@@ -1,13 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import HeaderTabs from "../../layouts/HeaderTabs";
 
 export class FrontDesk extends Component {
-    render() {
-        return (
-            <div>
-                <h1>FrontDesk</h1>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <HeaderTabs />
+      </div>
+    );
+  }
 }
 
-export default FrontDesk
+export default FrontDesk;

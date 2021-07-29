@@ -1,4 +1,5 @@
 import React from "react";
+
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -17,6 +18,7 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+import HeaderTabs from "./HeaderTabs";
 
 const useStyles = makeStyles((theme) => ({
   grow: {

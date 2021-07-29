@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import login from "./login.css";
 import PropTypes from "prop-types";
 import "../assets/variable.css";
 import auth from "../services/auth.service";
@@ -36,14 +37,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 100,
   },
   imglogo: {
-    maxHeight: 60,
-    maxWidth: 60,
-    border: "1.5px solid white",
-    borderRadius: 8,
-    marginBottom: 4,
+    maxHeight: 220,
+    maxWidth: 220,
+    // border: "1.5px solid white",
+    // borderRadius: 8,
+    // marginBottom: 4,
   },
   formlogin: {
-    marginBottom: 40,
+    marginBottom: 35,
   },
 }));
 
@@ -75,61 +76,63 @@ export default function Login({ setToken }) {
   // if(login) return <Redirect to='/'/>;
   // else
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
-      alignItems="center"
-      justifyContent="center"
-    >
-      <Paper className={classes.paper}>
-        <img className={classes.imglogo} src="logo.jpg" alt="logo" />
-        <h1 style={{ color: "#2D62ED" }}>App Platform</h1>
-        <Grid item className={classes.formlogin}>
-          <form Validate autoComplete="on" onSubmit={handleSubmit}>
-            <Grid item spacing={5}>
-              <TextField id="standard-basic" label="Username" fullWidth>
-                <Input
-                  type="text"
-                  onChange={(e) => setUserName(e.target.value)}
+    <div className="Login-component">
+      <Container
+        component="main"
+        maxWidth="xs"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Paper className={classes.paper}>
+          <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
+          <h5 style={{ color: "gray" }}>Hotel Property Management System</h5>
+          <Grid item className={classes.formlogin}>
+            <form Validate autoComplete="on" onSubmit={handleSubmit}>
+              <Grid item spacing={5}>
+                <TextField id="standard-basic" label="Username" fullWidth>
+                  <Input
+                    type="text"
+                    onChange={(e) => setUserName(e.target.value)}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <AccountBoxIcon />
+                      </InputAdornment>
+                    }
+                  />
+                </TextField>
+              </Grid>
+              <Grid item spacing={5}>
+                <TextField
+                  id="standard-basic"
+                  label="Password"
+                  fullWidth
                   endAdornment={
                     <InputAdornment position="end">
                       <AccountBoxIcon />
                     </InputAdornment>
                   }
-                />
-              </TextField>
-            </Grid>
-            <Grid item spacing={5}>
-              <TextField
-                id="standard-basic"
-                label="Password"
-                fullWidth
-                endAdornment={
-                  <InputAdornment position="end">
-                    <AccountBoxIcon />
-                  </InputAdornment>
-                }
-              >
-                <Input
-                  type="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </TextField>
-            </Grid>
-          </form>
-        </Grid>
-        <Grid item>
-          <Button
-            fullWidth
-            type="submit"
-            variant="contained"
-            style={{ backgroundColor: "#2D62ED", color: "white" }}
-          >
-            LOGIN
-          </Button>
-        </Grid>
-      </Paper>
-    </Container>
+                >
+                  <Input
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </TextField>
+              </Grid>
+            </form>
+          </Grid>
+          <Grid item>
+            <Button
+              fullWidth
+              type="submit"
+              variant="contained"
+              style={{ backgroundColor: "#2D62ED", color: "white" }}
+            >
+              LOGIN
+            </Button>
+          </Grid>
+        </Paper>
+      </Container>
+    </div>
   );
 }
 

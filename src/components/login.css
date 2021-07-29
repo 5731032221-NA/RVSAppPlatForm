@@ -1,0 +1,14 @@
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+.Login-component {
+  background: url("https://ak-d.tripcdn.com/images/220t19000001678im89B1_R_550_412_R5_Q70_D.jpg");
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
