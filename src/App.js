@@ -12,6 +12,10 @@ import thunk from "redux-thunk";
 import configureStore from "./middleware/store";
 import React, { useState } from "react";
 import useToken from "./middleware/useToken";
+import useLang from "./middleware/useLang";
+import useTheme from "./middleware/useTheme";
+import en_lang from "./static/lang/en.json"
+import th_lang from "./static/lang/th.json"
 
 // function setToken(userToken) {
 //   sessionStorage.setItem('token', JSON.stringify(userToken));
@@ -21,34 +25,50 @@ import useToken from "./middleware/useToken";
 //   sessionStorage.setItem('Authorization', tokenParsed);
 // }
 
+
+
 function App() {
-  const { token, setToken } = useToken();
-  // const store = createStore(reducer, applyMiddleware(thunk));
-  // const [token, setToken] = useState();
-  const store = configureStore();
-  // const token = getToken();
-  console.log("token", token);
-  // if (!token) {
-  //   console.log("tokentoken",token)
-  //   return <SignIn setToken={setToken} />
-  // }
-  return (
-    <Provider store={store}>
+    const { token, setToken } = useToken();
+    const { theme, setTheme } = useTheme();
+    const { lang, setLang } = useLang();
+    const [locale, setLocale] = useState(en_lang);
+    var prevlang = "en"
+    if (lang == 'th') {
+        setLocale(th_lang);
+    } else if (lang != prevlang && lang != undefined) {
+        console.log("prevlang", prevlang, lang)
+        prevlang = lang
+        setLocale(en_lang);
+    }
+    // const store = createStore(reducer, applyMiddleware(thunk));
+    // const [token, setToken] = useState();
+    const store = configureStore();
+
+    console.log("lang", lang);
+    console.log("theme", theme);
+    // const token = getToken();
+    console.log("token", token);
+    if (!token) {
+        console.log("tokentoken", token)
+        return <SignIn setToken = { setToken }
+        />
+    }
+    return ( <Provider store={store}>
       <div>
         <BrowserRouter>
-          <Header />
+          <Header store={store}/>
           <Switch>
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/forgotpassword" component={ForgotPass} />
             <Route exact path="/userlist" component={UserList} />
             
-            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/" component={Dashboard} locale={locale}  />
             {/* <Route component={ErrorPage} /> */}
           </Switch>
         </BrowserRouter>
       </div>
     </Provider>
-  );
+    );
 }
 
 export default App;

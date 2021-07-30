@@ -53,12 +53,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login({ setToken }) {
   const classes = useStyles();
-  const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
   // const [login, setlogin] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("up",username,password)
     const token = await auth({
       user: {
         username,
@@ -97,6 +98,10 @@ export default function Login({ setToken }) {
                 <TextField
                   id="standard-basic"
                   label="Username "
+                  htmlFor="Username"
+                  href
+                  type="text"
+                  onChange={(e) => setUserName(e.target.value)}
                   fullWidth
                   InputProps={{
                     endAdornment: (
@@ -106,10 +111,10 @@ export default function Login({ setToken }) {
                     ),
                   }}
                 >
-                  <Input
+                  {/* <Input
                     type="text"
                     onChange={(e) => setUserName(e.target.value)}
-                  />
+                  /> */}
                 </TextField>
               </Grid>
 
@@ -117,6 +122,9 @@ export default function Login({ setToken }) {
                 <TextField
                   id="standard-basic"
                   label="Password"
+                  htmlFor="password"
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
                   fullWidth
                   InputProps={{
                     endAdornment: (
@@ -126,24 +134,25 @@ export default function Login({ setToken }) {
                     ),
                   }}
                 >
-                  <Input
+                  {/* <Input
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
-                  />
+                  /> */}
                 </TextField>
+              </Grid>
+              <Grid item>
+                <Button
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                  style={{ backgroundColor: "#2D62ED", color: "white" }}
+                >
+                  LOGIN
+                </Button>
               </Grid>
             </form>
           </Grid>
-          <Grid item>
-            <Button
-              fullWidth
-              type="submit"
-              variant="contained"
-              style={{ backgroundColor: "#2D62ED", color: "white" }}
-            >
-              LOGIN
-            </Button>
-          </Grid>
+
         </Paper>
       </Container>
     </div>

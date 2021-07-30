@@ -12,6 +12,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import ExplicitIcon from '@material-ui/icons/Explicit';
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
@@ -21,6 +22,10 @@ import AddIcon from "@material-ui/icons/Add";
 import HeaderTabs from "./HeaderTabs";
 import Divider from "@material-ui/core/Divider";
 import ButtomBar from "./ButtomBar";
+
+import {
+  EDIT_LANG
+} from "../middleware/action";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -86,7 +91,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Navbar() {
+// function handleLanguageTH(){
+//   console.log("handle lang TH")
+//   // store.dispatch(user.actions.setUserName('eric'))
+//   // setAnchorEl(null);
+//   // handleMobileMenuClose();
+// };
+
+// function handleLanguageEN(){
+//   console.log("handle lang EN")
+//   // setAnchorEl(null);
+//   // handleMobileMenuClose();
+// };
+
+export default function Navbar(store) {
+  // console.log("store",store.store.dispatch({
+  //   type: EDIT_LANG,
+  //   payload: 'th',
+  //   }))
+  // console.log("store",store.store.getState())
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -94,8 +117,11 @@ export default function Navbar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event) => {
+  const handlelanguageMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+  const handleProfileMenuOpen = (event) => {
+   setAnchorEl(event.currentTarget);
   };
 
   const handleMobileMenuClose = () => {
@@ -110,6 +136,22 @@ export default function Navbar() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+ 
+
+  const handleLanguage = (lang) => {
+    console.log("handle lang",lang)
+    // setAnchorEl(null);
+    // handleMobileMenuClose();
+    store.store.dispatch({
+      type: EDIT_LANG,
+      payload: lang
+      })
+    console.log("store",store.store.getState().reducer.lang)
+  };
+
+  
+
+
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -122,8 +164,8 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={() => handleLanguage('en')}>English</MenuItem>
+      <MenuItem onClick={() => handleLanguage('th')}>ไทย</MenuItem>
     </Menu>
   );
 
@@ -154,7 +196,7 @@ export default function Navbar() {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem onClick={()=>handleProfileMenuOpen}>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
@@ -164,6 +206,17 @@ export default function Navbar() {
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
+      </MenuItem>
+      <MenuItem onClick={handlelanguageMenuOpen}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <ExplicitIcon />
+        </IconButton>
+        <p>Language</p>
       </MenuItem>
     </Menu>
   );
@@ -235,11 +288,11 @@ export default function Navbar() {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={handlelanguageMenuOpen}
               size="medium"
               style={{ color: "#1B47C1" }}
             >
-              <AccountCircle />
+              <ExplicitIcon />
             </IconButton>
             <Grid item spacing={1} style={{ paddingLeft: 20 }}>
               <Grid item spacing={1}>
@@ -271,3 +324,4 @@ export default function Navbar() {
     </div>
   );
 }
+
