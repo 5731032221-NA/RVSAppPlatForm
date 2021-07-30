@@ -20,6 +20,7 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import HeaderTabs from "./HeaderTabs";
 import Divider from "@material-ui/core/Divider";
+import ButtomBar from "./ButtomBar";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -266,6 +267,7 @@ export default function Navbar() {
       {renderMobileMenu}
       {renderMenu}
       <HeaderTabs />
+      <ButtomBar />
     </div>
   );
 }
