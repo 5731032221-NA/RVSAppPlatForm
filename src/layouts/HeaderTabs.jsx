@@ -7,11 +7,13 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import PhotoSizeSelectSmallIcon from "@material-ui/icons/PhotoSizeSelectSmall";
+import ImageAspectRatioIcon from "@material-ui/icons/ImageAspectRatio";
 import KingBedIcon from "@material-ui/icons/KingBed";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import NightsStayIcon from "@material-ui/icons/NightsStay";
 import NotificationsIcon from "@material-ui/icons/Notifications";
+import { IconButton } from "@material-ui/core";
+import FrontDesk from "../components/Dashboard/FrontDesk";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -73,12 +75,19 @@ export default function HeaderTabs() {
       >
         <Grid container>
           <Grid item spacing={1} className={classes.title}>
-            <Typography variant="h6" align="left">
-              <div>
+            {/* <Typography variant="h6" align="left"> */}
+
+            <h3 style={{ color: "gray" }}>
+              <IconButton
+                size="medium"
+                style={{ color: "red", marginLeft: 20 }}
+              >
                 <NotificationsIcon />
-                Update has a problem
-              </div>
-            </Typography>
+              </IconButton>
+              Update has a problem
+            </h3>
+
+            {/* </Typography> */}
           </Grid>
 
           <Tabs
@@ -89,7 +98,7 @@ export default function HeaderTabs() {
             centered
           >
             <Tab
-              icon={<PhotoSizeSelectSmallIcon />}
+              icon={<ImageAspectRatioIcon />}
               label="Front Desk"
               {...a11yProps(0)}
             />
@@ -108,7 +117,7 @@ export default function HeaderTabs() {
         </Grid>
       </AppBar>
       <TabPanel value={value} index={0}>
-        Front Desk
+        <FrontDesk />
       </TabPanel>
       <TabPanel value={value} index={1}>
         Reservation

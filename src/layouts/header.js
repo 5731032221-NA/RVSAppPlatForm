@@ -19,6 +19,7 @@ import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import HeaderTabs from "./HeaderTabs";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -222,6 +223,12 @@ export default function Navbar() {
             >
               <AddIcon />
             </Fab>
+            <Divider
+              orientation="vertical"
+              flexItem
+              style={{ backgroundColor: "#FFFFFF" }}
+              variant="middle"
+            />
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -233,7 +240,7 @@ export default function Navbar() {
             >
               <AccountCircle />
             </IconButton>
-            <Grid item spacing={1} style={{ paddingLeft: 15 }}>
+            <Grid item spacing={1} style={{ paddingLeft: 20 }}>
               <Grid item spacing={1}>
                 <Typography variant="subtitle1">Username</Typography>
               </Grid>
@@ -242,6 +249,7 @@ export default function Navbar() {
               </Grid>
             </Grid>
           </div>
+
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
@@ -257,6 +265,7 @@ export default function Navbar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      <HeaderTabs />
     </div>
   );
 }

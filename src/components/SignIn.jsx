@@ -3,7 +3,6 @@ import login from "./login.css";
 import PropTypes from "prop-types";
 import "../assets/variable.css";
 import auth from "../services/auth.service";
-import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,6 +11,9 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Divider from "@material-ui/core/Divider";
 
 // import { Redirect } from 'react-router'
 // async function loginUser(credentials) {
@@ -32,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     color: theme.palette.text.secondary,
     // margin: theme.spacing(1),
-    width: theme.spacing(40),
-    height: theme.spacing(45),
+    width: theme.spacing(38),
+    height: theme.spacing(48),
     marginTop: 100,
   },
   imglogo: {
@@ -44,7 +46,8 @@ const useStyles = makeStyles((theme) => ({
     // marginBottom: 4,
   },
   formlogin: {
-    marginBottom: 35,
+    marginBottom: 20,
+    padding: 10,
   },
 }));
 
@@ -85,32 +88,43 @@ export default function Login({ setToken }) {
       >
         <Paper className={classes.paper}>
           <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
-          <h5 style={{ color: "gray" }}>Hotel Property Management System</h5>
+          <h5 style={{ color: "gray" }}>Hotel Property Management System </h5>
+          <Divider variant="middle" />
+
           <Grid item className={classes.formlogin}>
             <form Validate autoComplete="on" onSubmit={handleSubmit}>
               <Grid item spacing={5}>
-                <TextField id="standard-basic" label="Username" fullWidth>
+                <TextField
+                  id="standard-basic"
+                  label="Username "
+                  fullWidth
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <GroupOutlinedIcon style={{ color: "#2D62ED" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                >
                   <Input
                     type="text"
                     onChange={(e) => setUserName(e.target.value)}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <AccountBoxIcon />
-                      </InputAdornment>
-                    }
                   />
                 </TextField>
               </Grid>
-              <Grid item spacing={5}>
+
+              <Grid item spacing={5} style={{ marginTop: 10 }}>
                 <TextField
                   id="standard-basic"
                   label="Password"
                   fullWidth
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <AccountBoxIcon />
-                    </InputAdornment>
-                  }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <LockOutlinedIcon style={{ color: "#2D62ED" }} />
+                      </InputAdornment>
+                    ),
+                  }}
                 >
                   <Input
                     type="password"

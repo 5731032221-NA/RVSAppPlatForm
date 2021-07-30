@@ -29,10 +29,10 @@ function App() {
   const store = configureStore();
   // const token = getToken();
   console.log("token",token)
-  if (!token) {
-    console.log("tokentoken",token)
-    return <SignIn setToken={setToken} />
-  }
+  // if (!token) {
+  //   console.log("tokentoken",token)
+  //   return <SignIn setToken={setToken} />
+  // }
   return (
     <Provider store={store}>
       <div>
