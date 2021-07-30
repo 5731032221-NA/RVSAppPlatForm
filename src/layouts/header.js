@@ -22,6 +22,7 @@ import AddIcon from "@material-ui/icons/Add";
 import HeaderTabs from "./HeaderTabs";
 import Divider from "@material-ui/core/Divider";
 import ButtomBar from "./ButtomBar";
+import Leftbar from "./Leftbar";
 
 import {
   EDIT_LANG
@@ -260,16 +261,6 @@ export default function Navbar(store) {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {/* <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
             <Fab
               size="small"
               aria-label="add"
@@ -319,6 +310,7 @@ export default function Navbar(store) {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {/* <Leftbar /> */}
       <HeaderTabs />
       <ButtomBar />
     </div>
