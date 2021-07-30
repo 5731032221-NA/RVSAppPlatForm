@@ -1,5 +1,7 @@
 import "./App.css";
 import Header from "./layouts/header";
+import Leftbar from "./layouts/Leftbar";
+
 import SignIn from "./components/SignIn";
 import Dashboard from "./pages/DashboardPage";
 import UserList from "./pages/TestUserListPage";
@@ -57,7 +59,9 @@ function App() {
       <div>
 
         <BrowserRouter>
+        {/* <Leftbar /> */}
           <Header store={store}/>
+          
           <Switch>
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/forgotpassword" component={ForgotPass} />

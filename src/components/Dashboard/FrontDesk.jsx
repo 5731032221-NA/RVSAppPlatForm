@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, { Component, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -7,13 +7,11 @@ import en_lang from "../../static/lang/en.json"
 import th_lang from "../../static/lang/th.json"
 // const [SomeThingInFrontDesk, setSomeThingInFrontDesk] = useState(en_lang.SomeThingInFrontDesk)
 // const [lang, setLang] = useState('en')
-=======
-import React, { Component } from "react";
+
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 
->>>>>>> e6416016b59ab3571164c5088d600e43ddac053d
 export class FrontDesk extends Component {
   constructor(props) {
     super(props);
@@ -38,21 +36,17 @@ export class FrontDesk extends Component {
             lang: 'en',
             SomeThingInFrontDesk: (en_lang.SomeThingInFrontDesk)
           });
-  
+
         }
-  
+
       }
-    } , 100);
+    }, 100);
   }
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
   render() {
-<<<<<<< HEAD
-    
-    return <div>{this.state.SomeThingInFrontDesk}</div>;
-=======
     return (
       <div style={{ backgroundColor: "#F2F5FC" }}>
         <Container maxWidth="xl">
@@ -119,9 +113,9 @@ export class FrontDesk extends Component {
         </Container>
       </div>
     );
->>>>>>> e6416016b59ab3571164c5088d600e43ddac053d
   }
 }
+
 
 const mapStateToProps = (state) => {
   console.log("mapStateToProps")

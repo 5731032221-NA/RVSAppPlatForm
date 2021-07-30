@@ -283,6 +283,17 @@ export default function Navbar(store) {
               size="medium"
               style={{ color: "#1B47C1" }}
             >
+              <AccountCircle />
+            </IconButton>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handlelanguageMenuOpen}
+              size="medium"
+              style={{ color: "#1B47C1" }}
+            >
               <ExplicitIcon />
             </IconButton>
             <Grid item spacing={1} style={{ paddingLeft: 20 }}>
