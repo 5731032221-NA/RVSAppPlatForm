@@ -34,7 +34,7 @@ function App() {
   // }
   return (
     <Provider store={store}>
-      <div>
+      <div >
         <BrowserRouter>
           <Header />
           <Switch>
