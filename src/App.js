@@ -31,43 +31,49 @@ import th_lang from "./static/lang/th.json"
 
 function App() {
     const { token, setToken } = useToken();
-    const { theme, setTheme } = useTheme();
-    const { lang, setLang } = useLang();
-    const [locale, setLocale] = useState(en_lang);
-    var prevlang = "en"
-    if (lang == 'th') {
-        setLocale(th_lang);
-    } else if (lang != prevlang && lang != undefined) {
-        console.log("prevlang", prevlang, lang)
-        prevlang = lang
-        setLocale(en_lang);
-    }
-    // const store = createStore(reducer, applyMiddleware(thunk));
-    // const [token, setToken] = useState();
     const store = configureStore();
-
-    console.log("lang", lang);
-    console.log("theme", theme);
-    // const token = getToken();
-    console.log("token", token);
+    const [pathn, setpathn] = useState("/"+store.getState().reducer.lang);
+    // const { theme, setTheme } = useTheme();
+    // const { lang, setLang } = useLang();
+    // const [locale, setLocale] = useState(en_lang);
+    // var prevlang = "en"
+    // if (lang == 'th') {
+    //     setLocale(th_lang);
+    // } else if (lang != prevlang && lang != undefined) {
+    //     console.log("prevlang", prevlang, lang)
+    //     prevlang = lang
+    //     setLocale(en_lang);
+    // }
+    // // const store = createStore(reducer, applyMiddleware(thunk));
+    // // const [token, setToken] = useState();
+    
+  
+    console.log("store",store.getState().reducer.lang)
+    // console.log("lang", lang);
+    // console.log("theme", theme);
+    // // const token = getToken();
+    // console.log("token", token);
     if (!token) {
         console.log("tokentoken", token)
         return <SignIn setToken = { setToken }
         />
     }
+    
+    // let pathn = "/"+store.getState().reducer.lang;
+    console.log(pathn);
     return ( <Provider store={store}>
       <div>
 
         <BrowserRouter>
         {/* <Leftbar /> */}
-          <Header store={store}/>
+          {/* <Header store={store}/> */}
           
           <Switch>
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/forgotpassword" component={ForgotPass} />
             <Route exact path="/userlist" component={UserList} />
             
-            <Route exact path="/" component={Dashboard} locale={locale}  />
+            <Route exact path="/" component={Dashboard}   />
             {/* <Route component={ErrorPage} /> */}
           </Switch>
         </BrowserRouter>

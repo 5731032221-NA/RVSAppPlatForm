@@ -18,7 +18,7 @@ export class FrontDesk extends Component {
     this.props.getUserList();
     this.state = {
       lang: 'en',
-      SomeThingInFrontDesk: en_lang.SomeThingInFrontDesk
+      Dashboard: en_lang.Dashboard
     };
   }
 
@@ -29,12 +29,12 @@ export class FrontDesk extends Component {
         if (this.props.lang == 'th') {
           this.setState({
             lang: 'th',
-            SomeThingInFrontDesk: (th_lang.SomeThingInFrontDesk)
+            Dashboard: (th_lang.Dashboard)
           });
         } else if (this.props.lang == 'en') {
           this.setState({
             lang: 'en',
-            SomeThingInFrontDesk: (en_lang.SomeThingInFrontDesk)
+            Dashboard: (en_lang.Dashboard)
           });
 
         }
@@ -50,7 +50,7 @@ export class FrontDesk extends Component {
     return (
       <div style={{ backgroundColor: "#F2F5FC" }}>
         <Container maxWidth="xl">
-          <h3 style={{ color: "blue" }}>Dashboard</h3>
+          <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
           <Grid container spacing={3}>
             <Grid item xs={12} md={12} lg={9} xl={9}>
               <Grid item spacing={1} xs={12} md={12} lg={12} xl={12}>

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import login from "./login.css";
-import PropTypes from "prop-types";
+import "../assets/login.css";
 import "../assets/variable.css";
+import background from "../assets/img/imgbackground.jpg";
+
+import PropTypes from "prop-types";
 import auth from "../services/auth.service";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -15,17 +17,17 @@ import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Divider from "@material-ui/core/Divider";
 
-// import { Redirect } from 'react-router'
-// async function loginUser(credentials) {
-//   return fetch('http://localhost:8083/login', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(credentials)
-//   })
-//     .then(data => data.json())
-// }
+import { Redirect } from 'react-router';
+async function loginUser(credentials) {
+   return fetch('http://localhost:8083/login', {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json'
+     },
+     body: JSON.stringify(credentials)
+   })
+     .then(data => data.json())
+ }
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,16 +41,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 100,
   },
   imglogo: {
-    maxHeight: 220,
-    maxWidth: 220,
-    // border: "1.5px solid white",
-    // borderRadius: 8,
-    // marginBottom: 4,
+    maxHeight: 220, maxWidth: 220,
   },
   formlogin: {
-    marginBottom: 20,
-    padding: 10,
+    marginBottom: 20, padding: 10,
   },
+  sysname: {
+    color: "#393737", fontFamily:'Roboto',  fontWeight:'normal', fontSize:15
+  }
 }));
 
 export default function Login({ setToken }) {
@@ -56,7 +56,7 @@ export default function Login({ setToken }) {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
-  // const [login, setlogin] = useState(false);
+  const [login, setlogin] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("up",username,password)
@@ -67,20 +67,20 @@ export default function Login({ setToken }) {
       },
     });
     console.log("token", token);
-    // loginUser({
-    //   user: {
-    //     username,
-    //     password
-    //   }
-    // });
+    loginUser({
+       user: {
+         username,
+         password
+       }
+     });
     setToken(token);
-    // setlogin(true);
+    setlogin(true);
   };
 
-  // if(login) return <Redirect to='/'/>;
-  // else
+  if(login) return <Redirect to='/Dashboard/FrontDesk'/>;
+  else
   return (
-    <div className="Login-component">
+    <div className="Login-component" style={{ backgroundImage: `url(${background})` }} >
       <Container
         component="main"
         maxWidth="xs"
@@ -89,15 +89,15 @@ export default function Login({ setToken }) {
       >
         <Paper className={classes.paper}>
           <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
-          <h5 style={{ color: "gray" }}>Hotel Property Management System </h5>
+          <h5 className={classes.sysname} >Hotel Property Management System </h5>
           <Divider variant="middle" />
 
           <Grid item className={classes.formlogin}>
             <form Validate autoComplete="on" onSubmit={handleSubmit}>
               <Grid item spacing={5}>
-                <TextField
+                <TextField 
                   id="standard-basic"
-                  label="Username "
+                  label=" Username "
                   htmlFor="Username"
                   href
                   type="text"
@@ -140,7 +140,7 @@ export default function Login({ setToken }) {
                   /> */}
                 </TextField>
               </Grid>
-              <Grid item>
+              <Grid item style={{marginTop:30}} >
                 <Button
                   fullWidth
                   type="submit"
