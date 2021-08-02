@@ -109,7 +109,7 @@ export default function Login({ setToken }) {
       try{
       store.dispatch({
         type: EDIT_AUTHORIZATION,
-        payload: token.contents[0].accessToken
+        payload: token.contents[0].refreshToken
         })
       }catch(err){
         console.log("de2",err.stack)

@@ -30,6 +30,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MailIcon from "@material-ui/icons/Mail";
 import { purple, green } from "@material-ui/core/colors";
+
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+
 // import { useDispatch } from 'react-redux/lib/hooks/useDispatch';
 import {
     EDIT_LANG
@@ -38,8 +42,12 @@ import { ReactReduxContext } from 'react-redux'
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
 
-import { mainListItems_en, secondaryListItems_en } from '../middleware/listitems/listltems_en';
-import { mainListItems_th, secondaryListItems_th } from '../middleware/listitems/listltems_en';
+import MainListItems_en from '../middleware/listitems/dropDownItems';
+import secondaryListItems_en from '../middleware/listitems/dropDownItems';
+import mainListItems_th from '../middleware/listitems/dropDownItems';
+import secondaryListItems_th from '../middleware/listitems/dropDownItems';
+// import { mainListItems_en, secondaryListItems_en } from '../middleware/listitems/dropDownItems';
+// import { mainListItems_th, secondaryListItems_th } from '../middleware/listitems/dropDownItems';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -64,13 +72,13 @@ const useStyles = makeStyles((theme) => ({
         }),
         // backgroundColor:'#2D62ED'
     },
-    themeDefault:{
-        backgroundColor:'#2D62ED'
+    themeDefault: {
+        backgroundColor: '#2D62ED'
     },
-    themeGreen:{
+    themeGreen: {
         backgroundColor: green[600]
     },
-    themePurple:{
+    themePurple: {
         backgroundColor: purple[600]
     },
     appBarShift: {
@@ -80,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
-        
+
     },
     // menuButton: {
     //     marginRight: 36,
@@ -99,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
-        backgroundColor:'#2D62ED',
+        backgroundColor: '#2D62ED',
         color: 'white'
     },
     drawerPaperClose: {
@@ -203,6 +211,28 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
     const classes = useStyles();
+    const items = [
+        { name: 'Dashboard', label: 'Dashboard' },
+        { name: 'Reservation', label: 'Reservation' },
+        {
+            name: 'FrontDesk', label: 'Front Desk',
+            items: [{ name: 'Walk-in', label: 'Walk-in' },
+            { name: 'Check-in', label: 'Walk-in' },
+            { name: 'Chen-in', label: 'Walk-in' },
+            { name: 'Walk-in', label: 'Walk-in' },
+            ]
+        },
+        { name: 'Cashier', label: 'Cashier' },
+        { name: 'Profiles', label: 'Profiles' },
+        { name: 'NightAuditor', label: 'Night Auditor' },
+        { name: 'House Keeping', label: 'HouseKeeping' },
+        { name: 'Engineering', label: 'Engineering' },
+        { name: 'Reports', label: 'Reports' },
+        { name: 'Configuration', label: 'Configuration' },
+        { name: 'System Tools', label: 'System Tools' }
+
+    ]
+
     const [open, setOpen] = React.useState(false);
     const [themeState, setThemeState] = React.useState(classes.themeDefault);
     const handleDrawerOpen = () => {
@@ -243,9 +273,9 @@ export default function Dashboard() {
         console.log("handle lang", lang)
         // setAnchorEl(null);
         // handleMobileMenuClose();
-        if(lang == 'th'){
+        if (lang == 'th') {
             setThemeState(classes.themePurple)
-        }else{
+        } else {
             setThemeState(classes.themeGreen)
         }
         console.log("store", store)
@@ -336,7 +366,7 @@ export default function Dashboard() {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar position="absolute" className={clsx(themeState,classes.appBar, open && classes.appBarShift)}>
+            <AppBar position="absolute" className={clsx(themeState, classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
                     <IconButton
                         edge="start"
@@ -446,7 +476,7 @@ export default function Dashboard() {
                             height={40}
                         />
                         {/* <div style={{ paddingLeft: 40 }}> */}
-                        {open?
+                        {open ?
                             <IconButton
                                 edge="start"
                                 className={classes.menuButton}
@@ -455,7 +485,7 @@ export default function Dashboard() {
                                 onClick={handleDrawerClose}
                             >
                                 <MenuIcon />
-                            </IconButton>:<div style={{marginTop:'20px'}}></div>}
+                            </IconButton> : <div style={{ marginTop: '20px' }}></div>}
                         {/* </div> */}
 
                         {/* <div className={classes.toolbarIcon}>
@@ -466,16 +496,23 @@ export default function Dashboard() {
                     </Grid>
                 </Grid>
                 <Divider />
-                <List>{store.getState().reducer.lang == "en"? mainListItems_en:mainListItems_th}</List>
+                {/* <List disablePadding dense>
+                    {items.map(({ label, name, ...rest }) => (
+                        <ListItem key={name} button {...rest}>
+                            <ListItemText>{label}</ListItemText>
+                        </ListItem>
+                    ))}
+                </List> */}
+                <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List>
                 <Divider />
-                <List>{store.getState().reducer.lang == "en"? secondaryListItems_en:secondaryListItems_th}</List>
+                {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     {/* <FrontDesk /> */}
                     <HeaderTabs />
-            <ButtomBar />
+                    <ButtomBar />
                 </Container>
             </main>
         </div>
