@@ -29,7 +29,7 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MailIcon from "@material-ui/icons/Mail";
-
+import { purple, green } from "@material-ui/core/colors";
 // import { useDispatch } from 'react-redux/lib/hooks/useDispatch';
 import {
     EDIT_LANG
@@ -62,7 +62,16 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+        // backgroundColor:'#2D62ED'
+    },
+    themeDefault:{
         backgroundColor:'#2D62ED'
+    },
+    themeGreen:{
+        backgroundColor: green[600]
+    },
+    themePurple:{
+        backgroundColor: purple[600]
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -195,6 +204,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [themeState, setThemeState] = React.useState(classes.themeDefault);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -233,6 +243,11 @@ export default function Dashboard() {
         console.log("handle lang", lang)
         // setAnchorEl(null);
         // handleMobileMenuClose();
+        if(lang == 'th'){
+            setThemeState(classes.themePurple)
+        }else{
+            setThemeState(classes.themeGreen)
+        }
         console.log("store", store)
         console.log("store", store.store)
         store.dispatch({
@@ -321,7 +336,7 @@ export default function Dashboard() {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+            <AppBar position="absolute" className={clsx(themeState,classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
                     <IconButton
                         edge="start"
