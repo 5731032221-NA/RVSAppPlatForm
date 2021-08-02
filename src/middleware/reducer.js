@@ -4,9 +4,17 @@ import {
 import {
     EDIT_LANG
 } from "./action";
+import {
+    EDIT_AUTHORIZATION
+} from "./action";
+import {
+    EDIT_PROPERTYS
+} from "./action";
 const initialState = {
     users: [{ 'id': "0", 'name': 'n' }],
-    lang: 'en'
+    lang: 'en',
+    auth: '',
+    propertys: ''
 };
 
 
@@ -15,6 +23,16 @@ const reducer = (state = initialState, action) => {
     console.log("action", action)
     const allUsers = [...state.users];
     switch (action.type) {
+        case EDIT_PROPERTYS:
+            return {
+                ...state,
+                propertys: action.payload,
+            };
+        case EDIT_AUTHORIZATION:
+            return {
+                ...state,
+                auth: action.payload,
+            };
         case EDIT_LANG:
             return {
                 ...state,

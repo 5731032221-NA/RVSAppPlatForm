@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import "../assets/login.css";
 import "../assets/variable.css";
 import background from "../assets/img/imgbackground.jpg";
 
 import PropTypes from "prop-types";
 import auth from "../services/auth.service";
+import menu from "../services/menus.service";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,6 +17,14 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Divider from "@material-ui/core/Divider";
+import { ReactReduxContext } from 'react-redux'
+import {
+  EDIT_AUTHORIZATION
+} from "../middleware/action";
+
+import {
+  EDIT_PROPERTYS
+} from "../middleware/action";
 
 async function loginUser(credentials) {
   return fetch('http://localhost:8083/login', {
@@ -61,7 +70,8 @@ export default function Login({ setToken }) {
   const [errorUsername, setErrorUsername] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
   const [errorLogin, setErrorLogin] = useState(false);
-
+  const { store } = useContext(ReactReduxContext);
+  console.log("log store",store);
   // const [login, setlogin] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,7 +85,7 @@ export default function Login({ setToken }) {
     } else {
       setErrorPassword(false);
     }
-
+    
     console.log("up", username, password)
     console.log((username == null || username == ''),(password == null || password == ''),
     !(username == null || username == '') && !(password == null || password == ''))
@@ -87,14 +97,35 @@ export default function Login({ setToken }) {
         },
       });
       console.log("token", token);
-      loginUser({
-        user: {
-          username,
-          password
-        }
-      });
-      setToken(token);
+      // loginUser({
+      //   user: {
+      //     username,
+      //     password
+      //   }
+      // });
+      
+
+      console.log("debug",store)
+      try{
+      store.dispatch({
+        type: EDIT_AUTHORIZATION,
+        payload: token.contents[0].accessToken
+        })
+      }catch(err){
+        console.log("de2",err.stack)
+      }
+      console.log("store authen",store.getState().reducer.auth)
+      const apitest = await menu(store.getState().reducer.auth);
+      store.dispatch({
+        type: EDIT_PROPERTYS,
+        payload: apitest
+      })
+      console.log("store authen",store.getState().reducer)
+      console.log("apitest",apitest)
       setErrorLogin(true);
+
+      setToken(token);
+      
     }
   };
 
@@ -137,7 +168,7 @@ export default function Login({ setToken }) {
                     onChange={(e) => setUserName(e.target.value)}
                   /> */}
                 </TextField>
-                {errorUsername ? <h5 className={classes.errorMessage}>This is required</h5> : null}
+                {errorUsername ? <h5 className={classes.errorMessage}>Username is required</h5> : null}
               </Grid>
 
               <Grid item spacing={5} style={{ marginTop: 10  }}>
@@ -162,7 +193,7 @@ export default function Login({ setToken }) {
                     onChange={(e) => setPassword(e.target.value)}
                   /> */}
                 </TextField>
-                {errorPassword ? <h5 className={classes.errorMessage}>This is required</h5> : null}
+                {errorPassword ? <h5 className={classes.errorMessage}>Password is required</h5> : null}
               </Grid>
               <Grid item style={{ marginTop: 30 }} >
                 <Button
@@ -185,4 +216,7 @@ export default function Login({ setToken }) {
 
 Login.propTypes = {
   setToken: PropTypes.func.isRequired,
+  // store: PropTypes.func.isRequired
+  // ,
+  // setAuthorization: PropTypes.func.isRequired
 };

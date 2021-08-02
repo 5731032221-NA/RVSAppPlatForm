@@ -1,13 +1,26 @@
 import axios from "axios";
 export const GET_USER_LIST = "GET_USER_LIST";
 export const EDIT_LANG = "EDIT_LANG";
+export const EDIT_AUTHORIZATION = "EDIT_AUTHORIZATION"
+export const EDIT_PROPERTYS = "EDIT_PROPERTYS";
+export const editAuth = (auth) => {
+    return (dispatch) => {
+
+        console.log("edit auth", auth);
+        dispatch({
+            type: EDIT_AUTHORIZATION,
+            payload: auth,
+        });
+
+    };
+};
 
 export const editLang = (lang) => {
     return (dispatch) => {
 
         console.log("edit lang", lang);
         dispatch({
-            type: "EDIT_LANG",
+            type: EDIT_LANG,
             payload: lang,
         });
 
