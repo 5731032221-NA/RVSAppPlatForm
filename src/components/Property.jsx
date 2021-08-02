@@ -51,11 +51,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function Property({ setToken }) {
+export default function Property({ setToken,setProperty }) {
     const { store } = useContext(ReactReduxContext);
     const classes = useStyles();
     const radioProp = ''
-    const [selectedProperty, setSelectedProperty] = useState("male");
+    const [selectedProperty, setSelectedProperty] = useState("");
     const [list, setList] = useState([]);
 
     const handleChange = event => {
@@ -70,8 +70,8 @@ export default function Property({ setToken }) {
         setToken(false);
 
     };
-    const handleSelect = event => {
-     
+    const handleSelect = () => {
+        setProperty(selectedProperty)
     };
     console.log("store1", store.getState())
     console.log("store2", store.getState().reducer)
@@ -117,9 +117,6 @@ export default function Property({ setToken }) {
                     <FormControl component="fieldset">
                         <FormLabel component="legend">Select Property</FormLabel>
                         <RadioGroup aria-label="gender" name="gender1" value={selectedProperty} onClick={handleChange}>
-                            {/* <FormControlLabel key="female" value="female" control={<Radio />} label="Female" />
-                            <FormControlLabel key="male" value="male" control={<Radio />} label="Male" /> */}
-                            {/* {selectedProperty} */}
                             {[store.getState().reducer.propertys].map((item) => (
 
                                 <FormControlLabel key={item.content.propertyID} value={item.content.propertyID} control={<Radio />} label={item.content.propertyID} />
@@ -153,6 +150,8 @@ export default function Property({ setToken }) {
 
 Property.propTypes = {
     setToken: PropTypes.func.isRequired,
+    setProperty: PropTypes.func.isRequired
+    
   
     // store: PropTypes.func.isRequired
 

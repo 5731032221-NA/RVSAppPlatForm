@@ -79,10 +79,11 @@ function App() {
       {!token ? <SignIn setToken={setToken}
         store={store}
       /> 
-      // :
-      //   !property? <Property
-      //   setToken={setToken}
-      //       />
+      :
+        !property? <Property
+        setToken={setToken}
+        setProperty={setProperty}
+            />
             :
       
 
