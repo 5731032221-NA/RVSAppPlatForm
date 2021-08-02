@@ -99,7 +99,7 @@ function App() {
             <Route exact path="/" component={Dashboard} />
             {/* <Route component={ErrorPage} /> */}
           </Switch>
-          <Header store={store} />
+          {/* <Header store={store} /> */}
         </BrowserRouter>
         
       }
