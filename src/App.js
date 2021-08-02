@@ -34,14 +34,14 @@ function App() {
   // }
   return (
     <Provider store={store}>
-      <div >
+      <div>
         <BrowserRouter>
           <Header />
           <Switch>
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/forgotpassword" component={ForgotPass} />
             <Route exact path="/userlist" component={UserList} />
-            
+
             <Route exact path="/" component={Dashboard} />
             {/* <Route component={ErrorPage} /> */}
           </Switch>
