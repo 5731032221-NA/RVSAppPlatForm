@@ -1,4 +1,4 @@
-import "./Assets/App.css";
+import "./assets/App.css";
 import Header from "./layouts/header";
 import Leftbar from "./layouts/Leftbar";
 
