@@ -62,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        // backgroundColor:'#2D62ED'
     },
     themeDefault:{
         backgroundColor:'#2D62ED'
@@ -82,15 +81,16 @@ const useStyles = makeStyles((theme) => ({
         }),
         
     },
-    // menuButton: {
-    //     marginRight: 36,
-    // },
+    menuButtonExpand: {
+         paddingRight: 20,
+         paddingLeft:40
+    },
+    logoExpand: {
+        marginLeft: -10,
+   },
     menuButtonHidden: {
         display: 'none',
     },
-    // title: {
-    //     flexGrow: 1,
-    // },
     drawerPaper: {
         position: 'relative',
         whiteSpace: 'nowrap',
@@ -139,9 +139,12 @@ const useStyles = makeStyles((theme) => ({
     },
     menuButton: {
         marginRight: theme.spacing(2),
+        paddingTop:25,
+        paddingBottom:14
     },
     title: {
         display: "none",
+        fontWeight:'normal',
         [theme.breakpoints.up("sm")]: {
             display: "block",
         },
@@ -338,12 +341,19 @@ export default function Dashboard() {
             <CssBaseline />
             <AppBar position="absolute" className={clsx(themeState,classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
+                    <img
+                        src="logomin.png"
+                        className={clsx(classes.logoExpand, open && classes.menuButtonHidden)}
+                        alt="..."
+                        height={35}
+                    />
+
                     <IconButton
                         edge="start"
                         color="inherit"
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
-                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                        className={clsx(classes.menuButtonExpand, open && classes.menuButtonHidden)}
                     >
                         <MenuIcon />
                     </IconButton>
@@ -387,7 +397,7 @@ export default function Dashboard() {
                             size="medium"
                             style={{ color: "#1B47C1" }}
                         >
-                            <AccountCircle />
+                            <ExplicitIcon />
                         </IconButton>
                         <IconButton
                             edge="end"
@@ -395,17 +405,17 @@ export default function Dashboard() {
                             aria-controls={menuId}
                             aria-haspopup="true"
                             onClick={handlelanguageMenuOpen}
-                            size="medium"
+                            size="large"
                             style={{ color: "#1B47C1" }}
                         >
-                            <ExplicitIcon />
+                            <AccountCircle style={{size:50}} />
                         </IconButton>
                         <Grid item spacing={1} style={{ paddingLeft: 20 }}>
                             <Grid item spacing={1}>
-                                <Typography variant="subtitle1">Username</Typography>
+                                <Typography variant="subtitle1" style={{fontSize:15}}>Prachaya N.</Typography>
                             </Grid>
                             <Grid item spacing={1}>
-                                <Typography variant="body2">Admin</Typography>
+                                <Typography variant="body2" style={{fontSize:10}} >Admin</Typography>
                             </Grid>
                         </Grid>
                     </div>
@@ -439,14 +449,15 @@ export default function Dashboard() {
             >
                 <Grid container >
                     <Grid item container direction="row">
-                        <img
-                            src="logo.png"
-                            class="rounded mx-auto d-block"
-                            alt="..."
-                            height={40}
-                        />
-                        {/* <div style={{ paddingLeft: 40 }}> */}
-                        {open?
+                            <div style={{paddingLeft:12, paddingRight:10, paddingTop:18 }}>
+                                <img
+                                src="logo.png"
+                                class="rounded mx-auto d-block"
+                                alt="..."
+                                height={35}
+                                />
+                            </div>
+                            {open?
                             <IconButton
                                 edge="start"
                                 className={classes.menuButton}
@@ -455,8 +466,9 @@ export default function Dashboard() {
                                 onClick={handleDrawerClose}
                             >
                                 <MenuIcon />
-                            </IconButton>:<div style={{marginTop:'20px'}}></div>}
-                        {/* </div> */}
+                            </IconButton>: null }
+                       
+                        
 
                         {/* <div className={classes.toolbarIcon}>
                         <IconButton onClick={handleDrawerClose}>
