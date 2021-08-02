@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#393737", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 15
   },
   errorMessage: {
-    color: "#ff0033", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 15
+    color: "#ff0033", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 12, paddingTop:10,
   }
 }));
 
@@ -96,15 +96,7 @@ export default function Login({ setToken }) {
           password,
         },
       });
-      console.log("token", token);
-      // loginUser({
-      //   user: {
-      //     username,
-      //     password
-      //   }
-      // });
-      
-
+      console.log("token", token);  
       console.log("debug",store)
       try{
       store.dispatch({
@@ -142,7 +134,9 @@ export default function Login({ setToken }) {
           <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
           <h5 className={classes.sysname} >Hotel Property Management System </h5>
           <Divider variant="middle" />
-          {errorLogin ? <h5 className={classes.errorMessage}>Invalid Username or Password</h5> : null}
+          
+          {errorUsername ? <div className={classes.errorMessage}>Username is required</div> : (errorPassword ? <div className={classes.errorMessage}>Password is required</div> : (errorLogin ? <div className={classes.errorMessage}>Invalid Username or Password</div> : null))}
+
           <Grid item className={classes.formlogin}>
             <form Validate autoComplete="on" onSubmit={handleSubmit}>
               <Grid item spacing={5}>
@@ -168,10 +162,10 @@ export default function Login({ setToken }) {
                     onChange={(e) => setUserName(e.target.value)}
                   /> */}
                 </TextField>
-                {errorUsername ? <h5 className={classes.errorMessage}>Username is required</h5> : null}
+                
               </Grid>
 
-              <Grid item spacing={5} style={{ marginTop: 10  }}>
+              <Grid item spacing={5} style={{ marginTop: 0  }}>
                 <TextField
                   id="standard-basic"
                   label="Password"
@@ -193,9 +187,9 @@ export default function Login({ setToken }) {
                     onChange={(e) => setPassword(e.target.value)}
                   /> */}
                 </TextField>
-                {errorPassword ? <h5 className={classes.errorMessage}>Password is required</h5> : null}
+               
               </Grid>
-              <Grid item style={{ marginTop: 30 }} >
+              <Grid item style={{ paddingTop: 25, paddingBottom:20 }} >
                 <Button
                   fullWidth
                   type="submit"
