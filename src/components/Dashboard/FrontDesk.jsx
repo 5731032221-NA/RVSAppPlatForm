@@ -11,6 +11,11 @@ import th_lang from "../../static/lang/th.json"
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import WorkIcon from "@material-ui/icons/Work";
+import Avatar from "@material-ui/core/Avatar";
+
+import Button from "@material-ui/core/Button";
 
 export class FrontDesk extends Component {
   constructor(props) {
@@ -48,66 +53,413 @@ export class FrontDesk extends Component {
 
   render() {
     return (
-      <div style={{ backgroundColor: "#F2F5FC" }}>
+      <div>
         <Container maxWidth="xl">
-          <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
+
+          {/* <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
           <Grid container spacing={3}>
             <Grid item xs={12} md={12} lg={9} xl={9}>
               <Grid item spacing={1} xs={12} md={12} lg={12} xl={12}>
                 <Paper elevation={3} style={{ minHeight: 300 }}>
-                  Gride layout 12
+                  Gride layout 12 */}
+
+          <h3 style={{ color: "blue", marginBottom: 25 }}>Dashboard</h3>
+          <Grid
+            container
+            spacing={4}
+            justifyContent="center"
+            alignItems="start"
+          >
+            <Grid container spacing={3} xs={12} md={12} lg={9} xl={9}>
+              <Grid item xs={12} md={12} lg={12} xl={12}>
+                <Paper elevation={3} style={{ minHeight: 400 }}>
+                  <Grid container style={{ padding: 20 }}>
+                    <Grid
+                      container
+                      direction="row"
+                      style={{ marginBottom: 20, marginLeft: 20 }}
+                    >
+                      <Grid container style={{ marginBottom: 10 }}>
+                        <Typography variant="h6" component="h6">
+                          Sales Statistical Overview
+                        </Typography>
+                      </Grid>
+                      <Grid item style={{ flexGrow: 1 }}>
+                        <Typography variant="body1" component="body1">
+                          Start Collecting data from February 2019
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Button size="small">1D</Button>
+                        <Button size="small">5D</Button>
+                        <Button variant="contained" size="small">
+                          1M
+                        </Button>
+                        <Button size="small">1Y</Button>
+                        <Button size="small">Max</Button>
+                      </Grid>
+                    </Grid>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="start"
+                      alignItems="center"
+                      style={{ marginLeft: 15 }}
+                      spacing={3}
+                    >
+                      <Grid item sx={4} md={4} lg={4} xl={4}>
+                        <Typography
+                          variant="body1"
+                          style={{ color: "darkblue" }}
+                        >
+                          Total cost
+                        </Typography>
+                        <Grid
+                          container
+                          direction="row"
+                          justifyContent="start"
+                          alignItems="center"
+                        >
+                          <Grid item sx={6} md={6} lg={6} xl={6}>
+                            <Typography variant="h5">15,236</Typography>
+                          </Grid>
+                          <Grid item>
+                            <Typography variant="body1">
+                              89.5% of 20,000 Total
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item sx={4} md={4} lg={4} xl={4}>
+                        <Typography
+                          variant="body1"
+                          style={{ color: "darkblue" }}
+                        >
+                          Total Revenue
+                        </Typography>
+                        <Grid
+                          container
+                          direction="row"
+                          justifyContent="start"
+                          alignItems="center"
+                        >
+                          <Grid item sx={6} md={6} lg={6} xl={6}>
+                            <Typography variant="h5">$753,098</Typography>
+                          </Grid>
+                          <Grid item>
+                            <Typography variant="body1">
+                              10.5% of 20,000 Total
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+
+                      <Grid item sx={4} md={4} lg={4} xl={4}>
+                        <Grid
+                          container
+                          direction="row"
+                          justifyContent="space-around"
+                          alignItems="center"
+                          spacing={3}
+                        >
+                          <Typography variant="body1">Sales</Typography>
+                          <Typography variant="body1">Avenue</Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                      item
+                      lg={12}
+                      xs={12}
+                      md={12}
+                      xl={12}
+                    >
+                      <Paper
+                        style={{
+                          backgroundColor: "#BDBFC3",
+                          width: "100%",
+                          height: 190,
+                          marginTop: 20,
+                        }}
+                      ></Paper>
+                    </Grid>
+                  </Grid>
+
                 </Paper>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                md={12}
-                lg={12}
-                xl={12}
-                style={{ marginTop: 20 }}
-              >
-                <Grid
-                  lg={12}
-                  xl={12}
-                  spacing={3}
-                  container
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Grid item xs={12} md={6} lg={4} xl={4}>
-                    <Paper elevation={3} style={{ minHeight: 300 }}>
-                      Gride layout3.1
-                    </Paper>
+
+              <Grid item xs={12} md={6} lg={4} xl={4}>
+                <Paper elevation={3} style={{ minHeight: 400 }}>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={3}
+                    style={{ padding: 20 }}
+                  >
+                    <Grid
+                      container
+                      style={{ marginBottom: 20, marginLeft: 20 }}
+                    >
+                      <Typography variant="h6" component="h6">
+                        Website Audience Metrics
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing={3}
+                      xs={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          style={{
+                            backgroundColor: "#BDBFC3",
+                            width: "100%",
+                            height: 150,
+                            marginBottom: 20,
+                          }}
+                        ></Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          style={{
+                            backgroundColor: "#BDBFC3",
+                            width: "100%",
+                            height: 150,
+                            marginBottom: 20,
+                          }}
+                        ></Paper>
+                      </Grid>
+                    </Grid>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing={3}
+                      xs={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          style={{
+                            backgroundColor: "#BDBFC3",
+                            width: "100%",
+                            height: 120,
+                            marginBottom: 20,
+                          }}
+                        ></Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          style={{
+                            backgroundColor: "#BDBFC3",
+                            width: "100%",
+                            height: 120,
+                            marginBottom: 20,
+                          }}
+                        ></Paper>
+                      </Grid>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} md={6} lg={4} xl={4}>
-                    <Paper elevation={3} style={{ minHeight: 300 }}>
-                      Gride layout3.2
-                    </Paper>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={6} lg={4} xl={4}>
+                <Paper elevation={3} style={{ minHeight: 400 }}>
+                  <Grid container style={{ padding: 20 }}>
+                    <Grid container style={{ marginBottom: 20 }}>
+                      <Typography variant="h6" component="h6">
+                        World Selling
+                      </Typography>
+                    </Grid>
+                    <Grid container justifyContent="center" alignItems="center">
+                      <Paper
+                        style={{
+                          backgroundColor: "#BDBFC3",
+                          width: "100%",
+                          height: 200,
+                          marginBottom: 20,
+                        }}
+                      ></Paper>
+                    </Grid>
+                    <Grid container direction="row" style={{ marginTop: 5 }}>
+                      <Grid item style={{ flexGrow: 1 }}>
+                        <Typography variant="subtitle1" component="subtitle1">
+                          California
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Grid container spacing={3}>
+                          <Grid item>
+                            <Typography variant="subtitle1" component="h1">
+                              26,473
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <Typography variant="subtitle1" component="h1">
+                              26%
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    {/* ================================================ */}
+                    <Grid container direction="row" style={{ marginTop: 5 }}>
+                      <Grid item style={{ flexGrow: 1 }}>
+                        <Typography variant="subtitle1" component="subtitle1">
+                          Washington
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Grid container spacing={3}>
+                          <Grid item>
+                            <Typography variant="subtitle1" component="h1">
+                              63,252
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <Typography variant="subtitle1" component="h1">
+                              64%
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} md={6} lg={4} xl={4}>
-                    <Paper elevation={3} style={{ minHeight: 300 }}>
-                      Gride layout3.3
-                    </Paper>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={6} lg={4} xl={4}>
+                <Paper elevation={3} style={{ minHeight: 400 }}>
+                  <Grid container style={{ padding: 20 }}>
+                    <Grid
+                      container
+                      direction="column"
+                      style={{ marginBottom: 20 }}
+                    >
+                      <Typography variant="h6" component="h6">
+                        Net Profit Margin
+                      </Typography>
+
+                      <Typography variant="body1" component="body1">
+                        Start Collecting data from February 2019
+                      </Typography>
+                    </Grid>
+                    <Grid container justifyContent="center" alignItems="center">
+                      <Paper
+                        style={{
+                          backgroundColor: "#BDBFC3",
+                          width: "100%",
+                          height: 275,
+                        }}
+                      ></Paper>
+                    </Grid>
                   </Grid>
-                </Grid>
+                </Paper>
               </Grid>
             </Grid>
+
             {/* right  */}
+
             <Grid item xs={12} md={12} lg={3} xl={3}>
-              <Paper
-                elevation={3}
-                style={{ minHeight: 150, backgroundColor: "#030AAC" }}
-              >
-                <div style={{ padding: 20, color: "#FFFFFF" }}>
-                  <h1>4,624</h1>
-                </div>
-              </Paper>
-              <Paper elevation={3} style={{ minHeight: 450, marginTop: 20 }}>
-                <div style={{ padding: 10, color: "black" }}>
-                  <p>Top Performance</p>
-                </div>
-              </Paper>
+              <Grid item xs={12} md={12} lg={12} xl={12}>
+                <Paper
+                  elevation={3}
+                  style={{ minHeight: 150, backgroundColor: "#030AAC" }}
+                >
+                  <Grid
+                    container
+                    spacing={1}
+                    style={{ padding: 20, color: "#FFFFFF" }}
+                    direction="row"
+                  >
+                    <Grid item style={{ flexGrow: 1 }}>
+                      <Typography variant="" component="h1">
+                        4,624
+                      </Typography>
+                    </Grid>
+
+                    <Grid item>
+                      <WorkIcon
+                        style={{
+                          backgroundColor: "#2A31B9",
+                          color: "#FFFFFF",
+                          padding: 10,
+                          borderRadius: 8,
+                        }}
+                      />
+                    </Grid>
+                    <Grid container direction="row" alignItems="center">
+                      <Grid item style={{ flexGrow: 1 }}>
+                        <Typography variant="h6" component="h1">
+                          Average Booking
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="p1" component="p1">
+                          Since last month
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={12} lg={12} xl={12}>
+                <Paper elevation={3} style={{ minHeight: 645, marginTop: 20 }}>
+                  <Grid container style={{ padding: 20 }}>
+                    <Grid container style={{ marginBottom: 20 }}>
+                      <Typography variant="h6" component="h6">
+                        Top Performance
+                      </Typography>
+                    </Grid>
+                    <Grid container alignItems="center">
+                      <Grid item>
+                        <Avatar
+                          style={{
+                            width: 50,
+                            height: 50,
+                          }}
+                          alt="Remy Sharp"
+                          src="https://images.generated.photos/Vju0wVYI8Qk7k-sFT6qguoAvnNa2pzgUFOTG8jx9UWU/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzAyOTg4MTAuanBn.jpg"
+                        />
+                      </Grid>
+                      <Grid item style={{ marginLeft: 10, flexGrow: 1 }}>
+                        <Grid item>
+                          <Typography variant="h6" component="h6">
+                            Remy Sharp
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="body2" component="body1">
+                            162543
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                      <Grid item>
+                        <Typography
+                          variant="p1"
+                          component="h6"
+                          style={{ color: "lightgrey" }}
+                        >
+                          3 Hours ago
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Paper>
+              </Grid>
             </Grid>
           </Grid>
         </Container>

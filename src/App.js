@@ -65,6 +65,7 @@ function App() {
   //   />
   //   </Provider>
   // }
+
   // else if (!property) {
   //   console.log("not property", property)
   //   return <Provider store={store}><Property
@@ -72,7 +73,6 @@ function App() {
   //   /></Provider>
   // }
 
-  // let pathn = "/"+store.getState().reducer.lang;
   console.log(pathn);
   return (<Provider store={store}>
     <div>
@@ -84,6 +84,8 @@ function App() {
       //   setToken={setToken}
       //       />
             :
+      
+
         <BrowserRouter>
           {/* <Leftbar /> */}
 
