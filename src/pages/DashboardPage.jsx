@@ -118,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
         }),
         width: theme.spacing(7),
         [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9),
+            width: theme.spacing(8.5),
         },
     },
     appBarSpacer: theme.mixins.toolbar,
@@ -128,8 +128,10 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto',
     },
     container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
+        paddingTop: theme.spacing(0),
+        paddingBottom: theme.spacing(0),
+        paddingLeft: theme.spacing(0),
+        paddingRight: theme.spacing(0),
     },
     paper: {
         padding: theme.spacing(2),
@@ -514,9 +516,10 @@ export default function Dashboard() {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
+                <Container maxWidth="100" className={classes.container}>
                     {/* <FrontDesk /> */}
                     <HeaderTabs />
+                    <div style={{paddingTop:50}}></div>
                     <ButtomBar />
                 </Container>
             </main>
