@@ -447,7 +447,7 @@ export default function Dashboard() {
                         </IconButton>
                         <Grid item spacing={1} style={{ paddingLeft: 20 }}>
                             <Grid item spacing={1}>
-                                <Typography variant="subtitle1" style={{fontSize:15}}>{store.getState().reducer.username}</Typography>
+                                <Typography variant="subtitle1" style={{fontSize:15}}>{sessionStorage.getItem('name')}</Typography>
                             </Grid>
                             <Grid item spacing={1}>
                                 <Typography variant="body2" style={{fontSize:10}} >Admin</Typography>
