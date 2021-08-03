@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
@@ -16,12 +16,21 @@ import FlagIcon from "@material-ui/icons/Flag";
 import Switch from "@material-ui/core/Switch";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-
+import { purple, green } from "@material-ui/core/colors";
+import { ReactReduxContext } from 'react-redux';
+import {
+  EDIT_LANG
+} from "../middleware/action";
+import {
+  EDIT_COLOR
+} from "../middleware/action";
 const useStyles = makeStyles({
   list: {
     width: 250,
+    zIndex: 2000
   },
   Container: {
+    zIndex: 2000,
     padding: 10,
     marginTop: 30,
   },
@@ -61,8 +70,44 @@ const useStyles = makeStyles({
   },
 });
 
+
 export default function RighBar() {
   const classes = useStyles();
+  const { store } = useContext(ReactReduxContext)
+
+  function handlelanguageEN() {
+    // setOpenSystemsTools(!openSystemTools)
+    store.dispatch({
+      type: EDIT_LANG,
+      payload: 'en'
+    })
+  }
+  function handlelanguageTH() {
+    store.dispatch({
+      type: EDIT_LANG,
+      payload: 'th'
+    })
+  }
+
+  function handleThemePurple() {
+    store.dispatch({
+      type: EDIT_COLOR,
+      payload: purple[600]
+    })
+  }
+  function handleThemeGreen() {
+    store.dispatch({
+      type: EDIT_COLOR,
+      payload: green[600]
+    })
+  }
+
+  function handleLogOut() {
+    console.log("log out")
+    // sessionStorage.setItem('token', false);
+    // window.location.reload(false);
+  }
+
 
   return (
     <Container className={classes.Container}>
@@ -121,13 +166,13 @@ export default function RighBar() {
 
         <List>
           <Divider variant="inset" />
-          <ListItem>
+          <ListItem button onClick={handlelanguageEN}>
             <ListItemAvatar>
               <FlagIcon style={{ color: "gray" }} />
             </ListItemAvatar>
             <ListItemText primary="English" />
           </ListItem>
-          <ListItem>
+          <ListItem button onClick={handlelanguageTH}>
             <ListItemAvatar>
               <FlagIcon style={{ color: "gray" }} />
             </ListItemAvatar>
@@ -150,9 +195,9 @@ export default function RighBar() {
             alignItems="center"
             style={{ padding: 20 }}
           >
-            <Avatar className={classes.purple}> </Avatar>
+            <Avatar onClick={handleThemePurple} className={classes.purple}> </Avatar>
             <Avatar className={classes.blue}> </Avatar>
-            <Avatar className={classes.green}> </Avatar>
+            <Avatar onClick={handleThemeGreen} className={classes.green}> </Avatar>
             <Avatar className={classes.orange}> </Avatar>
             <Avatar className={classes.red}> </Avatar>
             <Avatar className={classes.yellow}> </Avatar>
@@ -289,7 +334,7 @@ export default function RighBar() {
             <ListItemText primary="Setting" />
           </ListItem>
 
-          <ListItem>
+          <ListItem onClick={handleLogOut}>
             <ListItemAvatar>
               <Avatar style={{ backgroundColor: "red" }}>
                 <ExitToAppIcon />
@@ -299,6 +344,7 @@ export default function RighBar() {
           </ListItem>
         </List>
       </Grid>
+      <Divider />
     </Container>
   );
 }

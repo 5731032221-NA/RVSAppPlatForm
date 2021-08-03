@@ -84,7 +84,7 @@ export default function ButtomBar() {
             color: wordColor,
             top: "auto",
             bottom: 0,
-            zIndex: 2000
+            zIndex: 1500
             // width: document.getElementById("barwidth").style.width
             // width: '95%'
           }}

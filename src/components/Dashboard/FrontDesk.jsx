@@ -24,14 +24,10 @@ export class FrontDesk extends Component {
     super(props);
     this.props.getUserList();
     this.state = {
-<<<<<<< HEAD
-      lang: "en",
-      Dashboard: en_lang.Dashboard,
-=======
+
       lang: 'en',
       Dashboard: en_lang.Dashboard,
       color: this.props.color
->>>>>>> a2c6898297578ffdd503acf8c017ef32dfd023cf
     };
   }
 
@@ -41,25 +37,17 @@ export class FrontDesk extends Component {
         this.setState({ lang: "th" });
         if (this.props.lang == "th") {
           this.setState({
-<<<<<<< HEAD
-            lang: "th",
-            Dashboard: th_lang.Dashboard,
-=======
+
             lang: 'th',
             Dashboard: (th_lang.Dashboard),
             color: this.props.color
->>>>>>> a2c6898297578ffdd503acf8c017ef32dfd023cf
           });
         } else if (this.props.lang == "en") {
           this.setState({
-<<<<<<< HEAD
-            lang: "en",
-            Dashboard: en_lang.Dashboard,
-=======
+
             lang: 'en',
             Dashboard: (en_lang.Dashboard),
             color: this.props.color
->>>>>>> a2c6898297578ffdd503acf8c017ef32dfd023cf
           });
         }
       }
