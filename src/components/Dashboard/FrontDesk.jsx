@@ -22,7 +22,7 @@ export class FrontDesk extends Component {
           >
             <Grid container spacing={3} xs={12} md={12} lg={9} xl={9}>
               <Grid item xs={12} md={12} lg={12} xl={12}>
-                <Paper elevation={3} style={{ minHeight: 400 }}>
+                <Paper elevation={3} style={{ minHeight: 430 }}>
                   <Grid container style={{ padding: 20 }}>
                     <Grid
                       container
@@ -142,7 +142,7 @@ export class FrontDesk extends Component {
               </Grid>
 
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 400 }}>
+                <Paper elevation={3} style={{ minHeight: 430 }}>
                   <Grid
                     container
                     direction="row"
@@ -201,6 +201,7 @@ export class FrontDesk extends Component {
                       md={12}
                       lg={12}
                       xl={12}
+                      style={{ marginTop: 15 }}
                     >
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
@@ -227,8 +228,8 @@ export class FrontDesk extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 400 }}>
-                  <Grid container style={{ padding: 20 }}>
+                <Paper elevation={3} style={{ minHeight: 430 }}>
+                  <Grid container spacing={3} style={{ padding: 20 }}>
                     <Grid container style={{ marginBottom: 20 }}>
                       <Typography variant="h6" component="h6">
                         World Selling
@@ -291,8 +292,8 @@ export class FrontDesk extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 400 }}>
-                  <Grid container style={{ padding: 20 }}>
+                <Paper elevation={3} style={{ minHeight: 430 }}>
+                  <Grid container spacing={3} style={{ padding: 20 }}>
                     <Grid
                       container
                       direction="column"
@@ -330,7 +331,7 @@ export class FrontDesk extends Component {
                 >
                   <Grid
                     container
-                    spacing={1}
+                    spacing={3}
                     style={{ padding: 20, color: "#FFFFFF" }}
                     direction="row"
                   >
@@ -366,7 +367,7 @@ export class FrontDesk extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={12} lg={12} xl={12}>
-                <Paper elevation={3} style={{ minHeight: 645, marginTop: 20 }}>
+                <Paper elevation={3} style={{ minHeight: 700, marginTop: 20 }}>
                   <Grid container style={{ padding: 20 }}>
                     <Grid container style={{ marginBottom: 20 }}>
                       <Typography variant="h6" component="h6">
