@@ -1,10 +1,9 @@
-
 import React, { Component, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../../middleware/action";
-import en_lang from "../../static/lang/en.json"
-import th_lang from "../../static/lang/th.json"
+import en_lang from "../../static/lang/en.json";
+import th_lang from "../../static/lang/th.json";
 // const [SomeThingInFrontDesk, setSomeThingInFrontDesk] = useState(en_lang.SomeThingInFrontDesk)
 // const [lang, setLang] = useState('en')
 
@@ -16,6 +15,7 @@ import WorkIcon from "@material-ui/icons/Work";
 import Avatar from "@material-ui/core/Avatar";
 
 import Button from "@material-ui/core/Button";
+import TestGraph from "./TestGraph";
 
 import ButtomBar from "../../layouts/ButtomBar";
 
@@ -24,31 +24,44 @@ export class FrontDesk extends Component {
     super(props);
     this.props.getUserList();
     this.state = {
+<<<<<<< HEAD
+      lang: "en",
+      Dashboard: en_lang.Dashboard,
+=======
       lang: 'en',
       Dashboard: en_lang.Dashboard,
       color: this.props.color
+>>>>>>> a2c6898297578ffdd503acf8c017ef32dfd023cf
     };
   }
 
   componentDidMount() {
     this.interval = setInterval(() => {
       if (this.state.lang != this.props.lang) {
-        this.setState({ lang: 'th' })
-        if (this.props.lang == 'th') {
+        this.setState({ lang: "th" });
+        if (this.props.lang == "th") {
           this.setState({
+<<<<<<< HEAD
+            lang: "th",
+            Dashboard: th_lang.Dashboard,
+=======
             lang: 'th',
             Dashboard: (th_lang.Dashboard),
             color: this.props.color
+>>>>>>> a2c6898297578ffdd503acf8c017ef32dfd023cf
           });
-        } else if (this.props.lang == 'en') {
+        } else if (this.props.lang == "en") {
           this.setState({
+<<<<<<< HEAD
+            lang: "en",
+            Dashboard: en_lang.Dashboard,
+=======
             lang: 'en',
             Dashboard: (en_lang.Dashboard),
             color: this.props.color
+>>>>>>> a2c6898297578ffdd503acf8c017ef32dfd023cf
           });
-
         }
-
       }
     }, 100);
   }
@@ -60,7 +73,6 @@ export class FrontDesk extends Component {
     return (
       <div>
         <Container maxWidth="xl">
-
           {/* <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
           <Grid container spacing={3}>
             <Grid item xs={12} md={12} lg={9} xl={9}>
@@ -77,7 +89,7 @@ export class FrontDesk extends Component {
           >
             <Grid container spacing={3} xs={12} md={12} lg={9} xl={9}>
               <Grid item xs={12} md={12} lg={12} xl={12}>
-                <Paper elevation={3} style={{ minHeight: 400 }}>
+                <Paper elevation={3} style={{ minHeight: 430 }}>
                   <Grid container style={{ padding: 20 }}>
                     <Grid
                       container
@@ -185,20 +197,22 @@ export class FrontDesk extends Component {
                     >
                       <Paper
                         style={{
-                          backgroundColor: "#BDBFC3",
+                          // backgroundColor: "#BDBFC3",
                           width: "100%",
                           height: 190,
                           marginTop: 20,
                         }}
-                      ></Paper>
+                        elevation={0}
+                      >
+                        <TestGraph />
+                      </Paper>
                     </Grid>
                   </Grid>
-
                 </Paper>
               </Grid>
 
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 400 }}>
+                <Paper elevation={3} style={{ minHeight: 430 }}>
                   <Grid
                     container
                     direction="row"
@@ -257,6 +271,7 @@ export class FrontDesk extends Component {
                       md={12}
                       lg={12}
                       xl={12}
+                      style={{ marginTop: 15 }}
                     >
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
@@ -283,8 +298,8 @@ export class FrontDesk extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 400 }}>
-                  <Grid container style={{ padding: 20 }}>
+                <Paper elevation={3} style={{ minHeight: 430 }}>
+                  <Grid container spacing={3} style={{ padding: 20 }}>
                     <Grid container style={{ marginBottom: 20 }}>
                       <Typography variant="h6" component="h6">
                         World Selling
@@ -347,8 +362,8 @@ export class FrontDesk extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 400 }}>
-                  <Grid container style={{ padding: 20 }}>
+                <Paper elevation={3} style={{ minHeight: 430 }}>
+                  <Grid container spacing={3} style={{ padding: 20 }}>
                     <Grid
                       container
                       direction="column"
@@ -386,7 +401,7 @@ export class FrontDesk extends Component {
                 >
                   <Grid
                     container
-                    spacing={1}
+                    spacing={3}
                     style={{ padding: 20, color: "#FFFFFF" }}
                     direction="row"
                   >
@@ -403,6 +418,8 @@ export class FrontDesk extends Component {
                           color: "#FFFFFF",
                           padding: 10,
                           borderRadius: 8,
+                          width: 35,
+                          height: 35,
                         }}
                       />
                     </Grid>
@@ -422,7 +439,7 @@ export class FrontDesk extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={12} lg={12} xl={12}>
-                <Paper elevation={3} style={{ minHeight: 645, marginTop: 20 }}>
+                <Paper elevation={3} style={{ minHeight: 700, marginTop: 20 }}>
                   <Grid container style={{ padding: 20 }}>
                     <Grid container style={{ marginBottom: 20 }}>
                       <Typography variant="h6" component="h6">
@@ -473,9 +490,8 @@ export class FrontDesk extends Component {
   }
 }
 
-
 const mapStateToProps = (state) => {
-  console.log("mapStateToProps")
+  console.log("mapStateToProps");
   return {
     lang: state.reducer.lang,
     color: state.reducer.color
@@ -483,7 +499,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-
   return bindActionCreators(Actions, dispatch);
 };
 
