@@ -76,7 +76,7 @@ function App() {
   console.log(pathn);
   return (<Provider store={store}>
     <div>
-      {!token ? <SignIn setToken={setToken}
+      {/* {!token ? <SignIn setToken={setToken}
         store={store}
       /> 
       :
@@ -84,7 +84,7 @@ function App() {
         setToken={setToken}
         setProperty={setProperty}
             />
-            :
+            : */}
       
 
         <BrowserRouter>

@@ -1,10 +1,9 @@
-
 import React, { Component, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../../middleware/action";
-import en_lang from "../../static/lang/en.json"
-import th_lang from "../../static/lang/th.json"
+import en_lang from "../../static/lang/en.json";
+import th_lang from "../../static/lang/th.json";
 // const [SomeThingInFrontDesk, setSomeThingInFrontDesk] = useState(en_lang.SomeThingInFrontDesk)
 // const [lang, setLang] = useState('en')
 
@@ -16,34 +15,33 @@ import WorkIcon from "@material-ui/icons/Work";
 import Avatar from "@material-ui/core/Avatar";
 
 import Button from "@material-ui/core/Button";
+import TestGraph from "./TestGraph";
 
 export class FrontDesk extends Component {
   constructor(props) {
     super(props);
     this.props.getUserList();
     this.state = {
-      lang: 'en',
-      Dashboard: en_lang.Dashboard
+      lang: "en",
+      Dashboard: en_lang.Dashboard,
     };
   }
 
   componentDidMount() {
     this.interval = setInterval(() => {
       if (this.state.lang != this.props.lang) {
-        this.setState({ lang: 'th' })
-        if (this.props.lang == 'th') {
+        this.setState({ lang: "th" });
+        if (this.props.lang == "th") {
           this.setState({
-            lang: 'th',
-            Dashboard: (th_lang.Dashboard)
+            lang: "th",
+            Dashboard: th_lang.Dashboard,
           });
-        } else if (this.props.lang == 'en') {
+        } else if (this.props.lang == "en") {
           this.setState({
-            lang: 'en',
-            Dashboard: (en_lang.Dashboard)
+            lang: "en",
+            Dashboard: en_lang.Dashboard,
           });
-
         }
-
       }
     }, 100);
   }
@@ -55,7 +53,6 @@ export class FrontDesk extends Component {
     return (
       <div>
         <Container maxWidth="xl">
-
           {/* <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
           <Grid container spacing={3}>
             <Grid item xs={12} md={12} lg={9} xl={9}>
@@ -180,15 +177,17 @@ export class FrontDesk extends Component {
                     >
                       <Paper
                         style={{
-                          backgroundColor: "#BDBFC3",
+                          // backgroundColor: "#BDBFC3",
                           width: "100%",
                           height: 190,
                           marginTop: 20,
                         }}
-                      ></Paper>
+                        elevation={0}
+                      >
+                        <TestGraph />
+                      </Paper>
                     </Grid>
                   </Grid>
-
                 </Paper>
               </Grid>
 
@@ -399,6 +398,8 @@ export class FrontDesk extends Component {
                           color: "#FFFFFF",
                           padding: 10,
                           borderRadius: 8,
+                          width: 35,
+                          height: 35,
                         }}
                       />
                     </Grid>
@@ -469,16 +470,14 @@ export class FrontDesk extends Component {
   }
 }
 
-
 const mapStateToProps = (state) => {
-  console.log("mapStateToProps")
+  console.log("mapStateToProps");
   return {
     lang: state.reducer.lang,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-
   return bindActionCreators(Actions, dispatch);
 };
 
