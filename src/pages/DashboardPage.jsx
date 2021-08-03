@@ -30,6 +30,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MailIcon from "@material-ui/icons/Mail";
 import { purple, green } from "@material-ui/core/colors";
+
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+
 // import { useDispatch } from 'react-redux/lib/hooks/useDispatch';
 import {
     EDIT_LANG
@@ -38,8 +42,12 @@ import { ReactReduxContext } from 'react-redux'
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
 
-import { mainListItems_en, secondaryListItems_en } from '../middleware/listitems/listltems_en';
-import { mainListItems_th, secondaryListItems_th } from '../middleware/listitems/listltems_en';
+import MainListItems_en from '../middleware/listitems/dropDownItems';
+import secondaryListItems_en from '../middleware/listitems/dropDownItems';
+import mainListItems_th from '../middleware/listitems/dropDownItems';
+import secondaryListItems_th from '../middleware/listitems/dropDownItems';
+// import { mainListItems_en, secondaryListItems_en } from '../middleware/listitems/dropDownItems';
+// import { mainListItems_th, secondaryListItems_th } from '../middleware/listitems/dropDownItems';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -62,15 +70,14 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        // backgroundColor:'#2D62ED'
     },
-    themeDefault:{
-        backgroundColor:'#2D62ED'
+    themeDefault: {
+        backgroundColor: '#2D62ED'
     },
-    themeGreen:{
+    themeGreen: {
         backgroundColor: green[600]
     },
-    themePurple:{
+    themePurple: {
         backgroundColor: purple[600]
     },
     appBarShift: {
@@ -80,17 +87,18 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
-        
+
     },
-    // menuButton: {
-    //     marginRight: 36,
-    // },
+    menuButtonExpand: {
+         paddingRight: 20,
+         paddingLeft:40
+    },
+    logoExpand: {
+        marginLeft: -10,
+   },
     menuButtonHidden: {
         display: 'none',
     },
-    // title: {
-    //     flexGrow: 1,
-    // },
     drawerPaper: {
         position: 'relative',
         whiteSpace: 'nowrap',
@@ -99,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
-        backgroundColor:'#2D62ED',
+        backgroundColor: '#2D62ED',
         color: 'white'
     },
     drawerPaperClose: {
@@ -110,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
         }),
         width: theme.spacing(7),
         [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9),
+            width: theme.spacing(8.5),
         },
     },
     appBarSpacer: theme.mixins.toolbar,
@@ -120,8 +128,10 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto',
     },
     container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
+        paddingTop: theme.spacing(0),
+        paddingBottom: theme.spacing(0),
+        paddingLeft: theme.spacing(0),
+        paddingRight: theme.spacing(0),
     },
     paper: {
         padding: theme.spacing(2),
@@ -139,9 +149,12 @@ const useStyles = makeStyles((theme) => ({
     },
     menuButton: {
         marginRight: theme.spacing(2),
+        paddingTop:25,
+        paddingBottom:14
     },
     title: {
         display: "none",
+        fontWeight:'normal',
         [theme.breakpoints.up("sm")]: {
             display: "block",
         },
@@ -203,6 +216,28 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
     const classes = useStyles();
+    const items = [
+        { name: 'Dashboard', label: 'Dashboard' },
+        { name: 'Reservation', label: 'Reservation' },
+        {
+            name: 'FrontDesk', label: 'Front Desk',
+            items: [{ name: 'Walk-in', label: 'Walk-in' },
+            { name: 'Check-in', label: 'Walk-in' },
+            { name: 'Chen-in', label: 'Walk-in' },
+            { name: 'Walk-in', label: 'Walk-in' },
+            ]
+        },
+        { name: 'Cashier', label: 'Cashier' },
+        { name: 'Profiles', label: 'Profiles' },
+        { name: 'NightAuditor', label: 'Night Auditor' },
+        { name: 'House Keeping', label: 'HouseKeeping' },
+        { name: 'Engineering', label: 'Engineering' },
+        { name: 'Reports', label: 'Reports' },
+        { name: 'Configuration', label: 'Configuration' },
+        { name: 'System Tools', label: 'System Tools' }
+
+    ]
+
     const [open, setOpen] = React.useState(false);
     const [themeState, setThemeState] = React.useState(classes.themeDefault);
     const handleDrawerOpen = () => {
@@ -243,9 +278,9 @@ export default function Dashboard() {
         console.log("handle lang", lang)
         // setAnchorEl(null);
         // handleMobileMenuClose();
-        if(lang == 'th'){
+        if (lang == 'th') {
             setThemeState(classes.themePurple)
-        }else{
+        } else {
             setThemeState(classes.themeGreen)
         }
         console.log("store", store)
@@ -336,14 +371,21 @@ export default function Dashboard() {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar position="absolute" className={clsx(themeState,classes.appBar, open && classes.appBarShift)}>
+            <AppBar position="absolute" className={clsx(themeState, classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
+                    <img
+                        src="logomin.png"
+                        className={clsx(classes.logoExpand, open && classes.menuButtonHidden)}
+                        alt="..."
+                        height={35}
+                    />
+
                     <IconButton
                         edge="start"
                         color="inherit"
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
-                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                        className={clsx(classes.menuButtonExpand, open && classes.menuButtonHidden)}
                     >
                         <MenuIcon />
                     </IconButton>
@@ -387,7 +429,7 @@ export default function Dashboard() {
                             size="medium"
                             style={{ color: "#1B47C1" }}
                         >
-                            <AccountCircle />
+                            <ExplicitIcon />
                         </IconButton>
                         <IconButton
                             edge="end"
@@ -395,17 +437,17 @@ export default function Dashboard() {
                             aria-controls={menuId}
                             aria-haspopup="true"
                             onClick={handlelanguageMenuOpen}
-                            size="medium"
+                            size="large"
                             style={{ color: "#1B47C1" }}
                         >
-                            <ExplicitIcon />
+                            <AccountCircle style={{size:50}} />
                         </IconButton>
                         <Grid item spacing={1} style={{ paddingLeft: 20 }}>
                             <Grid item spacing={1}>
-                                <Typography variant="subtitle1">Username</Typography>
+                                <Typography variant="subtitle1" style={{fontSize:15}}>Prachaya N.</Typography>
                             </Grid>
                             <Grid item spacing={1}>
-                                <Typography variant="body2">Admin</Typography>
+                                <Typography variant="body2" style={{fontSize:10}} >Admin</Typography>
                             </Grid>
                         </Grid>
                     </div>
@@ -439,14 +481,15 @@ export default function Dashboard() {
             >
                 <Grid container >
                     <Grid item container direction="row">
-                        <img
-                            src="logo.png"
-                            class="rounded mx-auto d-block"
-                            alt="..."
-                            height={40}
-                        />
-                        {/* <div style={{ paddingLeft: 40 }}> */}
-                        {open?
+                            <div style={{paddingLeft:12, paddingRight:10, paddingTop:18 }}>
+                                <img
+                                src="logo.png"
+                                class="rounded mx-auto d-block"
+                                alt="..."
+                                height={35}
+                                />
+                            </div>
+                            {open?
                             <IconButton
                                 edge="start"
                                 className={classes.menuButton}
@@ -455,27 +498,29 @@ export default function Dashboard() {
                                 onClick={handleDrawerClose}
                             >
                                 <MenuIcon />
-                            </IconButton>:<div style={{marginTop:'20px'}}></div>}
-                        {/* </div> */}
 
-                        {/* <div className={classes.toolbarIcon}>
-                        <IconButton onClick={handleDrawerClose}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </div> */}
+                            </IconButton>: null }
                     </Grid>
                 </Grid>
                 <Divider />
-                <List>{store.getState().reducer.lang == "en"? mainListItems_en:mainListItems_th}</List>
+                {/* <List disablePadding dense>
+                    {items.map(({ label, name, ...rest }) => (
+                        <ListItem key={name} button {...rest}>
+                            <ListItemText>{label}</ListItemText>
+                        </ListItem>
+                    ))}
+                </List> */}
+                <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List>
                 <Divider />
-                <List>{store.getState().reducer.lang == "en"? secondaryListItems_en:secondaryListItems_th}</List>
+                {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
+                <Container maxWidth="100" className={classes.container}>
                     {/* <FrontDesk /> */}
                     <HeaderTabs />
-            <ButtomBar />
+                    <div style={{paddingTop:50}}></div>
+                    <ButtomBar />
                 </Container>
             </main>
         </div>

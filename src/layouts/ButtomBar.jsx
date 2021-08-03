@@ -60,14 +60,7 @@ export default function ButtomBar() {
   };
 
   return (
-    <div className={classes.root}>
-      <TabPanel value={value} index={0}>
-        Room2001
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Room2056
-      </TabPanel>
-      <Grid container spacing={1}>
+    <div>
         <AppBar
           position="fixed"
           style={{
@@ -85,12 +78,11 @@ export default function ButtomBar() {
               indicatorColor="primary"
               centered
             >
-              <Tab label="Room2011" {...a11yProps(0)} />
+              <Tab label="Room201221" {...a11yProps(0)} />
               <Tab label="Room2056" {...a11yProps(1)} />
             </Tabs>
           </Grid>
         </AppBar>
-      </Grid>
     </div>
   );
 }
