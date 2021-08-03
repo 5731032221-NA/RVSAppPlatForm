@@ -3,7 +3,7 @@ import Header from "./layouts/header";
 import Leftbar from "./layouts/Leftbar";
 
 import SignIn from "./components/SignIn";
-import Property from "./components/Property"
+import Property from "./components/Property";
 import Dashboard from "./pages/DashboardPage";
 import UserList from "./pages/TestUserListPage";
 import ForgotPass from "./components/Forgotpass";
@@ -19,8 +19,8 @@ import useProperty from "./middleware/useProperty";
 // import useAuthorization from "./middleware/useAuthorization";
 import useLang from "./middleware/useLang";
 import useTheme from "./middleware/useTheme";
-import en_lang from "./static/lang/en.json"
-import th_lang from "./static/lang/th.json"
+import en_lang from "./static/lang/en.json";
+import th_lang from "./static/lang/th.json";
 
 // function setToken(userToken) {
 //   sessionStorage.setItem('token', JSON.stringify(userToken));
@@ -29,8 +29,6 @@ import th_lang from "./static/lang/th.json"
 // function setHeader(tokenParsed) {
 //   sessionStorage.setItem('Authorization', tokenParsed);
 // }
-
-
 
 function App() {
   const { token, setToken } = useToken();
@@ -52,8 +50,7 @@ function App() {
   // // const store = createStore(reducer, applyMiddleware(thunk));
   // // const [token, setToken] = useState();
 
-
-  console.log("store main", store.getState().reducer)
+  console.log("store main", store.getState().reducer);
   // console.log("lang", lang);
   // console.log("theme", theme);
   // // const token = getToken();
@@ -74,37 +71,30 @@ function App() {
   // }
 
   console.log(pathn);
-  return (<Provider store={store}>
-    <div>
-      {/* {!token ? <SignIn setToken={setToken}
-        store={store}
-      /> 
-      :
-        property? <Property
-        setToken={setToken}
-        setProperty={setProperty}
-            />
-            : */}
-      
+  return (
+    <Provider store={store}>
+      <div>
+        {!token ? (
+          <SignIn setToken={setToken} store={store} />
+        ) : !property ? (
+          <Property setToken={setToken} setProperty={setProperty} />
+        ) : (
+          <BrowserRouter>
+            {/* <Leftbar /> */}
 
-        <BrowserRouter>
-          {/* <Leftbar /> */}
+            <Switch>
+              <Route exact path="/signin" component={SignIn} />
+              <Route exact path="/forgotpassword" component={ForgotPass} />
+              <Route exact path="/userlist" component={UserList} />
 
-
-          <Switch>
-            <Route exact path="/signin" component={SignIn} />
-            <Route exact path="/forgotpassword" component={ForgotPass} />
-            <Route exact path="/userlist" component={UserList} />
-
-            <Route exact path="/" component={Dashboard} />
-            {/* <Route component={ErrorPage} /> */}
-          </Switch>
-          {/* <Header store={store} /> */}
-        </BrowserRouter>
-        
-      }
-    </div>
-  </Provider>
+              <Route exact path="/" component={Dashboard} />
+              {/* <Route component={ErrorPage} /> */}
+            </Switch>
+            {/* <Header store={store} /> */}
+          </BrowserRouter>
+        )}
+      </div>
+    </Provider>
   );
 }
 

@@ -46,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
     },
     errorMessage: {
         color: "#ff0033", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 15
+    },
+    seletprop: {
+        fontSize: 14,
+        fontWeight: 'bold'
     }
 }));
 
@@ -55,7 +59,9 @@ export default function Property({ setToken,setProperty }) {
     const { store } = useContext(ReactReduxContext);
     const classes = useStyles();
     const radioProp = ''
-    const [selectedProperty, setSelectedProperty] = useState("");
+
+    const [selectedProperty, setSelectedProperty] = useState([store.getState().reducer.propertys][0].content.propertyID);
+    
     const [list, setList] = useState([]);
 
     const handleChange = event => {
@@ -91,14 +97,15 @@ export default function Property({ setToken,setProperty }) {
     //     ))
     //     );
     // }
+    // if(store.getState().reducer.propertys != ''){
+    // console.log("a", [store.getState().reducer.propertys].map((item) => (
 
-    console.log("a", [store.getState().reducer.propertys].map((item) => (
+    //     <FormControlLabel value={item.content.propertyID} control={<Radio />} label={item.content.propertyID} />
 
-        <FormControlLabel value={item.content.propertyID} control={<Radio />} label={item.content.propertyID} />
+    //     // <FormControlLabel value={item.contents.propertyID} control={<StyledRadio />} label={item.contents.propertyID} />
 
-        // <FormControlLabel value={item.contents.propertyID} control={<StyledRadio />} label={item.contents.propertyID} />
+    // )))
 
-    )))
 
 
     return (
@@ -115,7 +122,7 @@ export default function Property({ setToken,setProperty }) {
                     <Divider variant="middle" />
                     <h5  ></h5>
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">Select Property</FormLabel>
+                        <FormLabel component="legend" className={classes.seletprop}>Select Property</FormLabel>
                         <RadioGroup aria-label="gender" name="gender1" value={selectedProperty} onClick={handleChange}>
                             {[store.getState().reducer.propertys].map((item) => (
 
@@ -126,14 +133,15 @@ export default function Property({ setToken,setProperty }) {
                             ))}
                         </RadioGroup>
                     </FormControl>
-                    <Button
+                    <div variant="middle" style={{paddingTop: 30}}/>
+                    {/* <Button
                         fullWidth
                         variant="contained"
                         style={{ backgroundColor: "#2D62ED", color: "white" }}
                         onClick={handleCancle}
                     >
                         Cancle
-                    </Button>
+                    </Button> */}
                     <Button
                         fullWidth
                         variant="contained"

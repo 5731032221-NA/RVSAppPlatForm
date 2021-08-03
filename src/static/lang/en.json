@@ -11,7 +11,7 @@
   "clipped": "Clipped",
   "_comment_search": "comment test",
   "search": "Search",
-  "Profile": "Profile",
+  "Profile": "Profiles",
   "settings": "Settings",
   "logout": "Logout",
   "Notification": "Notification",
@@ -89,5 +89,14 @@
   "quantity": "Quantity",
   "Campaign Detail": "Campaign Detail",
   "to": "To",
-  "SomeThingInFrontDesk": "Some thing in Front Desk"
+  "SomeThingInFrontDesk": "Some thing in Front Desk",
+  "Reservation":"Reservation",
+  "Cashier":"Cashier",
+  "SystemsTools":"Systems Tools",
+  "FrontDesk":"Front Desk",
+  "NightAuditor":"Night Auditor",
+  "HouseKeeping": "House Keeping",
+  "Engineer": "Engineer",
+  "Reports": "Reports",
+  "Configuration": "Configuration"
 }

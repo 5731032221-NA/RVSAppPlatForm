@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -7,6 +7,7 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import { ReactReduxContext } from 'react-redux'
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -54,20 +55,38 @@ const useStyles = makeStyles((theme) => ({
 export default function ButtomBar() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [wordColor, setWordColor] = React.useState('#2D62ED');
+  const { store } = useContext(ReactReduxContext)
+
+  setInterval(() => {
+    let settingColor = store.getState().reducer.color;
+    if (wordColor != settingColor && wordColor != null) {
+      setWordColor(settingColor)
+      }
+  }, 500);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   return (
-    <div>
+    <div id="barwidth" className={classes.root}>
+      <TabPanel value={value} index={0}>
+        Room2001
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        Room2056
+      </TabPanel>
+      <Grid container spacing={1}>
         <AppBar
-          position="fixed"
+          // position="fixed"
           style={{
             backgroundColor: "#FFFFFF",
-            color: "#2D62ED",
+            color: wordColor,
             top: "auto",
             bottom: 0,
+            zIndex: 2000
+            // width: document.getElementById("barwidth").style.width
+            // width: '95%'
           }}
         >
           <Grid container>
@@ -78,11 +97,12 @@ export default function ButtomBar() {
               indicatorColor="primary"
               centered
             >
-              <Tab label="Room201221" {...a11yProps(0)} />
+              <Tab label="Room2011" {...a11yProps(0)} />
               <Tab label="Room2056" {...a11yProps(1)} />
             </Tabs>
           </Grid>
         </AppBar>
+      </Grid>
     </div>
   );
 }

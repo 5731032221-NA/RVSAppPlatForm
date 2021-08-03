@@ -17,13 +17,21 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TestGraph from "./TestGraph";
 
+import ButtomBar from "../../layouts/ButtomBar";
+
 export class FrontDesk extends Component {
   constructor(props) {
     super(props);
     this.props.getUserList();
     this.state = {
+<<<<<<< HEAD
       lang: "en",
       Dashboard: en_lang.Dashboard,
+=======
+      lang: 'en',
+      Dashboard: en_lang.Dashboard,
+      color: this.props.color
+>>>>>>> a2c6898297578ffdd503acf8c017ef32dfd023cf
     };
   }
 
@@ -33,13 +41,25 @@ export class FrontDesk extends Component {
         this.setState({ lang: "th" });
         if (this.props.lang == "th") {
           this.setState({
+<<<<<<< HEAD
             lang: "th",
             Dashboard: th_lang.Dashboard,
+=======
+            lang: 'th',
+            Dashboard: (th_lang.Dashboard),
+            color: this.props.color
+>>>>>>> a2c6898297578ffdd503acf8c017ef32dfd023cf
           });
         } else if (this.props.lang == "en") {
           this.setState({
+<<<<<<< HEAD
             lang: "en",
             Dashboard: en_lang.Dashboard,
+=======
+            lang: 'en',
+            Dashboard: (en_lang.Dashboard),
+            color: this.props.color
+>>>>>>> a2c6898297578ffdd503acf8c017ef32dfd023cf
           });
         }
       }
@@ -60,7 +80,7 @@ export class FrontDesk extends Component {
                 <Paper elevation={3} style={{ minHeight: 300 }}>
                   Gride layout 12 */}
 
-          <h3 style={{ color: "blue", marginBottom: 25 }}>Dashboard</h3>
+          <h3 style={{ color: this.state.color, marginBottom: 25 }}>Dashboard</h3>
           <Grid
             container
             spacing={4}
@@ -474,6 +494,7 @@ const mapStateToProps = (state) => {
   console.log("mapStateToProps");
   return {
     lang: state.reducer.lang,
+    color: state.reducer.color
   };
 };
 
