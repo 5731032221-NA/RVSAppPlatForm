@@ -77,7 +77,7 @@ export default function HeaderTabs() {
           <Grid item spacing={1} className={classes.title}>
             {/* <Typography variant="h6" align="left"> */}
 
-            <h3 style={{ color: "gray" }}>
+            <h3 style={{ color: "black", fontWeight: 'normal' }}>
               <IconButton
                 size="medium"
                 style={{ color: "red", marginLeft: 20 }}
@@ -96,21 +96,28 @@ export default function HeaderTabs() {
             aria-label="simple tabs example"
             indicatorColor="primary"
             centered
+            
           >
             <Tab
               icon={<ImageAspectRatioIcon />}
               label="Front Desk"
+              style={{fontSize:12}}
               {...a11yProps(0)}
             />
-            <Tab icon={<KingBedIcon />} label="Reservation" {...a11yProps(1)} />
+            <Tab icon={<KingBedIcon />} 
+              label="Reservation" 
+              style={{fontSize:12}} 
+              {...a11yProps(1)} />
             <Tab
               icon={<MonetizationOnIcon />}
               label="Cachier"
+              style={{fontSize:12}}
               {...a11yProps(2)}
             />
             <Tab
               icon={<NightsStayIcon />}
               label="Night Auditor"
+              style={{fontSize:12}}
               {...a11yProps(3)}
             />
           </Tabs>

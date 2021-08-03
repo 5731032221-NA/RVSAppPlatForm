@@ -1,4 +1,13 @@
-import React, { Component } from "react";
+
+import React, { Component, useState } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Actions from "../../middleware/action";
+import en_lang from "../../static/lang/en.json"
+import th_lang from "../../static/lang/th.json"
+// const [SomeThingInFrontDesk, setSomeThingInFrontDesk] = useState(en_lang.SomeThingInFrontDesk)
+// const [lang, setLang] = useState('en')
+
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -9,10 +18,51 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 
 export class FrontDesk extends Component {
+  constructor(props) {
+    super(props);
+    this.props.getUserList();
+    this.state = {
+      lang: 'en',
+      Dashboard: en_lang.Dashboard
+    };
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      if (this.state.lang != this.props.lang) {
+        this.setState({ lang: 'th' })
+        if (this.props.lang == 'th') {
+          this.setState({
+            lang: 'th',
+            Dashboard: (th_lang.Dashboard)
+          });
+        } else if (this.props.lang == 'en') {
+          this.setState({
+            lang: 'en',
+            Dashboard: (en_lang.Dashboard)
+          });
+
+        }
+
+      }
+    }, 100);
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   render() {
     return (
       <div>
         <Container maxWidth="xl">
+
+          {/* <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={12} lg={9} xl={9}>
+              <Grid item spacing={1} xs={12} md={12} lg={12} xl={12}>
+                <Paper elevation={3} style={{ minHeight: 300 }}>
+                  Gride layout 12 */}
+
           <h3 style={{ color: "blue", marginBottom: 25 }}>Dashboard</h3>
           <Grid
             container
@@ -138,6 +188,7 @@ export class FrontDesk extends Component {
                       ></Paper>
                     </Grid>
                   </Grid>
+
                 </Paper>
               </Grid>
 
@@ -418,4 +469,17 @@ export class FrontDesk extends Component {
   }
 }
 
-export default FrontDesk;
+
+const mapStateToProps = (state) => {
+  console.log("mapStateToProps")
+  return {
+    lang: state.reducer.lang,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+
+  return bindActionCreators(Actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FrontDesk);

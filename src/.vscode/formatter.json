@@ -1,0 +1,12 @@
+{
+    "onSave": false,
+    "css": {
+        "indent_size": 4,
+        "indentCharacter": " ",
+        "indent_char": " ",
+        "selector_separator_newline": true,
+        "end_with_newline": false,
+        "newline_between_rules": true,
+        "eol": "\n"
+    }
+}

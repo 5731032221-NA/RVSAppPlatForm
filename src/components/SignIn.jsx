@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import login from "./login.css";
-import PropTypes from "prop-types";
+import React, { useState,useContext } from "react";
+import "../assets/login.css";
 import "../assets/variable.css";
+import background from "../assets/img/imgbackground.jpg";
+
+import PropTypes from "prop-types";
 import auth from "../services/auth.service";
+import menu from "../services/menus.service";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,18 +17,25 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Divider from "@material-ui/core/Divider";
+import { ReactReduxContext } from 'react-redux'
+import {
+  EDIT_AUTHORIZATION
+} from "../middleware/action";
 
-// import { Redirect } from 'react-router'
-// async function loginUser(credentials) {
-//   return fetch('http://localhost:8083/login', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(credentials)
-//   })
-//     .then(data => data.json())
-// }
+import {
+  EDIT_PROPERTYS
+} from "../middleware/action";
+
+async function loginUser(credentials) {
+  return fetch('http://localhost:8083/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+    .then(data => data.json())
+}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,47 +49,81 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 100,
   },
   imglogo: {
-    maxHeight: 220,
-    maxWidth: 220,
-    // border: "1.5px solid white",
-    // borderRadius: 8,
-    // marginBottom: 4,
+    maxHeight: 220, maxWidth: 220,
   },
   formlogin: {
-    marginBottom: 20,
-    padding: 10,
+    marginBottom: 20, padding: 10,
   },
+  sysname: {
+    color: "#393737", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 15
+  },
+  errorMessage: {
+    color: "#ff0033", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 12, paddingTop:10,
+  }
 }));
 
 export default function Login({ setToken }) {
   const classes = useStyles();
-  const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
+  const [errorUsername, setErrorUsername] = useState(false);
+  const [errorPassword, setErrorPassword] = useState(false);
+  const [errorLogin, setErrorLogin] = useState(false);
+  const { store } = useContext(ReactReduxContext);
+  console.log("log store",store);
   // const [login, setlogin] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = await auth({
-      user: {
-        username,
-        password,
-      },
-    });
-    console.log("token", token);
-    // loginUser({
-    //   user: {
-    //     username,
-    //     password
-    //   }
-    // });
-    setToken(token);
-    // setlogin(true);
+    if (username == null || username == '') {
+      setErrorUsername(true);
+    } else {
+      setErrorUsername(false);
+    }
+    if (password == null || password == '') {
+      setErrorPassword(true);
+    } else {
+      setErrorPassword(false);
+    }
+    
+    console.log("up", username, password)
+    console.log((username == null || username == ''),(password == null || password == ''),
+    !(username == null || username == '') && !(password == null || password == ''))
+    if (!(username == null || username == '') && !(password == null || password == '')) {
+      const token = await auth({
+        user: {
+          username,
+          password,
+        },
+      });
+      console.log("token", token);  
+      console.log("debug",store)
+      try{
+      store.dispatch({
+        type: EDIT_AUTHORIZATION,
+        payload: token.contents[0].refreshToken
+        })
+      }catch(err){
+        console.log("de2",err.stack)
+      }
+      console.log("store authen",store.getState().reducer.auth)
+      const apitest = await menu(store.getState().reducer.auth);
+      store.dispatch({
+        type: EDIT_PROPERTYS,
+        payload: apitest
+      })
+      console.log("store authen",store.getState().reducer)
+      console.log("apitest",apitest)
+      setErrorLogin(true);
+
+      setToken(token);
+      
+    }
   };
 
-  // if(login) return <Redirect to='/'/>;
-  // else
+
   return (
-    <div className="Login-component">
+    <div className="Login-component" style={{ backgroundImage: `url(${background})` }} >
       <Container
         component="main"
         maxWidth="xs"
@@ -88,15 +132,21 @@ export default function Login({ setToken }) {
       >
         <Paper className={classes.paper}>
           <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
-          <h5 style={{ color: "gray" }}>Hotel Property Management System </h5>
+          <h5 className={classes.sysname} >Hotel Property Management System </h5>
           <Divider variant="middle" />
+          
+          {errorUsername ? <div className={classes.errorMessage}>Username is required</div> : (errorPassword ? <div className={classes.errorMessage}>Password is required</div> : (errorLogin ? <div className={classes.errorMessage}>Invalid Username or Password</div> : null))}
 
           <Grid item className={classes.formlogin}>
             <form Validate autoComplete="on" onSubmit={handleSubmit}>
               <Grid item spacing={5}>
                 <TextField
                   id="standard-basic"
-                  label="Username "
+                  label=" Username "
+                  htmlFor="Username"
+                  href
+                  type="text"
+                  onChange={(e) => setUserName(e.target.value)}
                   fullWidth
                   InputProps={{
                     endAdornment: (
@@ -106,17 +156,22 @@ export default function Login({ setToken }) {
                     ),
                   }}
                 >
-                  <Input
+                  
+                  {/* <Input
                     type="text"
                     onChange={(e) => setUserName(e.target.value)}
-                  />
+                  /> */}
                 </TextField>
+                
               </Grid>
 
-              <Grid item spacing={5} style={{ marginTop: 10 }}>
+              <Grid item spacing={5} style={{ marginTop: 0  }}>
                 <TextField
                   id="standard-basic"
                   label="Password"
+                  htmlFor="password"
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
                   fullWidth
                   InputProps={{
                     endAdornment: (
@@ -126,24 +181,27 @@ export default function Login({ setToken }) {
                     ),
                   }}
                 >
-                  <Input
+                  
+                  {/* <Input
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
-                  />
+                  /> */}
                 </TextField>
+               
+              </Grid>
+              <Grid item style={{ paddingTop: 25, paddingBottom:20 }} >
+                <Button
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                  style={{ backgroundColor: "#2D62ED", color: "white" }}
+                >
+                  LOGIN
+                </Button>
               </Grid>
             </form>
           </Grid>
-          <Grid item>
-            <Button
-              fullWidth
-              type="submit"
-              variant="contained"
-              style={{ backgroundColor: "#2D62ED", color: "white" }}
-            >
-              LOGIN
-            </Button>
-          </Grid>
+
         </Paper>
       </Container>
     </div>
@@ -152,4 +210,7 @@ export default function Login({ setToken }) {
 
 Login.propTypes = {
   setToken: PropTypes.func.isRequired,
+  // store: PropTypes.func.isRequired
+  // ,
+  // setAuthorization: PropTypes.func.isRequired
 };
