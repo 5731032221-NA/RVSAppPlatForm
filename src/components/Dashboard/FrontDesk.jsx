@@ -17,13 +17,16 @@ import Avatar from "@material-ui/core/Avatar";
 
 import Button from "@material-ui/core/Button";
 
+import ButtomBar from "../../layouts/ButtomBar";
+
 export class FrontDesk extends Component {
   constructor(props) {
     super(props);
     this.props.getUserList();
     this.state = {
       lang: 'en',
-      Dashboard: en_lang.Dashboard
+      Dashboard: en_lang.Dashboard,
+      color: this.props.color
     };
   }
 
@@ -34,12 +37,14 @@ export class FrontDesk extends Component {
         if (this.props.lang == 'th') {
           this.setState({
             lang: 'th',
-            Dashboard: (th_lang.Dashboard)
+            Dashboard: (th_lang.Dashboard),
+            color: this.props.color
           });
         } else if (this.props.lang == 'en') {
           this.setState({
             lang: 'en',
-            Dashboard: (en_lang.Dashboard)
+            Dashboard: (en_lang.Dashboard),
+            color: this.props.color
           });
 
         }
@@ -63,7 +68,7 @@ export class FrontDesk extends Component {
                 <Paper elevation={3} style={{ minHeight: 300 }}>
                   Gride layout 12 */}
 
-          <h3 style={{ color: "blue", marginBottom: 25 }}>Dashboard</h3>
+          <h3 style={{ color: this.state.color, marginBottom: 25 }}>Dashboard</h3>
           <Grid
             container
             spacing={4}
@@ -473,6 +478,7 @@ const mapStateToProps = (state) => {
   console.log("mapStateToProps")
   return {
     lang: state.reducer.lang,
+    color: state.reducer.color
   };
 };
 

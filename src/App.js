@@ -80,7 +80,7 @@ function App() {
         store={store}
       /> 
       :
-        property? <Property
+        !property? <Property
         setToken={setToken}
         setProperty={setProperty}
             />

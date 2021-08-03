@@ -89,5 +89,14 @@
   "quantity": "Quantity",
   "Campaign Detail": "รายละเอียดแคมเปญ",
   "to": "ถึง",
-  "SomeThingInFrontDesk": "Front Desk ภาษาไทย"
+  "SomeThingInFrontDesk": "Front Desk ภาษาไทย",
+  "Reservation":"การจองห้องพัก",
+  "Cashier":"แคชเชียร์",
+  "SystemsTools":"เครื่องมือระบบ",
+  "FrontDesk":"พนักงานต้อนรับ",
+  "NightAuditor":"Night Auditor",
+  "HouseKeeping": "แม่บ้าน",
+  "Engineer": "ช่าง",
+  "Reports": "รายงาน",
+  "Configuration": "การตั้งค่า"
 }

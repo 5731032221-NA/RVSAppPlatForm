@@ -322,8 +322,8 @@ export default function Navbar(store) {
       {renderMobileMenu}
       {renderMenu}
       {/* <Leftbar /> */}
-      <HeaderTabs />
-      <ButtomBar />
+      {/* <HeaderTabs /> */}
+      {/* <ButtomBar /> */}
     </div>
   );
 }

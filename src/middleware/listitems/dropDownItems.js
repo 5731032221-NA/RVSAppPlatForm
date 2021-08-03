@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState,useContext } from 'react';
 import List from '@material-ui/core/List';
 
 import ListItem from '@material-ui/core/ListItem';
@@ -26,13 +26,21 @@ import Collapse from '@material-ui/core/Collapse'
 
 import IconExpandLess from '@material-ui/icons/ExpandLess'
 import IconExpandMore from '@material-ui/icons/ExpandMore'
-import IconDashboard from '@material-ui/icons/Dashboard'
-import IconShoppingCart from '@material-ui/icons/ShoppingCart'
-import IconPeople from '@material-ui/icons/People'
-import IconBarChart from '@material-ui/icons/BarChart'
-import IconLibraryBooks from '@material-ui/icons/LibraryBooks'
+// import IconDashboard from '@material-ui/icons/Dashboard'
+// import IconShoppingCart from '@material-ui/icons/ShoppingCart'
+// import IconPeople from '@material-ui/icons/People'
+// import IconBarChart from '@material-ui/icons/BarChart'
+// import IconLibraryBooks from '@material-ui/icons/LibraryBooks'
 
-export default function MainListItems_en() {
+
+
+import translate_th from '../../static/lang/th.json'
+import translate_en from '../../static/lang/en.json'
+
+import { ReactReduxContext } from 'react-redux'
+
+export default function MainListItems() {
+    const { store } = useContext(ReactReduxContext);
     const [openFrontDesk, setOpenFrontDesk] = useState(false)
     const [openCashier, setOpenCashier] = useState(false)
     const [openProfile, setOpenProfile] = useState(false)
@@ -42,6 +50,19 @@ export default function MainListItems_en() {
     const [openRS, setOpenRS] = useState(false)
     const [openConfig, setOpenConfig] = useState(false)
     const [openSystemTools, setOpenSystemsTools] = useState(false)
+    const [lang, setLang] = useState('en')
+    const [translate, setTranslate] = useState(translate_en)
+
+    setInterval(() => {
+        let settinglang = store.getState().reducer.lang;
+        // console.log("settinglang",settinglang,lang)
+        // console.log("is",lang != settinglang && lang != null)
+        if (lang != settinglang && lang != null) {
+            setLang(settinglang)
+            if(settinglang == 'th') setTranslate(translate_th)
+            else if(settinglang == 'en') setTranslate(translate_en)
+        }
+    }, 500);
 
     function handleOpenFrontDesk() {
         setOpenFrontDesk(!openFrontDesk)
@@ -67,28 +88,28 @@ export default function MainListItems_en() {
     function handleOpenSystemsTools() {
         setOpenSystemsTools(!openSystemTools)
     }
-  
-    
+
+
     return (
-        <List >
+        <List>
             <ListItem button >
                 <ListItemIcon style={{ color: "white" }} >
                     <DashboardIcon />
                 </ListItemIcon>
-                <ListItemText primary="Dashboard" />
+                <ListItemText primary={translate.Dashboard} />
             </ListItem>
             <ListItem button>
                 <ListItemIcon style={{ color: "white" }} >
                     <KingBedIcon />
                 </ListItemIcon>
-                <ListItemText primary="Reservation" />
-                
+                <ListItemText primary={translate.Reservation} />
+
             </ListItem>
-            <ListItem button  onClick={handleOpenFrontDesk}>
+            <ListItem button onClick={handleOpenFrontDesk}>
                 <ListItemIcon style={{ color: "white" }} >
                     <ImageAspectRatioIcon />
                 </ListItemIcon>
-                <ListItemText primary="Front Desk" />
+                <ListItemText primary={translate.FrontDesk} />
                 {openFrontDesk ? <IconExpandLess /> : <IconExpandMore />}
             </ListItem>
             <Collapse in={openFrontDesk} timeout="auto" unmountOnExit>
@@ -112,7 +133,7 @@ export default function MainListItems_en() {
                 <ListItemIcon style={{ color: "white" }} >
                     <MonetizationOnIcon />
                 </ListItemIcon>
-                <ListItemText primary="Cashier" />
+                <ListItemText primary={translate.Cashier} />
                 {openCashier ? <IconExpandLess /> : <IconExpandMore />}
             </ListItem>
             <Collapse in={openCashier} timeout="auto" unmountOnExit>
@@ -130,7 +151,7 @@ export default function MainListItems_en() {
                 <ListItemIcon style={{ color: "white" }} >
                     <PeopleIcon />
                 </ListItemIcon>
-                <ListItemText primary="Profiles" />
+                <ListItemText primary={translate.Profile} />
                 {openProfile ? <IconExpandLess /> : <IconExpandMore />}
             </ListItem>
             <Collapse in={openProfile} timeout="auto" unmountOnExit>
@@ -154,7 +175,7 @@ export default function MainListItems_en() {
                 <ListItemIcon style={{ color: "white" }} >
                     <NightsStayIcon />
                 </ListItemIcon>
-                <ListItemText primary="Night Auditor" />
+                <ListItemText primary={translate.NightAuditor}/>
                 {openNA ? <IconExpandLess /> : <IconExpandMore />}
             </ListItem>
             <Collapse in={openNA} timeout="auto" unmountOnExit>
@@ -178,7 +199,7 @@ export default function MainListItems_en() {
                 <ListItemIcon style={{ color: "white" }} >
                     <DeleteSweepIcon />
                 </ListItemIcon>
-                <ListItemText primary="House Keeping" />
+                <ListItemText primary={translate.HouseKeeping} />
                 {openHK ? <IconExpandLess /> : <IconExpandMore />}
             </ListItem>
             <Collapse in={openHK} timeout="auto" unmountOnExit>
@@ -196,7 +217,7 @@ export default function MainListItems_en() {
                 <ListItemIcon style={{ color: "white" }} >
                     <BuildIcon />
                 </ListItemIcon>
-                <ListItemText primary="Engineering" />
+                <ListItemText primary={translate.Engineer} />
             </ListItem>
             <ListItem button onClick={handleOpenRS}>
                 <ListItemIcon style={{ color: "white" }} >
@@ -214,20 +235,20 @@ export default function MainListItems_en() {
                 </List>
             </Collapse>
             <ListItem button onClick={handleOpenConfig}>
-             <ListItemIcon style={{ color: "white" }} >
-                 <SettingsIcon />
-             </ListItemIcon>
-             <ListItemText primary="Configuration" />
-             {/* {openConfig ? <IconExpandLess /> : <IconExpandMore />} */}
-         </ListItem>
-         <ListItem button onClick={handleOpenSystemsTools}>
-             <ListItemIcon style={{ color: "white" }} >
-                 <AssignmentIcon />
-             </ListItemIcon>
-             <ListItemText primary="System Tools" />
-             {openSystemTools ? <IconExpandLess /> : <IconExpandMore />}
-         </ListItem>
-         <Collapse in={openSystemTools} timeout="auto" unmountOnExit>
+                <ListItemIcon style={{ color: "white" }} >
+                    <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary={translate.Configuration} />
+                {/* {openConfig ? <IconExpandLess /> : <IconExpandMore />} */}
+            </ListItem>
+            <ListItem button onClick={handleOpenSystemsTools}>
+                <ListItemIcon style={{ color: "white" }} >
+                    <AssignmentIcon />
+                </ListItemIcon>
+                <ListItemText primary={translate.SystemsTools} />
+                {openSystemTools ? <IconExpandLess /> : <IconExpandMore />}
+            </ListItem>
+            <Collapse in={openSystemTools} timeout="auto" unmountOnExit>
                 <Divider />
                 <List component="div" disablePadding>
                     <ListItem button >

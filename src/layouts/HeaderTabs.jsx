@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -14,6 +14,8 @@ import NightsStayIcon from "@material-ui/icons/NightsStay";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { IconButton } from "@material-ui/core";
 import FrontDesk from "../components/Dashboard/FrontDesk";
+
+import { ReactReduxContext } from 'react-redux'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,11 +59,23 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     justifyItems: "center",
   },
+  tabs: {
+    color: 'green'
+  }
 }));
 
 export default function HeaderTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [wordColor, setWordColor] = React.useState('#2D62ED');
+  const { store } = useContext(ReactReduxContext)
+
+  setInterval(() => {
+    let settingColor = store.getState().reducer.color;
+    if (wordColor != settingColor && wordColor != null) {
+      setWordColor(settingColor)
+      }
+  }, 500);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -96,20 +110,24 @@ export default function HeaderTabs() {
             aria-label="simple tabs example"
             indicatorColor="primary"
             centered
+            TabIndicatorProps={{ style: { backgroundColor: wordColor } }}
           >
             <Tab
               icon={<ImageAspectRatioIcon />}
+              style={{ color: wordColor }}
               label="Front Desk"
               {...a11yProps(0)}
             />
-            <Tab icon={<KingBedIcon />} label="Reservation" {...a11yProps(1)} />
+            <Tab style={{ color: wordColor }} icon={<KingBedIcon />} label="Reservation" {...a11yProps(1)} />
             <Tab
               icon={<MonetizationOnIcon />}
+              style={{ color: wordColor }}
               label="Cachier"
               {...a11yProps(2)}
             />
             <Tab
               icon={<NightsStayIcon />}
+              style={{ color: wordColor }}
               label="Night Auditor"
               {...a11yProps(3)}
             />

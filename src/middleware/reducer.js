@@ -10,11 +10,17 @@ import {
 import {
     EDIT_PROPERTYS
 } from "./action";
+
+import {
+    EDIT_COLOR
+} from "./action";
+
 const initialState = {
     users: [{ 'id': "0", 'name': 'n' }],
     lang: 'en',
     auth: '',
-    propertys: ''
+    propertys: {content : {propertyID:"FSDH"}},
+    color: '#2D62ED'
 };
 
 
@@ -23,6 +29,11 @@ const reducer = (state = initialState, action) => {
     console.log("action", action)
     const allUsers = [...state.users];
     switch (action.type) {
+        case EDIT_COLOR:
+            return {
+                ...state,
+                color: action.payload,
+            };
         case EDIT_PROPERTYS:
             return {
                 ...state,

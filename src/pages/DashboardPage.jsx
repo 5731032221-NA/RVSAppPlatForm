@@ -38,6 +38,9 @@ import ListItemText from '@material-ui/core/ListItemText'
 import {
     EDIT_LANG
 } from "../middleware/action";
+import {
+    EDIT_COLOR
+} from "../middleware/action";
 import { ReactReduxContext } from 'react-redux'
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
@@ -65,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
         ...theme.mixins.toolbar,
     },
     appBar: {
-        zIndex: theme.zIndex.drawer + 1,
+        zIndex: theme.zIndex.drawer +1,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
@@ -79,6 +82,15 @@ const useStyles = makeStyles((theme) => ({
     },
     themePurple: {
         backgroundColor: purple[600]
+    },
+    themeFontDefault: {
+        color: '#2D62ED'
+    },
+    themeFontGreen: {
+        color: 'green'
+    },
+    themeFonrPurple: {
+        color: 'purple'
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -107,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
-        backgroundColor: '#2D62ED',
+        // backgroundColor: '#2D62ED',
         color: 'white'
     },
     drawerPaperClose: {
@@ -214,30 +226,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
     const classes = useStyles();
-    const items = [
-        { name: 'Dashboard', label: 'Dashboard' },
-        { name: 'Reservation', label: 'Reservation' },
-        {
-            name: 'FrontDesk', label: 'Front Desk',
-            items: [{ name: 'Walk-in', label: 'Walk-in' },
-            { name: 'Check-in', label: 'Walk-in' },
-            { name: 'Chen-in', label: 'Walk-in' },
-            { name: 'Walk-in', label: 'Walk-in' },
-            ]
-        },
-        { name: 'Cashier', label: 'Cashier' },
-        { name: 'Profiles', label: 'Profiles' },
-        { name: 'NightAuditor', label: 'Night Auditor' },
-        { name: 'House Keeping', label: 'HouseKeeping' },
-        { name: 'Engineering', label: 'Engineering' },
-        { name: 'Reports', label: 'Reports' },
-        { name: 'Configuration', label: 'Configuration' },
-        { name: 'System Tools', label: 'System Tools' }
-
-    ]
+    
 
     const [open, setOpen] = React.useState(false);
     const [themeState, setThemeState] = React.useState(classes.themeDefault);
+    const [themeFontState, setThemeFontState] = React.useState(classes.themeFontDefault);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -278,8 +271,18 @@ export default function Dashboard() {
         // handleMobileMenuClose();
         if (lang == 'th') {
             setThemeState(classes.themePurple)
+            setThemeFontState(classes.themeFonrPurple)
+            store.dispatch({
+                type: EDIT_COLOR,
+                payload: purple[600]
+            })
         } else {
             setThemeState(classes.themeGreen)
+            setThemeFontState(classes.themeFontGreen)
+            store.dispatch({
+                type: EDIT_COLOR,
+                payload: green[600]
+            })
         }
         console.log("store", store)
         console.log("store", store.store)
@@ -442,7 +445,7 @@ export default function Dashboard() {
                         </IconButton>
                         <Grid item spacing={1} style={{ paddingLeft: 20 }}>
                             <Grid item spacing={1}>
-                                <Typography variant="subtitle1" style={{fontSize:15}}>Prachaya N.</Typography>
+                                <Typography variant="subtitle1" style={{fontSize:15}}>{store.getState().reducer.username}</Typography>
                             </Grid>
                             <Grid item spacing={1}>
                                 <Typography variant="body2" style={{fontSize:10}} >Admin</Typography>
@@ -473,7 +476,7 @@ export default function Dashboard() {
             <Drawer
                 variant="permanent"
                 classes={{
-                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose,themeState),
                 }}
                 open={open}
             >
@@ -508,7 +511,7 @@ export default function Dashboard() {
                         </ListItem>
                     ))}
                 </List> */}
-                <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List>
+                <List >{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List>
                 <Divider />
                 {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
             </Drawer>
