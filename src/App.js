@@ -74,11 +74,11 @@ function App() {
   return (
     <Provider store={store}>
       <div>
-        {/* {!token ? (
+        {!token ? (
           <SignIn setToken={setToken} store={store} />
         ) : !property ? (
           <Property setToken={setToken} setProperty={setProperty} />
-        ) : ( */}
+        ) : (
         <BrowserRouter>
           {/* <Leftbar /> */}
 
