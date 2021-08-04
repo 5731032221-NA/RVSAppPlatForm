@@ -37,7 +37,9 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
 // import { useDispatch } from 'react-redux/lib/hooks/useDispatch';
+
 import { EDIT_LANG } from "../middleware/action";
+import { EDIT_COLOR } from "../middleware/action";
 import { ReactReduxContext } from "react-redux";
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
@@ -110,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    backgroundColor: "#2D62ED",
+    // backgroundColor: "#2D62ED",
     color: "white",
   },
   drawerPaperClose: {
@@ -212,36 +214,19 @@ const useStyles = makeStyles((theme) => ({
   },
   rightBarStyle: {
     width: 280,
+    zIndex: 2001,
   },
 }));
 
 export default function Dashboard() {
   const classes = useStyles();
-  const items = [
-    { name: "Dashboard", label: "Dashboard" },
-    { name: "Reservation", label: "Reservation" },
-    {
-      name: "FrontDesk",
-      label: "Front Desk",
-      items: [
-        { name: "Walk-in", label: "Walk-in" },
-        { name: "Check-in", label: "Walk-in" },
-        { name: "Chen-in", label: "Walk-in" },
-        { name: "Walk-in", label: "Walk-in" },
-      ],
-    },
-    { name: "Cashier", label: "Cashier" },
-    { name: "Profiles", label: "Profiles" },
-    { name: "NightAuditor", label: "Night Auditor" },
-    { name: "House Keeping", label: "HouseKeeping" },
-    { name: "Engineering", label: "Engineering" },
-    { name: "Reports", label: "Reports" },
-    { name: "Configuration", label: "Configuration" },
-    { name: "System Tools", label: "System Tools" },
-  ];
 
   const [open, setOpen] = React.useState(false);
   const [themeState, setThemeState] = React.useState(classes.themeDefault);
+  const [wordColor, setWordColor] = React.useState("#2D62ED");
+  const [themeFontState, setThemeFontState] = React.useState(
+    classes.themeFontDefault
+  );
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -254,6 +239,38 @@ export default function Dashboard() {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  setInterval(() => {
+    let settingColor = store.getState().reducer.color;
+    if (wordColor != settingColor && wordColor != null) {
+      if (settingColor == purple[600]) {
+        setThemeState(classes.themePurple);
+        setWordColor(purple[600]);
+        setThemeFontState(classes.themeFonrPurple);
+      } else if (settingColor == green[600]) {
+        setThemeState(classes.themeGreen);
+        setWordColor(green[600]);
+        setThemeFontState(classes.themeFontGreen);
+      } else {
+        setThemeState(classes.themeDefault);
+        setWordColor("#2D62ED");
+        setThemeFontState("#2D62ED");
+      }
+    }
+  }, 500);
+
+  // const [lang, setLang] = useState('en')
+
+  // setInterval(() => {
+  //     let settinglang = store.getState().reducer.lang;
+  //     // console.log("settinglang",settinglang,lang)
+  //     // console.log("is",lang != settinglang && lang != null)
+  //     if (lang != settinglang && lang != null) {
+  //         setLang(settinglang)
+  //         if(settinglang == 'th') setTranslate(translate_th)
+  //         else if(settinglang == 'en') setTranslate(translate_en)
+  //     }
+  // }, 500);
 
   const handlelanguageMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -281,8 +298,18 @@ export default function Dashboard() {
     // handleMobileMenuClose();
     if (lang == "th") {
       setThemeState(classes.themePurple);
+      setThemeFontState(classes.themeFonrPurple);
+      store.dispatch({
+        type: EDIT_COLOR,
+        payload: purple[600],
+      });
     } else {
       setThemeState(classes.themeGreen);
+      setThemeFontState(classes.themeFontGreen);
+      store.dispatch({
+        type: EDIT_COLOR,
+        payload: green[600],
+      });
     }
     console.log("store", store);
     console.log("store", store.store);
@@ -324,7 +351,7 @@ export default function Dashboard() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
+        <IconButton aria-label="show 4 new mails" color="white">
           <Badge badgeContent={4} color="secondary">
             <MailIcon />
           </Badge>
@@ -332,7 +359,7 @@ export default function Dashboard() {
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
+        <IconButton aria-label="show 11 new notifications" color="white">
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
           </Badge>
@@ -439,17 +466,17 @@ export default function Dashboard() {
               style={{ backgroundColor: "#FFFFFF" }}
               variant="middle"
             />
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handlelanguageMenuOpen}
-              size="medium"
-              style={{ color: "#1B47C1" }}
-            >
-              <ExplicitIcon />
-            </IconButton>
+            {/* <IconButton
+                            edge="end"
+                            aria-label="account of current user"
+                            aria-controls={menuId}
+                            aria-haspopup="true"
+                            onClick={handlelanguageMenuOpen}
+                            size="medium"
+                            style={{ color: "white" }}
+                        >
+                            <ExplicitIcon />
+                        </IconButton> */}
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -457,14 +484,14 @@ export default function Dashboard() {
               aria-haspopup="true"
               onClick={handlelanguageMenuOpen}
               size="large"
-              style={{ color: "#1B47C1" }}
+              style={{ color: "white" }}
             >
               <AccountCircle style={{ size: 50 }} />
             </IconButton>
             <Grid item spacing={1} style={{ paddingLeft: 20 }}>
               <Grid item spacing={1}>
                 <Typography variant="subtitle1" style={{ fontSize: 15 }}>
-                  Prachaya N.
+                  {sessionStorage.getItem("name")}
                 </Typography>
               </Grid>
               <Grid item spacing={1}>
@@ -487,7 +514,7 @@ export default function Dashboard() {
                   open={rightBar}
                   onClose={toggleRightBar(false)}
                 >
-                  {rightBarMenu()}
+                  <div style={{ zIndex: 4000 }}>{rightBarMenu()}</div>
                 </SwipeableDrawer>
               </Grid>
             </Grid>
@@ -513,10 +540,15 @@ export default function Dashboard() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+
       <Drawer
         variant="permanent"
         classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          paper: clsx(
+            themeState,
+            classes.drawerPaper,
+            !open && classes.drawerPaperClose
+          ),
         }}
         open={open}
       >
@@ -551,6 +583,7 @@ export default function Dashboard() {
                         </ListItem>
                     ))}
                 </List> */}
+
         <List>
           {store.getState().reducer.lang == "en" ? (
             <MainListItems_en />

@@ -59,7 +59,8 @@ export default function useToken() {
         const userToken = tokenString;
         console.log("userToken", userToken)
         if (userToken != null) {
-            if (userToken.msg != "Invalid Username or Password") {
+            if (userToken.msg == "Success!") {
+                sessionStorage.setItem('name', userToken.contents[userToken.contents.length-1][0].firstname +" "+userToken.contents[userToken.contents.length-1][0].lastname+".")
                 sessionStorage.setItem('token', JSON.stringify(userToken));
                 setToken(userToken);
             } 

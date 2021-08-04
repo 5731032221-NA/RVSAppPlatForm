@@ -14,8 +14,9 @@ import NightsStayIcon from "@material-ui/icons/NightsStay";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { IconButton } from "@material-ui/core";
 import FrontDesk from "../components/Dashboard/FrontDesk";
+import Reservation from "../components/Dashboard/Reservation";
 
-import { ReactReduxContext } from 'react-redux'
+import { ReactReduxContext } from "react-redux";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -58,23 +59,25 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     justifyItems: "center",
+    color: "gray",
+    // padding: 30,
   },
   tabs: {
-    color: 'green'
-  }
+    color: "green",
+  },
 }));
 
 export default function HeaderTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [wordColor, setWordColor] = React.useState('#2D62ED');
-  const { store } = useContext(ReactReduxContext)
+  const [wordColor, setWordColor] = React.useState("#2D62ED");
+  const { store } = useContext(ReactReduxContext);
 
   setInterval(() => {
     let settingColor = store.getState().reducer.color;
     if (wordColor != settingColor && wordColor != null) {
-      setWordColor(settingColor)
-      }
+      setWordColor(settingColor);
+    }
   }, 500);
 
   const handleChange = (event, newValue) => {
@@ -87,29 +90,27 @@ export default function HeaderTabs() {
         position="static"
         style={{ backgroundColor: "#FFFFFF", color: "#2D62ED" }}
       >
-        <Grid container>
-          <Grid item spacing={1} className={classes.title}>
-            {/* <Typography variant="h6" align="left"> */}
-
-            <h3 style={{ color: "gray" }}>
-              <IconButton
-                size="medium"
-                style={{ color: "red", marginLeft: 20 }}
-              >
-                <NotificationsIcon />
-              </IconButton>
-              Update has a problem
-            </h3>
-
-            {/* </Typography> */}
-          </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <IconButton size="medium" style={{ color: "red", marginLeft: 20 }}>
+            <NotificationsIcon />
+          </IconButton>
+          <Typography variant="body1" className={classes.title}>
+            Update has a problem
+          </Typography>
 
           <Tabs
             value={value}
             onChange={handleChange}
             aria-label="simple tabs example"
             indicatorColor="primary"
-            centered
+            // centered
+            variant="scrollable"
+            scrollButtons="auto"
             TabIndicatorProps={{ style: { backgroundColor: wordColor } }}
           >
             <Tab
@@ -118,7 +119,12 @@ export default function HeaderTabs() {
               label="Front Desk"
               {...a11yProps(0)}
             />
-            <Tab style={{ color: wordColor }} icon={<KingBedIcon />} label="Reservation" {...a11yProps(1)} />
+            <Tab
+              style={{ color: wordColor }}
+              icon={<KingBedIcon />}
+              label="Reservation"
+              {...a11yProps(1)}
+            />
             <Tab
               icon={<MonetizationOnIcon />}
               style={{ color: wordColor }}
@@ -132,13 +138,14 @@ export default function HeaderTabs() {
               {...a11yProps(3)}
             />
           </Tabs>
+          {/* </Grid> */}
         </Grid>
       </AppBar>
       <TabPanel value={value} index={0}>
         <FrontDesk />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Reservation
+        <Reservation />
       </TabPanel>
       <TabPanel value={value} index={2}>
         Cachier
