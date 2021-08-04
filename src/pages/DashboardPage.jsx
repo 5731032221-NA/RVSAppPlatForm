@@ -31,20 +31,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MailIcon from "@material-ui/icons/Mail";
 import Button from "@material-ui/core/Button";
-import { purple, green, orange ,red , yellow } from "@material-ui/core/colors";
+import { purple, green, orange, red, yellow } from "@material-ui/core/colors";
 
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
 // import { useDispatch } from 'react-redux/lib/hooks/useDispatch';
 
-import {
-    EDIT_LANG
-} from "../middleware/action";
-import {
-    EDIT_COLOR
-} from "../middleware/action";
-import { ReactReduxContext } from 'react-redux'
+import { EDIT_LANG } from "../middleware/action";
+import { EDIT_COLOR } from "../middleware/action";
+import { ReactReduxContext } from "react-redux";
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
 
@@ -55,14 +51,13 @@ import secondaryListItems_th from "../middleware/listitems/dropDownItems";
 // import { mainListItems_en, secondaryListItems_en } from '../middleware/listitems/dropDownItems';
 // import { mainListItems_th, secondaryListItems_th } from '../middleware/listitems/dropDownItems';
 
-
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import RightBar from "../layouts/RightBar";
-
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+
     root: {
         display: "flex",
     },
@@ -99,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: red[600],
     },
     themeYellow: {
-        backgroundColor: yellow[600],
+        backgroundColor: "#ff5253",
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -220,6 +215,7 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up("md")]: {
             display: "flex",
         },
+
     },
     sectionMobile: {
         display: "flex",
@@ -229,7 +225,7 @@ const useStyles = makeStyles((theme) => ({
     },
     rightBarStyle: {
         width: 280,
-        zIndex: 2001
+        zIndex: 2001,
     },
 }));
 
@@ -278,9 +274,9 @@ export default function Dashboard() {
                 setWordColor(orange[600])
                 setThemeFontState(classes.themeFontOrange)
             }
-            else if (settingColor == yellow[600]) {
+            else if (settingColor == "#ff5253") {
                 setThemeState(classes.themeYellow)
-                setWordColor(yellow[600])
+                setWordColor("#ff5253")
                 setThemeFontState(classes.themeFontYellow)
             }
             else {
@@ -361,7 +357,6 @@ export default function Dashboard() {
 
 
 
-
     const menuId = "primary-search-account-menu";
     const renderMenu = (
         <Menu
@@ -373,8 +368,8 @@ export default function Dashboard() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={() => handleLanguage('en')}>English</MenuItem>
-            <MenuItem onClick={() => handleLanguage('th')}>ไทย</MenuItem>
+            <MenuItem onClick={() => handleLanguage("en")}>English</MenuItem>
+            <MenuItem onClick={() => handleLanguage("th")}>ไทย</MenuItem>
         </Menu>
     );
 
@@ -429,6 +424,7 @@ export default function Dashboard() {
             </MenuItem>
         </Menu>
     );
+
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     const [rightBar, setRightBar] = React.useState(false);
@@ -595,6 +591,7 @@ export default function Dashboard() {
                         </Grid>
                     </div>
                     {/* <IconButton color="inherit">
+
                         <Badge badgeContent={4} color="secondary">
                             <NotificationsIcon />
                         </Badge>
@@ -604,39 +601,43 @@ export default function Dashboard() {
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
-            <Drawer
-                variant="permanent"
-                classes={{
-                    paper: clsx(themeState, classes.drawerPaper, !open && classes.drawerPaperClose),
-                }}
-                open={open}
-            >
-                <Grid container >
-                    <Grid item container direction="row">
-                        <div style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}>
-                            <img
-                                src="logo.png"
-                                class="rounded mx-auto d-block"
-                                alt="..."
-                                height={35}
-                            />
-                        </div>
-                        {open ?
-                            <IconButton
-                                edge="start"
-                                className={classes.menuButton}
-                                color="inherit"
-                                aria-label="open drawer"
-                                onClick={handleDrawerClose}
-                            >
-                                <MenuIcon />
-
-                            </IconButton> : null}
+            <div className={classes.sectionDesktop}>
+                <Drawer
+                    variant="permanent"
+                    classes={{
+                        paper: clsx(
+                            themeState,
+                            classes.drawerPaper,
+                            !open && classes.drawerPaperClose
+                        ),
+                    }}
+                    open={open}
+                >
+                    <Grid container>
+                        <Grid item container direction="row">
+                            <div style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}>
+                                <img
+                                    src="logo.png"
+                                    class="rounded mx-auto d-block"
+                                    alt="..."
+                                    height={35}
+                                />
+                            </div>
+                            {open ? (
+                                <IconButton
+                                    edge="start"
+                                    className={classes.menuButton}
+                                    color="inherit"
+                                    aria-label="open drawer"
+                                    onClick={handleDrawerClose}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                            ) : null}
+                        </Grid>
                     </Grid>
-                </Grid>
-                <Divider />
-
-                {/* <List disablePadding dense>
+                    <Divider />
+                    {/* <List disablePadding dense>
                     {items.map(({ label, name, ...rest }) => (
                         <ListItem key={name} button {...rest}>
                             <ListItemText>{label}</ListItemText>
@@ -644,11 +645,19 @@ export default function Dashboard() {
                     ))}
                 </List> */}
 
-                <List >{store.getState().reducer.lang == "en" ? <MainListItems_en /> : <MainListItems_en />}</List>
-                <Divider />
 
-                {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
-            </Drawer>
+                    <List>
+                        {store.getState().reducer.lang == "en" ? (
+                            <MainListItems_en />
+                        ) : (
+                            <MainListItems_en />
+                        )}
+                    </List>
+                    <Divider />
+                    {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
+                </Drawer>
+                </div>
+                
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="100" className={classes.container}>

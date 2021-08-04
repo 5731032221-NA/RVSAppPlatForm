@@ -74,24 +74,24 @@ function App() {
   return (
     <Provider store={store}>
       <div>
-        {!token ? (
+        {/* {!token ? (
           <SignIn setToken={setToken} store={store} />
         ) : !property ? (
           <Property setToken={setToken} setProperty={setProperty} />
-        ) : (
-          <BrowserRouter>
-            {/* <Leftbar /> */}
+        ) : ( */}
+        <BrowserRouter>
+          {/* <Leftbar /> */}
 
-            <Switch>
-              <Route exact path="/signin" component={SignIn} />
-              <Route exact path="/forgotpassword" component={ForgotPass} />
-              <Route exact path="/userlist" component={UserList} />
+          <Switch>
+            <Route exact path="/signin" component={SignIn} />
+            <Route exact path="/forgotpassword" component={ForgotPass} />
+            <Route exact path="/userlist" component={UserList} />
 
-              <Route exact path="/" component={Dashboard} />
-              {/* <Route component={ErrorPage} /> */}
-            </Switch>
-            {/* <Header store={store} /> */}
-          </BrowserRouter>
+            <Route exact path="/" component={Dashboard} />
+            {/* <Route component={ErrorPage} /> */}
+          </Switch>
+          {/* <Header store={store} /> */}
+        </BrowserRouter>
         )}
       </div>
     </Provider>
