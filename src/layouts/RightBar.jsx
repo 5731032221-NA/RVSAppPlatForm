@@ -16,7 +16,7 @@ import FlagIcon from "@material-ui/icons/Flag";
 import Switch from "@material-ui/core/Switch";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { purple, green } from "@material-ui/core/colors";
+import { purple, green, orange, red, yellow } from "@material-ui/core/colors";
 import { ReactReduxContext } from 'react-redux';
 import {
   EDIT_LANG
@@ -39,32 +39,32 @@ const useStyles = makeStyles({
     height: 20,
   },
   purple: {
-    backgroundColor: "purple",
+    backgroundColor: purple[600],
     width: 20,
     height: 20,
   },
   blue: {
-    backgroundColor: "blue",
+    backgroundColor: "#2D62ED",
     width: 20,
     height: 20,
   },
   green: {
-    backgroundColor: "green",
+    backgroundColor: green[600],
     width: 20,
     height: 20,
   },
   orange: {
-    backgroundColor: "orange",
+    backgroundColor: orange[600],
     width: 20,
     height: 20,
   },
   red: {
-    backgroundColor: "red",
+    backgroundColor: red[600],
     width: 20,
     height: 20,
   },
   yellow: {
-    backgroundColor: "yellow",
+    backgroundColor: yellow[600],
     width: 20,
     height: 20,
   },
@@ -101,11 +101,35 @@ export default function RighBar() {
       payload: green[600]
     })
   }
+  function handleThemeOrange() {
+    store.dispatch({
+      type: EDIT_COLOR,
+      payload: orange[600]
+    })
+  }
+  function handleThemeRed() {
+    store.dispatch({
+      type: EDIT_COLOR,
+      payload: red[600]
+    })
+  }
+  function handleThemeYellow() {
+    store.dispatch({
+      type: EDIT_COLOR,
+      payload: green[600]
+    })
+  }
+  function handleThemeDefault() {
+    store.dispatch({
+      type: EDIT_COLOR,
+      payload: "#2D62ED"
+    })
+  }
 
   function handleLogOut() {
     console.log("log out")
-    // sessionStorage.setItem('token', false);
-    // window.location.reload(false);
+    sessionStorage.setItem('token', false);
+    window.location.reload(false);
   }
 
 
@@ -196,11 +220,11 @@ export default function RighBar() {
             style={{ padding: 20 }}
           >
             <Avatar onClick={handleThemePurple} className={classes.purple}> </Avatar>
-            <Avatar className={classes.blue}> </Avatar>
+            <Avatar onClick={handleThemeDefault} className={classes.blue}> </Avatar>
             <Avatar onClick={handleThemeGreen} className={classes.green}> </Avatar>
-            <Avatar className={classes.orange}> </Avatar>
-            <Avatar className={classes.red}> </Avatar>
-            <Avatar className={classes.yellow}> </Avatar>
+            <Avatar onClick={handleThemeOrange} className={classes.orange}> </Avatar>
+            <Avatar onClick={handleThemeRed} className={classes.red}> </Avatar>
+            <Avatar onClick={handleThemeYellow} className={classes.yellow}> </Avatar>
           </Grid>
         </Grid>
       </Grid>

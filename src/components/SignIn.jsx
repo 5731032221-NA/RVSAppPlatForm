@@ -97,11 +97,10 @@ export default function Login({ setToken }) {
         },
       });
       console.log("token", token);  
-      console.log("debug",store)
       try{
       store.dispatch({
         type: EDIT_AUTHORIZATION,
-        payload: token.contents[0].refreshToken
+        payload: token.contents[token.contents.length-2].refreshToken
         })
       }catch(err){
         console.log("de2",err.stack)

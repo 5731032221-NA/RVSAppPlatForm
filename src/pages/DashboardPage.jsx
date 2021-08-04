@@ -31,7 +31,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MailIcon from "@material-ui/icons/Mail";
 import Button from "@material-ui/core/Button";
-import { purple, green } from "@material-ui/core/colors";
+import { purple, green, orange ,red , yellow } from "@material-ui/core/colors";
 
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -91,6 +91,15 @@ const useStyles = makeStyles((theme) => ({
     },
     themePurple: {
         backgroundColor: purple[600],
+    },
+    themeOrange: {
+        backgroundColor: orange[600],
+    },
+    themeRed: {
+        backgroundColor: red[600],
+    },
+    themeYellow: {
+        backgroundColor: yellow[600],
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -220,7 +229,7 @@ const useStyles = makeStyles((theme) => ({
     },
     rightBarStyle: {
         width: 280,
-        zIndex:2001
+        zIndex: 2001
     },
 }));
 
@@ -249,21 +258,40 @@ export default function Dashboard() {
     setInterval(() => {
         let settingColor = store.getState().reducer.color;
         if (wordColor != settingColor && wordColor != null) {
-            if(settingColor == purple[600]) {setThemeState(classes.themePurple)
+            if (settingColor == purple[600]) {
+                setThemeState(classes.themePurple)
                 setWordColor(purple[600])
-                setThemeFontState(classes.themeFonrPurple)
+                setThemeFontState(classes.themeFontPurple)
             }
-            else if (settingColor == green[600]) {setThemeState(classes.themeGreen)
+            else if (settingColor == green[600]) {
+                setThemeState(classes.themeGreen)
                 setWordColor(green[600])
                 setThemeFontState(classes.themeFontGreen)
             }
-            else {setThemeState(classes.themeDefault)
-            setWordColor('#2D62ED')
-            setThemeFontState('#2D62ED')}
-            
-          }
-      }, 500);
-    
+            else if (settingColor == red[600]) {
+                setThemeState(classes.themeRed)
+                setWordColor(red[600])
+                setThemeFontState(classes.themeFontRed)
+            }
+            else if (settingColor == orange[600]) {
+                setThemeState(classes.themeOrange)
+                setWordColor(orange[600])
+                setThemeFontState(classes.themeFontOrange)
+            }
+            else if (settingColor == yellow[600]) {
+                setThemeState(classes.themeYellow)
+                setWordColor(yellow[600])
+                setThemeFontState(classes.themeFontYellow)
+            }
+            else {
+                setThemeState(classes.themeDefault)
+                setWordColor('#2D62ED')
+                setThemeFontState('#2D62ED')
+            }
+
+        }
+    }, 500);
+
 
     // const [lang, setLang] = useState('en')
 
@@ -525,9 +553,9 @@ export default function Dashboard() {
                                     open={rightBar}
                                     onClose={toggleRightBar(false)}
                                 >
-                                    <div style={{zIndex:4000}}>
+                                    <div style={{ zIndex: 4000 }}>
 
-                                    {rightBarMenu()}
+                                        {rightBarMenu()}
                                     </div>
                                 </SwipeableDrawer>
                             </Grid>
@@ -544,6 +572,27 @@ export default function Dashboard() {
                         >
                             <MoreIcon />
                         </IconButton>
+                        <Grid item spacing={1} style={{ paddingLeft: 20 }}>
+                            <Grid item>
+                                <IconButton
+                                    onClick={toggleRightBar(true)}
+                                    style={{ color: "#FFFFFF" }}
+                                >
+                                    <ArrowDropDownIcon />
+                                </IconButton>
+                                {/* ==============Rightbar=================== */}
+                                <SwipeableDrawer
+                                    anchor={"right"}
+                                    open={rightBar}
+                                    onClose={toggleRightBar(false)}
+                                >
+                                    <div style={{ zIndex: 4000 }}>
+
+                                        {rightBarMenu()}
+                                    </div>
+                                </SwipeableDrawer>
+                            </Grid>
+                        </Grid>
                     </div>
                     {/* <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">
@@ -558,7 +607,7 @@ export default function Dashboard() {
             <Drawer
                 variant="permanent"
                 classes={{
-                    paper: clsx(themeState,classes.drawerPaper, !open && classes.drawerPaperClose),
+                    paper: clsx(themeState, classes.drawerPaper, !open && classes.drawerPaperClose),
                 }}
                 open={open}
             >
@@ -586,6 +635,7 @@ export default function Dashboard() {
                     </Grid>
                 </Grid>
                 <Divider />
+
                 {/* <List disablePadding dense>
                     {items.map(({ label, name, ...rest }) => (
                         <ListItem key={name} button {...rest}>
@@ -596,6 +646,7 @@ export default function Dashboard() {
 
                 <List >{store.getState().reducer.lang == "en" ? <MainListItems_en /> : <MainListItems_en />}</List>
                 <Divider />
+
                 {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
             </Drawer>
             <main className={classes.content}>
