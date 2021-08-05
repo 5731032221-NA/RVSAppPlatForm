@@ -71,7 +71,7 @@ export default function Login({ setToken }) {
   const [errorPassword, setErrorPassword] = useState(false);
   const [errorLogin, setErrorLogin] = useState(false);
   const { store } = useContext(ReactReduxContext);
-  console.log("log store",store);
+  //console.log("log store",store);
   // const [login, setlogin] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
