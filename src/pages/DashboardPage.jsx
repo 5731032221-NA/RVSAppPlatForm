@@ -449,7 +449,7 @@ export default function Dashboard() {
             >
                 <Toolbar className={classes.toolbar}>
                     <img
-                        src="logomin.png"
+                        src="logomin_white.png"
                         className={clsx(
                             classes.logoExpand,
                             open && classes.menuButtonHidden
@@ -617,7 +617,7 @@ export default function Dashboard() {
                         <Grid item container direction="row">
                             <div style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}>
                                 <img
-                                    src="logo.png"
+                                    src="logo_white.png"
                                     class="rounded mx-auto d-block"
                                     alt="..."
                                     height={35}
