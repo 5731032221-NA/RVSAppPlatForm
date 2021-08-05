@@ -50,7 +50,7 @@ function App() {
   // // const store = createStore(reducer, applyMiddleware(thunk));
   // // const [token, setToken] = useState();
 
-  console.log("store main", store.getState().reducer);
+  //console.log("store main", store.getState().reducer);
   // console.log("lang", lang);
   // console.log("theme", theme);
   // // const token = getToken();
