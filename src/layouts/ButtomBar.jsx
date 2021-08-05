@@ -69,7 +69,7 @@ export default function ButtomBar() {
     setValue(newValue);
   };
   return (
-    <div id="barwidth" className={classes.root}>
+    <div className={classes.root}>
       <TabPanel value={value} index={0}>
         Room2001
       </TabPanel>
@@ -84,7 +84,8 @@ export default function ButtomBar() {
             color: wordColor,
             top: "auto",
             bottom: 0,
-            zIndex: 1500
+            zIndex: 1500,
+            width: store.getState().reducer.compwidth
             // width: document.getElementById("barwidth").style.width
             // width: '95%'
           }}

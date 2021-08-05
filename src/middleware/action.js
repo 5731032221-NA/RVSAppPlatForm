@@ -4,6 +4,7 @@ export const EDIT_LANG = "EDIT_LANG";
 export const EDIT_AUTHORIZATION = "EDIT_AUTHORIZATION"
 export const EDIT_PROPERTYS = "EDIT_PROPERTYS";
 export const EDIT_COLOR = "EDIT_COLOR";
+export const EDIT_COMPWIDTH = "EDIT_COMPWIDTH";
 export const editAuth = (auth) => {
     return (dispatch) => {
 

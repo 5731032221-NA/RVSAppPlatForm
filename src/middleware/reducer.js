@@ -15,12 +15,18 @@ import {
     EDIT_COLOR
 } from "./action";
 
+import {
+    EDIT_COMPWIDTH
+} from "./action";
+
 const initialState = {
     users: [{ 'id': "0", 'name': 'n' }],
     lang: 'en',
     auth: '',
     propertys: {content : {propertyID:"FSDH"}},
-    color: '#2D62ED'
+    color: '#2D62ED',
+    username: '',
+    compwidth: 0
 };
 
 
@@ -29,6 +35,11 @@ const reducer = (state = initialState, action) => {
     console.log("action", action)
     const allUsers = [...state.users];
     switch (action.type) {
+        case EDIT_COMPWIDTH:
+            return {
+                ...state,
+                compwidth: action.payload,
+            };
         case EDIT_COLOR:
             return {
                 ...state,

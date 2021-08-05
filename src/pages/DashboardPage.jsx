@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState ,useEffect} from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -37,7 +37,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
 // import { useDispatch } from 'react-redux/lib/hooks/useDispatch';
-
+import { EDIT_COMPWIDTH } from "../middleware/action";
 import { EDIT_LANG } from "../middleware/action";
 import { EDIT_COLOR } from "../middleware/action";
 import { ReactReduxContext } from "react-redux";
@@ -250,8 +250,31 @@ export default function Dashboard() {
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const [compWidthState, setCompWidth] = useState(null);
+    setInterval(() => {
+        // console.log("a",document.getElementById("compwidth").clientWidth,compWidthState)
+        if (compWidthState != document.getElementById("compwidth").clientWidth && compWidthState != 1) {
+            store.dispatch({
+                type: EDIT_COMPWIDTH,
+                payload: document.getElementById("compwidth").clientWidth+19.8
+            })
+            setCompWidth(document.getElementById("compwidth").clientWidth)
+        }
+
+    }, 1000);
+    // useEffect(() => {
+    //     store.dispatch({
+    //         type: EDIT_COMPWIDTH,
+    //         payload: document.getElementById("compwidth").clientWidth + 19.8
+    //     })
+    //     // effect
+    //     // return () => {
+    //     //     cleanup
+    //     // }
+    // })
 
     setInterval(() => {
+
         let settingColor = store.getState().reducer.color;
         if (wordColor != settingColor && wordColor != null) {
             if (settingColor == purple[600]) {
@@ -286,7 +309,7 @@ export default function Dashboard() {
             }
 
         }
-    }, 500);
+    }, 1000);
 
 
     // const [lang, setLang] = useState('en')
@@ -656,11 +679,11 @@ export default function Dashboard() {
                     <Divider />
                     {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
                 </Drawer>
-                </div>
-                
+            </div>
+
             <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
-                <Container maxWidth="100" className={classes.container}>
+                <div  className={classes.appBarSpacer} />
+                <Container id="compwidth" maxWidth="100" className={classes.container}>
                     {/* <FrontDesk /> */}
                     <HeaderTabs />
                     <div style={{ paddingTop: 50 }}></div>
