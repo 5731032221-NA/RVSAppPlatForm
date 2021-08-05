@@ -482,7 +482,7 @@ export class FrontDesk extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("mapStateToProps");
+  // console.log("mapStateToProps");
   return {
     lang: state.reducer.lang,
     color: state.reducer.color,

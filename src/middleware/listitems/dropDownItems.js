@@ -32,6 +32,7 @@ import IconExpandMore from '@material-ui/icons/ExpandMore'
 // import IconBarChart from '@material-ui/icons/BarChart'
 // import IconLibraryBooks from '@material-ui/icons/LibraryBooks'
 
+import { EDIT_COMPONENT } from "../action";
 
 
 import translate_th from '../../static/lang/th.json'
@@ -66,6 +67,7 @@ export default function MainListItems() {
 
     function handleOpenFrontDesk() {
         setOpenFrontDesk(!openFrontDesk)
+        handleComponentState("FrontDesk")
     }
     function handleOpenCashier() {
         setOpenCashier(!openCashier)
@@ -83,12 +85,19 @@ export default function MainListItems() {
         setOpenRS(!openRS)
     }
     function handleOpenConfig() {
-        setOpenConfig(!openConfig)
+        // setOpenConfig(!openConfig)
+        handleComponentState("Configuration")
     }
     function handleOpenSystemsTools() {
         setOpenSystemsTools(!openSystemTools)
     }
 
+    function handleComponentState(comp){
+        store.dispatch({
+            type: EDIT_COMPONENT,
+            payload: comp
+        })
+    }
 
     return (
         <List>

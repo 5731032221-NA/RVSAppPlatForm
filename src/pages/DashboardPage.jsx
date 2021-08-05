@@ -50,7 +50,7 @@ import mainListItems_th from "../middleware/listitems/dropDownItems";
 import secondaryListItems_th from "../middleware/listitems/dropDownItems";
 // import { mainListItems_en, secondaryListItems_en } from '../middleware/listitems/dropDownItems';
 // import { mainListItems_th, secondaryListItems_th } from '../middleware/listitems/dropDownItems';
-
+import Configuration from "../components/Dashboard/Configuration";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import RightBar from "../layouts/RightBar";
 
@@ -236,6 +236,7 @@ export default function Dashboard() {
     const [themeState, setThemeState] = React.useState(classes.themeDefault);
     const [wordColor, setWordColor] = React.useState('#2D62ED');
     const [themeFontState, setThemeFontState] = React.useState(classes.themeFontDefault);
+    // const [componentState, setComponentState] = React.useState("FrontDesk");
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -244,19 +245,25 @@ export default function Dashboard() {
     };
     const { store } = useContext(ReactReduxContext)
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(0);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const [compWidthState, setCompWidth] = useState(null);
+    const [compState, setComp] = useState(null);
     setInterval(() => {
-        // console.log("a",document.getElementById("compwidth").clientWidth,compWidthState)
-        if (compWidthState != document.getElementById("compwidth").clientWidth && compWidthState != 1) {
+        // console.log(parseInt(store.getState().reducer.compwidth) !== parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(store.getState().reducer.compwidth))
+
+        if (compWidthState != document.getElementById("compwidth").offsetWidth+19.8) {
             store.dispatch({
                 type: EDIT_COMPWIDTH,
-                payload: document.getElementById("compwidth").clientWidth+19.8
+                payload: document.getElementById("compwidth").offsetWidth+19.8
             })
-            setCompWidth(document.getElementById("compwidth").clientWidth)
+            setCompWidth(document.getElementById("compwidth").offsetWidth)
+        }
+
+        if(compState != store.getState().reducer.componentState){
+          setComp(store.getState().reducer.componentState)
         }
 
     }, 100);
@@ -679,6 +686,10 @@ export default function Dashboard() {
         <Container maxWidth="100" className={classes.container}>
           {/* <FrontDesk /> */}
           <HeaderTabs />
+          {store.getState().reducer.componentState == "FrontDesk"?
+          <FrontDesk />: store.getState().reducer.componentState == "Configuration"?
+           <Configuration/> : null
+        }
           <div style={{ paddingTop: 50 }}>
             <ButtomBar />
           </div>

@@ -19,6 +19,10 @@ import {
     EDIT_COMPWIDTH
 } from "./action";
 
+import {
+    EDIT_COMPONENT
+} from "./action";
+
 const initialState = {
     users: [{ 'id': "0", 'name': 'n' }],
     lang: 'en',
@@ -26,15 +30,21 @@ const initialState = {
     propertys: {content : {propertyID:"FSDH"}},
     color: '#2D62ED',
     username: '',
-    compwidth: 0
+    compwidth: 0,
+    componentState: "FrontDesk"
 };
 
 
 
 const reducer = (state = initialState, action) => {
-    console.log("action", action)
+    // console.log("action", action)
     const allUsers = [...state.users];
     switch (action.type) {
+        case EDIT_COMPONENT:
+            return {
+                ...state,
+                componentState: action.payload,
+            };
         case EDIT_COMPWIDTH:
             return {
                 ...state,
