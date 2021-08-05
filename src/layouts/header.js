@@ -228,7 +228,7 @@ export default function Navbar(store) {
       <AppBar position="static" style={{ backgroundColor: "#2D62ED" }}>
         <Toolbar>
           <img
-            src="logo.png"
+            src="logo_white.png"
             class="rounded mx-auto d-block"
             alt="..."
             height={40}
