@@ -2,22 +2,17 @@ import React, { useState, useContext } from "react";
 import "../assets/login.css";
 import "../assets/variable.css";
 import background from "../assets/img/imgbackground.jpg";
+import BusinessIcon from '@material-ui/icons/Business';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import PropTypes from "prop-types";
-import auth from "../services/auth.service";
-import menu from "../services/menus.service";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
-import TextField from "@material-ui/core/TextField";
-import Input from "@material-ui/core/Input";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Divider from "@material-ui/core/Divider";
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
+import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Select, InputLabel, MenuItem } from '@material-ui/core';
 import {
     EDIT_AUTHORIZATION
 } from "../middleware/action";
@@ -30,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         textAlign: "center",
         color: theme.palette.text.secondary,
-        // margin: theme.spacing(1),
         width: theme.spacing(38),
         height: theme.spacing(48),
         marginTop: 100,
@@ -48,8 +42,9 @@ const useStyles = makeStyles((theme) => ({
         color: "#ff0033", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 15
     },
     seletprop: {
-        fontSize: 14,
-        fontWeight: 'bold'
+        fontSize: 15,
+        color:"#164BD8",
+        paddingBottom:20
     }
 }));
 
@@ -68,7 +63,8 @@ export default function Property({ setToken,setProperty }) {
         console.log("handleChange 1:", selectedProperty);
         console.log(event.target.value)
         setSelectedProperty(event.target.value);
-        // console.log("handleChange 2:", selectedProperty);
+        console.log("handleChange 2:", selectedProperty);
+        console.log(event.target.value)
 
     };
     const handleCancle = () => {
@@ -82,32 +78,6 @@ export default function Property({ setToken,setProperty }) {
     console.log("store1", store.getState())
     console.log("store2", store.getState().reducer)
     console.log("store3", store.getState().reducer.propertys)
-
-    // store.get
-    // const apitest = await menu(store.getState().reducer.auth);
-    // console.log("apitest", [apitest])
-
-    // if (selectedProperty != "") {
-    //     setList([store.getState().reducer.propertys].map((item) => (
-
-    //         <FormControlLabel value={item.content.propertyID} control={<Radio />} label={item.content.propertyID} />
-
-    //         // <FormControlLabel value={item.contents.propertyID} control={<StyledRadio />} label={item.contents.propertyID} />
-
-    //     ))
-    //     );
-    // }
-    // if(store.getState().reducer.propertys != ''){
-    // console.log("a", [store.getState().reducer.propertys].map((item) => (
-
-    //     <FormControlLabel value={item.content.propertyID} control={<Radio />} label={item.content.propertyID} />
-
-    //     // <FormControlLabel value={item.contents.propertyID} control={<StyledRadio />} label={item.contents.propertyID} />
-
-    // )))
-
-
-
     return (
         <div className="Login-component" style={{ backgroundImage: `url(${background})` }} >
             <Container
@@ -122,34 +92,27 @@ export default function Property({ setToken,setProperty }) {
                     <Divider variant="middle" />
                     <h5  ></h5>
                     <FormControl component="fieldset">
-                        <FormLabel component="legend" className={classes.seletprop}>Select Property</FormLabel>
-                        <RadioGroup aria-label="gender" name="gender1" value={selectedProperty} onClick={handleChange}>
+                        <FormLabel component="legend" className={classes.seletprop}>Please Select Your Property</FormLabel>
+                        <Select name="gender1" id="select" value={selectedProperty} onClick={handleChange} style={{width:280}} defaultValue={selectedProperty} >
                             {[store.getState().reducer.propertys].map((item) => (
-
-                                <FormControlLabel key={item.content.propertyID} value={item.content.propertyID} control={<Radio />} label={item.content.propertyID} />
-
-                                // <FormControlLabel value={item.contents.propertyID} control={<StyledRadio />} label={item.contents.propertyID} />
-
+                                <MenuItem key={item.content.propertyID} value={item.content.propertyID} label={item.content.propertyID} >
+                                    <div style={{display:'flex', alignItems:'center'}}>
+                                        <BusinessIcon style={{paddingRight:20, color:'#2D62ED'}} />
+                                        <div> {item.content.propertyID} </div>
+                                    </div>
+                                </MenuItem>
                             ))}
-                        </RadioGroup>
+                        </Select>
                     </FormControl>
                     <div variant="middle" style={{paddingTop: 30}}/>
-                    {/* <Button
-                        fullWidth
-                        variant="contained"
-                        style={{ backgroundColor: "#2D62ED", color: "white" }}
-                        onClick={handleCancle}
-                    >
-                        Cancle
-                    </Button> */}
                     <Button
                         fullWidth
                         variant="contained"
                         style={{ backgroundColor: "#2D62ED", color: "white" }}
                         onClick={handleSelect}
-                    >
-                        Select
-                    </Button>
+                    >  
+                        Select <ArrowForwardIcon style={{paddingLeft:10}} />   
+                    </Button> 
                 </Paper>
             </Container>
         </div>
