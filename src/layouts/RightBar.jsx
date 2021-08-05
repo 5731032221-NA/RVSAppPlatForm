@@ -115,14 +115,14 @@ export default function RighBar() {
   function handleThemeOrange() {
     store.dispatch({
       type: EDIT_COLOR,
-      payload: orange[600]
-    })
+      payload: orange[600],
+    });
   }
   function handleThemeRed() {
     store.dispatch({
       type: EDIT_COLOR,
-      payload: red[600]
-    })
+      payload: red[600],
+    });
   }
   function handleThemeYellow() {
     store.dispatch({
@@ -133,8 +133,8 @@ export default function RighBar() {
   function handleThemeDefault() {
     store.dispatch({
       type: EDIT_COLOR,
-      payload: "#2D62ED"
-    })
+      payload: "#2D62ED",
+    });
   }
 
   function handleLogOut() {
