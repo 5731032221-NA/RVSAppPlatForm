@@ -18,6 +18,8 @@ import Reservation from "../components/Dashboard/Reservation";
 
 import { ReactReduxContext } from "react-redux";
 
+import Configuration from "../components/Dashboard/Configuration";
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -148,7 +150,7 @@ export default function HeaderTabs() {
         <Reservation />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Cachier
+        <Configuration />
       </TabPanel>
       <TabPanel value={value} index={3}>
         Night Auditor

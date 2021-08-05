@@ -31,7 +31,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MailIcon from "@material-ui/icons/Mail";
 import Button from "@material-ui/core/Button";
-import { purple, green, orange ,red , yellow } from "@material-ui/core/colors";
+import { purple, green, orange, red, yellow } from "@material-ui/core/colors";
 
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -85,6 +85,15 @@ const useStyles = makeStyles((theme) => ({
   },
   themePurple: {
     backgroundColor: purple[600],
+  },
+  themeOrange: {
+    backgroundColor: orange[600],
+  },
+  themeRed: {
+    backgroundColor: red[600],
+  },
+  themeYellow: {
+    backgroundColor: "#ff5253",
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -246,11 +255,23 @@ export default function Dashboard() {
       if (settingColor == purple[600]) {
         setThemeState(classes.themePurple);
         setWordColor(purple[600]);
-        setThemeFontState(classes.themeFonrPurple);
+        setThemeFontState(classes.themeFontPurple);
       } else if (settingColor == green[600]) {
         setThemeState(classes.themeGreen);
         setWordColor(green[600]);
         setThemeFontState(classes.themeFontGreen);
+      } else if (settingColor == red[600]) {
+        setThemeState(classes.themeRed);
+        setWordColor(red[600]);
+        setThemeFontState(classes.themeFontRed);
+      } else if (settingColor == orange[600]) {
+        setThemeState(classes.themeOrange);
+        setWordColor(orange[600]);
+        setThemeFontState(classes.themeFontOrange);
+      } else if (settingColor == "#ff5253") {
+        setThemeState(classes.themeYellow);
+        setWordColor("#ff5253");
+        setThemeFontState(classes.themeFontYellow);
       } else {
         setThemeState(classes.themeDefault);
         setWordColor("#2D62ED");
@@ -390,6 +411,7 @@ export default function Dashboard() {
       </MenuItem>
     </Menu>
   );
+
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const [rightBar, setRightBar] = React.useState(false);
@@ -530,8 +552,27 @@ export default function Dashboard() {
             >
               <MoreIcon />
             </IconButton>
+            <Grid item spacing={1} style={{ paddingLeft: 20 }}>
+              <Grid item>
+                <IconButton
+                  onClick={toggleRightBar(true)}
+                  style={{ color: "#FFFFFF" }}
+                >
+                  <ArrowDropDownIcon />
+                </IconButton>
+                {/* ==============Rightbar=================== */}
+                <SwipeableDrawer
+                  anchor={"right"}
+                  open={rightBar}
+                  onClose={toggleRightBar(false)}
+                >
+                  <div style={{ zIndex: 4000 }}>{rightBarMenu()}</div>
+                </SwipeableDrawer>
+              </Grid>
+            </Grid>
           </div>
           {/* <IconButton color="inherit">
+
                         <Badge badgeContent={4} color="secondary">
                             <NotificationsIcon />
                         </Badge>
@@ -540,43 +581,45 @@ export default function Dashboard() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(
-            themeState,
-            classes.drawerPaper,
-            !open && classes.drawerPaperClose
-          ),
-        }}
-        open={open}
-      >
-        <Grid container>
-          <Grid item container direction="row">
-            <div style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}>
-              <img
-                src="logo.png"
-                class="rounded mx-auto d-block"
-                alt="..."
-                height={35}
-              />
-            </div>
-            {open ? (
-              <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerClose}
+      <div className={classes.sectionDesktop}>
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: clsx(
+              themeState,
+              classes.drawerPaper,
+              !open && classes.drawerPaperClose
+            ),
+          }}
+          open={open}
+        >
+          <Grid container>
+            <Grid item container direction="row">
+              <div
+                style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}
               >
-                <MenuIcon />
-              </IconButton>
-            ) : null}
+                <img
+                  src="logo.png"
+                  class="rounded mx-auto d-block"
+                  alt="..."
+                  height={35}
+                />
+              </div>
+              {open ? (
+                <IconButton
+                  edge="start"
+                  className={classes.menuButton}
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleDrawerClose}
+                >
+                  <MenuIcon />
+                </IconButton>
+              ) : null}
+            </Grid>
           </Grid>
-        </Grid>
-        <Divider />
-        {/* <List disablePadding dense>
+          <Divider />
+          {/* <List disablePadding dense>
                     {items.map(({ label, name, ...rest }) => (
                         <ListItem key={name} button {...rest}>
                             <ListItemText>{label}</ListItemText>
@@ -584,23 +627,26 @@ export default function Dashboard() {
                     ))}
                 </List> */}
 
-        <List>
-          {store.getState().reducer.lang == "en" ? (
-            <MainListItems_en />
-          ) : (
-            <MainListItems_en />
-          )}
-        </List>
-        <Divider />
-        {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
-      </Drawer>
+          <List>
+            {store.getState().reducer.lang == "en" ? (
+              <MainListItems_en />
+            ) : (
+              <MainListItems_en />
+            )}
+          </List>
+          <Divider />
+          {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
+        </Drawer>
+      </div>
+
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="100" className={classes.container}>
           {/* <FrontDesk /> */}
           <HeaderTabs />
-          <div style={{ paddingTop: 50 }}></div>
-          <ButtomBar />
+          <div style={{ paddingTop: 50 }}>
+            <ButtomBar />
+          </div>
         </Container>
       </main>
     </div>

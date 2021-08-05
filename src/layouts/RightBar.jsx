@@ -17,9 +17,14 @@ import Switch from "@material-ui/core/Switch";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { purple, green, orange, red, yellow } from "@material-ui/core/colors";
-import { ReactReduxContext } from "react-redux";
-import { EDIT_LANG } from "../middleware/action";
-import { EDIT_COLOR } from "../middleware/action";
+import { ReactReduxContext } from 'react-redux';
+import {
+  EDIT_LANG
+} from "../middleware/action";
+import {
+  EDIT_COLOR
+} from "../middleware/action";
+
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -36,21 +41,25 @@ const useStyles = makeStyles({
   },
   purple: {
     backgroundColor: purple[600],
+    backgroundColor: "#9c28b1",
     width: 20,
     height: 20,
   },
   blue: {
-    backgroundColor: "#2D62ED",
+    // backgroundColor: "#2D62ED",
+    backgroundColor: "#1c75d1",
     width: 20,
     height: 20,
   },
   green: {
     backgroundColor: green[600],
+    // backgroundColor: "#4cb050",
     width: 20,
     height: 20,
   },
   orange: {
     backgroundColor: orange[600],
+    // backgroundColor: "#ff9800",
     width: 20,
     height: 20,
   },
@@ -61,6 +70,13 @@ const useStyles = makeStyles({
   },
   yellow: {
     backgroundColor: yellow[600],
+    // backgroundColor: "#ea1e63",
+    width: 20,
+    height: 20,
+  },
+  coral: {
+    backgroundColor: "#ff5253",
+    // backgroundColor: coral[600],
     width: 20,
     height: 20,
   },
@@ -111,8 +127,8 @@ export default function RighBar() {
   function handleThemeYellow() {
     store.dispatch({
       type: EDIT_COLOR,
-      payload: green[600],
-    });
+      payload: "#ff5253"
+    })
   }
   function handleThemeDefault() {
     store.dispatch({
@@ -122,8 +138,8 @@ export default function RighBar() {
   }
 
   function handleLogOut() {
-    console.log("log out");
-    sessionStorage.setItem("token", false);
+    console.log("log out")
+    sessionStorage.setItem('token', false);
     window.location.reload(false);
   }
 
@@ -219,24 +235,13 @@ export default function RighBar() {
             alignItems="center"
             style={{ padding: 20 }}
           >
-            <Avatar onClick={handleThemePurple} className={classes.purple}>
-              {" "}
-            </Avatar>
-            <Avatar onClick={handleThemeDefault} className={classes.blue}>
-              {" "}
-            </Avatar>
-            <Avatar onClick={handleThemeGreen} className={classes.green}>
-              {" "}
-            </Avatar>
-            <Avatar onClick={handleThemeOrange} className={classes.orange}>
-              {" "}
-            </Avatar>
-            <Avatar onClick={handleThemeRed} className={classes.red}>
-              {" "}
-            </Avatar>
-            <Avatar onClick={handleThemeYellow} className={classes.yellow}>
-              {" "}
-            </Avatar>
+            <Avatar onClick={handleThemePurple} className={classes.purple}>{" "}</Avatar>
+            <Avatar onClick={handleThemeDefault} className={classes.blue}>{" "}</Avatar>
+            <Avatar onClick={handleThemeGreen} className={classes.green}>{" "}</Avatar>
+            <Avatar onClick={handleThemeOrange} className={classes.orange}>{" "}</Avatar>
+            <Avatar onClick={handleThemeRed} className={classes.red}>{" "}</Avatar>
+            <Avatar onClick={handleThemeYellow} className={classes.coral}>{" "}</Avatar>
+
           </Grid>
         </Grid>
       </Grid>
