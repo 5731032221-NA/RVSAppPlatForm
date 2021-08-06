@@ -1,4 +1,4 @@
-import React, { useContext, useState ,useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -53,6 +53,8 @@ import secondaryListItems_th from "../middleware/listitems/dropDownItems";
 import Configuration from "../components/Dashboard/Configuration";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import RightBar from "../layouts/RightBar";
+import RoleManagement from "../components/RoleManagement";
+import UserManagement from "../components/UserManagement";
 
 const drawerWidth = 240;
 
@@ -228,161 +230,152 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
+  const classes = useStyles();
 
-    const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const [themeState, setThemeState] = React.useState(classes.themeDefault);
+  const [wordColor, setWordColor] = React.useState("#2D62ED");
+  const [themeFontState, setThemeFontState] = React.useState(
+    classes.themeFontDefault
+  );
+  // const [componentState, setComponentState] = React.useState("FrontDesk");
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+  const { store } = useContext(ReactReduxContext);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(0);
 
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const [compWidthState, setCompWidth] = useState(null);
+  const [compState, setComp] = useState(null);
+  setInterval(() => {
+    // console.log(parseInt(store.getState().reducer.compwidth) !== parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(store.getState().reducer.compwidth))
 
-    const [open, setOpen] = React.useState(false);
-    const [themeState, setThemeState] = React.useState(classes.themeDefault);
-    const [wordColor, setWordColor] = React.useState('#2D62ED');
-    const [themeFontState, setThemeFontState] = React.useState(classes.themeFontDefault);
-    // const [componentState, setComponentState] = React.useState("FrontDesk");
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
-    const { store } = useContext(ReactReduxContext)
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(0);
+    if (
+      compWidthState !=
+      document.getElementById("compwidth").offsetWidth + 19.8
+    ) {
+      store.dispatch({
+        type: EDIT_COMPWIDTH,
+        payload: document.getElementById("compwidth").offsetWidth + 19.8,
+      });
+      setCompWidth(document.getElementById("compwidth").offsetWidth);
+    }
 
-    const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-    const [compWidthState, setCompWidth] = useState(null);
-    const [compState, setComp] = useState(null);
-    setInterval(() => {
-        // console.log(parseInt(store.getState().reducer.compwidth) !== parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(store.getState().reducer.compwidth))
+    if (compState != store.getState().reducer.componentState) {
+      setComp(store.getState().reducer.componentState);
+    }
+  }, 100);
+  // useEffect(() => {
+  //     store.dispatch({
+  //         type: EDIT_COMPWIDTH,
+  //         payload: document.getElementById("compwidth").clientWidth + 19.8
+  //     })
+  //     // effect
+  //     // return () => {
+  //     //     cleanup
+  //     // }
+  // })
 
-        if (compWidthState != document.getElementById("compwidth").offsetWidth+19.8) {
-            store.dispatch({
-                type: EDIT_COMPWIDTH,
-                payload: document.getElementById("compwidth").offsetWidth+19.8
-            })
-            setCompWidth(document.getElementById("compwidth").offsetWidth)
-        }
+  setInterval(() => {
+    let settingColor = store.getState().reducer.color;
+    if (wordColor != settingColor && wordColor != null) {
+      if (settingColor == purple[600]) {
+        setThemeState(classes.themePurple);
+        setWordColor(purple[600]);
+        setThemeFontState(classes.themeFontPurple);
+      } else if (settingColor == green[600]) {
+        setThemeState(classes.themeGreen);
+        setWordColor(green[600]);
+        setThemeFontState(classes.themeFontGreen);
+      } else if (settingColor == red[600]) {
+        setThemeState(classes.themeRed);
+        setWordColor(red[600]);
+        setThemeFontState(classes.themeFontRed);
+      } else if (settingColor == orange[600]) {
+        setThemeState(classes.themeOrange);
+        setWordColor(orange[600]);
+        setThemeFontState(classes.themeFontOrange);
+      } else if (settingColor == "#ff5253") {
+        setThemeState(classes.themeYellow);
+        setWordColor("#ff5253");
+        setThemeFontState(classes.themeFontYellow);
+      } else {
+        setThemeState(classes.themeDefault);
+        setWordColor("#2D62ED");
+        setThemeFontState("#2D62ED");
+      }
+    }
+  }, 1000);
 
-        if(compState != store.getState().reducer.componentState){
-          setComp(store.getState().reducer.componentState)
-        }
+  // const [lang, setLang] = useState('en')
 
-    }, 100);
-    // useEffect(() => {
-    //     store.dispatch({
-    //         type: EDIT_COMPWIDTH,
-    //         payload: document.getElementById("compwidth").clientWidth + 19.8
-    //     })
-    //     // effect
-    //     // return () => {
-    //     //     cleanup
-    //     // }
-    // })
+  // setInterval(() => {
+  //     let settinglang = store.getState().reducer.lang;
+  //     // console.log("settinglang",settinglang,lang)
+  //     // console.log("is",lang != settinglang && lang != null)
+  //     if (lang != settinglang && lang != null) {
+  //         setLang(settinglang)
+  //         if(settinglang == 'th') setTranslate(translate_th)
+  //         else if(settinglang == 'en') setTranslate(translate_en)
+  //     }
+  // }, 500);
 
-    setInterval(() => {
+  const handlelanguageMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-        let settingColor = store.getState().reducer.color;
-        if (wordColor != settingColor && wordColor != null) {
-            if (settingColor == purple[600]) {
-                setThemeState(classes.themePurple)
-                setWordColor(purple[600])
-                setThemeFontState(classes.themeFontPurple)
-            }
-            else if (settingColor == green[600]) {
-                setThemeState(classes.themeGreen)
-                setWordColor(green[600])
-                setThemeFontState(classes.themeFontGreen)
-            }
-            else if (settingColor == red[600]) {
-                setThemeState(classes.themeRed)
-                setWordColor(red[600])
-                setThemeFontState(classes.themeFontRed)
-            }
-            else if (settingColor == orange[600]) {
-                setThemeState(classes.themeOrange)
-                setWordColor(orange[600])
-                setThemeFontState(classes.themeFontOrange)
-            }
-            else if (settingColor == "#ff5253") {
-                setThemeState(classes.themeYellow)
-                setWordColor("#ff5253")
-                setThemeFontState(classes.themeFontYellow)
-            }
-            else {
-                setThemeState(classes.themeDefault)
-                setWordColor('#2D62ED')
-                setThemeFontState('#2D62ED')
-            }
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
 
-        }
-    }, 1000);
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
 
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
 
-    // const [lang, setLang] = useState('en')
+  const handleLanguage = (lang) => {
+    console.log("handle lang", lang);
+    // setAnchorEl(null);
+    // handleMobileMenuClose();
+    if (lang == "th") {
+      setThemeState(classes.themePurple);
+      setThemeFontState(classes.themeFonrPurple);
+      store.dispatch({
+        type: EDIT_COLOR,
+        payload: purple[600],
+      });
+    } else {
+      setThemeState(classes.themeGreen);
+      setThemeFontState(classes.themeFontGreen);
+      store.dispatch({
+        type: EDIT_COLOR,
+        payload: green[600],
+      });
+    }
+    console.log("store", store);
+    console.log("store", store.store);
+    store.dispatch({
+      type: EDIT_LANG,
+      payload: lang,
+    });
 
-    // setInterval(() => {
-    //     let settinglang = store.getState().reducer.lang;
-    //     // console.log("settinglang",settinglang,lang)
-    //     // console.log("is",lang != settinglang && lang != null)
-    //     if (lang != settinglang && lang != null) {
-    //         setLang(settinglang)
-    //         if(settinglang == 'th') setTranslate(translate_th)
-    //         else if(settinglang == 'en') setTranslate(translate_en)
-    //     }
-    // }, 500);
-
-    const handlelanguageMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMobileMenuClose = () => {
-        setMobileMoreAnchorEl(null);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    };
-
-    const handleMobileMenuOpen = (event) => {
-        setMobileMoreAnchorEl(event.currentTarget);
-    };
-
-
-    const handleLanguage = (lang) => {
-        console.log("handle lang", lang)
-        // setAnchorEl(null);
-        // handleMobileMenuClose();
-        if (lang == 'th') {
-            setThemeState(classes.themePurple)
-            setThemeFontState(classes.themeFonrPurple)
-            store.dispatch({
-                type: EDIT_COLOR,
-                payload: purple[600]
-            })
-        } else {
-            setThemeState(classes.themeGreen)
-            setThemeFontState(classes.themeFontGreen)
-            store.dispatch({
-                type: EDIT_COLOR,
-                payload: green[600]
-            })
-        }
-        console.log("store", store)
-        console.log("store", store.store)
-        store.dispatch({
-            type: EDIT_LANG,
-            payload: lang
-        })
-
-        console.log("store", store.getState().reducer.lang)
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    };
-
-
+    console.log("store", store.getState().reducer.lang);
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -653,7 +646,6 @@ export default function Dashboard() {
                   aria-label="open drawer"
                   onClick={handleDrawerClose}
                 >
-
                   <MenuIcon />
                 </IconButton>
               ) : null}
@@ -667,7 +659,6 @@ export default function Dashboard() {
                         </ListItem>
                     ))}
                 </List> */}
-
 
           <List>
             {store.getState().reducer.lang == "en" ? (
@@ -686,10 +677,16 @@ export default function Dashboard() {
         <Container maxWidth="100" className={classes.container}>
           {/* <FrontDesk /> */}
           <HeaderTabs />
-          {store.getState().reducer.componentState == "FrontDesk"?
-          <FrontDesk />: store.getState().reducer.componentState == "Configuration"?
-           <Configuration/> : null
-        }
+          {store.getState().reducer.componentState == "FrontDesk" ? (
+            <FrontDesk />
+          ) : store.getState().reducer.componentState == "Configuration" ? (
+            <div>
+              <Configuration />
+              <RoleManagement />
+              <UserManagement />
+            </div>
+          ) : null}
+
           <div style={{ paddingTop: 50 }}>
             <ButtomBar />
           </div>
