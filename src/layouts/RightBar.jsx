@@ -143,6 +143,10 @@ export default function RighBar() {
     window.location.reload(false);
   }
 
+  function handleDarkMode(e) {
+    console.log("darkmode",e)
+  }
+
   return (
     <Container className={classes.Container}>
       <Grid container>
@@ -255,7 +259,7 @@ export default function RighBar() {
             </Typography>
           </Grid>
           <Grid item>
-            <Switch />
+            <Switch onChange={handleDarkMode} />
           </Grid>
         </Grid>
         <Grid container alignItems="center">

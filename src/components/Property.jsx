@@ -16,6 +16,10 @@ import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Select, In
 import {
     EDIT_AUTHORIZATION
 } from "../middleware/action";
+import {
+    EDIT_PROPERTY
+} from "../middleware/action";
+
 import { ReactReduxContext } from 'react-redux'
 
 
@@ -43,20 +47,20 @@ const useStyles = makeStyles((theme) => ({
     },
     seletprop: {
         fontSize: 15,
-        color:"#164BD8",
-        paddingBottom:20
+        color: "#164BD8",
+        paddingBottom: 20
     }
 }));
 
 
 
-export default function Property({ setToken,setProperty }) {
+export default function Property({ setToken, setProperty }) {
     const { store } = useContext(ReactReduxContext);
     const classes = useStyles();
     const radioProp = ''
 
-    const [selectedProperty, setSelectedProperty] = useState([store.getState().reducer.propertys][0].content.propertyID);
-    
+    const [selectedProperty, setSelectedProperty] = useState(store.getState().reducer.propertys[0].propertyid);
+
     const [list, setList] = useState([]);
 
     const handleChange = event => {
@@ -68,11 +72,15 @@ export default function Property({ setToken,setProperty }) {
 
     };
     const handleCancle = () => {
-      console.log("cancle")
+        console.log("cancle")
         setToken(false);
 
     };
     const handleSelect = () => {
+        store.dispatch({
+            type: EDIT_PROPERTY,
+            payload: selectedProperty
+        })
         setProperty(selectedProperty)
     };
     console.log("store1", store.getState())
@@ -93,26 +101,26 @@ export default function Property({ setToken,setProperty }) {
                     <h5  ></h5>
                     <FormControl component="fieldset">
                         <FormLabel component="legend" className={classes.seletprop}>Please Select Your Property</FormLabel>
-                        <Select name="gender1" id="select" value={selectedProperty} onClick={handleChange} style={{width:280}} defaultValue={selectedProperty} >
-                            {[store.getState().reducer.propertys].map((item) => (
-                                <MenuItem key={item.content.propertyID} value={item.content.propertyID} label={item.content.propertyID} >
-                                    <div style={{display:'flex', alignItems:'center'}}>
-                                        <BusinessIcon style={{paddingRight:20, color:'#2D62ED'}} />
-                                        <div> {item.content.propertyID} </div>
+                        <Select name="gender1" id="select" value={selectedProperty} onClick={handleChange} style={{ width: 280 }} defaultValue={selectedProperty} >
+                            {(store.getState().reducer.propertys).map((item) => (
+                                <MenuItem key={item.propertyid} value={item.propertyid} label={item.propertyid} >
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        <BusinessIcon style={{ paddingRight: 20, color: '#2D62ED' }} />
+                                        <div> {item.propertyid} </div>
                                     </div>
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
-                    <div variant="middle" style={{paddingTop: 30}}/>
+                    <div variant="middle" style={{ paddingTop: 30 }} />
                     <Button
                         fullWidth
                         variant="contained"
                         style={{ backgroundColor: "#2D62ED", color: "white" }}
                         onClick={handleSelect}
-                    >  
-                        Select <ArrowForwardIcon style={{paddingLeft:10}} />   
-                    </Button> 
+                    >
+                        Select <ArrowForwardIcon style={{ paddingLeft: 10 }} />
+                    </Button>
                 </Paper>
             </Container>
         </div>
@@ -122,8 +130,8 @@ export default function Property({ setToken,setProperty }) {
 Property.propTypes = {
     setToken: PropTypes.func.isRequired,
     setProperty: PropTypes.func.isRequired
-    
-  
+
+
     // store: PropTypes.func.isRequired
 
 };

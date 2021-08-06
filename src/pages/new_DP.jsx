@@ -35,7 +35,7 @@ import { purple, green, orange, red, yellow } from "@material-ui/core/colors";
 
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import SettingsIcon from '@material-ui/icons/Settings';
+
 // import { useDispatch } from 'react-redux/lib/hooks/useDispatch';
 import { EDIT_COMPWIDTH } from "../middleware/action";
 import { EDIT_LANG } from "../middleware/action";
@@ -613,81 +613,47 @@ export default function Dashboard() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(
-            themeState,
-            classes.drawerPaper,
-            !open
-            && classes.drawerPaperClose
-          ),
-        }}
-        open={open}
-      >
-
-        <Grid container>
-          <Grid item container direction="row">
-            <div
-              style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}
-            >
-              <img
-                src="logo_white.png"
-                class="rounded mx-auto d-block"
-                alt="..."
-                height={35}
-              />
-            </div>
-            {open ? (
-              <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerClose}
+      <div className={classes.sectionDesktop}>
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: clsx(
+              themeState,
+              classes.drawerPaper,
+              !open 
+              // && classes.drawerPaperClose
+            ),
+          }}
+          open={open}
+        >
+          <Grid container>
+            <Grid item container direction="row">
+              <div
+                style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}
               >
+                <img
+                  src="logo_white.png"
+                  class="rounded mx-auto d-block"
+                  alt="..."
+                  height={35}
+                />
+              </div>
+              {open ? (
+                <IconButton
+                  edge="start"
+                  className={classes.menuButton}
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleDrawerClose}
+                >
 
-                <MenuIcon />
-              </IconButton>
-            ) : null}
-          </Grid>
-        </Grid>
-        <Divider />
-        <Grid item container direction="row">
-          <IconButton
-            edge="end"
-            aria-label="account of current user"
-            aria-controls={menuId}
-            aria-haspopup="true"
-            // onClick={handlelanguageMenuOpen}
-            size="large"
-            style={{ color: "white", marginLeft: 5, marginTop: 5 }}
-          >
-            <AccountCircle style={{ size: 50 }} />
-          </IconButton>
-          {open ?
-            <Grid item spacing={1} style={{ paddingLeft: 20, marginTop: 5 }}>
-              <Grid item spacing={1}>
-                <Typography variant="subtitle1" style={{ fontSize: 15 }}>
-                  {sessionStorage.getItem("name")}
-                </Typography>
-              </Grid>
-              <Grid item container direction="row">
-                <Grid>
-                  <SettingsIcon />
-                </Grid>
-                <Grid item spacing={1}>
-                  <Typography variant="body2" style={{ fontSize: 10,marginTop:5, marginLeft:5 }}>
-                    {store.getState().reducer.property}
-                  </Typography>
-                </Grid>
-              </Grid>
+                  <MenuIcon />
+                </IconButton>
+              ) : null}
             </Grid>
-            : null}
-        </Grid>
-        <Divider />
-        {/* <List disablePadding dense>
+          </Grid>
+          <Divider />
+          {/* <List disablePadding dense>
                     {items.map(({ label, name, ...rest }) => (
                         <ListItem key={name} button {...rest}>
                             <ListItemText>{label}</ListItemText>
@@ -696,20 +662,17 @@ export default function Dashboard() {
                 </List> */}
 
 
-        <List>
-          {store.getState().reducer.lang == "en" ? (
-            <MainListItems_en />
-          ) : (
-            <MainListItems_en />
-          )}
-        </List>
-
-
-        <Divider />
-
-        {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
-      </Drawer>
-
+          <List>
+            {store.getState().reducer.lang == "en" ? (
+              <MainListItems_en />
+            ) : (
+              <MainListItems_en />
+            )}
+          </List>
+          <Divider />
+          {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
+        </Drawer>
+      </div>
 
       <main id="compwidth" className={classes.content}>
         <div className={classes.appBarSpacer} />

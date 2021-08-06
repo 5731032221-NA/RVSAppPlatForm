@@ -19,15 +19,21 @@ import TestGraph from "./TestGraph";
 
 import ButtomBar from "../../layouts/ButtomBar";
 import TestGraph2 from "./TestGraph2";
+import { makeStyles } from "@material-ui/core/styles";
 
 export class FrontDesk extends Component {
   constructor(props) {
     super(props);
     this.props.getUserList();
+    // const classes = useStyles();
     this.state = {
       lang: "en",
       Dashboard: en_lang.Dashboard,
       color: this.props.color,
+      themeBackground: "#FFFFFF",
+      themeState: { background: '#363537',
+      color: '#FAFAFA'},
+      // matStyle: classes.normalmode
     };
   }
 
@@ -39,7 +45,7 @@ export class FrontDesk extends Component {
           this.setState({
             lang: "th",
             Dashboard: th_lang.Dashboard,
-            color: this.props.color,
+            color: this.props.color
           });
         } else if (this.props.lang == "en") {
           this.setState({
@@ -49,6 +55,22 @@ export class FrontDesk extends Component {
           });
         }
       }
+
+      if(this.state.themeBackground != this.props.themeBackground){
+        console.log(this.state.themeBackground,this.props.themeBackground)
+        if(this.props.themeBackground === "#FFFFFF"){
+          this.setState({themeState:{ background: '#FFFFFF',
+          color: '#000000',
+          // matStyle: this.classes.normalmode
+        }})
+        }else{
+          this.setState({themeState:{ background: '#363537',
+          color: '#FAFAFA',
+            // matStyle: this.classes.darkmode
+          }})
+        }
+        this.setState({themeBackground:this.props.themeBackground})
+      }
     }, 100);
   }
   componentWillUnmount() {
@@ -57,8 +79,8 @@ export class FrontDesk extends Component {
 
   render() {
     return (
-      <div>
-        <Container maxWidth="xl">
+      <div style={this.state.themeState}>
+        <Container maxWidth="xl" >
           {/* <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
           <Grid container spacing={3}>
             <Grid item xs={12} md={12} lg={9} xl={9}>
@@ -66,7 +88,7 @@ export class FrontDesk extends Component {
                 <Paper elevation={3} style={{ minHeight: 300 }}>
                   Gride layout 12 */}
 
-          <h3 style={{ color: this.state.color, marginBottom: 25 }}>
+          <h3 style={{ color: this.state.color, marginBottom: 25 },this.state.themeState}>
             Dashboard
           </h3>
           <Grid
@@ -74,18 +96,23 @@ export class FrontDesk extends Component {
             spacing={4}
             justifyContent="center"
             alignItems="start"
+            // style={this.state.themeBackground}
+            // style={{body: '#363537',
+            // text: '#FAFAFA',
+            // toggleBorder: '#6B8096',
+            // gradient: 'linear-gradient(#091236, #1E215D)',}}
           >
             <Grid container spacing={3} xs={12} md={12} lg={9} xl={9}>
               <Grid item xs={12} md={12} lg={12} xl={12}>
                 <Paper elevation={3} style={{ minHeight: 430 }}>
-                  <Grid container style={{ padding: 20 }}>
+                  <Grid container >
                     <Grid
                       container
                       direction="row"
                       style={{ marginBottom: 20, marginLeft: 20 }}
                     >
                       <Grid container style={{ marginBottom: 10 }}>
-                        <Typography variant="h6" component="h6">
+                        <Typography variant="h6" component="h6" >
                           Sales Statistical Overview
                         </Typography>
                       </Grid>
@@ -208,10 +235,12 @@ export class FrontDesk extends Component {
                     alignItems="center"
                     spacing={3}
                     style={{ padding: 20 }}
+                    background={this.state.themeBackground}
                   >
                     <Grid
                       container
                       style={{ marginBottom: 20, marginLeft: 20 }}
+                      background="black"
                     >
                       <Typography variant="h6" component="h6">
                         Website Audience Metrics
@@ -486,6 +515,7 @@ const mapStateToProps = (state) => {
   return {
     lang: state.reducer.lang,
     color: state.reducer.color,
+    themeBackground: state.reducer.themeBackground
   };
 };
 

@@ -18,8 +18,6 @@ import Reservation from "../components/Dashboard/Reservation";
 
 import { ReactReduxContext } from "react-redux";
 
-import { EDIT_COMPONENT } from "../middleware/action";
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -61,24 +59,19 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     justifyItems: "center",
+    color: "gray",
+    // padding: 30,
   },
   tabs: {
-    color: 'green'
-  }
+    color: "green",
+  },
 }));
 
 export default function HeaderTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [wordColor, setWordColor] = React.useState('#2D62ED');
+  const [wordColor, setWordColor] = React.useState("#2D62ED");
   const { store } = useContext(ReactReduxContext);
-
-  function handleComponentState(comp) {
-    store.dispatch({
-      type: EDIT_COMPONENT,
-      payload: comp
-    })
-  }
 
   setInterval(() => {
     let settingColor = store.getState().reducer.color;
@@ -88,10 +81,7 @@ export default function HeaderTabs() {
   }, 500);
 
   const handleChange = (event, newValue) => {
-    console.log("newValue", newValue)
     setValue(newValue);
-    if(newValue==0) handleComponentState("FrontDesk")
-    console.log("st",store.getState().reducer.componentState)
   };
 
   return (
@@ -148,10 +138,11 @@ export default function HeaderTabs() {
               {...a11yProps(3)}
             />
           </Tabs>
+          {/* </Grid> */}
         </Grid>
       </AppBar>
       <TabPanel value={value} index={0}>
-        {/* <FrontDesk /> */}
+        <FrontDesk />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Reservation />

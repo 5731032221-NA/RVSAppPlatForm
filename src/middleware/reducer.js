@@ -23,15 +23,25 @@ import {
     EDIT_COMPONENT
 } from "./action";
 
+import {
+    EDIT_DARKMODE
+} from "./action";
+
+import {
+    EDIT_PROPERTY
+} from "./action";
+
 const initialState = {
     users: [{ 'id': "0", 'name': 'n' }],
     lang: 'en',
     auth: '',
-    propertys: {content : {propertyID:"FSDH"}},
+    propertys: {content : [{propertyID:"FSDH"}]},
     color: '#2D62ED',
     username: '',
     compwidth: 0,
-    componentState: "FrontDesk"
+    componentState: "FrontDesk",
+    themeBackground: "#FFFFFF",
+    property: ""
 };
 
 
@@ -40,6 +50,16 @@ const reducer = (state = initialState, action) => {
     // console.log("action", action)
     const allUsers = [...state.users];
     switch (action.type) {
+        case EDIT_PROPERTY:
+            return {
+                ...state,
+                property: action.payload,
+            };
+        case EDIT_DARKMODE:
+            return {
+                ...state,
+                themeBackground: action.payload,
+            };
         case EDIT_COMPONENT:
             return {
                 ...state,

@@ -109,7 +109,7 @@ export default function Login({ setToken }) {
       const apitest = await menu(store.getState().reducer.auth);
       store.dispatch({
         type: EDIT_PROPERTYS,
-        payload: apitest
+        payload: apitest.content
       })
       console.log("store authen",store.getState().reducer)
       console.log("apitest",apitest)
