@@ -45,7 +45,7 @@ export class Reservation extends Component {
           });
         }
       }
-    }, 100);
+    }, 1000);
   }
   componentWillUnmount() {
     clearInterval(this.interval);

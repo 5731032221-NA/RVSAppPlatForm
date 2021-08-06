@@ -85,7 +85,7 @@ export default function HeaderTabs() {
     if (wordColor != settingColor && wordColor != null) {
       setWordColor(settingColor);
     }
-  }, 500);
+  }, 1000);
 
   const handleChange = (event, newValue) => {
     console.log("newValue", newValue)

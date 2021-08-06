@@ -31,8 +31,8 @@ export class FrontDesk extends Component {
       Dashboard: en_lang.Dashboard,
       color: this.props.color,
       themeBackground: "#FFFFFF",
-      themeState: { background: '#363537',
-      color: '#FAFAFA'},
+      themeState: { background: '#FFFFFF',
+      color: '#000000'},
       // matStyle: classes.normalmode
     };
   }
@@ -71,7 +71,7 @@ export class FrontDesk extends Component {
         }
         this.setState({themeBackground:this.props.themeBackground})
       }
-    }, 100);
+    }, 1000);
   }
   componentWillUnmount() {
     clearInterval(this.interval);
@@ -89,7 +89,7 @@ export class FrontDesk extends Component {
                   Gride layout 12 */}
 
           <h3 style={{ color: this.state.color, marginBottom: 25 },this.state.themeState}>
-            Dashboard
+           Property - {this.props.property}
           </h3>
           <Grid
             container
@@ -515,7 +515,8 @@ const mapStateToProps = (state) => {
   return {
     lang: state.reducer.lang,
     color: state.reducer.color,
-    themeBackground: state.reducer.themeBackground
+    themeBackground: state.reducer.themeBackground,
+    property: state.reducer.property
   };
 };
 

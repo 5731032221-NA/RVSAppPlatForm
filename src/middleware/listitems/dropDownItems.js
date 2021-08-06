@@ -63,7 +63,7 @@ export default function MainListItems() {
             if(settinglang == 'th') setTranslate(translate_th)
             else if(settinglang == 'en') setTranslate(translate_en)
         }
-    }, 500);
+    }, 1000);
 
     function handleOpenFrontDesk() {
         setOpenFrontDesk(!openFrontDesk)

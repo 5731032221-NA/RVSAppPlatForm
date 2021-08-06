@@ -86,7 +86,6 @@ function App() {
               <Route exact path="/signin" component={SignIn} />
               <Route exact path="/forgotpassword" component={ForgotPass} />
               <Route exact path="/userlist" component={UserList} />
-
               <Route exact path="/" component={Dashboard} />
               {/* <Route component={ErrorPage} /> */}
             </Switch>

@@ -40,6 +40,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { EDIT_COMPWIDTH } from "../middleware/action";
 import { EDIT_LANG } from "../middleware/action";
 import { EDIT_COLOR } from "../middleware/action";
+import { EDIT_PROPERTY } from "../middleware/action";
 import { ReactReduxContext } from "react-redux";
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
@@ -53,7 +54,10 @@ import secondaryListItems_th from "../middleware/listitems/dropDownItems";
 import Configuration from "../components/Dashboard/Configuration";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import RightBar from "../layouts/RightBar";
-
+import RoleManagement from "../components/RoleManagement";
+import UserManagement from "../components/UserManagement";
+import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Select, InputLabel } from '@material-ui/core';
+import BusinessIcon from '@material-ui/icons/Business';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -225,6 +229,14 @@ const useStyles = makeStyles((theme) => ({
     width: 280,
     zIndex: 2001,
   },
+  seletprop: {
+    fontSize: 15,
+    color: "#164BD8",
+    paddingBottom: 20
+  },
+  propertyForm:{
+    width: 40
+  }
 }));
 
 export default function Dashboard() {
@@ -234,8 +246,10 @@ export default function Dashboard() {
 
   const [open, setOpen] = React.useState(false);
   const [themeState, setThemeState] = React.useState(classes.themeDefault);
-  const [wordColor, setWordColor] = React.useState('#2D62ED');
-  const [themeFontState, setThemeFontState] = React.useState(classes.themeFontDefault);
+  const [wordColor, setWordColor] = React.useState("#2D62ED");
+  const [themeFontState, setThemeFontState] = React.useState(
+    classes.themeFontDefault
+  );
   // const [componentState, setComponentState] = React.useState("FrontDesk");
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -243,7 +257,8 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const { store } = useContext(ReactReduxContext)
+
+  const { store } = useContext(ReactReduxContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(0);
 
@@ -251,63 +266,71 @@ export default function Dashboard() {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [compWidthState, setCompWidth] = useState(null);
   const [compState, setComp] = useState(null);
+  const [selectedProperty, setSelectedProperty] = useState(store.getState().reducer.property)
   setInterval(() => {
     // console.log(parseInt(store.getState().reducer.compwidth) !== parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(store.getState().reducer.compwidth))
-    if (document.getElementById("compwidth") != null) {
-      if (compWidthState != document.getElementById("compwidth").offsetWidth + 19.8) {
-        store.dispatch({
-          type: EDIT_COMPWIDTH,
-          payload: document.getElementById("compwidth").offsetWidth + 19.8
-        })
-        setCompWidth(document.getElementById("compwidth").offsetWidth)
-      }
+
+
+    if (
+      compWidthState !=
+      document.getElementById("compwidth").offsetWidth + 19.8
+    ) {
+      store.dispatch({
+        type: EDIT_COMPWIDTH,
+        payload: document.getElementById("compwidth").offsetWidth + 19.8,
+      });
+      setCompWidth(document.getElementById("compwidth").offsetWidth);
     }
 
     if (compState != store.getState().reducer.componentState) {
-      setComp(store.getState().reducer.componentState)
+      setComp(store.getState().reducer.componentState);
     }
-
-  }, 10);
-
+  }, 500);
 
   setInterval(() => {
 
     let settingColor = store.getState().reducer.color;
     if (wordColor != settingColor && wordColor != null) {
       if (settingColor == purple[600]) {
-        setThemeState(classes.themePurple)
-        setWordColor(purple[600])
-        setThemeFontState(classes.themeFontPurple)
-      }
-      else if (settingColor == green[600]) {
-        setThemeState(classes.themeGreen)
-        setWordColor(green[600])
-        setThemeFontState(classes.themeFontGreen)
-      }
-      else if (settingColor == red[600]) {
-        setThemeState(classes.themeRed)
-        setWordColor(red[600])
-        setThemeFontState(classes.themeFontRed)
-      }
-      else if (settingColor == orange[600]) {
-        setThemeState(classes.themeOrange)
-        setWordColor(orange[600])
-        setThemeFontState(classes.themeFontOrange)
-      }
-      else if (settingColor == "#ff5253") {
-        setThemeState(classes.themeYellow)
-        setWordColor("#ff5253")
-        setThemeFontState(classes.themeFontYellow)
-      }
-      else {
-        setThemeState(classes.themeDefault)
-        setWordColor('#2D62ED')
-        setThemeFontState('#2D62ED')
+        setThemeState(classes.themePurple);
+        setWordColor(purple[600]);
+        setThemeFontState(classes.themeFontPurple);
+      } else if (settingColor == green[600]) {
+        setThemeState(classes.themeGreen);
+        setWordColor(green[600]);
+        setThemeFontState(classes.themeFontGreen);
+      } else if (settingColor == red[600]) {
+        setThemeState(classes.themeRed);
+        setWordColor(red[600]);
+        setThemeFontState(classes.themeFontRed);
+      } else if (settingColor == orange[600]) {
+        setThemeState(classes.themeOrange);
+        setWordColor(orange[600]);
+        setThemeFontState(classes.themeFontOrange);
+      } else if (settingColor == "#ff5253") {
+        setThemeState(classes.themeYellow);
+        setWordColor("#ff5253");
+        setThemeFontState(classes.themeFontYellow);
+      } else {
+        setThemeState(classes.themeDefault);
+        setWordColor("#2D62ED");
+        setThemeFontState("#2D62ED");
       }
 
     }
   }, 1000);
 
+  const handleChangeProperty = event => {
+    store.dispatch({
+      type: EDIT_PROPERTY,
+      payload: event.target.value
+    })
+    setSelectedProperty(event.target.value);
+    // setSelectedProperty(event.target.value);
+    // setSelectedProperty(event.target.value);
+
+
+  };
 
   // const [lang, setLang] = useState('en')
 
@@ -344,32 +367,32 @@ export default function Dashboard() {
 
 
   const handleLanguage = (lang) => {
-    console.log("handle lang", lang)
+    console.log("handle lang", lang);
     // setAnchorEl(null);
     // handleMobileMenuClose();
-    if (lang == 'th') {
-      setThemeState(classes.themePurple)
-      setThemeFontState(classes.themeFonrPurple)
+    if (lang == "th") {
+      setThemeState(classes.themePurple);
+      setThemeFontState(classes.themeFonrPurple);
       store.dispatch({
         type: EDIT_COLOR,
         payload: purple[600]
       })
     } else {
-      setThemeState(classes.themeGreen)
-      setThemeFontState(classes.themeFontGreen)
+      setThemeState(classes.themeGreen);
+      setThemeFontState(classes.themeFontGreen);
       store.dispatch({
         type: EDIT_COLOR,
         payload: green[600]
       })
     }
-    console.log("store", store)
-    console.log("store", store.store)
+    console.log("store", store);
+    console.log("store", store.store);
     store.dispatch({
       type: EDIT_LANG,
       payload: lang
     })
 
-    console.log("store", store.getState().reducer.lang)
+    console.log("store", store.getState().reducer.lang);
     setAnchorEl(null);
     handleMobileMenuClose();
   };
@@ -673,17 +696,31 @@ export default function Dashboard() {
                   {sessionStorage.getItem("name")}
                 </Typography>
               </Grid>
-              <Grid item container direction="row">
-                <Grid>
+              {/* <Grid item container direction="row"> */}
+              {/* <Grid>
                   <SettingsIcon />
-                </Grid>
-                <Grid item spacing={1}>
-                  <Typography variant="body2" style={{ fontSize: 10,marginTop:5, marginLeft:5 }}>
+                </Grid> */}
+              {/* <Grid item spacing={1}>
+                  <Typography variant="body2" style={{ fontSize: 10, marginTop: 5, marginLeft: 5 }}>
                     {store.getState().reducer.property}
                   </Typography>
-                </Grid>
+                </Grid> */}
+              <Grid class={classes.propertyForm}>
+                <FormControl component="fieldset">
+                  <Select name="gender1" id="select" value={selectedProperty} onClick={handleChangeProperty} style={{ width: 280 }} defaultValue={store.getState().reducer.property} >
+                    {(store.getState().reducer.propertys).map((item) => (
+                      <MenuItem key={item.propertyid} value={item.propertyid} label={item.propertyid} >
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <BusinessIcon style={{ paddingRight: 20, color: '#2D62ED' }} />
+                          <div> {item.propertyid} </div>
+                        </div>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
+            // </Grid>
             : null}
         </Grid>
         <Divider />
@@ -716,10 +753,15 @@ export default function Dashboard() {
         <Container maxWidth="100" className={classes.container}>
           {/* <FrontDesk /> */}
           <HeaderTabs />
-          {store.getState().reducer.componentState == "FrontDesk" ?
-            <FrontDesk /> : store.getState().reducer.componentState == "Configuration" ?
-              <Configuration /> : null
-          }
+          {store.getState().reducer.componentState == "FrontDesk" ? (
+            <FrontDesk />
+          ) : store.getState().reducer.componentState == "Configuration" ? (
+            <div>
+              <Configuration />
+              <RoleManagement />
+              <UserManagement />
+            </div>
+          ) : null}
           <div style={{ paddingTop: 50 }}>
             <ButtomBar />
           </div>

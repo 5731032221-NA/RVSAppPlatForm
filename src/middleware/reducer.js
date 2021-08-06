@@ -35,7 +35,7 @@ const initialState = {
     users: [{ 'id': "0", 'name': 'n' }],
     lang: 'en',
     auth: '',
-    propertys: {content : [{propertyID:"FSDH"}]},
+    propertys:  [{propertyid:"FSDH"}],
     color: '#2D62ED',
     username: '',
     compwidth: 0,
