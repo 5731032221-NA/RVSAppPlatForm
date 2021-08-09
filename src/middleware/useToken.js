@@ -1,35 +1,35 @@
 import { useState } from 'react';
 
-function decodeToken(str) {
-    if (str) {
-        str = str.split('.')[1]
+// function decodeToken(str) {
+//     if (str) {
+//         str = str.split('.')[1]
 
-        str = str.replace('/-/g', '+')
-        str = str.replace('/_/g', '/')
-        switch (str.length % 4) {
-            case 0:
-                break
-            case 2:
-                str += '=='
-                break
-            case 3:
-                str += '='
-                break
-            default:
-                throw new Error('Invalid token')
-        }
+//         str = str.replace('/-/g', '+')
+//         str = str.replace('/_/g', '/')
+//         switch (str.length % 4) {
+//             case 0:
+//                 break
+//             case 2:
+//                 str += '=='
+//                 break
+//             case 3:
+//                 str += '='
+//                 break
+//             default:
+//                 throw new Error('Invalid token')
+//         }
 
-        str = (str + '===').slice(0, str.length + (str.length % 4))
-        str = str.replace(/-/g, '+').replace(/_/g, '/')
+//         str = (str + '===').slice(0, str.length + (str.length % 4))
+//         str = str.replace(/-/g, '+').replace(/_/g, '/')
 
-        str = decodeURIComponent(
-            escape(Buffer.from(str, 'base64').toString('binary'))
-        )
+//         str = decodeURIComponent(
+//             escape(Buffer.from(str, 'base64').toString('binary'))
+//         )
 
-        str = JSON.parse(str)
-        return str
-    }
-}
+//         str = JSON.parse(str)
+//         return str
+//     }
+// }
 
 
 export default function useToken() {
@@ -59,7 +59,7 @@ export default function useToken() {
         const userToken = tokenString;
         console.log("userToken", userToken)
         if (userToken != null) {
-            if (userToken.msg == "Success!") {
+            if (userToken.msg === "Success!") {
                 sessionStorage.setItem('name', userToken.contents[userToken.contents.length-1][0].firstname +" "+userToken.contents[userToken.contents.length-1][0].lastname+".")
                 sessionStorage.setItem('token', JSON.stringify(userToken));
                 setToken(userToken);
