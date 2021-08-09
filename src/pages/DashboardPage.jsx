@@ -1,63 +1,42 @@
 import React, { useContext, useState, useEffect } from "react";
 import clsx from "clsx";
+import { ReactReduxContext } from "react-redux";
+
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Drawer from "@material-ui/core/Drawer";
-import Box from "@material-ui/core/Box";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import Badge from "@material-ui/core/Badge";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Link from "@material-ui/core/Link";
+
+import { purple, green, orange, red, yellow } from "@material-ui/core/colors";
+
+import {CssBaseline, Drawer, AppBar, Toolbar, List, Typography, Badge, Container, Grid, InputLabel,
+        InputBase, Divider, IconButton, Menu, SwipeableDrawer, FormControl, Select, MenuItem} from "@material-ui/core";
+
 import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import FrontDesk from "../components/Dashboard/FrontDesk";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
+import MailIcon from "@material-ui/icons/Mail";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ExplicitIcon from "@material-ui/icons/Explicit";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import MailIcon from "@material-ui/icons/Mail";
-import Button from "@material-ui/core/Button";
-import { purple, green, orange, red, yellow } from "@material-ui/core/colors";
+import BusinessIcon from '@material-ui/icons/Business';
+import SettingsIcon from '@material-ui/icons/PlayForWork';
 
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import SettingsIcon from '@material-ui/icons/Settings';
-// import { useDispatch } from 'react-redux/lib/hooks/useDispatch';
-import { EDIT_COMPWIDTH } from "../middleware/action";
-import { EDIT_LANG } from "../middleware/action";
-import { EDIT_COLOR } from "../middleware/action";
-import { EDIT_PROPERTY } from "../middleware/action";
-import { ReactReduxContext } from "react-redux";
+import FrontDesk from "../components/Dashboard/FrontDesk";
+import Configuration from "../components/Dashboard/Configuration";
+import RoleManagement from "../components/RoleManagement";
+import UserManagement from "../components/UserManagement";
+
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
+import RightBar from "../layouts/RightBar";
 
+import { EDIT_COMPWIDTH, EDIT_LANG, EDIT_COLOR, EDIT_PROPERTY} from "../middleware/action";
 import MainListItems_en from "../middleware/listitems/dropDownItems";
 import secondaryListItems_en from "../middleware/listitems/dropDownItems";
 import mainListItems_th from "../middleware/listitems/dropDownItems";
 import secondaryListItems_th from "../middleware/listitems/dropDownItems";
 // import { mainListItems_en, secondaryListItems_en } from '../middleware/listitems/dropDownItems';
 // import { mainListItems_th, secondaryListItems_th } from '../middleware/listitems/dropDownItems';
-import Configuration from "../components/Dashboard/Configuration";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-import RightBar from "../layouts/RightBar";
-import RoleManagement from "../components/RoleManagement";
-import UserManagement from "../components/UserManagement";
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Select, InputLabel } from '@material-ui/core';
-import BusinessIcon from '@material-ui/icons/Business';
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -236,7 +215,11 @@ const useStyles = makeStyles((theme) => ({
   },
   propertyForm:{
     width: 40
+  },
+  whiteColor: {
+    color: "white"
   }
+
 }));
 
 export default function Dashboard() {
@@ -530,7 +513,7 @@ export default function Dashboard() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Fab
+            {/* <Fab
               size="small"
               aria-label="add"
               style={{ backgroundColor: "#64CFFF", color: "white" }}
@@ -542,7 +525,7 @@ export default function Dashboard() {
               flexItem
               style={{ backgroundColor: "#FFFFFF" }}
               variant="middle"
-            />
+            /> */}
             {/* <IconButton
                             edge="end"
                             aria-label="account of current user"
@@ -560,14 +543,13 @@ export default function Dashboard() {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handlelanguageMenuOpen}
-              size="large"
-              style={{ color: "white" }}
+              style={{ color: "white"}}
             >
-              <AccountCircle style={{ size: 50 }} />
+              <AccountCircle style={{ fontSize: 38 }} />
             </IconButton>
             <Grid item spacing={1} style={{ paddingLeft: 20 }}>
-              <Grid item spacing={1}>
-                <Typography variant="subtitle1" style={{ fontSize: 15 }}>
+              <Grid item spacing={0}>
+                <Typography variant="subtitle1" style={{ fontSize: 15, paddingTop:10 }}>
                   {sessionStorage.getItem("name")}
                 </Typography>
               </Grid>
@@ -577,7 +559,7 @@ export default function Dashboard() {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item spacing={1} style={{ paddingLeft: 20 }}>
+            <Grid item spacing={1} style={{ paddingLeft: 20, paddingTop:5 }}>
               <Grid item>
                 <IconButton
                   onClick={toggleRightBar(true)}
@@ -598,7 +580,7 @@ export default function Dashboard() {
           </div>
 
           <div className={classes.sectionMobile}>
-            <IconButton
+            {/* <IconButton
               aria-label="show more"
               aria-controls={mobileMenuId}
               aria-haspopup="true"
@@ -606,12 +588,34 @@ export default function Dashboard() {
               color="inherit"
             >
               <MoreIcon />
+            </IconButton> */}
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handlelanguageMenuOpen}
+              style={{ color: "white", paddingLeft:20}}
+            >
+              <AccountCircle style={{ fontSize: 25 }} />
             </IconButton>
+            <Grid item spacing={1} style={{ paddingLeft: 10 }}>
+              <Grid item spacing={0}>
+                <Typography variant="subtitle1" style={{ fontSize: 11, paddingTop:10, width:48 }}>
+                  {sessionStorage.getItem("name")}
+                </Typography>
+              </Grid>
+              <Grid item spacing={1}>
+                <Typography variant="body2" style={{ fontSize: 10, fontWeight:'bold'}}>
+                  Admin
+                </Typography>
+              </Grid>
+            </Grid>
             <Grid item spacing={1} style={{ paddingLeft: 20 }}>
               <Grid item>
                 <IconButton
                   onClick={toggleRightBar(true)}
-                  style={{ color: "#FFFFFF" }}
+                  style={{ color: "#FFFFFF", marginLeft:-5 }}
                 >
                   <ArrowDropDownIcon />
                 </IconButton>
@@ -670,7 +674,6 @@ export default function Dashboard() {
                 aria-label="open drawer"
                 onClick={handleDrawerClose}
               >
-
                 <MenuIcon />
               </IconButton>
             ) : null}
@@ -678,7 +681,7 @@ export default function Dashboard() {
         </Grid>
         <Divider />
         <Grid item container direction="row">
-          <IconButton
+          {/* <IconButton
             edge="end"
             aria-label="account of current user"
             aria-controls={menuId}
@@ -687,13 +690,15 @@ export default function Dashboard() {
             size="large"
             style={{ color: "white", marginLeft: 5, marginTop: 5 }}
           >
-            <AccountCircle style={{ size: 50 }} />
-          </IconButton>
+            <AccountCircle style={{ fontSize: 28 }} />
+          </IconButton> */}
           {open ?
-            <Grid item spacing={1} style={{ paddingLeft: 20, marginTop: 5 }}>
+            <Grid item spacing={1} style={{ paddingLeft: 15, marginTop: 5 , paddingBottom:10}}>
               <Grid item spacing={1}>
-                <Typography variant="subtitle1" style={{ fontSize: 15 }}>
-                  {sessionStorage.getItem("name")}
+                <Typography variant="subtitle1" style={{ fontSize: 12, paddingLeft:50, marginTop:-10 }}>
+                  {/*sessionStorage.getItem("name")*/}
+                  <SettingsIcon style={{fontSize:16, marginTop:10}} />
+                  {" Change Property"}
                 </Typography>
               </Grid>
               {/* <Grid item container direction="row"> */}
@@ -705,23 +710,22 @@ export default function Dashboard() {
                     {store.getState().reducer.property}
                   </Typography>
                 </Grid> */}
+
               <Grid class={classes.propertyForm}>
-                <FormControl component="fieldset">
-                  <Select name="gender1" id="select" value={selectedProperty} onClick={handleChangeProperty} style={{ width: 280 }} defaultValue={store.getState().reducer.property} >
+              <BusinessIcon style={{ paddingRight: 20, color: '#FFFFFF', fontSize:45}} />
+                <FormControl variant="filled"  style={{backgroundColor:'#FFFFFF', borderRadius:5}}>
+                  <Select name="selectprop" id="selectprop" value={selectedProperty} 
+                          onChange={handleChangeProperty} defaultValue={store.getState().reducer.property} >
                     {(store.getState().reducer.propertys).map((item) => (
                       <MenuItem key={item.propertyid} value={item.propertyid} label={item.propertyid} >
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <BusinessIcon style={{ paddingRight: 20, color: '#2D62ED' }} />
-                          <div> {item.propertyid} </div>
-                        </div>
+                          <div style={{marginTop:-7}}> {item.propertyid} </div>                        
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
               </Grid>
             </Grid>
-            // </Grid>
-            : null}
+            :  <BusinessIcon style={{ paddingRight: 20, paddingTop:10, marginLeft:15, color: '#FFFFFF', fontSize:45 }} /> }
         </Grid>
         <Divider />
         {/* <List disablePadding dense>
