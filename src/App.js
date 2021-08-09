@@ -1,26 +1,23 @@
 import "./assets/App.css";
-import Header from "./layouts/header";
-import Leftbar from "./layouts/Leftbar";
-
-import SignIn from "./components/SignIn";
-import Property from "./components/Property";
+import SignIn from "./pages/SignIn";
+import Property from "./pages/Property";
 import Dashboard from "./pages/DashboardPage";
 import UserList from "./pages/TestUserListPage";
 import ForgotPass from "./components/Forgotpass";
-import reducer from "./middleware/reducer";
-import { createStore, applyMiddleware } from "redux";
+// import reducer from "./middleware/reducer";
+import {createStore, applyMiddleware } from "redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
+// import thunk from "redux-thunk";
 import configureStore from "./middleware/store";
 import React, { useState } from "react";
 import useToken from "./middleware/useToken";
 import useProperty from "./middleware/useProperty";
 // import useAuthorization from "./middleware/useAuthorization";
-import useLang from "./middleware/useLang";
-import useTheme from "./middleware/useTheme";
-import en_lang from "./static/lang/en.json";
-import th_lang from "./static/lang/th.json";
+// import useLang from "./middleware/useLang";
+// import useTheme from "./middleware/useTheme";
+// import en_lang from "./static/lang/en.json";
+// import th_lang from "./static/lang/th.json";
 
 // function setToken(userToken) {
 //   sessionStorage.setItem('token', JSON.stringify(userToken));
@@ -35,7 +32,7 @@ function App() {
   const { property, setProperty } = useProperty();
   // const { authorization, setAuthorization } = useAuthorization();
   const [store, setStore] = useState(configureStore());
-  const [pathn, setpathn] = useState("/" + store.getState().reducer.lang);
+  //const [pathn, setpathn] = useState("/" + store.getState().reducer.lang);
   // const { theme, setTheme } = useTheme();
   // const { lang, setLang } = useLang();
   // const [locale, setLocale] = useState(en_lang);
@@ -70,10 +67,9 @@ function App() {
   //   /></Provider>
   // }
 
-  console.log(pathn);
+  //console.log(pathn);
   return (
     <Provider store={store}>
-      <div>
         {!token ? (
           <SignIn setToken={setToken} store={store} />
         ) : !property ? (
@@ -81,7 +77,6 @@ function App() {
         ) : (
           <BrowserRouter>
             {/* <Leftbar /> */}
-
             <Switch>
               <Route exact path="/signin" component={SignIn} />
               <Route exact path="/forgotpassword" component={ForgotPass} />
@@ -92,7 +87,7 @@ function App() {
             {/* <Header store={store} /> */}
           </BrowserRouter>
         )}
-      </div>
+     
     </Provider>
   );
 }
