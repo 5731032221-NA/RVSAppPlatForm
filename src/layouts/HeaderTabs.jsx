@@ -13,7 +13,7 @@ import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import NightsStayIcon from "@material-ui/icons/NightsStay";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { IconButton } from "@material-ui/core";
-import FrontDesk from "../components/Dashboard/FrontDesk";
+// import FrontDesk from "../components/Dashboard/FrontDesk";
 import Reservation from "../components/Dashboard/Reservation";
 
 import { ReactReduxContext } from "react-redux";
@@ -82,7 +82,7 @@ export default function HeaderTabs() {
 
   setInterval(() => {
     let settingColor = store.getState().reducer.color;
-    if (wordColor != settingColor && wordColor != null) {
+    if (wordColor !== settingColor && wordColor !== null) {
       setWordColor(settingColor);
     }
   }, 1000);
@@ -90,7 +90,7 @@ export default function HeaderTabs() {
   const handleChange = (event, newValue) => {
     console.log("newValue", newValue)
     setValue(newValue);
-    if(newValue==0) handleComponentState("FrontDesk")
+    if(newValue===0) handleComponentState("FrontDesk")
     console.log("st",store.getState().reducer.componentState)
   };
 
