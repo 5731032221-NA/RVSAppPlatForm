@@ -138,7 +138,7 @@ export default function HeaderTabs() {
             <Tab
               icon={<MonetizationOnIcon />}
               style={{ color: wordColor }}
-              label="Cachier"
+              label="Cashier"
               {...a11yProps(2)}
             />
             <Tab
@@ -157,7 +157,7 @@ export default function HeaderTabs() {
         <Reservation />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Cachier
+        Cashier
       </TabPanel>
       <TabPanel value={value} index={3}>
         Night Auditor

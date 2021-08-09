@@ -10,7 +10,7 @@ import {InputAdornment, TextField, Container, Button, Paper, Grid, Divider} from
 
 import PropTypes from "prop-types";
 import auth from "../services/auth.service";
-import menu from "../services/menus.service";
+import propertys from "../services/propertys.service";
 import { makeStyles } from "@material-ui/core/styles";
 import { ReactReduxContext } from 'react-redux'
 import { EDIT_AUTHORIZATION } from "../middleware/action";
@@ -95,7 +95,7 @@ export default function Login({ setToken }) {
         console.log("de2",err.stack)
       }
       console.log("store authen",store.getState().reducer.auth)
-      const apitest = await menu(store.getState().reducer.auth);
+      const apitest = await propertys(store.getState().reducer.auth);
       store.dispatch({
         type: EDIT_PROPERTYS,
         payload: apitest.content

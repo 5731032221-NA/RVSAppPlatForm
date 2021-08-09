@@ -555,7 +555,7 @@ export default function Dashboard() {
               </Grid>
               <Grid item spacing={1}>
                 <Typography variant="body2" style={{ fontSize: 10 }}>
-                  Admin
+                {sessionStorage.getItem("role")}
                 </Typography>
               </Grid>
             </Grid>
@@ -589,6 +589,7 @@ export default function Dashboard() {
             >
               <MoreIcon />
             </IconButton> */}
+            
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -607,7 +608,7 @@ export default function Dashboard() {
               </Grid>
               <Grid item spacing={1}>
                 <Typography variant="body2" style={{ fontSize: 10, fontWeight:'bold'}}>
-                  Admin
+                {sessionStorage.getItem("role")}
                 </Typography>
               </Grid>
             </Grid>
@@ -762,8 +763,6 @@ export default function Dashboard() {
           ) : store.getState().reducer.componentState == "Configuration" ? (
             <div>
               <Configuration />
-              <RoleManagement />
-              <UserManagement />
             </div>
           ) : null}
           <div style={{ paddingTop: 50 }}>

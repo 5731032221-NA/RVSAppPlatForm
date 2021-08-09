@@ -49,7 +49,7 @@ const rows = [
     "Somchai",
     "Somchai Wong nut",
     "Front Office",
-    "Cashaier",
+    "Cashier",
     "Active"
   ),
   createData(1, "Fah", "Mekha Wihok", "Reception", "Night", "Inactive"),

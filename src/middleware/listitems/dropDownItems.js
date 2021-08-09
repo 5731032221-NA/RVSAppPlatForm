@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import List from '@material-ui/core/List';
 
 import ListItem from '@material-ui/core/ListItem';
@@ -32,7 +32,7 @@ import IconExpandMore from '@material-ui/icons/ExpandMore'
 // import IconBarChart from '@material-ui/icons/BarChart'
 // import IconLibraryBooks from '@material-ui/icons/LibraryBooks'
 
-import { EDIT_COMPONENT } from "../action";
+import { EDIT_COMPONENT, EDIT_CONFIGSTATE } from "../action";
 
 
 import translate_th from '../../static/lang/th.json'
@@ -54,14 +54,29 @@ export default function MainListItems() {
     const [lang, setLang] = useState('en')
     const [translate, setTranslate] = useState(translate_en)
 
+
+    const compString = sessionStorage.getItem('comp');
+    const comps = JSON.parse(compString);
+    console.log("comps", comps);
+    const cashier = comps.some(item => item.slug === 'ReportRoomMaster')
+    const front = comps.some(item => item.slug === 'ConfigMaster')
+    const setting = comps.some(item => item.slug === 'RoleManagement')
+
+    // comps.forEach(element => {
+    //     if (element.slug == "ReportRoomMaster") setCashier(true)
+    //     if (element.slug == "ConfigMaster") setFront(true)
+    //     if (element.slug == "RoleManagement") setSetting(true)
+
+    // });
+
     setInterval(() => {
         let settinglang = store.getState().reducer.lang;
         // console.log("settinglang",settinglang,lang)
         // console.log("is",lang != settinglang && lang != null)
         if (lang != settinglang && lang != null) {
             setLang(settinglang)
-            if(settinglang == 'th') setTranslate(translate_th)
-            else if(settinglang == 'en') setTranslate(translate_en)
+            if (settinglang == 'th') setTranslate(translate_th)
+            else if (settinglang == 'en') setTranslate(translate_en)
         }
     }, 1000);
 
@@ -85,14 +100,19 @@ export default function MainListItems() {
         setOpenRS(!openRS)
     }
     function handleOpenConfig() {
+        console.log("again")
         // setOpenConfig(!openConfig)
+        store.dispatch({
+            type: EDIT_CONFIGSTATE,
+            payload: "Configuration"
+        })
         handleComponentState("Configuration")
     }
     function handleOpenSystemsTools() {
         setOpenSystemsTools(!openSystemTools)
     }
 
-    function handleComponentState(comp){
+    function handleComponentState(comp) {
         store.dispatch({
             type: EDIT_COMPONENT,
             payload: comp
@@ -114,160 +134,171 @@ export default function MainListItems() {
                 <ListItemText primary={translate.Reservation} />
 
             </ListItem>
-            <ListItem button onClick={handleOpenFrontDesk}>
-                <ListItemIcon style={{ color: "white" }} >
-                    <ImageAspectRatioIcon />
-                </ListItemIcon>
-                <ListItemText primary={translate.FrontDesk} />
-                {openFrontDesk ? <IconExpandLess /> : <IconExpandMore />}
-            </ListItem>
-            <Collapse in={openFrontDesk} timeout="auto" unmountOnExit>
-                <Divider />
-                <List component="div" disablePadding>
-                    <ListItem button >
-                        <ListItemText inset primary="Walk-in" />
+            {front ?
+                <List>
+                    <ListItem button onClick={handleOpenFrontDesk}>
+                        <ListItemIcon style={{ color: "white" }} >
+                            <ImageAspectRatioIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={translate.FrontDesk} />
+                        {openFrontDesk ? <IconExpandLess /> : <IconExpandMore />}
                     </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Check-in" />
-                    </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Check-out" />
-                    </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Room Status" />
-                    </ListItem>
+                    <Collapse in={openFrontDesk} timeout="auto" unmountOnExit>
+                        <Divider />
+                        <List component="div" disablePadding>
+                            <ListItem button >
+                                <ListItemText inset primary="Walk-in" />
+                            </ListItem>
+                            <ListItem button >
+                                <ListItemText inset primary="Check-in" />
+                            </ListItem>
+                            <ListItem button >
+                                <ListItemText inset primary="Check-out" />
+                            </ListItem>
+                            <ListItem button >
+                                <ListItemText inset primary="Room Status" />
+                            </ListItem>
+                        </List>
+                    </Collapse>
                 </List>
-            </Collapse>
-            <ListItem button onClick={handleOpenCashier}>
-                <ListItemIcon style={{ color: "white" }} >
-                    <MonetizationOnIcon />
-                </ListItemIcon>
-                <ListItemText primary={translate.Cashier} />
-                {openCashier ? <IconExpandLess /> : <IconExpandMore />}
-            </ListItem>
-            <Collapse in={openCashier} timeout="auto" unmountOnExit>
-                <Divider />
-                <List component="div" disablePadding>
-                    <ListItem button >
-                        <ListItemText inset primary="Folio Management" />
+                : null}
+            {cashier ?
+                <List>
+                    <ListItem button onClick={handleOpenCashier}>
+                        <ListItemIcon style={{ color: "white" }} >
+                            <MonetizationOnIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={translate.Cashier} />
+                        {openCashier ? <IconExpandLess /> : <IconExpandMore />}
                     </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Report" />
-                    </ListItem>
+                    <Collapse in={openCashier} timeout="auto" unmountOnExit>
+                        <Divider />
+                        <List component="div" disablePadding>
+                            <ListItem button >
+                                <ListItemText inset primary="Folio Management" />
+                            </ListItem>
+                            <ListItem button >
+                                <ListItemText inset primary="Report" />
+                            </ListItem>
+                        </List>
+                    </Collapse>
                 </List>
-            </Collapse>
-            <ListItem button onClick={handleOpenProfile}>
-                <ListItemIcon style={{ color: "white" }} >
-                    <PeopleIcon />
-                </ListItemIcon>
-                <ListItemText primary={translate.Profile} />
-                {openProfile ? <IconExpandLess /> : <IconExpandMore />}
-            </ListItem>
-            <Collapse in={openProfile} timeout="auto" unmountOnExit>
-                <Divider />
-                <List component="div" disablePadding>
-                    <ListItem button >
-                        <ListItemText inset primary="Individual" />
-                    </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Travel Agent" />
-                    </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Company" />
-                    </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Group" />
-                    </ListItem>
-                </List>
-            </Collapse>
-            <ListItem button onClick={handleOpenNA}>
-                <ListItemIcon style={{ color: "white" }} >
-                    <NightsStayIcon />
-                </ListItemIcon>
-                <ListItemText primary={translate.NightAuditor}/>
-                {openNA ? <IconExpandLess /> : <IconExpandMore />}
-            </ListItem>
-            <Collapse in={openNA} timeout="auto" unmountOnExit>
-                <Divider />
-                <List component="div" disablePadding>
-                    <ListItem button >
-                        <ListItemText inset primary="Reports" />
-                    </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Hotel Date Maintenance" />
-                    </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Close-Day Procedure" />
-                    </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Auto-Sequence Reports" />
-                    </ListItem>
-                </List>
-            </Collapse>
-            <ListItem button onClick={handleOpenHK}>
-                <ListItemIcon style={{ color: "white" }} >
-                    <DeleteSweepIcon />
-                </ListItemIcon>
-                <ListItemText primary={translate.HouseKeeping} />
-                {openHK ? <IconExpandLess /> : <IconExpandMore />}
-            </ListItem>
-            <Collapse in={openHK} timeout="auto" unmountOnExit>
-                <Divider />
-                <List component="div" disablePadding>
-                    <ListItem button >
-                        <ListItemText inset primary="Item Management" />
-                    </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Room Status" />
-                    </ListItem>
-                </List>
-            </Collapse>
-            <ListItem button>
-                <ListItemIcon style={{ color: "white" }} >
-                    <BuildIcon />
-                </ListItemIcon>
-                <ListItemText primary={translate.Engineer} />
-            </ListItem>
-            <ListItem button onClick={handleOpenRS}>
-                <ListItemIcon style={{ color: "white" }} >
-                    <LayersIcon />
-                </ListItemIcon>
-                <ListItemText primary="Reports" />
-                {openRS ? <IconExpandLess /> : <IconExpandMore />}
-            </ListItem>
-            <Collapse in={openRS} timeout="auto" unmountOnExit>
-                <Divider />
-                <List component="div" disablePadding>
-                    <ListItem button >
-                        <ListItemText inset primary="Customizable" />
-                    </ListItem>
-                </List>
-            </Collapse>
-            <ListItem button onClick={handleOpenConfig}>
-                <ListItemIcon style={{ color: "white" }} >
-                    <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary={translate.Configuration} />
-                {/* {openConfig ? <IconExpandLess /> : <IconExpandMore />} */}
-            </ListItem>
-            <ListItem button onClick={handleOpenSystemsTools}>
-                <ListItemIcon style={{ color: "white" }} >
-                    <AssignmentIcon />
-                </ListItemIcon>
-                <ListItemText primary={translate.SystemsTools} />
-                {openSystemTools ? <IconExpandLess /> : <IconExpandMore />}
-            </ListItem>
-            <Collapse in={openSystemTools} timeout="auto" unmountOnExit>
-                <Divider />
-                <List component="div" disablePadding>
-                    <ListItem button >
-                        <ListItemText inset primary="Hotel Status" />
-                    </ListItem>
-                    <ListItem button >
-                        <ListItemText inset primary="Room Rack" />
-                    </ListItem>
-                </List>
-            </Collapse>
+                : null}
+            {setting ? <List>
+                <ListItem button onClick={handleOpenProfile}>
+                    <ListItemIcon style={{ color: "white" }} >
+                        <PeopleIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={translate.Profile} />
+                    {openProfile ? <IconExpandLess /> : <IconExpandMore />}
+                </ListItem>
+                <Collapse in={openProfile} timeout="auto" unmountOnExit>
+                    <Divider />
+                    <List component="div" disablePadding>
+                        <ListItem button >
+                            <ListItemText inset primary="Individual" />
+                        </ListItem>
+                        <ListItem button >
+                            <ListItemText inset primary="Travel Agent" />
+                        </ListItem>
+                        <ListItem button >
+                            <ListItemText inset primary="Company" />
+                        </ListItem>
+                        <ListItem button >
+                            <ListItemText inset primary="Group" />
+                        </ListItem>
+                    </List>
+                </Collapse>
+                <ListItem button onClick={handleOpenNA}>
+                    <ListItemIcon style={{ color: "white" }} >
+                        <NightsStayIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={translate.NightAuditor} />
+                    {openNA ? <IconExpandLess /> : <IconExpandMore />}
+                </ListItem>
+                <Collapse in={openNA} timeout="auto" unmountOnExit>
+                    <Divider />
+                    <List component="div" disablePadding>
+                        <ListItem button >
+                            <ListItemText inset primary="Reports" />
+                        </ListItem>
+                        <ListItem button >
+                            <ListItemText inset primary="Hotel Date Maintenance" />
+                        </ListItem>
+                        <ListItem button >
+                            <ListItemText inset primary="Close-Day Procedure" />
+                        </ListItem>
+                        <ListItem button >
+                            <ListItemText inset primary="Auto-Sequence Reports" />
+                        </ListItem>
+                    </List>
+                </Collapse>
+                <ListItem button onClick={handleOpenHK}>
+                    <ListItemIcon style={{ color: "white" }} >
+                        <DeleteSweepIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={translate.HouseKeeping} />
+                    {openHK ? <IconExpandLess /> : <IconExpandMore />}
+                </ListItem>
+                <Collapse in={openHK} timeout="auto" unmountOnExit>
+                    <Divider />
+                    <List component="div" disablePadding>
+                        <ListItem button >
+                            <ListItemText inset primary="Item Management" />
+                        </ListItem>
+                        <ListItem button >
+                            <ListItemText inset primary="Room Status" />
+                        </ListItem>
+                    </List>
+                </Collapse>
+                <ListItem button>
+                    <ListItemIcon style={{ color: "white" }} >
+                        <BuildIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={translate.Engineer} />
+                </ListItem>
+                <ListItem button onClick={handleOpenRS}>
+                    <ListItemIcon style={{ color: "white" }} >
+                        <LayersIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Reports" />
+                    {openRS ? <IconExpandLess /> : <IconExpandMore />}
+                </ListItem>
+                <Collapse in={openRS} timeout="auto" unmountOnExit>
+                    <Divider />
+                    <List component="div" disablePadding>
+                        <ListItem button >
+                            <ListItemText inset primary="Customizable" />
+                        </ListItem>
+                    </List>
+                </Collapse>
+                <ListItem button onClick={handleOpenConfig}>
+                    <ListItemIcon style={{ color: "white" }} >
+                        <SettingsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={translate.Configuration} />
+                    {/* {openConfig ? <IconExpandLess /> : <IconExpandMore />} */}
+                </ListItem>
+                <ListItem button onClick={handleOpenSystemsTools}>
+                    <ListItemIcon style={{ color: "white" }} >
+                        <AssignmentIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={translate.SystemsTools} />
+                    {openSystemTools ? <IconExpandLess /> : <IconExpandMore />}
+                </ListItem>
+                <Collapse in={openSystemTools} timeout="auto" unmountOnExit>
+                    <Divider />
+                    <List component="div" disablePadding>
+                        <ListItem button >
+                            <ListItemText inset primary="Hotel Status" />
+                        </ListItem>
+                        <ListItem button >
+                            <ListItemText inset primary="Room Rack" />
+                        </ListItem>
+                    </List>
+                </Collapse>
+            </List>
+                : null}
         </List>
     );
 }

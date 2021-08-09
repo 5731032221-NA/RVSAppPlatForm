@@ -13,6 +13,8 @@ import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Divider from "@material-ui/core/Divider";
 import { FormControl, FormLabel,Select, MenuItem } from '@material-ui/core';
+import menus from "../services/menus.service";
+
 // import {
 //     EDIT_AUTHORIZATION
 // } from "../middleware/action";
@@ -71,7 +73,13 @@ export default function Property({ setToken, setProperty }) {
     //     setToken(false);
 
     // };
-    const handleSelect = () => {
+    const handleSelect = async () => {
+        const menu = await menus(store.getState().reducer.auth,selectedProperty);
+        console.log("menu",menu);
+        console.log("content",menu.content);
+        console.log("com",menu.content.components);
+        sessionStorage.setItem('comp', JSON.stringify(menu.content.components));
+ 
         store.dispatch({
             type: EDIT_PROPERTY,
             payload: selectedProperty

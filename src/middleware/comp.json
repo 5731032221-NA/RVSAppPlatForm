@@ -1,0 +1,100 @@
+{
+    "status": "2000",
+    "msg": "Welcome New Member!",
+    "content": {
+        "propertyID": "FSDH",
+        "branchID": "HQ",
+        "userID": "ADMIN",
+        "components": [
+            {
+                "icon": "mdi-folder-account",
+                "slug": "Users",
+                "permission": [
+                    "Y",
+                    "Y",
+                    "Y",
+                    "Y"
+                ],
+                "_children": []
+            },
+            {
+                "icon": "mdi-alpha-m-box",
+                "slug": "ConfigMaster",
+                "permission": [
+                    "Y",
+                    "Y",
+                    "Y",
+                    "Y"
+                ],
+                "_children": []
+            },
+            {
+                "icon": "mdi-folder-account",
+                "slug": "ReportRoomMaster",
+                "permission": [
+                    "Y",
+                    "Y",
+                    "Y",
+                    "N"
+                ],
+                "_children": []
+            },
+            {
+                "icon": "mdi-home-city",
+                "slug": "RoomMaster",
+                "permission": [
+                    "Y",
+                    "Y",
+                    "Y",
+                    "Y"
+                ],
+                "_children": []
+            },
+            {
+                "icon": "mdi-home-city",
+                "slug": "RoomRack",
+                "permission": [
+                    "N",
+                    "Y",
+                    "N",
+                    "N"
+                ],
+                "_children": []
+            },
+            {
+                "icon": "mdi-badge-account",
+                "slug": "RoleManagement",
+                "permission": [
+                    "Y",
+                    "Y",
+                    "Y",
+                    "Y"
+                ],
+                "_children": []
+            },
+            {
+                "icon": "mdi-alpha-m-box",
+                "slug": "LogDB",
+                "permission": [
+                    "Y",
+                    "Y",
+                    "Y",
+                    "N"
+                ],
+                "_children": []
+            },
+            {
+                "icon": "mdi-home-city",
+                "slug": "Campaign",
+                "permission": [
+                    "Y",
+                    "Y",
+                    "Y",
+                    "Y"
+                ],
+                "_children": []
+            }
+        ]
+    },
+    "items": []
+}

@@ -8,6 +8,7 @@ export const EDIT_COMPWIDTH = "EDIT_COMPWIDTH";
 export const EDIT_COMPONENT = "EDIT_COMPONENT";
 export const EDIT_DARKMODE = "EDIT_DARKMODE";
 export const EDIT_PROPERTY = "EDIT_DARKMODE";
+export const EDIT_CONFIGSTATE = "EDIT_DARKMODE";
 
 export const editAuth = (auth) => {
     return (dispatch) => {
