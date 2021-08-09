@@ -35,13 +35,14 @@ const initialState = {
     users: [{ 'id': "0", 'name': 'n' }],
     lang: 'en',
     auth: '',
-    propertys:  [{propertyid:"FSDH"}],
+    propertys:  [{propertyid:"Novotel Pattaya"}],
     color: '#2D62ED',
     username: '',
     compwidth: 0,
     componentState: "FrontDesk",
     themeBackground: "#FFFFFF",
-    property: ""
+    property: "",
+    role: "Admin"
 };
 
 
