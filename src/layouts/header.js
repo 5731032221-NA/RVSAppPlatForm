@@ -262,7 +262,7 @@ export default function Navbar(store) {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Fab
+            {/* <Fab
               size="small"
               aria-label="add"
               style={{ backgroundColor: "#64CFFF", color: "white" }}
@@ -285,7 +285,7 @@ export default function Navbar(store) {
               style={{ color: "#1B47C1" }}
             >
               <AccountCircle />
-            </IconButton>
+            </IconButton> */}
             <IconButton
               edge="end"
               aria-label="account of current user"
