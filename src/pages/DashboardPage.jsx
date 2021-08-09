@@ -6,8 +6,26 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { purple, green, orange, red, yellow } from "@material-ui/core/colors";
 
-import {CssBaseline, Drawer, AppBar, Toolbar, List, Typography, Badge, Container, Grid, InputLabel,
-        InputBase, Divider, IconButton, Menu, SwipeableDrawer, FormControl, Select, MenuItem} from "@material-ui/core";
+import {
+  CssBaseline,
+  Drawer,
+  AppBar,
+  Toolbar,
+  List,
+  Typography,
+  Badge,
+  Container,
+  Grid,
+  InputLabel,
+  InputBase,
+  Divider,
+  IconButton,
+  Menu,
+  SwipeableDrawer,
+  FormControl,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -17,8 +35,8 @@ import MailIcon from "@material-ui/icons/Mail";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ExplicitIcon from "@material-ui/icons/Explicit";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import BusinessIcon from '@material-ui/icons/Business';
-import SettingsIcon from '@material-ui/icons/PlayForWork';
+import BusinessIcon from "@material-ui/icons/Business";
+import SettingsIcon from "@material-ui/icons/PlayForWork";
 
 import FrontDesk from "../components/Dashboard/FrontDesk";
 import Configuration from "../components/Dashboard/Configuration";
@@ -29,7 +47,12 @@ import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
 import RightBar from "../layouts/RightBar";
 
-import { EDIT_COMPWIDTH, EDIT_LANG, EDIT_COLOR, EDIT_PROPERTY} from "../middleware/action";
+import {
+  EDIT_COMPWIDTH,
+  EDIT_LANG,
+  EDIT_COLOR,
+  EDIT_PROPERTY,
+} from "../middleware/action";
 import MainListItems_en from "../middleware/listitems/dropDownItems";
 import secondaryListItems_en from "../middleware/listitems/dropDownItems";
 import mainListItems_th from "../middleware/listitems/dropDownItems";
@@ -211,21 +234,18 @@ const useStyles = makeStyles((theme) => ({
   seletprop: {
     fontSize: 15,
     color: "#164BD8",
-    paddingBottom: 20
+    paddingBottom: 20,
   },
-  propertyForm:{
-    width: 40
+  propertyForm: {
+    width: 40,
   },
   whiteColor: {
-    color: "white"
-  }
-
+    color: "white",
+  },
 }));
 
 export default function Dashboard() {
-
   const classes = useStyles();
-
 
   const [open, setOpen] = React.useState(false);
   const [themeState, setThemeState] = React.useState(classes.themeDefault);
@@ -249,10 +269,11 @@ export default function Dashboard() {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [compWidthState, setCompWidth] = useState(null);
   const [compState, setComp] = useState(null);
-  const [selectedProperty, setSelectedProperty] = useState(store.getState().reducer.property)
+  const [selectedProperty, setSelectedProperty] = useState(
+    store.getState().reducer.property
+  );
   setInterval(() => {
     // console.log(parseInt(store.getState().reducer.compwidth) !== parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(store.getState().reducer.compwidth))
-
 
     if (
       compWidthState !=
@@ -271,7 +292,6 @@ export default function Dashboard() {
   }, 500);
 
   setInterval(() => {
-
     let settingColor = store.getState().reducer.color;
     if (wordColor != settingColor && wordColor != null) {
       if (settingColor == purple[600]) {
@@ -299,20 +319,17 @@ export default function Dashboard() {
         setWordColor("#2D62ED");
         setThemeFontState("#2D62ED");
       }
-
     }
   }, 1000);
 
-  const handleChangeProperty = event => {
+  const handleChangeProperty = (event) => {
     store.dispatch({
       type: EDIT_PROPERTY,
-      payload: event.target.value
-    })
+      payload: event.target.value,
+    });
     setSelectedProperty(event.target.value);
     // setSelectedProperty(event.target.value);
     // setSelectedProperty(event.target.value);
-
-
   };
 
   // const [lang, setLang] = useState('en')
@@ -348,7 +365,6 @@ export default function Dashboard() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-
   const handleLanguage = (lang) => {
     console.log("handle lang", lang);
     // setAnchorEl(null);
@@ -358,29 +374,27 @@ export default function Dashboard() {
       setThemeFontState(classes.themeFonrPurple);
       store.dispatch({
         type: EDIT_COLOR,
-        payload: purple[600]
-      })
+        payload: purple[600],
+      });
     } else {
       setThemeState(classes.themeGreen);
       setThemeFontState(classes.themeFontGreen);
       store.dispatch({
         type: EDIT_COLOR,
-        payload: green[600]
-      })
+        payload: green[600],
+      });
     }
     console.log("store", store);
     console.log("store", store.store);
     store.dispatch({
       type: EDIT_LANG,
-      payload: lang
-    })
+      payload: lang,
+    });
 
     console.log("store", store.getState().reducer.lang);
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
-
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -543,14 +557,18 @@ export default function Dashboard() {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handlelanguageMenuOpen}
-              style={{ color: "white"}}
+              style={{ color: "white" }}
             >
               <AccountCircle style={{ fontSize: 38 }} />
             </IconButton>
             <Grid item spacing={1} style={{ paddingLeft: 20 }}>
               <Grid item spacing={0}>
-                <Typography variant="subtitle1" style={{ fontSize: 15, paddingTop:10 }}>
+                <Typography
+                  variant="subtitle1"
+                  style={{ fontSize: 15, paddingTop: 10 }}
+                >
                   {sessionStorage.getItem("name")}
+                  
                 </Typography>
               </Grid>
               <Grid item spacing={1}>
@@ -559,7 +577,7 @@ export default function Dashboard() {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item spacing={1} style={{ paddingLeft: 20, paddingTop:5 }}>
+            <Grid item spacing={1} style={{ paddingLeft: 20, paddingTop: 5 }}>
               <Grid item>
                 <IconButton
                   onClick={toggleRightBar(true)}
@@ -595,18 +613,25 @@ export default function Dashboard() {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handlelanguageMenuOpen}
-              style={{ color: "white", paddingLeft:20}}
+              style={{ color: "white", paddingLeft: 20 }}
             >
               <AccountCircle style={{ fontSize: 25 }} />
             </IconButton>
             <Grid item spacing={1} style={{ paddingLeft: 10 }}>
               <Grid item spacing={0}>
-                <Typography variant="subtitle1" style={{ fontSize: 11, paddingTop:10, width:48 }}>
+                <Typography
+                  variant="subtitle1"
+                  style={{ fontSize: 11, paddingTop: 10, width: 48 }}
+                >
                   {sessionStorage.getItem("name")}
+                  console.log();
                 </Typography>
               </Grid>
               <Grid item spacing={1}>
-                <Typography variant="body2" style={{ fontSize: 10, fontWeight:'bold'}}>
+                <Typography
+                  variant="body2"
+                  style={{ fontSize: 10, fontWeight: "bold" }}
+                >
                   Admin
                 </Typography>
               </Grid>
@@ -615,7 +640,7 @@ export default function Dashboard() {
               <Grid item>
                 <IconButton
                   onClick={toggleRightBar(true)}
-                  style={{ color: "#FFFFFF", marginLeft:-5 }}
+                  style={{ color: "#FFFFFF", marginLeft: -5 }}
                 >
                   <ArrowDropDownIcon />
                 </IconButton>
@@ -647,18 +672,14 @@ export default function Dashboard() {
           paper: clsx(
             themeState,
             classes.drawerPaper,
-            !open
-            && classes.drawerPaperClose
+            !open && classes.drawerPaperClose
           ),
         }}
         open={open}
       >
-
         <Grid container>
           <Grid item container direction="row">
-            <div
-              style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}
-            >
+            <div style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}>
               <img
                 src="logo_white.png"
                 class="rounded mx-auto d-block"
@@ -692,12 +713,19 @@ export default function Dashboard() {
           >
             <AccountCircle style={{ fontSize: 28 }} />
           </IconButton> */}
-          {open ?
-            <Grid item spacing={1} style={{ paddingLeft: 15, marginTop: 5 , paddingBottom:10}}>
+          {open ? (
+            <Grid
+              item
+              spacing={1}
+              style={{ paddingLeft: 15, marginTop: 5, paddingBottom: 10 }}
+            >
               <Grid item spacing={1}>
-                <Typography variant="subtitle1" style={{ fontSize: 12, paddingLeft:50, marginTop:-10 }}>
+                <Typography
+                  variant="subtitle1"
+                  style={{ fontSize: 12, paddingLeft: 50, marginTop: -10 }}
+                >
                   {/*sessionStorage.getItem("name")*/}
-                  <SettingsIcon style={{fontSize:16, marginTop:10}} />
+                  <SettingsIcon style={{ fontSize: 16, marginTop: 10 }} />
                   {" Change Property"}
                 </Typography>
               </Grid>
@@ -712,20 +740,44 @@ export default function Dashboard() {
                 </Grid> */}
 
               <Grid class={classes.propertyForm}>
-              <BusinessIcon style={{ paddingRight: 20, color: '#FFFFFF', fontSize:45}} />
-                <FormControl variant="filled"  style={{backgroundColor:'#FFFFFF', borderRadius:5}}>
-                  <Select name="selectprop" id="selectprop" value={selectedProperty} 
-                          onChange={handleChangeProperty} defaultValue={store.getState().reducer.property} >
-                    {(store.getState().reducer.propertys).map((item) => (
-                      <MenuItem key={item.propertyid} value={item.propertyid} label={item.propertyid} >
-                          <div style={{marginTop:-7}}> {item.propertyid} </div>                        
+                <BusinessIcon
+                  style={{ paddingRight: 20, color: "#FFFFFF", fontSize: 45 }}
+                />
+                <FormControl
+                  variant="filled"
+                  style={{ backgroundColor: "#FFFFFF", borderRadius: 5 }}
+                >
+                  <Select
+                    name="selectprop"
+                    id="selectprop"
+                    value={selectedProperty}
+                    onChange={handleChangeProperty}
+                    defaultValue={store.getState().reducer.property}
+                  >
+                    {store.getState().reducer.propertys.map((item) => (
+                      <MenuItem
+                        key={item.propertyid}
+                        value={item.propertyid}
+                        label={item.propertyid}
+                      >
+                        <div style={{ marginTop: -7 }}> {item.propertyid} </div>
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
               </Grid>
             </Grid>
-            :  <BusinessIcon style={{ paddingRight: 20, paddingTop:10, marginLeft:15, color: '#FFFFFF', fontSize:45 }} /> }
+          ) : (
+            <BusinessIcon
+              style={{
+                paddingRight: 20,
+                paddingTop: 10,
+                marginLeft: 15,
+                color: "#FFFFFF",
+                fontSize: 45,
+              }}
+            />
+          )}
         </Grid>
         <Divider />
         {/* <List disablePadding dense>
@@ -736,7 +788,6 @@ export default function Dashboard() {
                     ))}
                 </List> */}
 
-
         <List>
           {store.getState().reducer.lang == "en" ? (
             <MainListItems_en />
@@ -745,12 +796,10 @@ export default function Dashboard() {
           )}
         </List>
 
-
         <Divider />
 
         {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
       </Drawer>
-
 
       <main id="compwidth" className={classes.content}>
         <div className={classes.appBarSpacer} />
