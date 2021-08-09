@@ -31,18 +31,24 @@ import {
     EDIT_PROPERTY
 } from "./action";
 
+import {
+    EDIT_CONFIGSTATE
+} from "./action";
+
+
 const initialState = {
     users: [{ 'id': "0", 'name': 'n' }],
     lang: 'en',
     auth: '',
-    propertys:  [{propertyid:"Novotel Pattaya"}],
+    propertys: [{ propertyid: "Novotel Pattaya" }],
     color: '#2D62ED',
     username: '',
     compwidth: 0,
     componentState: "FrontDesk",
     themeBackground: "#FFFFFF",
     property: "",
-    role: "Admin"
+    role: "Admin",
+    configState: "Configuration"
 };
 
 
@@ -51,6 +57,11 @@ const reducer = (state = initialState, action) => {
     // console.log("action", action)
     const allUsers = [...state.users];
     switch (action.type) {
+        case EDIT_CONFIGSTATE:
+            return {
+                ...state,
+                configState: action.payload,
+            };
         case EDIT_PROPERTY:
             return {
                 ...state,

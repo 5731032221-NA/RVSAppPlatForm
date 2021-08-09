@@ -110,7 +110,7 @@ export default function RoleManagement() {
           variant="h6"
           style={{ marginBottom: 15, fontSize: 18, color: "#2B4EAD" }}
         >
-          Role Management
+          {/* Role Management */}
         </Typography>
         <Paper>
           <Grid container style={{ padding: 30 }}>
