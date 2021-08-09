@@ -501,7 +501,7 @@ export default function Dashboard() {
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
-              <SearchIcon style={{marginLeft:-50}} />
+              <SearchIcon style={{marginLeft:-45}} />
             </div>
             <InputBase
               placeholder=""
@@ -546,7 +546,7 @@ export default function Dashboard() {
               onClick={handlelanguageMenuOpen}
               style={{ color: "white", }}
             >
-              <AccountCircle style={{ fontSize: 38}} />
+              <AccountCircle style={{ fontSize: 36}} />
             </IconButton>
             <Grid item spacing={1} style={{ paddingLeft: 20 }}>
               <Grid item spacing={0}>
@@ -598,7 +598,7 @@ export default function Dashboard() {
               onClick={handlelanguageMenuOpen}
               style={{ color: "white"}}
             >
-              <AccountCircle style={{ fontSize: 25 }} />
+              <AccountCircle style={{ fontSize: 30 }} />
             </IconButton>
             <Grid item spacing={1} style={{ paddingLeft: 10 }}>
               <Grid item spacing={0}>
