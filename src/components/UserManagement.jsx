@@ -24,8 +24,7 @@ import {
 
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import IconButton from "@material-ui/core/IconButton";
-import EditRoundedIcon from "@material-ui/icons/EditRounded";
-import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
+
 import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
 import FirstPageRoundedIcon from "@material-ui/icons/FirstPageRounded";

@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TreeView from "@material-ui/lab/TreeView";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
@@ -24,8 +24,108 @@ import LastPageRoundedIcon from "@material-ui/icons/LastPageRounded";
 
 import RoleManagement from "../RoleManagement";
 import UserManagement from "../UserManagement";
-import { ReactReduxContext,useSelector } from "react-redux";
-import { EDIT_CONFIGSTATE} from "../../middleware/action";
+import { ReactReduxContext, useSelector } from "react-redux";
+import { EDIT_CONFIGSTATE } from "../../middleware/action";
+
+const data = {
+  id: "root",
+  name: "Configuration",
+  children: [
+    {
+      id: "1.1",
+      name: "PMS Configuration",
+      children: [
+        {
+          id: "1.1.1",
+          name: "Property Configuration",
+          children: [
+            {
+              id: "1.1.1.1",
+              name: "Property Master",
+            },
+            {
+              id: "1.1.1.2",
+              name: "Building Master",
+            },
+            {
+              id: "1.1.1.3",
+              name: "Exposure ",
+            },
+            {
+              id: "1.1.1.4",
+              name: "Floor ",
+            },
+            {
+              id: "1.1.1.5",
+              name: "Zone/Wing",
+            },
+          ],
+        },
+        {
+          id: "1.1.2",
+          name: "Room Configuration",
+          children: [
+            {
+              id: "1.1.2.1",
+              name: "Room Type",
+            },
+            {
+              id: "1.1.2.2",
+              name: "Room Category",
+            },
+            {
+              id: "1.1.2.3",
+              name: "Room Master Maintenance",
+            },
+          ],
+        },
+        {
+          id: "1.1.3",
+          name: "Item Configuration",
+          children: [
+            {
+              id: "1.1.3.1",
+              name: "Item Type",
+            },
+            {
+              id: "1.1.3.2",
+              name: "Item Category",
+            },
+          ],
+        },
+        {
+          id: "1.1.4",
+          name: "Reservation Configuration",
+          children: [
+            {
+              id: "1.1.4.1",
+              name: "Market segment Maintenance",
+            },
+            {
+              id: "1.1.4.2",
+              name: "Source Maintenance",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "1.2",
+      name: "System Configuration",
+      children: [
+        {
+          id: "1.2.1",
+          name: "User Management",
+        },
+        {
+          id: "1.2.2",
+          name: "Role Management",
+        },
+      ],
+    },
+  ],
+};
+
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -83,6 +183,126 @@ export default function Configuration() {
     // setstore.getState().reducer.configState("UserManagement")
   }
 
+
+
+  const renderTree = (nodes) => (
+    <div>
+      {nodes.name == "Room Master Maintenance" ?
+        <TreeItem
+          key={nodes.id}
+          nodeId={nodes.id}
+          label={
+            <div>
+              <Grid container direction="row" alignItems="center">
+                <Grid item className={classes.root}>
+                  <Typography
+                    variant="body1"
+                    color="initial"
+                    style={{ paddind: 5 }}
+                  >
+                    <div onClick={testclick}>
+                    {nodes.name}
+                    </div>
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <IconButton>
+                    <EditRoundedIcon />
+                  </IconButton>
+                  <IconButton>
+                    <DeleteRoundedIcon />
+                  </IconButton>
+                  <IconButton>
+                    <MoreVertRoundedIcon />
+                  </IconButton>
+                </Grid>
+              </Grid>
+              <Divider />
+            </div>
+          }
+        >
+          {Array.isArray(nodes.children)
+            ? nodes.children.map((node) => renderTree(node))
+            : null}
+        </TreeItem>
+        : nodes.name == "User Management" ?
+          <TreeItem
+            key={nodes.id}
+            nodeId={nodes.id}
+            label={
+              <div>
+                <Grid container direction="row" alignItems="center">
+                  <Grid item className={classes.root}>
+                    <Typography
+                      variant="body1"
+                      color="initial"
+                      style={{ paddind: 5 }}
+                    >
+                      <div onClick={roleclick}>
+                      {nodes.name}
+                      </div>
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <IconButton>
+                      <EditRoundedIcon />
+                    </IconButton>
+                    <IconButton>
+                      <DeleteRoundedIcon />
+                    </IconButton>
+                    <IconButton>
+                      <MoreVertRoundedIcon />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+                <Divider />
+              </div>
+            }
+          >
+            {Array.isArray(nodes.children)
+              ? nodes.children.map((node) => renderTree(node))
+              : null}
+          </TreeItem>
+          :
+          <TreeItem
+            key={nodes.id}
+            nodeId={nodes.id}
+            label={
+              <div>
+                <Grid container direction="row" alignItems="center">
+                  <Grid item className={classes.root}>
+                    <Typography
+                      variant="body1"
+                      color="initial"
+                      style={{ paddind: 5 }}
+                    >
+                      {nodes.name}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <IconButton>
+                      <EditRoundedIcon />
+                    </IconButton>
+                    <IconButton>
+                      <DeleteRoundedIcon />
+                    </IconButton>
+                    <IconButton>
+                      <MoreVertRoundedIcon />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+                <Divider />
+              </div>
+            }
+          >
+            {Array.isArray(nodes.children)
+              ? nodes.children.map((node) => renderTree(node))
+              : null}
+          </TreeItem>
+      }
+    </div>
+  );
+
   return (
     <div>
       {configState == "Configuration" ? (
@@ -120,614 +340,7 @@ export default function Configuration() {
                 onNodeToggle={handleToggle}
                 onNodeSelect={handleSelect}
               >
-                <TreeItem
-                  nodeId="1"
-                  label={
-                    <div>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item className={classes.root}>
-                          <Typography
-                            variant="body1"
-                            color="initial"
-                            style={{ paddind: 5 }}
-                          >
-                            System Configuration
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <IconButton>
-                            <EditRoundedIcon />
-                          </IconButton>
-                          <IconButton>
-                            <DeleteRoundedIcon />
-                          </IconButton>
-                          <IconButton>
-                            <MoreVertRoundedIcon />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                      <Divider />
-                    </div>
-                  }
-                >
-                  <TreeItem
-                    nodeId="2"
-                    label={
-                      <div>
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item className={classes.root}>
-                            <Typography
-                              variant="body1"
-                              color="initial"
-                              style={{ paddind: 5 }}
-                            >
-                              <div onClick={roleclick}>User Maintenance{" "}</div>
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <IconButton>
-                              <EditRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <DeleteRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <MoreVertRoundedIcon />
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                      </div>
-                    }
-                  />
-                  <Divider />
-                  <TreeItem
-                    nodeId="3"
-                    label={
-                      <div>
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item className={classes.root}>
-                            <Typography
-                              variant="body1"
-                              color="initial"
-                              style={{ paddind: 5 }}
-                            >
-                              <div>Role Management</div>
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <IconButton>
-                              <EditRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <DeleteRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <MoreVertRoundedIcon />
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                      </div>
-                    }
-                  />
-                  <Divider />
-                </TreeItem>
-
-                <TreeItem
-                  nodeId="4"
-                  label={
-                    <div>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item className={classes.root}>
-                          <Typography
-                            variant="body1"
-                            color="initial"
-                            style={{ paddind: 5 }}
-                          >
-                            <div>PMS Configuration</div>
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <IconButton>
-                            <EditRoundedIcon />
-                          </IconButton>
-                          <IconButton>
-                            <DeleteRoundedIcon />
-                          </IconButton>
-                          <IconButton>
-                            <MoreVertRoundedIcon />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                      <Divider />
-                    </div>
-                  }
-                >
-                  <TreeItem
-                    nodeId="5"
-                    label={
-                      <div>
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item className={classes.root}>
-                            <Typography
-                              variant="body1"
-                              color="initial"
-                              style={{ paddind: 5 }}
-                            >
-                              Property Configuration
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <IconButton>
-                              <EditRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <DeleteRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <MoreVertRoundedIcon />
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                        <Divider />
-                      </div>
-                    }
-                  >
-                    <TreeItem
-                      nodeId="6"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                Property Master
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                    <TreeItem
-                      nodeId="7"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                Building Master
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                    <TreeItem
-                      nodeId="8"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                Exposure
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                    <TreeItem
-                      nodeId="9"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                Floor
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                    <TreeItem
-                      nodeId="10"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                Zone/Wing
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                  </TreeItem>
-                  <TreeItem
-                    nodeId="11"
-                    label={
-                      <div>
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item className={classes.root}>
-                            <Typography
-                              variant="body1"
-                              color="initial"
-                              style={{ paddind: 5 }}
-                            >
-                              Room Configuration
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <IconButton>
-                              <EditRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <DeleteRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <MoreVertRoundedIcon />
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                        <Divider />
-                      </div>
-                    }
-                  >
-                    <TreeItem
-                      nodeId="12"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                Room Type
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                    <TreeItem
-                      nodeId="13"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                Room Category
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                    <TreeItem
-                      nodeId="14"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                <div onClick={testclick}>Room Master Maintenance</div>
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                  </TreeItem>
-
-                  <TreeItem
-                    nodeId="15"
-                    label={
-                      <div>
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item className={classes.root}>
-                            <Typography
-                              variant="body1"
-                              color="initial"
-                              style={{ paddind: 5 }}
-                            >
-                              Item Configuration
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <IconButton>
-                              <EditRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <DeleteRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <MoreVertRoundedIcon />
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                        <Divider />
-                      </div>
-                    }
-                  >
-                    <TreeItem
-                      nodeId="16"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                Item Type
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                    <TreeItem
-                      nodeId="17"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                Item Category
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                  </TreeItem>
-                  <TreeItem
-                    nodeId="18"
-                    label={
-                      <div>
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item className={classes.root}>
-                            <Typography
-                              variant="body1"
-                              color="initial"
-                              style={{ paddind: 5 }}
-                            >
-                              Reservation Configuration
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <IconButton>
-                              <EditRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <DeleteRoundedIcon />
-                            </IconButton>
-                            <IconButton>
-                              <MoreVertRoundedIcon />
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                        <Divider />
-                      </div>
-                    }
-                  >
-                    <TreeItem
-                      nodeId="19"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                Market segment Maintenance
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                    <TreeItem
-                      nodeId="20"
-                      label={
-                        <div>
-                          <Grid container direction="row" alignItems="center">
-                            <Grid item className={classes.root}>
-                              <Typography
-                                variant="body1"
-                                color="initial"
-                                style={{ paddind: 5 }}
-                              >
-                                Source Maintenance
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <IconButton>
-                                <EditRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                              <IconButton>
-                                <MoreVertRoundedIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
-                          <Divider />
-                        </div>
-                      }
-                    />
-                  </TreeItem>
-                </TreeItem>
+                {renderTree(data)}
               </TreeView>
               <Grid
                 container
@@ -789,9 +402,9 @@ export default function Configuration() {
             </Grid>
           </Paper>
         </Container>
-      ) : configState == "RoleManagement" ? <RoleManagement/>
-    : <UserManagement/>
-    }
+      ) : configState == "RoleManagement" ? <RoleManagement />
+        : <UserManagement />
+      }
     </div>
   );
 }
