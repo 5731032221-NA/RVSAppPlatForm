@@ -275,18 +275,19 @@ export default function Dashboard() {
   const [selectedProperty, setSelectedProperty] = useState(
     store.getState().reducer.property
   );
+  const ratio = window.devicePixelRatio || 1;
   setInterval(() => {
     // console.log(parseInt(store.getState().reducer.compwidth) !== parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(store.getState().reducer.compwidth))
 
     if (
       compWidthState !=
-      document.getElementById("compwidth").offsetWidth + 19.8
+      document.getElementById("compwidth").offsetWidth
     ) {
       console.log(window.innerWidth < 1000)
       setSmallwidth(window.innerWidth < 1000)
       store.dispatch({
         type: EDIT_COMPWIDTH,
-        payload: document.getElementById("compwidth").offsetWidth + 19.8,
+        payload: (document.getElementById("compwidth").offsetWidth )*(ratio),
       });
       setCompWidth(document.getElementById("compwidth").offsetWidth);
     }

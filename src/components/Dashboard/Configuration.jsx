@@ -254,12 +254,12 @@ export default function Configuration() {
 
   function filterObject(obj, id) {
     for (var i in obj) {
-        if (!obj.hasOwnProperty(i)) continue;
-        if (typeof obj[i] == 'object') {
-            filterObject(obj[i], id);
-        } else if (i.id == id) {
-          return null; 
-        }
+      if (!obj.hasOwnProperty(i)) continue;
+      if (typeof obj[i] == 'object') {
+        filterObject(obj[i], id);
+      } else if (i.id == id) {
+        return null;
+      }
     }
     return obj;
   }
@@ -294,40 +294,59 @@ export default function Configuration() {
     console.log(array)
     console.log(array.length)
     for (var i = 0; i < array.length; i++) {
-        var obj = array[i];
-        console.log(obj.id,label)
-        if (obj.id === label) {
-            // splice out 1 element starting at position i
+      var obj = array[i];
+      console.log(obj.id, label)
+      if (obj.id === label) {
+        // splice out 1 element starting at position i
+        array.splice(i, 1);
+        return true;
+      }
+      if (obj.children) {
+        if (prune(obj.children, label)) {
+          if (obj.children.length === 0) {
+            // delete children property when empty
+            delete obj.children;
+
+            // or, to delete this parent altogether
+            // as a result of it having no more children
+            // do this instead
             array.splice(i, 1);
-            return true;
+          }
+          // return true;
         }
-        if (obj.children) {
-            if (prune(obj.children, label)) {
-                if (obj.children.length === 0) {
-                    // delete children property when empty
-                    delete obj.children;
-
-                    // or, to delete this parent altogether
-                    // as a result of it having no more children
-                    // do this instead
-                    array.splice(i, 1);
-                }
-                // return true;
-            }
-        }
+      }
     }
-}
+  }
+  
 
-  const habdleDelete = async (id) => {
+  const handleDelete = async (id) => {
     console.log("deleteid", id);
     let key = [0];
-    // let newData = data;
-    // let newData = data;
-     await prune(data.children,id);  
-    // if(prunedata) console.log("newData",newData);
-    // else console.log("newData",newData);
+
+    await prune(data.children, id);
   }
 
+  // const runningid = async (id) => {
+  //   for (var i = 0; i < array.length; i++) {
+  //     var obj = array[i];
+  //     console.log(obj.id, label)
+  //     if (obj.id === label) {
+        
+  //       return true;
+  //     }
+  //     if (obj.children) {
+  //       prune(obj.children, label);
+  //     }
+  //   }
+  // } 
+
+  const handleAdd = async (id) => {
+    console.log("addparentid", id);
+
+    // let key = [0];
+
+    // await prune(data.children, id);
+  }
 
 
   const renderTree = (nodes) => (
@@ -354,10 +373,10 @@ export default function Configuration() {
                   <IconButton>
                     <EditRoundedIcon />
                   </IconButton>
-                  <div onClick={() => habdleDelete(nodes.id)}>
-                  <IconButton>
-                    <DeleteRoundedIcon />
-                  </IconButton>
+                  <div onClick={() => handleDelete(nodes.id)}>
+                    <IconButton>
+                      <DeleteRoundedIcon />
+                    </IconButton>
                   </div>
                   <IconButton>
                     <MoreVertRoundedIcon />
@@ -394,10 +413,10 @@ export default function Configuration() {
                     <IconButton>
                       <EditRoundedIcon />
                     </IconButton>
-                    <div onClick={() => habdleDelete(nodes.id)}>
-                    <IconButton>
-                      <DeleteRoundedIcon />
-                    </IconButton>
+                    <div onClick={() => handleDelete(nodes.id)}>
+                      <IconButton>
+                        <DeleteRoundedIcon />
+                      </IconButton>
                     </div>
                     <IconButton>
                       <MoreVertRoundedIcon />
@@ -432,7 +451,7 @@ export default function Configuration() {
                     <IconButton>
                       <EditRoundedIcon />
                     </IconButton>
-                    <div onClick={() => habdleDelete(nodes.id)}>
+                    <div onClick={() => handleDelete(nodes.id)}>
                       <IconButton>
                         <DeleteRoundedIcon />
                       </IconButton>
