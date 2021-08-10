@@ -110,8 +110,8 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   menuButtonExpand: {
-    paddingRight: 20,
-    paddingLeft: 40,
+    marginRight:20,
+    marginLeft:40,
   },
   logoExpand: {
     marginLeft: -10,
@@ -226,7 +226,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       display: "none",
     },
+    marginLeft:-50
   },
+  
   rightBarStyle: {
     width: 280,
     zIndex: 2001,
@@ -496,7 +498,6 @@ export default function Dashboard() {
             alt="..."
             height={35}
           />
-
           <IconButton
             edge="start"
             color="inherit"
@@ -507,14 +508,14 @@ export default function Dashboard() {
               open && classes.menuButtonHidden
             )}
           >
-            <MenuIcon />
+            <MenuIcon style={{marginLeft:-40}}/>
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             RVS App Platform
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
-              <SearchIcon />
+              <SearchIcon style={{marginLeft:-45}} />
             </div>
             <InputBase
               placeholder=""
@@ -558,8 +559,9 @@ export default function Dashboard() {
               aria-haspopup="true"
               onClick={handlelanguageMenuOpen}
               style={{ color: "white" }}
+
             >
-              <AccountCircle style={{ fontSize: 38 }} />
+              <AccountCircle style={{ fontSize: 36}} />
             </IconButton>
             <Grid item spacing={1} style={{ paddingLeft: 20 }}>
               <Grid item spacing={0}>
@@ -616,7 +618,7 @@ export default function Dashboard() {
               onClick={handlelanguageMenuOpen}
               style={{ color: "white", paddingLeft: 20 }}
             >
-              <AccountCircle style={{ fontSize: 25 }} />
+              <AccountCircle style={{ fontSize: 30 }} />
             </IconButton>
             <Grid item spacing={1} style={{ paddingLeft: 10 }}>
               <Grid item spacing={0}>
@@ -783,8 +785,7 @@ export default function Dashboard() {
                             <ListItemText>{label}</ListItemText>
                         </ListItem>
                     ))}
-                </List> */}
-
+            </List> */}
         <List>
           {store.getState().reducer.lang == "en" ? (
             <MainListItems_en />
@@ -792,7 +793,6 @@ export default function Dashboard() {
             <MainListItems_en />
           )}
         </List>
-
         <Divider />
 
         {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
