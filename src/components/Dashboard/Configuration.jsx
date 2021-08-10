@@ -21,7 +21,15 @@ import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
 import FirstPageRoundedIcon from "@material-ui/icons/FirstPageRounded";
 import LastPageRoundedIcon from "@material-ui/icons/LastPageRounded";
-
+import Menu from "@material-ui/core/Menu";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import RoleManagement from "../RoleManagement";
 import UserManagement from "../UserManagement";
 import { ReactReduxContext, useSelector } from "react-redux";
@@ -40,11 +48,27 @@ const useStyles = makeStyles({
   },
 });
 
+const language = [
+  {
+    value: "TH",
+    label: "TH",
+  },
+  {
+    value: "EN",
+    label: "EN",
+  },
+];
+
 export default function Configuration() {
+
+  
   const classes = useStyles();
   const { store } = useContext(ReactReduxContext);
   const [expanded, setExpanded] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
+  const [addChild, setAddchild] = React.useState(null);
+  const [dialogAdd, setDialogAdd] = React.useState(false);
+  const [languageDialog, setLanguageDialog] = React.useState("EN");
   const [page, setPage] = React.useState("");
   const [data, setData] = React.useState({
     id: "root",
@@ -148,6 +172,17 @@ export default function Configuration() {
 
   // const [store.getState().reducer.configState, setstore.getState().reducer.configState] = React.useState("Configuration");
   const configState = useSelector(state => state.reducer.configState);
+  const handleLanguageDialog = (event) => {
+    setLanguageDialog(event.target.value);
+  };
+
+  const handleClick = (event) => {
+    setAddchild(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAddchild(false);
+  };
   const handleChangePage = (event) => {
     setPage(event.target.value);
   };
@@ -160,6 +195,14 @@ export default function Configuration() {
     setSelected(nodeIds);
   };
 
+  const handleDialogAdd = () => {
+    setAddchild(null);
+    setDialogAdd(true);
+  };
+
+  const handleDialogAddClose = () => {
+    setDialogAdd(false);
+  };
 
   const roleclick = () => {
     console.log("testclick")
@@ -326,23 +369,40 @@ export default function Configuration() {
     await prune(data.children, id);
   }
 
-  // const runningid = async (id) => {
-  //   for (var i = 0; i < array.length; i++) {
-  //     var obj = array[i];
-  //     console.log(obj.id, label)
-  //     if (obj.id === label) {
-        
-  //       return true;
-  //     }
-  //     if (obj.children) {
-  //       prune(obj.children, label);
-  //     }
-  //   }
-  // } 
+  const maxchildid = async (array,parentid) => {
+    let max = 0;
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      let num = parseInt(obj.id.replace(parentid+".", ""));
+      console.log("cc",max,num)
+      if(num > max) max = num
+    }
+    return max;
+  }
+
+  const runningid = async (array,label) => {
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      console.log(obj.id, label)
+      if (obj.id === label) {
+        if(obj.children){
+          return await maxchildid(obj.children,obj.id);
+        }
+        else {
+          console.log("label",label)
+          console.log("labelid",label+".1")
+          return label+".1"}
+      }
+      else if (obj.children) {
+        return await runningid(obj.children, label);
+      }
+    }
+  } 
 
   const handleAdd = async (id) => {
     console.log("addparentid", id);
-
+    let newid = await runningid(data,id)
+    console.log("newid",newid)
     // let key = [0];
 
     // await prune(data.children, id);
@@ -373,17 +433,157 @@ export default function Configuration() {
                   <IconButton>
                     <EditRoundedIcon />
                   </IconButton>
-                  <div onClick={() => handleDelete(nodes.id)}>
-                    <IconButton>
+                    <IconButton 
+                    onClick={() => handleDelete(nodes.id)}>
                       <DeleteRoundedIcon />
                     </IconButton>
-                  </div>
-                  <IconButton>
+                  <IconButton
+                aria-controls={nodes.id}
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
                     <MoreVertRoundedIcon />
                   </IconButton>
                 </Grid>
               </Grid>
               <Divider />
+              <Menu
+            id={nodes.id}
+            anchorEl={addChild}
+            keepMounted
+            open={Boolean(addChild)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleDialogAdd}>
+              {/* <MenuItem onClick={handleClose}> */}
+              <AddRoundedIcon /> Add child
+            </MenuItem>
+          </Menu>
+
+          <Dialog
+            fullWidth="true"
+            maxWidth="xs"
+            open={dialogAdd}
+            onClose={handleDialogAddClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              New Master Config
+            </DialogTitle>
+
+            <DialogContent>
+              <Container maxWidth="xl" disableGutters>
+                <TextField
+                  autoFocus
+                  helperText={
+                    <Grid
+                      container
+                      justifyContent="flex-end"
+                      alignItems="center"
+                    >
+                      <Typography variant="title1" color="initial">
+                        3/50
+                      </Typography>
+                    </Grid>
+                  }
+                  id="outlined-basic"
+                  label="Parent"
+                  variant="outlined"
+                  fullWidth
+                />
+                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                  <TextField
+                    autoFocus
+                    id="outlined-basic"
+                    label="Lastname"
+                    variant="outlined"
+                    helperText={
+                      <Grid
+                        container
+                        justifyContent="flex-end"
+                        alignItems="center"
+                      >
+                        <Typography variant="title1" color="initial">
+                          0/50
+                        </Typography>
+                      </Grid>
+                    }
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                  <TextField
+                    autoFocus
+                    id="outlined-basic"
+                    label="Decription (en)"
+                    variant="outlined"
+                    helperText={
+                      <Grid
+                        container
+                        justifyContent="flex-end"
+                        alignItems="center"
+                      >
+                        <Typography variant="title1" color="initial">
+                          0/50
+                        </Typography>
+                      </Grid>
+                    }
+                    fullWidth
+                  />
+                </Grid>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  style={{ paddingTop: 20 }}
+                >
+                  <Grid item style={{ marginRight: 15 }}>
+                    <AddRoundedIcon />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="outlined-select-language"
+                      select
+                      // fullWidth
+                      alignItems="flex-end"
+                      label="Add Language"
+                      value={languageDialog}
+                      onChange={handleLanguageDialog}
+                      SelectProps={{
+                        native: true,
+                      }}
+                      variant="outlined"
+                    >
+                      {language.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                </Grid>
+              </Container>
+            </DialogContent>
+            <DialogActions style={{ padding: 20 }}>
+              <Button
+                onClick={handleDialogAddClose}
+                variant="text"
+                color="primary"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleDialogAddClose}
+                variant="contained"
+                color="primary"
+              >
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
             </div>
           }
         >
@@ -413,17 +613,156 @@ export default function Configuration() {
                     <IconButton>
                       <EditRoundedIcon />
                     </IconButton>
-                    <div onClick={() => handleDelete(nodes.id)}>
-                      <IconButton>
+                      <IconButton onClick={() => handleAdd(nodes.id)}>
                         <DeleteRoundedIcon />
                       </IconButton>
-                    </div>
-                    <IconButton>
+                      <IconButton
+                aria-controls={nodes.id}
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
                       <MoreVertRoundedIcon />
                     </IconButton>
                   </Grid>
                 </Grid>
                 <Divider />
+                <Menu
+            id={nodes.id}
+            anchorEl={addChild}
+            keepMounted
+            open={Boolean(addChild)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleDialogAdd}>
+              {/* <MenuItem onClick={handleClose}> */}
+              <AddRoundedIcon /> Add child
+            </MenuItem>
+          </Menu>
+
+          <Dialog
+            fullWidth="true"
+            maxWidth="xs"
+            open={dialogAdd}
+            onClose={handleDialogAddClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              New Master Config
+            </DialogTitle>
+
+            <DialogContent>
+              <Container maxWidth="xl" disableGutters>
+                <TextField
+                  autoFocus
+                  helperText={
+                    <Grid
+                      container
+                      justifyContent="flex-end"
+                      alignItems="center"
+                    >
+                      <Typography variant="title1" color="initial">
+                        3/50
+                      </Typography>
+                    </Grid>
+                  }
+                  id="outlined-basic"
+                  label="Parent"
+                  variant="outlined"
+                  fullWidth
+                />
+                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                  <TextField
+                    autoFocus
+                    id="outlined-basic"
+                    label="Lastname"
+                    variant="outlined"
+                    helperText={
+                      <Grid
+                        container
+                        justifyContent="flex-end"
+                        alignItems="center"
+                      >
+                        <Typography variant="title1" color="initial">
+                          0/50
+                        </Typography>
+                      </Grid>
+                    }
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                  <TextField
+                    autoFocus
+                    id="outlined-basic"
+                    label="Decription (en)"
+                    variant="outlined"
+                    helperText={
+                      <Grid
+                        container
+                        justifyContent="flex-end"
+                        alignItems="center"
+                      >
+                        <Typography variant="title1" color="initial">
+                          0/50
+                        </Typography>
+                      </Grid>
+                    }
+                    fullWidth
+                  />
+                </Grid>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  style={{ paddingTop: 20 }}
+                >
+                  <Grid item style={{ marginRight: 15 }}>
+                    <AddRoundedIcon />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="outlined-select-language"
+                      select
+                      // fullWidth
+                      alignItems="flex-end"
+                      label="Add Language"
+                      value={languageDialog}
+                      onChange={handleLanguageDialog}
+                      SelectProps={{
+                        native: true,
+                      }}
+                      variant="outlined"
+                    >
+                      {language.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                </Grid>
+              </Container>
+            </DialogContent>
+            <DialogActions style={{ padding: 20 }}>
+              <Button
+                onClick={handleDialogAddClose}
+                variant="text"
+                color="primary"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleDialogAddClose}
+                variant="contained"
+                color="primary"
+              >
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
               </div>
             }
           >
@@ -451,17 +790,156 @@ export default function Configuration() {
                     <IconButton>
                       <EditRoundedIcon />
                     </IconButton>
-                    <div onClick={() => handleDelete(nodes.id)}>
-                      <IconButton>
+                      <IconButton onClick={() => handleDelete(nodes.id)}>
                         <DeleteRoundedIcon />
                       </IconButton>
-                    </div>
-                    <IconButton>
+                      <IconButton
+                aria-controls={nodes.id}
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
                       <MoreVertRoundedIcon />
                     </IconButton>
                   </Grid>
                 </Grid>
                 <Divider />
+                <Menu
+            id={nodes.id}
+            anchorEl={addChild}
+            keepMounted
+            open={Boolean(addChild)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleDialogAdd}>
+              {/* <MenuItem onClick={handleClose}> */}
+              <AddRoundedIcon /> Add child
+            </MenuItem>
+          </Menu>
+
+          <Dialog
+            fullWidth="true"
+            maxWidth="xs"
+            open={dialogAdd}
+            onClose={handleDialogAddClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              New Master Config
+            </DialogTitle>
+
+            <DialogContent>
+              <Container maxWidth="xl" disableGutters>
+                <TextField
+                  autoFocus
+                  helperText={
+                    <Grid
+                      container
+                      justifyContent="flex-end"
+                      alignItems="center"
+                    >
+                      <Typography variant="title1" color="initial">
+                        3/50
+                      </Typography>
+                    </Grid>
+                  }
+                  id="outlined-basic"
+                  label="Parent"
+                  variant="outlined"
+                  fullWidth
+                />
+                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                  <TextField
+                    autoFocus
+                    id="outlined-basic"
+                    label="Lastname"
+                    variant="outlined"
+                    helperText={
+                      <Grid
+                        container
+                        justifyContent="flex-end"
+                        alignItems="center"
+                      >
+                        <Typography variant="title1" color="initial">
+                          0/50
+                        </Typography>
+                      </Grid>
+                    }
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                  <TextField
+                    autoFocus
+                    id="outlined-basic"
+                    label="Decription (en)"
+                    variant="outlined"
+                    helperText={
+                      <Grid
+                        container
+                        justifyContent="flex-end"
+                        alignItems="center"
+                      >
+                        <Typography variant="title1" color="initial">
+                          0/50
+                        </Typography>
+                      </Grid>
+                    }
+                    fullWidth
+                  />
+                </Grid>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  style={{ paddingTop: 20 }}
+                >
+                  <Grid item style={{ marginRight: 15 }}>
+                    <AddRoundedIcon />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="outlined-select-language"
+                      select
+                      // fullWidth
+                      alignItems="flex-end"
+                      label="Add Language"
+                      value={languageDialog}
+                      onChange={handleLanguageDialog}
+                      SelectProps={{
+                        native: true,
+                      }}
+                      variant="outlined"
+                    >
+                      {language.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                </Grid>
+              </Container>
+            </DialogContent>
+            <DialogActions style={{ padding: 20 }}>
+              <Button
+                onClick={handleDialogAddClose}
+                variant="text"
+                color="primary"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleDialogAddClose}
+                variant="contained"
+                color="primary"
+              >
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
               </div>
             }
           >
