@@ -283,7 +283,6 @@ export default function Dashboard() {
       compWidthState !=
       document.getElementById("compwidth").offsetWidth
     ) {
-      console.log(window.innerWidth < 1000)
       setSmallwidth(window.innerWidth < 1000)
       store.dispatch({
         type: EDIT_COMPWIDTH,
