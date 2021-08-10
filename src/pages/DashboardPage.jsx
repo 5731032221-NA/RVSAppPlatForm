@@ -252,6 +252,7 @@ export default function Dashboard() {
   const [open, setOpen] = React.useState(false);
   const [themeState, setThemeState] = React.useState(classes.themeDefault);
   const [wordColor, setWordColor] = React.useState("#2D62ED");
+  const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000)
   const [themeFontState, setThemeFontState] = React.useState(
     classes.themeFontDefault
   );
@@ -281,6 +282,8 @@ export default function Dashboard() {
       compWidthState !=
       document.getElementById("compwidth").offsetWidth + 19.8
     ) {
+      console.log(window.innerWidth < 1000)
+      setSmallwidth(window.innerWidth < 1000)
       store.dispatch({
         type: EDIT_COMPWIDTH,
         payload: document.getElementById("compwidth").offsetWidth + 19.8,
@@ -664,7 +667,7 @@ export default function Dashboard() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      {(!open && window.innerWidth < 480) ? null: (
+      {(!open && smallwidth) ? null: (
       <Drawer
         variant="permanent"
         classes={{
