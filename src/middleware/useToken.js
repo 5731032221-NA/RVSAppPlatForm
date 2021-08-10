@@ -36,7 +36,7 @@ export default function useToken() {
     const getToken = () => {
         const tokenString = sessionStorage.getItem('token');
         const userToken = JSON.parse(tokenString);
-        console.log("decode",decodeToken(sessionStorage.getItem('token')))
+        // console.log("decode",decodeToken(sessionStorage.getItem('token')))
         // console.log("userToken", userToken)
         // if (userToken != null) {
         //     if (userToken.msg != "Invalid Username or Password") {

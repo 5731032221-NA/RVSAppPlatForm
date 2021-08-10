@@ -27,105 +27,6 @@ import UserManagement from "../UserManagement";
 import { ReactReduxContext, useSelector } from "react-redux";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
 
-const data = {
-  id: "root",
-  name: "Configuration",
-  children: [
-    {
-      id: "1.1",
-      name: "PMS Configuration",
-      children: [
-        {
-          id: "1.1.1",
-          name: "Property Configuration",
-          children: [
-            {
-              id: "1.1.1.1",
-              name: "Property Master",
-            },
-            {
-              id: "1.1.1.2",
-              name: "Building Master",
-            },
-            {
-              id: "1.1.1.3",
-              name: "Exposure ",
-            },
-            {
-              id: "1.1.1.4",
-              name: "Floor ",
-            },
-            {
-              id: "1.1.1.5",
-              name: "Zone/Wing",
-            },
-          ],
-        },
-        {
-          id: "1.1.2",
-          name: "Room Configuration",
-          children: [
-            {
-              id: "1.1.2.1",
-              name: "Room Type",
-            },
-            {
-              id: "1.1.2.2",
-              name: "Room Category",
-            },
-            {
-              id: "1.1.2.3",
-              name: "Room Master Maintenance",
-            },
-          ],
-        },
-        {
-          id: "1.1.3",
-          name: "Item Configuration",
-          children: [
-            {
-              id: "1.1.3.1",
-              name: "Item Type",
-            },
-            {
-              id: "1.1.3.2",
-              name: "Item Category",
-            },
-          ],
-        },
-        {
-          id: "1.1.4",
-          name: "Reservation Configuration",
-          children: [
-            {
-              id: "1.1.4.1",
-              name: "Market segment Maintenance",
-            },
-            {
-              id: "1.1.4.2",
-              name: "Source Maintenance",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "1.2",
-      name: "System Configuration",
-      children: [
-        {
-          id: "1.2.1",
-          name: "User Management",
-        },
-        {
-          id: "1.2.2",
-          name: "Role Management",
-        },
-      ],
-    },
-  ],
-};
-
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -145,6 +46,105 @@ export default function Configuration() {
   const [expanded, setExpanded] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState("");
+  const [data, setData] = React.useState({
+    id: "root",
+    name: "Configuration",
+    children: [
+      {
+        id: "1.1",
+        name: "PMS Configuration",
+        children: [
+          {
+            id: "1.1.1",
+            name: "Property Configuration",
+            children: [
+              {
+                id: "1.1.1.1",
+                name: "Property Master",
+              },
+              {
+                id: "1.1.1.2",
+                name: "Building Master",
+              },
+              {
+                id: "1.1.1.3",
+                name: "Exposure ",
+              },
+              {
+                id: "1.1.1.4",
+                name: "Floor ",
+              },
+              {
+                id: "1.1.1.5",
+                name: "Zone/Wing",
+              },
+            ],
+          },
+          {
+            id: "1.1.2",
+            name: "Room Configuration",
+            children: [
+              {
+                id: "1.1.2.1",
+                name: "Room Type",
+              },
+              {
+                id: "1.1.2.2",
+                name: "Room Category",
+              },
+              {
+                id: "1.1.2.3",
+                name: "Room Master Maintenance",
+              },
+            ],
+          },
+          {
+            id: "1.1.3",
+            name: "Item Configuration",
+            children: [
+              {
+                id: "1.1.3.1",
+                name: "Item Type",
+              },
+              {
+                id: "1.1.3.2",
+                name: "Item Category",
+              },
+            ],
+          },
+          {
+            id: "1.1.4",
+            name: "Reservation Configuration",
+            children: [
+              {
+                id: "1.1.4.1",
+                name: "Market segment Maintenance",
+              },
+              {
+                id: "1.1.4.2",
+                name: "Source Maintenance",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "1.2",
+        name: "System Configuration",
+        children: [
+          {
+            id: "1.2.1",
+            name: "User Management",
+          },
+          {
+            id: "1.2.2",
+            name: "Role Management",
+          },
+        ],
+      },
+    ],
+  }
+  )
 
   // const [store.getState().reducer.configState, setstore.getState().reducer.configState] = React.useState("Configuration");
   const configState = useSelector(state => state.reducer.configState);
@@ -183,6 +183,151 @@ export default function Configuration() {
     // setstore.getState().reducer.configState("UserManagement")
   }
 
+  // const delnode = (data, key) => {
+
+  //   // data.forEach(function (subdata) {
+  //   //   if (subdata.hasOwnProperty('children')) {
+  //   //     delnode(subdata.children,)
+  //   //   }
+  //   // })
+
+  //   for (let i = 0; i < data.length; i++) {
+  //     if (data[i].hasOwnProperty('children')) {
+  //       delnode(data[i].children, data[i][i])
+  //     }
+  //   }
+  // }
+
+  function addObj(itemArr, nId, newObj) {
+    for (var i = 0; i < itemArr.length; i++) {
+      if (itemArr[i].id && itemArr[i].id === nId) {
+        itemArr.push(newObj);
+      } else {
+        if (itemArr[i].items) {
+          addObj(itemArr[i].items, nId, newObj);
+        }
+      }
+    }
+  }
+
+  function chgObj(itemArr, nId, operator, prop, val) {
+    for (var i = 0; i < itemArr.length; i++) {
+      if (itemArr[i].id && itemArr[i].id === nId) {
+        switch (operator) {
+          case '+':
+            if (!itemArr[i][prop]) {
+              itemArr[i][prop] = val;
+            }
+            break;
+
+          case '-':
+            if (itemArr[i][prop]) {
+              delete itemArr[i][prop];
+            }
+            break;
+
+          case '^':
+            if (itemArr[i][prop]) {
+              itemArr[i][prop] = val;
+            }
+            break;
+        }
+      } else {
+        if (itemArr[i].items) {
+          chgObj(itemArr[i].items, nId, operator, prop, val);
+        }
+      }
+    }
+  }
+
+  function dltObj(itemArr, nId) {
+    for (var i = 0; i < itemArr.length; i++) {
+      if (itemArr[i].id && itemArr[i].id === nId) {
+        itemArr.splice(i, 1);
+      } else {
+        if (itemArr[i].items) {
+          dltObj(itemArr[i].items, nId);
+        }
+      }
+    }
+  }
+
+  function filterObject(obj, id) {
+    for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) continue;
+        if (typeof obj[i] == 'object') {
+            filterObject(obj[i], id);
+        } else if (i.id == id) {
+          return null; 
+        }
+    }
+    return obj;
+  }
+
+  // const delnode = async (data, id) => {
+
+  //   // data.forEach(function (subdata) {
+  //   //   if (subdata.hasOwnProperty('children')) {
+  //   //     delnode(subdata.children,)
+  //   //   }
+  //   // })
+  //   console.log("hmm")
+
+  //   data.forEach(function (subdata) {
+  //     if (subdata.hasOwnProperty('children')) {
+  //       delnode(subdata.children, id)
+  //     }
+  //     console.log(subdata)
+  //     console.log(subdata.id,id)
+  //     if(subdata.id == id){
+  //     console.log("del",subdata.name)
+  //     // delete subdata.id;
+  //     array.splice(i, 1);
+  //     }
+  //   })
+
+  //   return data;
+  // } 
+
+  async function prune(array, label) {
+    console.log("pr")
+    console.log(array)
+    console.log(array.length)
+    for (var i = 0; i < array.length; i++) {
+        var obj = array[i];
+        console.log(obj.id,label)
+        if (obj.id === label) {
+            // splice out 1 element starting at position i
+            array.splice(i, 1);
+            return true;
+        }
+        if (obj.children) {
+            if (prune(obj.children, label)) {
+                if (obj.children.length === 0) {
+                    // delete children property when empty
+                    delete obj.children;
+
+                    // or, to delete this parent altogether
+                    // as a result of it having no more children
+                    // do this instead
+                    array.splice(i, 1);
+                }
+                // return true;
+            }
+        }
+    }
+}
+
+  const habdleDelete = async (id) => {
+    console.log("deleteid", id);
+    let key = [0];
+    // let newData = data;
+    // let newData = data;
+     await prune(data.children,id);  
+    // if(prunedata) console.log("newData",newData);
+    // else console.log("newData",newData);
+  }
+
 
 
   const renderTree = (nodes) => (
@@ -201,7 +346,7 @@ export default function Configuration() {
                     style={{ paddind: 5 }}
                   >
                     <div onClick={testclick}>
-                    {nodes.name}
+                      {nodes.name}
                     </div>
                   </Typography>
                 </Grid>
@@ -209,9 +354,11 @@ export default function Configuration() {
                   <IconButton>
                     <EditRoundedIcon />
                   </IconButton>
+                  <div onClick={() => habdleDelete(nodes.id)}>
                   <IconButton>
                     <DeleteRoundedIcon />
                   </IconButton>
+                  </div>
                   <IconButton>
                     <MoreVertRoundedIcon />
                   </IconButton>
@@ -239,7 +386,7 @@ export default function Configuration() {
                       style={{ paddind: 5 }}
                     >
                       <div onClick={roleclick}>
-                      {nodes.name}
+                        {nodes.name}
                       </div>
                     </Typography>
                   </Grid>
@@ -247,9 +394,11 @@ export default function Configuration() {
                     <IconButton>
                       <EditRoundedIcon />
                     </IconButton>
+                    <div onClick={() => habdleDelete(nodes.id)}>
                     <IconButton>
                       <DeleteRoundedIcon />
                     </IconButton>
+                    </div>
                     <IconButton>
                       <MoreVertRoundedIcon />
                     </IconButton>
@@ -283,9 +432,11 @@ export default function Configuration() {
                     <IconButton>
                       <EditRoundedIcon />
                     </IconButton>
-                    <IconButton>
-                      <DeleteRoundedIcon />
-                    </IconButton>
+                    <div onClick={() => habdleDelete(nodes.id)}>
+                      <IconButton>
+                        <DeleteRoundedIcon />
+                      </IconButton>
+                    </div>
                     <IconButton>
                       <MoreVertRoundedIcon />
                     </IconButton>

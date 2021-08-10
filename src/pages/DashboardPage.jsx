@@ -625,7 +625,6 @@ export default function Dashboard() {
                   style={{ fontSize: 11, paddingTop: 10, width: 48 }}
                 >
                   {sessionStorage.getItem("name")}
-                  console.log();
                 </Typography>
               </Grid>
               <Grid item spacing={1}>
@@ -663,7 +662,7 @@ export default function Dashboard() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-
+      {(!open && window.innerWidth < 480) ? null: (
       <Drawer
         variant="permanent"
         classes={{
@@ -736,7 +735,7 @@ export default function Dashboard() {
                     {store.getState().reducer.property}
                   </Typography>
                 </Grid> */}
-
+              
               <Grid class={classes.propertyForm}>
                 <BusinessIcon
                   style={{ paddingRight: 20, color: "#FFFFFF", fontSize: 45 }}
@@ -798,6 +797,7 @@ export default function Dashboard() {
 
         {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
       </Drawer>
+      )}
 
       <main id="compwidth" className={classes.content}>
         <div className={classes.appBarSpacer} />
