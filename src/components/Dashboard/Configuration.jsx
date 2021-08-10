@@ -404,7 +404,6 @@ export default function Configuration() {
     let newid = await runningid(data,id)
     console.log("newid",newid)
     // let key = [0];
-
     // await prune(data.children, id);
   }
 
@@ -613,7 +612,7 @@ export default function Configuration() {
                     <IconButton>
                       <EditRoundedIcon />
                     </IconButton>
-                      <IconButton onClick={() => handleAdd(nodes.id)}>
+                      <IconButton onClick={() => handleDelete(nodes.id)}>
                         <DeleteRoundedIcon />
                       </IconButton>
                       <IconButton
