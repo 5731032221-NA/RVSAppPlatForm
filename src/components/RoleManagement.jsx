@@ -22,7 +22,7 @@ import {
 } from "@material-ui/core";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import IconButton from "@material-ui/core/IconButton";
-import EditRoundedIcon from "@material-ui/icons/EditRounded";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
 import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
@@ -35,6 +35,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import Chip from "@material-ui/core/Chip";
 
 // Generate Order Data
 function createData(
@@ -86,14 +87,107 @@ const rows = [
     "-"
   ),
 ];
-const language = [
+const attribute = [
   {
-    value: "TH",
-    label: "TH",
+    value: "Minibar",
+    label: "Minibar",
   },
   {
-    value: "EN",
-    label: "EN",
+    value: "NTV",
+    label: "NTV",
+  },
+];
+const properties = [
+  {
+    value: "1",
+    label: "Novotel Pattaya",
+  },
+  {
+    value: "2",
+    label: "Novotel Bangkok",
+  },
+];
+const roomType = [
+  {
+    value: "1",
+    label: "SUPERIOR",
+  },
+  {
+    value: "2",
+    label: "DELUX",
+  },
+];
+const building = [
+  {
+    value: "1",
+    label: "TOWER 1",
+  },
+
+  {
+    value: "2",
+    label: "TOWER 2",
+  },
+  {
+    value: "3",
+    label: "TOWER 3",
+  },
+];
+const wing = [
+  {
+    value: "1",
+    label: "East",
+  },
+  {
+    value: "2",
+    label: "North",
+  },
+  {
+    value: "3",
+    label: "South",
+  },
+  {
+    value: "4",
+    label: "West",
+  },
+];
+const exposure = [
+  {
+    value: "1",
+    label: "Mountain View",
+  },
+  {
+    value: "2",
+    label: "Sea View",
+  },
+];
+const roomSize = [
+  {
+    value: "1",
+    label: "56 sq.m",
+  },
+  {
+    value: "2",
+    label: "100 sq.m",
+  },
+];
+const roomSeg = [
+  {
+    value: "1",
+    label: "90",
+  },
+  {
+    value: "2",
+    label: "150",
+  },
+];
+const roomStatus = [
+  {
+    value: "1",
+    label: "In House",
+  },
+  {
+    value: "2",
+    label: "Assign Clean",
   },
 ];
 
@@ -121,10 +215,43 @@ const useStyles = makeStyles((theme) => ({
 export default function RoleManagement() {
   const classes = useStyles();
   const [dialogAddRoom, setDialogAddRoom] = React.useState(false);
-  const [languageDialog, setLanguageDialog] = React.useState("EN");
+  const [dialogEditRoom, setDialogEditRoom] = React.useState(false);
+  const [attributeDialog, setAttributeDialog] = React.useState("Minibar");
+  const [propertyDialog, setPropertyDialog] = React.useState("1");
+  const [roomTypeDialog, setRoomTypeDialog] = React.useState("1");
+  const [buildingDialog, setBuildingDialog] = React.useState("1");
+  const [wingDialog, setWingDialog] = React.useState("1");
+  const [exposureDialog, setExposureDialog] = React.useState("1");
+  const [roomSizeDialog, setRoomSizeDialog] = React.useState("1");
+  const [roomSegDialog, setRoomSegDialog] = React.useState("1");
+  const [roomStatusDialog, setRoomStatusDialog] = React.useState("1");
 
-  const handleLanguageDialog = (event) => {
-    setLanguageDialog(event.target.value);
+  const handleAttributeDialog = (event) => {
+    setAttributeDialog(event.target.value);
+  };
+  const handlePropertyDialog = (event) => {
+    setPropertyDialog(event.target.value);
+  };
+  const handleRoomTypeDialog = (event) => {
+    setRoomTypeDialog(event.target.value);
+  };
+  const handleBuildingDialog = (event) => {
+    setBuildingDialog(event.target.value);
+  };
+  const handleWingDialog = (event) => {
+    setWingDialog(event.target.value);
+  };
+  const handleExposureDialog = (event) => {
+    setExposureDialog(event.target.value);
+  };
+  const handleRoomSizeDialog = (event) => {
+    setRoomSizeDialog(event.target.value);
+  };
+  const handleRoomSegDialog = (event) => {
+    setRoomSegDialog(event.target.value);
+  };
+  const handleRoomStatusDialog = (event) => {
+    setRoomStatusDialog(event.target.value);
   };
   const handleDialogAddRoom = () => {
     setDialogAddRoom(true);
@@ -132,6 +259,13 @@ export default function RoleManagement() {
 
   const handleDialogAddRoomClose = () => {
     setDialogAddRoom(false);
+  };
+  const handleDialogEditRoom = () => {
+    setDialogEditRoom(true);
+  };
+
+  const handleDialogEditRoomClose = () => {
+    setDialogEditRoom(false);
   };
 
   return (
@@ -217,12 +351,23 @@ export default function RoleManagement() {
                       label="Property"
                       variant="outlined"
                       fullWidth
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      value={propertyDialog}
+                      onChange={handlePropertyDialog}
+                    >
+                      {properties.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        autoFocus
+                        // autoFocus
                         id="outlined-basic"
                         label="Room Number"
                         variant="outlined"
@@ -231,19 +376,30 @@ export default function RoleManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        autoFocus
+                        // autoFocus
                         select
                         id="outlined-basic"
                         label="Room Type"
                         variant="outlined"
                         fullWidth
-                      />
+                        SelectProps={{
+                          native: true,
+                        }}
+                        value={roomTypeDialog}
+                        onChange={handleRoomTypeDialog}
+                      >
+                        {roomType.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 15 }}>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                       <TextField
-                        autoFocus
+                        // autoFocus
                         id="outlined-basic"
                         label="Floor"
                         variant="outlined"
@@ -252,67 +408,133 @@ export default function RoleManagement() {
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                       <TextField
-                        autoFocus
+                        // autoFocus
                         select
                         id="outlined-basic"
                         label="Building"
                         variant="outlined"
                         fullWidth
-                      />
+                        SelectProps={{
+                          native: true,
+                        }}
+                        value={buildingDialog}
+                        onChange={handleBuildingDialog}
+                      >
+                        {building.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                       <TextField
-                        autoFocus
+                        // autoFocus
                         select
                         id="outlined-basic"
                         label="Wing"
                         variant="outlined"
                         fullWidth
-                      />
+                        SelectProps={{
+                          native: true,
+                        }}
+                        value={wingDialog}
+                        onChange={handleWingDialog}
+                      >
+                        {wing.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Room Number"
-                        variant="outlined"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        autoFocus
+                        // autoFocus
                         select
                         id="outlined-basic"
                         label="Exposure"
                         variant="outlined"
                         fullWidth
-                      />
+                        SelectProps={{
+                          native: true,
+                        }}
+                        value={exposureDialog}
+                        onChange={handleExposureDialog}
+                      >
+                        {exposure.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        // autoFocus
+                        select
+                        id="outlined-basic"
+                        label="Room Size"
+                        variant="outlined"
+                        fullWidth
+                        SelectProps={{
+                          native: true,
+                        }}
+                        value={roomSizeDialog}
+                        onChange={handleRoomSizeDialog}
+                      >
+                        {roomSize.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        autoFocus
+                        // autoFocus
                         select
                         id="outlined-basic"
-                        label="Room Seq"
+                        label="Room Seg"
                         variant="outlined"
                         fullWidth
-                      />
+                        SelectProps={{
+                          native: true,
+                        }}
+                        value={roomSegDialog}
+                        onChange={handleRoomSegDialog}
+                      >
+                        {roomSeg.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        autoFocus
+                        // autoFocus
                         select
                         id="outlined-basic"
                         label="Room Status"
                         variant="outlined"
                         fullWidth
-                      />
+                        SelectProps={{
+                          native: true,
+                        }}
+                        value={roomStatusDialog}
+                        onChange={handleRoomStatusDialog}
+                      >
+                        {roomStatus.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid
@@ -324,26 +546,27 @@ export default function RoleManagement() {
                   >
                     <TextField
                       fullWidth
-                      autoFocus
+                      // autoFocus
                       id="outlined-select-language"
                       select
                       // fullWidth
 
-                      label="Add Language"
-                      value={languageDialog}
-                      onChange={handleLanguageDialog}
+                      label="Attribute"
+                      value={attributeDialog}
+                      onChange={handleAttributeDialog}
                       SelectProps={{
                         native: true,
                       }}
                       variant="outlined"
                     >
-                      {language.map((option) => (
+                      {attribute.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
                         </option>
                       ))}
                     </TextField>
                   </Grid>
+
                   <Grid
                     container
                     direction="row"
@@ -379,6 +602,7 @@ export default function RoleManagement() {
                 </Button>
               </DialogActions>
             </Dialog>
+            {/* ---------------------------------------- */}
             <Grid container>
               <Table size="small">
                 <TableHead>
@@ -412,11 +636,8 @@ export default function RoleManagement() {
                       <TableCell>{row.attribute}</TableCell>
 
                       <TableCell align="center">
-                        <IconButton>
-                          <EditRoundedIcon />
-                        </IconButton>
-                        <IconButton>
-                          <SaveRoundedIcon />
+                        <IconButton onClick={handleDialogEditRoom}>
+                          <EditOutlinedIcon />
                         </IconButton>
                       </TableCell>
                       {/* <TableCell align="right">{row.amount}</TableCell> */}
@@ -424,6 +645,280 @@ export default function RoleManagement() {
                   ))}
                 </TableBody>
               </Table>
+              {/* ==================== Dialog Edit Room========================= */}
+              <Dialog
+                fullWidth="true"
+                maxWidth="sm"
+                open={dialogEditRoom}
+                onClose={handleDialogEditRoomClose}
+                aria-labelledby="form-dialog-title"
+              >
+                <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                  Edit Room Master
+                </DialogTitle>
+
+                <DialogContent>
+                  <Container maxWidth="xl" disableGutters>
+                    <Grid container>
+                      <TextField
+                        autoFocus
+                        select
+                        id="outlined-basic"
+                        label="Property"
+                        variant="outlined"
+                        fullWidth
+                        SelectProps={{
+                          native: true,
+                        }}
+                        value={propertyDialog}
+                        onChange={handlePropertyDialog}
+                      >
+                        {properties.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <TextField
+                          // autoFocus
+                          id="outlined-basic"
+                          label="Room Number"
+                          variant="outlined"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <TextField
+                          // autoFocus
+                          select
+                          id="outlined-basic"
+                          label="Room Type"
+                          variant="outlined"
+                          fullWidth
+                          SelectProps={{
+                            native: true,
+                          }}
+                          value={roomTypeDialog}
+                          onChange={handleRoomTypeDialog}
+                        >
+                          {roomType.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </TextField>
+                      </Grid>
+                    </Grid>
+                    <Grid container spacing={2} style={{ paddingTop: 15 }}>
+                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                        <TextField
+                          // autoFocus
+                          id="outlined-basic"
+                          label="Floor"
+                          variant="outlined"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                        <TextField
+                          // autoFocus
+                          select
+                          id="outlined-basic"
+                          label="Building"
+                          variant="outlined"
+                          fullWidth
+                          SelectProps={{
+                            native: true,
+                          }}
+                          value={buildingDialog}
+                          onChange={handleBuildingDialog}
+                        >
+                          {building.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </TextField>
+                      </Grid>
+                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                        <TextField
+                          // autoFocus
+                          select
+                          id="outlined-basic"
+                          label="Wing"
+                          variant="outlined"
+                          fullWidth
+                          SelectProps={{
+                            native: true,
+                          }}
+                          value={wingDialog}
+                          onChange={handleWingDialog}
+                        >
+                          {wing.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </TextField>
+                      </Grid>
+                    </Grid>
+                    <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <TextField
+                          // autoFocus
+                          select
+                          id="outlined-basic"
+                          label="Exposure"
+                          variant="outlined"
+                          fullWidth
+                          SelectProps={{
+                            native: true,
+                          }}
+                          value={exposureDialog}
+                          onChange={handleExposureDialog}
+                        >
+                          {exposure.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </TextField>
+                      </Grid>
+                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <TextField
+                          // autoFocus
+                          select
+                          id="outlined-basic"
+                          label="Room Size"
+                          variant="outlined"
+                          fullWidth
+                          SelectProps={{
+                            native: true,
+                          }}
+                          value={roomSizeDialog}
+                          onChange={handleRoomSizeDialog}
+                        >
+                          {roomSize.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </TextField>
+                      </Grid>
+                    </Grid>
+                    <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <TextField
+                          // autoFocus
+                          select
+                          id="outlined-basic"
+                          label="Room Seg"
+                          variant="outlined"
+                          fullWidth
+                          SelectProps={{
+                            native: true,
+                          }}
+                          value={roomSegDialog}
+                          onChange={handleRoomSegDialog}
+                        >
+                          {roomSeg.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </TextField>
+                      </Grid>
+                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <TextField
+                          // autoFocus
+                          select
+                          id="outlined-basic"
+                          label="Room Status"
+                          variant="outlined"
+                          fullWidth
+                          SelectProps={{
+                            native: true,
+                          }}
+                          value={roomStatusDialog}
+                          onChange={handleRoomStatusDialog}
+                        >
+                          {roomStatus.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </TextField>
+                      </Grid>
+                    </Grid>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="flex-end"
+                      alignItems="center"
+                      style={{ paddingTop: 10 }}
+                    >
+                      <TextField
+                        fullWidth
+                        // autoFocus
+                        id="outlined-select-language"
+                        select
+                        // fullWidth
+
+                        label="Attribute"
+                        value={attributeDialog}
+                        onChange={handleAttributeDialog}
+                        SelectProps={{
+                          native: true,
+                        }}
+                        variant="outlined"
+                      >
+                        {attribute.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
+                    </Grid>
+
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="flex-start"
+                      alignItems="center"
+                      style={{ paddingTop: 10 }}
+                    >
+                      <TextField
+                        fullWidth
+                        // id="outlined-multiline-static"
+                        label="Description"
+                        multiline
+                        rows={4}
+                        variant="outlined"
+                      />
+                    </Grid>
+                  </Container>
+                </DialogContent>
+                <DialogActions style={{ padding: 20 }}>
+                  <Button
+                    onClick={handleDialogEditRoomClose}
+                    variant="text"
+                    color="primary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleDialogEditRoomClose}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Save
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              {/* -------------------------------------- */}
               <Grid
                 container
                 direction="row"
