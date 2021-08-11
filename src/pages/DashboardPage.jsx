@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import clsx from "clsx";
-import { ReactReduxContext } from "react-redux";
+import { ReactReduxContext, useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -249,7 +249,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-
+  const componentState = useSelector(state => state.reducer.componentState);
   const [open, setOpen] = React.useState(false);
   const [themeState, setThemeState] = React.useState(classes.themeDefault);
   const [wordColor, setWordColor] = React.useState("#2D62ED");
@@ -272,7 +272,7 @@ export default function Dashboard() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [compWidthState, setCompWidth] = useState(null);
-  const [compState, setComp] = useState(null);
+  // const [compState, setComp] = useState(null);
   const [selectedProperty, setSelectedProperty] = useState(
     store.getState().reducer.property
   );
@@ -289,9 +289,9 @@ export default function Dashboard() {
       setCompWidth(document.getElementById("compwidth").offsetWidth);
     }
 
-    if (compState != store.getState().reducer.componentState) {
-      setComp(store.getState().reducer.componentState);
-    }
+    // if (compState != store.getState().reducer.componentState) {
+    //   setComp(store.getState().reducer.componentState);
+    // }
   }, 500);
 
   setInterval(() => {
@@ -811,10 +811,10 @@ export default function Dashboard() {
         <Container maxWidth="100" className={classes.container}>
           {/* <FrontDesk /> */}
           <HeaderTabs />
-          <DashboardDetail />
-          {store.getState().reducer.componentState == "FrontDesk" ? (
-            <FrontDesk />
-          ) : store.getState().reducer.componentState == "Configuration" ? (
+          {componentState == "FrontDesk" ? (
+            // <FrontDesk />
+            <DashboardDetail />
+          ) : componentState == "Configuration" ? (
             <div>
               <Configuration />
             </div>
