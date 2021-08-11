@@ -33,10 +33,12 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 
 // import AddRoundedIcon from '@material-ui/icons/AddRounded';
 
-const data = {
-  id: "root",
-  name: "Configuration",
-  children: [
+const data = 
+// {
+  // id: "root",
+  // name: "Configuration",
+  // children:
+   [
     {
       id: "1.1",
       name: "PMS Configuration",
@@ -130,7 +132,7 @@ const data = {
       ],
     },
   ],
-};
+// };
 const language = [
   {
     value: "TH",
@@ -412,7 +414,8 @@ export default function Configuration() {
               onNodeToggle={handleToggle}
               onNodeSelect={handleSelect}
             >
-              {renderTree(data)}
+              {/* {renderTree(data)} */}
+              {data.map((node) => renderTree(node))}
             </TreeView>
             <Grid
               container

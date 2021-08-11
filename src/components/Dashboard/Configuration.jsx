@@ -70,10 +70,12 @@ export default function Configuration() {
   const [dialogAdd, setDialogAdd] = React.useState(false);
   const [languageDialog, setLanguageDialog] = React.useState("EN");
   const [page, setPage] = React.useState("");
-  const [data, setData] = React.useState({
-    id: "root",
-    name: "Configuration",
-    children: [
+  const [data, setData] = React.useState(
+    // {
+    // id: "root",
+    // name: "Configuration",
+    // children: 
+    [
       {
         id: "1.1",
         name: "PMS Configuration",
@@ -167,7 +169,7 @@ export default function Configuration() {
         ],
       },
     ],
-  }
+  // }
   )
 
   // const [store.getState().reducer.configState, setstore.getState().reducer.configState] = React.useState("Configuration");
@@ -366,7 +368,7 @@ export default function Configuration() {
     console.log("deleteid", id);
     let key = [0];
 
-    await prune(data.children, id);
+    await prune(data, id);
   }
 
   const maxchildid = async (array,parentid) => {
@@ -987,7 +989,8 @@ export default function Configuration() {
                 onNodeToggle={handleToggle}
                 onNodeSelect={handleSelect}
               >
-                {renderTree(data)}
+                {/* {renderTree(data)} */}
+                {data.map((node) => renderTree(node))}
               </TreeView>
               <Grid
                 container
