@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import clsx from "clsx";
-import { ReactReduxContext, useSelector } from "react-redux";
+import { ReactReduxContext } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -42,7 +42,6 @@ import FrontDesk from "../components/Dashboard/FrontDesk";
 import Configuration from "../components/Dashboard/Configuration";
 import RoleManagement from "../components/RoleManagement";
 import UserManagement from "../components/UserManagement";
-import DashboardDetail from "../components/Dashboard/DashboardDetail";
 
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
@@ -111,8 +110,8 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   menuButtonExpand: {
-    marginRight: 20,
-    marginLeft: 40,
+    marginRight:20,
+    marginLeft:40,
   },
   logoExpand: {
     marginLeft: -10,
@@ -227,9 +226,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       display: "none",
     },
-    marginLeft: -50,
+    marginLeft:-50
   },
-
+  
   rightBarStyle: {
     width: 280,
     zIndex: 2001,
@@ -249,11 +248,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const componentState = useSelector(state => state.reducer.componentState);
+
   const [open, setOpen] = React.useState(false);
   const [themeState, setThemeState] = React.useState(classes.themeDefault);
   const [wordColor, setWordColor] = React.useState("#2D62ED");
-  const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
+  const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000)
   const [themeFontState, setThemeFontState] = React.useState(
     classes.themeFontDefault
   );
@@ -272,7 +271,7 @@ export default function Dashboard() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [compWidthState, setCompWidth] = useState(null);
-  // const [compState, setComp] = useState(null);
+  const [compState, setComp] = useState(null);
   const [selectedProperty, setSelectedProperty] = useState(
     store.getState().reducer.property
   );
@@ -280,18 +279,21 @@ export default function Dashboard() {
   setInterval(() => {
     // console.log(parseInt(store.getState().reducer.compwidth) !== parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(store.getState().reducer.compwidth))
 
-    if (compWidthState != document.getElementById("compwidth").offsetWidth) {
-      setSmallwidth(window.innerWidth < 1000);
+    if (
+      compWidthState !=
+      document.getElementById("compwidth").offsetWidth
+    ) {
+      setSmallwidth(window.innerWidth < 1000)
       store.dispatch({
         type: EDIT_COMPWIDTH,
-        payload: document.getElementById("compwidth").offsetWidth * ratio,
+        payload: (document.getElementById("compwidth").offsetWidth )*(ratio),
       });
       setCompWidth(document.getElementById("compwidth").offsetWidth);
     }
 
-    // if (compState != store.getState().reducer.componentState) {
-    //   setComp(store.getState().reducer.componentState);
-    // }
+    if (compState != store.getState().reducer.componentState) {
+      setComp(store.getState().reducer.componentState);
+    }
   }, 500);
 
   setInterval(() => {
@@ -509,14 +511,14 @@ export default function Dashboard() {
               open && classes.menuButtonHidden
             )}
           >
-            <MenuIcon style={{ marginLeft: -40 }} />
+            <MenuIcon style={{marginLeft:-40}}/>
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             RVS App Platform
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
-              <SearchIcon style={{ marginLeft: -45 }} />
+              <SearchIcon style={{marginLeft:-45}} />
             </div>
             <InputBase
               placeholder=""
@@ -560,8 +562,9 @@ export default function Dashboard() {
               aria-haspopup="true"
               onClick={handlelanguageMenuOpen}
               style={{ color: "white" }}
+
             >
-              <AccountCircle style={{ fontSize: 36 }} />
+              <AccountCircle style={{ fontSize: 36}} />
             </IconButton>
             <Grid item spacing={1} style={{ paddingLeft: 20 }}>
               <Grid item spacing={0}>
@@ -570,11 +573,12 @@ export default function Dashboard() {
                   style={{ fontSize: 15, paddingTop: 10 }}
                 >
                   {sessionStorage.getItem("name")}
+                  
                 </Typography>
               </Grid>
               <Grid item spacing={1}>
                 <Typography variant="body2" style={{ fontSize: 10 }}>
-                  {sessionStorage.getItem("role")}
+                {sessionStorage.getItem("role")}
                 </Typography>
               </Grid>
             </Grid>
@@ -608,7 +612,7 @@ export default function Dashboard() {
             >
               <MoreIcon />
             </IconButton> */}
-
+            
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -629,11 +633,8 @@ export default function Dashboard() {
                 </Typography>
               </Grid>
               <Grid item spacing={1}>
-                <Typography
-                  variant="body2"
-                  style={{ fontSize: 10, fontWeight: "bold" }}
-                >
-                  {sessionStorage.getItem("role")}
+                <Typography variant="body2" style={{ fontSize: 10, fontWeight:'bold'}}>
+                {sessionStorage.getItem("role")}
                 </Typography>
               </Grid>
             </Grid>
@@ -666,46 +667,44 @@ export default function Dashboard() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      {!open && smallwidth ? null : (
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: clsx(
-              themeState,
-              classes.drawerPaper,
-              !open && classes.drawerPaperClose
-            ),
-          }}
-          open={open}
-        >
-          <Grid container>
-            <Grid item container direction="row">
-              <div
-                style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}
-              >
-                <img
-                  src="logo_white.png"
-                  class="rounded mx-auto d-block"
-                  alt="..."
-                  height={35}
-                />
-              </div>
-              {open ? (
-                <IconButton
-                  edge="start"
-                  className={classes.menuButton}
-                  color="inherit"
-                  aria-label="open drawer"
-                  onClick={handleDrawerClose}
-                >
-                  <MenuIcon />
-                </IconButton>
-              ) : null}
-            </Grid>
-          </Grid>
-          <Divider />
+      {(!open && smallwidth) ? null: (
+      <Drawer
+        variant="permanent"
+        classes={{
+          paper: clsx(
+            themeState,
+            classes.drawerPaper,
+            !open && classes.drawerPaperClose
+          ),
+        }}
+        open={open}
+      >
+        <Grid container>
           <Grid item container direction="row">
-            {/* <IconButton
+            <div style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}>
+              <img
+                src="logo_white.png"
+                class="rounded mx-auto d-block"
+                alt="..."
+                height={35}
+              />
+            </div>
+            {open ? (
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerClose}
+              >
+                <MenuIcon />
+              </IconButton>
+            ) : null}
+          </Grid>
+        </Grid>
+        <Divider />
+        <Grid item container direction="row">
+          {/* <IconButton
             edge="end"
             aria-label="account of current user"
             aria-controls={menuId}
@@ -716,94 +715,91 @@ export default function Dashboard() {
           >
             <AccountCircle style={{ fontSize: 28 }} />
           </IconButton> */}
-            {open ? (
-              <Grid
-                item
-                spacing={1}
-                style={{ paddingLeft: 15, marginTop: 5, paddingBottom: 10 }}
-              >
-                <Grid item spacing={1}>
-                  <Typography
-                    variant="subtitle1"
-                    style={{ fontSize: 12, paddingLeft: 50, marginTop: -10 }}
-                  >
-                    {/*sessionStorage.getItem("name")*/}
-                    <SettingsIcon style={{ fontSize: 16, marginTop: 10 }} />
-                    {" Change Property"}
-                  </Typography>
-                </Grid>
-                {/* <Grid item container direction="row"> */}
-                {/* <Grid>
+          {open ? (
+            <Grid
+              item
+              spacing={1}
+              style={{ paddingLeft: 15, marginTop: 5, paddingBottom: 10 }}
+            >
+              <Grid item spacing={1}>
+                <Typography
+                  variant="subtitle1"
+                  style={{ fontSize: 12, paddingLeft: 50, marginTop: -10 }}
+                >
+                  {/*sessionStorage.getItem("name")*/}
+                  <SettingsIcon style={{ fontSize: 16, marginTop: 10 }} />
+                  {" Change Property"}
+                </Typography>
+              </Grid>
+              {/* <Grid item container direction="row"> */}
+              {/* <Grid>
                   <SettingsIcon />
                 </Grid> */}
-                {/* <Grid item spacing={1}>
+              {/* <Grid item spacing={1}>
                   <Typography variant="body2" style={{ fontSize: 10, marginTop: 5, marginLeft: 5 }}>
                     {store.getState().reducer.property}
                   </Typography>
                 </Grid> */}
-
-                <Grid class={classes.propertyForm}>
-                  <BusinessIcon
-                    style={{ paddingRight: 20, color: "#FFFFFF", fontSize: 45 }}
-                  />
-                  <FormControl
-                    variant="filled"
-                    style={{ backgroundColor: "#FFFFFF", borderRadius: 5 }}
+              
+              <Grid class={classes.propertyForm}>
+                <BusinessIcon
+                  style={{ paddingRight: 20, color: "#FFFFFF", fontSize: 45 }}
+                />
+                <FormControl
+                  variant="filled"
+                  style={{ backgroundColor: "#FFFFFF", borderRadius: 5 }}
+                >
+                  <Select
+                    name="selectprop"
+                    id="selectprop"
+                    value={selectedProperty}
+                    onChange={handleChangeProperty}
+                    defaultValue={store.getState().reducer.property}
                   >
-                    <Select
-                      name="selectprop"
-                      id="selectprop"
-                      value={selectedProperty}
-                      onChange={handleChangeProperty}
-                      defaultValue={store.getState().reducer.property}
-                    >
-                      {store.getState().reducer.propertys.map((item) => (
-                        <MenuItem
-                          key={item.propertyid}
-                          value={item.propertyid}
-                          label={item.propertyid}
-                        >
-                          <div style={{ marginTop: -7 }}>
-                            {" "}
-                            {item.propertyid}{" "}
-                          </div>
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
+                    {store.getState().reducer.propertys.map((item) => (
+                      <MenuItem
+                        key={item.propertyid}
+                        value={item.propertyid}
+                        label={item.propertyid}
+                      >
+                        <div style={{ marginTop: -7 }}> {item.propertyid} </div>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
-            ) : (
-              <BusinessIcon
-                style={{
-                  paddingRight: 20,
-                  paddingTop: 10,
-                  marginLeft: 15,
-                  color: "#FFFFFF",
-                  fontSize: 45,
-                }}
-              />
-            )}
-          </Grid>
-          <Divider />
-          {/* <List disablePadding dense>
+            </Grid>
+          ) : (
+            <BusinessIcon
+              style={{
+                paddingRight: 20,
+                paddingTop: 10,
+                marginLeft: 15,
+                color: "#FFFFFF",
+                fontSize: 45,
+              }}
+            />
+          )}
+        </Grid>
+        <Divider />
+        {/* <List disablePadding dense>
                     {items.map(({ label, name, ...rest }) => (
                         <ListItem key={name} button {...rest}>
                             <ListItemText>{label}</ListItemText>
                         </ListItem>
                     ))}
             </List> */}
-          <List>
-            {store.getState().reducer.lang == "en" ? (
-              <MainListItems_en />
-            ) : (
-              <MainListItems_en />
-            )}
-          </List>
-          <Divider />
+        <List>
+          {store.getState().reducer.lang == "en" ? (
+            <MainListItems_en />
+          ) : (
+            <MainListItems_en />
+          )}
+        </List>
+        <Divider />
 
-          {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
-        </Drawer>
+        {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
+      </Drawer>
       )}
 
       <main id="compwidth" className={classes.content}>
@@ -811,10 +807,9 @@ export default function Dashboard() {
         <Container maxWidth="100" className={classes.container}>
           {/* <FrontDesk /> */}
           <HeaderTabs />
-          {componentState == "FrontDesk" ? (
-            // <FrontDesk />
-            <DashboardDetail />
-          ) : componentState == "Configuration" ? (
+          {store.getState().reducer.componentState == "FrontDesk" ? (
+            <FrontDesk />
+          ) : store.getState().reducer.componentState == "Configuration" ? (
             <div>
               <Configuration />
             </div>
