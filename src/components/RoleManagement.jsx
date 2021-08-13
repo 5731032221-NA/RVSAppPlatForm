@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,184 +10,55 @@ import {
   Grid,
   Paper,
   Typography,
-  Divider,
-  TextField,
-  InputAdornment,
+  //Divider,
+  //TextField,
+  //InputAdornment,
   Button,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
+  Breadcrumbs,
+  Link,
+  TextField,
+  Divider,
 } from "@material-ui/core";
-import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import IconButton from "@material-ui/core/IconButton";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
+
 import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
 import FirstPageRoundedIcon from "@material-ui/icons/FirstPageRounded";
 import LastPageRoundedIcon from "@material-ui/icons/LastPageRounded";
-import Menu from "@material-ui/core/Menu";
+
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import Chip from "@material-ui/core/Chip";
-
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import TreeItem from "@material-ui/lab/TreeItem";
+import TreeView from "@material-ui/lab/TreeView";
+import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 // Generate Order Data
-function createData(
-  id,
-  property,
-  number,
-  roomType,
-  floor,
-  building,
-  desc,
-  status,
-  attribute
-) {
+function createData(id, userID, userName, position, roles, status) {
   return {
     id,
-    property,
-    number,
-    roomType,
-    floor,
-    building,
-    desc,
+    userID,
+    userName,
+    position,
+    roles,
     status,
-    attribute,
   };
 }
 
 const rows = [
-  createData(
-    0,
-    "FSDH",
-    "8038",
-    "SUPERVISOR",
-    "3RDFLOOR",
-    "TOWER1",
-    "Desription",
-    "IN",
-    "-"
-  ),
-  createData(1, "FSDH", "8038", "DELUX", "F4", "A", "Desription", "VC", "-"),
-  createData(
-    2,
-    "FSDH",
-    "8038",
-    "SUPERVISOR",
-    "F5",
-    "TOWER1",
-    "Desription",
-    "IN",
-    "-"
-  ),
-];
-const attribute = [
-  {
-    value: "Minibar",
-    label: "Minibar",
-  },
-  {
-    value: "NTV",
-    label: "NTV",
-  },
-];
-const properties = [
-  {
-    value: "1",
-    label: "Novotel Pattaya",
-  },
-  {
-    value: "2",
-    label: "Novotel Bangkok",
-  },
-];
-const roomType = [
-  {
-    value: "1",
-    label: "SUPERIOR",
-  },
-  {
-    value: "2",
-    label: "DELUX",
-  },
-];
-const building = [
-  {
-    value: "1",
-    label: "TOWER 1",
-  },
-
-  {
-    value: "2",
-    label: "TOWER 2",
-  },
-  {
-    value: "3",
-    label: "TOWER 3",
-  },
-];
-const wing = [
-  {
-    value: "1",
-    label: "East",
-  },
-  {
-    value: "2",
-    label: "North",
-  },
-  {
-    value: "3",
-    label: "South",
-  },
-  {
-    value: "4",
-    label: "West",
-  },
-];
-const exposure = [
-  {
-    value: "1",
-    label: "Mountain View",
-  },
-  {
-    value: "2",
-    label: "Sea View",
-  },
-];
-const roomSize = [
-  {
-    value: "1",
-    label: "56 sq.m",
-  },
-  {
-    value: "2",
-    label: "100 sq.m",
-  },
-];
-const roomSeg = [
-  {
-    value: "1",
-    label: "90",
-  },
-  {
-    value: "2",
-    label: "150",
-  },
-];
-const roomStatus = [
-  {
-    value: "1",
-    label: "In House",
-  },
-  {
-    value: "2",
-    label: "Assign Clean",
-  },
+  createData(0, "CASHIER", "Cashier", "All Shifts Cashier", "5", "Active"),
+  createData(1, "Reception", "Receptionist", "All Shifts", "4", "Inactive"),
+  createData(2, "ACCOUNT", "Accountant", "All Accountant", "6", "Active"),
 ];
 
 function preventDefault(event) {
@@ -214,407 +84,233 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RoleManagement() {
   const classes = useStyles();
-  const [dialogAddRoom, setDialogAddRoom] = React.useState(false);
-  const [dialogEditRoom, setDialogEditRoom] = React.useState(false);
-  const [attributeDialog, setAttributeDialog] = React.useState("Minibar");
-  const [propertyDialog, setPropertyDialog] = React.useState("1");
-  const [roomTypeDialog, setRoomTypeDialog] = React.useState("1");
-  const [buildingDialog, setBuildingDialog] = React.useState("1");
-  const [wingDialog, setWingDialog] = React.useState("1");
-  const [exposureDialog, setExposureDialog] = React.useState("1");
-  const [roomSizeDialog, setRoomSizeDialog] = React.useState("1");
-  const [roomSegDialog, setRoomSegDialog] = React.useState("1");
-  const [roomStatusDialog, setRoomStatusDialog] = React.useState("1");
-
-  const handleAttributeDialog = (event) => {
-    setAttributeDialog(event.target.value);
-  };
-  const handlePropertyDialog = (event) => {
-    setPropertyDialog(event.target.value);
-  };
-  const handleRoomTypeDialog = (event) => {
-    setRoomTypeDialog(event.target.value);
-  };
-  const handleBuildingDialog = (event) => {
-    setBuildingDialog(event.target.value);
-  };
-  const handleWingDialog = (event) => {
-    setWingDialog(event.target.value);
-  };
-  const handleExposureDialog = (event) => {
-    setExposureDialog(event.target.value);
-  };
-  const handleRoomSizeDialog = (event) => {
-    setRoomSizeDialog(event.target.value);
-  };
-  const handleRoomSegDialog = (event) => {
-    setRoomSegDialog(event.target.value);
-  };
-  const handleRoomStatusDialog = (event) => {
-    setRoomStatusDialog(event.target.value);
-  };
-  const handleDialogAddRoom = () => {
-    setDialogAddRoom(true);
+  const [dialogAddRole, setDialogAddRole] = React.useState(false);
+  const [dialogEditRole, setDialogEditRole] = React.useState(false);
+  const handleDialogAddRole = () => {
+    setDialogAddRole(true);
   };
 
-  const handleDialogAddRoomClose = () => {
-    setDialogAddRoom(false);
+  const handleDialogAddRoleClose = () => {
+    setDialogAddRole(false);
   };
-  const handleDialogEditRoom = () => {
-    setDialogEditRoom(true);
+  const handleDialogEditRole = () => {
+    setDialogEditRole(true);
   };
 
-  const handleDialogEditRoomClose = () => {
-    setDialogEditRoom(false);
+  const handleDialogEditRoleClose = () => {
+    setDialogEditRole(false);
   };
+  const [data, setData] = React.useState([
+    {
+      id: "1.1",
+      name: "Dashboard",
+    },
+    {
+      id: "1.2",
+      name: "Reservartion",
+    },
+    {
+      id: "1.3",
+      name: "Front Desk",
+      children: [
+        {
+          id: "1.3.1",
+          name: "Walk-in",
+        },
+        {
+          id: "1.3.2",
+          name: "Check-in",
+        },
+        {
+          id: "1.3.3",
+          name: "Checkout",
+        },
+        {
+          id: "1.3.4",
+          name: "RoomStatus",
+        },
+      ],
+    },
+  ]);
+
+  const renderTree = (nodes) => (
+    <div>
+      <TreeItem
+        key={nodes.id}
+        nodeId={nodes.id}
+        label={
+          <div>
+            <Grid container direction="row" alignItems="center">
+              <Grid item style={{ flexGrow: 1 }}>
+                <Typography
+                  variant="h6"
+                  color="initial"
+                  style={{ paddind: 5, fontSize: 16 }}
+                >
+                  {nodes.name}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      All
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Create
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Read
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Update
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Delete
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+              </Grid>
+            </Grid>
+            <Divider />
+          </div>
+        }
+      >
+        {Array.isArray(nodes.children)
+          ? nodes.children.map((node) => renderTree(node))
+          : null}
+      </TreeItem>
+    </div>
+  );
 
   return (
     <Container maxWidth="xl">
       <React.Fragment>
-        <Typography
-          variant="h6"
-          style={{ marginBottom: 15, fontSize: 18, color: "#2B4EAD" }}
+        <Grid
+          container
+          //   direction="row"
+          //   justifyContent="flex-start"
+          //   alignItems="center"
+          style={{ padding: 20 }}
         >
-          {/* Role Management */}
-        </Typography>
-        <Paper>
-          <Grid container style={{ padding: 30 }}>
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="center"
-              style={{ marginBottom: 30 }}
-            >
-              <Grid item style={{ marginLeft: 10, marginRight: 20 }}>
+          <Grid item style={{ flexGrow: 1 }}>
+            <Breadcrumbs
+              separator={
                 <Typography
                   variant="h6"
-                  style={{ fontSize: 25, color: "black" }}
+                  style={{ marginBottom: 15, fontSize: 20 }}
                 >
-                  Room Master
+                  /
                 </Typography>
-              </Grid>
-              <Divider orientation="vertical" flexItem />
-              <Grid item className={classes.searchLayout}>
-                <TextField
-                  id="standard-basic"
-                  label=" Search "
-                  htmlFor="Search"
-                  href="#"
-                  type="text"
-                  onChange={" "}
-                  style={{ maxWidth: 600 }}
-                  fullWidth
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <SearchRoundedIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Divider orientation="vertical" flexItem />
-              <Grid item style={{ marginLeft: 20, marginRight: 20 }}>
-                <Button
-                  variant="contained"
-                  style={{
-                    backgroundColor: "#2D62ED",
-                    color: "white",
-                    textAlign: "center",
-                  }}
-                  onClick={handleDialogAddRoom}
-                >
-                  NEW ROOM MASTER
-                </Button>
-              </Grid>
-            </Grid>
-            {/* ==================== Dialog New Room========================= */}
-            <Dialog
-              fullWidth="true"
-              maxWidth="sm"
-              open={dialogAddRoom}
-              onClose={handleDialogAddRoomClose}
-              aria-labelledby="form-dialog-title"
+              }
             >
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                New Room Master
-              </DialogTitle>
-
-              <DialogContent>
-                <Container maxWidth="xl" disableGutters>
-                  <Grid container>
-                    <TextField
-                      autoFocus
-                      select
-                      id="outlined-basic"
-                      label="Property"
-                      variant="outlined"
-                      fullWidth
-                      SelectProps={{
-                        native: true,
-                      }}
-                      value={propertyDialog}
-                      onChange={handlePropertyDialog}
-                    >
-                      {properties.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        // autoFocus
-                        id="outlined-basic"
-                        label="Room Number"
-                        variant="outlined"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        // autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Room Type"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        value={roomTypeDialog}
-                        onChange={handleRoomTypeDialog}
-                      >
-                        {roomType.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 15 }}>
-                    <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
-                        // autoFocus
-                        id="outlined-basic"
-                        label="Floor"
-                        variant="outlined"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
-                        // autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Building"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        value={buildingDialog}
-                        onChange={handleBuildingDialog}
-                      >
-                        {building.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
-                        // autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Wing"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        value={wingDialog}
-                        onChange={handleWingDialog}
-                      >
-                        {wing.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        // autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Exposure"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        value={exposureDialog}
-                        onChange={handleExposureDialog}
-                      >
-                        {exposure.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        // autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Room Size"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        value={roomSizeDialog}
-                        onChange={handleRoomSizeDialog}
-                      >
-                        {roomSize.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        // autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Room Seg"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        value={roomSegDialog}
-                        onChange={handleRoomSegDialog}
-                      >
-                        {roomSeg.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        // autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Room Status"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        value={roomStatusDialog}
-                        onChange={handleRoomStatusDialog}
-                      >
-                        {roomStatus.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-end"
-                    alignItems="center"
-                    style={{ paddingTop: 10 }}
-                  >
-                    <TextField
-                      fullWidth
-                      // autoFocus
-                      id="outlined-select-language"
-                      select
-                      // fullWidth
-
-                      label="Attribute"
-                      value={attributeDialog}
-                      onChange={handleAttributeDialog}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      variant="outlined"
-                    >
-                      {attribute.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    style={{ paddingTop: 10 }}
-                  >
-                    <TextField
-                      fullWidth
-                      // id="outlined-multiline-static"
-                      label="Description"
-                      multiline
-                      rows={4}
-                      variant="outlined"
-                    />
-                  </Grid>
-                </Container>
-              </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
-                <Button
-                  onClick={handleDialogAddRoomClose}
-                  variant="text"
-                  color="primary"
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
                 >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleDialogAddRoomClose}
-                  variant="contained"
-                  color="primary"
+                  Configuration
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 14 }}
                 >
-                  Save
-                </Button>
-              </DialogActions>
-            </Dialog>
-            {/* ---------------------------------------- */}
+                  Permission
+                </Typography>
+              </Link>
+              <Typography>
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 14 }}
+                >
+                  Role Management
+                </Typography>
+              </Typography>
+            </Breadcrumbs>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="outlined"
+              style={{
+                backgroundColor: "#2949A0",
+                color: "white",
+                alignItems: "center",
+              }}
+              size="large"
+              onClick={handleDialogAddRole}
+            >
+              <AddRoundedIcon />
+              <Typography variant="body1" style={{}}>
+                New Role
+              </Typography>
+            </Button>
+          </Grid>
+        </Grid>
+
+        <Paper>
+          <Grid container style={{ padding: 30 }}>
             <Grid container>
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Property</TableCell>
-                    <TableCell>#Number</TableCell>
-                    <TableCell>Room Type</TableCell>
-                    <TableCell>Floor</TableCell>
-                    <TableCell>Building</TableCell>
-                    <TableCell>Desc</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Attribute</TableCell>
+                    <TableCell>Role Code</TableCell>
+                    <TableCell>Role Name</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell>#User</TableCell>
+                    <TableCell align="center">Status</TableCell>
                     <TableCell align="center">Action</TableCell>
                     {/* <TableCell align="center">Sale Amount</TableCell> */}
                   </TableRow>
@@ -622,22 +318,43 @@ export default function RoleManagement() {
                 <TableBody>
                   {rows.map((row) => (
                     <TableRow key={row.id}>
-                      {/* return { id, property, number, roomType, floor, building,desc,status,attribute }; */}
-
-                      <TableCell>{row.property}</TableCell>
-                      <TableCell style={{ color: "blue" }}>
-                        {row.number}
-                      </TableCell>
-                      <TableCell>{row.roomType}</TableCell>
-                      <TableCell>{row.floor}</TableCell>
-                      <TableCell>{row.building}</TableCell>
-                      <TableCell>{row.desc}</TableCell>
-                      <TableCell>{row.status}</TableCell>
-                      <TableCell>{row.attribute}</TableCell>
-
+                      <TableCell>{row.userID}</TableCell>
+                      <TableCell>{row.userName}</TableCell>
+                      <TableCell>{row.position}</TableCell>
+                      <TableCell>{row.roles}</TableCell>
+                      {`${row.status}` === "Active" ? (
+                        <TableCell align="center">
+                          <Button
+                            variant="contained"
+                            style={{
+                              borderRadius: 20,
+                              backgroundColor: "#2D62ED",
+                              color: "white",
+                            }}
+                          >
+                            {row.status}
+                          </Button>
+                        </TableCell>
+                      ) : (
+                        <TableCell align="center">
+                          <Button
+                            variant="contained"
+                            style={{
+                              borderRadius: 20,
+                              backgroundColor: "#DEDFE0",
+                              color: "black",
+                            }}
+                          >
+                            {row.status}
+                          </Button>
+                        </TableCell>
+                      )}
                       <TableCell align="center">
-                        <IconButton onClick={handleDialogEditRoom}>
+                        <IconButton onClick={handleDialogEditRole}>
                           <EditOutlinedIcon />
+                        </IconButton>
+                        <IconButton onClick={" "}>
+                          <SaveRoundedIcon />
                         </IconButton>
                       </TableCell>
                       {/* <TableCell align="right">{row.amount}</TableCell> */}
@@ -645,280 +362,6 @@ export default function RoleManagement() {
                   ))}
                 </TableBody>
               </Table>
-              {/* ==================== Dialog Edit Room========================= */}
-              <Dialog
-                fullWidth="true"
-                maxWidth="sm"
-                open={dialogEditRoom}
-                onClose={handleDialogEditRoomClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                  Edit Room Master
-                </DialogTitle>
-
-                <DialogContent>
-                  <Container maxWidth="xl" disableGutters>
-                    <Grid container>
-                      <TextField
-                        autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Property"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        value={propertyDialog}
-                        onChange={handlePropertyDialog}
-                      >
-                        {properties.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          id="outlined-basic"
-                          label="Room Number"
-                          variant="outlined"
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Type"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={roomTypeDialog}
-                          onChange={handleRoomTypeDialog}
-                        >
-                          {roomType.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 15 }}>
-                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                        <TextField
-                          // autoFocus
-                          id="outlined-basic"
-                          label="Floor"
-                          variant="outlined"
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Building"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={buildingDialog}
-                          onChange={handleBuildingDialog}
-                        >
-                          {building.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Wing"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={wingDialog}
-                          onChange={handleWingDialog}
-                        >
-                          {wing.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Exposure"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={exposureDialog}
-                          onChange={handleExposureDialog}
-                        >
-                          {exposure.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Size"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={roomSizeDialog}
-                          onChange={handleRoomSizeDialog}
-                        >
-                          {roomSize.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Seg"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={roomSegDialog}
-                          onChange={handleRoomSegDialog}
-                        >
-                          {roomSeg.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Status"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={roomStatusDialog}
-                          onChange={handleRoomStatusDialog}
-                        >
-                          {roomStatus.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="flex-end"
-                      alignItems="center"
-                      style={{ paddingTop: 10 }}
-                    >
-                      <TextField
-                        fullWidth
-                        // autoFocus
-                        id="outlined-select-language"
-                        select
-                        // fullWidth
-
-                        label="Attribute"
-                        value={attributeDialog}
-                        onChange={handleAttributeDialog}
-                        SelectProps={{
-                          native: true,
-                        }}
-                        variant="outlined"
-                      >
-                        {attribute.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="flex-start"
-                      alignItems="center"
-                      style={{ paddingTop: 10 }}
-                    >
-                      <TextField
-                        fullWidth
-                        // id="outlined-multiline-static"
-                        label="Description"
-                        multiline
-                        rows={4}
-                        variant="outlined"
-                      />
-                    </Grid>
-                  </Container>
-                </DialogContent>
-                <DialogActions style={{ padding: 20 }}>
-                  <Button
-                    onClick={handleDialogEditRoomClose}
-                    variant="text"
-                    color="primary"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleDialogEditRoomClose}
-                    variant="contained"
-                    color="primary"
-                  >
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-              {/* -------------------------------------- */}
               <Grid
                 container
                 direction="row"
@@ -978,6 +421,316 @@ export default function RoleManagement() {
             </Grid>
           </Grid>
         </Paper>
+        {/* ==================== Dialog New Role ========================= */}
+        <Dialog
+          fullWidth="true"
+          maxWidth="sm"
+          open={dialogAddRole}
+          onClose={handleDialogAddRoleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+            New Role
+          </DialogTitle>
+
+          <DialogContent>
+            <Container maxWidth="xl" disableGutters>
+              <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    // autoFocus
+                    id="outlined-basic"
+                    label="Role Code"
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Role Name"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    // value={roomTypeDialog}
+                    // onChange={handleRoomTypeDialog}
+                  >
+                    {/* {roomType.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))} */}
+                  </TextField>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="center"
+                style={{ paddingTop: 10 }}
+              >
+                <TextField
+                  fullWidth
+                  // id="outlined-multiline-static"
+                  label="Description"
+                  multiline
+                  rows={4}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid
+                container
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                // spacing={2}
+                // style={{ paddingTop: 10 }}
+              >
+                <FormControlLabel
+                  style={{ paddingTop: 15 }}
+                  value="Status"
+                  control={<Switch color="primary" />}
+                  label="Status"
+                  labelPlacement="start"
+                />
+              </Grid>
+              <Divider style={{ marginTop: 15 }} />
+              <Grid
+                container
+                alignItems="center"
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                style={{ paddingTop: 10 }}
+              >
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 18 }}
+                    >
+                      Select Permission All
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+              </Grid>
+              <Divider style={{ marginTop: 10 }} />
+              <Container disableGutters>
+                <TreeView
+                  // className={classes.root}
+                  defaultCollapseIcon={
+                    <RemoveRoundedIcon
+                      style={{
+                        backgroundColor: "#717171",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                  defaultExpandIcon={
+                    <AddRoundedIcon
+                      style={{
+                        backgroundColor: "#2D62ED",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                  // expanded={expanded}
+                  // selected={selected}
+                  // onNodeToggle={handleToggle}
+                  // onNodeSelect={handleSelect}
+                >
+                  {data.map((node) => renderTree(node))}
+                </TreeView>
+              </Container>
+            </Container>
+          </DialogContent>
+          <DialogActions style={{ padding: 20 }}>
+            <Button
+              onClick={handleDialogAddRoleClose}
+              variant="text"
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDialogAddRoleClose}
+              variant="contained"
+              color="primary"
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+        {/* ---------------------------------------- */}
+        {/* ==================== Dialog New Role========================= */}
+        <Dialog
+          fullWidth="true"
+          maxWidth="sm"
+          open={dialogEditRole}
+          onClose={handleDialogEditRoleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+            Edit Role
+          </DialogTitle>
+
+          <DialogContent>
+            <Container maxWidth="xl" disableGutters>
+              <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    // autoFocus
+                    id="outlined-basic"
+                    label="Role Code"
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Role Name"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    // value={roomTypeDialog}
+                    // onChange={handleRoomTypeDialog}
+                  >
+                    {/* {roomType.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))} */}
+                  </TextField>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="center"
+                style={{ paddingTop: 10 }}
+              >
+                <TextField
+                  fullWidth
+                  // id="outlined-multiline-static"
+                  label="Description"
+                  multiline
+                  rows={4}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid
+                container
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                // spacing={2}
+                // style={{ paddingTop: 10 }}
+              >
+                <FormControlLabel
+                  style={{ paddingTop: 15 }}
+                  value="Status"
+                  control={<Switch color="primary" />}
+                  label="Status"
+                  labelPlacement="start"
+                />
+              </Grid>
+              <Divider style={{ marginTop: 15 }} />
+              <Grid
+                container
+                alignItems="center"
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                style={{ paddingTop: 10 }}
+              >
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 18 }}
+                    >
+                      Select Permission All
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+              </Grid>
+              <Divider style={{ marginTop: 10 }} />
+              <Container disableGutters>
+                <TreeView
+                  // className={classes.root}
+                  defaultCollapseIcon={
+                    <RemoveRoundedIcon
+                      style={{
+                        backgroundColor: "#717171",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                  defaultExpandIcon={
+                    <AddRoundedIcon
+                      style={{
+                        backgroundColor: "#2D62ED",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                  // expanded={expanded}
+                  // selected={selected}
+                  // onNodeToggle={handleToggle}
+                  // onNodeSelect={handleSelect}
+                >
+                  {data.map((node) => renderTree(node))}
+                </TreeView>
+              </Container>
+            </Container>
+          </DialogContent>
+          <DialogActions style={{ padding: 20 }}>
+            <Button
+              onClick={handleDialogEditRoleClose}
+              variant="text"
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDialogEditRoleClose}
+              variant="contained"
+              color="primary"
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+        {/* ---------------------------------------- */}
       </React.Fragment>
     </Container>
   );

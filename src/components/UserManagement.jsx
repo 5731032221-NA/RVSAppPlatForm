@@ -20,15 +20,23 @@ import {
   MenuItem,
   Breadcrumbs,
   Link,
+  TextField,
 } from "@material-ui/core";
 
-import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import IconButton from "@material-ui/core/IconButton";
-
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
 import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
 import FirstPageRoundedIcon from "@material-ui/icons/FirstPageRounded";
 import LastPageRoundedIcon from "@material-ui/icons/LastPageRounded";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
@@ -78,6 +86,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserManagement() {
   const classes = useStyles();
+  const [dialogAddUser, setDialogAddUser] = React.useState(false);
+  const [dialogEditUser, setDialogEditUser] = React.useState(false);
+  const handleDialogAddUser = () => {
+    setDialogAddUser(true);
+  };
+
+  const handleDialogAddUserClose = () => {
+    setDialogAddUser(false);
+  };
+  const handleDialogEditUser = () => {
+    setDialogEditUser(true);
+  };
+
+  const handleDialogEditUserClose = () => {
+    setDialogEditUser(false);
+  };
   return (
     <Container maxWidth="xl">
       <React.Fragment>
@@ -86,42 +110,62 @@ export default function UserManagement() {
           //   direction="row"
           //   justifyContent="flex-start"
           //   alignItems="center"
+          style={{ padding: 20 }}
         >
-          <Breadcrumbs
-            separator={
-              <Typography
-                variant="h6"
-                style={{ marginBottom: 15, fontSize: 20 }}
-              >
-                /
+          <Grid item style={{ flexGrow: 1 }}>
+            <Breadcrumbs
+              separator={
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20 }}
+                >
+                  /
+                </Typography>
+              }
+            >
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
+                >
+                  Configuration
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 14 }}
+                >
+                  Permission
+                </Typography>
+              </Link>
+              <Typography>
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 14 }}
+                >
+                  User Management
+                </Typography>
               </Typography>
-            }
-          >
-            <Link color="inherit" href="#" onClick={" "}>
-              <Typography
-                variant="h6"
-                style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
-              >
-                Configuration
+            </Breadcrumbs>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="outlined"
+              style={{
+                backgroundColor: "#2949A0",
+                color: "white",
+                alignItems: "center",
+              }}
+              size="large"
+              onClick={handleDialogAddUser}
+            >
+              <AddRoundedIcon />
+              <Typography variant="body1" style={{}}>
+                New User
               </Typography>
-            </Link>
-            <Link color="inherit" href="#" onClick={" "}>
-              <Typography
-                variant="h6"
-                style={{ marginBottom: 15, fontSize: 14 }}
-              >
-                Permission
-              </Typography>
-            </Link>
-            <Typography>
-              <Typography
-                variant="h6"
-                style={{ marginBottom: 15, fontSize: 14 }}
-              >
-                User Management
-              </Typography>
-            </Typography>
-          </Breadcrumbs>
+            </Button>
+          </Grid>
         </Grid>
 
         <Paper>
@@ -134,9 +178,8 @@ export default function UserManagement() {
                     <TableCell>User Name</TableCell>
                     <TableCell>Position</TableCell>
                     <TableCell>Roles</TableCell>
-
                     <TableCell align="center">Status</TableCell>
-                    {/* <TableCell align="center">Sale Amount</TableCell> */}
+                    <TableCell align="center">Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -173,8 +216,14 @@ export default function UserManagement() {
                           </Button>
                         </TableCell>
                       )}
-
-                      {/* <TableCell align="right">{row.amount}</TableCell> */}
+                      <TableCell align="center">
+                        <IconButton onClick={handleDialogEditUser}>
+                          <EditOutlinedIcon />
+                        </IconButton>
+                        <IconButton onClick={" "}>
+                          <SaveRoundedIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -210,7 +259,6 @@ export default function UserManagement() {
                       // value={page}
                       // onChange={handleChangePage}
                       label="Page"
-                      // style={{" "}}
                     >
                       <MenuItem value="">None</MenuItem>
                       <MenuItem value={1}>1</MenuItem>
@@ -238,6 +286,323 @@ export default function UserManagement() {
             </Grid>
           </Grid>
         </Paper>
+        {/* ==================== Dialog New User========================= */}
+        <Dialog
+          fullWidth="true"
+          maxWidth="sm"
+          open={dialogAddUser}
+          onClose={handleDialogAddUserClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+            New User
+          </DialogTitle>
+
+          <DialogContent>
+            <Container maxWidth="xl" disableGutters>
+              <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    // autoFocus
+                    id="outlined-basic"
+                    label="Username"
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Name"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    // value={" "}
+                    // onChange={" "}
+                  ></TextField>
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    // autoFocus
+                    select
+                    id="outlined-basic"
+                    label="Position"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    // value={" "}
+                    // onChange={" "}
+                  ></TextField>
+                </Grid>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    // autoFocus
+                    select
+                    id="outlined-basic"
+                    label="Property"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    /* value={" "}
+                    onChange={" "} */
+                  >
+                    {/*  {roomStatus.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))} */}
+                  </TextField>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+                style={{ paddingTop: 10 }}
+              >
+                <TextField
+                  fullWidth
+                  // autoFocus
+                  id="outlined-select-language"
+                  select
+                  // fullWidth
+
+                  label="Roles"
+                  value={" "}
+                  onChange={" "}
+                  SelectProps={{
+                    native: true,
+                  }}
+                  variant="outlined"
+                >
+                  {/*   {attribute.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))} */}
+                </TextField>
+              </Grid>
+              <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    id="outlined-basic"
+                    label="username@mail.com"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    // value={" "}
+                    // onChange={" "}
+                  ></TextField>
+                </Grid>
+                <Grid
+                  container
+                  xs={6}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  style={{ alignContent: "center", padding: 20 }}
+                >
+                  <FormControlLabel
+                    value="Status"
+                    control={<Switch color="primary" />}
+                    label="Status"
+                    labelPlacement="start"
+                  />
+                </Grid>
+              </Grid>
+            </Container>
+          </DialogContent>
+          <DialogActions style={{ padding: 20 }}>
+            <Button
+              onClick={handleDialogAddUserClose}
+              variant="text"
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDialogAddUserClose}
+              variant="contained"
+              color="primary"
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+        {/* ---------------------------------------- */}
+        {/* ==================== Dialog New User========================= */}
+        <Dialog
+          fullWidth="true"
+          maxWidth="sm"
+          open={dialogEditUser}
+          onClose={handleDialogEditUserClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+            Edit User
+          </DialogTitle>
+
+          <DialogContent>
+            <Container maxWidth="xl" disableGutters>
+              <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    // autoFocus
+                    id="outlined-basic"
+                    label="Username"
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Name"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    // value={" "}
+                    // onChange={" "}
+                  ></TextField>
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    // autoFocus
+                    select
+                    id="outlined-basic"
+                    label="Position"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    // value={" "}
+                    // onChange={" "}
+                  >
+                    {/* {roomSeg.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))} */}
+                  </TextField>
+                </Grid>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    // autoFocus
+                    select
+                    id="outlined-basic"
+                    label="Property"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    /* value={" "}
+                    onChange={" "} */
+                  >
+                    {/*  {roomStatus.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))} */}
+                  </TextField>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+                style={{ paddingTop: 10 }}
+              >
+                <TextField
+                  fullWidth
+                  id="outlined-select-language"
+                  select
+                  label="Roles"
+                  // value={" "}
+                  // onChange={" "}
+                  SelectProps={{
+                    native: true,
+                  }}
+                  variant="outlined"
+                >
+                  {/*   {attribute.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))} */}
+                </TextField>
+              </Grid>
+              <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    id="outlined-basic"
+                    label="username@mail.com"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    // value={" "}
+                    // onChange={" "}
+                  ></TextField>
+                </Grid>
+                <Grid
+                  container
+                  xs={6}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  style={{ alignContent: "center", padding: 20 }}
+                >
+                  <FormControlLabel
+                    value="Status"
+                    control={<Switch color="primary" />}
+                    label="Status"
+                    labelPlacement="start"
+                  />
+                </Grid>
+              </Grid>
+            </Container>
+          </DialogContent>
+          <DialogActions style={{ padding: 20 }}>
+            <Button
+              onClick={handleDialogEditUserClose}
+              variant="text"
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDialogEditUserClose}
+              variant="contained"
+              color="primary"
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+        {/* ---------------------------------------- */}
       </React.Fragment>
     </Container>
   );
