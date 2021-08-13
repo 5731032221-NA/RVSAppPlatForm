@@ -32,6 +32,7 @@ import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import RoleManagement from "../RoleManagement";
 import UserManagement from "../UserManagement";
+import RoomManagement from "../RoomManagement";
 import { ReactReduxContext, useSelector } from "react-redux";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
 
@@ -68,6 +69,7 @@ export default function Configuration() {
   const [selected, setSelected] = React.useState([]);
   const [addChild, setAddchild] = React.useState(null);
   const [dialogAdd, setDialogAdd] = React.useState(false);
+  const [dialogEdit, setDialogEdit] = React.useState(false);
   const [languageDialog, setLanguageDialog] = React.useState("EN");
   const [addChildid, setAddChuldid] = React.useState(null);
   const [addChildName, setAddChuldName] = React.useState(null);
@@ -219,7 +221,7 @@ export default function Configuration() {
     setLanguageDialog(event.target.value);
   };
 
-  const handleClick = (event,name,id) => {
+  const handleClick = (event, name, id) => {
     // console.log(event)
     // console.log("ids",event.target.id);
     // console.log("id",event.target.id.split("-")[0]);
@@ -255,9 +257,26 @@ export default function Configuration() {
     setDialogAdd(true);
   };
 
+  const handleDialogEdit = ( name, id) => {
+    // console.log("ids",event.target.id);
+    // console.log("id",event.target.id.split("-")[0]);
+    // console.log("name",event.target.id.split("-")[1])
+    // setAddChuldid(event.target.id.split("-")[0]);
+    // setAddChuldName(event.target.id.split("-")[1]);
+    // setAddchild(null);
+    setAddChuldid(id);
+    setAddChuldName(name);
+    setDialogEdit(true);
+  };
+
   const handleDialogAddClose = () => {
     setDialogAdd(false);
   };
+
+  const handleDialogEditClose = () => {
+    setDialogEdit(false);
+  };
+
 
   const handleChangeAdd = (event) => {
     setAddChuldValue(event.target.value);
@@ -268,6 +287,17 @@ export default function Configuration() {
     console.log("testclick")
     store.dispatch({
       type: EDIT_CONFIGSTATE,
+      payload: "RoleManagement"
+    })
+    // configState
+    // console.log(event)
+    // setstore.getState().reducer.configState("UserManagement")
+  }
+
+  const userclick = () => {
+    console.log("testclick")
+    store.dispatch({
+      type: EDIT_CONFIGSTATE,
       payload: "UserManagement"
     })
     // configState
@@ -275,11 +305,11 @@ export default function Configuration() {
     // setstore.getState().reducer.configState("UserManagement")
   }
 
-  const testclick = () => {
+  const roomclick = () => {
     console.log("testclick")
     store.dispatch({
       type: EDIT_CONFIGSTATE,
-      payload: "RoleManagement"
+      payload: "RoomManagement"
     })
     // configState
     // console.log(event)
@@ -406,7 +436,7 @@ export default function Configuration() {
       }
       else if (obj.children) {
         prune(obj.children, label)
-        
+
       }
     }
   }
@@ -463,7 +493,7 @@ export default function Configuration() {
             master: false,
           }]
         } else {
-          obj.children = [ {
+          obj.children = [{
             id: newid,
             name: name,
             createdate: "2021-08-13 13:03:00",
@@ -489,6 +519,31 @@ export default function Configuration() {
     setDialogAdd(false);
   }
 
+  const editing = async (array, label, name) => {
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      console.log(obj.id, label)
+      if (obj.id === label) {
+
+        obj.name = name
+      }
+      else if (obj.children) {
+        editing(obj.children, label, name);
+      }
+    }
+  }
+
+  const handleEdit = async () => {
+    let id = addChildid;
+    console.log("editparentid", id);
+    let newid = await runningid(data, id)
+    console.log("newid", newid)
+    await (editing(data, id, addChildValue))
+    console.log(data)
+    // setData(data)
+    setDialogEdit(false);
+  }
+
 
   const renderTree = (nodes) => (
     <div>
@@ -505,13 +560,14 @@ export default function Configuration() {
                     color="initial"
                     style={{ paddind: 5 }}
                   >
-                    <div onClick={testclick}>
+                    <div onClick={roomclick}>
                       {nodes.name}
                     </div>
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <IconButton>
+                  <IconButton
+                    onClick={() => handleDialogEdit(nodes.name,nodes.id)}>
                     <EditRoundedIcon />
                   </IconButton>
                   <IconButton
@@ -519,12 +575,12 @@ export default function Configuration() {
                     <DeleteRoundedIcon />
                   </IconButton>
                   <IconButton
-                      aria-controls={nodes.id}
-                      aria-haspopup="true" 
-                      onClick={(e)=>handleClick(e,nodes.name,nodes.id)}
-                    >
-                      <MoreVertRoundedIcon />
-                    </IconButton>
+                    aria-controls={nodes.id}
+                    aria-haspopup="true"
+                    onClick={(e) => handleClick(e, nodes.name, nodes.id)}
+                  >
+                    <MoreVertRoundedIcon />
+                  </IconButton>
                 </Grid>
               </Grid>
               <Divider />
@@ -535,7 +591,7 @@ export default function Configuration() {
                 open={Boolean(addChild)}
                 onClose={handleClose}
               >
-                <MenuItem id={nodes.id+"-"+nodes.name} onClick={handleDialogAdd}>
+                <MenuItem id={nodes.id + "-" + nodes.name} onClick={handleDialogAdd}>
                   {/* <MenuItem onClick={handleClose}> */}
                   <AddRoundedIcon /> Add child
                 </MenuItem>
@@ -554,7 +610,181 @@ export default function Configuration() {
 
                 <DialogContent>
                   <Container maxWidth="xl" disableGutters>
-                    {/* <TextField
+
+                    <h2>Parent Name: {addChildName}</h2>
+                    <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                      <TextField
+                        autoFocus
+                        id="outlined-basic"
+                        label="Name"
+                        variant="outlined"
+                        onChange={(e) => handleChangeAdd(e)}
+                        helperText={
+                          <Grid
+                            container
+                            justifyContent="flex-end"
+                            alignItems="center"
+                          >
+                            <Typography variant="title1" color="initial">
+                              0/50
+                            </Typography>
+                          </Grid>
+                        }
+                        fullWidth
+                      />
+                    </Grid>
+
+                  </Container>
+                </DialogContent>
+                <DialogActions style={{ padding: 20 }}>
+                  <Button
+                    onClick={handleDialogAddClose}
+                    variant="text"
+                    color="primary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleAdd}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Save
+                  </Button>
+                </DialogActions>
+              </Dialog>
+
+
+              <Dialog
+                fullWidth="true"
+                maxWidth="xs"
+                open={dialogEdit}
+                onClose={handleDialogAddClose}
+                aria-labelledby="form-dialog-title"
+              >
+                <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                  Edit Master Config
+                </DialogTitle>
+
+                <DialogContent>
+                  <Container maxWidth="xl" disableGutters>
+
+                    <h2>Old Name: {addChildName}</h2>
+                    <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                      <TextField
+                        autoFocus
+                        id="outlined-basic"
+                        label="New Name"
+                        variant="outlined"
+                        onChange={(e) => handleChangeAdd(e)}
+                        helperText={
+                          <Grid
+                            container
+                            justifyContent="flex-end"
+                            alignItems="center"
+                          >
+                            <Typography variant="title1" color="initial">
+                              0/50
+                            </Typography>
+                          </Grid>
+                        }
+                        fullWidth
+                      />
+                    </Grid>
+
+                  </Container>
+                </DialogContent>
+                <DialogActions style={{ padding: 20 }}>
+                  <Button
+                    onClick={handleDialogEditClose}
+                    variant="text"
+                    color="primary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleEdit}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Save
+                  </Button>
+                </DialogActions>
+              </Dialog>
+
+
+            </div>
+          }
+        >
+          {Array.isArray(nodes.children)
+            ? nodes.children.map((node) => renderTree(node))
+            : null}
+        </TreeItem>
+        :
+        nodes.name == "Role Management" ?
+          <TreeItem
+            key={nodes.id}
+            nodeId={nodes.id}
+            label={
+              <div>
+                <Grid container direction="row" alignItems="center">
+                  <Grid item className={classes.root}>
+                    <Typography
+                      variant="body1"
+                      color="initial"
+                      style={{ paddind: 5 }}
+                    >
+                      <div onClick={roleclick}>
+                        {nodes.name}
+                      </div>
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <IconButton
+                      onClick={() => handleDialogEdit(nodes.name,nodes.id)}>
+                      <EditRoundedIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => handleDelete(nodes.id)}>
+                      <DeleteRoundedIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-controls={nodes.id}
+                      aria-haspopup="true"
+                      onClick={(e) => handleClick(e, nodes.name, nodes.id)}
+                    >
+                      <MoreVertRoundedIcon />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+                <Divider />
+                <Menu
+                  id={nodes.id}
+                  anchorEl={addChild}
+                  keepMounted
+                  open={Boolean(addChild)}
+                  onClose={handleClose}
+                >
+                  <MenuItem id={nodes.id + "-" + nodes.name} onClick={handleDialogAdd}>
+                    {/* <MenuItem onClick={handleClose}> */}
+                    <AddRoundedIcon /> Add child
+                  </MenuItem>
+                </Menu>
+
+                <Dialog
+                  fullWidth="true"
+                  maxWidth="xs"
+                  open={dialogAdd}
+                  onClose={handleDialogAddClose}
+                  aria-labelledby="form-dialog-title"
+                >
+                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                    New Master Config
+                  </DialogTitle>
+
+                  <DialogContent>
+                    <Container maxWidth="xl" disableGutters>
+                      {/* <TextField
                       autoFocus
                       helperText={
                         <Grid
@@ -572,29 +802,29 @@ export default function Configuration() {
                       variant="outlined"
                       fullWidth
                     /> */}
-                    <h2>Parent Name: {addChildName}</h2>
-                    <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                      <TextField
-                        autoFocus
-                        id="outlined-basic"
-                        label="Name"
-                        variant="outlined"
-                        onChange={(e) => handleChangeAdd(e) }
-                        helperText={
-                          <Grid
-                            container
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <Typography variant="title1" color="initial">
-                              0/50
-                            </Typography>
-                          </Grid>
-                        }
-                        fullWidth
-                      />
-                    </Grid>
-                    {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                      <h2>Parent Name: {addChildName}</h2>
+                      <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                        <TextField
+                          autoFocus
+                          id="outlined-basic"
+                          label="Name"
+                          variant="outlined"
+                          onChange={(e) => handleChangeAdd(e)}
+                          helperText={
+                            <Grid
+                              container
+                              justifyContent="flex-end"
+                              alignItems="center"
+                            >
+                              <Typography variant="title1" color="initial">
+                                0/50
+                              </Typography>
+                            </Grid>
+                          }
+                          fullWidth
+                        />
+                      </Grid>
+                      {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
                       <TextField
                         autoFocus
                         id="outlined-basic"
@@ -648,94 +878,389 @@ export default function Configuration() {
                         </TextField>
                       </Grid>
                     </Grid> */}
-                  </Container>
-                </DialogContent>
-                <DialogActions style={{ padding: 20 }}>
-                  <Button
-                    onClick={handleDialogAddClose}
-                    variant="text"
-                    color="primary"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleAdd}
-                    variant="contained"
-                    color="primary"
-                  >
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </div>
-          }
-        >
-          {Array.isArray(nodes.children)
-            ? nodes.children.map((node) => renderTree(node))
-            : null}
-        </TreeItem>
-        : nodes.name == "User Management" ?
-          <TreeItem
-            key={nodes.id}
-            nodeId={nodes.id}
-            label={
-              <div>
-                <Grid container direction="row" alignItems="center">
-                  <Grid item className={classes.root}>
-                    <Typography
-                      variant="body1"
-                      color="initial"
-                      style={{ paddind: 5 }}
+                    </Container>
+                  </DialogContent>
+                  <DialogActions style={{ padding: 20 }}>
+                    <Button
+                      onClick={handleDialogAddClose}
+                      variant="text"
+                      color="primary"
                     >
-                      <div onClick={roleclick}>
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleAdd}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                <Dialog
+                  fullWidth="true"
+                  maxWidth="xs"
+                  open={dialogEdit}
+                  onClose={handleDialogAddClose}
+                  aria-labelledby="form-dialog-title"
+                >
+                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                    Edit Master Config
+                  </DialogTitle>
+
+                  <DialogContent>
+                    <Container maxWidth="xl" disableGutters>
+
+                      <h2>Old Name: {addChildName}</h2>
+                      <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                        <TextField
+                          autoFocus
+                          id="outlined-basic"
+                          label="New Name"
+                          variant="outlined"
+                          onChange={(e) => handleChangeAdd(e)}
+                          helperText={
+                            <Grid
+                              container
+                              justifyContent="flex-end"
+                              alignItems="center"
+                            >
+                              <Typography variant="title1" color="initial">
+                                0/50
+                              </Typography>
+                            </Grid>
+                          }
+                          fullWidth
+                        />
+                      </Grid>
+
+                    </Container>
+                  </DialogContent>
+                  <DialogActions style={{ padding: 20 }}>
+                    <Button
+                      onClick={handleDialogEditClose}
+                      variant="text"
+                      color="primary"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleEdit}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            }
+          >
+            {Array.isArray(nodes.children)
+              ? nodes.children.map((node) => renderTree(node))
+              : null}
+          </TreeItem>
+          : nodes.name == "User Management" ?
+            <TreeItem
+              key={nodes.id}
+              nodeId={nodes.id}
+              label={
+                <div>
+                  <Grid container direction="row" alignItems="center">
+                    <Grid item className={classes.root}>
+                      <Typography
+                        variant="body1"
+                        color="initial"
+                        style={{ paddind: 5 }}
+                      >
+                        <div onClick={userclick}>
+                          {nodes.name}
+                        </div>
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <IconButton
+                        onClick={() => handleDialogEdit(nodes.name,nodes.id)}>
+                        <EditRoundedIcon />
+                      </IconButton>
+                      <IconButton onClick={() => handleDelete(nodes.id)}>
+                        <DeleteRoundedIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-controls={nodes.id}
+                        aria-haspopup="true"
+                        onClick={(e) => handleClick(e, nodes.name, nodes.id)}
+                      >
+                        <MoreVertRoundedIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                  <Divider />
+                  <Menu
+                    id={nodes.id}
+                    anchorEl={addChild}
+                    keepMounted
+                    open={Boolean(addChild)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem id={nodes.id + "-" + nodes.name} onClick={handleDialogAdd}>
+                      {/* <MenuItem onClick={handleClose}> */}
+                      <AddRoundedIcon /> Add child
+                    </MenuItem>
+                  </Menu>
+
+                  <Dialog
+                    fullWidth="true"
+                    maxWidth="xs"
+                    open={dialogAdd}
+                    onClose={handleDialogAddClose}
+                    aria-labelledby="form-dialog-title"
+                  >
+                    <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                      New Master Config
+                    </DialogTitle>
+
+                    <DialogContent>
+                      <Container maxWidth="xl" disableGutters>
+                        {/* <TextField
+                        autoFocus
+                        helperText={
+                          <Grid
+                            container
+                            justifyContent="flex-end"
+                            alignItems="center"
+                          >
+                            <Typography variant="title1" color="initial">
+                              3/50
+                            </Typography>
+                          </Grid>
+                        }
+                        id="outlined-basic"
+                        label="Parent"
+                        variant="outlined"
+                        fullWidth
+                      /> */}
+                        <h2>Parent Name: {addChildName}</h2>
+                        <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                          <TextField
+                            autoFocus
+                            id="outlined-basic"
+                            label="Name"
+                            variant="outlined"
+                            onChange={(e) => handleChangeAdd(e)}
+                            helperText={
+                              <Grid
+                                container
+                                justifyContent="flex-end"
+                                alignItems="center"
+                              >
+                                <Typography variant="title1" color="initial">
+                                  0/50
+                                </Typography>
+                              </Grid>
+                            }
+                            fullWidth
+                          />
+                        </Grid>
+                        {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                        <TextField
+                          autoFocus
+                          id="outlined-basic"
+                          label="Decription (en)"
+                          variant="outlined"
+                          helperText={
+                            <Grid
+                              container
+                              justifyContent="flex-end"
+                              alignItems="center"
+                            >
+                              <Typography variant="title1" color="initial">
+                                0/50
+                              </Typography>
+                            </Grid>
+                          }
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        style={{ paddingTop: 20 }}
+                      >
+                        <Grid item style={{ marginRight: 15 }}>
+                          <AddRoundedIcon />
+                        </Grid>
+                        <Grid item xs={10}>
+                          <TextField
+                            fullWidth
+                            autoFocus
+                            id="outlined-select-language"
+                            select
+                            // fullWidth
+                            alignItems="flex-end"
+                            label="Add Language"
+                            value={languageDialog}
+                            onChange={handleLanguageDialog}
+                            SelectProps={{
+                              native: true,
+                            }}
+                            variant="outlined"
+                          >
+                            {language.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid> */}
+                      </Container>
+                    </DialogContent>
+                    <DialogActions style={{ padding: 20 }}>
+                      <Button
+                        onClick={handleDialogAddClose}
+                        variant="text"
+                        color="primary"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleAdd}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Save
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                  <Dialog
+                    fullWidth="true"
+                    maxWidth="xs"
+                    open={dialogEdit}
+                    onClose={handleDialogAddClose}
+                    aria-labelledby="form-dialog-title"
+                  >
+                    <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                      Edit Master Config
+                    </DialogTitle>
+
+                    <DialogContent>
+                      <Container maxWidth="xl" disableGutters>
+
+                        <h2>Old Name: {addChildName}</h2>
+                        <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                          <TextField
+                            autoFocus
+                            id="outlined-basic"
+                            label="New Name"
+                            variant="outlined"
+                            onChange={(e) => handleChangeAdd(e)}
+                            helperText={
+                              <Grid
+                                container
+                                justifyContent="flex-end"
+                                alignItems="center"
+                              >
+                                <Typography variant="title1" color="initial">
+                                  0/50
+                                </Typography>
+                              </Grid>
+                            }
+                            fullWidth
+                          />
+                        </Grid>
+
+                      </Container>
+                    </DialogContent>
+                    <DialogActions style={{ padding: 20 }}>
+                      <Button
+                        onClick={handleDialogEditClose}
+                        variant="text"
+                        color="primary"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleEdit}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Save
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+
+
+                </div>
+              }
+            >
+              {Array.isArray(nodes.children)
+                ? nodes.children.map((node) => renderTree(node))
+                : null}
+            </TreeItem>
+            :
+            <TreeItem
+              key={nodes.id}
+              nodeId={nodes.id}
+              label={
+                <div>
+                  <Grid container direction="row" alignItems="center">
+                    <Grid item className={classes.root}>
+                      <Typography
+                        variant="body1"
+                        color="initial"
+                        style={{ paddind: 5 }}
+                      >
                         {nodes.name}
-                      </div>
-                    </Typography>
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <IconButton
+                        onClick={() => handleDialogEdit(nodes.name,nodes.id)}>
+                        <EditRoundedIcon />
+                      </IconButton>
+                      <IconButton onClick={() => handleDelete(nodes.id)}>
+                        <DeleteRoundedIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-controls={nodes.id}
+                        aria-haspopup="true"
+                        onClick={(e) => handleClick(e, nodes.name, nodes.id)}
+                      >
+                        <MoreVertRoundedIcon />
+                      </IconButton>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <IconButton>
-                      <EditRoundedIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(nodes.id)}>
-                      <DeleteRoundedIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-controls={nodes.id}
-                      aria-haspopup="true" 
-                      onClick={(e)=>handleClick(e,nodes.name,nodes.id)}
-                    >
-                      <MoreVertRoundedIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-                <Divider />
-                <Menu
-                  id={nodes.id}
-                  anchorEl={addChild}
-                  keepMounted
-                  open={Boolean(addChild)}
-                  onClose={handleClose}
-                >
-                  <MenuItem id={nodes.id+"-"+nodes.name} onClick={handleDialogAdd}>
-                    {/* <MenuItem onClick={handleClose}> */}
-                    <AddRoundedIcon /> Add child
-                  </MenuItem>
-                </Menu>
+                  <Divider />
+                  <Menu
+                    id={nodes.id}
+                    anchorEl={addChild}
+                    keepMounted
+                    open={Boolean(addChild)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem id={nodes.id + "-" + nodes.name} onClick={handleDialogAdd}>
+                      {/* <MenuItem onClick={handleClose}> */}
+                      <AddRoundedIcon /> Add child
+                    </MenuItem>
+                  </Menu>
 
-                <Dialog
-                  fullWidth="true"
-                  maxWidth="xs"
-                  open={dialogAdd}
-                  onClose={handleDialogAddClose}
-                  aria-labelledby="form-dialog-title"
-                >
-                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                    New Master Config
-                  </DialogTitle>
+                  <Dialog
+                    fullWidth="true"
+                    maxWidth="xs"
+                    open={dialogAdd}
+                    onClose={handleDialogAddClose}
+                    aria-labelledby="form-dialog-title"
+                  >
+                    <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                      New Master Config
+                    </DialogTitle>
 
-                  <DialogContent>
-                    <Container maxWidth="xl" disableGutters>
-                      {/* <TextField
+                    <DialogContent>
+                      <Container maxWidth="xl" disableGutters>
+                        {/* <TextField
                         autoFocus
                         helperText={
                           <Grid
@@ -753,29 +1278,29 @@ export default function Configuration() {
                         variant="outlined"
                         fullWidth
                       /> */}
-                      <h2>Parent Name: {addChildName}</h2>
-                      <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                        <TextField
-                          autoFocus
-                          id="outlined-basic"
-                          label="Name"
-                          variant="outlined"
-                          onChange={(e) => handleChangeAdd(e) }
-                          helperText={
-                            <Grid
-                              container
-                              justifyContent="flex-end"
-                              alignItems="center"
-                            >
-                              <Typography variant="title1" color="initial">
-                                0/50
-                              </Typography>
-                            </Grid>
-                          }
-                          fullWidth
-                        />
-                      </Grid>
-                      {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                        <h2>Parent Name: {addChildName}</h2>
+                        <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                          <TextField
+                            autoFocus
+                            id="outlined-basic"
+                            label="Name"
+                            variant="outlined"
+                            onChange={(e) => handleChangeAdd(e)}
+                            helperText={
+                              <Grid
+                                container
+                                justifyContent="flex-end"
+                                alignItems="center"
+                              >
+                                <Typography variant="title1" color="initial">
+                                  0/50
+                                </Typography>
+                              </Grid>
+                            }
+                            fullWidth
+                          />
+                        </Grid>
+                        {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
                         <TextField
                           autoFocus
                           id="outlined-basic"
@@ -829,211 +1354,90 @@ export default function Configuration() {
                           </TextField>
                         </Grid>
                       </Grid> */}
-                    </Container>
-                  </DialogContent>
-                  <DialogActions style={{ padding: 20 }}>
-                    <Button
-                      onClick={handleDialogAddClose}
-                      variant="text"
-                      color="primary"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={handleAdd}
-                      variant="contained"
-                      color="primary"
-                    >
-                      Save
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </div>
-            }
-          >
-            {Array.isArray(nodes.children)
-              ? nodes.children.map((node) => renderTree(node))
-              : null}
-          </TreeItem>
-          :
-          <TreeItem
-            key={nodes.id}
-            nodeId={nodes.id}
-            label={
-              <div>
-                <Grid container direction="row" alignItems="center">
-                  <Grid item className={classes.root}>
-                    <Typography
-                      variant="body1"
-                      color="initial"
-                      style={{ paddind: 5 }}
-                    >
-                      {nodes.name}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <IconButton>
-                      <EditRoundedIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(nodes.id)}>
-                      <DeleteRoundedIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-controls={nodes.id}
-                      aria-haspopup="true" 
-                      onClick={(e)=>handleClick(e,nodes.name,nodes.id)}
-                    >
-                      <MoreVertRoundedIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-                <Divider />
-                <Menu
-                  id={nodes.id}
-                  anchorEl={addChild}
-                  keepMounted
-                  open={Boolean(addChild)}
-                  onClose={handleClose}
-                >
-                  <MenuItem id={nodes.id+"-"+nodes.name} onClick={handleDialogAdd}>
-                    {/* <MenuItem onClick={handleClose}> */}
-                    <AddRoundedIcon /> Add child
-                  </MenuItem>
-                </Menu>
-
-                <Dialog
-                  fullWidth="true"
-                  maxWidth="xs"
-                  open={dialogAdd}
-                  onClose={handleDialogAddClose}
-                  aria-labelledby="form-dialog-title"
-                >
-                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                    New Master Config
-                  </DialogTitle>
-
-                  <DialogContent>
-                    <Container maxWidth="xl" disableGutters>
-                      {/* <TextField
-                        autoFocus
-                        helperText={
-                          <Grid
-                            container
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <Typography variant="title1" color="initial">
-                              3/50
-                            </Typography>
-                          </Grid>
-                        }
-                        id="outlined-basic"
-                        label="Parent"
-                        variant="outlined"
-                        fullWidth
-                      /> */}
-                      <h2>Parent Name: {addChildName}</h2>
-                      <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                        <TextField
-                          autoFocus
-                          id="outlined-basic"
-                          label="Name"
-                          variant="outlined"
-                          onChange={(e) => handleChangeAdd(e) }
-                          helperText={
-                            <Grid
-                              container
-                              justifyContent="flex-end"
-                              alignItems="center"
-                            >
-                              <Typography variant="title1" color="initial">
-                                0/50
-                              </Typography>
-                            </Grid>
-                          }
-                          fullWidth
-                        />
-                      </Grid>
-                      {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                        <TextField
-                          autoFocus
-                          id="outlined-basic"
-                          label="Decription (en)"
-                          variant="outlined"
-                          helperText={
-                            <Grid
-                              container
-                              justifyContent="flex-end"
-                              alignItems="center"
-                            >
-                              <Typography variant="title1" color="initial">
-                                0/50
-                              </Typography>
-                            </Grid>
-                          }
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                        style={{ paddingTop: 20 }}
+                      </Container>
+                    </DialogContent>
+                    <DialogActions style={{ padding: 20 }}>
+                      <Button
+                        onClick={handleDialogAddClose}
+                        variant="text"
+                        color="primary"
                       >
-                        <Grid item style={{ marginRight: 15 }}>
-                          <AddRoundedIcon />
-                        </Grid>
-                        <Grid item xs={10}>
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleAdd}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Save
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                  <Dialog
+                    fullWidth="true"
+                    maxWidth="xs"
+                    open={dialogEdit}
+                    onClose={handleDialogAddClose}
+                    aria-labelledby="form-dialog-title"
+                  >
+                    <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                      Edit Master Config
+                    </DialogTitle>
+
+                    <DialogContent>
+                      <Container maxWidth="xl" disableGutters>
+
+                        <h2>Old Name: {addChildName}</h2>
+                        <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
                           <TextField
-                            fullWidth
                             autoFocus
-                            id="outlined-select-language"
-                            select
-                            // fullWidth
-                            alignItems="flex-end"
-                            label="Add Language"
-                            value={languageDialog}
-                            onChange={handleLanguageDialog}
-                            SelectProps={{
-                              native: true,
-                            }}
+                            id="outlined-basic"
+                            label="New Name"
                             variant="outlined"
-                          >
-                            {language.map((option) => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </TextField>
+                            onChange={(e) => handleChangeAdd(e)}
+                            helperText={
+                              <Grid
+                                container
+                                justifyContent="flex-end"
+                                alignItems="center"
+                              >
+                                <Typography variant="title1" color="initial">
+                                  0/50
+                                </Typography>
+                              </Grid>
+                            }
+                            fullWidth
+                          />
                         </Grid>
-                      </Grid> */}
-                    </Container>
-                  </DialogContent>
-                  <DialogActions style={{ padding: 20 }}>
-                    <Button
-                      onClick={handleDialogAddClose}
-                      variant="text"
-                      color="primary"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={handleAdd}
-                      variant="contained"
-                      color="primary"
-                    >
-                      Save
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </div>
-            }
-          >
-            {Array.isArray(nodes.children)
-              ? nodes.children.map((node) => renderTree(node))
-              : null}
-          </TreeItem>
+
+                      </Container>
+                    </DialogContent>
+                    <DialogActions style={{ padding: 20 }}>
+                      <Button
+                        onClick={handleDialogEditClose}
+                        variant="text"
+                        color="primary"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleEdit}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Save
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+
+
+                </div>
+              }
+            >
+              {Array.isArray(nodes.children)
+                ? nodes.children.map((node) => renderTree(node))
+                : null}
+            </TreeItem>
       }
     </div>
   );
@@ -1139,7 +1543,8 @@ export default function Configuration() {
           </Paper>
         </Container>
       ) : configState == "RoleManagement" ? <RoleManagement />
-        : <UserManagement />
+        : configState == "RoomManagement" ? <RoomManagement />
+          : <UserManagement />
       }
     </div>
   );
