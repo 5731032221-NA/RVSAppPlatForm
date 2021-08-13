@@ -61,7 +61,7 @@ const language = [
 
 export default function Configuration() {
 
-  
+
   const classes = useStyles();
   const { store } = useContext(ReactReduxContext);
   const [expanded, setExpanded] = React.useState([]);
@@ -69,6 +69,9 @@ export default function Configuration() {
   const [addChild, setAddchild] = React.useState(null);
   const [dialogAdd, setDialogAdd] = React.useState(false);
   const [languageDialog, setLanguageDialog] = React.useState("EN");
+  const [addChildid, setAddChuldid] = React.useState(null);
+  const [addChildName, setAddChuldName] = React.useState(null);
+  const [addChildValue, setAddChuldValue] = React.useState(null);
   const [page, setPage] = React.useState("");
   const [data, setData] = React.useState(
     // {
@@ -79,76 +82,108 @@ export default function Configuration() {
       {
         id: "1.1",
         name: "PMS Configuration",
+        createdate: "2021-08-13 12:03:00",
+        master: true,
         children: [
           {
             id: "1.1.1",
             name: "Property Configuration",
+            createdate: "2021-08-13 12:03:00",
+            master: true,
             children: [
               {
                 id: "1.1.1.1",
                 name: "Property Master",
+                createdate: "2021-08-13 12:03:00",
+                master: true,
               },
               {
                 id: "1.1.1.2",
                 name: "Building Master",
+                createdate: "2021-08-13 12:03:00",
               },
               {
                 id: "1.1.1.3",
                 name: "Exposure ",
+                createdate: "2021-08-13 12:03:00",
               },
               {
                 id: "1.1.1.4",
                 name: "Floor ",
+                createdate: "2021-08-13 12:03:00",
+                master: true,
               },
               {
                 id: "1.1.1.5",
                 name: "Zone/Wing",
+                createdate: "2021-08-13 12:03:00",
+                master: true,
               },
             ],
           },
           {
             id: "1.1.2",
             name: "Room Configuration",
+            createdate: "2021-08-13 12:03:00",
+            master: true,
             children: [
               {
                 id: "1.1.2.1",
                 name: "Room Type",
+                master: true,
+                createdate: "2021-08-13 12:03:00",
               },
               {
                 id: "1.1.2.2",
                 name: "Room Category",
+                master: true,
+                createdate: "2021-08-13 12:03:00",
               },
               {
                 id: "1.1.2.3",
                 name: "Room Master Maintenance",
+                master: true,
+                createdate: "2021-08-13 12:03:00",
               },
             ],
           },
           {
             id: "1.1.3",
             name: "Item Configuration",
+            createdate: "2021-08-13 12:03:00",
+            master: true,
             children: [
               {
                 id: "1.1.3.1",
                 name: "Item Type",
+                createdate: "2021-08-13 12:03:00",
+                master: true,
               },
               {
                 id: "1.1.3.2",
                 name: "Item Category",
+                createdate: "2021-08-13 12:03:00",
+                master: true,
               },
             ],
           },
           {
             id: "1.1.4",
             name: "Reservation Configuration",
+            createdate: "2021-08-13 12:03:00",
+            master: true,
             children: [
               {
                 id: "1.1.4.1",
                 name: "Market segment Maintenance",
+                createdate: "2021-08-13 12:03:00",
+                master: true,
               },
               {
                 id: "1.1.4.2",
                 name: "Source Maintenance",
+                createdate: "2021-08-13 12:03:00",
+                master: true,
               },
             ],
           },
@@ -157,19 +192,25 @@ export default function Configuration() {
       {
         id: "1.2",
         name: "System Configuration",
+        createdate: "2021-08-13 12:03:00",
+        master: true,
         children: [
           {
             id: "1.2.1",
             name: "User Management",
+            createdate: "2021-08-13 12:03:00",
+            master: true,
           },
           {
             id: "1.2.2",
             name: "Role Management",
+            createdate: "2021-08-13 12:03:00",
+            master: true,
           },
         ],
       },
     ],
-  // }
+    // }
   )
 
   // const [store.getState().reducer.configState, setstore.getState().reducer.configState] = React.useState("Configuration");
@@ -178,8 +219,15 @@ export default function Configuration() {
     setLanguageDialog(event.target.value);
   };
 
-  const handleClick = (event) => {
-    setAddchild(event.currentTarget);
+  const handleClick = (event,name,id) => {
+    // console.log(event)
+    // console.log("ids",event.target.id);
+    // console.log("id",event.target.id.split("-")[0]);
+    // console.log("name",event.target.id.split("-")[1])
+    setAddChuldid(id);
+    setAddChuldName(name);
+
+    setAddchild(event.target);
   };
 
   const handleClose = () => {
@@ -197,14 +245,24 @@ export default function Configuration() {
     setSelected(nodeIds);
   };
 
-  const handleDialogAdd = () => {
-    setAddchild(null);
+  const handleDialogAdd = (event) => {
+    // console.log("ids",event.target.id);
+    // console.log("id",event.target.id.split("-")[0]);
+    // console.log("name",event.target.id.split("-")[1])
+    // setAddChuldid(event.target.id.split("-")[0]);
+    // setAddChuldName(event.target.id.split("-")[1]);
+    // setAddchild(null);
     setDialogAdd(true);
   };
 
   const handleDialogAddClose = () => {
     setDialogAdd(false);
   };
+
+  const handleChangeAdd = (event) => {
+    setAddChuldValue(event.target.value);
+  };
+
 
   const roleclick = () => {
     console.log("testclick")
@@ -346,67 +404,89 @@ export default function Configuration() {
         array.splice(i, 1);
         return true;
       }
-      if (obj.children) {
-        if (prune(obj.children, label)) {
-          if (obj.children.length === 0) {
-            // delete children property when empty
-            delete obj.children;
-
-            // or, to delete this parent altogether
-            // as a result of it having no more children
-            // do this instead
-            array.splice(i, 1);
-          }
-          // return true;
-        }
+      else if (obj.children) {
+        prune(obj.children, label)
+        
       }
     }
   }
-  
+
 
   const handleDelete = async (id) => {
     console.log("deleteid", id);
-    let key = [0];
-
     await prune(data, id);
   }
 
-  const maxchildid = async (array,parentid) => {
+  const maxchildid = async (array, parentid) => {
     let max = 0;
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      let num = parseInt(obj.id.replace(parentid+".", ""));
-      console.log("cc",max,num)
-      if(num > max) max = num
+      let num = parseInt(obj.id.replace(parentid + ".", ""));
+      console.log("cc", max, num)
+      if (num > max) max = num
     }
     return max;
   }
 
-  const runningid = async (array,label) => {
+  const runningid = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       console.log(obj.id, label)
       if (obj.id === label) {
-        if(obj.children){
-          return await maxchildid(obj.children,obj.id);
+        if (obj.children) {
+          let newmaxid = await maxchildid(obj.children, obj.id);
+          return obj.id + "." + (newmaxid + 1)
         }
         else {
-          console.log("label",label)
-          console.log("labelid",label+".1")
-          return label+".1"}
+          console.log("label", label)
+          console.log("labelid", label + ".1")
+          return label + ".1"
+        }
       }
       else if (obj.children) {
-        return await runningid(obj.children, label);
+        let a = await runningid(obj.children, label);
+        if (a != undefined) return a;
       }
     }
-  } 
+  }
 
-  const handleAdd = async (id) => {
+  const adding = async (array, label, name, newid) => {
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      console.log(obj.id, label)
+      if (obj.id === label) {
+        if (obj.children) {
+          obj.children = [...obj.children, {
+            id: newid,
+            name: name,
+            createdate: "2021-08-13 13:03:00",
+            master: false,
+          }]
+        } else {
+          obj.children = [ {
+            id: newid,
+            name: name,
+            createdate: "2021-08-13 13:03:00",
+            master: false,
+          }]
+        }
+      }
+      else if (obj.children) {
+        adding(obj.children, label, name, newid);
+      }
+    }
+  }
+
+
+  const handleAdd = async () => {
+    let id = addChildid;
     console.log("addparentid", id);
-    let newid = await runningid(data,id)
-    console.log("newid",newid)
-    // let key = [0];
-    // await prune(data.children, id);
+    let newid = await runningid(data, id)
+    console.log("newid", newid)
+    await (adding(data, id, addChildValue, newid))
+    console.log(data)
+    // setData(data)
+    setDialogAdd(false);
   }
 
 
@@ -434,157 +514,159 @@ export default function Configuration() {
                   <IconButton>
                     <EditRoundedIcon />
                   </IconButton>
-                    <IconButton 
-                    onClick={() => handleDelete(nodes.id)}>
-                      <DeleteRoundedIcon />
-                    </IconButton>
                   <IconButton
-                aria-controls={nodes.id}
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                    <MoreVertRoundedIcon />
+                    onClick={() => handleDelete(nodes.id)}>
+                    <DeleteRoundedIcon />
                   </IconButton>
+                  <IconButton
+                      aria-controls={nodes.id}
+                      aria-haspopup="true" 
+                      onClick={(e)=>handleClick(e,nodes.name,nodes.id)}
+                    >
+                      <MoreVertRoundedIcon />
+                    </IconButton>
                 </Grid>
               </Grid>
               <Divider />
               <Menu
-            id={nodes.id}
-            anchorEl={addChild}
-            keepMounted
-            open={Boolean(addChild)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleDialogAdd}>
-              {/* <MenuItem onClick={handleClose}> */}
-              <AddRoundedIcon /> Add child
-            </MenuItem>
-          </Menu>
+                id={nodes.id}
+                anchorEl={addChild}
+                keepMounted
+                open={Boolean(addChild)}
+                onClose={handleClose}
+              >
+                <MenuItem id={nodes.id+"-"+nodes.name} onClick={handleDialogAdd}>
+                  {/* <MenuItem onClick={handleClose}> */}
+                  <AddRoundedIcon /> Add child
+                </MenuItem>
+              </Menu>
 
-          <Dialog
-            fullWidth="true"
-            maxWidth="xs"
-            open={dialogAdd}
-            onClose={handleDialogAddClose}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-              New Master Config
-            </DialogTitle>
+              <Dialog
+                fullWidth="true"
+                maxWidth="xs"
+                open={dialogAdd}
+                onClose={handleDialogAddClose}
+                aria-labelledby="form-dialog-title"
+              >
+                <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                  New Master Config
+                </DialogTitle>
 
-            <DialogContent>
-              <Container maxWidth="xl" disableGutters>
-                <TextField
-                  autoFocus
-                  helperText={
+                <DialogContent>
+                  <Container maxWidth="xl" disableGutters>
+                    {/* <TextField
+                      autoFocus
+                      helperText={
+                        <Grid
+                          container
+                          justifyContent="flex-end"
+                          alignItems="center"
+                        >
+                          <Typography variant="title1" color="initial">
+                            3/50
+                          </Typography>
+                        </Grid>
+                      }
+                      id="outlined-basic"
+                      label="Parent"
+                      variant="outlined"
+                      fullWidth
+                    /> */}
+                    <h2>Parent Name: {addChildName}</h2>
+                    <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                      <TextField
+                        autoFocus
+                        id="outlined-basic"
+                        label="Name"
+                        variant="outlined"
+                        onChange={(e) => handleChangeAdd(e) }
+                        helperText={
+                          <Grid
+                            container
+                            justifyContent="flex-end"
+                            alignItems="center"
+                          >
+                            <Typography variant="title1" color="initial">
+                              0/50
+                            </Typography>
+                          </Grid>
+                        }
+                        fullWidth
+                      />
+                    </Grid>
+                    {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                      <TextField
+                        autoFocus
+                        id="outlined-basic"
+                        label="Decription (en)"
+                        variant="outlined"
+                        helperText={
+                          <Grid
+                            container
+                            justifyContent="flex-end"
+                            alignItems="center"
+                          >
+                            <Typography variant="title1" color="initial">
+                              0/50
+                            </Typography>
+                          </Grid>
+                        }
+                        fullWidth
+                      />
+                    </Grid>
                     <Grid
                       container
+                      direction="row"
                       justifyContent="flex-end"
                       alignItems="center"
+                      style={{ paddingTop: 20 }}
                     >
-                      <Typography variant="title1" color="initial">
-                        3/50
-                      </Typography>
-                    </Grid>
-                  }
-                  id="outlined-basic"
-                  label="Parent"
-                  variant="outlined"
-                  fullWidth
-                />
-                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                  <TextField
-                    autoFocus
-                    id="outlined-basic"
-                    label="Lastname"
-                    variant="outlined"
-                    helperText={
-                      <Grid
-                        container
-                        justifyContent="flex-end"
-                        alignItems="center"
-                      >
-                        <Typography variant="title1" color="initial">
-                          0/50
-                        </Typography>
+                      <Grid item style={{ marginRight: 15 }}>
+                        <AddRoundedIcon />
                       </Grid>
-                    }
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                  <TextField
-                    autoFocus
-                    id="outlined-basic"
-                    label="Decription (en)"
-                    variant="outlined"
-                    helperText={
-                      <Grid
-                        container
-                        justifyContent="flex-end"
-                        alignItems="center"
-                      >
-                        <Typography variant="title1" color="initial">
-                          0/50
-                        </Typography>
+                      <Grid item xs={10}>
+                        <TextField
+                          fullWidth
+                          autoFocus
+                          id="outlined-select-language"
+                          select
+                          // fullWidth
+                          alignItems="flex-end"
+                          label="Add Language"
+                          value={languageDialog}
+                          onChange={handleLanguageDialog}
+                          SelectProps={{
+                            native: true,
+                          }}
+                          variant="outlined"
+                        >
+                          {language.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </TextField>
                       </Grid>
-                    }
-                    fullWidth
-                  />
-                </Grid>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="flex-end"
-                  alignItems="center"
-                  style={{ paddingTop: 20 }}
-                >
-                  <Grid item style={{ marginRight: 15 }}>
-                    <AddRoundedIcon />
-                  </Grid>
-                  <Grid item xs={10}>
-                    <TextField
-                      fullWidth
-                      autoFocus
-                      id="outlined-select-language"
-                      select
-                      // fullWidth
-                      alignItems="flex-end"
-                      label="Add Language"
-                      value={languageDialog}
-                      onChange={handleLanguageDialog}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      variant="outlined"
-                    >
-                      {language.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                </Grid>
-              </Container>
-            </DialogContent>
-            <DialogActions style={{ padding: 20 }}>
-              <Button
-                onClick={handleDialogAddClose}
-                variant="text"
-                color="primary"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleDialogAddClose}
-                variant="contained"
-                color="primary"
-              >
-                Save
-              </Button>
-            </DialogActions>
-          </Dialog>
+                    </Grid> */}
+                  </Container>
+                </DialogContent>
+                <DialogActions style={{ padding: 20 }}>
+                  <Button
+                    onClick={handleDialogAddClose}
+                    variant="text"
+                    color="primary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleAdd}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Save
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </div>
           }
         >
@@ -614,156 +696,158 @@ export default function Configuration() {
                     <IconButton>
                       <EditRoundedIcon />
                     </IconButton>
-                      <IconButton onClick={() => handleDelete(nodes.id)}>
-                        <DeleteRoundedIcon />
-                      </IconButton>
-                      <IconButton
-                aria-controls={nodes.id}
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
+                    <IconButton onClick={() => handleDelete(nodes.id)}>
+                      <DeleteRoundedIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-controls={nodes.id}
+                      aria-haspopup="true" 
+                      onClick={(e)=>handleClick(e,nodes.name,nodes.id)}
+                    >
                       <MoreVertRoundedIcon />
                     </IconButton>
                   </Grid>
                 </Grid>
                 <Divider />
                 <Menu
-            id={nodes.id}
-            anchorEl={addChild}
-            keepMounted
-            open={Boolean(addChild)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleDialogAdd}>
-              {/* <MenuItem onClick={handleClose}> */}
-              <AddRoundedIcon /> Add child
-            </MenuItem>
-          </Menu>
-
-          <Dialog
-            fullWidth="true"
-            maxWidth="xs"
-            open={dialogAdd}
-            onClose={handleDialogAddClose}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-              New Master Config
-            </DialogTitle>
-
-            <DialogContent>
-              <Container maxWidth="xl" disableGutters>
-                <TextField
-                  autoFocus
-                  helperText={
-                    <Grid
-                      container
-                      justifyContent="flex-end"
-                      alignItems="center"
-                    >
-                      <Typography variant="title1" color="initial">
-                        3/50
-                      </Typography>
-                    </Grid>
-                  }
-                  id="outlined-basic"
-                  label="Parent"
-                  variant="outlined"
-                  fullWidth
-                />
-                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                  <TextField
-                    autoFocus
-                    id="outlined-basic"
-                    label="Lastname"
-                    variant="outlined"
-                    helperText={
-                      <Grid
-                        container
-                        justifyContent="flex-end"
-                        alignItems="center"
-                      >
-                        <Typography variant="title1" color="initial">
-                          0/50
-                        </Typography>
-                      </Grid>
-                    }
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                  <TextField
-                    autoFocus
-                    id="outlined-basic"
-                    label="Decription (en)"
-                    variant="outlined"
-                    helperText={
-                      <Grid
-                        container
-                        justifyContent="flex-end"
-                        alignItems="center"
-                      >
-                        <Typography variant="title1" color="initial">
-                          0/50
-                        </Typography>
-                      </Grid>
-                    }
-                    fullWidth
-                  />
-                </Grid>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="flex-end"
-                  alignItems="center"
-                  style={{ paddingTop: 20 }}
+                  id={nodes.id}
+                  anchorEl={addChild}
+                  keepMounted
+                  open={Boolean(addChild)}
+                  onClose={handleClose}
                 >
-                  <Grid item style={{ marginRight: 15 }}>
-                    <AddRoundedIcon />
-                  </Grid>
-                  <Grid item xs={10}>
-                    <TextField
-                      fullWidth
-                      autoFocus
-                      id="outlined-select-language"
-                      select
-                      // fullWidth
-                      alignItems="flex-end"
-                      label="Add Language"
-                      value={languageDialog}
-                      onChange={handleLanguageDialog}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      variant="outlined"
+                  <MenuItem id={nodes.id+"-"+nodes.name} onClick={handleDialogAdd}>
+                    {/* <MenuItem onClick={handleClose}> */}
+                    <AddRoundedIcon /> Add child
+                  </MenuItem>
+                </Menu>
+
+                <Dialog
+                  fullWidth="true"
+                  maxWidth="xs"
+                  open={dialogAdd}
+                  onClose={handleDialogAddClose}
+                  aria-labelledby="form-dialog-title"
+                >
+                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                    New Master Config
+                  </DialogTitle>
+
+                  <DialogContent>
+                    <Container maxWidth="xl" disableGutters>
+                      {/* <TextField
+                        autoFocus
+                        helperText={
+                          <Grid
+                            container
+                            justifyContent="flex-end"
+                            alignItems="center"
+                          >
+                            <Typography variant="title1" color="initial">
+                              3/50
+                            </Typography>
+                          </Grid>
+                        }
+                        id="outlined-basic"
+                        label="Parent"
+                        variant="outlined"
+                        fullWidth
+                      /> */}
+                      <h2>Parent Name: {addChildName}</h2>
+                      <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                        <TextField
+                          autoFocus
+                          id="outlined-basic"
+                          label="Name"
+                          variant="outlined"
+                          onChange={(e) => handleChangeAdd(e) }
+                          helperText={
+                            <Grid
+                              container
+                              justifyContent="flex-end"
+                              alignItems="center"
+                            >
+                              <Typography variant="title1" color="initial">
+                                0/50
+                              </Typography>
+                            </Grid>
+                          }
+                          fullWidth
+                        />
+                      </Grid>
+                      {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                        <TextField
+                          autoFocus
+                          id="outlined-basic"
+                          label="Decription (en)"
+                          variant="outlined"
+                          helperText={
+                            <Grid
+                              container
+                              justifyContent="flex-end"
+                              alignItems="center"
+                            >
+                              <Typography variant="title1" color="initial">
+                                0/50
+                              </Typography>
+                            </Grid>
+                          }
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        style={{ paddingTop: 20 }}
+                      >
+                        <Grid item style={{ marginRight: 15 }}>
+                          <AddRoundedIcon />
+                        </Grid>
+                        <Grid item xs={10}>
+                          <TextField
+                            fullWidth
+                            autoFocus
+                            id="outlined-select-language"
+                            select
+                            // fullWidth
+                            alignItems="flex-end"
+                            label="Add Language"
+                            value={languageDialog}
+                            onChange={handleLanguageDialog}
+                            SelectProps={{
+                              native: true,
+                            }}
+                            variant="outlined"
+                          >
+                            {language.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid> */}
+                    </Container>
+                  </DialogContent>
+                  <DialogActions style={{ padding: 20 }}>
+                    <Button
+                      onClick={handleDialogAddClose}
+                      variant="text"
+                      color="primary"
                     >
-                      {language.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                </Grid>
-              </Container>
-            </DialogContent>
-            <DialogActions style={{ padding: 20 }}>
-              <Button
-                onClick={handleDialogAddClose}
-                variant="text"
-                color="primary"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleDialogAddClose}
-                variant="contained"
-                color="primary"
-              >
-                Save
-              </Button>
-            </DialogActions>
-          </Dialog>
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleAdd}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </div>
             }
           >
@@ -791,156 +875,158 @@ export default function Configuration() {
                     <IconButton>
                       <EditRoundedIcon />
                     </IconButton>
-                      <IconButton onClick={() => handleDelete(nodes.id)}>
-                        <DeleteRoundedIcon />
-                      </IconButton>
-                      <IconButton
-                aria-controls={nodes.id}
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
+                    <IconButton onClick={() => handleDelete(nodes.id)}>
+                      <DeleteRoundedIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-controls={nodes.id}
+                      aria-haspopup="true" 
+                      onClick={(e)=>handleClick(e,nodes.name,nodes.id)}
+                    >
                       <MoreVertRoundedIcon />
                     </IconButton>
                   </Grid>
                 </Grid>
                 <Divider />
                 <Menu
-            id={nodes.id}
-            anchorEl={addChild}
-            keepMounted
-            open={Boolean(addChild)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleDialogAdd}>
-              {/* <MenuItem onClick={handleClose}> */}
-              <AddRoundedIcon /> Add child
-            </MenuItem>
-          </Menu>
-
-          <Dialog
-            fullWidth="true"
-            maxWidth="xs"
-            open={dialogAdd}
-            onClose={handleDialogAddClose}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-              New Master Config
-            </DialogTitle>
-
-            <DialogContent>
-              <Container maxWidth="xl" disableGutters>
-                <TextField
-                  autoFocus
-                  helperText={
-                    <Grid
-                      container
-                      justifyContent="flex-end"
-                      alignItems="center"
-                    >
-                      <Typography variant="title1" color="initial">
-                        3/50
-                      </Typography>
-                    </Grid>
-                  }
-                  id="outlined-basic"
-                  label="Parent"
-                  variant="outlined"
-                  fullWidth
-                />
-                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                  <TextField
-                    autoFocus
-                    id="outlined-basic"
-                    label="Lastname"
-                    variant="outlined"
-                    helperText={
-                      <Grid
-                        container
-                        justifyContent="flex-end"
-                        alignItems="center"
-                      >
-                        <Typography variant="title1" color="initial">
-                          0/50
-                        </Typography>
-                      </Grid>
-                    }
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                  <TextField
-                    autoFocus
-                    id="outlined-basic"
-                    label="Decription (en)"
-                    variant="outlined"
-                    helperText={
-                      <Grid
-                        container
-                        justifyContent="flex-end"
-                        alignItems="center"
-                      >
-                        <Typography variant="title1" color="initial">
-                          0/50
-                        </Typography>
-                      </Grid>
-                    }
-                    fullWidth
-                  />
-                </Grid>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="flex-end"
-                  alignItems="center"
-                  style={{ paddingTop: 20 }}
+                  id={nodes.id}
+                  anchorEl={addChild}
+                  keepMounted
+                  open={Boolean(addChild)}
+                  onClose={handleClose}
                 >
-                  <Grid item style={{ marginRight: 15 }}>
-                    <AddRoundedIcon />
-                  </Grid>
-                  <Grid item xs={10}>
-                    <TextField
-                      fullWidth
-                      autoFocus
-                      id="outlined-select-language"
-                      select
-                      // fullWidth
-                      alignItems="flex-end"
-                      label="Add Language"
-                      value={languageDialog}
-                      onChange={handleLanguageDialog}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      variant="outlined"
+                  <MenuItem id={nodes.id+"-"+nodes.name} onClick={handleDialogAdd}>
+                    {/* <MenuItem onClick={handleClose}> */}
+                    <AddRoundedIcon /> Add child
+                  </MenuItem>
+                </Menu>
+
+                <Dialog
+                  fullWidth="true"
+                  maxWidth="xs"
+                  open={dialogAdd}
+                  onClose={handleDialogAddClose}
+                  aria-labelledby="form-dialog-title"
+                >
+                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                    New Master Config
+                  </DialogTitle>
+
+                  <DialogContent>
+                    <Container maxWidth="xl" disableGutters>
+                      {/* <TextField
+                        autoFocus
+                        helperText={
+                          <Grid
+                            container
+                            justifyContent="flex-end"
+                            alignItems="center"
+                          >
+                            <Typography variant="title1" color="initial">
+                              3/50
+                            </Typography>
+                          </Grid>
+                        }
+                        id="outlined-basic"
+                        label="Parent"
+                        variant="outlined"
+                        fullWidth
+                      /> */}
+                      <h2>Parent Name: {addChildName}</h2>
+                      <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                        <TextField
+                          autoFocus
+                          id="outlined-basic"
+                          label="Name"
+                          variant="outlined"
+                          onChange={(e) => handleChangeAdd(e) }
+                          helperText={
+                            <Grid
+                              container
+                              justifyContent="flex-end"
+                              alignItems="center"
+                            >
+                              <Typography variant="title1" color="initial">
+                                0/50
+                              </Typography>
+                            </Grid>
+                          }
+                          fullWidth
+                        />
+                      </Grid>
+                      {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                        <TextField
+                          autoFocus
+                          id="outlined-basic"
+                          label="Decription (en)"
+                          variant="outlined"
+                          helperText={
+                            <Grid
+                              container
+                              justifyContent="flex-end"
+                              alignItems="center"
+                            >
+                              <Typography variant="title1" color="initial">
+                                0/50
+                              </Typography>
+                            </Grid>
+                          }
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        style={{ paddingTop: 20 }}
+                      >
+                        <Grid item style={{ marginRight: 15 }}>
+                          <AddRoundedIcon />
+                        </Grid>
+                        <Grid item xs={10}>
+                          <TextField
+                            fullWidth
+                            autoFocus
+                            id="outlined-select-language"
+                            select
+                            // fullWidth
+                            alignItems="flex-end"
+                            label="Add Language"
+                            value={languageDialog}
+                            onChange={handleLanguageDialog}
+                            SelectProps={{
+                              native: true,
+                            }}
+                            variant="outlined"
+                          >
+                            {language.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid> */}
+                    </Container>
+                  </DialogContent>
+                  <DialogActions style={{ padding: 20 }}>
+                    <Button
+                      onClick={handleDialogAddClose}
+                      variant="text"
+                      color="primary"
                     >
-                      {language.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                </Grid>
-              </Container>
-            </DialogContent>
-            <DialogActions style={{ padding: 20 }}>
-              <Button
-                onClick={handleDialogAddClose}
-                variant="text"
-                color="primary"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleDialogAddClose}
-                variant="contained"
-                color="primary"
-              >
-                Save
-              </Button>
-            </DialogActions>
-          </Dialog>
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleAdd}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </div>
             }
           >

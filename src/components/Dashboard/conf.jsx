@@ -33,85 +33,117 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 
 // import AddRoundedIcon from '@material-ui/icons/AddRounded';
 
-const data = 
-// {
+const data =
+  // {
   // id: "root",
   // name: "Configuration",
   // children:
-   [
+  [
     {
       id: "1.1",
       name: "PMS Configuration",
+      createdate: "2021-08-13 12:03:00",
+      master: true,
       children: [
         {
           id: "1.1.1",
           name: "Property Configuration",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
           children: [
             {
               id: "1.1.1.1",
               name: "Property Master",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
             },
             {
               id: "1.1.1.2",
               name: "Building Master",
+              createdate: "2021-08-13 12:03:00",
             },
             {
               id: "1.1.1.3",
               name: "Exposure ",
+              createdate: "2021-08-13 12:03:00",
             },
             {
               id: "1.1.1.4",
               name: "Floor ",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
             },
             {
               id: "1.1.1.5",
               name: "Zone/Wing",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
             },
           ],
         },
         {
           id: "1.1.2",
           name: "Room Configuration",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
           children: [
             {
               id: "1.1.2.1",
               name: "Room Type",
+              master: true,
+              createdate: "2021-08-13 12:03:00",
             },
             {
               id: "1.1.2.2",
               name: "Room Category",
+              master: true,
+              createdate: "2021-08-13 12:03:00",
             },
             {
               id: "1.1.2.3",
               name: "Room Master Maintenance",
+              master: true,
+              createdate: "2021-08-13 12:03:00",
             },
           ],
         },
         {
           id: "1.1.3",
           name: "Item Configuration",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
           children: [
             {
               id: "1.1.3.1",
               name: "Item Type",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
             },
             {
               id: "1.1.3.2",
               name: "Item Category",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
             },
           ],
         },
         {
           id: "1.1.4",
           name: "Reservation Configuration",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
           children: [
             {
               id: "1.1.4.1",
               name: "Market segment Maintenance",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
             },
             {
               id: "1.1.4.2",
               name: "Source Maintenance",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
             },
           ],
         },
@@ -120,14 +152,20 @@ const data =
     {
       id: "1.2",
       name: "System Configuration",
+      createdate: "2021-08-13 12:03:00",
+      master: true,
       children: [
         {
           id: "1.2.1",
           name: "User Management",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
         },
         {
           id: "1.2.2",
           name: "Role Management",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
         },
       ],
     },
