@@ -61,6 +61,8 @@ const rows = [
   createData(2, "ACCOUNT", "Accountant", "All Accountant", "6", "Active"),
 ];
 
+
+
 function preventDefault(event) {
   event.preventDefault();
 }
@@ -86,6 +88,10 @@ export default function RoleManagement() {
   const classes = useStyles();
   const [dialogAddRole, setDialogAddRole] = React.useState(false);
   const [dialogEditRole, setDialogEditRole] = React.useState(false);
+  const [selectPosition, setSelectPosition] = React.useState("1");
+  const [selectProperty, setSelectProperty] = React.useState("1");
+  const [selectRole, setSelectRole] = React.useState("1");
+
   const handleDialogAddRole = () => {
     setDialogAddRole(true);
   };
@@ -100,6 +106,8 @@ export default function RoleManagement() {
   const handleDialogEditRoleClose = () => {
     setDialogEditRole(false);
   };
+  
+
   const [data, setData] = React.useState([
     {
       id: "1.1",

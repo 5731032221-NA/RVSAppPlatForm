@@ -21,6 +21,7 @@ import {
   Breadcrumbs,
   Link,
   TextField,
+  Chip,
 } from "@material-ui/core";
 
 import IconButton from "@material-ui/core/IconButton";
@@ -63,6 +64,43 @@ const rows = [
   createData(2, "Mon", "Month main", "Front Office", "Cashaier", "Active"),
 ];
 
+const roles = [
+  {
+    key: "1",
+    label: "Cahshier",
+  },
+  {
+    key: "2",
+    label: "Account",
+  },
+];
+
+const position = [
+  {
+    key: "1",
+    label: "Front office",
+  },
+  {
+    key: "2",
+    label: "Receptionist",
+  },
+];
+const property = [
+  {
+    key: "1",
+    label: "Novotel Pattaya",
+  },
+  {
+    key: "2",
+    label: "Novotel Bangkok",
+  },
+  {
+    key: "3",
+    label: "Novotel Rayong",
+  },
+];
+const RoleValues = "";
+
 function preventDefault(event) {
   event.preventDefault();
 }
@@ -88,6 +126,10 @@ export default function UserManagement() {
   const classes = useStyles();
   const [dialogAddUser, setDialogAddUser] = React.useState(false);
   const [dialogEditUser, setDialogEditUser] = React.useState(false);
+  const [selectPosition, setSelectPosition] = React.useState(null);
+  const [selectProperty, setSelectProperty] = React.useState(null);
+  const [chipRolesDialog, setChipRolesDialog] = React.useState([]);
+
   const handleDialogAddUser = () => {
     setDialogAddUser(true);
   };
@@ -101,6 +143,30 @@ export default function UserManagement() {
 
   const handleDialogEditUserClose = () => {
     setDialogEditUser(false);
+  };
+
+  const handleSelectPosition = (event) => {
+    setSelectPosition(event.target.value);
+  };
+  const handleSelectProperty = (event) => {
+    setSelectProperty(event.target.value);
+  };
+
+  const handleSelectRoles = (event) => {
+    console.log("event", event.target.value);
+    console.log(chipRolesDialog);
+    if (!(event.target.value in chipRolesDialog)) {
+      setChipRolesDialog([
+        ...chipRolesDialog,
+        { key: event.target.value, label: event.target.value },
+      ]);
+    } else {
+    }
+  };
+  const handleDeleteRoles = (chipToDelete) => () => {
+    setChipRolesDialog((chips) =>
+      chips.filter((chips) => chips.key !== chipToDelete.key)
+    );
   };
   return (
     <Container maxWidth="xl">
@@ -328,7 +394,6 @@ export default function UserManagement() {
               <Grid container spacing={2} style={{ paddingTop: 5 }}>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                   <TextField
-                    // autoFocus
                     select
                     id="outlined-basic"
                     label="Position"
@@ -337,9 +402,15 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
-                  ></TextField>
+                    value={selectPosition}
+                    onChange={handleSelectPosition}
+                  >
+                    {position.map((option) => (
+                      <option key={option.key} value={option.label}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
                 </Grid>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                   <TextField
@@ -352,45 +423,52 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    /* value={" "}
-                    onChange={" "} */
+                    value={selectProperty}
+                    onChange={handleSelectProperty}
                   >
-                    {/*  {roomStatus.map((option) => (
-                      <option key={option.value} value={option.value}>
+                    {property.map((option) => (
+                      <option key={option.key} value={option.label}>
                         {option.label}
                       </option>
-                    ))} */}
+                    ))}
                   </TextField>
                 </Grid>
               </Grid>
               <Grid
                 container
                 direction="row"
-                justifyContent="flex-end"
+                justifyContent="flex-start"
                 alignItems="center"
                 style={{ paddingTop: 10 }}
               >
                 <TextField
                   fullWidth
                   // autoFocus
-                  id="outlined-select-language"
-                  select
-                  // fullWidth
-
-                  label="Roles"
-                  value={" "}
-                  onChange={" "}
-                  SelectProps={{
+                  variant="outlined"
+                  selectSelectProps={{
                     native: true,
                   }}
-                  variant="outlined"
+                  label="Roles"
+                  select
+                  value={RoleValues}
+                  onChange={(event) => handleSelectRoles(event)}
                 >
-                  {/*   {attribute.map((option) => (
-                    <option key={option.value} value={option.value}>
+                  {roles.map((option) => (
+                    <MenuItem key={option.key} value={option.label}>
                       {option.label}
-                    </option>
-                  ))} */}
+                    </MenuItem>
+                  ))}
                 </TextField>
+                {chipRolesDialog.map((data, index) => {
+                  return (
+                    <Chip
+                      style={{ marginTop: 10 }}
+                      key={data.key + index}
+                      label={data.label}
+                      onDelete={handleDeleteRoles(data)}
+                    />
+                  );
+                })}
               </Grid>
               <Grid container spacing={2} style={{ paddingTop: 10 }}>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -454,7 +532,6 @@ export default function UserManagement() {
           <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
             Edit User
           </DialogTitle>
-
           <DialogContent>
             <Container maxWidth="xl" disableGutters>
               <Grid container spacing={2} style={{ paddingTop: 10 }}>
@@ -485,7 +562,6 @@ export default function UserManagement() {
               <Grid container spacing={2} style={{ paddingTop: 5 }}>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                   <TextField
-                    // autoFocus
                     select
                     id="outlined-basic"
                     label="Position"
@@ -494,14 +570,14 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                    value={selectPosition}
+                    onChange={handleSelectPosition}
                   >
-                    {/* {roomSeg.map((option) => (
-                      <option key={option.value} value={option.value}>
+                    {position.map((option) => (
+                      <option key={option.key} value={option.label}>
                         {option.label}
                       </option>
-                    ))} */}
+                    ))}
                   </TextField>
                 </Grid>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -515,42 +591,52 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    /* value={" "}
-                    onChange={" "} */
+                    value={selectProperty}
+                    onChange={handleSelectProperty}
                   >
-                    {/*  {roomStatus.map((option) => (
-                      <option key={option.value} value={option.value}>
+                    {property.map((option) => (
+                      <option key={option.key} value={option.label}>
                         {option.label}
                       </option>
-                    ))} */}
+                    ))}
                   </TextField>
                 </Grid>
               </Grid>
               <Grid
                 container
                 direction="row"
-                justifyContent="flex-end"
+                justifyContent="flex-start"
                 alignItems="center"
                 style={{ paddingTop: 10 }}
               >
                 <TextField
                   fullWidth
-                  id="outlined-select-language"
-                  select
-                  label="Roles"
-                  // value={" "}
-                  // onChange={" "}
-                  SelectProps={{
+                  // autoFocus
+                  variant="outlined"
+                  selectSelectProps={{
                     native: true,
                   }}
-                  variant="outlined"
+                  label="Roles"
+                  select
+                  value={RoleValues}
+                  onChange={(event) => handleSelectRoles(event)}
                 >
-                  {/*   {attribute.map((option) => (
-                    <option key={option.value} value={option.value}>
+                  {roles.map((option) => (
+                    <MenuItem key={option.key} value={option.label}>
                       {option.label}
-                    </option>
-                  ))} */}
+                    </MenuItem>
+                  ))}
                 </TextField>
+                {chipRolesDialog.map((data, index) => {
+                  return (
+                    <Chip
+                      style={{ marginTop: 10 }}
+                      key={data.key + index}
+                      label={data.label}
+                      onDelete={handleDeleteRoles(data)}
+                    />
+                  );
+                })}
               </Grid>
               <Grid container spacing={2} style={{ paddingTop: 10 }}>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>

@@ -19,6 +19,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Chip,
 } from "@material-ui/core";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import IconButton from "@material-ui/core/IconButton";
@@ -33,6 +34,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 // import Chip from "@material-ui/core/Chip";
 
@@ -86,16 +88,16 @@ const rows = [
     "-"
   ),
 ];
-const attribute = [
-  {
-    value: "Minibar",
-    label: "Minibar",
-  },
-  {
-    value: "NTV",
-    label: "NTV",
-  },
-];
+// const attribute = [
+//   {
+//     value: "Minibar",
+//     label: "Minibar",
+//   },
+//   {
+//     value: "NTV",
+//     label: "NTV",
+//   },
+// ];
 const properties = [
   {
     value: "1",
@@ -189,6 +191,17 @@ const roomStatus = [
     label: "Assign Clean",
   },
 ];
+const attribute = [
+  {
+    key: "1",
+    label: "Minibar",
+  },
+  {
+    key: "2",
+    label: "NTV",
+  },
+];
+const userValues = "";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -224,6 +237,7 @@ export default function RoomManagement() {
   const [roomSizeDialog, setRoomSizeDialog] = React.useState("1");
   const [roomSegDialog, setRoomSegDialog] = React.useState("1");
   const [roomStatusDialog, setRoomStatusDialog] = React.useState("1");
+  const [chipAttributeDialog, setChipAttributeDialog] = React.useState([]);
 
   const handleAttributeDialog = (event) => {
     setAttributeDialog(event.target.value);
@@ -265,6 +279,23 @@ export default function RoomManagement() {
 
   const handleDialogEditRoomClose = () => {
     setDialogEditRoom(false);
+  };
+
+  const handleSelectAttribute = (event) => {
+    console.log("event", event.target.value);
+    console.log("Chip", chipAttributeDialog);
+    if (!(event.target.value in chipAttributeDialog)) {
+      setChipAttributeDialog([
+        ...chipAttributeDialog,
+        { key: event.target.value, label: event.target.value },
+      ]);
+    } else {
+    }
+  };
+  const handleDeleteAttribute = (chipToDelete) => () => {
+    setChipAttributeDialog((chips) =>
+      chips.filter((chips) => chips.key !== chipToDelete.key)
+    );
   };
 
   return (
@@ -539,33 +570,39 @@ export default function RoomManagement() {
                   <Grid
                     container
                     direction="row"
-                    justifyContent="flex-end"
+                    justifyContent="flex-start"
                     alignItems="center"
                     style={{ paddingTop: 10 }}
                   >
                     <TextField
                       fullWidth
                       // autoFocus
-                      id="outlined-select-language"
-                      select
-                      // fullWidth
-
-                      label="Attribute"
-                      value={attributeDialog}
-                      onChange={handleAttributeDialog}
-                      SelectProps={{
+                      variant="outlined"
+                      selectSelectProps={{
                         native: true,
                       }}
-                      variant="outlined"
+                      label="Attribute"
+                      select
+                      value={userValues}
+                      onChange={(event) => handleSelectAttribute(event)}
                     >
                       {attribute.map((option) => (
-                        <option key={option.value} value={option.value}>
+                        <MenuItem key={option.key} value={option.label}>
                           {option.label}
-                        </option>
+                        </MenuItem>
                       ))}
                     </TextField>
+                    {chipAttributeDialog.map((data, index) => {
+                      return (
+                        <Chip
+                          style={{ marginTop: 10 }}
+                          key={data.key + index}
+                          label={data.label}
+                          onDelete={handleDeleteAttribute(data)}
+                        />
+                      );
+                    })}
                   </Grid>
-
                   <Grid
                     container
                     direction="row"
@@ -851,31 +888,38 @@ export default function RoomManagement() {
                     <Grid
                       container
                       direction="row"
-                      justifyContent="flex-end"
+                      justifyContent="flex-start"
                       alignItems="center"
                       style={{ paddingTop: 10 }}
                     >
                       <TextField
                         fullWidth
                         // autoFocus
-                        id="outlined-select-language"
-                        select
-                        // fullWidth
-
-                        label="Attribute"
-                        value={attributeDialog}
-                        onChange={handleAttributeDialog}
-                        SelectProps={{
+                        variant="outlined"
+                        selectSelectProps={{
                           native: true,
                         }}
-                        variant="outlined"
+                        label="Attribute"
+                        select
+                        value={userValues}
+                        onChange={(event) => handleSelectAttribute(event)}
                       >
                         {attribute.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <MenuItem key={option.key} value={option.label}>
                             {option.label}
-                          </option>
+                          </MenuItem>
                         ))}
                       </TextField>
+                      {chipAttributeDialog.map((data, index) => {
+                        return (
+                          <Chip
+                            style={{ marginTop: 10 }}
+                            key={data.key + index}
+                            label={data.label}
+                            onDelete={handleDeleteAttribute(data)}
+                          />
+                        );
+                      })}
                     </Grid>
 
                     <Grid
