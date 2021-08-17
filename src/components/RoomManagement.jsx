@@ -88,16 +88,7 @@ const rows = [
     "-"
   ),
 ];
-// const attribute = [
-//   {
-//     value: "Minibar",
-//     label: "Minibar",
-//   },
-//   {
-//     value: "NTV",
-//     label: "NTV",
-//   },
-// ];
+
 const properties = [
   {
     value: "1",
@@ -228,7 +219,7 @@ export default function RoomManagement() {
   const classes = useStyles();
   const [dialogAddRoom, setDialogAddRoom] = React.useState(false);
   const [dialogEditRoom, setDialogEditRoom] = React.useState(false);
-  const [attributeDialog, setAttributeDialog] = React.useState("Minibar");
+  // const [attributeDialog, setAttributeDialog] = React.useState("Minibar");
   const [propertyDialog, setPropertyDialog] = React.useState("1");
   const [roomTypeDialog, setRoomTypeDialog] = React.useState("1");
   const [buildingDialog, setBuildingDialog] = React.useState("1");
@@ -239,9 +230,9 @@ export default function RoomManagement() {
   const [roomStatusDialog, setRoomStatusDialog] = React.useState("1");
   const [chipAttributeDialog, setChipAttributeDialog] = React.useState([]);
 
-  const handleAttributeDialog = (event) => {
-    setAttributeDialog(event.target.value);
-  };
+  // const handleAttributeDialog = (event) => {
+  //   setAttributeDialog(event.target.value);
+  // };
   const handlePropertyDialog = (event) => {
     setPropertyDialog(event.target.value);
   };
@@ -282,15 +273,31 @@ export default function RoomManagement() {
   };
 
   const handleSelectAttribute = (event) => {
-    console.log("event", event.target.value);
-    console.log("Chip", chipAttributeDialog);
-    if (!(event.target.value in chipAttributeDialog)) {
-      setChipAttributeDialog([
-        ...chipAttributeDialog,
-        { key: event.target.value, label: event.target.value },
-      ]);
-    } else {
-    }
+    setChipAttributeDialog([
+      ...chipAttributeDialog,
+      { key: event.target.value, label: event.target.value },
+    ]);
+
+    // const dataTemp = new Set();
+    // if (!chipAttributeDialog.lenght) {
+    //   setChipAttributeDialog([
+    //     ...chipAttributeDialog,
+    //     { key: event.target.value, label: event.target.value },
+    //   ]);
+    // } else {
+    //   for (var i in chipAttributeDialog) {
+    //     dataTemp.add(chipAttributeDialog[i].label);
+    //   }
+    //   console.log(dataTemp);
+    //   console.log(dataTemp.has(event.target.value));
+    //   if (dataTemp.has(event.target.value)) {
+    //     setChipAttributeDialog([
+    //       ...chipAttributeDialog,
+    //       { key: event.target.value, label: event.target.value },
+    //     ]);
+    //   } else {
+    //   }
+    // }
   };
   const handleDeleteAttribute = (chipToDelete) => () => {
     setChipAttributeDialog((chips) =>
