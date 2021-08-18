@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { ReactReduxContext } from 'react-redux';
+import { ReactReduxContext } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -40,7 +40,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import user from "../services/user.service";
-import TablePagination from '@material-ui/core/TablePagination';
+import TablePagination from "@material-ui/core/TablePagination";
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
   return {
@@ -64,8 +64,6 @@ function createData(id, userID, userName, position, roles, status) {
 //   createData(1, "Fah", "Mekha Wihok", "Reception", "Night", "Inactive"),
 //   createData(2, "Mon", "Month main", "Front Office", "Cashaier", "Active"),
 // ];
-
-
 
 const roles = [
   {
@@ -135,12 +133,12 @@ export default function UserManagement() {
   const [pageData, setPageData] = React.useState([]);
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
-    let data = []
-    for (let i = (_page) * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
+    let data = [];
+    for (let i = _page * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
       if (rowsdata[i]) data.push(rowsdata[i]);
     }
     setPageData(data);
-  }
+  };
 
   const handleDialogAddUser = () => {
     setDialogAddUser(true);
@@ -158,37 +156,38 @@ export default function UserManagement() {
   };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-    updatePageData(rows, newPage, rowsPerPage)
-  }
+    setPage(newPage);
+    updatePageData(rows, newPage, rowsPerPage);
+  };
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(event.target.value)
-    setPage(0)
-    updatePageData(rows, 0, event.target.value)
-  }
-
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(event.target.value);
+    setPage(0);
+    updatePageData(rows, 0, event.target.value);
+  };
 
   const [rows, setRows] = useState([]);
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
     const data = await user(sessionStorage.getItem("auth"));
     let userdata = [];
-    data.content[data.content.length - 1].forEach(element =>
-      userdata.push(createData(
-        element.id,
-        element.userid,
-        (element.firstname + " " + element.lastname),
-        "",
-        element.role,
-        element.status_record
-      ))
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          element.userid,
+          element.firstname + " " + element.lastname,
+          "",
+          element.role,
+          element.status_record
+        )
+      )
     );
-    setRows(userdata)
-    updatePageData(userdata, page, rowsPerPage)
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
   }, []);
 
   const handleSelectPosition = (event) => {
@@ -199,14 +198,24 @@ export default function UserManagement() {
   };
 
   const handleSelectRoles = (event) => {
-    console.log("event", event.target.value);
-    console.log("chipRolesDialog", chipRolesDialog);
-    if (chipRolesDialog.filter(x => x.label === event.target.value).length == 0) {
+    const temp = new Set();
+    if (chipRolesDialog.length) {
+      for (var i in chipRolesDialog) {
+        temp.add(chipRolesDialog[i].label);
+      }
+      if (temp.has(event.target.value)) {
+        // console.log("had value");
+      } else {
+        setChipRolesDialog([
+          ...chipRolesDialog,
+          { key: event.target.value, label: event.target.value },
+        ]);
+      }
+    } else {
       setChipRolesDialog([
         ...chipRolesDialog,
         { key: event.target.value, label: event.target.value },
       ]);
-    } else {
     }
   };
   const handleDeleteRoles = (chipToDelete) => () => {
@@ -214,6 +223,7 @@ export default function UserManagement() {
       chips.filter((chips) => chips.key !== chipToDelete.key)
     );
   };
+
   return (
     <Container maxWidth="xl">
       <React.Fragment>
@@ -301,7 +311,8 @@ export default function UserManagement() {
                       <TableCell>{row.userName}</TableCell>
                       <TableCell>{row.position}</TableCell>
                       <TableCell>{row.roles}</TableCell>
-                      {`${row.status}` === "Active" || (`${row.status}` === "active") ? (
+                      {`${row.status}` === "Active" ||
+                      `${row.status}` === "active" ? (
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -350,7 +361,11 @@ export default function UserManagement() {
               >
                 <Grid item style={{ flexGrow: 1 }}>
                   <Typography variant="title1" color="initial">
-                    item {(page * rowsPerPage) + 1}-{((page + 1) * rowsPerPage) > rows.length ? rows.length : ((page + 1) * rowsPerPage)} of {rows.length} Total
+                    item {page * rowsPerPage + 1}-
+                    {(page + 1) * rowsPerPage > rows.length
+                      ? rows.length
+                      : (page + 1) * rowsPerPage}{" "}
+                    of {rows.length} Total
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -363,7 +378,7 @@ export default function UserManagement() {
                     rowsPerPage={rowsPerPage}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
-                  // onRowsPerPageChange={handleChangeRowsPerPage}
+                    // onRowsPerPageChange={handleChangeRowsPerPage}
                   />
                 </Grid>
               </Grid>
@@ -403,8 +418,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                  // value={" "}
-                  // onChange={" "}
+                    // value={" "}
+                    // onChange={" "}
                   ></TextField>
                 </Grid>
               </Grid>
@@ -420,7 +435,6 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-
                     value={selectPosition}
                     onChange={handleSelectPosition}
                   >
@@ -442,7 +456,6 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-
                     value={selectProperty}
                     onChange={handleSelectProperty}
                   >
@@ -500,8 +513,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                  // value={" "}
-                  // onChange={" "}
+                    // value={" "}
+                    // onChange={" "}
                   ></TextField>
                 </Grid>
                 <Grid
@@ -573,8 +586,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                  // value={" "}
-                  // onChange={" "}
+                    // value={" "}
+                    // onChange={" "}
                   ></TextField>
                 </Grid>
               </Grid>
@@ -590,7 +603,6 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-
                     value={selectPosition}
                     onChange={handleSelectPosition}
                   >
@@ -612,7 +624,6 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-
                     value={selectProperty}
                     onChange={handleSelectProperty}
                   >
@@ -670,8 +681,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                  // value={" "}
-                  // onChange={" "}
+                    // value={" "}
+                    // onChange={" "}
                   ></TextField>
                 </Grid>
                 <Grid
@@ -711,7 +722,7 @@ export default function UserManagement() {
           </DialogActions>
         </Dialog>
         {/* ---------------------------------------- */}
-      </React.Fragment >
-    </Container >
+      </React.Fragment>
+    </Container>
   );
 }
