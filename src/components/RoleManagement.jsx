@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { ReactReduxContext } from 'react-redux';
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -43,6 +44,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import TreeItem from "@material-ui/lab/TreeItem";
 import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
+import user from "../services/user.service"
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
   return {
@@ -55,11 +57,11 @@ function createData(id, userID, userName, position, roles, status) {
   };
 }
 
-const rows = [
-  createData(0, "CASHIER", "Cashier", "All Shifts Cashier", "5", "Active"),
-  createData(1, "Reception", "Receptionist", "All Shifts", "4", "Inactive"),
-  createData(2, "ACCOUNT", "Accountant", "All Accountant", "6", "Active"),
-];
+// const rows = [
+//   createData(0, "CASHIER", "Cashier", "All Shifts Cashier", "5", "Active"),
+//   createData(1, "Reception", "Receptionist", "All Shifts", "4", "Inactive"),
+//   createData(2, "ACCOUNT", "Accountant", "All Accountant", "6", "Active"),
+// ];
 
 function preventDefault(event) {
   event.preventDefault();
@@ -86,6 +88,32 @@ export default function RoleManagement() {
   const classes = useStyles();
   const [dialogAddRole, setDialogAddRole] = React.useState(false);
   const [dialogEditRole, setDialogEditRole] = React.useState(false);
+  const [rows, setRows] = useState([]);
+  const { store } = useContext(ReactReduxContext);
+  React.useEffect(async () => {
+    const data = await user(store.getState().reducer.auth);
+    let userdata = [];
+    let i = 0;
+    console.log("aaa",data)
+    data.content[data.content.length-1].forEach(element =>
+      userdata.push(createData(
+
+
+
+        element.id,
+        "",
+        element.role,
+        "",
+        element.id,
+        element.status_record
+        
+      ))
+    );
+    console.log("a",userdata)
+    setRows(userdata)
+
+  }, []);
+  
   const handleDialogAddRole = () => {
     setDialogAddRole(true);
   };
@@ -322,7 +350,7 @@ export default function RoleManagement() {
                       <TableCell>{row.userName}</TableCell>
                       <TableCell>{row.position}</TableCell>
                       <TableCell>{row.roles}</TableCell>
-                      {`${row.status}` === "Active" ? (
+                      {`${row.status}` === "Active" || (`${row.status}` === "active") ? (
                         <TableCell align="center">
                           <Button
                             variant="contained"

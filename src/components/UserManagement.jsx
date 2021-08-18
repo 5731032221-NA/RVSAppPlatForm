@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { ReactReduxContext } from 'react-redux';
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -37,7 +38,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-
+import user from "../services/user.service"
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
   return {
@@ -49,19 +50,20 @@ function createData(id, userID, userName, position, roles, status) {
     status,
   };
 }
+// const rows = [
+//   createData(
+//     0,
+//     "Somchai",
+//     "Somchai Wong nut",
+//     "Front Office",
+//     "Cashier",
+//     "Active"
+//   ),
+//   createData(1, "Fah", "Mekha Wihok", "Reception", "Night", "Inactive"),
+//   createData(2, "Mon", "Month main", "Front Office", "Cashaier", "Active"),
+// ];
 
-const rows = [
-  createData(
-    0,
-    "Somchai",
-    "Somchai Wong nut",
-    "Front Office",
-    "Cashier",
-    "Active"
-  ),
-  createData(1, "Fah", "Mekha Wihok", "Reception", "Night", "Inactive"),
-  createData(2, "Mon", "Month main", "Front Office", "Cashaier", "Active"),
-];
+
 
 function preventDefault(event) {
   event.preventDefault();
@@ -102,6 +104,27 @@ export default function UserManagement() {
   const handleDialogEditUserClose = () => {
     setDialogEditUser(false);
   };
+  const [rows, setRows] = useState([]);
+  const { store } = useContext(ReactReduxContext);
+  React.useEffect(async () => {
+    const data = await user(store.getState().reducer.auth);
+    let userdata = [];
+    let i = 0;
+    console.log("aaa",data)
+    data.content[data.content.length-1].forEach(element =>
+      userdata.push(createData(
+        element.id,
+        element.userid,
+        (element.firstname+" "+element.lastname),
+        "",
+        element.role,
+        element.status_record
+      ))
+    );
+    console.log("a",userdata)
+    setRows(userdata)
+
+  }, []);
   return (
     <Container maxWidth="xl">
       <React.Fragment>
@@ -189,7 +212,7 @@ export default function UserManagement() {
                       <TableCell>{row.userName}</TableCell>
                       <TableCell>{row.position}</TableCell>
                       <TableCell>{row.roles}</TableCell>
-                      {`${row.status}` === "Active" ? (
+                      {`${row.status}` === "Active" || (`${row.status}` === "active") ? (
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -319,8 +342,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                  // value={" "}
+                  // onChange={" "}
                   ></TextField>
                 </Grid>
               </Grid>
@@ -337,8 +360,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                  // value={" "}
+                  // onChange={" "}
                   ></TextField>
                 </Grid>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -352,8 +375,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    /* value={" "}
-                    onChange={" "} */
+                  /* value={" "}
+                  onChange={" "} */
                   >
                     {/*  {roomStatus.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -402,8 +425,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                  // value={" "}
+                  // onChange={" "}
                   ></TextField>
                 </Grid>
                 <Grid
@@ -476,8 +499,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                  // value={" "}
+                  // onChange={" "}
                   ></TextField>
                 </Grid>
               </Grid>
@@ -494,8 +517,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                  // value={" "}
+                  // onChange={" "}
                   >
                     {/* {roomSeg.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -515,8 +538,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    /* value={" "}
-                    onChange={" "} */
+                  /* value={" "}
+                  onChange={" "} */
                   >
                     {/*  {roomStatus.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -562,8 +585,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                  // value={" "}
+                  // onChange={" "}
                   ></TextField>
                 </Grid>
                 <Grid

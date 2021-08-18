@@ -75,9 +75,6 @@ export default function Property({ setToken, setProperty }) {
     // };
     const handleSelect = async () => {
         const menu = await menus(store.getState().reducer.auth,selectedProperty);
-        console.log("menu",menu);
-        console.log("content",menu.content);
-        console.log("com",menu.content.components);
         sessionStorage.setItem('comp', JSON.stringify(menu.content.components));
  
         store.dispatch({

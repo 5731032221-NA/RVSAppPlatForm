@@ -75,7 +75,6 @@ export default function HeaderTabs() {
 
   const compString = sessionStorage.getItem('comp');
   const comps = JSON.parse(compString);
-  console.log("comps", comps);
   const cashier = comps.some(item => item.slug === 'ReportRoomMaster')
   const front = comps.some(item => item.slug === 'ConfigMaster')
   const setting = comps.some(item => item.slug === 'RoleManagement')

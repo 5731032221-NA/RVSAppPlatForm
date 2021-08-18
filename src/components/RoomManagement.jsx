@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState,useContext }  from "react";
 // import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -6,6 +6,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import { ReactReduxContext } from 'react-redux';
 import {
   Container,
   Grid,
@@ -33,6 +34,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import roomMaster from "../services/roomMaster.service";
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 // import Chip from "@material-ui/core/Chip";
 
@@ -61,31 +63,7 @@ function createData(
   };
 }
 
-const rows = [
-  createData(
-    0,
-    "FSDH",
-    "8038",
-    "SUPERVISOR",
-    "3RDFLOOR",
-    "TOWER1",
-    "Desription",
-    "IN",
-    "-"
-  ),
-  createData(1, "FSDH", "8038", "DELUX", "F4", "A", "Desription", "VC", "-"),
-  createData(
-    2,
-    "FSDH",
-    "8038",
-    "SUPERVISOR",
-    "F5",
-    "TOWER1",
-    "Desription",
-    "IN",
-    "-"
-  ),
-];
+
 const attribute = [
   {
     value: "Minibar",
@@ -224,6 +202,54 @@ export default function RoomManagement() {
   const [roomSizeDialog, setRoomSizeDialog] = React.useState("1");
   const [roomSegDialog, setRoomSegDialog] = React.useState("1");
   const [roomStatusDialog, setRoomStatusDialog] = React.useState("1");
+
+  const [rows,setRows] = useState([
+    // createData(
+    //   0,
+    //   "FSDH",
+    //   "8038",
+    //   "SUPERVISOR",
+    //   "3RDFLOOR",
+    //   "TOWER1",
+    //   "Desription",
+    //   "IN",
+    //   "-"
+    // ),
+    // createData(1, "FSDH", "8038", "DELUX", "F4", "A", "Desription", "VC", "-"),
+    // createData(
+    //   2,
+    //   "FSDH",
+    //   "8038",
+    //   "SUPERVISOR",
+    //   "F5",
+    //   "TOWER1",
+    //   "Desription",
+    //   "IN",
+    //   "-"
+    // ),
+  ]);
+  const { store } = useContext(ReactReduxContext);
+  React.useEffect(async() => {
+    const data = await roomMaster(store.getState().reducer.auth);
+    let roomdata = [];
+    let i = 0;
+    data.content.forEach(element => 
+      roomdata.push(createData(
+        i++,
+        element.rmproperty,
+        element.rmno,
+        element.rmtypeid,
+        element.floorid,
+        element.buildingid,
+        element.rmdesc,
+        element.rmstatus,
+        element.rmattribute
+      ))
+      );
+      // console.log("a",roomdata)
+      setRows(roomdata)
+    
+  }, []);
 
   const handleAttributeDialog = (event) => {
     setAttributeDialog(event.target.value);

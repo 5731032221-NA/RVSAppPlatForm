@@ -34,6 +34,7 @@ import RoleManagement from "../RoleManagement";
 import UserManagement from "../UserManagement";
 import RoomManagement from "../RoomManagement";
 import { ReactReduxContext, useSelector } from "react-redux";
+import LockIcon from '@material-ui/icons/Https';
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
 
 const useStyles = makeStyles({
@@ -62,7 +63,6 @@ const language = [
 
 export default function Configuration() {
 
-
   const classes = useStyles();
   const { store } = useContext(ReactReduxContext);
   const [expanded, setExpanded] = React.useState([]);
@@ -73,150 +73,237 @@ export default function Configuration() {
   const [languageDialog, setLanguageDialog] = React.useState("EN");
   const [addChildid, setAddChuldid] = React.useState(null);
   const [addChildName, setAddChuldName] = React.useState(null);
+  const [addChildNameLang, setAddChuldNameLang] = React.useState("");
+  const [row, setRow] = React.useState(null);
+  const [code, setCode] = React.useState(null);
+  const [description, setDescription] = React.useState(null);
   const [addChildValue, setAddChuldValue] = React.useState(null);
+  const testa = "testa2";
   const [page, setPage] = React.useState("");
   const [data, setData] = React.useState(
     // {
     // id: "root",
-    // name: "Configuration",
+    // name_en: "Configuration",
     // children: 
     [
       {
-        id: "1.1",
-        name: "PMS Configuration",
+        id: 1000000001,
+        RefNo: "1.1",
+        code: "CFGPMS",
+        name_en: "PMS Configuration",
+        name_th: "การกำหนดค่า PMS",
+        name_cn: "PMS 配置",
+        description: "PMS Configuration",
         createdate: "2021-08-13 12:03:00",
         master: true,
+        addchild: false,
         children: [
           {
-            id: "1.1.1",
-            name: "Property Configuration",
+            id: 1000000002,
+            RefNo: "1.1.1",
+            code: "CFGPROP",
+            name_en: "Property Configuration",
+            name_th: "การกำหนดค่า Property",
+            description: "Property Configuration",
             createdate: "2021-08-13 12:03:00",
             master: true,
+            addchild: false,
             children: [
               {
-                id: "1.1.1.1",
-                name: "Property Master",
+                id: 1000000003,
+                RefNo: "1.1.1.1",
+                code: "PROPERTY",
+                name_en: "Property Master",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
+                addchild: true,
               },
               {
-                id: "1.1.1.2",
-                name: "Building Master",
-                createdate: "2021-08-13 12:03:00",
-              },
-              {
-                id: "1.1.1.3",
-                name: "Exposure ",
-                createdate: "2021-08-13 12:03:00",
-              },
-              {
-                id: "1.1.1.4",
-                name: "Floor ",
+                id: 1000000004,
+                RefNo: "1.1.1.2",
+                code: "BUILDING",
+                name_en: "Building Master",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
+                addchild: true,
               },
               {
-                id: "1.1.1.5",
-                name: "Zone/Wing",
+                id: 1000000005,
+                RefNo: "1.1.1.3",
+                code: "EXPOSURE",
+                name_en: "Exposure",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
+                addchild: true,
+              },
+              {
+                id: 1000000006,
+                RefNo: "1.1.1.4",
+                code: "FLOOR",
+                name_en: "Floor",
+                name_th: "ชั้น",
+                createdate: "2021-08-13 12:03:00",
+                master: true,
+                addchild: true,
+              },
+              {
+                id: 1000000007,
+                RefNo: "1.1.1.5",
+                code: "ZONE",
+                name_en: "Zone/Wing",
+                createdate: "2021-08-13 12:03:00",
+                master: true,
+                addchild: true,
               },
             ],
           },
           {
-            id: "1.1.2",
-            name: "Room Configuration",
+            id: 1000000008,
+            RefNo: "1.1.2",
+            code: "CFGROOM",
+            name_en: "Room Configuration",
+            name_th: "การกำหนดค่าห้อง",
             createdate: "2021-08-13 12:03:00",
             master: true,
+            addchild: false,
             children: [
               {
-                id: "1.1.2.1",
-                name: "Room Type",
+                id: 1000000009,
+                RefNo: "1.1.2.1",
+                code: "RMTYPE",
+                name_en: "Room Type",
+                name_th: "ประเภทห้อง",
                 master: true,
+                addchild: true,
                 createdate: "2021-08-13 12:03:00",
               },
               {
-                id: "1.1.2.2",
-                name: "Room Category",
+                id: 1000000010,
+                RefNo: "1.1.2.2",
+                code: "RMCAT",
+                name_en: "Room Category",
+                name_th: "ประเภทห้อง",
                 master: true,
+                addchild: true,
                 createdate: "2021-08-13 12:03:00",
               },
               {
-                id: "1.1.2.3",
-                name: "Room Master Maintenance",
+                id: 1000000011,
+                RefNo: "1.1.2.3",
+                code: "ROOM",
+                name_en: "Room Master Maintenance",
+                name_th: "การบำรุงรักษาห้องมาสเตอร์",
                 master: true,
+                addchild: true,
                 createdate: "2021-08-13 12:03:00",
               },
             ],
           },
           {
-            id: "1.1.3",
-            name: "Item Configuration",
+            id: 1000000012,
+            RefNo: "1.1.3",
+            code: "CFGITEM",
+            name_en: "Item Configuration",
+            name_th: "การกำหนดค่ารายการ",
             createdate: "2021-08-13 12:03:00",
             master: true,
+            addchild: false,
             children: [
               {
-                id: "1.1.3.1",
-                name: "Item Type",
+                id: 1000000013,
+                RefNo: "1.1.3.1",
+                code: "ITEMTYPE",
+                name_en: "Item Type",
+                name_th: "ประเภทรายการ",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
+                addchild: true,
               },
               {
-                id: "1.1.3.2",
-                name: "Item Category",
+                id: 1000000014,
+                RefNo: "1.1.3.2",
+                code: "ITEMCAT",
+                name_en: "Item Category",
+                name_th: "หมวดหมู่รายการ",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
+                addchild: true,
               },
             ],
           },
           {
-            id: "1.1.4",
-            name: "Reservation Configuration",
+            id: 1000000015,
+            RefNo: "1.1.4",
+            code: "CFGRSVN",
+            name_en: "Reservation Configuration",
+            name_th: "การกำหนดค่าการจอง",
             createdate: "2021-08-13 12:03:00",
             master: true,
+            addchild: false,
             children: [
               {
-                id: "1.1.4.1",
-                name: "Market segment Maintenance",
+                id: 1000000016,
+                RefNo: "1.1.4.1",
+                code: "MARKET",
+                name_en: "Market segment Maintenance",
+                name_th: "การบำรุงรักษาส่วนตลาด",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
+                addchild: true,
               },
               {
-                id: "1.1.4.2",
-                name: "Source Maintenance",
+                id: 1000000017,
+                RefNo: "1.1.4.2",
+                code: "SOURCE",
+                name_en: "Source Maintenance",
+                name_th: "การบำรุงรักษาแหล่งที่มา",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
+                addchild: true,
               },
             ],
           },
         ],
       },
       {
-        id: "1.2",
-        name: "System Configuration",
+        id: 1000000018,
+        RefNo: "1.2",
+        code: "CFGSYS",
+        name_en: "System Configuration",
+        name_th: "การกำหนดค่าระบบ",
         createdate: "2021-08-13 12:03:00",
         master: true,
+        addchild: false,
         children: [
           {
-            id: "1.2.1",
-            name: "User Management",
+            id: 1000000019,
+            RefNo: "1.2.1",
+            code: "USER",
+            name_en: "User Management",
+            name_th: "การจัดการผู้ใช้",
             createdate: "2021-08-13 12:03:00",
             master: true,
+            addchild: true,
           },
           {
-            id: "1.2.2",
-            name: "Role Management",
+            id: 1000000020,
+            RefNo: "1.2.2",
+            code: "ROLE",
+            name_en: "Role Management",
+            name_th: "การจัดการบทบาท",
             createdate: "2021-08-13 12:03:00",
             master: true,
+            addchild: true,
           },
         ],
       },
-    ],
-    // }
+    ]
+
   )
 
   // const [store.getState().reducer.configState, setstore.getState().reducer.configState] = React.useState("Configuration");
   const configState = useSelector(state => state.reducer.configState);
+  const lang = useSelector(state => state.reducer.lang);
   const handleLanguageDialog = (event) => {
     setLanguageDialog(event.target.value);
   };
@@ -254,10 +341,12 @@ export default function Configuration() {
     // setAddChuldid(event.target.id.split("-")[0]);
     // setAddChuldName(event.target.id.split("-")[1]);
     // setAddchild(null);
+    setAddchild(false);
     setDialogAdd(true);
   };
 
-  const handleDialogEdit = ( name, id) => {
+  const handleDialogEdit = (name, id, node) => {
+    // console.log("debug",name,id)
     // console.log("ids",event.target.id);
     // console.log("id",event.target.id.split("-")[0]);
     // console.log("name",event.target.id.split("-")[1])
@@ -266,6 +355,17 @@ export default function Configuration() {
     // setAddchild(null);
     setAddChuldid(id);
     setAddChuldName(name);
+    setCode(node.code);
+    setDescription(node.description)
+    setAddChuldNameLang(node["name_"+lang])
+    // setRow(node)
+    setDialogEdit(true);
+  };
+
+  const handleDialogEditLang = (name, namelang, id) => {
+    setAddChuldid(id);
+    setAddChuldName(name);
+    setAddChuldNameLang(namelang);
     setDialogEdit(true);
   };
 
@@ -281,146 +381,38 @@ export default function Configuration() {
   const handleChangeAdd = (event) => {
     setAddChuldValue(event.target.value);
   };
+  const handleChangeLang = (event) => {
+    setAddChuldNameLang(event.target.value);
+  };
+  
 
+  const handleChangeCode = (event) => {
+    setCode(event.target.value);
+  };
 
-  const roleclick = () => {
-    console.log("testclick")
-    store.dispatch({
-      type: EDIT_CONFIGSTATE,
-      payload: "RoleManagement"
-    })
-    // configState
-    // console.log(event)
-    // setstore.getState().reducer.configState("UserManagement")
-  }
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value);
+  };
 
-  const userclick = () => {
-    console.log("testclick")
-    store.dispatch({
-      type: EDIT_CONFIGSTATE,
-      payload: "UserManagement"
-    })
-    // configState
-    // console.log(event)
-    // setstore.getState().reducer.configState("UserManagement")
-  }
-
-  const roomclick = () => {
-    console.log("testclick")
-    store.dispatch({
-      type: EDIT_CONFIGSTATE,
-      payload: "RoomManagement"
-    })
-    // configState
-    // console.log(event)
-    // setstore.getState().reducer.configState("UserManagement")
-  }
-
-  // const delnode = (data, key) => {
-
-  //   // data.forEach(function (subdata) {
-  //   //   if (subdata.hasOwnProperty('children')) {
-  //   //     delnode(subdata.children,)
-  //   //   }
-  //   // })
-
-  //   for (let i = 0; i < data.length; i++) {
-  //     if (data[i].hasOwnProperty('children')) {
-  //       delnode(data[i].children, data[i][i])
-  //     }
-  //   }
-  // }
-
-  function addObj(itemArr, nId, newObj) {
-    for (var i = 0; i < itemArr.length; i++) {
-      if (itemArr[i].id && itemArr[i].id === nId) {
-        itemArr.push(newObj);
-      } else {
-        if (itemArr[i].items) {
-          addObj(itemArr[i].items, nId, newObj);
-        }
-      }
+  const handleConfig = async (name) => {
+    if (name == "ROLE") {
+      store.dispatch({
+        type: EDIT_CONFIGSTATE,
+        payload: "RoleManagement"
+      })
+    } else if (name == "USER") {
+      store.dispatch({
+        type: EDIT_CONFIGSTATE,
+        payload: "UserManagement"
+      })
+    } else if (name == "ROOM") {
+      store.dispatch({
+        type: EDIT_CONFIGSTATE,
+        payload: "RoomManagement"
+      })
     }
   }
 
-  function chgObj(itemArr, nId, operator, prop, val) {
-    for (var i = 0; i < itemArr.length; i++) {
-      if (itemArr[i].id && itemArr[i].id === nId) {
-        switch (operator) {
-          case '+':
-            if (!itemArr[i][prop]) {
-              itemArr[i][prop] = val;
-            }
-            break;
-
-          case '-':
-            if (itemArr[i][prop]) {
-              delete itemArr[i][prop];
-            }
-            break;
-
-          case '^':
-            if (itemArr[i][prop]) {
-              itemArr[i][prop] = val;
-            }
-            break;
-        }
-      } else {
-        if (itemArr[i].items) {
-          chgObj(itemArr[i].items, nId, operator, prop, val);
-        }
-      }
-    }
-  }
-
-  function dltObj(itemArr, nId) {
-    for (var i = 0; i < itemArr.length; i++) {
-      if (itemArr[i].id && itemArr[i].id === nId) {
-        itemArr.splice(i, 1);
-      } else {
-        if (itemArr[i].items) {
-          dltObj(itemArr[i].items, nId);
-        }
-      }
-    }
-  }
-
-  function filterObject(obj, id) {
-    for (var i in obj) {
-      if (!obj.hasOwnProperty(i)) continue;
-      if (typeof obj[i] == 'object') {
-        filterObject(obj[i], id);
-      } else if (i.id == id) {
-        return null;
-      }
-    }
-    return obj;
-  }
-
-  // const delnode = async (data, id) => {
-
-  //   // data.forEach(function (subdata) {
-  //   //   if (subdata.hasOwnProperty('children')) {
-  //   //     delnode(subdata.children,)
-  //   //   }
-  //   // })
-  //   console.log("hmm")
-
-  //   data.forEach(function (subdata) {
-  //     if (subdata.hasOwnProperty('children')) {
-  //       delnode(subdata.children, id)
-  //     }
-  //     console.log(subdata)
-  //     console.log(subdata.id,id)
-  //     if(subdata.id == id){
-  //     console.log("del",subdata.name)
-  //     // delete subdata.id;
-  //     array.splice(i, 1);
-  //     }
-  //   })
-
-  //   return data;
-  // } 
 
   async function prune(array, label) {
     console.log("pr")
@@ -428,8 +420,8 @@ export default function Configuration() {
     console.log(array.length)
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label)
-      if (obj.id === label) {
+      console.log(obj.RefNo, label)
+      if (obj.RefNo === label) {
         // splice out 1 element starting at position i
         array.splice(i, 1);
         return true;
@@ -451,7 +443,7 @@ export default function Configuration() {
     let max = 0;
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      let num = parseInt(obj.id.replace(parentid + ".", ""));
+      let num = parseInt(obj.RefNo.replace(parentid + ".", ""));
       console.log("cc", max, num)
       if (num > max) max = num
     }
@@ -461,11 +453,11 @@ export default function Configuration() {
   const runningid = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label)
-      if (obj.id === label) {
+      console.log(obj.RefNo, label)
+      if (obj.RefNo === label) {
         if (obj.children) {
-          let newmaxid = await maxchildid(obj.children, obj.id);
-          return obj.id + "." + (newmaxid + 1)
+          let newmaxid = await maxchildid(obj.children, obj.RefNo);
+          return obj.RefNo + "." + (newmaxid + 1)
         }
         else {
           console.log("label", label)
@@ -483,21 +475,35 @@ export default function Configuration() {
   const adding = async (array, label, name, newid) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label)
-      if (obj.id === label) {
+      console.log(obj.RefNo, label)
+      if (obj.RefNo === label) {
+        let currentdate = new Date();
+        let day = ("0" + currentdate.getDate()).slice(-2);
+        let month = ("0" + (currentdate.getMonth() + 1)).slice(-2);
+        let year = currentdate.getFullYear();
+        let hours = currentdate.getHours();
+        let minutes = currentdate.getMinutes();
+        let seconds = currentdate.getSeconds();
+
         if (obj.children) {
           obj.children = [...obj.children, {
-            id: newid,
-            name: name,
-            createdate: "2021-08-13 13:03:00",
+            RefNo: newid,
+            code: code,
+            name_en: name,
+            description: description,
+            createdate: (year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds),
             master: false,
+            addchild: false,
           }]
         } else {
           obj.children = [{
-            id: newid,
-            name: name,
-            createdate: "2021-08-13 13:03:00",
+            RefNo: newid,
+            code: code,
+            name_en: name,
+            description: description,
+            createdate: (year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds),
             master: false,
+            addchild: false,
           }]
         }
       }
@@ -514,7 +520,7 @@ export default function Configuration() {
     let newid = await runningid(data, id)
     console.log("newid", newid)
     await (adding(data, id, addChildValue, newid))
-    console.log(data)
+    console.log("added", data)
     // setData(data)
     setDialogAdd(false);
   }
@@ -522,10 +528,11 @@ export default function Configuration() {
   const editing = async (array, label, name) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label)
-      if (obj.id === label) {
-
-        obj.name = name
+      console.log(obj.RefNo, label)
+      if (obj.RefNo === label) {
+        obj.code = code;
+        obj.name_en = name;
+        obj.description = description;
       }
       else if (obj.children) {
         editing(obj.children, label, name);
@@ -536,89 +543,136 @@ export default function Configuration() {
   const handleEdit = async () => {
     let id = addChildid;
     console.log("editparentid", id);
-    let newid = await runningid(data, id)
-    console.log("newid", newid)
+    // let newid = await runningid(data, id)
+    // console.log("newid", newid)
     await (editing(data, id, addChildValue))
     console.log(data)
     // setData(data)
     setDialogEdit(false);
   }
 
+  const editingLang = async (array, label, name) => {
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      console.log(obj.RefNo, label,addChildNameLang)
+      if (obj.RefNo === label) {
+
+        obj.code = code;
+        obj.name_en = name;
+        obj["name_" + lang] = addChildNameLang;
+        obj.description = description;
+      }
+      else if (obj.children) {
+        editingLang(obj.children, label, name);
+      }
+    }
+  }
+
+  const handleEditLang = async () => {
+    let id = addChildid;
+    console.log("editparentid", id);
+    // let newid = await runningid(data, id)
+    // console.log("newid", newid)
+    await (editingLang(data, id, addChildValue))
+    console.log(data)
+    // setData(data)
+    setDialogEdit(false);
+  }
+
+
 
   const renderTree = (nodes) => (
     <div>
-      {nodes.name == "Room Master Maintenance" ?
-        <TreeItem
-          key={nodes.id}
-          nodeId={nodes.id}
-          label={
-            <div>
-              <Grid container direction="row" alignItems="center">
-                <Grid item className={classes.root}>
-                  <Typography
-                    variant="body1"
-                    color="initial"
-                    style={{ paddind: 5 }}
-                  >
-                    <div onClick={roomclick}>
-                      {nodes.name}
-                    </div>
-                  </Typography>
-                </Grid>
-                <Grid item>
+      <TreeItem
+        key={nodes.RefNo}
+        nodeId={nodes.RefNo}
+        label={
+          <div>
+            <Grid container direction="row" alignItems="center">
+              <Grid item className={classes.root}>
+                <Typography
+                  variant="body1"
+                  color="initial"
+                  style={{ paddind: 5 }}
+                >
+                  <div onClick={() => handleConfig(nodes.code)}>
+                    {nodes["name_" + lang] != null ? nodes["name_" + lang] : nodes["name_en"]}
+                    {
+                      nodes.master == true ?
+                        <LockIcon style={{ paddingTop: 10, color: "blue" }} /> :
+                        null
+                    }
+                  </div>
+                </Typography>
+              </Grid>
+              <Grid item>
+                {nodes.master == false || sessionStorage.getItem("role") == "root" ?
                   <IconButton
-                    onClick={() => handleDialogEdit(nodes.name,nodes.id)}>
+                    onClick={() => handleDialogEdit(nodes.code, nodes.RefNo, nodes)}>
                     <EditRoundedIcon />
                   </IconButton>
-                  <IconButton
-                    onClick={() => handleDelete(nodes.id)}>
+                  :
+                  <IconButton>
+                    <EditRoundedIcon style={{ color: "#d8d8d8" }} />
+                  </IconButton>
+                }
+                {nodes.master == false || sessionStorage.getItem("role") == "root" ?
+                  <IconButton onClick={() => handleDelete(nodes.RefNo)}>
                     <DeleteRoundedIcon />
                   </IconButton>
+                  :
+                  <IconButton >
+                    <DeleteRoundedIcon style={{ color: "#d8d8d8" }} />
+                  </IconButton>
+                }
+                {nodes.addchild == true || sessionStorage.getItem("role") == "root" ?
                   <IconButton
-                    aria-controls={nodes.id}
+                    aria-controls={nodes.RefNo}
                     aria-haspopup="true"
-                    onClick={(e) => handleClick(e, nodes.name, nodes.id)}
+                    onClick={(e) => handleClick(e, nodes.name_en, nodes.RefNo)}
                   >
                     <MoreVertRoundedIcon />
                   </IconButton>
-                </Grid>
+                  :
+                  <IconButton
+                    aria-controls={nodes.RefNo}
+                    aria-haspopup="true"
+
+                  >
+                    <MoreVertRoundedIcon style={{ color: "#d8d8d8" }} />
+                  </IconButton>
+                }
               </Grid>
-              <Divider />
-              <Menu
-                id={nodes.id}
-                anchorEl={addChild}
-                keepMounted
-                open={Boolean(addChild)}
-                onClose={handleClose}
-              >
-                <MenuItem id={nodes.id + "-" + nodes.name} onClick={handleDialogAdd}>
-                  {/* <MenuItem onClick={handleClose}> */}
-                  <AddRoundedIcon /> Add child
-                </MenuItem>
-              </Menu>
+            </Grid>
+            <Divider />
+            <Menu
+              id={nodes.RefNo}
+              anchorEl={addChild}
+              keepMounted
+              open={Boolean(addChild)}
+              onClose={handleClose}
+            >
+              <MenuItem id={nodes.RefNo + "-" + nodes.code} onClick={handleDialogAdd}>
+                {/* <MenuItem onClick={handleClose}> */}
+                <AddRoundedIcon /> Add child
+              </MenuItem>
+            </Menu>
 
-              <Dialog
-                fullWidth="true"
-                maxWidth="xs"
-                open={dialogAdd}
-                onClose={handleDialogAddClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                  New Master Config
-                </DialogTitle>
+            <Dialog
+              fullWidth="true"
+              maxWidth="xs"
+              open={dialogAdd}
+              onClose={handleDialogAddClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title" style={{ color: "#2D62ED" }}>
+                New Master Config
+              </DialogTitle>
 
-                <DialogContent>
-                  <Container maxWidth="xl" disableGutters>
-
-                    <h2>Parent Name: {addChildName}</h2>
-                    <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                      <TextField
+              <DialogContent>
+                <Container maxWidth="xl" disableGutters>
+                  {/* <TextField
                         autoFocus
-                        id="outlined-basic"
-                        label="Name"
-                        variant="outlined"
-                        onChange={(e) => handleChangeAdd(e)}
                         helperText={
                           <Grid
                             container
@@ -626,166 +680,24 @@ export default function Configuration() {
                             alignItems="center"
                           >
                             <Typography variant="title1" color="initial">
-                              0/50
+                              3/50
                             </Typography>
                           </Grid>
                         }
-                        fullWidth
-                      />
-                    </Grid>
-
-                  </Container>
-                </DialogContent>
-                <DialogActions style={{ padding: 20 }}>
-                  <Button
-                    onClick={handleDialogAddClose}
-                    variant="text"
-                    color="primary"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleAdd}
-                    variant="contained"
-                    color="primary"
-                  >
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-
-
-              <Dialog
-                fullWidth="true"
-                maxWidth="xs"
-                open={dialogEdit}
-                onClose={handleDialogAddClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                  Edit Master Config
-                </DialogTitle>
-
-                <DialogContent>
-                  <Container maxWidth="xl" disableGutters>
-
-                    <h2>Old Name: {addChildName}</h2>
-                    <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                      <TextField
-                        autoFocus
                         id="outlined-basic"
-                        label="New Name"
+                        label="Parent"
                         variant="outlined"
-                        onChange={(e) => handleChangeAdd(e)}
-                        helperText={
-                          <Grid
-                            container
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <Typography variant="title1" color="initial">
-                              0/50
-                            </Typography>
-                          </Grid>
-                        }
                         fullWidth
-                      />
-                    </Grid>
-
-                  </Container>
-                </DialogContent>
-                <DialogActions style={{ padding: 20 }}>
-                  <Button
-                    onClick={handleDialogEditClose}
-                    variant="text"
-                    color="primary"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleEdit}
-                    variant="contained"
-                    color="primary"
-                  >
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-
-
-            </div>
-          }
-        >
-          {Array.isArray(nodes.children)
-            ? nodes.children.map((node) => renderTree(node))
-            : null}
-        </TreeItem>
-        :
-        nodes.name == "Role Management" ?
-          <TreeItem
-            key={nodes.id}
-            nodeId={nodes.id}
-            label={
-              <div>
-                <Grid container direction="row" alignItems="center">
-                  <Grid item className={classes.root}>
-                    <Typography
-                      variant="body1"
-                      color="initial"
-                      style={{ paddind: 5 }}
-                    >
-                      <div onClick={roleclick}>
-                        {nodes.name}
-                      </div>
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <IconButton
-                      onClick={() => handleDialogEdit(nodes.name,nodes.id)}>
-                      <EditRoundedIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => handleDelete(nodes.id)}>
-                      <DeleteRoundedIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-controls={nodes.id}
-                      aria-haspopup="true"
-                      onClick={(e) => handleClick(e, nodes.name, nodes.id)}
-                    >
-                      <MoreVertRoundedIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-                <Divider />
-                <Menu
-                  id={nodes.id}
-                  anchorEl={addChild}
-                  keepMounted
-                  open={Boolean(addChild)}
-                  onClose={handleClose}
-                >
-                  <MenuItem id={nodes.id + "-" + nodes.name} onClick={handleDialogAdd}>
-                    {/* <MenuItem onClick={handleClose}> */}
-                    <AddRoundedIcon /> Add child
-                  </MenuItem>
-                </Menu>
-
-                <Dialog
-                  fullWidth="true"
-                  maxWidth="xs"
-                  open={dialogAdd}
-                  onClose={handleDialogAddClose}
-                  aria-labelledby="form-dialog-title"
-                >
-                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                    New Master Config
-                  </DialogTitle>
-
-                  <DialogContent>
-                    <Container maxWidth="xl" disableGutters>
-                      {/* <TextField
+                      /> */}
+                  <h2>Parent Name: {addChildName}</h2>
+                  <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                    <TextField
                       autoFocus
+                      id="outlined-basic"
+                      label="Code"
+                      variant="outlined"
+                      // value={code}
+                      onChange={(e) => handleChangeCode(e)}
                       helperText={
                         <Grid
                           container
@@ -793,652 +705,203 @@ export default function Configuration() {
                           alignItems="center"
                         >
                           <Typography variant="title1" color="initial">
-                            3/50
+                            0/50
                           </Typography>
                         </Grid>
                       }
-                      id="outlined-basic"
-                      label="Parent"
-                      variant="outlined"
                       fullWidth
-                    /> */}
-                      <h2>Parent Name: {addChildName}</h2>
-                      <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                        <TextField
-                          autoFocus
-                          id="outlined-basic"
-                          label="Name"
-                          variant="outlined"
-                          onChange={(e) => handleChangeAdd(e)}
-                          helperText={
-                            <Grid
-                              container
-                              justifyContent="flex-end"
-                              alignItems="center"
-                            >
-                              <Typography variant="title1" color="initial">
-                                0/50
-                              </Typography>
-                            </Grid>
-                          }
-                          fullWidth
-                        />
-                      </Grid>
-                      {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                      <TextField
-                        autoFocus
-                        id="outlined-basic"
-                        label="Decription (en)"
-                        variant="outlined"
-                        helperText={
-                          <Grid
-                            container
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <Typography variant="title1" color="initial">
-                              0/50
-                            </Typography>
-                          </Grid>
-                        }
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="flex-end"
-                      alignItems="center"
-                      style={{ paddingTop: 20 }}
-                    >
-                      <Grid item style={{ marginRight: 15 }}>
-                        <AddRoundedIcon />
-                      </Grid>
-                      <Grid item xs={10}>
-                        <TextField
-                          fullWidth
-                          autoFocus
-                          id="outlined-select-language"
-                          select
-                          // fullWidth
-                          alignItems="flex-end"
-                          label="Add Language"
-                          value={languageDialog}
-                          onChange={handleLanguageDialog}
-                          SelectProps={{
-                            native: true,
-                          }}
-                          variant="outlined"
+                    />
+
+                    <TextField
+                      autoFocus
+                      id="outlined-basic"
+                      label="Name (EN)"
+                      variant="outlined"
+                      // value={addChildValue}
+                      onChange={(e) => handleChangeAdd(e)}
+                      helperText={
+                        <Grid
+                          container
+                          justifyContent="flex-end"
+                          alignItems="center"
                         >
-                          {language.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid> */}
-                    </Container>
-                  </DialogContent>
-                  <DialogActions style={{ padding: 20 }}>
-                    <Button
-                      onClick={handleDialogAddClose}
-                      variant="text"
-                      color="primary"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={handleAdd}
-                      variant="contained"
-                      color="primary"
-                    >
-                      Save
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-                <Dialog
-                  fullWidth="true"
-                  maxWidth="xs"
-                  open={dialogEdit}
-                  onClose={handleDialogAddClose}
-                  aria-labelledby="form-dialog-title"
+                          <Typography variant="title1" color="initial">
+                            0/50
+                          </Typography>
+                        </Grid>
+                      }
+                      fullWidth
+                    />
+
+                    <TextField
+                      autoFocus
+                      id="outlined-basic"
+                      label="Description"
+                      variant="outlined"
+                      // value={description}
+                      onChange={(e) => handleChangeDescription(e)}
+                      helperText={
+                        <Grid
+                          container
+                          justifyContent="flex-end"
+                          alignItems="center"
+                        >
+                          <Typography variant="title1" color="initial">
+                            0/50
+                          </Typography>
+                        </Grid>
+                      }
+                      fullWidth
+                    />
+                  </Grid>
+
+                </Container>
+              </DialogContent>
+              <DialogActions style={{ padding: 20 }}>
+                <Button
+                  onClick={handleDialogAddClose}
+                  variant="text"
+                  color="primary"
                 >
-                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                    Edit Master Config
-                  </DialogTitle>
-
-                  <DialogContent>
-                    <Container maxWidth="xl" disableGutters>
-
-                      <h2>Old Name: {addChildName}</h2>
-                      <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                        <TextField
-                          autoFocus
-                          id="outlined-basic"
-                          label="New Name"
-                          variant="outlined"
-                          onChange={(e) => handleChangeAdd(e)}
-                          helperText={
-                            <Grid
-                              container
-                              justifyContent="flex-end"
-                              alignItems="center"
-                            >
-                              <Typography variant="title1" color="initial">
-                                0/50
-                              </Typography>
-                            </Grid>
-                          }
-                          fullWidth
-                        />
-                      </Grid>
-
-                    </Container>
-                  </DialogContent>
-                  <DialogActions style={{ padding: 20 }}>
-                    <Button
-                      onClick={handleDialogEditClose}
-                      variant="text"
-                      color="primary"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={handleEdit}
-                      variant="contained"
-                      color="primary"
-                    >
-                      Save
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </div>
-            }
-          >
-            {Array.isArray(nodes.children)
-              ? nodes.children.map((node) => renderTree(node))
-              : null}
-          </TreeItem>
-          : nodes.name == "User Management" ?
-            <TreeItem
-              key={nodes.id}
-              nodeId={nodes.id}
-              label={
-                <div>
-                  <Grid container direction="row" alignItems="center">
-                    <Grid item className={classes.root}>
-                      <Typography
-                        variant="body1"
-                        color="initial"
-                        style={{ paddind: 5 }}
-                      >
-                        <div onClick={userclick}>
-                          {nodes.name}
-                        </div>
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <IconButton
-                        onClick={() => handleDialogEdit(nodes.name,nodes.id)}>
-                        <EditRoundedIcon />
-                      </IconButton>
-                      <IconButton onClick={() => handleDelete(nodes.id)}>
-                        <DeleteRoundedIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-controls={nodes.id}
-                        aria-haspopup="true"
-                        onClick={(e) => handleClick(e, nodes.name, nodes.id)}
-                      >
-                        <MoreVertRoundedIcon />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                  <Divider />
-                  <Menu
-                    id={nodes.id}
-                    anchorEl={addChild}
-                    keepMounted
-                    open={Boolean(addChild)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem id={nodes.id + "-" + nodes.name} onClick={handleDialogAdd}>
-                      {/* <MenuItem onClick={handleClose}> */}
-                      <AddRoundedIcon /> Add child
-                    </MenuItem>
-                  </Menu>
-
-                  <Dialog
-                    fullWidth="true"
-                    maxWidth="xs"
-                    open={dialogAdd}
-                    onClose={handleDialogAddClose}
-                    aria-labelledby="form-dialog-title"
-                  >
-                    <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                      New Master Config
-                    </DialogTitle>
-
-                    <DialogContent>
-                      <Container maxWidth="xl" disableGutters>
-                        {/* <TextField
-                        autoFocus
-                        helperText={
-                          <Grid
-                            container
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <Typography variant="title1" color="initial">
-                              3/50
-                            </Typography>
-                          </Grid>
-                        }
-                        id="outlined-basic"
-                        label="Parent"
-                        variant="outlined"
-                        fullWidth
-                      /> */}
-                        <h2>Parent Name: {addChildName}</h2>
-                        <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                          <TextField
-                            autoFocus
-                            id="outlined-basic"
-                            label="Name"
-                            variant="outlined"
-                            onChange={(e) => handleChangeAdd(e)}
-                            helperText={
-                              <Grid
-                                container
-                                justifyContent="flex-end"
-                                alignItems="center"
-                              >
-                                <Typography variant="title1" color="initial">
-                                  0/50
-                                </Typography>
-                              </Grid>
-                            }
-                            fullWidth
-                          />
-                        </Grid>
-                        {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                        <TextField
-                          autoFocus
-                          id="outlined-basic"
-                          label="Decription (en)"
-                          variant="outlined"
-                          helperText={
-                            <Grid
-                              container
-                              justifyContent="flex-end"
-                              alignItems="center"
-                            >
-                              <Typography variant="title1" color="initial">
-                                0/50
-                              </Typography>
-                            </Grid>
-                          }
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                        style={{ paddingTop: 20 }}
-                      >
-                        <Grid item style={{ marginRight: 15 }}>
-                          <AddRoundedIcon />
-                        </Grid>
-                        <Grid item xs={10}>
-                          <TextField
-                            fullWidth
-                            autoFocus
-                            id="outlined-select-language"
-                            select
-                            // fullWidth
-                            alignItems="flex-end"
-                            label="Add Language"
-                            value={languageDialog}
-                            onChange={handleLanguageDialog}
-                            SelectProps={{
-                              native: true,
-                            }}
-                            variant="outlined"
-                          >
-                            {language.map((option) => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </TextField>
-                        </Grid>
-                      </Grid> */}
-                      </Container>
-                    </DialogContent>
-                    <DialogActions style={{ padding: 20 }}>
-                      <Button
-                        onClick={handleDialogAddClose}
-                        variant="text"
-                        color="primary"
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={handleAdd}
-                        variant="contained"
-                        color="primary"
-                      >
-                        Save
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                  <Dialog
-                    fullWidth="true"
-                    maxWidth="xs"
-                    open={dialogEdit}
-                    onClose={handleDialogAddClose}
-                    aria-labelledby="form-dialog-title"
-                  >
-                    <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                      Edit Master Config
-                    </DialogTitle>
-
-                    <DialogContent>
-                      <Container maxWidth="xl" disableGutters>
-
-                        <h2>Old Name: {addChildName}</h2>
-                        <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                          <TextField
-                            autoFocus
-                            id="outlined-basic"
-                            label="New Name"
-                            variant="outlined"
-                            onChange={(e) => handleChangeAdd(e)}
-                            helperText={
-                              <Grid
-                                container
-                                justifyContent="flex-end"
-                                alignItems="center"
-                              >
-                                <Typography variant="title1" color="initial">
-                                  0/50
-                                </Typography>
-                              </Grid>
-                            }
-                            fullWidth
-                          />
-                        </Grid>
-
-                      </Container>
-                    </DialogContent>
-                    <DialogActions style={{ padding: 20 }}>
-                      <Button
-                        onClick={handleDialogEditClose}
-                        variant="text"
-                        color="primary"
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={handleEdit}
-                        variant="contained"
-                        color="primary"
-                      >
-                        Save
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-
-
-                </div>
-              }
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleAdd}
+                  variant="contained"
+                  color="primary"
+                >
+                  Save
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Dialog
+              fullWidth="true"
+              maxWidth="xs"
+              open={dialogEdit}
+              onClose={handleDialogAddClose}
+              aria-labelledby="form-dialog-title"
             >
-              {Array.isArray(nodes.children)
-                ? nodes.children.map((node) => renderTree(node))
-                : null}
-            </TreeItem>
-            :
-            <TreeItem
-              key={nodes.id}
-              nodeId={nodes.id}
-              label={
-                <div>
-                  <Grid container direction="row" alignItems="center">
-                    <Grid item className={classes.root}>
-                      <Typography
-                        variant="body1"
-                        color="initial"
-                        style={{ paddind: 5 }}
-                      >
-                        {nodes.name}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <IconButton
-                        onClick={() => handleDialogEdit(nodes.name,nodes.id)}>
-                        <EditRoundedIcon />
-                      </IconButton>
-                      <IconButton onClick={() => handleDelete(nodes.id)}>
-                        <DeleteRoundedIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-controls={nodes.id}
-                        aria-haspopup="true"
-                        onClick={(e) => handleClick(e, nodes.name, nodes.id)}
-                      >
-                        <MoreVertRoundedIcon />
-                      </IconButton>
-                    </Grid>
+              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                Edit Master Config
+              </DialogTitle>
+
+              <DialogContent>
+                <Container maxWidth="xl" disableGutters>
+
+                  <h2>Code: {addChildName}</h2>
+                  <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                    <TextField
+                      autoFocus
+                      id="outlined-basic"
+                      label="Name (EN)"
+                      variant="outlined"
+                      // defaultValue={row.name_en}
+                      value={addChildValue}
+                      onChange={(e) => handleChangeAdd(e)}
+                      helperText={
+                        <Grid
+                          container
+                          justifyContent="flex-end"
+                          alignItems="center"
+                        >
+                          <Typography variant="title1" color="initial">
+                            0/50
+                          </Typography>
+                        </Grid>
+                      }
+                      fullWidth
+                    />
                   </Grid>
-                  <Divider />
-                  <Menu
-                    id={nodes.id}
-                    anchorEl={addChild}
-                    keepMounted
-                    open={Boolean(addChild)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem id={nodes.id + "-" + nodes.name} onClick={handleDialogAdd}>
-                      {/* <MenuItem onClick={handleClose}> */}
-                      <AddRoundedIcon /> Add child
-                    </MenuItem>
-                  </Menu>
 
-                  <Dialog
-                    fullWidth="true"
-                    maxWidth="xs"
-                    open={dialogAdd}
-                    onClose={handleDialogAddClose}
-                    aria-labelledby="form-dialog-title"
-                  >
-                    <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                      New Master Config
-                    </DialogTitle>
-
-                    <DialogContent>
-                      <Container maxWidth="xl" disableGutters>
-                        {/* <TextField
-                        autoFocus
-                        helperText={
-                          <Grid
-                            container
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <Typography variant="title1" color="initial">
-                              3/50
-                            </Typography>
-                          </Grid>
-                        }
-                        id="outlined-basic"
-                        label="Parent"
-                        variant="outlined"
-                        fullWidth
-                      /> */}
-                        <h2>Parent Name: {addChildName}</h2>
-                        <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                          <TextField
-                            autoFocus
-                            id="outlined-basic"
-                            label="Name"
-                            variant="outlined"
-                            onChange={(e) => handleChangeAdd(e)}
-                            helperText={
-                              <Grid
-                                container
-                                justifyContent="flex-end"
-                                alignItems="center"
-                              >
-                                <Typography variant="title1" color="initial">
-                                  0/50
-                                </Typography>
-                              </Grid>
-                            }
-                            fullWidth
-                          />
+                  {lang != "en" ?
+                  <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                    <TextField
+                      autoFocus
+                      id="outlined-basic"
+                      label={"Name ("+lang.toUpperCase()+")"}
+                      variant="outlined"
+                      value={addChildNameLang}
+                      onChange={(e) => handleChangeLang(e)}
+                      helperText={
+                        <Grid
+                          container
+                          justifyContent="flex-end"
+                          alignItems="center"
+                        >
+                          <Typography variant="title1" color="initial">
+                            0/50
+                          </Typography>
                         </Grid>
-                        {/* <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                        <TextField
-                          autoFocus
-                          id="outlined-basic"
-                          label="Decription (en)"
-                          variant="outlined"
-                          helperText={
-                            <Grid
-                              container
-                              justifyContent="flex-end"
-                              alignItems="center"
-                            >
-                              <Typography variant="title1" color="initial">
-                                0/50
-                              </Typography>
-                            </Grid>
-                          }
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                        style={{ paddingTop: 20 }}
-                      >
-                        <Grid item style={{ marginRight: 15 }}>
-                          <AddRoundedIcon />
+                      }
+                      fullWidth
+                    />
+                  </Grid>
+                  :
+                  null}
+
+                  <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                    <TextField
+                      autoFocus
+                      id="outlined-basic"
+                      label="Description"
+                      variant="outlined"
+                      // defaultValue={row.description}
+                      value={description}
+                      onChange={(e) => handleChangeDescription(e)}
+                      helperText={
+                        <Grid
+                          container
+                          justifyContent="flex-end"
+                          alignItems="center"
+                        >
+                          <Typography variant="title1" color="initial">
+                            0/50
+                          </Typography>
                         </Grid>
-                        <Grid item xs={10}>
-                          <TextField
-                            fullWidth
-                            autoFocus
-                            id="outlined-select-language"
-                            select
-                            // fullWidth
-                            alignItems="flex-end"
-                            label="Add Language"
-                            value={languageDialog}
-                            onChange={handleLanguageDialog}
-                            SelectProps={{
-                              native: true,
-                            }}
-                            variant="outlined"
-                          >
-                            {language.map((option) => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </TextField>
-                        </Grid>
-                      </Grid> */}
-                      </Container>
-                    </DialogContent>
-                    <DialogActions style={{ padding: 20 }}>
-                      <Button
-                        onClick={handleDialogAddClose}
-                        variant="text"
-                        color="primary"
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={handleAdd}
-                        variant="contained"
-                        color="primary"
-                      >
-                        Save
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                  <Dialog
-                    fullWidth="true"
-                    maxWidth="xs"
-                    open={dialogEdit}
-                    onClose={handleDialogAddClose}
-                    aria-labelledby="form-dialog-title"
-                  >
-                    <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                      Edit Master Config
-                    </DialogTitle>
+                      }
+                      fullWidth
+                    />
+                  </Grid>
 
-                    <DialogContent>
-                      <Container maxWidth="xl" disableGutters>
+                </Container>
+              </DialogContent>
+              <DialogActions style={{ padding: 20 }}>
+                <Button
+                  onClick={handleDialogEditClose}
+                  variant="text"
+                  color="primary"
+                >
+                  Cancel
+                </Button>
+                {lang == 'en' ?
+                  <Button
+                    onClick={handleEdit}
+                    variant="contained"
+                    color="primary"
+                  > Save
+                  </Button>
+                  :
+                  <Button
+                    onClick={handleEditLang}
+                    variant="contained"
+                    color="primary"
+                  > Save
+                  </Button>
+                }
 
-                        <h2>Old Name: {addChildName}</h2>
-                        <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                          <TextField
-                            autoFocus
-                            id="outlined-basic"
-                            label="New Name"
-                            variant="outlined"
-                            onChange={(e) => handleChangeAdd(e)}
-                            helperText={
-                              <Grid
-                                container
-                                justifyContent="flex-end"
-                                alignItems="center"
-                              >
-                                <Typography variant="title1" color="initial">
-                                  0/50
-                                </Typography>
-                              </Grid>
-                            }
-                            fullWidth
-                          />
-                        </Grid>
-
-                      </Container>
-                    </DialogContent>
-                    <DialogActions style={{ padding: 20 }}>
-                      <Button
-                        onClick={handleDialogEditClose}
-                        variant="text"
-                        color="primary"
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={handleEdit}
-                        variant="contained"
-                        color="primary"
-                      >
-                        Save
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
+              </DialogActions>
+            </Dialog>
 
 
-                </div>
-              }
-            >
-              {Array.isArray(nodes.children)
-                ? nodes.children.map((node) => renderTree(node))
-                : null}
-            </TreeItem>
-      }
+
+          </div>
+        }
+      >
+        {Array.isArray(nodes.children)
+          ? nodes.children.map((node) => renderTree(node))
+          : null}
+      </TreeItem>
+
     </div>
   );
 
@@ -1450,7 +913,7 @@ export default function Configuration() {
             variant="h6"
             style={{ marginBottom: 15, fontSize: 18, color: "blue" }}
           >
-            Configuration
+            Configuration {data[0][testa]}
           </Typography>
           <Paper elevation={3} style={{ minHeight: 150, width: "100%" }}>
             <Grid container style={{ padding: 20 }}>
