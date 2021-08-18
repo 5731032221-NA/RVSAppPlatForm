@@ -86,7 +86,7 @@ export default function Login({ setToken }) {
         },
       });
       console.log("token", token);  
-      setToken(token);
+      
       // try{
       // store.dispatch({
       //   type: EDIT_AUTHORIZATION,
@@ -95,8 +95,7 @@ export default function Login({ setToken }) {
       // }catch(err){
       //   console.log("de2",err.stack)
       // }
-      console.log("store authen",sessionStorage.getItem("auth"))
-      const apitest = await propertys(sessionStorage.getItem("auth"));
+      const apitest = await propertys(token.contents[token.contents.length-2].refreshToken);
       store.dispatch({
         type: EDIT_PROPERTYS,
         payload: apitest.content
@@ -105,7 +104,7 @@ export default function Login({ setToken }) {
       console.log("apitest",apitest)
       setErrorLogin(true);
 
-      
+      setToken(token);
       
     }
   };
