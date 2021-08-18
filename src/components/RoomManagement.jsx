@@ -36,6 +36,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import roomMaster from "../services/roomMaster.service";
+import TablePagination from '@material-ui/core/TablePagination';
 
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 // import Chip from "@material-ui/core/Chip";
@@ -233,6 +234,9 @@ export default function RoomManagement() {
     //   "-"
     // ),
   ]);
+  const [pageData, setPageData] = React.useState([]);
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async() => {
     const data = await roomMaster(store.getState().reducer.auth);
@@ -253,8 +257,27 @@ export default function RoomManagement() {
       );
       // console.log("a",roomdata)
       setRows(roomdata)
-    
+      updatePageData(roomdata, page, rowsPerPage)
   }, []);
+
+  const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
+    let data = []
+    for (let i = (_page) * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
+      if (rowsdata[i]) data.push(rowsdata[i]);
+    }
+    setPageData(data);
+  }
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+    updatePageData(rows, newPage, rowsPerPage)
+  }
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(event.target.value)
+    setPage(0)
+    updatePageData(rows, 0, event.target.value)
+  }
 
   const handleAttributeDialog = (event) => {
     setAttributeDialog(event.target.value);
@@ -689,7 +712,7 @@ export default function RoomManagement() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {pageData.map((row) => (
                     <TableRow key={row.id}>
                       <TableCell>{row.property}</TableCell>
                       <TableCell style={{ color: "blue" }}>
@@ -1002,50 +1025,21 @@ export default function RoomManagement() {
               >
                 <Grid item style={{ flexGrow: 1 }}>
                   <Typography variant="title1" color="initial">
-                    item 11-13 of 13 Total
+                    item {(page * rowsPerPage) + 1}-{((page + 1) * rowsPerPage) > rows.length ? rows.length : ((page + 1) * rowsPerPage)} of {rows.length} Total
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Typography variant="title1" color="initial">
-                    Row per Page
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <FormControl
-                    variant="outlined"
-                    size="small"
-                    className={classes.selectPage}
-                  >
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Page
-                    </InputLabel>
-                    <Select
-                      // value={page}
-                      // onChange={handleChangePage}
-                      label="Page"
-                      // style={{" "}}
-                    >
-                      <MenuItem value="">None</MenuItem>
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item>1-4 of 10</Grid>
-                <Grid item>
-                  <IconButton>
-                    <FirstPageRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <NavigateBeforeRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <NavigateNextRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <LastPageRoundedIcon />
-                  </IconButton>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={rows.length}
+                    page={page}
+                    // onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                  // onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
                 </Grid>
               </Grid>
             </Grid>
