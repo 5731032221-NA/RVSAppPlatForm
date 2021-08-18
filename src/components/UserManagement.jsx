@@ -224,6 +224,9 @@ export default function UserManagement() {
     );
   };
 
+  // const handleToggleStatus = (event) => {
+  //   setToggleStatus(event.target.value);
+  // };
   return (
     <Container maxWidth="xl">
       <React.Fragment>
@@ -321,6 +324,7 @@ export default function UserManagement() {
                               backgroundColor: "#2D62ED",
                               color: "white",
                             }}
+                            onClick={" "}
                           >
                             {row.status}
                           </Button>
