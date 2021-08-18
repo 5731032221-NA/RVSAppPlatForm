@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { ReactReduxContext } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -38,7 +39,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-
+import user from "../services/user.service";
+import TablePagination from "@material-ui/core/TablePagination";
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
   return {
@@ -50,19 +52,18 @@ function createData(id, userID, userName, position, roles, status) {
     status,
   };
 }
-
-const rows = [
-  createData(
-    0,
-    "Somchai",
-    "Somchai Wong nut",
-    "Front Office",
-    "Cashier",
-    "Active"
-  ),
-  createData(1, "Fah", "Mekha Wihok", "Reception", "Night", "Inactive"),
-  createData(2, "Mon", "Month main", "Front Office", "Cashaier", "Active"),
-];
+// const rows = [
+//   createData(
+//     0,
+//     "Somchai",
+//     "Somchai Wong nut",
+//     "Front Office",
+//     "Cashier",
+//     "Active"
+//   ),
+//   createData(1, "Fah", "Mekha Wihok", "Reception", "Night", "Inactive"),
+//   createData(2, "Mon", "Month main", "Front Office", "Cashaier", "Active"),
+// ];
 
 const roles = [
   {
@@ -129,7 +130,15 @@ export default function UserManagement() {
   const [selectPosition, setSelectPosition] = React.useState(null);
   const [selectProperty, setSelectProperty] = React.useState(null);
   const [chipRolesDialog, setChipRolesDialog] = React.useState([]);
-  const [toggleStatus, setToggleStatus] = React.useState(null);
+  const [pageData, setPageData] = React.useState([]);
+
+  const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
+    let data = [];
+    for (let i = _page * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
+      if (rowsdata[i]) data.push(rowsdata[i]);
+    }
+    setPageData(data);
+  };
 
   const handleDialogAddUser = () => {
     setDialogAddUser(true);
@@ -145,6 +154,41 @@ export default function UserManagement() {
   const handleDialogEditUserClose = () => {
     setDialogEditUser(false);
   };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    updatePageData(rows, newPage, rowsPerPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(event.target.value);
+    setPage(0);
+    updatePageData(rows, 0, event.target.value);
+  };
+
+  const [rows, setRows] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const { store } = useContext(ReactReduxContext);
+  React.useEffect(async () => {
+    const data = await user(store.getState().reducer.auth);
+    let userdata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          element.userid,
+          element.firstname + " " + element.lastname,
+          "",
+          element.role,
+          element.status_record
+        )
+      )
+    );
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
+  }, []);
 
   const handleSelectPosition = (event) => {
     setSelectPosition(event.target.value);
@@ -180,9 +224,6 @@ export default function UserManagement() {
     );
   };
 
-  const handleToggleStatus = (event) => {
-    setToggleStatus(event.target.value);
-  };
   return (
     <Container maxWidth="xl">
       <React.Fragment>
@@ -264,14 +305,14 @@ export default function UserManagement() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {pageData.map((row) => (
                     <TableRow key={row.id}>
                       <TableCell>{row.userID}</TableCell>
                       <TableCell>{row.userName}</TableCell>
                       <TableCell>{row.position}</TableCell>
                       <TableCell>{row.roles}</TableCell>
-                      {/* {`${row.status}` === "Active" ? */}
-                      {`${row.status}` === "Active" ? (
+                      {`${row.status}` === "Active" ||
+                      `${row.status}` === "active" ? (
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -280,7 +321,6 @@ export default function UserManagement() {
                               backgroundColor: "#2D62ED",
                               color: "white",
                             }}
-                            onClick={handleToggleStatus}
                           >
                             {row.status}
                           </Button>
@@ -321,49 +361,25 @@ export default function UserManagement() {
               >
                 <Grid item style={{ flexGrow: 1 }}>
                   <Typography variant="title1" color="initial">
-                    item 11-13 of 13 Total
+                    item {page * rowsPerPage + 1}-
+                    {(page + 1) * rowsPerPage > rows.length
+                      ? rows.length
+                      : (page + 1) * rowsPerPage}{" "}
+                    of {rows.length} Total
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Typography variant="title1" color="initial">
-                    Row per Page
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <FormControl
-                    variant="outlined"
-                    size="small"
-                    className={classes.selectPage}
-                  >
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Page
-                    </InputLabel>
-                    <Select
-                      // value={page}
-                      // onChange={handleChangePage}
-                      label="Page"
-                    >
-                      <MenuItem value="">None</MenuItem>
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item>1-4 of 10</Grid>
-                <Grid item>
-                  <IconButton>
-                    <FirstPageRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <NavigateBeforeRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <NavigateNextRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <LastPageRoundedIcon />
-                  </IconButton>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={rows.length}
+                    page={page}
+                    // onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    // onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
                 </Grid>
               </Grid>
             </Grid>

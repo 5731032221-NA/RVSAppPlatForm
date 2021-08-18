@@ -44,11 +44,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import TreeItem from "@material-ui/lab/TreeItem";
 import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import user from "../services/user.service";
-import TablePagination from '@material-ui/core/TablePagination';
-
+import user from "../services/user.service"
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
   return {
@@ -92,18 +88,14 @@ export default function RoleManagement() {
   const classes = useStyles();
   const [dialogAddRole, setDialogAddRole] = React.useState(false);
   const [dialogEditRole, setDialogEditRole] = React.useState(false);
-  const [selectUser, setSelectUser] = React.useState(null);
   const [rows, setRows] = useState([]);
   const { store } = useContext(ReactReduxContext);
-  const [pageData, setPageData] = React.useState([]);
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
   React.useEffect(async () => {
     const data = await user(store.getState().reducer.auth);
     let userdata = [];
     let i = 0;
-    console.log("aaa", data)
-    data.content[data.content.length - 1].forEach(element =>
+    console.log("aaa",data)
+    data.content[data.content.length-1].forEach(element =>
       userdata.push(createData(
 
 
@@ -114,13 +106,14 @@ export default function RoleManagement() {
         "",
         element.id,
         element.status_record
-
+        
       ))
     );
-    console.log("a", userdata)
+    console.log("a",userdata)
     setRows(userdata)
-    updatePageData(userdata, page, rowsPerPage)
+
   }, []);
+  
   const handleDialogAddRole = () => {
     setDialogAddRole(true);
   };
@@ -135,30 +128,6 @@ export default function RoleManagement() {
   const handleDialogEditRoleClose = () => {
     setDialogEditRole(false);
   };
-  const handleSelectUser = (event) => {
-    setSelectUser(event.target.value);
-  };
-
-  const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
-    let data = []
-    for (let i = (_page) * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
-      if (rowsdata[i]) data.push(rowsdata[i]);
-    }
-    setPageData(data);
-  }
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-    updatePageData(rows, newPage, rowsPerPage)
-  }
-
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(event.target.value)
-    setPage(0)
-    updatePageData(rows, 0, event.target.value)
-  }
-
-
   const [data, setData] = React.useState([
     {
       id: "1.1",
@@ -191,156 +160,6 @@ export default function RoleManagement() {
       ],
     },
   ]);
-
-  const [dataMenu, setDataMenu] = React.useState(
-    [
-      {
-        id: "1.1",
-        name: "PMS Configuration",
-        createdate: "2021-08-13 12:03:00",
-        master: true,
-        children: [
-          {
-            id: "1.1.1",
-            name: "Property Configuration",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-            children: [
-              {
-                id: "1.1.1.1",
-                name: "Property Master",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-              },
-              {
-                id: "1.1.1.2",
-                name: "Building Master",
-                createdate: "2021-08-13 12:03:00",
-              },
-              {
-                id: "1.1.1.3",
-                name: "Exposure ",
-                createdate: "2021-08-13 12:03:00",
-              },
-              {
-                id: "1.1.1.4",
-                name: "Floor ",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-              },
-              {
-                id: "1.1.1.5",
-                name: "Zone/Wing",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-              },
-            ],
-          },
-          {
-            id: "1.1.2",
-            name: "Room Configuration",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-            children: [
-              {
-                id: "1.1.2.1",
-                name: "Room Type",
-                master: true,
-                createdate: "2021-08-13 12:03:00",
-              },
-              {
-                id: "1.1.2.2",
-                name: "Room Category",
-                master: true,
-                createdate: "2021-08-13 12:03:00",
-              },
-              {
-                id: "1.1.2.3",
-                name: "Room Master Maintenance",
-                master: true,
-                createdate: "2021-08-13 12:03:00",
-              },
-            ],
-          },
-          {
-            id: "1.1.3",
-            name: "Item Configuration",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-            children: [
-              {
-                id: "1.1.3.1",
-                name: "Item Type",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-              },
-              {
-                id: "1.1.3.2",
-                name: "Item Category",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-              },
-            ],
-          },
-          {
-            id: "1.1.4",
-            name: "Reservation Configuration",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-            children: [
-              {
-                id: "1.1.4.1",
-                name: "Market segment Maintenance",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-              },
-              {
-                id: "1.1.4.2",
-                name: "Source Maintenance",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        id: "1.2",
-        name: "System Configuration",
-        createdate: "2021-08-13 12:03:00",
-        master: true,
-        children: [
-          {
-            id: "1.2.1",
-            name: "User Management",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-          },
-          {
-            id: "1.2.2",
-            name: "Role Management",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-          },
-        ],
-      },
-    ]
-    // }
-  );
-  const demoUser = [
-    {
-      key: "1",
-      label: "Admin",
-    },
-    {
-      key: "2",
-      label: "User1",
-    },
-    {
-      key: "3",
-      label: "User1",
-    },
-  ];
 
   const renderTree = (nodes) => (
     <div>
@@ -443,14 +262,6 @@ export default function RoleManagement() {
     </div>
   );
 
-  const renderTreeSubMenu = (nodes) => (
-    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
-      {Array.isArray(nodes.children)
-        ? nodes.children.map((node) => renderTreeSubMenu(node))
-        : null}
-    </TreeItem>
-  );
-
   return (
     <Container maxWidth="xl">
       <React.Fragment>
@@ -516,167 +327,128 @@ export default function RoleManagement() {
             </Button>
           </Grid>
         </Grid>
-        <Grid container>
-          <Paper
-            square
-            style={{
-              minHeight: 50,
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <Grid
-              style={{ padding: 15 }}
-              container
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={3}
-                lg={3}
-                xl={3}
-                style={{ flexGrow: 1 }}
-              >
-                <Typography variant="h6" style={{ fontSize: 25 }}>
-                  Role Management
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
-                <TextField
-                  select
-                  // id="outlined-basic"
-                  label="Select Username"
-                  variant="outlined"
-                  fullWidth
-                  SelectProps={{
-                    native: true,
-                  }}
-                  value={selectUser}
-                  onChange={handleSelectUser}
-                >
-                  {demoUser.map((option) => (
-                    <option key={option.key} value={option.key}>
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-            </Grid>
-            <Divider />
-          </Paper>
-        </Grid>
 
-        <Grid container>
-          <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-            <Paper square style={{ minHeight: "100%", padding: 20 }}>
-              <TreeView
-                defaultCollapseIcon={<ArrowDropDownIcon />}
-                defaultExpandIcon={<ArrowRightIcon />}
+        <Paper>
+          <Grid container style={{ padding: 30 }}>
+            <Grid container>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Role Code</TableCell>
+                    <TableCell>Role Name</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell>#User</TableCell>
+                    <TableCell align="center">Status</TableCell>
+                    <TableCell align="center">Action</TableCell>
+                    {/* <TableCell align="center">Sale Amount</TableCell> */}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                    <TableRow key={row.id}>
+                      <TableCell>{row.userID}</TableCell>
+                      <TableCell>{row.userName}</TableCell>
+                      <TableCell>{row.position}</TableCell>
+                      <TableCell>{row.roles}</TableCell>
+                      {`${row.status}` === "Active" || (`${row.status}` === "active") ? (
+                        <TableCell align="center">
+                          <Button
+                            variant="contained"
+                            style={{
+                              borderRadius: 20,
+                              backgroundColor: "#2D62ED",
+                              color: "white",
+                            }}
+                          >
+                            {row.status}
+                          </Button>
+                        </TableCell>
+                      ) : (
+                        <TableCell align="center">
+                          <Button
+                            variant="contained"
+                            style={{
+                              borderRadius: 20,
+                              backgroundColor: "#DEDFE0",
+                              color: "black",
+                            }}
+                          >
+                            {row.status}
+                          </Button>
+                        </TableCell>
+                      )}
+                      <TableCell align="center">
+                        <IconButton onClick={handleDialogEditRole}>
+                          <EditOutlinedIcon />
+                        </IconButton>
+                        <IconButton onClick={" "}>
+                          <SaveRoundedIcon />
+                        </IconButton>
+                      </TableCell>
+                      {/* <TableCell align="right">{row.amount}</TableCell> */}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="center"
+                spacing={3}
+                style={{ marginTop: 15 }}
               >
-                {dataMenu.map((node) => renderTreeSubMenu(node))}
-              </TreeView>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={12} md={10} lg={10} xl={10}>
-            <Paper square style={{ minHeight: "100%" }}>
-              <Grid container style={{ padding: 30 }}>
-                <Grid container>
-                  <Table size="small">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Role Code</TableCell>
-                        <TableCell>Role Name</TableCell>
-                        <TableCell>Description</TableCell>
-                        <TableCell>#User</TableCell>
-                        <TableCell align="center">Status</TableCell>
-                        <TableCell align="center">Action</TableCell>
-                        {/* <TableCell align="center">Sale Amount</TableCell> */}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {pageData.map((row) => (
-                        <TableRow key={row.id}>
-                          <TableCell>{row.userID}</TableCell>
-                          <TableCell>{row.userName}</TableCell>
-                          <TableCell>{row.position}</TableCell>
-                          <TableCell>{row.roles}</TableCell>
-                          {`${row.status}` === "Active" || (`${row.status}` === "active") ? (
-                            <TableCell align="center">
-                              <Button
-                                variant="contained"
-                                style={{
-                                  borderRadius: 20,
-                                  backgroundColor: "#2D62ED",
-                                  color: "white",
-                                }}
-                              >
-                                {row.status}
-                              </Button>
-                            </TableCell>
-                          ) : (
-                            <TableCell align="center">
-                              <Button
-                                variant="contained"
-                                style={{
-                                  borderRadius: 20,
-                                  backgroundColor: "#DEDFE0",
-                                  color: "black",
-                                }}
-                              >
-                                {row.status}
-                              </Button>
-                            </TableCell>
-                          )}
-                          <TableCell align="center">
-                            <IconButton onClick={handleDialogEditRole}>
-                              <EditOutlinedIcon />
-                            </IconButton>
-                            <IconButton onClick={" "}>
-                              <SaveRoundedIcon />
-                            </IconButton>
-                          </TableCell>
-                          {/* <TableCell align="right">{row.amount}</TableCell> */}
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    spacing={3}
-                    style={{ marginTop: 15 }}
+                <Grid item style={{ flexGrow: 1 }}>
+                  <Typography variant="title1" color="initial">
+                    item 11-13 of 13 Total
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="title1" color="initial">
+                    Row per Page
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <FormControl
+                    variant="outlined"
+                    size="small"
+                    className={classes.selectPage}
                   >
-                    <Grid item style={{ flexGrow: 1 }}>
-                      <Typography variant="title1" color="initial">
-                        item {(page * rowsPerPage) + 1}-{((page + 1) * rowsPerPage) > rows.length ? rows.length : ((page + 1) * rowsPerPage)} of {rows.length} Total
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={rows.length}
-                        page={page}
-                        // onPageChange={handleChangePage}
-                        rowsPerPage={rowsPerPage}
-                        onChangePage={handleChangePage}
-                        onChangeRowsPerPage={handleChangeRowsPerPage}
-                      // onRowsPerPageChange={handleChangeRowsPerPage}
-                      />
-                    </Grid>
-                  </Grid>
+                    <InputLabel id="demo-simple-select-outlined-label">
+                      Page
+                    </InputLabel>
+                    <Select
+                      // value={page}
+                      // onChange={handleChangePage}
+                      label="Page"
+                      // style={{" "}}
+                    >
+                      <MenuItem value="">None</MenuItem>
+                      <MenuItem value={1}>1</MenuItem>
+                      <MenuItem value={2}>2</MenuItem>
+                      <MenuItem value={3}>3</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item>1-4 of 10</Grid>
+                <Grid item>
+                  <IconButton>
+                    <FirstPageRoundedIcon />
+                  </IconButton>
+                  <IconButton>
+                    <NavigateBeforeRoundedIcon />
+                  </IconButton>
+                  <IconButton>
+                    <NavigateNextRoundedIcon />
+                  </IconButton>
+                  <IconButton>
+                    <LastPageRoundedIcon />
+                  </IconButton>
                 </Grid>
               </Grid>
-            </Paper>
+            </Grid>
           </Grid>
-        </Grid>
-
+        </Paper>
         {/* ==================== Dialog New Role ========================= */}
         <Dialog
           fullWidth="true"
@@ -710,8 +482,8 @@ export default function RoleManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                  // value={roomTypeDialog}
-                  // onChange={handleRoomTypeDialog}
+                    // value={roomTypeDialog}
+                    // onChange={handleRoomTypeDialog}
                   >
                     {/* {roomType.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -745,8 +517,8 @@ export default function RoleManagement() {
                 md={12}
                 lg={12}
                 xl={12}
-              // spacing={2}
-              // style={{ paddingTop: 10 }}
+                // spacing={2}
+                // style={{ paddingTop: 10 }}
               >
                 <FormControlLabel
                   style={{ paddingTop: 15 }}
@@ -804,10 +576,10 @@ export default function RoleManagement() {
                       }}
                     />
                   }
-                // expanded={expanded}
-                // selected={selected}
-                // onNodeToggle={handleToggle}
-                // onNodeSelect={handleSelect}
+                  // expanded={expanded}
+                  // selected={selected}
+                  // onNodeToggle={handleToggle}
+                  // onNodeSelect={handleSelect}
                 >
                   {data.map((node) => renderTree(node))}
                 </TreeView>
@@ -865,8 +637,8 @@ export default function RoleManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                  // value={roomTypeDialog}
-                  // onChange={handleRoomTypeDialog}
+                    // value={roomTypeDialog}
+                    // onChange={handleRoomTypeDialog}
                   >
                     {/* {roomType.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -900,8 +672,8 @@ export default function RoleManagement() {
                 md={12}
                 lg={12}
                 xl={12}
-              // spacing={2}
-              // style={{ paddingTop: 10 }}
+                // spacing={2}
+                // style={{ paddingTop: 10 }}
               >
                 <FormControlLabel
                   style={{ paddingTop: 15 }}
@@ -959,10 +731,10 @@ export default function RoleManagement() {
                       }}
                     />
                   }
-                // expanded={expanded}
-                // selected={selected}
-                // onNodeToggle={handleToggle}
-                // onNodeSelect={handleSelect}
+                  // expanded={expanded}
+                  // selected={selected}
+                  // onNodeToggle={handleToggle}
+                  // onNodeSelect={handleSelect}
                 >
                   {data.map((node) => renderTree(node))}
                 </TreeView>

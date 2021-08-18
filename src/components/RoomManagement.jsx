@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState,useContext }  from "react";
 // import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -6,6 +6,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import { ReactReduxContext } from 'react-redux';
 import {
   Container,
   Grid,
@@ -34,6 +35,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import roomMaster from "../services/roomMaster.service";
+import TablePagination from '@material-ui/core/TablePagination';
 
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 // import Chip from "@material-ui/core/Chip";
@@ -63,31 +66,7 @@ function createData(
   };
 }
 
-const rows = [
-  createData(
-    0,
-    "FSDH",
-    "8038",
-    "SUPERVISOR",
-    "3RDFLOOR",
-    "TOWER1",
-    "Desription",
-    "IN",
-    "-"
-  ),
-  createData(1, "FSDH", "8038", "DELUX", "F4", "A", "Desription", "VC", "-"),
-  createData(
-    2,
-    "FSDH",
-    "8038",
-    "SUPERVISOR",
-    "F5",
-    "TOWER1",
-    "Desription",
-    "IN",
-    "-"
-  ),
-];
+
 
 const properties = [
   {
@@ -219,7 +198,7 @@ export default function RoomManagement() {
   const classes = useStyles();
   const [dialogAddRoom, setDialogAddRoom] = React.useState(false);
   const [dialogEditRoom, setDialogEditRoom] = React.useState(false);
-  // const [attributeDialog, setAttributeDialog] = React.useState("Minibar");
+  const [attributeDialog, setAttributeDialog] = React.useState("Minibar");
   const [propertyDialog, setPropertyDialog] = React.useState("1");
   const [roomTypeDialog, setRoomTypeDialog] = React.useState("1");
   const [buildingDialog, setBuildingDialog] = React.useState("1");
@@ -230,9 +209,80 @@ export default function RoomManagement() {
   const [roomStatusDialog, setRoomStatusDialog] = React.useState("1");
   const [chipAttributeDialog, setChipAttributeDialog] = React.useState([]);
 
-  // const handleAttributeDialog = (event) => {
-  //   setAttributeDialog(event.target.value);
-  // };
+  const [rows,setRows] = useState([
+    // createData(
+    //   0,
+    //   "FSDH",
+    //   "8038",
+    //   "SUPERVISOR",
+    //   "3RDFLOOR",
+    //   "TOWER1",
+    //   "Desription",
+    //   "IN",
+    //   "-"
+    // ),
+    // createData(1, "FSDH", "8038", "DELUX", "F4", "A", "Desription", "VC", "-"),
+    // createData(
+    //   2,
+    //   "FSDH",
+    //   "8038",
+    //   "SUPERVISOR",
+    //   "F5",
+    //   "TOWER1",
+    //   "Desription",
+    //   "IN",
+    //   "-"
+    // ),
+  ]);
+  const [pageData, setPageData] = React.useState([]);
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const { store } = useContext(ReactReduxContext);
+  React.useEffect(async() => {
+    const data = await roomMaster(store.getState().reducer.auth);
+    let roomdata = [];
+    let i = 0;
+    data.content.forEach(element => 
+      roomdata.push(createData(
+        i++,
+        element.rmproperty,
+        element.rmno,
+        element.rmtypeid,
+        element.floorid,
+        element.buildingid,
+        element.rmdesc,
+        element.rmstatus,
+        element.rmattribute
+      ))
+      );
+      // console.log("a",roomdata)
+      setRows(roomdata)
+      updatePageData(roomdata, page, rowsPerPage)
+  }, []);
+
+  const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
+    let data = []
+    for (let i = (_page) * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
+      if (rowsdata[i]) data.push(rowsdata[i]);
+    }
+    setPageData(data);
+  }
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+    updatePageData(rows, newPage, rowsPerPage)
+  }
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(event.target.value)
+    setPage(0)
+    updatePageData(rows, 0, event.target.value)
+  }
+
+  const handleAttributeDialog = (event) => {
+    setAttributeDialog(event.target.value);
+  };
+
   const handlePropertyDialog = (event) => {
     setPropertyDialog(event.target.value);
   };
@@ -657,7 +707,7 @@ export default function RoomManagement() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {pageData.map((row) => (
                     <TableRow key={row.id}>
                       <TableCell>{row.property}</TableCell>
                       <TableCell style={{ color: "blue" }}>
@@ -970,50 +1020,21 @@ export default function RoomManagement() {
               >
                 <Grid item style={{ flexGrow: 1 }}>
                   <Typography variant="title1" color="initial">
-                    item 11-13 of 13 Total
+                    item {(page * rowsPerPage) + 1}-{((page + 1) * rowsPerPage) > rows.length ? rows.length : ((page + 1) * rowsPerPage)} of {rows.length} Total
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Typography variant="title1" color="initial">
-                    Row per Page
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <FormControl
-                    variant="outlined"
-                    size="small"
-                    className={classes.selectPage}
-                  >
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Page
-                    </InputLabel>
-                    <Select
-                      // value={page}
-                      // onChange={handleChangePage}
-                      label="Page"
-                      // style={{" "}}
-                    >
-                      <MenuItem value="">None</MenuItem>
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item>1-4 of 10</Grid>
-                <Grid item>
-                  <IconButton>
-                    <FirstPageRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <NavigateBeforeRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <NavigateNextRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <LastPageRoundedIcon />
-                  </IconButton>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={rows.length}
+                    page={page}
+                    // onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                  // onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
                 </Grid>
               </Grid>
             </Grid>
