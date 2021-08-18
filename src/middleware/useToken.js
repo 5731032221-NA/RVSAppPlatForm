@@ -64,7 +64,7 @@ export default function useToken() {
                 sessionStorage.setItem('name', userToken.contents[userToken.contents.length-1][0].firstname +" "+userToken.contents[userToken.contents.length-1][0].lastname+".")
                 sessionStorage.setItem('role', userToken.contents[userToken.contents.length-1][0].role);
                 sessionStorage.setItem('token', JSON.stringify(userToken));
-                sessionStorage.setItem('auth', userToken.contents[userToken.contents.length-2].refreshToken)
+                sessionStorage.setItem('auth', userToken.contents[userToken.contents.length-2].refreshToken);
                 setToken(userToken);
             } 
         }
