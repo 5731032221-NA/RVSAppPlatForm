@@ -129,6 +129,7 @@ export default function UserManagement() {
   const [selectPosition, setSelectPosition] = React.useState(null);
   const [selectProperty, setSelectProperty] = React.useState(null);
   const [chipRolesDialog, setChipRolesDialog] = React.useState([]);
+  const [toggleStatus, setToggleStatus] = React.useState(null);
 
   const handleDialogAddUser = () => {
     setDialogAddUser(true);
@@ -153,20 +154,34 @@ export default function UserManagement() {
   };
 
   const handleSelectRoles = (event) => {
-    console.log("event", event.target.value);
-    console.log(chipRolesDialog);
-    if (!(event.target.value in chipRolesDialog)) {
+    const temp = new Set();
+    if (chipRolesDialog.length) {
+      for (var i in chipRolesDialog) {
+        temp.add(chipRolesDialog[i].label);
+      }
+      if (temp.has(event.target.value)) {
+        // console.log("had value");
+      } else {
+        setChipRolesDialog([
+          ...chipRolesDialog,
+          { key: event.target.value, label: event.target.value },
+        ]);
+      }
+    } else {
       setChipRolesDialog([
         ...chipRolesDialog,
         { key: event.target.value, label: event.target.value },
       ]);
-    } else {
     }
   };
   const handleDeleteRoles = (chipToDelete) => () => {
     setChipRolesDialog((chips) =>
       chips.filter((chips) => chips.key !== chipToDelete.key)
     );
+  };
+
+  const handleToggleStatus = (event) => {
+    setToggleStatus(event.target.value);
   };
   return (
     <Container maxWidth="xl">
@@ -255,6 +270,7 @@ export default function UserManagement() {
                       <TableCell>{row.userName}</TableCell>
                       <TableCell>{row.position}</TableCell>
                       <TableCell>{row.roles}</TableCell>
+                      {/* {`${row.status}` === "Active" ? */}
                       {`${row.status}` === "Active" ? (
                         <TableCell align="center">
                           <Button
@@ -264,6 +280,7 @@ export default function UserManagement() {
                               backgroundColor: "#2D62ED",
                               color: "white",
                             }}
+                            onClick={handleToggleStatus}
                           >
                             {row.status}
                           </Button>

@@ -273,31 +273,26 @@ export default function RoomManagement() {
   };
 
   const handleSelectAttribute = (event) => {
-    setChipAttributeDialog([
-      ...chipAttributeDialog,
-      { key: event.target.value, label: event.target.value },
-    ]);
+    const temp = new Set();
 
-    // const dataTemp = new Set();
-    // if (!chipAttributeDialog.lenght) {
-    //   setChipAttributeDialog([
-    //     ...chipAttributeDialog,
-    //     { key: event.target.value, label: event.target.value },
-    //   ]);
-    // } else {
-    //   for (var i in chipAttributeDialog) {
-    //     dataTemp.add(chipAttributeDialog[i].label);
-    //   }
-    //   console.log(dataTemp);
-    //   console.log(dataTemp.has(event.target.value));
-    //   if (dataTemp.has(event.target.value)) {
-    //     setChipAttributeDialog([
-    //       ...chipAttributeDialog,
-    //       { key: event.target.value, label: event.target.value },
-    //     ]);
-    //   } else {
-    //   }
-    // }
+    if (chipAttributeDialog.length) {
+      for (var i in chipAttributeDialog) {
+        temp.add(chipAttributeDialog[i].label);
+      }
+      if (temp.has(event.target.value)) {
+        // console.log("had value");
+      } else {
+        setChipAttributeDialog([
+          ...chipAttributeDialog,
+          { key: event.target.value, label: event.target.value },
+        ]);
+      }
+    } else {
+      setChipAttributeDialog([
+        ...chipAttributeDialog,
+        { key: event.target.value, label: event.target.value },
+      ]);
+    }
   };
   const handleDeleteAttribute = (chipToDelete) => () => {
     setChipAttributeDialog((chips) =>
