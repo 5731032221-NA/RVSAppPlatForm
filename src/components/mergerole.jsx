@@ -91,7 +91,7 @@ export default function RoleManagement() {
   const [rows, setRows] = useState([]);
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
-    const data = await user(store.getState().reducer.auth);
+    const data = await user(sessionStorage.getItem("auth"));
     let userdata = [];
     let i = 0;
     console.log("aaa",data)

@@ -86,16 +86,17 @@ export default function Login({ setToken }) {
         },
       });
       console.log("token", token);  
-      try{
-      store.dispatch({
-        type: EDIT_AUTHORIZATION,
-        payload: token.contents[token.contents.length-2].refreshToken
-        })
-      }catch(err){
-        console.log("de2",err.stack)
-      }
-      console.log("store authen",store.getState().reducer.auth)
-      const apitest = await propertys(store.getState().reducer.auth);
+      setToken(token);
+      // try{
+      // store.dispatch({
+      //   type: EDIT_AUTHORIZATION,
+      //   payload: token.contents[token.contents.length-2].refreshToken
+      //   })
+      // }catch(err){
+      //   console.log("de2",err.stack)
+      // }
+      console.log("store authen",sessionStorage.getItem("auth"))
+      const apitest = await propertys(sessionStorage.getItem("auth"));
       store.dispatch({
         type: EDIT_PROPERTYS,
         payload: apitest.content
@@ -104,7 +105,7 @@ export default function Login({ setToken }) {
       console.log("apitest",apitest)
       setErrorLogin(true);
 
-      setToken(token);
+      
       
     }
   };
