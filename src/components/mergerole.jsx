@@ -22,23 +22,28 @@ import {
   Breadcrumbs,
   Link,
   TextField,
-  Chip,
+  Divider,
 } from "@material-ui/core";
-
 import IconButton from "@material-ui/core/IconButton";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
+
 import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
 import FirstPageRoundedIcon from "@material-ui/icons/FirstPageRounded";
 import LastPageRoundedIcon from "@material-ui/icons/LastPageRounded";
+
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import TreeItem from "@material-ui/lab/TreeItem";
+import TreeView from "@material-ui/lab/TreeView";
+import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import user from "../services/user.service"
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
@@ -51,57 +56,12 @@ function createData(id, userID, userName, position, roles, status) {
     status,
   };
 }
+
 // const rows = [
-//   createData(
-//     0,
-//     "Somchai",
-//     "Somchai Wong nut",
-//     "Front Office",
-//     "Cashier",
-//     "Active"
-//   ),
-//   createData(1, "Fah", "Mekha Wihok", "Reception", "Night", "Inactive"),
-//   createData(2, "Mon", "Month main", "Front Office", "Cashaier", "Active"),
+//   createData(0, "CASHIER", "Cashier", "All Shifts Cashier", "5", "Active"),
+//   createData(1, "Reception", "Receptionist", "All Shifts", "4", "Inactive"),
+//   createData(2, "ACCOUNT", "Accountant", "All Accountant", "6", "Active"),
 // ];
-
-
-
-const roles = [
-  {
-    key: "1",
-    label: "Cahshier",
-  },
-  {
-    key: "2",
-    label: "Account",
-  },
-];
-
-const position = [
-  {
-    key: "1",
-    label: "Front office",
-  },
-  {
-    key: "2",
-    label: "Receptionist",
-  },
-];
-const property = [
-  {
-    key: "1",
-    label: "Novotel Pattaya",
-  },
-  {
-    key: "2",
-    label: "Novotel Bangkok",
-  },
-  {
-    key: "3",
-    label: "Novotel Rayong",
-  },
-];
-const RoleValues = "";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -124,29 +84,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserManagement() {
+export default function RoleManagement() {
   const classes = useStyles();
-  const [dialogAddUser, setDialogAddUser] = React.useState(false);
-  const [dialogEditUser, setDialogEditUser] = React.useState(false);
-  const [selectPosition, setSelectPosition] = React.useState(null);
-  const [selectProperty, setSelectProperty] = React.useState(null);
-  const [chipRolesDialog, setChipRolesDialog] = React.useState([]);
-
-  const handleDialogAddUser = () => {
-    setDialogAddUser(true);
-  };
-
-  const handleDialogAddUserClose = () => {
-    setDialogAddUser(false);
-  };
-  const handleDialogEditUser = () => {
-    setDialogEditUser(true);
-  };
-
-  const handleDialogEditUserClose = () => {
-    setDialogEditUser(false);
-  };
-
+  const [dialogAddRole, setDialogAddRole] = React.useState(false);
+  const [dialogEditRole, setDialogEditRole] = React.useState(false);
   const [rows, setRows] = useState([]);
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
@@ -156,42 +97,171 @@ export default function UserManagement() {
     console.log("aaa",data)
     data.content[data.content.length-1].forEach(element =>
       userdata.push(createData(
+
+
+
         element.id,
-        element.userid,
-        (element.firstname+" "+element.lastname),
         "",
         element.role,
+        "",
+        element.id,
         element.status_record
+        
       ))
     );
     console.log("a",userdata)
     setRows(userdata)
 
   }, []);
-
-  const handleSelectPosition = (event) => {
-    setSelectPosition(event.target.value);
-  };
-  const handleSelectProperty = (event) => {
-    setSelectProperty(event.target.value);
+  
+  const handleDialogAddRole = () => {
+    setDialogAddRole(true);
   };
 
-  const handleSelectRoles = (event) => {
-    console.log("event", event.target.value);
-    console.log("chipRolesDialog",chipRolesDialog);
-    if (chipRolesDialog.filter(x => x.label === event.target.value).length == 0) {
-      setChipRolesDialog([
-        ...chipRolesDialog,
-        { key: event.target.value, label: event.target.value },
-      ]);
-    } else {
-    }
+  const handleDialogAddRoleClose = () => {
+    setDialogAddRole(false);
   };
-  const handleDeleteRoles = (chipToDelete) => () => {
-    setChipRolesDialog((chips) =>
-      chips.filter((chips) => chips.key !== chipToDelete.key)
-    );
+  const handleDialogEditRole = () => {
+    setDialogEditRole(true);
   };
+
+  const handleDialogEditRoleClose = () => {
+    setDialogEditRole(false);
+  };
+  const [data, setData] = React.useState([
+    {
+      id: "1.1",
+      name: "Dashboard",
+    },
+    {
+      id: "1.2",
+      name: "Reservartion",
+    },
+    {
+      id: "1.3",
+      name: "Front Desk",
+      children: [
+        {
+          id: "1.3.1",
+          name: "Walk-in",
+        },
+        {
+          id: "1.3.2",
+          name: "Check-in",
+        },
+        {
+          id: "1.3.3",
+          name: "Checkout",
+        },
+        {
+          id: "1.3.4",
+          name: "RoomStatus",
+        },
+      ],
+    },
+  ]);
+
+  const renderTree = (nodes) => (
+    <div>
+      <TreeItem
+        key={nodes.id}
+        nodeId={nodes.id}
+        label={
+          <div>
+            <Grid container direction="row" alignItems="center">
+              <Grid item style={{ flexGrow: 1 }}>
+                <Typography
+                  variant="h6"
+                  color="initial"
+                  style={{ paddind: 5, fontSize: 16 }}
+                >
+                  {nodes.name}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      All
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Create
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Read
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Update
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Delete
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+              </Grid>
+            </Grid>
+            <Divider />
+          </div>
+        }
+      >
+        {Array.isArray(nodes.children)
+          ? nodes.children.map((node) => renderTree(node))
+          : null}
+      </TreeItem>
+    </div>
+  );
+
   return (
     <Container maxWidth="xl">
       <React.Fragment>
@@ -234,7 +304,7 @@ export default function UserManagement() {
                   variant="h6"
                   style={{ marginBottom: 15, fontSize: 14 }}
                 >
-                  User Management
+                  Role Management
                 </Typography>
               </Typography>
             </Breadcrumbs>
@@ -248,11 +318,11 @@ export default function UserManagement() {
                 alignItems: "center",
               }}
               size="large"
-              onClick={handleDialogAddUser}
+              onClick={handleDialogAddRole}
             >
               <AddRoundedIcon />
               <Typography variant="body1" style={{}}>
-                New User
+                New Role
               </Typography>
             </Button>
           </Grid>
@@ -264,12 +334,13 @@ export default function UserManagement() {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>User ID</TableCell>
-                    <TableCell>User Name</TableCell>
-                    <TableCell>Position</TableCell>
-                    <TableCell>Roles</TableCell>
+                    <TableCell>Role Code</TableCell>
+                    <TableCell>Role Name</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell>#User</TableCell>
                     <TableCell align="center">Status</TableCell>
                     <TableCell align="center">Action</TableCell>
+                    {/* <TableCell align="center">Sale Amount</TableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -307,13 +378,14 @@ export default function UserManagement() {
                         </TableCell>
                       )}
                       <TableCell align="center">
-                        <IconButton onClick={handleDialogEditUser}>
+                        <IconButton onClick={handleDialogEditRole}>
                           <EditOutlinedIcon />
                         </IconButton>
                         <IconButton onClick={" "}>
                           <SaveRoundedIcon />
                         </IconButton>
                       </TableCell>
+                      {/* <TableCell align="right">{row.amount}</TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -349,6 +421,7 @@ export default function UserManagement() {
                       // value={page}
                       // onChange={handleChangePage}
                       label="Page"
+                      // style={{" "}}
                     >
                       <MenuItem value="">None</MenuItem>
                       <MenuItem value={1}>1</MenuItem>
@@ -376,16 +449,16 @@ export default function UserManagement() {
             </Grid>
           </Grid>
         </Paper>
-        {/* ==================== Dialog New User========================= */}
+        {/* ==================== Dialog New Role ========================= */}
         <Dialog
           fullWidth="true"
           maxWidth="sm"
-          open={dialogAddUser}
-          onClose={handleDialogAddUserClose}
+          open={dialogAddRole}
+          onClose={handleDialogAddRoleClose}
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-            New User
+            New Role
           </DialogTitle>
 
           <DialogContent>
@@ -395,7 +468,7 @@ export default function UserManagement() {
                   <TextField
                     // autoFocus
                     id="outlined-basic"
-                    label="Username"
+                    label="Role Code"
                     variant="outlined"
                     fullWidth
                   />
@@ -403,63 +476,24 @@ export default function UserManagement() {
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name"
+                    label="Role Name"
                     variant="outlined"
                     fullWidth
                     SelectProps={{
                       native: true,
                     }}
-                  // value={" "}
-                  // onChange={" "}
-                  ></TextField>
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    select
-                    id="outlined-basic"
-                    label="Position"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-
-                    value={selectPosition}
-                    onChange={handleSelectPosition}
+                    // value={roomTypeDialog}
+                    // onChange={handleRoomTypeDialog}
                   >
-                    {position.map((option) => (
-                      <option key={option.key} value={option.label}>
+                    {/* {roomType.map((option) => (
+                      <option key={option.value} value={option.value}>
                         {option.label}
                       </option>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    // autoFocus
-                    select
-                    id="outlined-basic"
-                    label="Property"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-
-                    value={selectProperty}
-                    onChange={handleSelectProperty}
-                  >
-                    {property.map((option) => (
-                      <option key={option.key} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
+                    ))} */}
                   </TextField>
                 </Grid>
               </Grid>
+
               <Grid
                 container
                 direction="row"
@@ -469,76 +503,99 @@ export default function UserManagement() {
               >
                 <TextField
                   fullWidth
-                  // autoFocus
+                  // id="outlined-multiline-static"
+                  label="Description"
+                  multiline
+                  rows={4}
                   variant="outlined"
-                  selectSelectProps={{
-                    native: true,
-                  }}
-                  label="Roles"
-                  select
-                  value={RoleValues}
-                  onChange={(event) => handleSelectRoles(event)}
-                >
-                  {roles.map((option) => (
-                    <MenuItem key={option.key} value={option.label}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                {chipRolesDialog.map((data, index) => {
-                  return (
-                    <Chip
-                      style={{ marginTop: 10 }}
-                      key={data.key + index}
-                      label={data.label}
-                      onDelete={handleDeleteRoles(data)}
+                />
+              </Grid>
+              <Grid
+                container
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                // spacing={2}
+                // style={{ paddingTop: 10 }}
+              >
+                <FormControlLabel
+                  style={{ paddingTop: 15 }}
+                  value="Status"
+                  control={<Switch color="primary" />}
+                  label="Status"
+                  labelPlacement="start"
+                />
+              </Grid>
+              <Divider style={{ marginTop: 15 }} />
+              <Grid
+                container
+                alignItems="center"
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                style={{ paddingTop: 10 }}
+              >
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 18 }}
+                    >
+                      Select Permission All
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+              </Grid>
+              <Divider style={{ marginTop: 10 }} />
+              <Container disableGutters>
+                <TreeView
+                  // className={classes.root}
+                  defaultCollapseIcon={
+                    <RemoveRoundedIcon
+                      style={{
+                        backgroundColor: "#717171",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
                     />
-                  );
-                })}
-              </Grid>
-              <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    id="outlined-basic"
-                    label="username@mail.com"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-                  // value={" "}
-                  // onChange={" "}
-                  ></TextField>
-                </Grid>
-                <Grid
-                  container
-                  xs={6}
-                  sm={6}
-                  md={6}
-                  lg={6}
-                  xl={6}
-                  style={{ alignContent: "center", padding: 20 }}
+                  }
+                  defaultExpandIcon={
+                    <AddRoundedIcon
+                      style={{
+                        backgroundColor: "#2D62ED",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                  // expanded={expanded}
+                  // selected={selected}
+                  // onNodeToggle={handleToggle}
+                  // onNodeSelect={handleSelect}
                 >
-                  <FormControlLabel
-                    value="Status"
-                    control={<Switch color="primary" />}
-                    label="Status"
-                    labelPlacement="start"
-                  />
-                </Grid>
-              </Grid>
+                  {data.map((node) => renderTree(node))}
+                </TreeView>
+              </Container>
             </Container>
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
             <Button
-              onClick={handleDialogAddUserClose}
+              onClick={handleDialogAddRoleClose}
               variant="text"
               color="primary"
             >
               Cancel
             </Button>
             <Button
-              onClick={handleDialogAddUserClose}
+              onClick={handleDialogAddRoleClose}
               variant="contained"
               color="primary"
             >
@@ -547,17 +604,18 @@ export default function UserManagement() {
           </DialogActions>
         </Dialog>
         {/* ---------------------------------------- */}
-        {/* ==================== Dialog New User========================= */}
+        {/* ==================== Dialog New Role========================= */}
         <Dialog
           fullWidth="true"
           maxWidth="sm"
-          open={dialogEditUser}
-          onClose={handleDialogEditUserClose}
+          open={dialogEditRole}
+          onClose={handleDialogEditRoleClose}
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-            Edit User
+            Edit Role
           </DialogTitle>
+
           <DialogContent>
             <Container maxWidth="xl" disableGutters>
               <Grid container spacing={2} style={{ paddingTop: 10 }}>
@@ -565,7 +623,7 @@ export default function UserManagement() {
                   <TextField
                     // autoFocus
                     id="outlined-basic"
-                    label="Username"
+                    label="Role Code"
                     variant="outlined"
                     fullWidth
                   />
@@ -573,63 +631,24 @@ export default function UserManagement() {
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name"
+                    label="Role Name"
                     variant="outlined"
                     fullWidth
                     SelectProps={{
                       native: true,
                     }}
-                  // value={" "}
-                  // onChange={" "}
-                  ></TextField>
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    select
-                    id="outlined-basic"
-                    label="Position"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-
-                    value={selectPosition}
-                    onChange={handleSelectPosition}
+                    // value={roomTypeDialog}
+                    // onChange={handleRoomTypeDialog}
                   >
-                    {position.map((option) => (
-                      <option key={option.key} value={option.label}>
+                    {/* {roomType.map((option) => (
+                      <option key={option.value} value={option.value}>
                         {option.label}
                       </option>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    // autoFocus
-                    select
-                    id="outlined-basic"
-                    label="Property"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-
-                    value={selectProperty}
-                    onChange={handleSelectProperty}
-                  >
-                    {property.map((option) => (
-                      <option key={option.key} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
+                    ))} */}
                   </TextField>
                 </Grid>
               </Grid>
+
               <Grid
                 container
                 direction="row"
@@ -639,76 +658,99 @@ export default function UserManagement() {
               >
                 <TextField
                   fullWidth
-                  // autoFocus
+                  // id="outlined-multiline-static"
+                  label="Description"
+                  multiline
+                  rows={4}
                   variant="outlined"
-                  selectSelectProps={{
-                    native: true,
-                  }}
-                  label="Roles"
-                  select
-                  value={RoleValues}
-                  onChange={(event) => handleSelectRoles(event)}
-                >
-                  {roles.map((option) => (
-                    <MenuItem key={option.key} value={option.label}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                {chipRolesDialog.map((data, index) => {
-                  return (
-                    <Chip
-                      style={{ marginTop: 10 }}
-                      key={data.key + index}
-                      label={data.label}
-                      onDelete={handleDeleteRoles(data)}
+                />
+              </Grid>
+              <Grid
+                container
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                // spacing={2}
+                // style={{ paddingTop: 10 }}
+              >
+                <FormControlLabel
+                  style={{ paddingTop: 15 }}
+                  value="Status"
+                  control={<Switch color="primary" />}
+                  label="Status"
+                  labelPlacement="start"
+                />
+              </Grid>
+              <Divider style={{ marginTop: 15 }} />
+              <Grid
+                container
+                alignItems="center"
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                style={{ paddingTop: 10 }}
+              >
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 18 }}
+                    >
+                      Select Permission All
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+              </Grid>
+              <Divider style={{ marginTop: 10 }} />
+              <Container disableGutters>
+                <TreeView
+                  // className={classes.root}
+                  defaultCollapseIcon={
+                    <RemoveRoundedIcon
+                      style={{
+                        backgroundColor: "#717171",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
                     />
-                  );
-                })}
-              </Grid>
-              <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    id="outlined-basic"
-                    label="username@mail.com"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-                  // value={" "}
-                  // onChange={" "}
-                  ></TextField>
-                </Grid>
-                <Grid
-                  container
-                  xs={6}
-                  sm={6}
-                  md={6}
-                  lg={6}
-                  xl={6}
-                  style={{ alignContent: "center", padding: 20 }}
+                  }
+                  defaultExpandIcon={
+                    <AddRoundedIcon
+                      style={{
+                        backgroundColor: "#2D62ED",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                  // expanded={expanded}
+                  // selected={selected}
+                  // onNodeToggle={handleToggle}
+                  // onNodeSelect={handleSelect}
                 >
-                  <FormControlLabel
-                    value="Status"
-                    control={<Switch color="primary" />}
-                    label="Status"
-                    labelPlacement="start"
-                  />
-                </Grid>
-              </Grid>
+                  {data.map((node) => renderTree(node))}
+                </TreeView>
+              </Container>
             </Container>
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
             <Button
-              onClick={handleDialogEditUserClose}
+              onClick={handleDialogEditRoleClose}
               variant="text"
               color="primary"
             >
               Cancel
             </Button>
             <Button
-              onClick={handleDialogEditUserClose}
+              onClick={handleDialogEditRoleClose}
               variant="contained"
               color="primary"
             >
