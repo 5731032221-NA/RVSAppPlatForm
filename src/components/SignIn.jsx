@@ -100,13 +100,13 @@ export default function Login({ setToken }) {
       try{
       store.dispatch({
         type: EDIT_AUTHORIZATION,
-        payload: token.contents[token.contents.length-2].refreshToken
+        payload: token.contents[token.contents.length].refreshToken
         })
       }catch(err){
         console.log("de2",err.stack)
       }
-      console.log("store authen",store.getState().reducer.auth)
-      const apitest = await menu(store.getState().reducer.auth);
+      console.log("store authen",sessionStorage.getItem("auth"))
+      const apitest = await menu(sessionStorage.getItem("auth"));
       store.dispatch({
         type: EDIT_PROPERTYS,
         payload: apitest.content

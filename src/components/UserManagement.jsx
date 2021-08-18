@@ -175,7 +175,7 @@ export default function UserManagement() {
 
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
-    const data = await user(store.getState().reducer.auth);
+    const data = await user(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach(element =>
       userdata.push(createData(

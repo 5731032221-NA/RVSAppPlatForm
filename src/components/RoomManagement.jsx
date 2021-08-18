@@ -239,7 +239,7 @@ export default function RoomManagement() {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async() => {
-    const data = await roomMaster(store.getState().reducer.auth);
+    const data = await roomMaster(sessionStorage.getItem("auth"));
     let roomdata = [];
     let i = 0;
     data.content.forEach(element => 
@@ -262,6 +262,7 @@ export default function RoomManagement() {
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
     let data = []
+    console.log("rowsdata",rowsdata)
     for (let i = (_page) * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
       if (rowsdata[i]) data.push(rowsdata[i]);
     }
