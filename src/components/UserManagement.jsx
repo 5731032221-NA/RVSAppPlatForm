@@ -147,8 +147,11 @@ export default function UserManagement() {
   const handleDialogAddUserClose = () => {
     setDialogAddUser(false);
   };
-  const handleDialogEditUser = () => {
+  const handleDialogEditUser = (event) => {
     setDialogEditUser(true);
+    console.log(event.target.value);
+    console.log(event.target.name);
+    console.log(event.target.email);
   };
 
   const handleDialogEditUserClose = () => {
@@ -309,7 +312,7 @@ export default function UserManagement() {
                 </TableHead>
                 <TableBody>
                   {pageData.map((row) => (
-                    <TableRow key={row.id}>
+                    <TableRow key={row.id} value={row.id}>
                       <TableCell>{row.userID}</TableCell>
                       <TableCell>{row.userName}</TableCell>
                       <TableCell>{row.position}</TableCell>
@@ -344,8 +347,18 @@ export default function UserManagement() {
                         </TableCell>
                       )}
                       <TableCell align="center">
-                        <IconButton onClick={handleDialogEditUser}>
-                          <EditOutlinedIcon />
+                        <IconButton
+                          // onClick={handleDialogEditUser}
+                          value={row.id}
+                          name={row.id}
+                          email={row.id}
+                          onClick={(event) => handleDialogEditUser(event)}
+                        >
+                          {row.id}
+                          <EditOutlinedIcon
+                          // value={row.id}
+                          // onClick={(event) => handleDialogEditUser(event)}
+                          />
                         </IconButton>
                         <IconButton onClick={" "}>
                           <SaveRoundedIcon />
@@ -558,7 +571,7 @@ export default function UserManagement() {
           </DialogActions>
         </Dialog>
         {/* ---------------------------------------- */}
-        {/* ==================== Dialog New User========================= */}
+        {/* ==================== Dialog Edit User========================= */}
         <Dialog
           fullWidth="true"
           maxWidth="sm"
