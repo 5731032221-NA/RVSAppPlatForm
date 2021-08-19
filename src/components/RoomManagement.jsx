@@ -1,4 +1,4 @@
-import React, { useState,useContext }  from "react";
+import React, { useState, useContext } from "react";
 // import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -6,7 +6,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { ReactReduxContext } from 'react-redux';
+import { ReactReduxContext } from "react-redux";
 import {
   Container,
   Grid,
@@ -36,7 +36,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import roomMaster from "../services/roomMaster.service";
-import TablePagination from '@material-ui/core/TablePagination';
+import TablePagination from "@material-ui/core/TablePagination";
 
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 // import Chip from "@material-ui/core/Chip";
@@ -65,8 +65,6 @@ function createData(
     attribute,
   };
 }
-
-
 
 const properties = [
   {
@@ -209,7 +207,7 @@ export default function RoomManagement() {
   const [roomStatusDialog, setRoomStatusDialog] = React.useState("1");
   const [chipAttributeDialog, setChipAttributeDialog] = React.useState([]);
 
-  const [rows,setRows] = useState([
+  const [rows, setRows] = useState([
     // createData(
     //   0,
     //   "FSDH",
@@ -235,29 +233,31 @@ export default function RoomManagement() {
     // ),
   ]);
   const [pageData, setPageData] = React.useState([]);
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async() => {
     const data = await roomMaster(sessionStorage.getItem("auth"));
     let roomdata = [];
     let i = 0;
-    data.content.forEach(element => 
-      roomdata.push(createData(
-        i++,
-        element.rmproperty,
-        element.rmno,
-        element.rmtypeid,
-        element.floorid,
-        element.buildingid,
-        element.rmdesc,
-        element.rmstatus,
-        element.rmattribute
-      ))
-      );
-      // console.log("a",roomdata)
-      setRows(roomdata)
-      updatePageData(roomdata, page, rowsPerPage)
+    data.content.forEach((element) =>
+      roomdata.push(
+        createData(
+          i++,
+          element.rmproperty,
+          element.rmno,
+          element.rmtypeid,
+          element.floorid,
+          element.buildingid,
+          element.rmdesc,
+          element.rmstatus,
+          element.rmattribute
+        )
+      )
+    );
+    // console.log("a",roomdata)
+    setRows(roomdata);
+    updatePageData(roomdata, page, rowsPerPage);
   }, []);
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
@@ -267,18 +267,18 @@ export default function RoomManagement() {
       if (rowsdata[i]) data.push(rowsdata[i]);
     }
     setPageData(data);
-  }
+  };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-    updatePageData(rows, newPage, rowsPerPage)
-  }
+    setPage(newPage);
+    updatePageData(rows, newPage, rowsPerPage);
+  };
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(event.target.value)
-    setPage(0)
-    updatePageData(rows, 0, event.target.value)
-  }
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(event.target.value);
+    setPage(0);
+    updatePageData(rows, 0, event.target.value);
+  };
 
   const handleAttributeDialog = (event) => {
     setAttributeDialog(event.target.value);
@@ -1021,7 +1021,11 @@ export default function RoomManagement() {
               >
                 <Grid item style={{ flexGrow: 1 }}>
                   <Typography variant="title1" color="initial">
-                    item {(page * rowsPerPage) + 1}-{((page + 1) * rowsPerPage) > rows.length ? rows.length : ((page + 1) * rowsPerPage)} of {rows.length} Total
+                    item {page * rowsPerPage + 1}-
+                    {(page + 1) * rowsPerPage > rows.length
+                      ? rows.length
+                      : (page + 1) * rowsPerPage}{" "}
+                    of {rows.length} Total
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -1034,7 +1038,7 @@ export default function RoomManagement() {
                     rowsPerPage={rowsPerPage}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
-                  // onRowsPerPageChange={handleChangeRowsPerPage}
+                    // onRowsPerPageChange={handleChangeRowsPerPage}
                   />
                 </Grid>
               </Grid>

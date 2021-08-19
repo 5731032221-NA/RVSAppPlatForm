@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { ReactReduxContext } from 'react-redux';
+import { ReactReduxContext } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -47,7 +47,7 @@ import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import user from "../services/user.service";
-import TablePagination from '@material-ui/core/TablePagination';
+import TablePagination from "@material-ui/core/TablePagination";
 
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
@@ -96,30 +96,28 @@ export default function RoleManagement() {
   const [rows, setRows] = useState([]);
   const { store } = useContext(ReactReduxContext);
   const [pageData, setPageData] = React.useState([]);
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   React.useEffect(async () => {
     const data = await user(sessionStorage.getItem("auth"));
     let userdata = [];
     let i = 0;
-    console.log("aaa", data)
-    data.content[data.content.length - 1].forEach(element =>
-      userdata.push(createData(
-
-
-
-        element.id,
-        "",
-        element.role,
-        "",
-        element.id,
-        element.status_record
-
-      ))
+    console.log("aaa", data);
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          "",
+          element.role,
+          "",
+          element.id,
+          element.status_record
+        )
+      )
     );
-    console.log("a", userdata)
-    setRows(userdata)
-    updatePageData(userdata, page, rowsPerPage)
+    console.log("a", userdata);
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
   }, []);
   const handleDialogAddRole = () => {
     setDialogAddRole(true);
@@ -140,24 +138,23 @@ export default function RoleManagement() {
   };
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
-    let data = []
-    for (let i = (_page) * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
+    let data = [];
+    for (let i = _page * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
       if (rowsdata[i]) data.push(rowsdata[i]);
     }
     setPageData(data);
-  }
+  };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-    updatePageData(rows, newPage, rowsPerPage)
-  }
+    setPage(newPage);
+    updatePageData(rows, newPage, rowsPerPage);
+  };
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(event.target.value)
-    setPage(0)
-    updatePageData(rows, 0, event.target.value)
-  }
-
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(event.target.value);
+    setPage(0);
+    updatePageData(rows, 0, event.target.value);
+  };
 
   const [data, setData] = React.useState([
     {
@@ -604,7 +601,8 @@ export default function RoleManagement() {
                           <TableCell>{row.userName}</TableCell>
                           <TableCell>{row.position}</TableCell>
                           <TableCell>{row.roles}</TableCell>
-                          {`${row.status}` === "Active" || (`${row.status}` === "active") ? (
+                          {`${row.status}` === "Active" ||
+                          `${row.status}` === "active" ? (
                             <TableCell align="center">
                               <Button
                                 variant="contained"
@@ -654,7 +652,11 @@ export default function RoleManagement() {
                   >
                     <Grid item style={{ flexGrow: 1 }}>
                       <Typography variant="title1" color="initial">
-                        item {(page * rowsPerPage) + 1}-{((page + 1) * rowsPerPage) > rows.length ? rows.length : ((page + 1) * rowsPerPage)} of {rows.length} Total
+                        item {page * rowsPerPage + 1}-
+                        {(page + 1) * rowsPerPage > rows.length
+                          ? rows.length
+                          : (page + 1) * rowsPerPage}{" "}
+                        of {rows.length} Total
                       </Typography>
                     </Grid>
                     <Grid item>
@@ -667,7 +669,7 @@ export default function RoleManagement() {
                         rowsPerPage={rowsPerPage}
                         onChangePage={handleChangePage}
                         onChangeRowsPerPage={handleChangeRowsPerPage}
-                      // onRowsPerPageChange={handleChangeRowsPerPage}
+                        // onRowsPerPageChange={handleChangeRowsPerPage}
                       />
                     </Grid>
                   </Grid>
@@ -680,311 +682,383 @@ export default function RoleManagement() {
         {/* ==================== Dialog New Role ========================= */}
         <Dialog
           fullWidth="true"
-          maxWidth="sm"
+          maxWidth="md"
           open={dialogAddRole}
           onClose={handleDialogAddRoleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-            New Role
-          </DialogTitle>
-
-          <DialogContent>
-            <Container maxWidth="xl" disableGutters>
-              <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    // autoFocus
-                    id="outlined-basic"
-                    label="Role Code"
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    id="outlined-basic"
-                    label="Role Name"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
+          <Grid container>
+            <Grid
+              item
+              sm={3}
+              md={3}
+              lg={3}
+              xl={3}
+              style={{ backgroundColor: "#F5F5F5" }}
+            >
+              <TreeView
+                style={{ padding: 20 }}
+                defaultCollapseIcon={
+                  <RemoveRoundedIcon
+                    style={{
+                      backgroundColor: "#717171",
+                      borderRadius: 2,
+                      color: "white",
                     }}
-                  // value={roomTypeDialog}
-                  // onChange={handleRoomTypeDialog}
-                  >
-                    {/* {roomType.map((option) => (
+                  />
+                }
+                defaultExpandIcon={
+                  <AddRoundedIcon
+                    style={{
+                      backgroundColor: "#2D62ED",
+                      borderRadius: 2,
+                      color: "white",
+                    }}
+                  />
+                }
+              >
+                {data.map((node) => renderTreeSubMenu(node))}
+              </TreeView>
+            </Grid>
+            <Grid item xs={9} sm={9} md={9} lg={9} xl={9}>
+              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                New Role
+              </DialogTitle>
+
+              <DialogContent>
+                <Container maxWidth="xl" disableGutters>
+                  <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        // autoFocus
+                        id="outlined-basic"
+                        label="Role Code"
+                        variant="outlined"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        id="outlined-basic"
+                        label="Role Name"
+                        variant="outlined"
+                        fullWidth
+                        SelectProps={{
+                          native: true,
+                        }}
+                        // value={roomTypeDialog}
+                        // onChange={handleRoomTypeDialog}
+                      >
+                        {/* {roomType.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
                       </option>
                     ))} */}
-                  </TextField>
-                </Grid>
-              </Grid>
+                      </TextField>
+                    </Grid>
+                  </Grid>
 
-              <Grid
-                container
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
-                style={{ paddingTop: 10 }}
-              >
-                <TextField
-                  fullWidth
-                  // id="outlined-multiline-static"
-                  label="Description"
-                  multiline
-                  rows={4}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid
-                container
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-              // spacing={2}
-              // style={{ paddingTop: 10 }}
-              >
-                <FormControlLabel
-                  style={{ paddingTop: 15 }}
-                  value="Status"
-                  control={<Switch color="primary" />}
-                  label="Status"
-                  labelPlacement="start"
-                />
-              </Grid>
-              <Divider style={{ marginTop: 15 }} />
-              <Grid
-                container
-                alignItems="center"
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                style={{ paddingTop: 10 }}
-              >
-                <FormControlLabel
-                  value="end"
-                  control={<Checkbox color="primary" />}
-                  label={
-                    <Typography
-                      variant="title1"
-                      color="initial"
-                      style={{ fontSize: 18 }}
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    style={{ paddingTop: 10 }}
+                  >
+                    <TextField
+                      fullWidth
+                      // id="outlined-multiline-static"
+                      label="Description"
+                      multiline
+                      rows={4}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid
+                    container
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                    // spacing={2}
+                    // style={{ paddingTop: 10 }}
+                  >
+                    <FormControlLabel
+                      style={{ paddingTop: 15 }}
+                      value="Status"
+                      control={<Switch color="primary" />}
+                      label="Status"
+                      labelPlacement="start"
+                    />
+                  </Grid>
+                  <Divider style={{ marginTop: 15 }} />
+                  <Grid
+                    container
+                    alignItems="center"
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                    style={{ paddingTop: 10 }}
+                  >
+                    <FormControlLabel
+                      value="end"
+                      control={<Checkbox color="primary" />}
+                      label={
+                        <Typography
+                          variant="title1"
+                          color="initial"
+                          style={{ fontSize: 18 }}
+                        >
+                          Select Permission All
+                        </Typography>
+                      }
+                      labelPlacement="end"
+                    />
+                  </Grid>
+                  <Divider style={{ marginTop: 10 }} />
+                  <Container disableGutters>
+                    <TreeView
+                      // className={classes.root}
+                      defaultCollapseIcon={
+                        <RemoveRoundedIcon
+                          style={{
+                            backgroundColor: "#717171",
+                            borderRadius: 2,
+                            color: "white",
+                          }}
+                        />
+                      }
+                      defaultExpandIcon={
+                        <AddRoundedIcon
+                          style={{
+                            backgroundColor: "#2D62ED",
+                            borderRadius: 2,
+                            color: "white",
+                          }}
+                        />
+                      }
+                      // expanded={expanded}
+                      // selected={selected}
+                      // onNodeToggle={handleToggle}
+                      // onNodeSelect={handleSelect}
                     >
-                      Select Permission All
-                    </Typography>
-                  }
-                  labelPlacement="end"
-                />
-              </Grid>
-              <Divider style={{ marginTop: 10 }} />
-              <Container disableGutters>
-                <TreeView
-                  // className={classes.root}
-                  defaultCollapseIcon={
-                    <RemoveRoundedIcon
-                      style={{
-                        backgroundColor: "#717171",
-                        borderRadius: 2,
-                        color: "white",
-                      }}
-                    />
-                  }
-                  defaultExpandIcon={
-                    <AddRoundedIcon
-                      style={{
-                        backgroundColor: "#2D62ED",
-                        borderRadius: 2,
-                        color: "white",
-                      }}
-                    />
-                  }
-                // expanded={expanded}
-                // selected={selected}
-                // onNodeToggle={handleToggle}
-                // onNodeSelect={handleSelect}
+                      {data.map((node) => renderTree(node))}
+                    </TreeView>
+                  </Container>
+                </Container>
+              </DialogContent>
+              <DialogActions style={{ padding: 20 }}>
+                <Button
+                  onClick={handleDialogAddRoleClose}
+                  variant="text"
+                  color="primary"
                 >
-                  {data.map((node) => renderTree(node))}
-                </TreeView>
-              </Container>
-            </Container>
-          </DialogContent>
-          <DialogActions style={{ padding: 20 }}>
-            <Button
-              onClick={handleDialogAddRoleClose}
-              variant="text"
-              color="primary"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleDialogAddRoleClose}
-              variant="contained"
-              color="primary"
-            >
-              Save
-            </Button>
-          </DialogActions>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleDialogAddRoleClose}
+                  variant="contained"
+                  color="primary"
+                >
+                  Save
+                </Button>
+              </DialogActions>
+            </Grid>
+          </Grid>
         </Dialog>
         {/* ---------------------------------------- */}
         {/* ==================== Dialog New Role========================= */}
         <Dialog
           fullWidth="true"
-          maxWidth="sm"
+          maxWidth="md"
           open={dialogEditRole}
           onClose={handleDialogEditRoleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-            Edit Role
-          </DialogTitle>
-
-          <DialogContent>
-            <Container maxWidth="xl" disableGutters>
-              <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    // autoFocus
-                    id="outlined-basic"
-                    label="Role Code"
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    id="outlined-basic"
-                    label="Role Name"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
+          <Grid container>
+            <Grid
+              item
+              sm={3}
+              md={3}
+              lg={3}
+              xl={3}
+              style={{ backgroundColor: "#F5F5F5" }}
+            >
+              <TreeView
+                style={{ padding: 20 }}
+                defaultCollapseIcon={
+                  <RemoveRoundedIcon
+                    style={{
+                      backgroundColor: "#717171",
+                      borderRadius: 2,
+                      color: "white",
                     }}
-                  // value={roomTypeDialog}
-                  // onChange={handleRoomTypeDialog}
-                  >
-                    {/* {roomType.map((option) => (
+                  />
+                }
+                defaultExpandIcon={
+                  <AddRoundedIcon
+                    style={{
+                      backgroundColor: "#2D62ED",
+                      borderRadius: 2,
+                      color: "white",
+                    }}
+                  />
+                }
+              >
+                {data.map((node) => renderTreeSubMenu(node))}
+              </TreeView>
+            </Grid>
+            <Grid item xs={9} sm={9} md={9} lg={9} xl={9}>
+              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                Edit Role
+              </DialogTitle>
+
+              <DialogContent>
+                <Container maxWidth="xl" disableGutters>
+                  <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        // autoFocus
+                        id="outlined-basic"
+                        label="Role Code"
+                        variant="outlined"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        id="outlined-basic"
+                        label="Role Name"
+                        variant="outlined"
+                        fullWidth
+                        SelectProps={{
+                          native: true,
+                        }}
+                        // value={roomTypeDialog}
+                        // onChange={handleRoomTypeDialog}
+                      >
+                        {/* {roomType.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
                       </option>
                     ))} */}
-                  </TextField>
-                </Grid>
-              </Grid>
+                      </TextField>
+                    </Grid>
+                  </Grid>
 
-              <Grid
-                container
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
-                style={{ paddingTop: 10 }}
-              >
-                <TextField
-                  fullWidth
-                  // id="outlined-multiline-static"
-                  label="Description"
-                  multiline
-                  rows={4}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid
-                container
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-              // spacing={2}
-              // style={{ paddingTop: 10 }}
-              >
-                <FormControlLabel
-                  style={{ paddingTop: 15 }}
-                  value="Status"
-                  control={<Switch color="primary" />}
-                  label="Status"
-                  labelPlacement="start"
-                />
-              </Grid>
-              <Divider style={{ marginTop: 15 }} />
-              <Grid
-                container
-                alignItems="center"
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                style={{ paddingTop: 10 }}
-              >
-                <FormControlLabel
-                  value="end"
-                  control={<Checkbox color="primary" />}
-                  label={
-                    <Typography
-                      variant="title1"
-                      color="initial"
-                      style={{ fontSize: 18 }}
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    style={{ paddingTop: 10 }}
+                  >
+                    <TextField
+                      fullWidth
+                      // id="outlined-multiline-static"
+                      label="Description"
+                      multiline
+                      rows={4}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid
+                    container
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                    // spacing={2}
+                    // style={{ paddingTop: 10 }}
+                  >
+                    <FormControlLabel
+                      style={{ paddingTop: 15 }}
+                      value="Status"
+                      control={<Switch color="primary" />}
+                      label="Status"
+                      labelPlacement="start"
+                    />
+                  </Grid>
+                  <Divider style={{ marginTop: 15 }} />
+                  <Grid
+                    container
+                    alignItems="center"
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                    style={{ paddingTop: 10 }}
+                  >
+                    <FormControlLabel
+                      value="end"
+                      control={<Checkbox color="primary" />}
+                      label={
+                        <Typography
+                          variant="title1"
+                          color="initial"
+                          style={{ fontSize: 18 }}
+                        >
+                          Select Permission All
+                        </Typography>
+                      }
+                      labelPlacement="end"
+                    />
+                  </Grid>
+                  <Divider style={{ marginTop: 10 }} />
+                  <Container disableGutters>
+                    <TreeView
+                      // className={classes.root}
+                      defaultCollapseIcon={
+                        <RemoveRoundedIcon
+                          style={{
+                            backgroundColor: "#717171",
+                            borderRadius: 2,
+                            color: "white",
+                          }}
+                        />
+                      }
+                      defaultExpandIcon={
+                        <AddRoundedIcon
+                          style={{
+                            backgroundColor: "#2D62ED",
+                            borderRadius: 2,
+                            color: "white",
+                          }}
+                        />
+                      }
+                      // expanded={expanded}
+                      // selected={selected}
+                      // onNodeToggle={handleToggle}
+                      // onNodeSelect={handleSelect}
                     >
-                      Select Permission All
-                    </Typography>
-                  }
-                  labelPlacement="end"
-                />
-              </Grid>
-              <Divider style={{ marginTop: 10 }} />
-              <Container disableGutters>
-                <TreeView
-                  // className={classes.root}
-                  defaultCollapseIcon={
-                    <RemoveRoundedIcon
-                      style={{
-                        backgroundColor: "#717171",
-                        borderRadius: 2,
-                        color: "white",
-                      }}
-                    />
-                  }
-                  defaultExpandIcon={
-                    <AddRoundedIcon
-                      style={{
-                        backgroundColor: "#2D62ED",
-                        borderRadius: 2,
-                        color: "white",
-                      }}
-                    />
-                  }
-                // expanded={expanded}
-                // selected={selected}
-                // onNodeToggle={handleToggle}
-                // onNodeSelect={handleSelect}
+                      {data.map((node) => renderTree(node))}
+                    </TreeView>
+                  </Container>
+                </Container>
+              </DialogContent>
+              <DialogActions style={{ padding: 20 }}>
+                <Button
+                  onClick={handleDialogAddRoleClose}
+                  variant="text"
+                  color="primary"
                 >
-                  {data.map((node) => renderTree(node))}
-                </TreeView>
-              </Container>
-            </Container>
-          </DialogContent>
-          <DialogActions style={{ padding: 20 }}>
-            <Button
-              onClick={handleDialogEditRoleClose}
-              variant="text"
-              color="primary"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleDialogEditRoleClose}
-              variant="contained"
-              color="primary"
-            >
-              Save
-            </Button>
-          </DialogActions>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleDialogAddRoleClose}
+                  variant="contained"
+                  color="primary"
+                >
+                  Save
+                </Button>
+              </DialogActions>
+            </Grid>
+          </Grid>
         </Dialog>
         {/* ---------------------------------------- */}
       </React.Fragment>
