@@ -168,14 +168,29 @@ export default function UserManagement() {
 
   const handleInsertUser = async () => {
     let insert = await postuser(sessionStorage.getItem("auth"),{
-      "firstname":"name",
-      "lastname":"last",
+      "firstname":"4name",
+      "lastname":"4last",
       "age":1,
       "status_record":"Active",
       "status_marriaged":""
       });
-    
-      console.log("insert",insert)
+      // console.log(insert)
+    const data = await getuser(sessionStorage.getItem("auth"));
+    let userdata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          element.userid,
+          element.firstname + " " + element.lastname,
+          "",
+          element.role,
+          element.status_record
+        )
+      )
+    );
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
 
     setDialogAddUser(false);
   };
