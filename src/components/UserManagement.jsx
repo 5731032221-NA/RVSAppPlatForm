@@ -39,7 +39,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import user from "../services/user.service";
+import {getuser,postuser} from "../services/user.service";
 import TablePagination from "@material-ui/core/TablePagination";
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
@@ -166,13 +166,27 @@ export default function UserManagement() {
     updatePageData(rows, 0, event.target.value);
   };
 
+  const handleInsertUser = async () => {
+    let insert = await postuser(sessionStorage.getItem("auth"),{
+      "firstname":"name",
+      "lastname":"last",
+      "age":1,
+      "status_record":"Active",
+      "status_marriaged":""
+      });
+    
+      console.log("insert",insert)
+
+    setDialogAddUser(false);
+  };
+
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
-    const data = await user(sessionStorage.getItem("auth"));
+    const data = await getuser(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
@@ -545,7 +559,7 @@ export default function UserManagement() {
               Cancel
             </Button>
             <Button
-              onClick={handleDialogAddUserClose}
+              onClick={handleInsertUser}
               variant="contained"
               color="primary"
             >
