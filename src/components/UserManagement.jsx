@@ -39,7 +39,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { getuser, postuser, updateuser } from "../services/user.service";
+import {
+  getuser,
+  postuser,
+  updateuser,
+  getuserbyid,
+} from "../services/user.service";
 import TablePagination from "@material-ui/core/TablePagination";
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
@@ -133,85 +138,8 @@ export default function UserManagement() {
   const [pageData, setPageData] = React.useState([]);
   const [editUserName, setEditUserName] = React.useState(null);
   const [editUserID, setEditUserID] = React.useState(null);
-  const [editStatus, setEditStatus] = React.useState(null);
-
-  const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
-    let data = [];
-    for (let i = _page * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
-      if (rowsdata[i]) data.push(rowsdata[i]);
-    }
-    setPageData(data);
-  };
-
-  const handleDialogAddUser = () => {
-    setDialogAddUser(true);
-  };
-
-  const handleDialogAddUserClose = () => {
-    setDialogAddUser(false);
-  };
-  const handleDialogEditUser = (id, userID, userName, status) => {
-    setDialogEditUser(true);
-
-    setEditUserID(userID);
-
-    setEditUserName(userName);
-
-    if (status === "Active" || status === "active") {
-      setEditStatus(true);
-    } else {
-      setEditStatus(false);
-    }
-    console.log("id :", id);
-    console.log("userID :", userID);
-    console.log("userName :", userName);
-    console.log("status :", status);
-  };
-
-  const handleDialogEditUserClose = () => {
-    setDialogEditUser(false);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-    updatePageData(rows, newPage, rowsPerPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
-    setPage(0);
-    updatePageData(rows, 0, event.target.value);
-  };
-
-  const handleInsertUser = async () => {
-    let insert = await postuser(sessionStorage.getItem("auth"), {
-      firstname: "4name",
-      lastname: "4last",
-      age: 1,
-      status_record: "Active",
-      status_marriaged: "",
-    });
-    // console.log(insert)
-    const data = await getuser(sessionStorage.getItem("auth"));
-    let userdata = [];
-    data.content[data.content.length - 1].forEach((element) =>
-      userdata.push(
-        createData(
-          element.id,
-          element.userid,
-          element.firstname + " " + element.lastname,
-          "",
-          element.role,
-          element.status_record
-        )
-      )
-    );
-    setRows(userdata);
-    updatePageData(userdata, page, rowsPerPage);
-
-    setDialogAddUser(false);
-  };
-
+  const [editID, setEditID] = React.useState(null);
+  const [editStatus, setEditStatus] = React.useState("Active");
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -232,9 +160,91 @@ export default function UserManagement() {
         )
       )
     );
+    console.log(sessionStorage.getItem("auth"));
+    console.log(userdata);
     setRows(userdata);
     updatePageData(userdata, page, rowsPerPage);
   }, []);
+
+  const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
+    let data = [];
+    for (let i = _page * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
+      if (rowsdata[i]) data.push(rowsdata[i]);
+    }
+    setPageData(data);
+  };
+
+  const handleDialogAddUser = () => {
+    setDialogAddUser(true);
+  };
+
+  const handleDialogAddUserClose = () => {
+    setDialogAddUser(false);
+  };
+  const handleDialogEditUser = async (id, firstName, lastName, status) => {
+    setDialogEditUser(true);
+    setEditID(id);
+    setEditUserID(firstName);
+    setEditUserName(lastName);
+    setEditStatus(status);
+    if (status === "Inactive" || status === "inactive") {
+      setEditStatus(false);
+    }
+    // -----------------------------------------
+    console.log("id :", id);
+    console.log("firstName :", firstName);
+    console.log("lastName :", lastName);
+    console.log("status :", status);
+
+    const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    console.log("databyid :", databyid);
+  };
+
+  const handleDialogEditUserClose = () => {
+    setDialogEditUser(false);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    updatePageData(rows, newPage, rowsPerPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(event.target.value);
+    setPage(0);
+    updatePageData(rows, 0, event.target.value);
+  };
+
+  const handleInsertUser = async (firstName, lastName, statusRec) => {
+    setEditUserID(null);
+    setEditUserName(null);
+    let insert = await postuser(sessionStorage.getItem("auth"), {
+      firstname: firstName,
+      lastname: lastName,
+      age: 1,
+      status_record: statusRec,
+      status_marriaged: "S",
+    });
+    console.log(insert);
+    const data = await getuser(sessionStorage.getItem("auth"));
+    let userdata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          element.userid,
+          element.firstname + " " + element.lastname,
+          "",
+          element.role,
+          element.status_record
+        )
+      )
+    );
+
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
+    setDialogAddUser(false);
+  };
 
   const handleSelectPosition = (event) => {
     setSelectPosition(event.target.value);
@@ -270,9 +280,46 @@ export default function UserManagement() {
     );
   };
 
-  // const handleToggleStatus = (event) => {
-  //   setToggleStatus(event.target.value);
-  // };
+  const handleSaveEdit = async (id, firstName, lastName, status) => {
+    console.log(
+      "Handle save Edit : id, firstname, userName, status",
+      id,
+      firstName,
+      lastName,
+      status
+    );
+    const userupdate = await updateuser(
+      sessionStorage.getItem("auth"),
+      {
+        id: id,
+        firstname: firstName,
+        lastname: lastName,
+        age: 20,
+        status_record: status,
+        status_marriaged: "S",
+      },
+      id
+    );
+    console.log("userupdate func:", userupdate);
+    const data = await getuser(sessionStorage.getItem("auth"));
+    let userdata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          element.userid,
+          element.firstname + " " + element.lastname,
+          "",
+          element.role,
+          element.status_record
+        )
+      )
+    );
+
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
+    setDialogEditUser(false);
+  };
 
   return (
     <Container maxWidth="xl">
@@ -464,22 +511,23 @@ export default function UserManagement() {
                   <TextField
                     // autoFocus
                     id="outlined-basic"
-                    label="Username"
+                    label="Firstname"
                     variant="outlined"
                     fullWidth
+                    onChange={(e) => setEditUserID(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name"
+                    label="Lastnameame"
                     variant="outlined"
                     fullWidth
                     SelectProps={{
                       native: true,
                     }}
                     // value={" "}
-                    // onChange={" "}
+                    onChange={(e) => setEditUserName(e.target.value)}
                   ></TextField>
                 </Grid>
               </Grid>
@@ -588,7 +636,19 @@ export default function UserManagement() {
                 >
                   <FormControlLabel
                     value="Status"
-                    control={<Switch color="primary" />}
+                    control={
+                      <Switch
+                        defaultChecked={"Active"}
+                        color="primary"
+                        // value={checked}
+                        // onChange={(e) => setEditStatus(e.target.checked)}
+                        onChange={(e) =>
+                          e.target.checked
+                            ? setEditStatus("Active")
+                            : setEditStatus("Inactive")
+                        }
+                      />
+                    }
                     label="Status"
                     labelPlacement="start"
                   />
@@ -605,9 +665,12 @@ export default function UserManagement() {
               Cancel
             </Button>
             <Button
-              onClick={handleInsertUser}
+              // onClick={handleInsertUser}
               variant="contained"
               color="primary"
+              onClick={() =>
+                handleInsertUser(editUserID, editUserName, editStatus)
+              }
             >
               Save
             </Button>
@@ -631,17 +694,18 @@ export default function UserManagement() {
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                   <TextField
                     // autoFocus
-                    id="outlined-basic"
-                    value={editUserID}
                     label="Username"
                     variant="outlined"
+                    id="outlined-basic"
+                    defaultValue={editUserID}
+                    // value={" "}
+                    onChange={(e) => setEditUserID(e.target.value)}
                     fullWidth
                   />
                 </Grid>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                   <TextField
                     id="outlined-basic"
-                    value={editUserName}
                     label="Name"
                     variant="outlined"
                     fullWidth
@@ -649,7 +713,8 @@ export default function UserManagement() {
                       native: true,
                     }}
                     // value={" "}
-                    // onChange={" "}
+                    defaultValue={editUserName}
+                    onChange={(e) => setEditUserName(e.target.value)}
                   ></TextField>
                 </Grid>
               </Grid>
@@ -743,6 +808,7 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
+
                     // value={" "}
                     // onChange={" "}
                   ></TextField>
@@ -757,10 +823,22 @@ export default function UserManagement() {
                   style={{ alignContent: "center", padding: 20 }}
                 >
                   <FormControlLabel
-                    value="Status"
-                    control={<Switch checked={editStatus} color="primary" />}
                     label="Status"
                     labelPlacement="start"
+                    value="Status"
+                    control={
+                      <Switch
+                        defaultChecked={editStatus}
+                        color="primary"
+                        // value={checked}
+                        // onChange={(e) => setEditStatus(e.target.checked)}
+                        onChange={(e) =>
+                          e.target.checked
+                            ? setEditStatus("Active")
+                            : setEditStatus("Inactive")
+                        }
+                      />
+                    }
                   />
                 </Grid>
               </Grid>
@@ -775,7 +853,9 @@ export default function UserManagement() {
               Cancel
             </Button>
             <Button
-              onClick={handleDialogEditUserClose}
+              onClick={() =>
+                handleSaveEdit(editID, editUserID, editUserName, editStatus)
+              }
               variant="contained"
               color="primary"
             >

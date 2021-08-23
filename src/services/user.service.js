@@ -9,19 +9,26 @@ module.exports = {
       body: JSON.stringify(req),
     }).then(async (res) => res.json());
   },
+
   getuser: async function (accessToken) {
-    return (
-      fetch("http://localhost:8082/user-management/users", {
-        method: "GET",
-        headers: {
-          Authorization: accessToken,
-          "Content-Type": "application/json",
-        },
-      })
-        // .then(data => data.json())
-        .then((data) => data.json())
-    );
+    return fetch("http://localhost:8082/user-management/users", {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then((data) => data.json());
   },
+  getuserbyid: async function (accessToken, id) {
+    return fetch(`http://localhost:8082/user-management/users/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
+
   updateuser: async function (accessToken, req, id) {
     return fetch(`http://localhost:8082/user-management/users/${id}`, {
       method: "PUT",
