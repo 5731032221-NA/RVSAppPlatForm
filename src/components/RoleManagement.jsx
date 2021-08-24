@@ -99,7 +99,7 @@ export default function RoleManagement() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   React.useEffect(async () => {
-    const data = await user(sessionStorage.getItem("auth"));
+    let data = await user(sessionStorage.getItem("auth"));
     let userdata = [];
     let i = 0;
     console.log("aaa", data);

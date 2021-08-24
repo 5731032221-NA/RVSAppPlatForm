@@ -23,6 +23,7 @@ import {
   Link,
   TextField,
   Chip,
+  Divider,
 } from "@material-ui/core";
 
 import IconButton from "@material-ui/core/IconButton";
@@ -39,8 +40,17 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import {getuser,postuser} from "../services/user.service";
+import { getuser, postuser } from "../services/user.service";
 import TablePagination from "@material-ui/core/TablePagination";
+
+import Checkbox from "@material-ui/core/Checkbox";
+import TreeItem from "@material-ui/lab/TreeItem";
+import TreeView from "@material-ui/lab/TreeView";
+import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import user from "../services/user.service";
+
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
   return {
@@ -129,8 +139,11 @@ export default function UserManagement() {
   const [dialogEditUser, setDialogEditUser] = React.useState(false);
   const [selectPosition, setSelectPosition] = React.useState(null);
   const [selectProperty, setSelectProperty] = React.useState(null);
+  const [permissionDialog, setPermissionDialog] = React.useState(false);
   const [chipRolesDialog, setChipRolesDialog] = React.useState([]);
   const [pageData, setPageData] = React.useState([]);
+
+
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
     let data = [];
@@ -155,6 +168,14 @@ export default function UserManagement() {
     setDialogEditUser(false);
   };
 
+  const handlePermission = () => {
+    setPermissionDialog(true);
+  };
+
+  const handlePermissionClose = () => {
+    setPermissionDialog(false);
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
     updatePageData(rows, newPage, rowsPerPage);
@@ -167,14 +188,14 @@ export default function UserManagement() {
   };
 
   const handleInsertUser = async () => {
-    let insert = await postuser(sessionStorage.getItem("auth"),{
-      "firstname":"4name",
-      "lastname":"4last",
-      "age":1,
-      "status_record":"Active",
-      "status_marriaged":""
-      });
-      // console.log(insert)
+    let insert = await postuser(sessionStorage.getItem("auth"), {
+      "firstname": "4name",
+      "lastname": "4last",
+      "age": 1,
+      "status_record": "Active",
+      "status_marriaged": ""
+    });
+    // console.log(insert)
     const data = await getuser(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach((element) =>
@@ -252,6 +273,150 @@ export default function UserManagement() {
       chips.filter((chips) => chips.key !== chipToDelete.key)
     );
   };
+
+  const renderTreeSubMenu = (nodes) => (
+    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+      {Array.isArray(nodes.children)
+        ? nodes.children.map((node) => renderTreeSubMenu(node))
+        : null}
+    </TreeItem>
+  );
+
+
+  const [data, setData] = React.useState([
+    {
+      id: "1.1",
+      name: "Dashboard",
+    },
+    {
+      id: "1.2",
+      name: "Reservartion",
+    },
+    {
+      id: "1.3",
+      name: "Front Desk",
+      children: [
+        {
+          id: "1.3.1",
+          name: "Walk-in",
+        },
+        {
+          id: "1.3.2",
+          name: "Check-in",
+        },
+        {
+          id: "1.3.3",
+          name: "Checkout",
+        },
+        {
+          id: "1.3.4",
+          name: "RoomStatus",
+        },
+      ],
+    },
+  ]);
+
+
+  const renderTree = (nodes) => (
+    <div>
+      <TreeItem
+        key={nodes.id}
+        nodeId={nodes.id}
+        label={
+          <div>
+            <Grid container direction="row" alignItems="center">
+              <Grid item style={{ flexGrow: 1 }}>
+                <Typography
+                  variant="h6"
+                  color="initial"
+                  style={{ paddind: 5, fontSize: 16 }}
+                >
+                  {nodes.name}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      All
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Create
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Read
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Update
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Delete
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+              </Grid>
+            </Grid>
+            <Divider />
+          </div>
+        }
+      >
+        {Array.isArray(nodes.children)
+          ? nodes.children.map((node) => renderTree(node))
+          : null}
+      </TreeItem>
+    </div>
+  );
 
   // const handleToggleStatus = (event) => {
   //   setToggleStatus(event.target.value);
@@ -344,7 +509,7 @@ export default function UserManagement() {
                       <TableCell>{row.position}</TableCell>
                       <TableCell>{row.roles}</TableCell>
                       {`${row.status}` === "Active" ||
-                      `${row.status}` === "active" ? (
+                        `${row.status}` === "active" ? (
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -411,7 +576,7 @@ export default function UserManagement() {
                     rowsPerPage={rowsPerPage}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
-                    // onRowsPerPageChange={handleChangeRowsPerPage}
+                  // onRowsPerPageChange={handleChangeRowsPerPage}
                   />
                 </Grid>
               </Grid>
@@ -451,8 +616,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                  // value={" "}
+                  // onChange={" "}
                   ></TextField>
                 </Grid>
               </Grid>
@@ -546,8 +711,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                  // value={" "}
+                  // onChange={" "}
                   ></TextField>
                 </Grid>
                 <Grid
@@ -619,8 +784,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                  // value={" "}
+                  // onChange={" "}
                   ></TextField>
                 </Grid>
               </Grid>
@@ -714,8 +879,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                  // value={" "}
+                  // onChange={" "}
                   ></TextField>
                 </Grid>
                 <Grid
@@ -736,6 +901,13 @@ export default function UserManagement() {
                 </Grid>
               </Grid>
             </Container>
+            <Button
+            onClick={handlePermission}
+            variant="contained"
+            color="primary"
+          >
+            Permission
+          </Button>
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
             <Button
@@ -755,6 +927,130 @@ export default function UserManagement() {
           </DialogActions>
         </Dialog>
         {/* ---------------------------------------- */}
+        <Dialog
+          fullWidth="true"
+          maxWidth="md"
+          open={permissionDialog}
+          onClose={handlePermissionClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <Grid container>
+            <Grid
+              item
+              sm={3}
+              md={3}
+              lg={3}
+              xl={3}
+              style={{ backgroundColor: "#F5F5F5" }}
+            >
+              <TreeView
+                style={{ padding: 20 }}
+                defaultCollapseIcon={
+                  <RemoveRoundedIcon
+                    style={{
+                      backgroundColor: "#717171",
+                      borderRadius: 2,
+                      color: "white",
+                    }}
+                  />
+                }
+                defaultExpandIcon={
+                  <AddRoundedIcon
+                    style={{
+                      backgroundColor: "#2D62ED",
+                      borderRadius: 2,
+                      color: "white",
+                    }}
+                  />
+                }
+              >
+                {data.map((node) => renderTreeSubMenu(node))}
+              </TreeView>
+            </Grid>
+            <Grid item xs={9} sm={9} md={9} lg={9} xl={9}>
+              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                Edit User Permission
+              </DialogTitle>
+
+              <DialogContent>
+                <Container maxWidth="xl" disableGutters>
+    
+                  <Grid
+                    container
+                    alignItems="center"
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                    style={{ paddingTop: 10 }}
+                  >
+                    <FormControlLabel
+                      value="end"
+                      control={<Checkbox color="primary" />}
+                      label={
+                        <Typography
+                          variant="title1"
+                          color="initial"
+                          style={{ fontSize: 18 }}
+                        >
+                          Select Permission All
+                        </Typography>
+                      }
+                      labelPlacement="end"
+                    />
+                  </Grid>
+                  <Divider style={{ marginTop: 10 }} />
+                  <Container disableGutters>
+                    <TreeView
+                      // className={classes.root}
+                      defaultCollapseIcon={
+                        <RemoveRoundedIcon
+                          style={{
+                            backgroundColor: "#717171",
+                            borderRadius: 2,
+                            color: "white",
+                          }}
+                        />
+                      }
+                      defaultExpandIcon={
+                        <AddRoundedIcon
+                          style={{
+                            backgroundColor: "#2D62ED",
+                            borderRadius: 2,
+                            color: "white",
+                          }}
+                        />
+                      }
+                      // expanded={expanded}
+                      // selected={selected}
+                      // onNodeToggle={handleToggle}
+                      // onNodeSelect={handleSelect}
+                    >
+                      {data.map((node) => renderTree(node))}
+                    </TreeView>
+                  </Container>
+                </Container>
+              </DialogContent>
+              <DialogActions style={{ padding: 20 }}>
+                <Button
+                  onClick={handlePermissionClose}
+                  variant="text"
+                  color="primary"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handlePermissionClose}
+                  variant="contained"
+                  color="primary"
+                >
+                  Save
+                </Button>
+              </DialogActions>
+            </Grid>
+          </Grid>
+        </Dialog>
       </React.Fragment>
     </Container>
   );
