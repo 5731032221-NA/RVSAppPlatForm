@@ -46,7 +46,9 @@ import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import user from "../services/user.service";
+import {
+  getuser
+} from "../services/user.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
 // Generate Order Data
@@ -99,7 +101,7 @@ export default function RoleManagement() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   React.useEffect(async () => {
-    let data = await user(sessionStorage.getItem("auth"));
+    let data = await getuser(sessionStorage.getItem("auth"));
     let userdata = [];
     let i = 0;
     console.log("aaa", data);

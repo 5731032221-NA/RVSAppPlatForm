@@ -44,7 +44,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import TreeItem from "@material-ui/lab/TreeItem";
 import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
-import user from "../services/user.service"
+import {
+  getuser
+} from "../services/user.service";
 // Generate Order Data
 function createData(id, userID, userName, position, roles, status) {
   return {
@@ -91,7 +93,7 @@ export default function RoleManagement() {
   const [rows, setRows] = useState([]);
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
-    const data = await user(sessionStorage.getItem("auth"));
+    const data = await getuser(sessionStorage.getItem("auth"));
     let userdata = [];
     let i = 0;
     console.log("aaa",data)
