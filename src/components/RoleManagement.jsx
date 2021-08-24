@@ -46,7 +46,12 @@ import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import user from "../services/user.service";
+import {
+  getuser,
+  postuser,
+  updateuser,
+  getuserbyid,
+} from "../services/user.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
 // Generate Order Data
@@ -92,16 +97,18 @@ export default function RoleManagement() {
   const classes = useStyles();
   const [dialogAddRole, setDialogAddRole] = React.useState(false);
   const [dialogEditRole, setDialogEditRole] = React.useState(false);
+  const [statusRec, setStatusRec] = React.useState(null);
   const [selectUser, setSelectUser] = React.useState(null);
   const [rows, setRows] = useState([]);
-  const { store } = useContext(ReactReduxContext);
+
   const [pageData, setPageData] = React.useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
-    const data = await user(sessionStorage.getItem("auth"));
+    const data = await getuser(sessionStorage.getItem("auth"));
     let userdata = [];
-    let i = 0;
+    // let i = 0;
     console.log("aaa", data);
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
@@ -115,10 +122,12 @@ export default function RoleManagement() {
         )
       )
     );
-    console.log("a", userdata);
+    console.log(sessionStorage.getItem("auth"));
+    console.log("userdata", userdata);
     setRows(userdata);
     updatePageData(userdata, page, rowsPerPage);
   }, []);
+
   const handleDialogAddRole = () => {
     setDialogAddRole(true);
   };
@@ -126,7 +135,13 @@ export default function RoleManagement() {
   const handleDialogAddRoleClose = () => {
     setDialogAddRole(false);
   };
-  const handleDialogEditRole = () => {
+  const handleDialogEditRole = async (idForEdit) => {
+    const databyid = await getuserbyid(
+      sessionStorage.getItem("auth"),
+      idForEdit
+    );
+    setStatusRec(databyid.content[databyid.content.length - 1].status_record);
+    console.log("idForEdit", idForEdit);
     setDialogEditRole(true);
   };
 
@@ -630,7 +645,9 @@ export default function RoleManagement() {
                             </TableCell>
                           )}
                           <TableCell align="center">
-                            <IconButton onClick={handleDialogEditRole}>
+                            <IconButton
+                              onClick={() => handleDialogEditRole(row.id)}
+                            >
                               <EditOutlinedIcon />
                             </IconButton>
                             <IconButton onClick={" "}>
@@ -787,7 +804,17 @@ export default function RoleManagement() {
                     <FormControlLabel
                       style={{ paddingTop: 15 }}
                       value="Status"
-                      control={<Switch color="primary" />}
+                      control={
+                        <Switch
+                          defaultChecked={true}
+                          color="primary"
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setStatusRec("Active")
+                              : setStatusRec("Inactive")
+                          }
+                        />
+                      }
                       label="Status"
                       labelPlacement="start"
                     />
@@ -870,7 +897,7 @@ export default function RoleManagement() {
           </Grid>
         </Dialog>
         {/* ---------------------------------------- */}
-        {/* ==================== Dialog New Role========================= */}
+        {/* ==================== Dialog Edit Role========================= */}
         <Dialog
           fullWidth="true"
           maxWidth="md"
@@ -978,7 +1005,35 @@ export default function RoleManagement() {
                     <FormControlLabel
                       style={{ paddingTop: 15 }}
                       value="Status"
-                      control={<Switch color="primary" />}
+                      control={
+                        statusRec === "Active" || statusRec === "active" ? (
+                          <Switch
+                            defaultChecked={true}
+                            color="primary"
+                            // value={checked}
+                            // onChange={(e) => setEditStatus(e.target.checked)}
+
+                            onChange={(e) =>
+                              e.target.checked
+                                ? setStatusRec("Active")
+                                : setStatusRec("Inactive")
+                            }
+                          />
+                        ) : (
+                          <Switch
+                            defaultChecked={false}
+                            color="primary"
+                            // value={checked}
+                            // onChange={(e) => setEditStatus(e.target.checked)}
+
+                            onChange={(e) =>
+                              e.target.checked
+                                ? setStatusRec("Active")
+                                : setStatusRec("Inactive")
+                            }
+                          />
+                        )
+                      }
                       label="Status"
                       labelPlacement="start"
                     />
@@ -1043,14 +1098,14 @@ export default function RoleManagement() {
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
-                  onClick={handleDialogAddRoleClose}
+                  onClick={handleDialogEditRoleClose}
                   variant="text"
                   color="primary"
                 >
                   Cancel
                 </Button>
                 <Button
-                  onClick={handleDialogAddRoleClose}
+                  onClick={handleDialogEditRoleClose}
                   variant="contained"
                   color="primary"
                 >
