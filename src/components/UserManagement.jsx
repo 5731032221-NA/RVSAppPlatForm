@@ -139,6 +139,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 export default function UserManagement() {
   const classes = useStyles();
   const [dialogAddUser, setDialogAddUser] = React.useState(false);
@@ -210,8 +212,8 @@ export default function UserManagement() {
     console.log("lastName :", lastName);
     console.log("status :", status);
 
-    const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    console.log("databyid :", databyid);
+    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    // console.log("databyid :", databyid);
   };
 
   const handleDialogEditUserClose = () => {
@@ -219,7 +221,7 @@ export default function UserManagement() {
   };
 
   const handlePermission = () => {
-    setPermissionDialog(true);
+    setPermissionDialog(!permissionDialog);
   };
 
   const handlePermissionClose = () => {
@@ -856,203 +858,9 @@ export default function UserManagement() {
           onClose={handleDialogEditUserClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-            Edit User
-          </DialogTitle>
-          <DialogContent>
-            <Container maxWidth="xl" disableGutters>
-              <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    // autoFocus
-                    label="Username"
-                    variant="outlined"
-                    id="outlined-basic"
-                    defaultValue={editUserID}
-                    // value={" "}
-                    onChange={(e) => setEditUserID(e.target.value)}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    id="outlined-basic"
-                    label="Name"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
 
-                    // value={" "}
-                    defaultValue={editUserName}
-                    onChange={(e) => setEditUserName(e.target.value)}
-
-                  ></TextField>
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    select
-                    id="outlined-basic"
-                    label="Position"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-                    value={selectPosition}
-                    onChange={handleSelectPosition}
-                  >
-                    {position.map((option) => (
-                      <option key={option.key} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    // autoFocus
-                    select
-                    id="outlined-basic"
-                    label="Property"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-                    value={selectProperty}
-                    onChange={handleSelectProperty}
-                  >
-                    {property.map((option) => (
-                      <option key={option.key} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                </Grid>
-              </Grid>
-              <Grid
-                container
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
-                style={{ paddingTop: 10 }}
-              >
-                <TextField
-                  fullWidth
-                  // autoFocus
-                  variant="outlined"
-                  selectSelectProps={{
-                    native: true,
-                  }}
-                  label="Roles"
-                  select
-                  value={RoleValues}
-                  onChange={(event) => handleSelectRoles(event)}
-                >
-                  {roles.map((option) => (
-                    <MenuItem key={option.key} value={option.label}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                {chipRolesDialog.map((data, index) => {
-                  return (
-                    <Chip
-                      style={{ marginTop: 10 }}
-                      key={data.key + index}
-                      label={data.label}
-                      onDelete={handleDeleteRoles(data)}
-                    />
-                  );
-                })}
-              </Grid>
-              <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    id="outlined-basic"
-                    label="username@mail.com"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-
-
-                    // value={" "}
-                    // onChange={" "}
-                  ></TextField>
-                </Grid>
-                <Grid
-                  container
-                  xs={6}
-                  sm={6}
-                  md={6}
-                  lg={6}
-                  xl={6}
-                  style={{ alignContent: "center", padding: 20 }}
-                >
-                  <FormControlLabel
-                    label="Status"
-                    labelPlacement="start"
-                    value="Status"
-                    control={
-                      <Switch
-                        defaultChecked={editStatus}
-                        color="primary"
-                        // value={checked}
-                        // onChange={(e) => setEditStatus(e.target.checked)}
-                        onChange={(e) =>
-                          e.target.checked
-                            ? setEditStatus("Active")
-                            : setEditStatus("Inactive")
-                        }
-                      />
-                    }
-                  />
-                </Grid>
-              </Grid>
-            </Container>
-            <Button
-            onClick={handlePermission}
-            variant="contained"
-            color="primary"
-          >
-            Permission
-          </Button>
-          </DialogContent>
-          <DialogActions style={{ padding: 20 }}>
-            <Button
-              onClick={handleDialogEditUserClose}
-              variant="text"
-              color="primary"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() =>
-                handleSaveEdit(editID, editUserID, editUserName, editStatus)
-              }
-              variant="contained"
-              color="primary"
-            >
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
-        {/* ---------------------------------------- */}
-        <Dialog
-          fullWidth="true"
-          maxWidth="md"
-          open={permissionDialog}
-          onClose={handlePermissionClose}
-          aria-labelledby="form-dialog-title"
-        >
           <Grid container>
+          {permissionDialog ?
             <Grid
               item
               sm={3}
@@ -1085,81 +893,249 @@ export default function UserManagement() {
                 {data.map((node) => renderTreeSubMenu(node))}
               </TreeView>
             </Grid>
+            : null}
             <Grid item xs={9} sm={9} md={9} lg={9} xl={9}>
               <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                Edit User Permission
+                Edit User
               </DialogTitle>
-
               <DialogContent>
                 <Container maxWidth="xl" disableGutters>
-    
+                  <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        // autoFocus
+                        label="Username"
+                        variant="outlined"
+                        id="outlined-basic"
+                        defaultValue={editUserID}
+                        // value={" "}
+                        onChange={(e) => setEditUserID(e.target.value)}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        id="outlined-basic"
+                        label="Name"
+                        variant="outlined"
+                        fullWidth
+                        SelectProps={{
+                          native: true,
+                        }}
+
+                        // value={" "}
+                        defaultValue={editUserName}
+                        onChange={(e) => setEditUserName(e.target.value)}
+
+                      ></TextField>
+                    </Grid>
+                  </Grid>
+
+                  <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        select
+                        id="outlined-basic"
+                        label="Position"
+                        variant="outlined"
+                        fullWidth
+                        SelectProps={{
+                          native: true,
+                        }}
+                        value={selectPosition}
+                        onChange={handleSelectPosition}
+                      >
+                        {position.map((option) => (
+                          <option key={option.key} value={option.label}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        // autoFocus
+                        select
+                        id="outlined-basic"
+                        label="Property"
+                        variant="outlined"
+                        fullWidth
+                        SelectProps={{
+                          native: true,
+                        }}
+                        value={selectProperty}
+                        onChange={handleSelectProperty}
+                      >
+                        {property.map((option) => (
+                          <option key={option.key} value={option.label}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
+                    </Grid>
+                  </Grid>
                   <Grid
                     container
+                    direction="row"
+                    justifyContent="flex-start"
                     alignItems="center"
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
                     style={{ paddingTop: 10 }}
                   >
-                    <FormControlLabel
-                      value="end"
-                      control={<Checkbox color="primary" />}
-                      label={
-                        <Typography
-                          variant="title1"
-                          color="initial"
-                          style={{ fontSize: 18 }}
-                        >
-                          Select Permission All
-                        </Typography>
-                      }
-                      labelPlacement="end"
-                    />
-                  </Grid>
-                  <Divider style={{ marginTop: 10 }} />
-                  <Container disableGutters>
-                    <TreeView
-                      // className={classes.root}
-                      defaultCollapseIcon={
-                        <RemoveRoundedIcon
-                          style={{
-                            backgroundColor: "#717171",
-                            borderRadius: 2,
-                            color: "white",
-                          }}
-                        />
-                      }
-                      defaultExpandIcon={
-                        <AddRoundedIcon
-                          style={{
-                            backgroundColor: "#2D62ED",
-                            borderRadius: 2,
-                            color: "white",
-                          }}
-                        />
-                      }
-                      // expanded={expanded}
-                      // selected={selected}
-                      // onNodeToggle={handleToggle}
-                      // onNodeSelect={handleSelect}
+                    <TextField
+                      fullWidth
+                      // autoFocus
+                      variant="outlined"
+                      selectSelectProps={{
+                        native: true,
+                      }}
+                      label="Roles"
+                      select
+                      value={RoleValues}
+                      onChange={(event) => handleSelectRoles(event)}
                     >
-                      {data.map((node) => renderTree(node))}
-                    </TreeView>
-                  </Container>
+                      {roles.map((option) => (
+                        <MenuItem key={option.key} value={option.label}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    {chipRolesDialog.map((data, index) => {
+                      return (
+                        <Chip
+                          style={{ marginTop: 10 }}
+                          key={data.key + index}
+                          label={data.label}
+                          onDelete={handleDeleteRoles(data)}
+                        />
+                      );
+                    })}
+                  </Grid>
+                  <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        id="outlined-basic"
+                        label="username@mail.com"
+                        variant="outlined"
+                        fullWidth
+                        SelectProps={{
+                          native: true,
+                        }}
+
+
+                      // value={" "}
+                      // onChange={" "}
+                      ></TextField>
+                    </Grid>
+                    <Grid
+                      container
+                      xs={6}
+                      sm={6}
+                      md={6}
+                      lg={6}
+                      xl={6}
+                      style={{ alignContent: "center", padding: 20 }}
+                    >
+                      <FormControlLabel
+                        label="Status"
+                        labelPlacement="start"
+                        value="Status"
+                        control={
+                          <Switch
+                            defaultChecked={editStatus}
+                            color="primary"
+                            // value={checked}
+                            // onChange={(e) => setEditStatus(e.target.checked)}
+                            onChange={(e) =>
+                              e.target.checked
+                                ? setEditStatus("Active")
+                                : setEditStatus("Inactive")
+                            }
+                          />
+                        }
+                      />
+                    </Grid>
+                  </Grid>
                 </Container>
+                <Button
+                  onClick={handlePermission}
+                  variant="contained"
+                  color="primary"
+                >
+                  Permission
+                </Button>
+
+                {permissionDialog ?
+                <Grid>
+                <Grid
+                  container
+                  alignItems="center"
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  style={{ paddingTop: 10 }}
+                >
+                  <FormControlLabel
+                    value="end"
+                    control={<Checkbox color="primary" />}
+                    label={
+                      <Typography
+                        variant="title1"
+                        color="initial"
+                        style={{ fontSize: 18 }}
+                      >
+                        Select Permission All
+                      </Typography>
+                    }
+                    labelPlacement="end"
+                  />
+                </Grid>
+                <Divider style={{ marginTop: 10 }} />
+                <Container disableGutters>
+                  <TreeView
+                    // className={classes.root}
+                    defaultCollapseIcon={
+                      <RemoveRoundedIcon
+                        style={{
+                          backgroundColor: "#717171",
+                          borderRadius: 2,
+                          color: "white",
+                        }}
+                      />
+                    }
+                    defaultExpandIcon={
+                      <AddRoundedIcon
+                        style={{
+                          backgroundColor: "#2D62ED",
+                          borderRadius: 2,
+                          color: "white",
+                        }}
+                      />
+                    }
+                  // expanded={expanded}
+                  // selected={selected}
+                  // onNodeToggle={handleToggle}
+                  // onNodeSelect={handleSelect}
+                  >
+                    {data.map((node) => renderTree(node))}
+                  </TreeView>
+                </Container>
+                </Grid>
+            : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
-                  onClick={handlePermissionClose}
+                  onClick={handleDialogEditUserClose}
                   variant="text"
                   color="primary"
                 >
                   Cancel
                 </Button>
                 <Button
-                  onClick={handlePermissionClose}
+                  onClick={() =>
+                    handleSaveEdit(editID, editUserID, editUserName, editStatus)
+                  }
                   variant="contained"
                   color="primary"
                 >

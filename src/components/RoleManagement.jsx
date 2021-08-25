@@ -23,6 +23,7 @@ import {
   Link,
   TextField,
   Divider,
+  Chip,
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
@@ -47,7 +48,8 @@ import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import {
-  getuser
+  getuser,
+  listrole
 } from "../services/user.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
@@ -100,20 +102,22 @@ export default function RoleManagement() {
   const [pageData, setPageData] = React.useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [chipAttributeDialog, setChipAttributeDialog] = React.useState([]);
   React.useEffect(async () => {
-    let data = await getuser(sessionStorage.getItem("auth"));
+    let data = await listrole(sessionStorage.getItem("auth"));
+    console.log("listrole", listrole)
     let userdata = [];
     let i = 0;
     console.log("aaa", data);
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
-          element.id,
-          "",
-          element.role,
-          "",
-          element.id,
-          element.status_record
+          element.rolecode,
+          element.rolecode,
+          element.rolename,
+          element.description,
+          0,
+          element.status
         )
       )
     );
@@ -158,34 +162,220 @@ export default function RoleManagement() {
     updatePageData(rows, 0, event.target.value);
   };
 
+  const editing_create = async (array, label) => {
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      console.log(obj.id, label)
+      if (obj.id === label) {
+        obj.edited_create = !obj.edited_create;
+        obj.create = !obj.create;
+      }
+      else if (obj.children) {
+        editing_create(obj.children, label);
+      }
+    }
+  }
+
+  const handleCheckPermision_create = async (nodes) => {
+    let _data = data;
+    console.log("nid", nodes.id);
+    await (editing_create(_data, nodes.id));
+    setData(_data)
+    setData(prevState => [...prevState])
+  };
+
+  const editing_read = async (array, label) => {
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      console.log(obj.id, label)
+      if (obj.id === label) {
+        obj.edited_read = !obj.edited_read;
+        obj.read = !obj.read;
+      }
+      else if (obj.children) {
+        editing_read(obj.children, label);
+      }
+    }
+  }
+
+  const handleCheckPermision_read = async (nodes) => {
+    let _data = data;
+    console.log("nid", nodes.id);
+    await (editing_read(_data, nodes.id));
+    setData(_data)
+    setData(prevState => [...prevState])
+  };
+
+  const editing_update = async (array, label) => {
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      console.log(obj.id, label)
+      if (obj.id === label) {
+        obj.edited_update = !obj.edited_update;
+        obj.update = !obj.update;
+      }
+      else if (obj.children) {
+        editing_update(obj.children, label);
+      }
+    }
+  }
+
+  const handleCheckPermision_update = async (nodes) => {
+    let _data = data;
+    console.log("nid", nodes.id);
+    await (editing_update(_data, nodes.id));
+    setData(_data)
+    setData(prevState => [...prevState])
+  };
+
+  const editing_delete = async (array, label) => {
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      console.log(obj.id, label)
+      if (obj.id === label) {
+        obj.edited_delete = !obj.edited_delete;
+        obj.delete = !obj.delete;
+      }
+      else if (obj.children) {
+        editing_delete(obj.children, label);
+      }
+    }
+  }
+
+  const handleCheckPermision_delete = async (nodes) => {
+    let _data = data;
+    console.log("nid", nodes.id);
+    await (editing_delete(_data, nodes.id));
+    setData(_data)
+    setData(prevState => [...prevState])
+  };
+
+  const editing_all = async (array, label,checked) => {
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      console.log(obj.id, label)
+      if (obj.id === label) {
+        if (obj.delete == checked) {
+          obj.edited_delete = !obj.edited_delete;
+          obj.delete = !obj.delete;
+        }
+        if (obj.update == checked) {
+          obj.edited_update = !obj.edited_update;
+          obj.update = !obj.update;
+        }
+        if (obj.read == checked) {
+          obj.edited_read = !obj.edited_read;
+          obj.read = !obj.read;
+        }
+        if (obj.create == checked) {
+          obj.edited_create = !obj.edited_create;
+          obj.create = !obj.create;
+        }
+      }
+      else if (obj.children) {
+        editing_all(obj.children, label,checked);
+      }
+    }
+  }
+
+  const handleCheckPermision_all = async (nodes,event) => {
+    let _data = data;
+    console.log("nid", nodes.id,event.target.checked);
+    await (editing_all(_data, nodes.id,!(event.target.checked)));
+    setData(_data)
+    setData(prevState => [...prevState])
+  };
+
   const [data, setData] = React.useState([
     {
       id: "1.1",
       name: "Dashboard",
+      code: "DB",
+      permision: true,
+      create: false,
+      read: true,
+      update: false,
+      delete: false,
+      edited_create: false,
+      edited_read: false,
+      edited_update: false,
+      edited_delete: false,
     },
     {
       id: "1.2",
       name: "Reservartion",
+      code: "RS",
+      permision: true,
+      create: false,
+      read: true,
+      update: false,
+      delete: false,
+      edited_create: false,
+      edited_read: false,
+      edited_update: false,
+      edited_delete: false,
     },
     {
       id: "1.3",
       name: "Front Desk",
+      code: "FD",
+      permision: false,
       children: [
         {
           id: "1.3.1",
           name: "Walk-in",
+          code: "FD-WN",
+          permision: true,
+          create: true,
+          read: true,
+          update: true,
+          delete: true,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
         },
         {
           id: "1.3.2",
           name: "Check-in",
+          code: "FD-CI",
+          permision: true,
+          create: true,
+          read: true,
+          update: true,
+          delete: true,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
         },
         {
           id: "1.3.3",
           name: "Checkout",
+          code: "FD-CO",
+          permision: true,
+          create: true,
+          read: true,
+          update: true,
+          delete: true,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
         },
         {
           id: "1.3.4",
           name: "RoomStatus",
+          code: "FD-RS",
+          permision: true,
+          create: true,
+          read: true,
+          update: true,
+          delete: true,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
         },
       ],
     },
@@ -341,6 +531,46 @@ export default function RoleManagement() {
     },
   ];
 
+
+  const attribute = [
+    {
+      key: "1",
+      label: "Novotel Pattaya",
+    },
+    {
+      key: "2",
+      label: "Novotel Rayong",
+    },
+  ];
+  const userValues = "";
+  const handleSelectAttribute = (event) => {
+    const temp = new Set();
+
+    if (chipAttributeDialog.length) {
+      for (var i in chipAttributeDialog) {
+        temp.add(chipAttributeDialog[i].label);
+      }
+      if (temp.has(event.target.value)) {
+        // console.log("had value");
+      } else {
+        setChipAttributeDialog([
+          ...chipAttributeDialog,
+          { key: event.target.value, label: event.target.value },
+        ]);
+      }
+    } else {
+      setChipAttributeDialog([
+        ...chipAttributeDialog,
+        { key: event.target.value, label: event.target.value },
+      ]);
+    }
+  };
+  const handleDeleteAttribute = (chipToDelete) => () => {
+    setChipAttributeDialog((chips) =>
+      chips.filter((chips) => chips.key !== chipToDelete.key)
+    );
+  };
+
   const renderTree = (nodes) => (
     <div>
       <TreeItem
@@ -348,90 +578,182 @@ export default function RoleManagement() {
         nodeId={nodes.id}
         label={
           <div>
-            <Grid container direction="row" alignItems="center">
-              <Grid item style={{ flexGrow: 1 }}>
-                <Typography
-                  variant="h6"
-                  color="initial"
-                  style={{ paddind: 5, fontSize: 16 }}
-                >
-                  {nodes.name}
-                </Typography>
-              </Grid>
-              <Grid item>
-                <FormControlLabel
-                  value="end"
-                  control={<Checkbox color="primary" />}
-                  label={
+            {nodes.permision ?
+              <div>
+                <Grid container direction="row" alignItems="center">
+                  <Grid item style={{ flexGrow: 1 }}>
                     <Typography
-                      variant="title1"
+                      variant="h6"
                       color="initial"
-                      style={{ fontSize: 12 }}
+                      style={{ paddind: 5, fontSize: 16 }}
                     >
-                      All
+                      {nodes.name}
                     </Typography>
-                  }
-                  labelPlacement="end"
-                />
-                <FormControlLabel
-                  value="end"
-                  control={<Checkbox color="primary" />}
-                  label={
+                  </Grid>
+                  <Grid item>
+                    <FormControlLabel
+                      value="end"
+                      control={<Checkbox color="primary" checked={nodes.create && nodes.read && nodes.update && nodes.delete} onClick={(event) => handleCheckPermision_all(nodes,event)} />}
+                      label={
+                        <Typography
+                          variant="title1"
+                          color="initial"
+                          style={{ fontSize: 12 }}
+                        >
+                          All
+                        </Typography>
+                      }
+                      labelPlacement="end"
+                    />
+                    {
+                      nodes.edited_create ?
+                        <FormControlLabel
+                          value="end"
+                          control={<Checkbox color="primary" checked={nodes.create} onChange={() => handleCheckPermision_create(nodes)} />}
+                          label={
+                            <Typography
+                              variant="title1"
+                              color="initial"
+                              style={{ fontSize: 12, color: 'green' }}
+                            >
+                              Create
+                            </Typography>
+                          }
+                          labelPlacement="end"
+                        />
+                        :
+                        <FormControlLabel
+                          value="end"
+                          control={<Checkbox color="primary" checked={nodes.create} onChange={() => handleCheckPermision_create(nodes)} />}
+                          label={
+                            <Typography
+                              variant="title1"
+                              color="initial"
+                              style={{ fontSize: 12 }}
+                            >
+                              Create
+                            </Typography>
+                          }
+                          labelPlacement="end"
+                        />
+                    }
+                    {
+                      nodes.edited_read ?
+                        <FormControlLabel
+                          value="end"
+                          control={<Checkbox color="primary" checked={nodes.read} onChange={() => handleCheckPermision_read(nodes)} />}
+                          label={
+                            <Typography
+                              variant="title1"
+                              color="initial"
+                              style={{ fontSize: 12, color: 'green' }}
+                            >
+                              Read
+                            </Typography>
+                          }
+                          labelPlacement="end"
+                        />
+                        :
+                        <FormControlLabel
+                          value="end"
+                          control={<Checkbox color="primary" checked={nodes.read} onChange={() => handleCheckPermision_read(nodes)} />}
+                          label={
+                            <Typography
+                              variant="title1"
+                              color="initial"
+                              style={{ fontSize: 12 }}
+                            >
+                              Read
+                            </Typography>
+                          }
+                          labelPlacement="end"
+                        />
+                    }
+                    {
+                      nodes.edited_update ?
+                        <FormControlLabel
+                          value="end"
+                          control={<Checkbox color="primary" checked={nodes.update} onChange={() => handleCheckPermision_update(nodes)} />}
+                          label={
+                            <Typography
+                              variant="title1"
+                              color="initial"
+                              style={{ fontSize: 12, color: 'green' }}
+                            >
+                              Update
+                            </Typography>
+                          }
+                          labelPlacement="end"
+                        />
+                        :
+                        <FormControlLabel
+                          value="end"
+                          control={<Checkbox color="primary" checked={nodes.update} onChange={() => handleCheckPermision_update(nodes)} />}
+                          label={
+                            <Typography
+                              variant="title1"
+                              color="initial"
+                              style={{ fontSize: 12 }}
+                            >
+                              Update
+                            </Typography>
+                          }
+                          labelPlacement="end"
+                        />
+                    }
+                    {
+                      nodes.edited_delete ?
+                        <FormControlLabel
+                          value="end"
+                          control={<Checkbox color="primary" checked={nodes.delete} onChange={() => handleCheckPermision_delete(nodes)} />}
+                          label={
+                            <Typography
+                              variant="title1"
+                              color="initial"
+                              style={{ fontSize: 12, color: 'green' }}
+                            >
+                              Delete
+                            </Typography>
+                          }
+                          labelPlacement="end"
+                        />
+                        :
+                        <FormControlLabel
+                          value="end"
+                          control={<Checkbox color="primary" checked={nodes.delete} onChange={() => handleCheckPermision_delete(nodes)} />}
+                          label={
+                            <Typography
+                              variant="title1"
+                              color="initial"
+                              style={{ fontSize: 12 }}
+                            >
+                              Delete
+                            </Typography>
+                          }
+                          labelPlacement="end"
+                        />
+                    }
+                  </Grid>
+                </Grid>
+                <Divider />
+              </div>
+              :
+
+              <div>
+                <Grid container direction="row" alignItems="center">
+                  <Grid item style={{ flexGrow: 1 }}>
                     <Typography
-                      variant="title1"
+                      variant="h6"
                       color="initial"
-                      style={{ fontSize: 12 }}
+                      style={{ paddind: 5, fontSize: 16 }}
                     >
-                      Create
+                      {nodes.name}
                     </Typography>
-                  }
-                  labelPlacement="end"
-                />
-                <FormControlLabel
-                  value="end"
-                  control={<Checkbox color="primary" />}
-                  label={
-                    <Typography
-                      variant="title1"
-                      color="initial"
-                      style={{ fontSize: 12 }}
-                    >
-                      Read
-                    </Typography>
-                  }
-                  labelPlacement="end"
-                />
-                <FormControlLabel
-                  value="end"
-                  control={<Checkbox color="primary" />}
-                  label={
-                    <Typography
-                      variant="title1"
-                      color="initial"
-                      style={{ fontSize: 12 }}
-                    >
-                      Update
-                    </Typography>
-                  }
-                  labelPlacement="end"
-                />
-                <FormControlLabel
-                  value="end"
-                  control={<Checkbox color="primary" />}
-                  label={
-                    <Typography
-                      variant="title1"
-                      color="initial"
-                      style={{ fontSize: 12 }}
-                    >
-                      Delete
-                    </Typography>
-                  }
-                  labelPlacement="end"
-                />
-              </Grid>
-            </Grid>
-            <Divider />
+                  </Grid>
+
+                </Grid>
+                <Divider />
+              </div>}
           </div>
         }
       >
@@ -544,7 +866,7 @@ export default function RoleManagement() {
                   Role Management
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
+              {/* <Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
                 <TextField
                   select
                   // id="outlined-basic"
@@ -563,14 +885,14 @@ export default function RoleManagement() {
                     </option>
                   ))}
                 </TextField>
-              </Grid>
+              </Grid> */}
             </Grid>
             <Divider />
           </Paper>
         </Grid>
 
         <Grid container>
-          <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
+          {/* <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
             <Paper square style={{ minHeight: "100%", padding: 20 }}>
               <TreeView
                 defaultCollapseIcon={<ArrowDropDownIcon />}
@@ -579,7 +901,7 @@ export default function RoleManagement() {
                 {dataMenu.map((node) => renderTreeSubMenu(node))}
               </TreeView>
             </Paper>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} sm={12} md={10} lg={10} xl={10}>
             <Paper square style={{ minHeight: "100%" }}>
               <Grid container style={{ padding: 30 }}>
@@ -604,7 +926,7 @@ export default function RoleManagement() {
                           <TableCell>{row.position}</TableCell>
                           <TableCell>{row.roles}</TableCell>
                           {`${row.status}` === "Active" ||
-                          `${row.status}` === "active" ? (
+                            `${row.status}` === "active" ? (
                             <TableCell align="center">
                               <Button
                                 variant="contained"
@@ -671,7 +993,7 @@ export default function RoleManagement() {
                         rowsPerPage={rowsPerPage}
                         onChangePage={handleChangePage}
                         onChangeRowsPerPage={handleChangeRowsPerPage}
-                        // onRowsPerPageChange={handleChangeRowsPerPage}
+                      // onRowsPerPageChange={handleChangeRowsPerPage}
                       />
                     </Grid>
                   </Grid>
@@ -748,8 +1070,8 @@ export default function RoleManagement() {
                         SelectProps={{
                           native: true,
                         }}
-                        // value={roomTypeDialog}
-                        // onChange={handleRoomTypeDialog}
+                      // value={roomTypeDialog}
+                      // onChange={handleRoomTypeDialog}
                       >
                         {/* {roomType.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -759,7 +1081,42 @@ export default function RoleManagement() {
                       </TextField>
                     </Grid>
                   </Grid>
-
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    style={{ paddingTop: 10 }}
+                  >
+                    <TextField
+                      fullWidth
+                      // autoFocus
+                      variant="outlined"
+                      selectSelectProps={{
+                        native: true,
+                      }}
+                      label="Property"
+                      select
+                      value={userValues}
+                      onChange={(event) => handleSelectAttribute(event)}
+                    >
+                      {attribute.map((option) => (
+                        <MenuItem key={option.key} value={option.label}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    {chipAttributeDialog.map((data, index) => {
+                      return (
+                        <Chip
+                          style={{ marginTop: 10 }}
+                          key={data.key + index}
+                          label={data.label}
+                          onDelete={handleDeleteAttribute(data)}
+                        />
+                      );
+                    })}
+                  </Grid>
                   <Grid
                     container
                     direction="row"
@@ -783,8 +1140,8 @@ export default function RoleManagement() {
                     md={12}
                     lg={12}
                     xl={12}
-                    // spacing={2}
-                    // style={{ paddingTop: 10 }}
+                  // spacing={2}
+                  // style={{ paddingTop: 10 }}
                   >
                     <FormControlLabel
                       style={{ paddingTop: 15 }}
@@ -842,10 +1199,10 @@ export default function RoleManagement() {
                           }}
                         />
                       }
-                      // expanded={expanded}
-                      // selected={selected}
-                      // onNodeToggle={handleToggle}
-                      // onNodeSelect={handleSelect}
+                    // expanded={expanded}
+                    // selected={selected}
+                    // onNodeToggle={handleToggle}
+                    // onNodeSelect={handleSelect}
                     >
                       {data.map((node) => renderTree(node))}
                     </TreeView>
@@ -939,8 +1296,8 @@ export default function RoleManagement() {
                         SelectProps={{
                           native: true,
                         }}
-                        // value={roomTypeDialog}
-                        // onChange={handleRoomTypeDialog}
+                      // value={roomTypeDialog}
+                      // onChange={handleRoomTypeDialog}
                       >
                         {/* {roomType.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -950,7 +1307,42 @@ export default function RoleManagement() {
                       </TextField>
                     </Grid>
                   </Grid>
-
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    style={{ paddingTop: 10 }}
+                  >
+                    <TextField
+                      fullWidth
+                      // autoFocus
+                      variant="outlined"
+                      selectSelectProps={{
+                        native: true,
+                      }}
+                      label="Property"
+                      select
+                      value={userValues}
+                      onChange={(event) => handleSelectAttribute(event)}
+                    >
+                      {attribute.map((option) => (
+                        <MenuItem key={option.key} value={option.label}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    {chipAttributeDialog.map((data, index) => {
+                      return (
+                        <Chip
+                          style={{ marginTop: 10 }}
+                          key={data.key + index}
+                          label={data.label}
+                          onDelete={handleDeleteAttribute(data)}
+                        />
+                      );
+                    })}
+                  </Grid>
                   <Grid
                     container
                     direction="row"
@@ -974,8 +1366,8 @@ export default function RoleManagement() {
                     md={12}
                     lg={12}
                     xl={12}
-                    // spacing={2}
-                    // style={{ paddingTop: 10 }}
+                  // spacing={2}
+                  // style={{ paddingTop: 10 }}
                   >
                     <FormControlLabel
                       style={{ paddingTop: 15 }}
@@ -1033,10 +1425,10 @@ export default function RoleManagement() {
                           }}
                         />
                       }
-                      // expanded={expanded}
-                      // selected={selected}
-                      // onNodeToggle={handleToggle}
-                      // onNodeSelect={handleSelect}
+                    // expanded={expanded}
+                    // selected={selected}
+                    // onNodeToggle={handleToggle}
+                    // onNodeSelect={handleSelect}
                     >
                       {data.map((node) => renderTree(node))}
                     </TreeView>
