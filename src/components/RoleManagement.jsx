@@ -98,6 +98,7 @@ export default function RoleManagement() {
   const [dialogAddRole, setDialogAddRole] = React.useState(false);
   const [dialogEditRole, setDialogEditRole] = React.useState(false);
   const [statusRec, setStatusRec] = React.useState(null);
+  const [editID, setEditID] = React.useState(null);
   const [selectUser, setSelectUser] = React.useState(null);
   const [rows, setRows] = useState([]);
 
@@ -141,8 +142,50 @@ export default function RoleManagement() {
       idForEdit
     );
     setStatusRec(databyid.content[databyid.content.length - 1].status_record);
+    setEditID(idForEdit);
     console.log("idForEdit", idForEdit);
     setDialogEditRole(true);
+  };
+
+  const handleDialogEditSave = async (id, status) => {
+    console.log("handleDialogEditSave", id, status);
+    const userupdate = await updateuser(
+      sessionStorage.getItem("auth"),
+      {
+        id: id,
+        firstname: "firstName",
+        lastname: "lastName",
+        age: 20,
+        status_record: status,
+        status_marriaged: "S",
+        role: "Cashier,Accountant",
+      },
+      id
+    );
+
+    console.log("userupdate func:", userupdate);
+
+    const data = await getuser(sessionStorage.getItem("auth"));
+    let userdata = [];
+    console.log("aaa", data);
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          "",
+          element.role,
+          "",
+          element.id,
+          element.status_record
+        )
+      )
+    );
+    console.log(sessionStorage.getItem("auth"));
+    console.log("userdata", userdata);
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
+
+    setDialogEditRole(false);
   };
 
   const handleDialogEditRoleClose = () => {
@@ -1010,9 +1053,6 @@ export default function RoleManagement() {
                           <Switch
                             defaultChecked={true}
                             color="primary"
-                            // value={checked}
-                            // onChange={(e) => setEditStatus(e.target.checked)}
-
                             onChange={(e) =>
                               e.target.checked
                                 ? setStatusRec("Active")
@@ -1023,9 +1063,6 @@ export default function RoleManagement() {
                           <Switch
                             defaultChecked={false}
                             color="primary"
-                            // value={checked}
-                            // onChange={(e) => setEditStatus(e.target.checked)}
-
                             onChange={(e) =>
                               e.target.checked
                                 ? setStatusRec("Active")
@@ -1105,7 +1142,7 @@ export default function RoleManagement() {
                   Cancel
                 </Button>
                 <Button
-                  onClick={handleDialogEditRoleClose}
+                  onClick={() => handleDialogEditSave(editID, statusRec)}
                   variant="contained"
                   color="primary"
                 >

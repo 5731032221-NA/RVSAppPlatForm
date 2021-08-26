@@ -77,7 +77,7 @@ const roles = [
   },
   {
     key: "2",
-    label: "Account",
+    label: "Accountant",
   },
 ];
 
@@ -139,7 +139,7 @@ export default function UserManagement() {
   const [editUserName, setEditUserName] = React.useState(null);
   const [editUserID, setEditUserID] = React.useState(null);
   const [editID, setEditID] = React.useState(null);
-  const [editStatus, setEditStatus] = React.useState(false);
+  const [editStatus, setEditStatus] = React.useState("Active");
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -175,26 +175,67 @@ export default function UserManagement() {
   };
 
   const handleDialogAddUser = () => {
+    setChipRolesDialog([]);
     setDialogAddUser(true);
   };
 
   const handleDialogAddUserClose = () => {
     setDialogAddUser(false);
   };
-  const handleDialogEditUser = async (id, firstName, lastName, status) => {
+  const handleDialogEditUser = async (
+    id,
+    firstName,
+    lastName,
+    status,
+    chipRolesDialog
+  ) => {
     const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
     setEditUserID(databyid.content[databyid.content.length - 1].firstname);
     setEditUserName(databyid.content[databyid.content.length - 1].lastname);
     setEditStatus(databyid.content[databyid.content.length - 1].status_record);
-    // let roleData;
-    // roleData = databyid.content[databyid.content.length - 1].role;
-    // let tempRole = [];
-    // tempRole.add(roleData.slice());
-    // console.log("roleData", roleData);
-    // console.log("tempRole", tempRole);
 
-    // for( let i in roleData)
-    setChipRolesDialog();
+    var Arr = ["Cashier", "Accountant", "Manager", "Officer"];
+    var tempArr = [];
+
+    for (let i = 0; i < Arr.length; i++) {
+      tempArr.push(Arr[i]);
+      console.log("tempArr", tempArr);
+      console.log("tempArr [i]", i);
+
+      setChipRolesDialog([
+        {
+          key: tempArr,
+          label: tempArr,
+        },
+      ]);
+    }
+
+    if (databyid.content[databyid.content.length - 1].role) {
+      const roleData = databyid.content[databyid.content.length - 1].role;
+
+      var tempRole = roleData.split(",");
+      console.log("roleData", tempRole);
+      console.log("roleData", typeof tempRole);
+
+      // console.log("chipRolesDialog", chipRolesDialog);
+      // setChipRolesDialog([...chipRolesDialog, { key: Arr, label: Arr }]);
+      // console.log("chipRolesDialog", chipRolesDialog);
+
+      // for (let i in tempRole - 1)
+      // tempRole.map((A) => {
+      //   setChipRolesDialog([...chipRolesDialog, { key: A, label: A }]);
+      // });
+      // var Arr = ["Cashier", "Accountant"];
+      //       for (let i = 0; i < tempRole.length; i++) {
+      //         setChipRolesDialog([
+      //           ...chipRolesDialog,
+      //           { key: Arr[i], label: Arr[i] },
+      //         ]);}
+      //   console.log("chipRolesDialog", chipRolesDialog);
+      //   console.log("let i in tempRole", tempRole[i]);
+      //   console.log("let i in tempRole", i);
+      // }
+    }
     setEditID(id);
 
     setDialogEditUser(true);
@@ -212,10 +253,10 @@ export default function UserManagement() {
       "databyid status_record :",
       databyid.content[databyid.content.length - 1].status_record
     );
-    console.log(
-      "databyid Role :",
-      databyid.content[databyid.content.length - 1].role
-    );
+    // console.log(
+    //   "databyid Role :",
+    //   databyid.content[databyid.content.length - 1].role
+    // );
 
     console.log("id :", id);
     console.log("firstName :", firstName);
@@ -238,13 +279,24 @@ export default function UserManagement() {
     updatePageData(rows, 0, event.target.value);
   };
 
-  const handleInsertUser = async (firstName, lastName, statusRec) => {
+  const handleInsertUser = async (firstName, lastName, statusRec, role) => {
     setEditUserID(null);
     setEditUserName(null);
+    const temp = new Set();
+    if (chipRolesDialog.length) {
+      for (var i in chipRolesDialog) {
+        temp.add(chipRolesDialog[i].label);
+      }
+    }
+    const tempArray = Array.from(temp).join(",");
+
+    console.log("role for insert", role);
+    console.log("tempArray for insert", tempArray);
     let insert = await postuser(sessionStorage.getItem("auth"), {
       firstname: firstName,
       lastname: lastName,
       age: 1,
+      role: tempArray,
       status_record: statusRec,
       status_marriaged: "S",
     });
@@ -296,6 +348,7 @@ export default function UserManagement() {
         { key: event.target.value, label: event.target.value },
       ]);
     }
+    console.log("chipRolesDialog", chipRolesDialog);
   };
   const handleDeleteRoles = (chipToDelete) => () => {
     setChipRolesDialog((chips) =>
@@ -321,6 +374,7 @@ export default function UserManagement() {
         age: 20,
         status_record: status,
         status_marriaged: "S",
+        role: "Cashier,Accountant",
       },
       id
     );
@@ -706,7 +760,12 @@ export default function UserManagement() {
               variant="contained"
               color="primary"
               onClick={() =>
-                handleInsertUser(editUserID, editUserName, editStatus)
+                handleInsertUser(
+                  editUserID,
+                  editUserName,
+                  editStatus,
+                  chipRolesDialog
+                )
               }
             >
               Save
@@ -825,6 +884,8 @@ export default function UserManagement() {
                   ))}
                 </TextField>
                 {chipRolesDialog.map((data, index) => {
+                  // console.log("chipRolesDialog inin ", chipRolesDialog);
+
                   return (
                     <Chip
                       style={{ marginTop: 10 }}
