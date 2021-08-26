@@ -139,12 +139,12 @@ export default function RoleManagement() {
     setDialogAddRole(false);
   };
   const handleDialogEditRole = async (idForEdit) => {
-    // const databyid = await getuserbyid(
-    //   sessionStorage.getItem("auth"),
-    //   idForEdit
-    // );
-    // setStatusRec(databyid.content[databyid.content.length - 1].status_record);
-    // console.log("idForEdit", idForEdit);
+    const databyid = await getuserbyid(
+      sessionStorage.getItem("auth"),
+      idForEdit
+    );
+    setStatusRec(databyid.content[databyid.content.length - 1].status_record);
+    console.log("idForEdit", idForEdit);
     setDialogEditRole(true);
   };
 
@@ -619,7 +619,6 @@ export default function RoleManagement() {
                     />
                     {
                       nodes.edited_create ?
-                      nodes.create ?
                         <FormControlLabel
                           value="end"
                           control={<Checkbox color="primary" checked={nodes.create} onChange={() => handleCheckPermision_create(nodes)} />}
@@ -628,21 +627,6 @@ export default function RoleManagement() {
                               variant="title1"
                               color="initial"
                               style={{ fontSize: 12, color: 'green' }}
-                            >
-                              Create
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-:
-<FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.create} onChange={() => handleCheckPermision_create(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12, color: 'red' }}
                             >
                               Create
                             </Typography>
@@ -667,7 +651,6 @@ export default function RoleManagement() {
                     }
                     {
                       nodes.edited_read ?
-                      nodes.read ?
                         <FormControlLabel
                           value="end"
                           control={<Checkbox color="primary" checked={nodes.read} onChange={() => handleCheckPermision_read(nodes)} />}
@@ -676,21 +659,6 @@ export default function RoleManagement() {
                               variant="title1"
                               color="initial"
                               style={{ fontSize: 12, color: 'green' }}
-                            >
-                              Read
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                        :
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.read} onChange={() => handleCheckPermision_read(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12, color: 'red' }}
                             >
                               Read
                             </Typography>

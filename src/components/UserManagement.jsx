@@ -153,7 +153,7 @@ export default function UserManagement() {
   const [editUserName, setEditUserName] = React.useState(null);
   const [editUserID, setEditUserID] = React.useState(null);
   const [editID, setEditID] = React.useState(null);
-  const [editStatus, setEditStatus] = React.useState("Active");
+  const [editStatus, setEditStatus] = React.useState(false);
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -198,22 +198,38 @@ export default function UserManagement() {
     setDialogAddUser(false);
   };
   const handleDialogEditUser = async (id, firstName, lastName, status) => {
-    setDialogEditUser(true);
-    setEditID(id);
-    setEditUserID(firstName);
-    setEditUserName(lastName);
-    setEditStatus(status);
-    if (status === "Inactive" || status === "inactive") {
-      setEditStatus(false);
-    }
-    // -----------------------------------------
-    console.log("id :", id);
-    console.log("firstName :", firstName);
-    console.log("lastName :", lastName);
-    console.log("status :", status);
-
     // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    // setEditUserID(databyid.content[databyid.content.length - 1].firstname);
+    // setEditUserName(databyid.content[databyid.content.length - 1].lastname);
+    // setEditStatus(databyid.content[databyid.content.length - 1].status_record);
+
+    // setChipRolesDialog();
+    // setEditID(id);
+
+    // setDialogEditUser(true);
+
     // console.log("databyid :", databyid);
+    // console.log(
+    //   "databyid Firstname:",
+    //   databyid.content[databyid.content.length - 1].firstname
+    // );
+    // console.log(
+    //   "databyid Lastname :",
+    //   databyid.content[databyid.content.length - 1].lastname
+    // );
+    // console.log(
+    //   "databyid status_record :",
+    //   databyid.content[databyid.content.length - 1].status_record
+    // );
+    // console.log(
+    //   "databyid Role :",
+    //   databyid.content[databyid.content.length - 1].role
+    // );
+
+    // console.log("id :", id);
+    // console.log("firstName :", firstName);
+    // console.log("lastName :", lastName);
+    // console.log("status :", status);
   };
 
   const handleDialogEditUserClose = () => {
@@ -460,6 +476,7 @@ export default function UserManagement() {
       lastName,
       status
     );
+
     const userupdate = await updateuser(
       sessionStorage.getItem("auth"),
       {
@@ -810,17 +827,30 @@ export default function UserManagement() {
                   <FormControlLabel
                     value="Status"
                     control={
-                      <Switch
-                        defaultChecked={"Active"}
-                        color="primary"
-                        // value={checked}
-                        // onChange={(e) => setEditStatus(e.target.checked)}
-                        onChange={(e) =>
-                          e.target.checked
-                            ? setEditStatus("Active")
-                            : setEditStatus("Inactive")
-                        }
-                      />
+                      editStatus === "Active" || editStatus === "active" ? (
+                        <Switch
+                          defaultChecked={true}
+                          color="primary"
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setEditStatus("Active")
+                              : setEditStatus("Inactive")
+                          }
+                        />
+                      ) : (
+                        <Switch
+                          defaultChecked={false}
+                          color="primary"
+                          // value={checked}
+                          // onChange={(e) => setEditStatus(e.target.checked)}
+
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setEditStatus("Active")
+                              : setEditStatus("Inactive")
+                          }
+                        />
+                      )
                     }
                     label="Status"
                     labelPlacement="start"
@@ -1077,16 +1107,38 @@ export default function UserManagement() {
                   style={{ paddingTop: 10 }}
                 >
                   <FormControlLabel
-                    value="end"
-                    control={<Checkbox color="primary" />}
-                    label={
-                      <Typography
-                        variant="title1"
-                        color="initial"
-                        style={{ fontSize: 18 }}
-                      >
-                        Select Permission All
-                      </Typography>
+
+                    label="Status"
+                    labelPlacement="start"
+                    value="Status"
+                    control={
+                      editStatus === "Active" || editStatus === "active" ? (
+                        <Switch
+                          defaultChecked={true}
+                          color="primary"
+                          // value={checked}
+                          // onChange={(e) => setEditStatus(e.target.checked)}
+
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setEditStatus("Active")
+                              : setEditStatus("Inactive")
+                          }
+                        />
+                      ) : (
+                        <Switch
+                          defaultChecked={false}
+                          color="primary"
+                          // value={checked}
+                          // onChange={(e) => setEditStatus(e.target.checked)}
+
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setEditStatus("Active")
+                              : setEditStatus("Inactive")
+                          }
+                        />
+                      )
                     }
                     labelPlacement="end"
                   />
