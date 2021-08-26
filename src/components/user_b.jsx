@@ -153,7 +153,7 @@ export default function UserManagement() {
   const [editUserName, setEditUserName] = React.useState(null);
   const [editUserID, setEditUserID] = React.useState(null);
   const [editID, setEditID] = React.useState(null);
-  const [editStatus, setEditStatus] = React.useState(false);
+  const [editStatus, setEditStatus] = React.useState("Active");
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -192,12 +192,24 @@ export default function UserManagement() {
 
   const handleDialogAddUser = () => {
     setChipRolesDialog([]);
-        setDialogAddUser(true);
+    setDialogAddUser(true);
   };
 
   const handleDialogAddUserClose = () => {
     setDialogAddUser(false);
   };
+<<<<<<< HEAD
+  const handleDialogEditUser = async (id, firstName, lastName, status) => {
+    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    // setEditUserID(databyid.content[databyid.content.length - 1].firstname);
+    // setEditUserName(databyid.content[databyid.content.length - 1].lastname);
+    // setEditStatus(databyid.content[databyid.content.length - 1].status_record);
+
+    // setChipRolesDialog();
+    // setEditID(id);
+
+    // setDialogEditUser(true);
+=======
   const handleDialogEditUser = async (
     id,
     firstName,
@@ -205,39 +217,75 @@ export default function UserManagement() {
     status,
     chipRolesDialog
   ) => {
-    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    // setEditUserID(databyid.content[databyid.content.length - 1].firstname);
-    // setEditUserName(databyid.content[databyid.content.length - 1].lastname);
-    // setEditStatus(databyid.content[databyid.content.length - 1].status_record);
+    const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    setEditUserID(databyid.content[databyid.content.length - 1].firstname);
+    setEditUserName(databyid.content[databyid.content.length - 1].lastname);
+    setEditStatus(databyid.content[databyid.content.length - 1].status_record);
 
-    // var Arr = ["Cashier", "Accountant", "Manager", "Officer"];
-    // var tempArr = [];
+    var Arr = ["Cashier", "Accountant", "Manager", "Officer"];
+    var tempArr = [];
 
-    // for (let i = 0; i < Arr.length; i++) {
-    //   tempArr.push(Arr[i]);
-    //   console.log("tempArr", tempArr);
-    //   console.log("tempArr [i]", i);
+    for (let i = 0; i < Arr.length; i++) {
+      tempArr.push(Arr[i]);
+      console.log("tempArr", tempArr);
+      console.log("tempArr [i]", i);
 
-    //   setChipRolesDialog([
-    //     {
-    //       key: tempArr,
-    //       label: tempArr,
-    //     },
-    //   ]);
-    // }
+      setChipRolesDialog([
+        {
+          key: tempArr,
+          label: tempArr,
+        },
+      ]);
+    }
 
-    // if (databyid.content[databyid.content.length - 1].role) {
-    //   const roleData = databyid.content[databyid.content.length - 1].role;
+    if (databyid.content[databyid.content.length - 1].role) {
+      const roleData = databyid.content[databyid.content.length - 1].role;
 
-    //   var tempRole = roleData.split(",");
-    //   console.log("roleData", tempRole);
-    //   console.log("roleData", typeof tempRole);
+      var tempRole = roleData.split(",");
+      console.log("roleData", tempRole);
+      console.log("roleData", typeof tempRole);
 
-    
-    // }
-    // setEditID(id);
+      // console.log("chipRolesDialog", chipRolesDialog);
+      // setChipRolesDialog([...chipRolesDialog, { key: Arr, label: Arr }]);
+      // console.log("chipRolesDialog", chipRolesDialog);
+
+      // for (let i in tempRole - 1)
+      // tempRole.map((A) => {
+      //   setChipRolesDialog([...chipRolesDialog, { key: A, label: A }]);
+      // });
+      // var Arr = ["Cashier", "Accountant"];
+      //       for (let i = 0; i < tempRole.length; i++) {
+      //         setChipRolesDialog([
+      //           ...chipRolesDialog,
+      //           { key: Arr[i], label: Arr[i] },
+      //         ]);}
+      //   console.log("chipRolesDialog", chipRolesDialog);
+      //   console.log("let i in tempRole", tempRole[i]);
+      //   console.log("let i in tempRole", i);
+      // }
+    }
+    setEditID(id);
 
     setDialogEditUser(true);
+
+    console.log("databyid :", databyid);
+    console.log(
+      "databyid Firstname:",
+      databyid.content[databyid.content.length - 1].firstname
+    );
+    console.log(
+      "databyid Lastname :",
+      databyid.content[databyid.content.length - 1].lastname
+    );
+    console.log(
+      "databyid status_record :",
+      databyid.content[databyid.content.length - 1].status_record
+    );
+    // console.log(
+    //   "databyid Role :",
+    //   databyid.content[databyid.content.length - 1].role
+    // );
+>>>>>>> 30fa22ebb42b6ed307b0941f441d3ef5f37ce171
 
     // console.log("databyid :", databyid);
     // console.log(
@@ -252,6 +300,15 @@ export default function UserManagement() {
     //   "databyid status_record :",
     //   databyid.content[databyid.content.length - 1].status_record
     // );
+    // console.log(
+    //   "databyid Role :",
+    //   databyid.content[databyid.content.length - 1].role
+    // );
+
+    // console.log("id :", id);
+    // console.log("firstName :", firstName);
+    // console.log("lastName :", lastName);
+    // console.log("status :", status);
   };
 
   const handleDialogEditUserClose = () => {
@@ -277,8 +334,12 @@ export default function UserManagement() {
     updatePageData(rows, 0, event.target.value);
   };
 
+<<<<<<< HEAD
 
+  const handleInsertUser = async (firstName, lastName, statusRec) => {
+=======
   const handleInsertUser = async (firstName, lastName, statusRec, role) => {
+>>>>>>> 30fa22ebb42b6ed307b0941f441d3ef5f37ce171
     setEditUserID(null);
     setEditUserName(null);
     const temp = new Set();
@@ -347,6 +408,7 @@ export default function UserManagement() {
         { key: event.target.value, label: event.target.value },
       ]);
     }
+    console.log("chipRolesDialog", chipRolesDialog);
   };
   const handleDeleteRoles = (chipToDelete) => () => {
     setChipRolesDialog((chips) =>
@@ -362,220 +424,35 @@ export default function UserManagement() {
     </TreeItem>
   );
 
-  const editing_create = async (array, label) => {
-    for (var i = 0; i < array.length; i++) {
-      var obj = array[i];
-      console.log(obj.id, label)
-      if (obj.id === label) {
-        obj.edited_create = !obj.edited_create;
-        obj.create = !obj.create;
-      }
-      else if (obj.children) {
-        editing_create(obj.children, label);
-      }
-    }
-  }
-
-  const handleCheckPermision_create = async (nodes) => {
-    let _data = data;
-    console.log("nid", nodes.id);
-    await (editing_create(_data, nodes.id));
-    setData(_data)
-    setData(prevState => [...prevState])
-  };
-
-  const editing_read = async (array, label) => {
-    for (var i = 0; i < array.length; i++) {
-      var obj = array[i];
-      console.log(obj.id, label)
-      if (obj.id === label) {
-        obj.edited_read = !obj.edited_read;
-        obj.read = !obj.read;
-      }
-      else if (obj.children) {
-        editing_read(obj.children, label);
-      }
-    }
-  }
-
-  const handleCheckPermision_read = async (nodes) => {
-    let _data = data;
-    console.log("nid", nodes.id);
-    await (editing_read(_data, nodes.id));
-    setData(_data)
-    setData(prevState => [...prevState])
-  };
-
-  const editing_update = async (array, label) => {
-    for (var i = 0; i < array.length; i++) {
-      var obj = array[i];
-      console.log(obj.id, label)
-      if (obj.id === label) {
-        obj.edited_update = !obj.edited_update;
-        obj.update = !obj.update;
-      }
-      else if (obj.children) {
-        editing_update(obj.children, label);
-      }
-    }
-  }
-
-  const handleCheckPermision_update = async (nodes) => {
-    let _data = data;
-    console.log("nid", nodes.id);
-    await (editing_update(_data, nodes.id));
-    setData(_data)
-    setData(prevState => [...prevState])
-  };
-
-  const editing_delete = async (array, label) => {
-    for (var i = 0; i < array.length; i++) {
-      var obj = array[i];
-      console.log(obj.id, label)
-      if (obj.id === label) {
-        obj.edited_delete = !obj.edited_delete;
-        obj.delete = !obj.delete;
-      }
-      else if (obj.children) {
-        editing_delete(obj.children, label);
-      }
-    }
-  }
-
-  const handleCheckPermision_delete = async (nodes) => {
-    let _data = data;
-    console.log("nid", nodes.id);
-    await (editing_delete(_data, nodes.id));
-    setData(_data)
-    setData(prevState => [...prevState])
-  };
-
-  const editing_all = async (array, label,checked) => {
-    for (var i = 0; i < array.length; i++) {
-      var obj = array[i];
-      console.log(obj.id, label)
-      if (obj.id === label) {
-        if (obj.delete == checked) {
-          obj.edited_delete = !obj.edited_delete;
-          obj.delete = !obj.delete;
-        }
-        if (obj.update == checked) {
-          obj.edited_update = !obj.edited_update;
-          obj.update = !obj.update;
-        }
-        if (obj.read == checked) {
-          obj.edited_read = !obj.edited_read;
-          obj.read = !obj.read;
-        }
-        if (obj.create == checked) {
-          obj.edited_create = !obj.edited_create;
-          obj.create = !obj.create;
-        }
-      }
-      else if (obj.children) {
-        editing_all(obj.children, label,checked);
-      }
-    }
-  }
-
-  const handleCheckPermision_all = async (nodes,event) => {
-    let _data = data;
-    console.log("nid", nodes.id,event.target.checked);
-    await (editing_all(_data, nodes.id,!(event.target.checked)));
-    setData(_data)
-    setData(prevState => [...prevState])
-  };
 
   const [data, setData] = React.useState([
     {
       id: "1.1",
       name: "Dashboard",
-      code: "DB",
-      permision: true,
-      create: false,
-      read: true,
-      update: false,
-      delete: false,
-      edited_create: false,
-      edited_read: false,
-      edited_update: false,
-      edited_delete: false,
     },
     {
       id: "1.2",
       name: "Reservartion",
-      code: "RS",
-      permision: true,
-      create: false,
-      read: true,
-      update: false,
-      delete: false,
-      edited_create: false,
-      edited_read: false,
-      edited_update: false,
-      edited_delete: false,
     },
     {
       id: "1.3",
       name: "Front Desk",
-      code: "FD",
-      permision: false,
       children: [
         {
           id: "1.3.1",
           name: "Walk-in",
-          code: "FD-WN",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
         },
         {
           id: "1.3.2",
           name: "Check-in",
-          code: "FD-CI",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
         },
         {
           id: "1.3.3",
           name: "Checkout",
-          code: "FD-CO",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
         },
         {
           id: "1.3.4",
           name: "RoomStatus",
-          code: "FD-RS",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
         },
       ],
     },
@@ -589,246 +466,90 @@ export default function UserManagement() {
         nodeId={nodes.id}
         label={
           <div>
-            {nodes.permision ?
-              <div>
-                <Grid container direction="row" alignItems="center">
-                  <Grid item style={{ flexGrow: 1 }}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item style={{ flexGrow: 1 }}>
+                <Typography
+                  variant="h6"
+                  color="initial"
+                  style={{ paddind: 5, fontSize: 16 }}
+                >
+                  {nodes.name}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
                     <Typography
-                      variant="h6"
+                      variant="title1"
                       color="initial"
-                      style={{ paddind: 5, fontSize: 16 }}
+                      style={{ fontSize: 12 }}
                     >
-                      {nodes.name}
+                      All
                     </Typography>
-                  </Grid>
-                  <Grid item>
-                    <FormControlLabel
-                      value="end"
-                      control={<Checkbox color="primary" checked={nodes.create && nodes.read && nodes.update && nodes.delete} onClick={(event) => handleCheckPermision_all(nodes,event)} />}
-                      label={
-                        <Typography
-                          variant="title1"
-                          color="initial"
-                          style={{ fontSize: 12 }}
-                        >
-                          All
-                        </Typography>
-                      }
-                      labelPlacement="end"
-                    />
-                    {
-                      nodes.edited_create ?
-                      nodes.create ?
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.create} onChange={() => handleCheckPermision_create(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12, color: 'green' }}
-                            >
-                              Create
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-:
-<FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.create} onChange={() => handleCheckPermision_create(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12, color: 'red' }}
-                            >
-                              Create
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                        :
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.create} onChange={() => handleCheckPermision_create(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12 }}
-                            >
-                              Create
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                    }
-                    {
-                      nodes.edited_read ?
-                      nodes.read ?
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.read} onChange={() => handleCheckPermision_read(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12, color: 'green' }}
-                            >
-                              Read
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                        :
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.read} onChange={() => handleCheckPermision_read(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12, color: 'red' }}
-                            >
-                              Read
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                        :
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.read} onChange={() => handleCheckPermision_read(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12 }}
-                            >
-                              Read
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                    }
-                    {
-                      nodes.edited_update ?
-                      nodes.update?
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.update} onChange={() => handleCheckPermision_update(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12, color: 'green' }}
-                            >
-                              Update
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                        :
-                        <FormControlLabel
-                        value="end"
-                        control={<Checkbox color="primary" checked={nodes.update} onChange={() => handleCheckPermision_update(nodes)} />}
-                        label={
-                          <Typography
-                            variant="title1"
-                            color="initial"
-                            style={{ fontSize: 12, color: 'red' }}
-                          >
-                            Update
-                          </Typography>
-                        }
-                        labelPlacement="end"
-                      />
-                        :
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.update} onChange={() => handleCheckPermision_update(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12 }}
-                            >
-                              Update
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                    }
-                    {
-                      nodes.edited_delete ?
-                      nodes.delete?
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.delete} onChange={() => handleCheckPermision_delete(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12, color: 'green' }}
-                            >
-                              Delete
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                        :
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.delete} onChange={() => handleCheckPermision_delete(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12, color: 'red' }}
-                            >
-                              Delete
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                        :
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.delete} onChange={() => handleCheckPermision_delete(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12 }}
-                            >
-                              Delete
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                    }
-                  </Grid>
-                </Grid>
-                <Divider />
-              </div>
-              :
-
-              <div>
-                <Grid container direction="row" alignItems="center">
-                  <Grid item style={{ flexGrow: 1 }}>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
                     <Typography
-                      variant="h6"
+                      variant="title1"
                       color="initial"
-                      style={{ paddind: 5, fontSize: 16 }}
+                      style={{ fontSize: 12 }}
                     >
-                      {nodes.name}
+                      Create
                     </Typography>
-                  </Grid>
-
-                </Grid>
-                <Divider />
-              </div>}
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Read
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Update
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+                <FormControlLabel
+                  value="end"
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Typography
+                      variant="title1"
+                      color="initial"
+                      style={{ fontSize: 12 }}
+                    >
+                      Delete
+                    </Typography>
+                  }
+                  labelPlacement="end"
+                />
+              </Grid>
+            </Grid>
+            <Divider />
           </div>
         }
       >
@@ -1247,7 +968,12 @@ export default function UserManagement() {
               variant="contained"
               color="primary"
               onClick={() =>
-                handleInsertUser(editUserID, editUserName, editStatus,chipRolesDialog)
+                handleInsertUser(
+                  editUserID,
+                  editUserName,
+                  editStatus,
+                  chipRolesDialog
+                )
               }
             >
               Save
@@ -1466,8 +1192,40 @@ export default function UserManagement() {
                   variant="contained"
                   color="primary"
                 >
+<<<<<<< HEAD
                   Permission
                 </Button>
+=======
+                  {roles.map((option) => (
+                    <MenuItem key={option.key} value={option.label}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                {chipRolesDialog.map((data, index) => {
+                  // console.log("chipRolesDialog inin ", chipRolesDialog);
+
+                  return (
+                    <Chip
+                      style={{ marginTop: 10 }}
+                      key={data.key + index}
+                      label={data.label}
+                      onDelete={handleDeleteRoles(data)}
+                    />
+                  );
+                })}
+              </Grid>
+              <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    id="outlined-basic"
+                    label="username@mail.com"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+>>>>>>> 30fa22ebb42b6ed307b0941f441d3ef5f37ce171
 
                 {permissionDialog ?
                 <Grid>

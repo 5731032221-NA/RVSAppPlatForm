@@ -100,6 +100,7 @@ export default function RoleManagement() {
   const [dialogAddRole, setDialogAddRole] = React.useState(false);
   const [dialogEditRole, setDialogEditRole] = React.useState(false);
   const [statusRec, setStatusRec] = React.useState(null);
+  const [editID, setEditID] = React.useState(null);
   const [selectUser, setSelectUser] = React.useState(null);
   const [rows, setRows] = useState([]);
 
@@ -139,13 +140,64 @@ export default function RoleManagement() {
     setDialogAddRole(false);
   };
   const handleDialogEditRole = async (idForEdit) => {
+<<<<<<< HEAD
     // const databyid = await getuserbyid(
     //   sessionStorage.getItem("auth"),
     //   idForEdit
     // );
     // setStatusRec(databyid.content[databyid.content.length - 1].status_record);
     // console.log("idForEdit", idForEdit);
+=======
+    const databyid = await getuserbyid(
+      sessionStorage.getItem("auth"),
+      idForEdit
+    );
+    setStatusRec(databyid.content[databyid.content.length - 1].status_record);
+    setEditID(idForEdit);
+    console.log("idForEdit", idForEdit);
+>>>>>>> 30fa22ebb42b6ed307b0941f441d3ef5f37ce171
     setDialogEditRole(true);
+  };
+
+  const handleDialogEditSave = async (id, status) => {
+    console.log("handleDialogEditSave", id, status);
+    const userupdate = await updateuser(
+      sessionStorage.getItem("auth"),
+      {
+        id: id,
+        firstname: "firstName",
+        lastname: "lastName",
+        age: 20,
+        status_record: status,
+        status_marriaged: "S",
+        role: "Cashier,Accountant",
+      },
+      id
+    );
+
+    console.log("userupdate func:", userupdate);
+
+    const data = await getuser(sessionStorage.getItem("auth"));
+    let userdata = [];
+    console.log("aaa", data);
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          "",
+          element.role,
+          "",
+          element.id,
+          element.status_record
+        )
+      )
+    );
+    console.log(sessionStorage.getItem("auth"));
+    console.log("userdata", userdata);
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
+
+    setDialogEditRole(false);
   };
 
   const handleDialogEditRoleClose = () => {
@@ -715,7 +767,6 @@ export default function RoleManagement() {
                     }
                     {
                       nodes.edited_update ?
-                      nodes.update?
                         <FormControlLabel
                           value="end"
                           control={<Checkbox color="primary" checked={nodes.update} onChange={() => handleCheckPermision_update(nodes)} />}
@@ -730,21 +781,6 @@ export default function RoleManagement() {
                           }
                           labelPlacement="end"
                         />
-                        :
-                        <FormControlLabel
-                        value="end"
-                        control={<Checkbox color="primary" checked={nodes.update} onChange={() => handleCheckPermision_update(nodes)} />}
-                        label={
-                          <Typography
-                            variant="title1"
-                            color="initial"
-                            style={{ fontSize: 12, color: 'red' }}
-                          >
-                            Update
-                          </Typography>
-                        }
-                        labelPlacement="end"
-                      />
                         :
                         <FormControlLabel
                           value="end"
@@ -763,7 +799,6 @@ export default function RoleManagement() {
                     }
                     {
                       nodes.edited_delete ?
-                      nodes.delete?
                         <FormControlLabel
                           value="end"
                           control={<Checkbox color="primary" checked={nodes.delete} onChange={() => handleCheckPermision_delete(nodes)} />}
@@ -772,21 +807,6 @@ export default function RoleManagement() {
                               variant="title1"
                               color="initial"
                               style={{ fontSize: 12, color: 'green' }}
-                            >
-                              Delete
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                        :
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.delete} onChange={() => handleCheckPermision_delete(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12, color: 'red' }}
                             >
                               Delete
                             </Typography>
@@ -1465,9 +1485,6 @@ export default function RoleManagement() {
                           <Switch
                             defaultChecked={true}
                             color="primary"
-                            // value={checked}
-                            // onChange={(e) => setEditStatus(e.target.checked)}
-
                             onChange={(e) =>
                               e.target.checked
                                 ? setStatusRec("Active")
@@ -1478,9 +1495,6 @@ export default function RoleManagement() {
                           <Switch
                             defaultChecked={false}
                             color="primary"
-                            // value={checked}
-                            // onChange={(e) => setEditStatus(e.target.checked)}
-
                             onChange={(e) =>
                               e.target.checked
                                 ? setStatusRec("Active")
@@ -1560,7 +1574,7 @@ export default function RoleManagement() {
                   Cancel
                 </Button>
                 <Button
-                  onClick={handleDialogEditRoleClose}
+                  onClick={() => handleDialogEditSave(editID, statusRec)}
                   variant="contained"
                   color="primary"
                 >
