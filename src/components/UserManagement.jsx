@@ -28,8 +28,9 @@ import {
 
 import IconButton from "@material-ui/core/IconButton";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
+import EditRoundedIcon from "@material-ui/icons/EditRounded";
+import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
+import VpnKeyOutlinedIcon from "@material-ui/icons/VpnKeyOutlined";
 import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
 import FirstPageRoundedIcon from "@material-ui/icons/FirstPageRounded";
@@ -47,6 +48,8 @@ import {
   postuser,
   updateuser,
   getuserbyid,
+  deleteuserbyid,
+  listrole,
 } from "../services/user.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
@@ -83,16 +86,16 @@ function createData(id, userID, userName, position, roles, property, status) {
 //   createData(2, "Mon", "Month main", "Front Office", "Cashaier", "Active"),
 // ];
 
-const roles = [
-  {
-    key: "1",
-    label: "Cahshier",
-  },
-  {
-    key: "2",
-    label: "Accountant",
-  },
-];
+// const roles = [
+//   {
+//     key: "1",
+//     label: "Cahshier",
+//   },
+//   {
+//     key: "2",
+//     label: "Accountant",
+//   },
+// ];
 
 const position = [
   {
@@ -141,16 +144,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
+var roles = [];
 
 export default function UserManagement() {
   const classes = useStyles();
   const [dialogAddUser, setDialogAddUser] = React.useState(false);
   const [dialogEditUser, setDialogEditUser] = React.useState(false);
+  const [dialogDeleteUser, setDialogDeleteUser] = React.useState(false);
   const [selectPosition, setSelectPosition] = React.useState(null);
   const [selectProperty, setSelectProperty] = React.useState(null);
   const [permissionDialog, setPermissionDialog] = React.useState(false);
   const [chipRolesDialog, setChipRolesDialog] = React.useState([]);
+  const [dialogSize, setDialogSize] = React.useState("sm");
+  const [dialogRatio, setDialogRatio] = React.useState(12);
   const [pageData, setPageData] = React.useState([]);
   const [editUserName, setEditUserName] = React.useState(null);
   const [editUserID, setEditUserID] = React.useState(null);
@@ -161,6 +167,22 @@ export default function UserManagement() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const { store } = useContext(ReactReduxContext);
+
+  React.useEffect(async () => {
+    let dataRole = await listrole(sessionStorage.getItem("auth"));
+    console.log("listrole", dataRole.content[dataRole.content.length - 1]);
+
+    dataRole.content[dataRole.content.length - 1].forEach((element) =>
+      roles.push({
+        key: element.rolecode,
+        label: element.rolename,
+      })
+    );
+    console.log("roles", roles);
+  }, []);
+
+  console.log("roles out:", roles);
+
   React.useEffect(async () => {
     const data = await listuser(sessionStorage.getItem("auth"));
     let userdata = [];
@@ -183,8 +205,6 @@ export default function UserManagement() {
     updatePageData(userdata, page, rowsPerPage);
   }, []);
 
-
-
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
     let data = [];
     for (let i = _page * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
@@ -195,7 +215,7 @@ export default function UserManagement() {
 
   const handleDialogAddUser = () => {
     setChipRolesDialog([]);
-        setDialogAddUser(true);
+    setDialogAddUser(true);
   };
 
   const handleDialogAddUserClose = () => {
@@ -213,21 +233,18 @@ export default function UserManagement() {
     // setEditUserName(databyid.content[databyid.content.length - 1].lastname);
     // setEditStatus(databyid.content[databyid.content.length - 1].status_record);
 
-    // var Arr = ["Cashier", "Accountant", "Manager", "Officer"];
-    // var tempArr = [];
+    // // var Arr = ["Cashier", "Accountant", "Manager", "Officer"];
+    // // var tempArr = [];
+    // // for (let i = 0; i < Arr.length; i++) {
+    // //   tempArr.push(Arr[i]);
 
-    // for (let i = 0; i < Arr.length; i++) {
-    //   tempArr.push(Arr[i]);
-    //   console.log("tempArr", tempArr);
-    //   console.log("tempArr [i]", i);
-
-    //   setChipRolesDialog([
-    //     {
-    //       key: tempArr,
-    //       label: tempArr,
-    //     },
-    //   ]);
-    // }
+    // //   setChipRolesDialog([
+    // //     {
+    // //       key: tempArr,
+    // //       label: tempArr,
+    // //     },
+    // //   ]);
+    // // }
 
     // if (databyid.content[databyid.content.length - 1].role) {
     //   const roleData = databyid.content[databyid.content.length - 1].role;
@@ -235,10 +252,8 @@ export default function UserManagement() {
     //   var tempRole = roleData.split(",");
     //   console.log("roleData", tempRole);
     //   console.log("roleData", typeof tempRole);
-
-    
     // }
-    // setEditID(id);
+    setEditID(id);
 
     setDialogEditUser(true);
 
@@ -263,6 +278,13 @@ export default function UserManagement() {
 
   const handlePermission = () => {
     setPermissionDialog(!permissionDialog);
+    if (permissionDialog) {
+      setDialogSize("sm");
+      setDialogRatio(12);
+    } else {
+      setDialogSize("md");
+      setDialogRatio(9);
+    }
   };
 
   const handlePermissionClose = () => {
@@ -279,7 +301,6 @@ export default function UserManagement() {
     setPage(0);
     updatePageData(rows, 0, event.target.value);
   };
-
 
   const handleInsertUser = async (firstName, lastName, statusRec, role) => {
     setEditUserID(null);
@@ -369,95 +390,91 @@ export default function UserManagement() {
   const editing_create = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label)
+      console.log(obj.id, label);
       if (obj.id === label) {
         obj.edited_create = !obj.edited_create;
         obj.create = !obj.create;
-      }
-      else if (obj.children) {
+      } else if (obj.children) {
         editing_create(obj.children, label);
       }
     }
-  }
+  };
 
   const handleCheckPermision_create = async (nodes) => {
     let _data = data;
     console.log("nid", nodes.id);
-    await (editing_create(_data, nodes.id));
-    setData(_data)
-    setData(prevState => [...prevState])
+    await editing_create(_data, nodes.id);
+    setData(_data);
+    setData((prevState) => [...prevState]);
   };
 
   const editing_read = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label)
+      console.log(obj.id, label);
       if (obj.id === label) {
         obj.edited_read = !obj.edited_read;
         obj.read = !obj.read;
-      }
-      else if (obj.children) {
+      } else if (obj.children) {
         editing_read(obj.children, label);
       }
     }
-  }
+  };
 
   const handleCheckPermision_read = async (nodes) => {
     let _data = data;
     console.log("nid", nodes.id);
-    await (editing_read(_data, nodes.id));
-    setData(_data)
-    setData(prevState => [...prevState])
+    await editing_read(_data, nodes.id);
+    setData(_data);
+    setData((prevState) => [...prevState]);
   };
 
   const editing_update = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label)
+      console.log(obj.id, label);
       if (obj.id === label) {
         obj.edited_update = !obj.edited_update;
         obj.update = !obj.update;
-      }
-      else if (obj.children) {
+      } else if (obj.children) {
         editing_update(obj.children, label);
       }
     }
-  }
+  };
 
   const handleCheckPermision_update = async (nodes) => {
     let _data = data;
     console.log("nid", nodes.id);
-    await (editing_update(_data, nodes.id));
-    setData(_data)
-    setData(prevState => [...prevState])
+    await editing_update(_data, nodes.id);
+    setData(_data);
+    setData((prevState) => [...prevState]);
   };
 
   const editing_delete = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label)
+      console.log(obj.id, label);
       if (obj.id === label) {
         obj.edited_delete = !obj.edited_delete;
         obj.delete = !obj.delete;
-      }
-      else if (obj.children) {
+      } else if (obj.children) {
         editing_delete(obj.children, label);
       }
     }
-  }
+  };
 
   const handleCheckPermision_delete = async (nodes) => {
     let _data = data;
     console.log("nid", nodes.id);
-    await (editing_delete(_data, nodes.id));
-    setData(_data)
-    setData(prevState => [...prevState])
+    await editing_delete(_data, nodes.id);
+    setData(_data);
+    setData((prevState) => [...prevState]);
   };
 
-  const editing_all = async (array, label,checked) => {
+  const editing_all = async (array, label, checked) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label)
+      console.log(obj.id, label);
       if (obj.id === label) {
         if (obj.delete == checked) {
           obj.edited_delete = !obj.edited_delete;
@@ -475,19 +492,18 @@ export default function UserManagement() {
           obj.edited_create = !obj.edited_create;
           obj.create = !obj.create;
         }
-      }
-      else if (obj.children) {
-        editing_all(obj.children, label,checked);
+      } else if (obj.children) {
+        editing_all(obj.children, label, checked);
       }
     }
-  }
+  };
 
-  const handleCheckPermision_all = async (nodes,event) => {
+  const handleCheckPermision_all = async (nodes, event) => {
     let _data = data;
-    console.log("nid", nodes.id,event.target.checked);
-    await (editing_all(_data, nodes.id,!(event.target.checked)));
-    setData(_data)
-    setData(prevState => [...prevState])
+    console.log("nid", nodes.id, event.target.checked);
+    await editing_all(_data, nodes.id, !event.target.checked);
+    setData(_data);
+    setData((prevState) => [...prevState]);
   };
 
   const [data, setData] = React.useState([
@@ -585,7 +601,6 @@ export default function UserManagement() {
     },
   ]);
 
-
   const renderTree = (nodes) => (
     <div>
       <TreeItem
@@ -593,7 +608,7 @@ export default function UserManagement() {
         nodeId={nodes.id}
         label={
           <div>
-            {nodes.permision ?
+            {nodes.permision ? (
               <div>
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
@@ -608,7 +623,20 @@ export default function UserManagement() {
                   <Grid item>
                     <FormControlLabel
                       value="end"
-                      control={<Checkbox color="primary" checked={nodes.create && nodes.read && nodes.update && nodes.delete} onClick={(event) => handleCheckPermision_all(nodes,event)} />}
+                      control={
+                        <Checkbox
+                          color="primary"
+                          checked={
+                            nodes.create &&
+                            nodes.read &&
+                            nodes.update &&
+                            nodes.delete
+                          }
+                          onClick={(event) =>
+                            handleCheckPermision_all(nodes, event)
+                          }
+                        />
+                      }
                       label={
                         <Typography
                           variant="title1"
@@ -620,204 +648,287 @@ export default function UserManagement() {
                       }
                       labelPlacement="end"
                     />
-                    {
-                      nodes.edited_create ?
-                      nodes.create ?
+                    {nodes.edited_create ? (
+                      nodes.create ? (
                         <FormControlLabel
                           value="end"
-                          control={<Checkbox color="primary" checked={nodes.create} onChange={() => handleCheckPermision_create(nodes)} />}
+                          control={
+                            <Checkbox
+                              color="primary"
+                              checked={nodes.create}
+                              onChange={() =>
+                                handleCheckPermision_create(nodes)
+                              }
+                            />
+                          }
                           label={
                             <Typography
                               variant="title1"
                               color="initial"
-                              style={{ fontSize: 12, color: 'green' }}
+                              style={{ fontSize: 12, color: "green" }}
                             >
                               Create
                             </Typography>
                           }
                           labelPlacement="end"
                         />
-:
-<FormControlLabel
+                      ) : (
+                        <FormControlLabel
                           value="end"
-                          control={<Checkbox color="primary" checked={nodes.create} onChange={() => handleCheckPermision_create(nodes)} />}
+                          control={
+                            <Checkbox
+                              color="primary"
+                              checked={nodes.create}
+                              onChange={() =>
+                                handleCheckPermision_create(nodes)
+                              }
+                            />
+                          }
                           label={
                             <Typography
                               variant="title1"
                               color="initial"
-                              style={{ fontSize: 12, color: 'red' }}
+                              style={{ fontSize: 12, color: "red" }}
                             >
                               Create
                             </Typography>
                           }
                           labelPlacement="end"
                         />
-                        :
+                      )
+                    ) : (
+                      <FormControlLabel
+                        value="end"
+                        control={
+                          <Checkbox
+                            color="primary"
+                            checked={nodes.create}
+                            onChange={() => handleCheckPermision_create(nodes)}
+                          />
+                        }
+                        label={
+                          <Typography
+                            variant="title1"
+                            color="initial"
+                            style={{ fontSize: 12 }}
+                          >
+                            Create
+                          </Typography>
+                        }
+                        labelPlacement="end"
+                      />
+                    )}
+                    {nodes.edited_read ? (
+                      nodes.read ? (
                         <FormControlLabel
                           value="end"
-                          control={<Checkbox color="primary" checked={nodes.create} onChange={() => handleCheckPermision_create(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12 }}
-                            >
-                              Create
-                            </Typography>
+                          control={
+                            <Checkbox
+                              color="primary"
+                              checked={nodes.read}
+                              onChange={() => handleCheckPermision_read(nodes)}
+                            />
                           }
-                          labelPlacement="end"
-                        />
-                    }
-                    {
-                      nodes.edited_read ?
-                      nodes.read ?
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.read} onChange={() => handleCheckPermision_read(nodes)} />}
                           label={
                             <Typography
                               variant="title1"
                               color="initial"
-                              style={{ fontSize: 12, color: 'green' }}
-                            >
-                              Read
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                        :
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.read} onChange={() => handleCheckPermision_read(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12, color: 'red' }}
+                              style={{ fontSize: 12, color: "green" }}
                             >
                               Read
                             </Typography>
                           }
                           labelPlacement="end"
                         />
-                        :
+                      ) : (
                         <FormControlLabel
                           value="end"
-                          control={<Checkbox color="primary" checked={nodes.read} onChange={() => handleCheckPermision_read(nodes)} />}
+                          control={
+                            <Checkbox
+                              color="primary"
+                              checked={nodes.read}
+                              onChange={() => handleCheckPermision_read(nodes)}
+                            />
+                          }
                           label={
                             <Typography
                               variant="title1"
                               color="initial"
-                              style={{ fontSize: 12 }}
+                              style={{ fontSize: 12, color: "red" }}
                             >
                               Read
                             </Typography>
                           }
                           labelPlacement="end"
                         />
-                    }
-                    {
-                      nodes.edited_update ?
-                      nodes.update?
+                      )
+                    ) : (
+                      <FormControlLabel
+                        value="end"
+                        control={
+                          <Checkbox
+                            color="primary"
+                            checked={nodes.read}
+                            onChange={() => handleCheckPermision_read(nodes)}
+                          />
+                        }
+                        label={
+                          <Typography
+                            variant="title1"
+                            color="initial"
+                            style={{ fontSize: 12 }}
+                          >
+                            Read
+                          </Typography>
+                        }
+                        labelPlacement="end"
+                      />
+                    )}
+                    {nodes.edited_update ? (
+                      nodes.update ? (
                         <FormControlLabel
                           value="end"
-                          control={<Checkbox color="primary" checked={nodes.update} onChange={() => handleCheckPermision_update(nodes)} />}
+                          control={
+                            <Checkbox
+                              color="primary"
+                              checked={nodes.update}
+                              onChange={() =>
+                                handleCheckPermision_update(nodes)
+                              }
+                            />
+                          }
                           label={
                             <Typography
                               variant="title1"
                               color="initial"
-                              style={{ fontSize: 12, color: 'green' }}
+                              style={{ fontSize: 12, color: "green" }}
                             >
                               Update
                             </Typography>
                           }
                           labelPlacement="end"
                         />
-                        :
+                      ) : (
                         <FormControlLabel
+                          value="end"
+                          control={
+                            <Checkbox
+                              color="primary"
+                              checked={nodes.update}
+                              onChange={() =>
+                                handleCheckPermision_update(nodes)
+                              }
+                            />
+                          }
+                          label={
+                            <Typography
+                              variant="title1"
+                              color="initial"
+                              style={{ fontSize: 12, color: "red" }}
+                            >
+                              Update
+                            </Typography>
+                          }
+                          labelPlacement="end"
+                        />
+                      )
+                    ) : (
+                      <FormControlLabel
                         value="end"
-                        control={<Checkbox color="primary" checked={nodes.update} onChange={() => handleCheckPermision_update(nodes)} />}
+                        control={
+                          <Checkbox
+                            color="primary"
+                            checked={nodes.update}
+                            onChange={() => handleCheckPermision_update(nodes)}
+                          />
+                        }
                         label={
                           <Typography
                             variant="title1"
                             color="initial"
-                            style={{ fontSize: 12, color: 'red' }}
+                            style={{ fontSize: 12 }}
                           >
                             Update
                           </Typography>
                         }
                         labelPlacement="end"
                       />
-                        :
+                    )}
+                    {nodes.edited_delete ? (
+                      nodes.delete ? (
                         <FormControlLabel
                           value="end"
-                          control={<Checkbox color="primary" checked={nodes.update} onChange={() => handleCheckPermision_update(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12 }}
-                            >
-                              Update
-                            </Typography>
+                          control={
+                            <Checkbox
+                              color="primary"
+                              checked={nodes.delete}
+                              onChange={() =>
+                                handleCheckPermision_delete(nodes)
+                              }
+                            />
                           }
-                          labelPlacement="end"
-                        />
-                    }
-                    {
-                      nodes.edited_delete ?
-                      nodes.delete?
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.delete} onChange={() => handleCheckPermision_delete(nodes)} />}
                           label={
                             <Typography
                               variant="title1"
                               color="initial"
-                              style={{ fontSize: 12, color: 'green' }}
+                              style={{ fontSize: 12, color: "green" }}
                             >
                               Delete
                             </Typography>
                           }
                           labelPlacement="end"
                         />
-                        :
+                      ) : (
                         <FormControlLabel
                           value="end"
-                          control={<Checkbox color="primary" checked={nodes.delete} onChange={() => handleCheckPermision_delete(nodes)} />}
+                          control={
+                            <Checkbox
+                              color="primary"
+                              checked={nodes.delete}
+                              onChange={() =>
+                                handleCheckPermision_delete(nodes)
+                              }
+                            />
+                          }
                           label={
                             <Typography
                               variant="title1"
                               color="initial"
-                              style={{ fontSize: 12, color: 'red' }}
+                              style={{ fontSize: 12, color: "red" }}
                             >
                               Delete
                             </Typography>
                           }
                           labelPlacement="end"
                         />
-                        :
-                        <FormControlLabel
-                          value="end"
-                          control={<Checkbox color="primary" checked={nodes.delete} onChange={() => handleCheckPermision_delete(nodes)} />}
-                          label={
-                            <Typography
-                              variant="title1"
-                              color="initial"
-                              style={{ fontSize: 12 }}
-                            >
-                              Delete
-                            </Typography>
-                          }
-                          labelPlacement="end"
-                        />
-                    }
+                      )
+                    ) : (
+                      <FormControlLabel
+                        value="end"
+                        control={
+                          <Checkbox
+                            color="primary"
+                            checked={nodes.delete}
+                            onChange={() => handleCheckPermision_delete(nodes)}
+                          />
+                        }
+                        label={
+                          <Typography
+                            variant="title1"
+                            color="initial"
+                            style={{ fontSize: 12 }}
+                          >
+                            Delete
+                          </Typography>
+                        }
+                        labelPlacement="end"
+                      />
+                    )}
                   </Grid>
                 </Grid>
                 <Divider />
               </div>
-              :
-
+            ) : (
               <div>
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
@@ -829,10 +940,10 @@ export default function UserManagement() {
                       {nodes.name}
                     </Typography>
                   </Grid>
-
                 </Grid>
                 <Divider />
-              </div>}
+              </div>
+            )}
           </div>
         }
       >
@@ -888,6 +999,65 @@ export default function UserManagement() {
     setRows(userdata);
     updatePageData(userdata, page, rowsPerPage);
     setDialogEditUser(false);
+  };
+
+  const handleDialogDeleteUserClose = () => {
+    setDialogDeleteUser(false);
+  };
+  const handleDialogDeleteUserOpen = async (id) => {
+    setEditID(id);
+    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    // setEditUserID(databyid.content[databyid.content.length - 1].firstname);
+    // setEditUserName(databyid.content[databyid.content.length - 1].lastname);
+    // // console.log(
+    // //   "databyid  Firstname Delete:",
+    // //   databyid.content[databyid.content.length - 1].firstname
+    // // );
+    // // console.log(
+    // //   "databyid Lastname Delete:",
+    // //   databyid.content[databyid.content.length - 1].lastname
+    // // );
+    setDialogDeleteUser(true);
+  };
+
+  const handleDialogDelete = async (id, fname, lname) => {
+    console.log("DeleteID:", id);
+    console.log("DeleteFname:", fname);
+    console.log("DeleteLname:", lname);
+
+    const deleteuser = await deleteuserbyid(
+      sessionStorage.getItem("auth"),
+      {
+        id: id,
+        firstname: fname,
+        lastname: lname,
+        age: 20,
+        status_record: " ",
+        status_marriaged: " ",
+        role: " ",
+      },
+      id
+    );
+    console.log("userupdate func:", deleteuser);
+    const data = await getuser(sessionStorage.getItem("auth"));
+    let userdata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          element.userid,
+          element.firstname + " " + element.lastname,
+          "",
+          element.role,
+          element.status_record
+        )
+      )
+    );
+
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
+
+    setDialogDeleteUser(false);
   };
 
   return (
@@ -980,7 +1150,7 @@ export default function UserManagement() {
                       <TableCell>{row.roles}</TableCell>
                       <TableCell>{row.property}</TableCell>
                       {`${row.status}` === "Active" ||
-                        `${row.status}` === "active" ? (
+                      `${row.status}` === "active" ? (
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -1019,10 +1189,12 @@ export default function UserManagement() {
                             )
                           }
                         >
-                          <EditOutlinedIcon />
+                          <EditRoundedIcon />
                         </IconButton>
-                        <IconButton onClick={" "}>
-                          <SaveRoundedIcon />
+                        <IconButton
+                          onClick={() => handleDialogDeleteUserOpen(row.id)}
+                        >
+                          <DeleteRoundedIcon />
                         </IconButton>
                       </TableCell>
                     </TableRow>
@@ -1056,7 +1228,7 @@ export default function UserManagement() {
                     rowsPerPage={rowsPerPage}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
-                  // onRowsPerPageChange={handleChangeRowsPerPage}
+                    // onRowsPerPageChange={handleChangeRowsPerPage}
                   />
                 </Grid>
               </Grid>
@@ -1097,7 +1269,6 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-
                     // value={" "}
                     onChange={(e) => setEditUserName(e.target.value)}
                   ></TextField>
@@ -1193,8 +1364,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                  // value={" "}
-                  // onChange={" "}
+                    // value={" "}
+                    // onChange={" "}
                   ></TextField>
                 </Grid>
                 <Grid
@@ -1254,7 +1425,12 @@ export default function UserManagement() {
               variant="contained"
               color="primary"
               onClick={() =>
-                handleInsertUser(editUserID, editUserName, editStatus,chipRolesDialog)
+                handleInsertUser(
+                  editUserID,
+                  editUserName,
+                  editStatus,
+                  chipRolesDialog
+                )
               }
             >
               Save
@@ -1265,48 +1441,54 @@ export default function UserManagement() {
         {/* ==================== Dialog Edit User========================= */}
         <Dialog
           fullWidth="true"
-          maxWidth="sm"
+          maxWidth={dialogSize}
           open={dialogEditUser}
           onClose={handleDialogEditUserClose}
           aria-labelledby="form-dialog-title"
         >
-
           <Grid container>
-          {permissionDialog ?
+            {permissionDialog ? (
+              <Grid
+                item
+                sm={3}
+                md={3}
+                lg={3}
+                xl={3}
+                style={{ backgroundColor: "#F5F5F5" }}
+              >
+                <TreeView
+                  style={{ padding: 20 }}
+                  defaultCollapseIcon={
+                    <RemoveRoundedIcon
+                      style={{
+                        backgroundColor: "#717171",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                  defaultExpandIcon={
+                    <AddRoundedIcon
+                      style={{
+                        backgroundColor: "#2D62ED",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                >
+                  {data.map((node) => renderTreeSubMenu(node))}
+                </TreeView>
+              </Grid>
+            ) : null}
             <Grid
               item
-              sm={3}
-              md={3}
-              lg={3}
-              xl={3}
-              style={{ backgroundColor: "#F5F5F5" }}
+              xs={dialogRatio}
+              sm={dialogRatio}
+              md={dialogRatio}
+              lg={dialogRatio}
+              xl={dialogRatio}
             >
-              <TreeView
-                style={{ padding: 20 }}
-                defaultCollapseIcon={
-                  <RemoveRoundedIcon
-                    style={{
-                      backgroundColor: "#717171",
-                      borderRadius: 2,
-                      color: "white",
-                    }}
-                  />
-                }
-                defaultExpandIcon={
-                  <AddRoundedIcon
-                    style={{
-                      backgroundColor: "#2D62ED",
-                      borderRadius: 2,
-                      color: "white",
-                    }}
-                  />
-                }
-              >
-                {data.map((node) => renderTreeSubMenu(node))}
-              </TreeView>
-            </Grid>
-            : null}
-            <Grid item xs={9} sm={9} md={9} lg={9} xl={9}>
               <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
                 Edit User
               </DialogTitle>
@@ -1334,64 +1516,41 @@ export default function UserManagement() {
                         SelectProps={{
                           native: true,
                         }}
-
                         // value={" "}
                         defaultValue={editUserName}
                         onChange={(e) => setEditUserName(e.target.value)}
-
                       ></TextField>
                     </Grid>
                   </Grid>
 
-                  <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        select
-                        id="outlined-basic"
-                        label="Position"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        value={selectPosition}
-                        onChange={handleSelectPosition}
-                      >
-                        {position.map((option) => (
-                          <option key={option.key} value={option.label}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        // autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Property"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        value={selectProperty}
-                        onChange={handleSelectProperty}
-                      >
-                        {property.map((option) => (
-                          <option key={option.key} value={option.label}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
+                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <TextField
+                      select
+                      style={{ marginTop: 15 }}
+                      id="outlined-basic"
+                      label="Position"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      value={selectPosition}
+                      onChange={handleSelectPosition}
+                    >
+                      {position.map((option) => (
+                        <option key={option.key} value={option.label}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
+
                   <Grid
                     container
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="center"
-                    style={{ paddingTop: 10 }}
+                    style={{ marginTop: 15 }}
                   >
                     <TextField
                       fullWidth
@@ -1422,6 +1581,28 @@ export default function UserManagement() {
                       );
                     })}
                   </Grid>
+                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <TextField
+                      // autoFocus
+                      select
+                      style={{ marginTop: 15 }}
+                      id="outlined-basic"
+                      label="Property"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      value={selectProperty}
+                      onChange={handleSelectProperty}
+                    >
+                      {property.map((option) => (
+                        <option key={option.key} value={option.label}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
@@ -1433,9 +1614,8 @@ export default function UserManagement() {
                           native: true,
                         }}
 
-
-                      // value={" "}
-                      // onChange={" "}
+                        // value={" "}
+                        // onChange={" "}
                       ></TextField>
                     </Grid>
                     <Grid
@@ -1468,113 +1648,224 @@ export default function UserManagement() {
                     </Grid>
                   </Grid>
                 </Container>
-                <Button
-                  onClick={handlePermission}
-                  variant="contained"
-                  color="primary"
-                >
-                  Permission
-                </Button>
 
-                {permissionDialog ?
-                <Grid>
-                <Grid
-                  container
-                  alignItems="center"
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  style={{ paddingTop: 10 }}
-                >
-                  <FormControlLabel
+                {permissionDialog ? (
+                  <Grid>
+                    <Grid
+                      container
+                      alignItems="center"
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      style={{ paddingTop: 10 }}
+                    >
+                      {/* <FormControlLabel
+                        label="Status"
+                        labelPlacement="start"
+                        value="Status"
+                        control={
+                          editStatus === "Active" || editStatus === "active" ? (
+                            <Switch
+                              defaultChecked={true}
+                              color="primary"
+                              // value={checked}
+                              // onChange={(e) => setEditStatus(e.target.checked)}
 
-                    label="Status"
-                    labelPlacement="start"
-                    value="Status"
-                    control={
-                      editStatus === "Active" || editStatus === "active" ? (
-                        <Switch
-                          defaultChecked={true}
-                          color="primary"
-                          // value={checked}
-                          // onChange={(e) => setEditStatus(e.target.checked)}
+                              onChange={(e) =>
+                                e.target.checked
+                                  ? setEditStatus("Active")
+                                  : setEditStatus("Inactive")
+                              }
+                            />
+                          ) : (
+                            <Switch
+                              defaultChecked={false}
+                              color="primary"
+                              // value={checked}
+                              // onChange={(e) => setEditStatus(e.target.checked)}
 
-                          onChange={(e) =>
-                            e.target.checked
-                              ? setEditStatus("Active")
-                              : setEditStatus("Inactive")
-                          }
-                        />
-                      ) : (
-                        <Switch
-                          defaultChecked={false}
-                          color="primary"
-                          // value={checked}
-                          // onChange={(e) => setEditStatus(e.target.checked)}
-
-                          onChange={(e) =>
-                            e.target.checked
-                              ? setEditStatus("Active")
-                              : setEditStatus("Inactive")
-                          }
-                        />
-                      )
-                    }
-                    labelPlacement="end"
-                  />
-                </Grid>
-                <Divider style={{ marginTop: 10 }} />
-                <Container disableGutters>
-                  <TreeView
-                    // className={classes.root}
-                    defaultCollapseIcon={
-                      <RemoveRoundedIcon
-                        style={{
-                          backgroundColor: "#717171",
-                          borderRadius: 2,
-                          color: "white",
-                        }}
-                      />
-                    }
-                    defaultExpandIcon={
-                      <AddRoundedIcon
-                        style={{
-                          backgroundColor: "#2D62ED",
-                          borderRadius: 2,
-                          color: "white",
-                        }}
-                      />
-                    }
-                  // expanded={expanded}
-                  // selected={selected}
-                  // onNodeToggle={handleToggle}
-                  // onNodeSelect={handleSelect}
-                  >
-                    {data.map((node) => renderTree(node))}
-                  </TreeView>
-                </Container>
-                </Grid>
-            : null}
+                              onChange={(e) =>
+                                e.target.checked
+                                  ? setEditStatus("Active")
+                                  : setEditStatus("Inactive")
+                              }
+                            />
+                          )
+                        }
+                        labelPlacement="end"
+                      /> */}
+                    </Grid>
+                    <Divider style={{ marginTop: 10 }} />
+                    <Container disableGutters>
+                      <Button style={{ margin: 15 }} variant="contained">
+                        Reset to Default
+                      </Button>
+                      <TreeView
+                        // className={classes.root}
+                        defaultCollapseIcon={
+                          <RemoveRoundedIcon
+                            style={{
+                              backgroundColor: "#717171",
+                              borderRadius: 2,
+                              color: "white",
+                            }}
+                          />
+                        }
+                        defaultExpandIcon={
+                          <AddRoundedIcon
+                            style={{
+                              backgroundColor: "#2D62ED",
+                              borderRadius: 2,
+                              color: "white",
+                            }}
+                          />
+                        }
+                        // expanded={expanded}
+                        // selected={selected}
+                        // onNodeToggle={handleToggle}
+                        // onNodeSelect={handleSelect}
+                      >
+                        {data.map((node) => renderTree(node))}
+                      </TreeView>
+                    </Container>
+                  </Grid>
+                ) : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
-                <Button
-                  onClick={handleDialogEditUserClose}
-                  variant="text"
-                  color="primary"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={() =>
-                    handleSaveEdit(editID, editUserID, editUserName, editStatus)
+                <Grid container>
+                  <Grid item style={{ flexGrow: 1 }}>
+                    <Button
+                      onClick={handlePermission}
+                      variant="contained"
+                      // color="#20C1BB"
+                      style={{ backgroundColor: "#20C1BB", color: "white" }}
+                    >
+                      <VpnKeyOutlinedIcon style={{ marginRight: 15 }} />
+                      Permission
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      onClick={handleDialogEditUserClose}
+                      variant="text"
+                      color="primary"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        handleSaveEdit(
+                          editID,
+                          editUserID,
+                          editUserName,
+                          editStatus
+                        )
+                      }
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save
+                    </Button>
+                  </Grid>
+                </Grid>
+              </DialogActions>
+            </Grid>
+          </Grid>
+        </Dialog>
+
+        {/* ==================== Dialog Delete User========================= */}
+        <Dialog
+          fullWidth="true"
+          maxWidth="sm"
+          open={dialogDeleteUser}
+          onClose={handleDialogDeleteUserClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <Grid container>
+            {permissionDialog ? (
+              <Grid
+                item
+                sm={3}
+                md={3}
+                lg={3}
+                xl={3}
+                style={{ backgroundColor: "#F5F5F5" }}
+              >
+                <TreeView
+                  style={{ padding: 20 }}
+                  defaultCollapseIcon={
+                    <RemoveRoundedIcon
+                      style={{
+                        backgroundColor: "#717171",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
                   }
-                  variant="contained"
-                  color="primary"
+                  defaultExpandIcon={
+                    <AddRoundedIcon
+                      style={{
+                        backgroundColor: "#2D62ED",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
                 >
-                  Save
-                </Button>
+                  {data.map((node) => renderTreeSubMenu(node))}
+                </TreeView>
+              </Grid>
+            ) : null}
+            <Grid
+              item
+              xs={dialogRatio}
+              sm={dialogRatio}
+              md={dialogRatio}
+              lg={dialogRatio}
+              xl={dialogRatio}
+            >
+              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                Confirm Delete User
+              </DialogTitle>
+              <DialogContent>
+                <Typography variant="h5" color="initial">
+                  Confirm Delete {editUserID} {editUserName}
+                </Typography>
+              </DialogContent>
+              <DialogActions style={{ padding: 20 }}>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="space-evenly"
+                  alignItems="center"
+                  spacing={4}
+                >
+                  <Grid item sm={6} md={6} lg={6} xl={6}>
+                    <Button
+                      fullWidth
+                      onClick={handleDialogDeleteUserClose}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Cancel
+                    </Button>
+                  </Grid>
+                  <Grid item sm={6} md={6} lg={6} xl={6}>
+                    <Button
+                      fullWidth
+                      onClick={() =>
+                        handleDialogDelete(editID, editUserID, editUserName)
+                      }
+                      variant="contained"
+                      // color="primary"
+                      style={{ backgroundColor: "red", color: "white" }}
+                    >
+                      Delete
+                    </Button>
+                  </Grid>
+                </Grid>
               </DialogActions>
             </Grid>
           </Grid>
