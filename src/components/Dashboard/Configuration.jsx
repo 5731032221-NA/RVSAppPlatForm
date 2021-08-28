@@ -606,7 +606,7 @@ export default function Configuration() {
                 </Typography>
               </Grid>
               <Grid item>
-                {nodes.master == false || sessionStorage.getItem("role") == "root" ?
+                {nodes.master == false || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root" ) ?
                   <IconButton
                     onClick={() => handleDialogEdit(nodes.code, nodes.RefNo, nodes)}>
                     <EditRoundedIcon />
@@ -616,7 +616,7 @@ export default function Configuration() {
                     <EditRoundedIcon style={{ color: "#d8d8d8" }} />
                   </IconButton>
                 }
-                {nodes.master == false || sessionStorage.getItem("role") == "root" ?
+                {nodes.master == false || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root" )  ?
                   <IconButton onClick={() => handleDelete(nodes.RefNo)}>
                     <DeleteRoundedIcon />
                   </IconButton>
