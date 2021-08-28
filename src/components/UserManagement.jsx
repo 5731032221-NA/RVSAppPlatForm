@@ -42,6 +42,7 @@ import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import {
+  listuser,
   getuser,
   postuser,
   updateuser,
@@ -55,16 +56,17 @@ import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import user from "../services/user.service";
+// import user from "../services/user.service";
 
 // Generate Order Data
-function createData(id, userID, userName, position, roles, status) {
+function createData(id, userID, userName, position, roles, property, status) {
   return {
     id,
     userID,
     userName,
     position,
     roles,
+    property,
     status,
   };
 }
@@ -160,17 +162,18 @@ export default function UserManagement() {
 
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
-    const data = await getuser(sessionStorage.getItem("auth"));
+    const data = await listuser(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
           element.id,
-          element.userid,
+          element.username,
           element.firstname + " " + element.lastname,
-          "",
-          element.role,
-          element.status_record
+          element.position,
+          element.roles,
+          element.property,
+          element.status
         )
       )
     );
@@ -300,17 +303,18 @@ export default function UserManagement() {
       status_marriaged: "S",
     });
     console.log(insert);
-    const data = await getuser(sessionStorage.getItem("auth"));
+    const data = await listuser(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
           element.id,
-          element.userid,
+          element.username,
           element.firstname + " " + element.lastname,
-          "",
-          element.role,
-          element.status_record
+          element.position,
+          element.roles,
+          element.property,
+          element.status
         )
       )
     );
@@ -865,17 +869,18 @@ export default function UserManagement() {
       id
     );
     console.log("userupdate func:", userupdate);
-    const data = await getuser(sessionStorage.getItem("auth"));
+    const data = await listuser(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
           element.id,
-          element.userid,
+          element.username,
           element.firstname + " " + element.lastname,
-          "",
-          element.role,
-          element.status_record
+          element.position,
+          element.roles,
+          element.property,
+          element.status
         )
       )
     );
@@ -961,6 +966,7 @@ export default function UserManagement() {
                     <TableCell>User Name</TableCell>
                     <TableCell>Position</TableCell>
                     <TableCell>Roles</TableCell>
+                    <TableCell>Property</TableCell>
                     <TableCell align="center">Status</TableCell>
                     <TableCell align="center">Action</TableCell>
                   </TableRow>
@@ -972,6 +978,7 @@ export default function UserManagement() {
                       <TableCell>{row.userName}</TableCell>
                       <TableCell>{row.position}</TableCell>
                       <TableCell>{row.roles}</TableCell>
+                      <TableCell>{row.property}</TableCell>
                       {`${row.status}` === "Active" ||
                         `${row.status}` === "active" ? (
                         <TableCell align="center">
