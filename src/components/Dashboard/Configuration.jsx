@@ -625,7 +625,7 @@ export default function Configuration() {
                     <DeleteRoundedIcon style={{ color: "#d8d8d8" }} />
                   </IconButton>
                 }
-                {nodes.addchild == true || sessionStorage.getItem("role") == "root" ?
+                {nodes.addchild == true || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root" )  ?
                   <IconButton
                     aria-controls={nodes.RefNo}
                     aria-haspopup="true"
