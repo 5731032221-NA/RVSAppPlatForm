@@ -57,17 +57,18 @@ import {
 import TablePagination from "@material-ui/core/TablePagination";
 
 // Generate Order Data
-function createData(id, userID, userName, position, roles, count, status) {
+function createData(id, rolecode, rolename, description, count, status) {
   return {
     id,
-    userID,
-    userName,
-    position,
-    roles,
+    rolecode,
+    rolename,
+    description,
     count,
-    status,
+    status
   };
 }
+
+
 
 // const rows = [
 //   createData(0, "CASHIER", "Cashier", "All Shifts Cashier", "5", "Active"),
@@ -104,6 +105,12 @@ export default function RoleManagement() {
   const [selectUser, setSelectUser] = React.useState(null);
   const [rows, setRows] = useState([]);
 
+  const [editRolecode, setEditRolecode] = useState([]);
+  const [editRolename, setEditRolename] = useState([]);
+  const [editDescription, setEditDescription] = useState([]);
+  const [editStatus, setEditStatus] = useState([]);
+
+
   const [pageData, setPageData] = React.useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -122,7 +129,6 @@ export default function RoleManagement() {
           element.rolename,
           element.description,
           element.count,
-          "",
           element.status
         )
       )
@@ -140,13 +146,17 @@ export default function RoleManagement() {
   const handleDialogAddRoleClose = () => {
     setDialogAddRole(false);
   };
-  const handleDialogEditRole = async (idForEdit) => {
+  const handleDialogEditRole = async (rolecode,rolename,description,status) => {
     // const databyid = await getuserbyid(
     //   sessionStorage.getItem("auth"),
     //   idForEdit
     // );
     // setStatusRec(databyid.content[databyid.content.length - 1].status_record);
     // console.log("idForEdit", idForEdit);
+    setEditRolecode(rolecode);
+    setEditRolename(rolename);
+    setEditDescription(description);
+    setEditStatus(status);
     setDialogEditRole(true);
   };
 
@@ -1089,10 +1099,10 @@ export default function RoleManagement() {
                     <TableBody>
                       {pageData.map((row) => (
                         <TableRow key={row.id}>
-                          <TableCell>{row.userID}</TableCell>
-                          <TableCell>{row.userName}</TableCell>
-                          <TableCell>{row.position}</TableCell>
-                          <TableCell>{row.roles}</TableCell>
+                          <TableCell>{row.rolecode}</TableCell>
+                          <TableCell>{row.rolename}</TableCell>
+                          <TableCell>{row.description}</TableCell>
+                          <TableCell>{row.count}</TableCell>
                           {`${row.status}` === "Active" ||
                           `${row.status}` === "active" ? (
                             <TableCell align="center">
@@ -1123,7 +1133,7 @@ export default function RoleManagement() {
                           )}
                           <TableCell align="center">
                             <IconButton
-                              onClick={() => handleDialogEditRole(row.id)}
+                              onClick={() => handleDialogEditRole(row.rolecode,row.rolename,row.description,row.status)}
                             >
                               <EditRoundedIcon />
                             </IconButton>
@@ -1464,6 +1474,7 @@ export default function RoleManagement() {
                         id="outlined-basic"
                         label="Role Code"
                         variant="outlined"
+                        value={editRolecode}
                         fullWidth
                       />
                     </Grid>
@@ -1476,6 +1487,7 @@ export default function RoleManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        value={editRolename}
                         // value={roomTypeDialog}
                         // onChange={handleRoomTypeDialog}
                       >
@@ -1534,6 +1546,7 @@ export default function RoleManagement() {
                       fullWidth
                       // id="outlined-multiline-static"
                       label="Description"
+                      value={editDescription}
                       multiline
                       rows={4}
                       variant="outlined"
@@ -1570,7 +1583,7 @@ export default function RoleManagement() {
                           <Switch
                             defaultChecked={false}
                             color="primary"
-                            // value={checked}
+                            value={editStatus}
                             // onChange={(e) => setEditStatus(e.target.checked)}
 
                             onChange={(e) =>

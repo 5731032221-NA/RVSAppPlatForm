@@ -62,11 +62,12 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 // import user from "../services/user.service";
 
 // Generate Order Data
-function createData(id, userID, userName, position, roles, property, status) {
+function createData(id, userID, firstname,lastname, position, roles, property, status) {
   return {
     id,
     userID,
-    userName,
+    firstname,
+    lastname,
     position,
     roles,
     property,
@@ -160,6 +161,8 @@ export default function UserManagement() {
   const [pageData, setPageData] = React.useState([]);
   const [editUserName, setEditUserName] = React.useState(null);
   const [editUserID, setEditUserID] = React.useState(null);
+  const [editFirstname, setEditFirstname] = React.useState(null);
+  const [editLastname, setEditLastname] = React.useState(null);
   const [editID, setEditID] = React.useState(null);
   const [editStatus, setEditStatus] = React.useState(false);
   const [rows, setRows] = useState([]);
@@ -191,7 +194,8 @@ export default function UserManagement() {
         createData(
           element.id,
           element.username,
-          element.firstname + " " + element.lastname,
+          element.firstname,
+          element.lastname,
           element.position,
           element.roles,
           element.property,
@@ -223,6 +227,7 @@ export default function UserManagement() {
   };
   const handleDialogEditUser = async (
     id,
+    UserID,
     firstName,
     lastName,
     status,
@@ -244,7 +249,10 @@ export default function UserManagement() {
     //   }
     // }
     // setEditID(id);
-
+    setEditUserID(UserID);
+    setEditFirstname(firstName);
+    setEditLastname(lastName);
+    setEditStatus(status);
     setDialogEditUser(true);
   };
 
@@ -307,7 +315,8 @@ export default function UserManagement() {
         createData(
           element.id,
           element.username,
-          element.firstname + " " + element.lastname,
+          element.firstname,
+          element.lastname,
           element.position,
           element.roles,
           element.property,
@@ -969,7 +978,8 @@ export default function UserManagement() {
         createData(
           element.id,
           element.username,
-          element.firstname + " " + element.lastname,
+          element.firstname,
+          element.lastname,
           element.position,
           element.roles,
           element.property,
@@ -1021,7 +1031,8 @@ export default function UserManagement() {
         createData(
           element.id,
           element.userid,
-          element.firstname + " " + element.lastname,
+          element.firstname,
+          element.lastname,
           "",
           element.role,
           element.status_record
@@ -1120,7 +1131,7 @@ export default function UserManagement() {
                   {pageData.map((row) => (
                     <TableRow key={row.id}>
                       <TableCell>{row.userID}</TableCell>
-                      <TableCell>{row.userName}</TableCell>
+                      <TableCell>{row.firstname} {row.lastname}</TableCell>
                       <TableCell>{row.position}</TableCell>
                       <TableCell>{row.roles}</TableCell>
                       <TableCell>{row.property}</TableCell>
@@ -1159,7 +1170,8 @@ export default function UserManagement() {
                             handleDialogEditUser(
                               row.id,
                               row.userID,
-                              row.userName,
+                              row.firstname,
+                              row.lastname,
                               row.status
                             )
                           }
@@ -1225,6 +1237,16 @@ export default function UserManagement() {
           <DialogContent>
             <Container maxWidth="xl" disableGutters>
               <Grid container spacing={2} style={{ paddingTop: 10 }}>
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <TextField
+                    // autoFocus
+                    id="outlined-basic"
+                    label="UserID"
+                    variant="outlined"
+                    fullWidth
+                    onChange={(e) => setEditUserID(e.target.value)}
+                  />
+                </Grid>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                   <TextField
                     // autoFocus
@@ -1238,7 +1260,7 @@ export default function UserManagement() {
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Lastnameame"
+                    label="Lastname"
                     variant="outlined"
                     fullWidth
                     SelectProps={{
@@ -1470,34 +1492,43 @@ export default function UserManagement() {
               <DialogContent>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        // autoFocus
-                        label="Username"
-                        variant="outlined"
-                        id="outlined-basic"
-                        defaultValue={editUserID}
-                        // value={" "}
-                        onChange={(e) => setEditUserID(e.target.value)}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        id="outlined-basic"
-                        label="Name"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        // value={" "}
-                        defaultValue={editUserName}
-                        onChange={(e) => setEditUserName(e.target.value)}
-                      ></TextField>
-                    </Grid>
-                  </Grid>
-
+                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <TextField
+                    // autoFocus
+                    id="outlined-basic"
+                    label="UserID"
+                    variant="outlined"
+                    value={editUserID}
+                    fullWidth
+                    onChange={(e) => setEditUserID(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    // autoFocus
+                    id="outlined-basic"
+                    label="Firstname"
+                    variant="outlined"
+                    value={editFirstname}
+                    fullWidth
+                    onChange={(e) => setEditFirstname(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Lastname"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    value={editLastname}
+                    // value={" "}
+                    onChange={(e) => setEditLastname(e.target.value)}
+                  ></TextField>
+                </Grid>
+              </Grid>
                   <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                     <TextField
                       select
@@ -1766,7 +1797,7 @@ export default function UserManagement() {
               </DialogTitle>
               <DialogContent>
                 <Typography variant="h5" color="initial">
-                  Confirm Delete {editUserID} {editUserName}
+                  Confirm Delete {editUserID} {editFirstname} {editLastname}
                 </Typography>
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
