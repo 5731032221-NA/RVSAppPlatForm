@@ -399,6 +399,10 @@ export default function Configuration() {
   const handleChangeAdd = (event) => {
     setAddChuldValue(event.target.value);
   };
+
+  const handleChangeName = (event) => {
+    setAddChuldName(event.target.value);
+  };
   const handleChangeLang = (event) => {
     setAddChuldNameLang(event.target.value);
   };
@@ -736,7 +740,7 @@ export default function Configuration() {
                       label="Name (EN)"
                       variant="outlined"
                       value={addChildValue}
-                      onChange={(e) => handleChangeAdd(e)}
+                      onChange={(e) => handleChangeValue(e)}
                       helperText={
                         <Grid
                           container
@@ -815,7 +819,7 @@ export default function Configuration() {
                       variant="outlined"
                       // defaultValue={row.name_en}
                       value={addChildName}
-                      onChange={(e) => handleChangeAdd(e)}
+                      onChange={(e) => handleChangeName(e)}
                       helperText={
                         <Grid
                           container
