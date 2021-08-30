@@ -228,48 +228,24 @@ export default function UserManagement() {
     status,
     chipRolesDialog
   ) => {
-    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    // setEditUserID(databyid.content[databyid.content.length - 1].firstname);
-    // setEditUserName(databyid.content[databyid.content.length - 1].lastname);
-    // setEditStatus(databyid.content[databyid.content.length - 1].status_record);
-
-    // // var Arr = ["Cashier", "Accountant", "Manager", "Officer"];
-    // // var tempArr = [];
-    // // for (let i = 0; i < Arr.length; i++) {
-    // //   tempArr.push(Arr[i]);
-
-    // //   setChipRolesDialog([
-    // //     {
-    // //       key: tempArr,
-    // //       label: tempArr,
-    // //     },
-    // //   ]);
-    // // }
-
-    // if (databyid.content[databyid.content.length - 1].role) {
-    //   const roleData = databyid.content[databyid.content.length - 1].role;
-
-    //   var tempRole = roleData.split(",");
-    //   console.log("roleData", tempRole);
-    //   console.log("roleData", typeof tempRole);
-    // }
+    const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    setEditUserID(databyid.content[databyid.content.length - 1].firstname);
+    setEditUserName(databyid.content[databyid.content.length - 1].lastname);
+    setEditStatus(databyid.content[databyid.content.length - 1].status_record);
+    setChipRolesDialog([]);
+    if (databyid.content[databyid.content.length - 1].role) {
+      const roleData = databyid.content[databyid.content.length - 1].role;
+      var tempRole = roleData.split(",");
+      for (let i = 0; i < tempRole.length; i++) {
+        setChipRolesDialog((prevState) => [
+          ...prevState,
+          { key: tempRole[i], label: tempRole[i] },
+        ]);
+      }
+    }
     setEditID(id);
 
     setDialogEditUser(true);
-
-    // console.log("databyid :", databyid);
-    // console.log(
-    //   "databyid Firstname:",
-    //   databyid.content[databyid.content.length - 1].firstname
-    // );
-    // console.log(
-    //   "databyid Lastname :",
-    //   databyid.content[databyid.content.length - 1].lastname
-    // );
-    // console.log(
-    //   "databyid status_record :",
-    //   databyid.content[databyid.content.length - 1].status_record
-    // );
   };
 
   const handleDialogEditUserClose = () => {
@@ -957,14 +933,20 @@ export default function UserManagement() {
   // const handleToggleStatus = (event) => {
   //   setToggleStatus(event.target.value);
   // };
-  const handleSaveEdit = async (id, firstName, lastName, status) => {
+  const handleSaveEdit = async (id, firstName, lastName, status, role) => {
     console.log(
       "Handle save Edit : id, firstname, userName, status",
       id,
       firstName,
       lastName,
-      status
+      status,
+      role
     );
+    // let roleCode = new Set();
+
+    // role.map((element) => roleCode.push(element.lebel));
+    // // console.log("role for save", role[role.length - 1].label);
+    // console.log("roleCode for save", roleCode);
 
     const userupdate = await updateuser(
       sessionStorage.getItem("auth"),
@@ -975,7 +957,7 @@ export default function UserManagement() {
         age: 20,
         status_record: status,
         status_marriaged: "S",
-        role: "Cashier,Accountant",
+        role: role,
       },
       id
     );
@@ -1006,17 +988,10 @@ export default function UserManagement() {
   };
   const handleDialogDeleteUserOpen = async (id) => {
     setEditID(id);
-    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    // setEditUserID(databyid.content[databyid.content.length - 1].firstname);
-    // setEditUserName(databyid.content[databyid.content.length - 1].lastname);
-    // // console.log(
-    // //   "databyid  Firstname Delete:",
-    // //   databyid.content[databyid.content.length - 1].firstname
-    // // );
-    // // console.log(
-    // //   "databyid Lastname Delete:",
-    // //   databyid.content[databyid.content.length - 1].lastname
-    // // );
+    const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    setEditUserID(databyid.content[databyid.content.length - 1].firstname);
+    setEditUserName(databyid.content[databyid.content.length - 1].lastname);
+
     setDialogDeleteUser(true);
   };
 
@@ -1760,7 +1735,8 @@ export default function UserManagement() {
                           editID,
                           editUserID,
                           editUserName,
-                          editStatus
+                          editStatus,
+                          chipRolesDialog
                         )
                       }
                       variant="contained"
@@ -1784,48 +1760,7 @@ export default function UserManagement() {
           aria-labelledby="form-dialog-title"
         >
           <Grid container>
-            {permissionDialog ? (
-              <Grid
-                item
-                sm={3}
-                md={3}
-                lg={3}
-                xl={3}
-                style={{ backgroundColor: "#F5F5F5" }}
-              >
-                <TreeView
-                  style={{ padding: 20 }}
-                  defaultCollapseIcon={
-                    <RemoveRoundedIcon
-                      style={{
-                        backgroundColor: "#717171",
-                        borderRadius: 2,
-                        color: "white",
-                      }}
-                    />
-                  }
-                  defaultExpandIcon={
-                    <AddRoundedIcon
-                      style={{
-                        backgroundColor: "#2D62ED",
-                        borderRadius: 2,
-                        color: "white",
-                      }}
-                    />
-                  }
-                >
-                  {data.map((node) => renderTreeSubMenu(node))}
-                </TreeView>
-              </Grid>
-            ) : null}
-            <Grid
-              item
-              xs={dialogRatio}
-              sm={dialogRatio}
-              md={dialogRatio}
-              lg={dialogRatio}
-              xl={dialogRatio}
-            >
+            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
               <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
                 Confirm Delete User
               </DialogTitle>
