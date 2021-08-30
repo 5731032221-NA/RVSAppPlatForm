@@ -372,7 +372,7 @@ export default function Configuration() {
     // setAddChuldName(event.target.id.split("-")[1]);
     // setAddchild(null);
     setAddChuldid(id);
-    setAddChuldName(name);
+    setAddChuldValue(name);
     setCode(node.code);
     setDescription(node.description)
     setAddChuldNameLang(node["name_"+lang])
@@ -400,8 +400,8 @@ export default function Configuration() {
     setAddChuldValue(event.target.value);
   };
 
-  const handleChangeName = (event) => {
-    setAddChuldName(event.target.value);
+  const handleChangeValue = (event) => {
+    setAddChuldValue(event.target.value);
   };
   const handleChangeLang = (event) => {
     setAddChuldNameLang(event.target.value);
@@ -818,8 +818,8 @@ export default function Configuration() {
                       label="Name (EN)"
                       variant="outlined"
                       // defaultValue={row.name_en}
-                      value={addChildName}
-                      onChange={(e) => handleChangeName(e)}
+                      value={addChildValue}
+                      onChange={(e) => handleChangeValue(e)}
                       helperText={
                         <Grid
                           container
