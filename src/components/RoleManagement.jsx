@@ -57,13 +57,14 @@ import {
 import TablePagination from "@material-ui/core/TablePagination";
 
 // Generate Order Data
-function createData(id, userID, userName, position, roles, status) {
+function createData(id, userID, userName, position, roles, count, status) {
   return {
     id,
     userID,
     userName,
     position,
     roles,
+    count,
     status,
   };
 }
@@ -120,7 +121,8 @@ export default function RoleManagement() {
           element.rolecode,
           element.rolename,
           element.description,
-          0,
+          element.count,
+          "",
           element.status
         )
       )

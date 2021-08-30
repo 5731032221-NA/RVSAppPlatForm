@@ -93,7 +93,7 @@ export default function Configuration() {
         name_en: "PMS Configuration",
         name_th: "การกำหนดค่า PMS",
         name_cn: "PMS 配置",
-        description: "PMS Configuration",
+        description: "CFGPMS description",
         createdate: "2021-08-13 12:03:00",
         master: true,
         addchild: false,
@@ -104,7 +104,7 @@ export default function Configuration() {
             code: "CFGPROP",
             name_en: "Property Configuration",
             name_th: "การกำหนดค่า Property",
-            description: "Property Configuration",
+            description: "CFGPROP Configuration",
             createdate: "2021-08-13 12:03:00",
             master: true,
             addchild: false,
@@ -114,6 +114,7 @@ export default function Configuration() {
                 RefNo: "1.1.1.1",
                 code: "PROPERTY",
                 name_en: "Property Master",
+                description: "PROPERTY description",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
                 addchild: true,
@@ -123,6 +124,7 @@ export default function Configuration() {
                 RefNo: "1.1.1.2",
                 code: "BUILDING",
                 name_en: "Building Master",
+                description: "BUILDING description",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
                 addchild: true,
@@ -132,6 +134,7 @@ export default function Configuration() {
                 RefNo: "1.1.1.3",
                 code: "EXPOSURE",
                 name_en: "Exposure",
+                description: "EXPOSURE description",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
                 addchild: true,
@@ -142,6 +145,7 @@ export default function Configuration() {
                 code: "FLOOR",
                 name_en: "Floor",
                 name_th: "ชั้น",
+                description: "FLOOR description",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
                 addchild: true,
@@ -151,6 +155,7 @@ export default function Configuration() {
                 RefNo: "1.1.1.5",
                 code: "ZONE",
                 name_en: "Zone/Wing",
+                description: "ZONE description",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
                 addchild: true,
@@ -163,6 +168,7 @@ export default function Configuration() {
             code: "CFGROOM",
             name_en: "Room Configuration",
             name_th: "การกำหนดค่าห้อง",
+            description: "CFGROOM description",
             createdate: "2021-08-13 12:03:00",
             master: true,
             addchild: false,
@@ -173,6 +179,7 @@ export default function Configuration() {
                 code: "RMTYPE",
                 name_en: "Room Type",
                 name_th: "ประเภทห้อง",
+                description: "RMTYPE description",
                 master: true,
                 addchild: true,
                 createdate: "2021-08-13 12:03:00",
@@ -183,6 +190,7 @@ export default function Configuration() {
                 code: "RMCAT",
                 name_en: "Room Category",
                 name_th: "ประเภทห้อง",
+                description: "RMCAT description",
                 master: true,
                 addchild: true,
                 createdate: "2021-08-13 12:03:00",
@@ -193,6 +201,7 @@ export default function Configuration() {
                 code: "ROOM",
                 name_en: "Room Master Maintenance",
                 name_th: "การบำรุงรักษาห้องมาสเตอร์",
+                description: "ROOM description",
                 master: true,
                 addchild: true,
                 createdate: "2021-08-13 12:03:00",
@@ -205,6 +214,7 @@ export default function Configuration() {
             code: "CFGITEM",
             name_en: "Item Configuration",
             name_th: "การกำหนดค่ารายการ",
+            description: "CFGITEM description",
             createdate: "2021-08-13 12:03:00",
             master: true,
             addchild: false,
@@ -215,6 +225,7 @@ export default function Configuration() {
                 code: "ITEMTYPE",
                 name_en: "Item Type",
                 name_th: "ประเภทรายการ",
+                description: "ITEMTYPE description",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
                 addchild: true,
@@ -225,6 +236,7 @@ export default function Configuration() {
                 code: "ITEMCAT",
                 name_en: "Item Category",
                 name_th: "หมวดหมู่รายการ",
+                description: "ITEMCAT description",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
                 addchild: true,
@@ -237,6 +249,7 @@ export default function Configuration() {
             code: "CFGRSVN",
             name_en: "Reservation Configuration",
             name_th: "การกำหนดค่าการจอง",
+            description: "CFGRSVN description",
             createdate: "2021-08-13 12:03:00",
             master: true,
             addchild: false,
@@ -247,6 +260,7 @@ export default function Configuration() {
                 code: "MARKET",
                 name_en: "Market segment Maintenance",
                 name_th: "การบำรุงรักษาส่วนตลาด",
+                description: "MARKET description",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
                 addchild: true,
@@ -257,6 +271,7 @@ export default function Configuration() {
                 code: "SOURCE",
                 name_en: "Source Maintenance",
                 name_th: "การบำรุงรักษาแหล่งที่มา",
+                description: "SOURCE description",
                 createdate: "2021-08-13 12:03:00",
                 master: true,
                 addchild: true,
@@ -271,6 +286,7 @@ export default function Configuration() {
         code: "CFGSYS",
         name_en: "System Configuration",
         name_th: "การกำหนดค่าระบบ",
+        description: "CFGSYS description",
         createdate: "2021-08-13 12:03:00",
         master: true,
         addchild: false,
@@ -281,6 +297,7 @@ export default function Configuration() {
             code: "USER",
             name_en: "User Management",
             name_th: "การจัดการผู้ใช้",
+            description: "USER description",
             createdate: "2021-08-13 12:03:00",
             master: true,
             addchild: true,
@@ -291,6 +308,7 @@ export default function Configuration() {
             code: "ROLE",
             name_en: "Role Management",
             name_th: "การจัดการบทบาท",
+            description: "ROLE description",
             createdate: "2021-08-13 12:03:00",
             master: true,
             addchild: true,
@@ -606,9 +624,9 @@ export default function Configuration() {
                 </Typography>
               </Grid>
               <Grid item>
-                {nodes.master == false || sessionStorage.getItem("role") == "root" ?
+                {nodes.master == false || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root" ) ?
                   <IconButton
-                    onClick={() => handleDialogEdit(nodes.code, nodes.RefNo, nodes)}>
+                    onClick={() => handleDialogEdit(nodes.name_en, nodes.RefNo, nodes)}>
                     <EditRoundedIcon />
                   </IconButton>
                   :
@@ -616,7 +634,7 @@ export default function Configuration() {
                     <EditRoundedIcon style={{ color: "#d8d8d8" }} />
                   </IconButton>
                 }
-                {nodes.master == false || sessionStorage.getItem("role") == "root" ?
+                {nodes.master == false || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root" )  ?
                   <IconButton onClick={() => handleDelete(nodes.RefNo)}>
                     <DeleteRoundedIcon />
                   </IconButton>
@@ -625,7 +643,7 @@ export default function Configuration() {
                     <DeleteRoundedIcon style={{ color: "#d8d8d8" }} />
                   </IconButton>
                 }
-                {nodes.addchild == true || sessionStorage.getItem("role") == "root" ?
+                {nodes.addchild == true || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root" )  ?
                   <IconButton
                     aria-controls={nodes.RefNo}
                     aria-haspopup="true"
@@ -717,7 +735,7 @@ export default function Configuration() {
                       id="outlined-basic"
                       label="Name (EN)"
                       variant="outlined"
-                      // value={addChildValue}
+                      value={addChildValue}
                       onChange={(e) => handleChangeAdd(e)}
                       helperText={
                         <Grid
@@ -788,7 +806,7 @@ export default function Configuration() {
               <DialogContent>
                 <Container maxWidth="xl" disableGutters>
 
-                  <h2>Code: {addChildName}</h2>
+                  <h2>Code: {code}</h2>
                   <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
                     <TextField
                       autoFocus
@@ -796,7 +814,7 @@ export default function Configuration() {
                       label="Name (EN)"
                       variant="outlined"
                       // defaultValue={row.name_en}
-                      value={addChildValue}
+                      value={addChildName}
                       onChange={(e) => handleChangeAdd(e)}
                       helperText={
                         <Grid

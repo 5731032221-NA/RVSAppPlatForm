@@ -1,4 +1,18 @@
 module.exports = {
+
+  listuser: async function (accessToken, req) {
+    return fetch('http://localhost:8082/listuser', {
+      method: 'GET',
+      headers: {
+        'Authorization': accessToken,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(req)
+    })
+      .then(async res => res.json())
+
+  },
+
   listrole: async function (accessToken, req) {
     return fetch("http://localhost:8082/listrole", {
       method: "GET",
