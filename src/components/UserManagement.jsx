@@ -228,22 +228,22 @@ export default function UserManagement() {
     status,
     chipRolesDialog
   ) => {
-    const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    setEditUserID(databyid.content[databyid.content.length - 1].firstname);
-    setEditUserName(databyid.content[databyid.content.length - 1].lastname);
-    setEditStatus(databyid.content[databyid.content.length - 1].status_record);
-    setChipRolesDialog([]);
-    if (databyid.content[databyid.content.length - 1].role) {
-      const roleData = databyid.content[databyid.content.length - 1].role;
-      var tempRole = roleData.split(",");
-      for (let i = 0; i < tempRole.length; i++) {
-        setChipRolesDialog((prevState) => [
-          ...prevState,
-          { key: tempRole[i], label: tempRole[i] },
-        ]);
-      }
-    }
-    setEditID(id);
+    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    // setEditUserID(databyid.content[databyid.content.length - 1].firstname);
+    // setEditUserName(databyid.content[databyid.content.length - 1].lastname);
+    // setEditStatus(databyid.content[databyid.content.length - 1].status_record);
+    // setChipRolesDialog([]);
+    // if (databyid.content[databyid.content.length - 1].role) {
+    //   const roleData = databyid.content[databyid.content.length - 1].role;
+    //   var tempRole = roleData.split(",");
+    //   for (let i = 0; i < tempRole.length; i++) {
+    //     setChipRolesDialog((prevState) => [
+    //       ...prevState,
+    //       { key: tempRole[i], label: tempRole[i] },
+    //     ]);
+    //   }
+    // }
+    // setEditID(id);
 
     setDialogEditUser(true);
   };
