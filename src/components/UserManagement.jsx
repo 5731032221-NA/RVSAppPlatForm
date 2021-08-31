@@ -99,12 +99,16 @@ function createData(id, userID, userName, position, roles, property, status) {
 
 const position = [
   {
-    key: "1",
-    label: "Front office",
+    key: "Administrator",
+    label: "Administrator",
   },
   {
-    key: "2",
-    label: "Receptionist",
+    key: "Cashier",
+    label: "Cashier",
+  },
+  {
+    key: "Manager",
+    label: "Manager",
   },
 ];
 const property = [
@@ -158,8 +162,9 @@ export default function UserManagement() {
   const [dialogSize, setDialogSize] = React.useState("sm");
   const [dialogRatio, setDialogRatio] = React.useState(12);
   const [pageData, setPageData] = React.useState([]);
+  const [editLastName, setEditLastName] = React.useState(null);
+  const [editFirstName, setEditFirstName] = React.useState(null);
   const [editUserName, setEditUserName] = React.useState(null);
-  const [editUserID, setEditUserID] = React.useState(null);
   const [editID, setEditID] = React.useState(null);
   const [editStatus, setEditStatus] = React.useState(false);
   const [rows, setRows] = useState([]);
@@ -179,11 +184,7 @@ export default function UserManagement() {
       })
     );
     console.log("roles", roles);
-  }, []);
 
-  console.log("roles out:", roles);
-
-  React.useEffect(async () => {
     const data = await listuser(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach((element) =>
@@ -221,28 +222,29 @@ export default function UserManagement() {
   const handleDialogAddUserClose = () => {
     setDialogAddUser(false);
   };
-  const handleDialogEditUser = async (
-    id,
-    firstName,
-    lastName,
-    status,
-    chipRolesDialog
-  ) => {
+  const handleDialogEditUser = async (id, chipRolesDialog) => {
     const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    setEditUserID(databyid.content[databyid.content.length - 1].firstname);
-    setEditUserName(databyid.content[databyid.content.length - 1].lastname);
-    setEditStatus(databyid.content[databyid.content.length - 1].status_record);
+    setEditFirstName(databyid.content[databyid.content.length - 1].firstname);
+    setEditLastName(databyid.content[databyid.content.length - 1].lastname);
+    setEditUserName(databyid.content[databyid.content.length - 1].username);
+    setEditStatus(databyid.content[databyid.content.length - 1].status);
+    setSelectPosition(databyid.content[databyid.content.length - 1].position);
+
     setChipRolesDialog([]);
-    if (databyid.content[databyid.content.length - 1].role) {
-      const roleData = databyid.content[databyid.content.length - 1].role;
-      var tempRole = roleData.split(",");
-      for (let i = 0; i < tempRole.length; i++) {
-        setChipRolesDialog((prevState) => [
-          ...prevState,
-          { key: tempRole[i], label: tempRole[i] },
-        ]);
+    if (databyid.content[databyid.content.length - 1].roles) {
+      const roleDataEdit = databyid.content[databyid.content.length - 1].roles;
+      var tempRole = roleDataEdit.split(", ");
+      for (let i in roles) {
+        if (tempRole.includes(roles[i].key)) {
+          setChipRolesDialog((prevState) => [
+            ...prevState,
+            { key: roles[i].key, label: roles[i].label },
+          ]);
+        }
       }
     }
+    console.log("Edit databyid:", databyid);
+    console.log("Edit ID:", id);
     setEditID(id);
 
     setDialogEditUser(true);
@@ -279,12 +281,12 @@ export default function UserManagement() {
   };
 
   const handleInsertUser = async (firstName, lastName, statusRec, role) => {
-    setEditUserID(null);
-    setEditUserName(null);
+    setEditFirstName(null);
+    setEditLastName(null);
     const temp = new Set();
     if (chipRolesDialog.length) {
       for (var i in chipRolesDialog) {
-        temp.add(chipRolesDialog[i].label);
+        temp.add(chipRolesDialog[i].key);
       }
     }
     const tempArray = Array.from(temp).join(",");
@@ -328,24 +330,24 @@ export default function UserManagement() {
     setSelectProperty(event.target.value);
   };
 
-  const handleSelectRoles = (event) => {
+  const handleSelectRoles = (event, key) => {
     const temp = new Set();
     if (chipRolesDialog.length) {
       for (var i in chipRolesDialog) {
-        temp.add(chipRolesDialog[i].label);
+        temp.add(chipRolesDialog[i].key);
       }
-      if (temp.has(event.target.value)) {
+      if (temp.has(key.props.name)) {
         // console.log("had value");
       } else {
         setChipRolesDialog([
           ...chipRolesDialog,
-          { key: event.target.value, label: event.target.value },
+          { key: key.props.name, label: event.target.value },
         ]);
       }
     } else {
       setChipRolesDialog([
         ...chipRolesDialog,
-        { key: event.target.value, label: event.target.value },
+        { key: key.props.name, label: event.target.value },
       ]);
     }
   };
@@ -930,34 +932,44 @@ export default function UserManagement() {
     </div>
   );
 
-  // const handleToggleStatus = (event) => {
-  //   setToggleStatus(event.target.value);
-  // };
-  const handleSaveEdit = async (id, firstName, lastName, status, role) => {
+  const handleSaveEdit = async (
+    id,
+    username,
+    firstName,
+    lastName,
+    status,
+    position,
+    role
+  ) => {
     console.log(
       "Handle save Edit : id, firstname, userName, status",
       id,
+      username,
       firstName,
       lastName,
       status,
+      position,
       role
     );
-    // let roleCode = new Set();
-
-    // role.map((element) => roleCode.push(element.lebel));
-    // // console.log("role for save", role[role.length - 1].label);
-    // console.log("roleCode for save", roleCode);
+    const temp = new Set();
+    if (role.length) {
+      for (var i in role) {
+        temp.add(role[i].key);
+      }
+    }
+    const roleArray = Array.from(temp).join(",");
+    console.log("roleArray", roleArray);
 
     const userupdate = await updateuser(
       sessionStorage.getItem("auth"),
       {
         id: id,
+        username: username,
         firstname: firstName,
         lastname: lastName,
-        age: 20,
-        status_record: status,
-        status_marriaged: "S",
-        role: role,
+        status: status,
+        position: position,
+        role: roleArray,
       },
       id
     );
@@ -989,14 +1001,16 @@ export default function UserManagement() {
   const handleDialogDeleteUserOpen = async (id) => {
     setEditID(id);
     const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    setEditUserID(databyid.content[databyid.content.length - 1].firstname);
-    setEditUserName(databyid.content[databyid.content.length - 1].lastname);
+    setEditUserName(databyid.content[databyid.content.length - 1].username);
+    setEditFirstName(databyid.content[databyid.content.length - 1].firstname);
+    setEditLastName(databyid.content[databyid.content.length - 1].lastname);
 
     setDialogDeleteUser(true);
   };
 
-  const handleDialogDelete = async (id, fname, lname) => {
+  const handleDialogDelete = async (id, username, fname, lname) => {
     console.log("DeleteID:", id);
+    console.log("DeleteUsername:", username);
     console.log("DeleteFname:", fname);
     console.log("DeleteLname:", lname);
 
@@ -1004,31 +1018,30 @@ export default function UserManagement() {
       sessionStorage.getItem("auth"),
       {
         id: id,
+        username: username,
         firstname: fname,
         lastname: lname,
-        age: 20,
-        status_record: " ",
-        status_marriaged: " ",
-        role: " ",
       },
       id
     );
     console.log("userupdate func:", deleteuser);
-    const data = await getuser(sessionStorage.getItem("auth"));
+    const data = await listuser(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
           element.id,
-          element.userid,
+          element.username,
           element.firstname + " " + element.lastname,
-          "",
-          element.role,
-          element.status_record
+          element.position,
+          element.roles,
+          element.property,
+          element.status
         )
       )
     );
-
+    console.log(sessionStorage.getItem("auth"));
+    console.log(userdata);
     setRows(userdata);
     updatePageData(userdata, page, rowsPerPage);
 
@@ -1155,14 +1168,7 @@ export default function UserManagement() {
                       )}
                       <TableCell align="center">
                         <IconButton
-                          onClick={() =>
-                            handleDialogEditUser(
-                              row.id,
-                              row.userID,
-                              row.userName,
-                              row.status
-                            )
-                          }
+                          onClick={() => handleDialogEditUser(row.id)}
                         >
                           <EditRoundedIcon />
                         </IconButton>
@@ -1232,7 +1238,7 @@ export default function UserManagement() {
                     label="Firstname"
                     variant="outlined"
                     fullWidth
-                    onChange={(e) => setEditUserID(e.target.value)}
+                    onChange={(e) => setEditFirstName(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -1245,7 +1251,7 @@ export default function UserManagement() {
                       native: true,
                     }}
                     // value={" "}
-                    onChange={(e) => setEditUserName(e.target.value)}
+                    onChange={(e) => setEditLastName(e.target.value)}
                   ></TextField>
                 </Grid>
               </Grid>
@@ -1310,10 +1316,14 @@ export default function UserManagement() {
                   label="Roles"
                   select
                   value={RoleValues}
-                  onChange={(event) => handleSelectRoles(event)}
+                  onChange={(event, name) => handleSelectRoles(event, name)}
                 >
                   {roles.map((option) => (
-                    <MenuItem key={option.key} value={option.label}>
+                    <MenuItem
+                      key={option.key}
+                      name={option.key}
+                      value={option.label}
+                    >
                       {option.label}
                     </MenuItem>
                   ))}
@@ -1401,9 +1411,10 @@ export default function UserManagement() {
               color="primary"
               onClick={() =>
                 handleInsertUser(
-                  editUserID,
-                  editUserName,
+                  editFirstName,
+                  editLastName,
                   editStatus,
+                  selectPosition,
                   chipRolesDialog
                 )
               }
@@ -1476,9 +1487,9 @@ export default function UserManagement() {
                         label="Username"
                         variant="outlined"
                         id="outlined-basic"
-                        defaultValue={editUserID}
+                        defaultValue={editFirstName}
                         // value={" "}
-                        onChange={(e) => setEditUserID(e.target.value)}
+                        onChange={(e) => setEditFirstName(e.target.value)}
                         fullWidth
                       />
                     </Grid>
@@ -1492,8 +1503,8 @@ export default function UserManagement() {
                           native: true,
                         }}
                         // value={" "}
-                        defaultValue={editUserName}
-                        onChange={(e) => setEditUserName(e.target.value)}
+                        defaultValue={editLastName}
+                        onChange={(e) => setEditLastName(e.target.value)}
                       ></TextField>
                     </Grid>
                   </Grid>
@@ -1536,11 +1547,17 @@ export default function UserManagement() {
                       }}
                       label="Roles"
                       select
+                      key={""}
+                      name={""}
                       value={RoleValues}
-                      onChange={(event) => handleSelectRoles(event)}
+                      onChange={(event, name) => handleSelectRoles(event, name)}
                     >
                       {roles.map((option) => (
-                        <MenuItem key={option.key} value={option.label}>
+                        <MenuItem
+                          key={option.key}
+                          name={option.key}
+                          value={option.label}
+                        >
                           {option.label}
                         </MenuItem>
                       ))}
@@ -1607,17 +1624,27 @@ export default function UserManagement() {
                         labelPlacement="start"
                         value="Status"
                         control={
-                          <Switch
-                            defaultChecked={editStatus}
-                            color="primary"
-                            // value={checked}
-                            // onChange={(e) => setEditStatus(e.target.checked)}
-                            onChange={(e) =>
-                              e.target.checked
-                                ? setEditStatus("Active")
-                                : setEditStatus("Inactive")
-                            }
-                          />
+                          editStatus === "Active" || editStatus === "active" ? (
+                            <Switch
+                              defaultChecked={true}
+                              color="primary"
+                              onChange={(e) =>
+                                e.target.checked
+                                  ? setEditStatus("Active")
+                                  : setEditStatus("Inactive")
+                              }
+                            />
+                          ) : (
+                            <Switch
+                              defaultChecked={false}
+                              color="primary"
+                              onChange={(e) =>
+                                e.target.checked
+                                  ? setEditStatus("Active")
+                                  : setEditStatus("Inactive")
+                              }
+                            />
+                          )
                         }
                       />
                     </Grid>
@@ -1635,43 +1662,7 @@ export default function UserManagement() {
                       lg={12}
                       xl={12}
                       style={{ paddingTop: 10 }}
-                    >
-                      {/* <FormControlLabel
-                        label="Status"
-                        labelPlacement="start"
-                        value="Status"
-                        control={
-                          editStatus === "Active" || editStatus === "active" ? (
-                            <Switch
-                              defaultChecked={true}
-                              color="primary"
-                              // value={checked}
-                              // onChange={(e) => setEditStatus(e.target.checked)}
-
-                              onChange={(e) =>
-                                e.target.checked
-                                  ? setEditStatus("Active")
-                                  : setEditStatus("Inactive")
-                              }
-                            />
-                          ) : (
-                            <Switch
-                              defaultChecked={false}
-                              color="primary"
-                              // value={checked}
-                              // onChange={(e) => setEditStatus(e.target.checked)}
-
-                              onChange={(e) =>
-                                e.target.checked
-                                  ? setEditStatus("Active")
-                                  : setEditStatus("Inactive")
-                              }
-                            />
-                          )
-                        }
-                        labelPlacement="end"
-                      /> */}
-                    </Grid>
+                    ></Grid>
                     <Divider style={{ marginTop: 10 }} />
                     <Container disableGutters>
                       <Button style={{ margin: 15 }} variant="contained">
@@ -1697,10 +1688,6 @@ export default function UserManagement() {
                             }}
                           />
                         }
-                        // expanded={expanded}
-                        // selected={selected}
-                        // onNodeToggle={handleToggle}
-                        // onNodeSelect={handleSelect}
                       >
                         {data.map((node) => renderTree(node))}
                       </TreeView>
@@ -1733,9 +1720,11 @@ export default function UserManagement() {
                       onClick={() =>
                         handleSaveEdit(
                           editID,
-                          editUserID,
                           editUserName,
+                          editFirstName,
+                          editLastName,
                           editStatus,
+                          selectPosition,
                           chipRolesDialog
                         )
                       }
@@ -1766,7 +1755,7 @@ export default function UserManagement() {
               </DialogTitle>
               <DialogContent>
                 <Typography variant="h5" color="initial">
-                  Confirm Delete {editUserID} {editUserName}
+                  Confirm Delete {editFirstName} {editLastName}
                 </Typography>
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
@@ -1791,7 +1780,12 @@ export default function UserManagement() {
                     <Button
                       fullWidth
                       onClick={() =>
-                        handleDialogDelete(editID, editUserID, editUserName)
+                        handleDialogDelete(
+                          editID,
+                          editUserName,
+                          editFirstName,
+                          editLastName
+                        )
                       }
                       variant="contained"
                       // color="primary"
