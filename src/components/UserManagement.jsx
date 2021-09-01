@@ -176,7 +176,7 @@ export default function UserManagement() {
   React.useEffect(async () => {
     let dataRole = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", dataRole.content[dataRole.content.length - 1]);
-
+    roles = [];
     dataRole.content[dataRole.content.length - 1].forEach((element) =>
       roles.push({
         key: element.rolecode,
@@ -280,7 +280,13 @@ export default function UserManagement() {
     updatePageData(rows, 0, event.target.value);
   };
 
-  const handleInsertUser = async (firstName, lastName, statusRec, role) => {
+  const handleInsertUser = async (
+    firstName,
+    lastName,
+    status,
+    position,
+    role
+  ) => {
     setEditFirstName(null);
     setEditLastName(null);
     const temp = new Set();
@@ -293,15 +299,17 @@ export default function UserManagement() {
 
     console.log("role for insert", role);
     console.log("tempArray for insert", tempArray);
+    console.log(firstName, lastName, status, position, role);
     let insert = await postuser(sessionStorage.getItem("auth"), {
       firstname: firstName,
       lastname: lastName,
-      age: 1,
+      status: status,
+      position: position,
+      userproperty: "GRPCSH",
       role: tempArray,
-      status_record: statusRec,
-      status_marriaged: "S",
     });
     console.log(insert);
+
     const data = await listuser(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach((element) =>
@@ -937,6 +945,7 @@ export default function UserManagement() {
     username,
     firstName,
     lastName,
+
     status,
     position,
     role
@@ -1019,8 +1028,6 @@ export default function UserManagement() {
       {
         id: id,
         username: username,
-        firstname: fname,
-        lastname: lname,
       },
       id
     );
@@ -1406,7 +1413,6 @@ export default function UserManagement() {
               Cancel
             </Button>
             <Button
-              // onClick={handleInsertUser}
               variant="contained"
               color="primary"
               onClick={() =>

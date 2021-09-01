@@ -21,7 +21,7 @@ module.exports = {
     }).then(async (res) => res.json());
   },
   postuser: async function (accessToken, req) {
-    return fetch("http://localhost:8082/user-management/users", {
+    return fetch("http://localhost:8082/listuser", {
       method: "POST",
       headers: {
         Authorization: accessToken,
