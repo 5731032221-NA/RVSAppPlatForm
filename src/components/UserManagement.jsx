@@ -1494,7 +1494,6 @@ export default function UserManagement() {
                         variant="outlined"
                         id="outlined-basic"
                         defaultValue={editFirstName}
-                        // value={" "}
                         onChange={(e) => setEditFirstName(e.target.value)}
                         fullWidth
                       />

@@ -48,11 +48,11 @@ import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import {
-  getuser,
   listrole,
-  postuser,
-  updateuser,
-  getuserbyid,
+  getrolebyid,
+  updaterole,
+  postrole,
+  deleterolebyid,
 } from "../services/user.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
@@ -100,8 +100,14 @@ export default function RoleManagement() {
   const classes = useStyles();
   const [dialogAddRole, setDialogAddRole] = React.useState(false);
   const [dialogEditRole, setDialogEditRole] = React.useState(false);
-  const [statusRec, setStatusRec] = React.useState(null);
+  const [dialogDeleteRole, setDialogDeleteRole] = React.useState(false);
+
+  const [status, setStatus] = React.useState(null);
   const [selectUser, setSelectUser] = React.useState(null);
+  const [roleID, setRoleID] = React.useState(null);
+  const [roleCode, setRoleCode] = React.useState(null);
+  const [roleName, setRoleName] = React.useState(null);
+  const [descriptionsRole, setDescriptionsRole] = React.useState(null);
   const [rows, setRows] = useState([]);
 
   const [pageData, setPageData] = React.useState([]);
@@ -117,7 +123,7 @@ export default function RoleManagement() {
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
-          element.rolecode,
+          element.id,
           element.rolecode,
           element.rolename,
           element.description,
@@ -134,20 +140,163 @@ export default function RoleManagement() {
   }, []);
 
   const handleDialogAddRole = () => {
+    setRoleCode(null);
+    setRoleName(null);
+    setDescriptionsRole(null);
+    setStatus("Active");
+
     setDialogAddRole(true);
+  };
+
+  const handleDialogAddRoleSave = async (
+    rolecode,
+    rolename,
+    description,
+    status
+  ) => {
+    let insert = await postrole(sessionStorage.getItem("auth"), {
+      rolecode: rolecode,
+      rolename: rolename,
+      description: description,
+      status: status,
+    });
+    console.log(insert);
+    let data = await listrole(sessionStorage.getItem("auth"));
+    let userdata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          element.rolecode,
+          element.rolename,
+          element.description,
+          element.count,
+          "",
+          element.status
+        )
+      )
+    );
+    console.log(sessionStorage.getItem("auth"));
+    console.log("userdata", userdata);
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
+
+    setDialogAddRole(false);
   };
 
   const handleDialogAddRoleClose = () => {
     setDialogAddRole(false);
   };
-  const handleDialogEditRole = async (idForEdit) => {
-    // const databyid = await getuserbyid(
-    //   sessionStorage.getItem("auth"),
-    //   idForEdit
-    // );
-    // setStatusRec(databyid.content[databyid.content.length - 1].status_record);
-    // console.log("idForEdit", idForEdit);
+  const handleDialogEditRole = async (id) => {
+    console.log("idForEdit", id);
+    const rolebyid = await getrolebyid(sessionStorage.getItem("auth"), id);
+    setRoleID(rolebyid.content[rolebyid.content.length - 1].id);
+    setRoleCode(rolebyid.content[rolebyid.content.length - 1].rolecode);
+    setRoleName(rolebyid.content[rolebyid.content.length - 1].rolename);
+    setDescriptionsRole(
+      rolebyid.content[rolebyid.content.length - 1].description
+    );
+    setStatus(rolebyid.content[rolebyid.content.length - 1].status);
+    console.log("rolebyid", rolebyid);
     setDialogEditRole(true);
+  };
+
+  const handleDialogEditRoleSave = async (
+    id,
+    rolecode,
+    rolename,
+    description,
+    status
+  ) => {
+    console.log(
+      "id,rolecode,rolename,description,status",
+      id,
+      rolecode,
+      rolename,
+      description,
+      status
+    );
+
+    const roleupdate = await updaterole(
+      sessionStorage.getItem("auth"),
+      {
+        id: id,
+        rolecode: rolecode,
+        rolename: rolename,
+        description: description,
+        status: status,
+      },
+      id
+    );
+    console.log("roleupdate func:", roleupdate);
+
+    let data = await listrole(sessionStorage.getItem("auth"));
+    let userdata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          element.rolecode,
+          element.rolename,
+          element.description,
+          element.count,
+          "",
+          element.status
+        )
+      )
+    );
+    console.log(sessionStorage.getItem("auth"));
+    console.log("userdata", userdata);
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
+
+    setDialogEditRole(false);
+  };
+
+  const handleDialogDeleteRoleClose = () => {
+    setDialogDeleteRole(false);
+  };
+
+  const handleDialogDeleteRoleOpen = async (id) => {
+    console.log("idForDelete", id);
+    const rolebyid = await getrolebyid(sessionStorage.getItem("auth"), id);
+    setRoleID(rolebyid.content[rolebyid.content.length - 1].id);
+    setRoleCode(rolebyid.content[rolebyid.content.length - 1].rolecode);
+    setRoleName(rolebyid.content[rolebyid.content.length - 1].rolename);
+    setDescriptionsRole(
+      rolebyid.content[rolebyid.content.length - 1].description
+    );
+
+    setDialogDeleteRole(true);
+  };
+
+  const handleDialogDelete = async (id) => {
+    console.log("id for delete", id);
+
+    const roleDelete = await deleterolebyid(sessionStorage.getItem("auth"), id);
+    console.log("roleuDelete func:", roleDelete);
+
+    let data = await listrole(sessionStorage.getItem("auth"));
+    let userdata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      userdata.push(
+        createData(
+          element.id,
+          element.rolecode,
+          element.rolename,
+          element.description,
+          element.count,
+          "",
+          element.status
+        )
+      )
+    );
+    console.log(sessionStorage.getItem("auth"));
+    console.log("userdata", userdata);
+    setRows(userdata);
+    updatePageData(userdata, page, rowsPerPage);
+
+    setDialogDeleteRole(false);
   };
 
   const handleDialogEditRoleClose = () => {
@@ -1127,7 +1276,9 @@ export default function RoleManagement() {
                             >
                               <EditRoundedIcon />
                             </IconButton>
-                            <IconButton onClick={" "}>
+                            <IconButton
+                              onClick={() => handleDialogDeleteRoleOpen(row.id)}
+                            >
                               <DeleteRoundedIcon />
                             </IconButton>
                           </TableCell>
@@ -1229,6 +1380,8 @@ export default function RoleManagement() {
                         label="Role Code"
                         variant="outlined"
                         fullWidth
+                        defaultValue={""}
+                        onChange={(e) => setRoleCode(e.target.value)}
                       />
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -1240,15 +1393,9 @@ export default function RoleManagement() {
                         SelectProps={{
                           native: true,
                         }}
-                        // value={roomTypeDialog}
-                        // onChange={handleRoomTypeDialog}
-                      >
-                        {/* {roomType.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))} */}
-                      </TextField>
+                        defaultValue={""}
+                        onChange={(e) => setRoleName(e.target.value)}
+                      ></TextField>
                     </Grid>
                   </Grid>
                   <Grid
@@ -1296,11 +1443,12 @@ export default function RoleManagement() {
                   >
                     <TextField
                       fullWidth
-                      // id="outlined-multiline-static"
                       label="Description"
                       multiline
                       rows={4}
                       variant="outlined"
+                      defaultValue={""}
+                      onChange={(e) => setDescriptionsRole(e.target.value)}
                     />
                   </Grid>
                   <Grid
@@ -1322,8 +1470,8 @@ export default function RoleManagement() {
                           color="primary"
                           onChange={(e) =>
                             e.target.checked
-                              ? setStatusRec("Active")
-                              : setStatusRec("Inactive")
+                              ? setStatus("Active")
+                              : setStatus("Inactive")
                           }
                         />
                       }
@@ -1398,9 +1546,16 @@ export default function RoleManagement() {
                   Cancel
                 </Button>
                 <Button
-                  onClick={handleDialogAddRoleClose}
                   variant="contained"
                   color="primary"
+                  onClick={() =>
+                    handleDialogAddRoleSave(
+                      roleCode,
+                      roleName,
+                      descriptionsRole,
+                      status
+                    )
+                  }
                 >
                   Save
                 </Button>
@@ -1465,6 +1620,8 @@ export default function RoleManagement() {
                         label="Role Code"
                         variant="outlined"
                         fullWidth
+                        defaultValue={roleCode}
+                        onChange={(e) => setRoleCode(e.target.value)}
                       />
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -1476,15 +1633,9 @@ export default function RoleManagement() {
                         SelectProps={{
                           native: true,
                         }}
-                        // value={roomTypeDialog}
-                        // onChange={handleRoomTypeDialog}
-                      >
-                        {/* {roomType.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))} */}
-                      </TextField>
+                        defaultValue={roleName}
+                        onChange={(e) => setRoleName(e.target.value)}
+                      ></TextField>
                     </Grid>
                   </Grid>
                   <Grid
@@ -1532,11 +1683,12 @@ export default function RoleManagement() {
                   >
                     <TextField
                       fullWidth
-                      // id="outlined-multiline-static"
                       label="Description"
                       multiline
                       rows={4}
                       variant="outlined"
+                      defaultValue={descriptionsRole}
+                      onChange={(e) => setDescriptionsRole(e.target.value)}
                     />
                   </Grid>
                   <Grid
@@ -1553,30 +1705,24 @@ export default function RoleManagement() {
                       style={{ paddingTop: 15 }}
                       value="Status"
                       control={
-                        statusRec === "Active" || statusRec === "active" ? (
+                        status === "Active" || status === "active" ? (
                           <Switch
                             defaultChecked={true}
                             color="primary"
-                            // value={checked}
-                            // onChange={(e) => setEditStatus(e.target.checked)}
-
                             onChange={(e) =>
                               e.target.checked
-                                ? setStatusRec("Active")
-                                : setStatusRec("Inactive")
+                                ? setStatus("Active")
+                                : setStatus("Inactive")
                             }
                           />
                         ) : (
                           <Switch
                             defaultChecked={false}
                             color="primary"
-                            // value={checked}
-                            // onChange={(e) => setEditStatus(e.target.checked)}
-
                             onChange={(e) =>
                               e.target.checked
-                                ? setStatusRec("Active")
-                                : setStatusRec("Inactive")
+                                ? setStatus("Active")
+                                : setStatus("Inactive")
                             }
                           />
                         )
@@ -1652,12 +1798,78 @@ export default function RoleManagement() {
                   Cancel
                 </Button>
                 <Button
-                  onClick={handleDialogEditRoleClose}
+                  onClick={() =>
+                    handleDialogEditRoleSave(
+                      roleID,
+                      roleCode,
+                      roleName,
+                      descriptionsRole,
+                      status
+                    )
+                  }
                   variant="contained"
                   color="primary"
                 >
                   Save
                 </Button>
+              </DialogActions>
+            </Grid>
+          </Grid>
+        </Dialog>
+        {/* ==================== Dialog Delete User========================= */}
+        <Dialog
+          fullWidth="true"
+          maxWidth="sm"
+          open={dialogDeleteRole}
+          onClose={handleDialogDeleteRoleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <Grid container>
+            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                Confirm Delete User
+              </DialogTitle>
+              <DialogContent>
+                <Typography variant="h5" color="initial">
+                  Confirm Delete {roleName}
+                </Typography>
+                <Typography variant="body1" color="initial">
+                  Code: {roleCode}
+                </Typography>
+                <Typography variant="title1" color="initial">
+                  Descrioption: {roleName}
+                </Typography>
+              </DialogContent>
+              <DialogActions style={{ padding: 20 }}>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="space-evenly"
+                  alignItems="center"
+                  spacing={4}
+                >
+                  <Grid item sm={6} md={6} lg={6} xl={6}>
+                    <Button
+                      fullWidth
+                      onClick={handleDialogDeleteRoleClose}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Cancel
+                    </Button>
+                  </Grid>
+                  <Grid item sm={6} md={6} lg={6} xl={6}>
+                    <Button
+                      fullWidth
+                      onClick={() => handleDialogDelete(roleID)}
+                      variant="contained"
+                      // color="primary"
+                      style={{ backgroundColor: "red", color: "white" }}
+                    >
+                      Delete
+                    </Button>
+                  </Grid>
+                </Grid>
               </DialogActions>
             </Grid>
           </Grid>
