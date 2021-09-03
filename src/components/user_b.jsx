@@ -198,18 +198,7 @@ export default function UserManagement() {
   const handleDialogAddUserClose = () => {
     setDialogAddUser(false);
   };
-<<<<<<< HEAD
-  const handleDialogEditUser = async (id, firstName, lastName, status) => {
-    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    // setEditUserID(databyid.content[databyid.content.length - 1].firstname);
-    // setEditUserName(databyid.content[databyid.content.length - 1].lastname);
-    // setEditStatus(databyid.content[databyid.content.length - 1].status_record);
 
-    // setChipRolesDialog();
-    // setEditID(id);
-
-    // setDialogEditUser(true);
-=======
   const handleDialogEditUser = async (
     id,
     firstName,
@@ -217,54 +206,54 @@ export default function UserManagement() {
     status,
     chipRolesDialog
   ) => {
-    const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    setEditUserID(databyid.content[databyid.content.length - 1].firstname);
-    setEditUserName(databyid.content[databyid.content.length - 1].lastname);
-    setEditStatus(databyid.content[databyid.content.length - 1].status_record);
+    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    // setEditUserID(databyid.content[databyid.content.length - 1].firstname);
+    // setEditUserName(databyid.content[databyid.content.length - 1].lastname);
+    // setEditStatus(databyid.content[databyid.content.length - 1].status_record);
 
-    var Arr = ["Cashier", "Accountant", "Manager", "Officer"];
-    var tempArr = [];
+    // var Arr = ["Cashier", "Accountant", "Manager", "Officer"];
+    // var tempArr = [];
 
-    for (let i = 0; i < Arr.length; i++) {
-      tempArr.push(Arr[i]);
-      console.log("tempArr", tempArr);
-      console.log("tempArr [i]", i);
+    // for (let i = 0; i < Arr.length; i++) {
+    //   tempArr.push(Arr[i]);
+    //   console.log("tempArr", tempArr);
+    //   console.log("tempArr [i]", i);
 
-      setChipRolesDialog([
-        {
-          key: tempArr,
-          label: tempArr,
-        },
-      ]);
-    }
+    //   setChipRolesDialog([
+    //     {
+    //       key: tempArr,
+    //       label: tempArr,
+    //     },
+    //   ]);
+    // }
 
-    if (databyid.content[databyid.content.length - 1].role) {
-      const roleData = databyid.content[databyid.content.length - 1].role;
+    // if (databyid.content[databyid.content.length - 1].role) {
+    //   const roleData = databyid.content[databyid.content.length - 1].role;
 
-      var tempRole = roleData.split(",");
-      console.log("roleData", tempRole);
-      console.log("roleData", typeof tempRole);
+    //   var tempRole = roleData.split(",");
+    //   console.log("roleData", tempRole);
+    //   console.log("roleData", typeof tempRole);
 
-      // console.log("chipRolesDialog", chipRolesDialog);
-      // setChipRolesDialog([...chipRolesDialog, { key: Arr, label: Arr }]);
-      // console.log("chipRolesDialog", chipRolesDialog);
+    //   // console.log("chipRolesDialog", chipRolesDialog);
+    //   // setChipRolesDialog([...chipRolesDialog, { key: Arr, label: Arr }]);
+    //   // console.log("chipRolesDialog", chipRolesDialog);
 
-      // for (let i in tempRole - 1)
-      // tempRole.map((A) => {
-      //   setChipRolesDialog([...chipRolesDialog, { key: A, label: A }]);
-      // });
-      // var Arr = ["Cashier", "Accountant"];
-      //       for (let i = 0; i < tempRole.length; i++) {
-      //         setChipRolesDialog([
-      //           ...chipRolesDialog,
-      //           { key: Arr[i], label: Arr[i] },
-      //         ]);}
-      //   console.log("chipRolesDialog", chipRolesDialog);
-      //   console.log("let i in tempRole", tempRole[i]);
-      //   console.log("let i in tempRole", i);
-      // }
-    }
-    setEditID(id);
+    //   // for (let i in tempRole - 1)
+    //   // tempRole.map((A) => {
+    //   //   setChipRolesDialog([...chipRolesDialog, { key: A, label: A }]);
+    //   // });
+    //   // var Arr = ["Cashier", "Accountant"];
+    //   //       for (let i = 0; i < tempRole.length; i++) {
+    //   //         setChipRolesDialog([
+    //   //           ...chipRolesDialog,
+    //   //           { key: Arr[i], label: Arr[i] },
+    //   //         ]);}
+    //   //   console.log("chipRolesDialog", chipRolesDialog);
+    //   //   console.log("let i in tempRole", tempRole[i]);
+    //   //   console.log("let i in tempRole", i);
+    //   // }
+    // }
+    // setEditID(id);
 
     setDialogEditUser(true);
 
@@ -285,7 +274,6 @@ export default function UserManagement() {
     //   "databyid Role :",
     //   databyid.content[databyid.content.length - 1].role
     // );
->>>>>>> 30fa22ebb42b6ed307b0941f441d3ef5f37ce171
 
     // console.log("databyid :", databyid);
     // console.log(
@@ -334,12 +322,9 @@ export default function UserManagement() {
     updatePageData(rows, 0, event.target.value);
   };
 
-<<<<<<< HEAD
 
-  const handleInsertUser = async (firstName, lastName, statusRec) => {
-=======
   const handleInsertUser = async (firstName, lastName, statusRec, role) => {
->>>>>>> 30fa22ebb42b6ed307b0941f441d3ef5f37ce171
+
     setEditUserID(null);
     setEditUserName(null);
     const temp = new Set();
@@ -991,40 +976,40 @@ export default function UserManagement() {
         >
 
           <Grid container>
-          {permissionDialog ?
-            <Grid
-              item
-              sm={3}
-              md={3}
-              lg={3}
-              xl={3}
-              style={{ backgroundColor: "#F5F5F5" }}
-            >
-              <TreeView
-                style={{ padding: 20 }}
-                defaultCollapseIcon={
-                  <RemoveRoundedIcon
-                    style={{
-                      backgroundColor: "#717171",
-                      borderRadius: 2,
-                      color: "white",
-                    }}
-                  />
-                }
-                defaultExpandIcon={
-                  <AddRoundedIcon
-                    style={{
-                      backgroundColor: "#2D62ED",
-                      borderRadius: 2,
-                      color: "white",
-                    }}
-                  />
-                }
+            {permissionDialog ?
+              <Grid
+                item
+                sm={3}
+                md={3}
+                lg={3}
+                xl={3}
+                style={{ backgroundColor: "#F5F5F5" }}
               >
-                {data.map((node) => renderTreeSubMenu(node))}
-              </TreeView>
-            </Grid>
-            : null}
+                <TreeView
+                  style={{ padding: 20 }}
+                  defaultCollapseIcon={
+                    <RemoveRoundedIcon
+                      style={{
+                        backgroundColor: "#717171",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                  defaultExpandIcon={
+                    <AddRoundedIcon
+                      style={{
+                        backgroundColor: "#2D62ED",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                >
+                  {data.map((node) => renderTreeSubMenu(node))}
+                </TreeView>
+              </Grid>
+              : null}
             <Grid item xs={9} sm={9} md={9} lg={9} xl={9}>
               <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
                 Edit User
@@ -1131,6 +1116,8 @@ export default function UserManagement() {
                       ))}
                     </TextField>
                     {chipRolesDialog.map((data, index) => {
+                      // console.log("chipRolesDialog inin ", chipRolesDialog);
+
                       return (
                         <Chip
                           style={{ marginTop: 10 }}
@@ -1192,122 +1179,91 @@ export default function UserManagement() {
                   variant="contained"
                   color="primary"
                 >
-<<<<<<< HEAD
                   Permission
                 </Button>
-=======
-                  {roles.map((option) => (
-                    <MenuItem key={option.key} value={option.label}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                {chipRolesDialog.map((data, index) => {
-                  // console.log("chipRolesDialog inin ", chipRolesDialog);
 
-                  return (
-                    <Chip
-                      style={{ marginTop: 10 }}
-                      key={data.key + index}
-                      label={data.label}
-                      onDelete={handleDeleteRoles(data)}
-                    />
-                  );
-                })}
-              </Grid>
-              <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    id="outlined-basic"
-                    label="username@mail.com"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
->>>>>>> 30fa22ebb42b6ed307b0941f441d3ef5f37ce171
 
                 {permissionDialog ?
-                <Grid>
-                <Grid
-                  container
-                  alignItems="center"
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  style={{ paddingTop: 10 }}
-                >
-                  <FormControlLabel
+                  <Grid>
+                    <Grid
+                      container
+                      alignItems="center"
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      style={{ paddingTop: 10 }}
+                    >
+                      <FormControlLabel
 
-                    label="Status"
-                    labelPlacement="start"
-                    value="Status"
-                    control={
-                      editStatus === "Active" || editStatus === "active" ? (
-                        <Switch
-                          defaultChecked={true}
-                          color="primary"
-                          // value={checked}
-                          // onChange={(e) => setEditStatus(e.target.checked)}
+                        label="Status"
+                        labelPlacement="start"
+                        value="Status"
+                        control={
+                          editStatus === "Active" || editStatus === "active" ? (
+                            <Switch
+                              defaultChecked={true}
+                              color="primary"
+                              // value={checked}
+                              // onChange={(e) => setEditStatus(e.target.checked)}
 
-                          onChange={(e) =>
-                            e.target.checked
-                              ? setEditStatus("Active")
-                              : setEditStatus("Inactive")
-                          }
-                        />
-                      ) : (
-                        <Switch
-                          defaultChecked={false}
-                          color="primary"
-                          // value={checked}
-                          // onChange={(e) => setEditStatus(e.target.checked)}
+                              onChange={(e) =>
+                                e.target.checked
+                                  ? setEditStatus("Active")
+                                  : setEditStatus("Inactive")
+                              }
+                            />
+                          ) : (
+                            <Switch
+                              defaultChecked={false}
+                              color="primary"
+                              // value={checked}
+                              // onChange={(e) => setEditStatus(e.target.checked)}
 
-                          onChange={(e) =>
-                            e.target.checked
-                              ? setEditStatus("Active")
-                              : setEditStatus("Inactive")
-                          }
-                        />
-                      )
-                    }
-                    labelPlacement="end"
-                  />
-                </Grid>
-                <Divider style={{ marginTop: 10 }} />
-                <Container disableGutters>
-                  <TreeView
-                    // className={classes.root}
-                    defaultCollapseIcon={
-                      <RemoveRoundedIcon
-                        style={{
-                          backgroundColor: "#717171",
-                          borderRadius: 2,
-                          color: "white",
-                        }}
+                              onChange={(e) =>
+                                e.target.checked
+                                  ? setEditStatus("Active")
+                                  : setEditStatus("Inactive")
+                              }
+                            />
+                          )
+                        }
+                        labelPlacement="end"
                       />
-                    }
-                    defaultExpandIcon={
-                      <AddRoundedIcon
-                        style={{
-                          backgroundColor: "#2D62ED",
-                          borderRadius: 2,
-                          color: "white",
-                        }}
-                      />
-                    }
-                  // expanded={expanded}
-                  // selected={selected}
-                  // onNodeToggle={handleToggle}
-                  // onNodeSelect={handleSelect}
-                  >
-                    {data.map((node) => renderTree(node))}
-                  </TreeView>
-                </Container>
-                </Grid>
-            : null}
+                    </Grid>
+                    <Divider style={{ marginTop: 10 }} />
+                    <Container disableGutters>
+                      <TreeView
+                        // className={classes.root}
+                        defaultCollapseIcon={
+                          <RemoveRoundedIcon
+                            style={{
+                              backgroundColor: "#717171",
+                              borderRadius: 2,
+                              color: "white",
+                            }}
+                          />
+                        }
+                        defaultExpandIcon={
+                          <AddRoundedIcon
+                            style={{
+                              backgroundColor: "#2D62ED",
+                              borderRadius: 2,
+                              color: "white",
+                            }}
+                          />
+                        }
+                      // expanded={expanded}
+                      // selected={selected}
+                      // onNodeToggle={handleToggle}
+                      // onNodeSelect={handleSelect}
+                      >
+                        {data.map((node) => renderTree(node))}
+                      </TreeView>
+                    </Container>
+                  </Grid>
+                  : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button

@@ -87,6 +87,9 @@ export default function Property({ setToken, setProperty }) {
             payload: permission.content[permission.content.length-1],
           });
 
+
+
+          
     const role = await propertyrole(sessionStorage.getItem("auth"), selectedProperty);
     sessionStorage.setItem("role",role.content[role.content.length-1]);
         // const menu = await menus(sessionStorage.getItem("auth"),selectedProperty);

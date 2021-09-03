@@ -1,16 +1,13 @@
 module.exports = {
-
   listuser: async function (accessToken, req) {
-    return fetch('http://localhost:8082/listuser', {
-      method: 'GET',
+    return fetch("http://localhost:8082/listuser", {
+      method: "GET",
       headers: {
-        'Authorization': accessToken,
-        'Content-Type': 'application/json'
+        Authorization: accessToken,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(req)
-    })
-      .then(async res => res.json())
-
+      body: JSON.stringify(req),
+    }).then(async (res) => res.json());
   },
 
   listrole: async function (accessToken, req) {
@@ -24,7 +21,18 @@ module.exports = {
     }).then(async (res) => res.json());
   },
   postuser: async function (accessToken, req) {
-    return fetch("http://localhost:8082/user-management/users", {
+    return fetch("http://localhost:8082/listuser", {
+      method: "POST",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req),
+    }).then(async (res) => res.json());
+  },
+
+  postrole: async function (accessToken, req) {
+    return fetch("http://localhost:8082/listrole", {
       method: "POST",
       headers: {
         Authorization: accessToken,
@@ -43,8 +51,9 @@ module.exports = {
       },
     }).then((data) => data.json());
   },
+
   getuserbyid: async function (accessToken, id) {
-    return fetch(`http://localhost:8082/user-management/users/${id}`, {
+    return fetch(`http://localhost:8082/listuser/${id}`, {
       method: "GET",
       headers: {
         Authorization: accessToken,
@@ -53,8 +62,28 @@ module.exports = {
     }).then(async (res) => res.json());
   },
 
+  getrolebyid: async function (accessToken, id) {
+    return fetch(`http://localhost:8082/listrole/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
+
+  // getuserbyid: async function (accessToken, id) {
+  //   return fetch(`http://localhost:8082/user-management/users/${id}`, {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: accessToken,
+  //       "Content-Type": "application/json",
+  //     },
+  //   }).then(async (res) => res.json());
+  // },
+
   updateuser: async function (accessToken, req, id) {
-    return fetch(`http://localhost:8082/user-management/users/${id}`, {
+    return fetch(`http://localhost:8082/listuser/${id}`, {
       method: "PUT",
       headers: {
         Authorization: accessToken,
@@ -63,14 +92,36 @@ module.exports = {
       body: JSON.stringify(req),
     }).then(async (res) => res.json());
   },
+
+  updaterole: async function (accessToken, req, id) {
+    return fetch(`http://localhost:8082/listrole/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req),
+    }).then(async (res) => res.json());
+  },
+
   deleteuserbyid: async function (accessToken, req, id) {
-    return fetch(`http://localhost:8082/user-management/users/${id}`, {
+    return fetch(`http://localhost:8082/listuser/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: accessToken,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
+    }).then(async (res) => res.json());
+  },
+
+  deleterolebyid: async function (accessToken, id) {
+    return fetch(`http://localhost:8082/listrole/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
     }).then(async (res) => res.json());
   },
 };
