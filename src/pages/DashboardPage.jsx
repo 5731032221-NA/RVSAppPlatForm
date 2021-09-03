@@ -60,6 +60,18 @@ import mainListItems_th from "../middleware/listitems/dropDownItems";
 import secondaryListItems_th from "../middleware/listitems/dropDownItems";
 // import { mainListItems_en, secondaryListItems_en } from '../middleware/listitems/dropDownItems';
 // import { mainListItems_th, secondaryListItems_th } from '../middleware/listitems/dropDownItems';
+import propertypermission from "../services/propertypermission.service"
+
+import {
+  EDIT_PERMISSION
+} from "../middleware/action";
+
+import propertyrole from "../services/propertyrole.service"
+
+// import {
+//   EDIT_PERMISSION
+// } from "../middleware/action";
+
 
 const drawerWidth = 240;
 
@@ -268,18 +280,16 @@ export default function Dashboard() {
   const { store } = useContext(ReactReduxContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(0);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [compWidthState, setCompWidth] = useState(null);
   const [compState, setComp] = useState(null);
   const [selectedProperty, setSelectedProperty] = useState(
-    store.getState().reducer.property
+    sessionStorage.getItem("property")
   );
   const ratio = window.devicePixelRatio || 1;
   setInterval(() => {
     // console.log(parseInt(store.getState().reducer.compwidth) !== parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(store.getState().reducer.compwidth))
-
     if (compWidthState != document.getElementById("compwidth").offsetWidth) {
       setSmallwidth(window.innerWidth < 1000);
       store.dispatch({
@@ -325,12 +335,22 @@ export default function Dashboard() {
     }
   }, 1000);
 
-  const handleChangeProperty = (event) => {
+  const handleChangeProperty = async (event) => {
+    const permission = await propertypermission(sessionStorage.getItem("auth"), event.target.value);
+    console.log("permission", permission)
+    const role = await propertyrole(sessionStorage.getItem("auth"), event.target.value);
+    console.log("role", role.content[role.content.length-1]);
+    sessionStorage.setItem("role",role.content[role.content.length-1]);
+    store.dispatch({
+      type: EDIT_PERMISSION,
+      payload: permission.content[permission.content.length-1],
+    });
     store.dispatch({
       type: EDIT_PROPERTY,
       payload: event.target.value,
     });
     setSelectedProperty(event.target.value);
+    sessionStorage.setItem('property', event.target.value);
     // setSelectedProperty(event.target.value);
     // setSelectedProperty(event.target.value);
   };
@@ -755,17 +775,17 @@ export default function Dashboard() {
                       id="selectprop"
                       value={selectedProperty}
                       onChange={handleChangeProperty}
-                      defaultValue={store.getState().reducer.property}
+                      defaultValue={sessionStorage.getItem("property")}
                     >
-                      {store.getState().reducer.propertys.map((item) => (
+                      {JSON.parse(sessionStorage.getItem("grantproperty")).map((item) => (
                         <MenuItem
-                          key={item.propertyid}
-                          value={item.propertyid}
-                          label={item.propertyid}
+                          key={item.propertycode}
+                          value={item.propertycode}
+                          label={item.propertycode}
                         >
                           <div style={{ marginTop: -7 }}>
                             {" "}
-                            {item.propertyid}{" "}
+                            {item.propertycode}{" "}
                           </div>
                         </MenuItem>
                       ))}

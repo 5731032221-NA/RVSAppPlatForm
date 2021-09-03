@@ -112,7 +112,6 @@ export default function RoleManagement() {
     console.log("listrole", listrole)
     let userdata = [];
     // let i = 0;
-    console.log("aaa", data);
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(

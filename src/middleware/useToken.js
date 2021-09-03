@@ -61,8 +61,11 @@ export default function useToken() {
         console.log("userToken", userToken)
         if (userToken != null) {
             if (userToken.msg === "Success!") {
-                sessionStorage.setItem('name', userToken.contents[userToken.contents.length-1][0].firstname +" "+userToken.contents[userToken.contents.length-1][0].lastname+".")
-                sessionStorage.setItem('role', userToken.contents[userToken.contents.length-1][0].role);
+                sessionStorage.setItem('name', userToken.contents[userToken.contents.length-1].firstname +" "+userToken.contents[userToken.contents.length-1].lastname+".")
+                let grantproperty = []
+                userToken.contents[userToken.contents.length-1].property.split(",").forEach(element => grantproperty.push({propertycode: element}));
+                sessionStorage.setItem('grantproperty', JSON.stringify(grantproperty));
+                console.log(sessionStorage.getItem("grantproperty"))
                 sessionStorage.setItem('token', JSON.stringify(userToken));
                 sessionStorage.setItem('auth', userToken.contents[userToken.contents.length-2].refreshToken);
                 setToken(userToken);

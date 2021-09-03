@@ -35,12 +35,16 @@ import {
     EDIT_CONFIGSTATE
 } from "./action";
 
+import {
+    EDIT_PERMISSION
+} from "./action";
+
 
 const initialState = {
     users: [{ 'id': "0", 'name': 'n' }],
     lang: 'en',
     auth: '',
-    propertys: [{ propertyid: "Novotel Pattaya" }],
+    propertys: [{ propertycode: "Novotel Pattaya" }],
     color: '#2D62ED',
     username: '',
     compwidth: 0,
@@ -48,7 +52,8 @@ const initialState = {
     themeBackground: "#FFFFFF",
     property: "",
     role: "Admin",
-    configState: "Configuration"
+    configState: "Configuration",
+    permission : []
 };
 
 
@@ -57,6 +62,11 @@ const reducer = (state = initialState, action) => {
     // console.log("action", action)
     const allUsers = [...state.users];
     switch (action.type) {
+        case EDIT_PERMISSION:
+            return {
+                ...state,
+                permission: action.payload,
+            };
         case EDIT_CONFIGSTATE:
             return {
                 ...state,

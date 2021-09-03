@@ -30,10 +30,10 @@ import { EDIT_COMPONENT, EDIT_CONFIGSTATE } from "../action";
 import translate_th from '../../static/lang/th.json'
 import translate_en from '../../static/lang/en.json'
 
-import { ReactReduxContext } from 'react-redux'
+import { ReactReduxContext, useSelector } from 'react-redux'
 
 export default function MainListItems() {
-    
+
     const { store } = useContext(ReactReduxContext);
     const [openFrontDesk, setOpenFrontDesk] = useState(false)
     const [openCashier, setOpenCashier] = useState(false)
@@ -47,18 +47,23 @@ export default function MainListItems() {
     const [lang, setLang] = useState('en')
     const [translate, setTranslate] = useState(translate_en)
 
-    const compString = sessionStorage.getItem('comp')
-    const comps = JSON.parse(compString);
-    const cashier = comps.some(item => item.slug === 'ReportRoomMaster')
-    const front = comps.some(item => item.slug === 'ConfigMaster')
-    const setting = comps.some(item => item.slug === 'RoleManagement')
-    
+    // const compString = sessionStorage.getItem('comp')
+    // const comps = JSON.parse(compString);
+    // const cashier = comps.some(item => item.slug === 'ReportRoomMaster')
+    // const front = comps.some(item => item.slug === 'ConfigMaster')
+    // const setting = comps.some(item => item.slug === 'RoleManagement')
+    // const cashier = true;
+    // const front = true;
+    // const setting = true;
+    const comps = useSelector(state => state.reducer.permission);
+    console.log("comps",comps);
+
     const [selectedIndex, setSelectedIndex] = React.useState(1)
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
     };
     const setFontSize = {
-        fontSize:14
+        fontSize: 14
     };
     // comps.forEach(element => {
     //     if (element.slug == "ReportRoomMaster") setCashier(true)
@@ -111,7 +116,7 @@ export default function MainListItems() {
         handleComponentState("Configuration")
         setSelectedIndex(9)
     }
-    
+
     function handleOpenSystemsTools() {
         setOpenSystemsTools(!openSystemTools)
         setSelectedIndex(10)
@@ -127,185 +132,209 @@ export default function MainListItems() {
 
     return (
         <List >
-            <ListItem button selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)} >
-                <ListItemIcon style={{ color: "white" }} >
-                    <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primaryTypographyProps={{style: setFontSize}} primary={translate.Dashboard} />
-            </ListItem>
-
-            <ListItem button selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event,1)} >
-                <ListItemIcon style={{ color: "white" }} >
-                    <KingBedIcon />
-                </ListItemIcon>
-                <ListItemText primaryTypographyProps={{style: setFontSize}} primary={translate.Reservation} />
-            </ListItem>
-            {front ?
-                <List style={{marginTop:-10}}>
+            {comps.includes("C01") ?
+                <ListItem button selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)} >
+                    <ListItemIcon style={{ color: "white" }} >
+                        <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.Dashboard} />
+                </ListItem>
+                : null}
+            {comps.includes("C02") ?
+                <ListItem button selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)} >
+                    <ListItemIcon style={{ color: "white" }} >
+                        <KingBedIcon />
+                    </ListItemIcon>
+                    <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.Reservation} />
+                </ListItem>
+                : null}
+            {comps.includes("C03") ?
+                <List style={{ marginTop: -10 }}>
                     <ListItem button selected={selectedIndex === 2} onClick={handleOpenFrontDesk}>
                         <ListItemIcon style={{ color: "white" }} >
                             <ImageAspectRatioIcon />
                         </ListItemIcon>
-                        <ListItemText primaryTypographyProps={{style: setFontSize}} primary={translate.FrontDesk} />
+                        <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.FrontDesk} />
                         {openFrontDesk ? <IconExpandLess /> : <IconExpandMore />}
                     </ListItem>
                     <Collapse in={openFrontDesk} timeout="auto" unmountOnExit>
                         <Divider />
                         <List component="div" disablePadding>
                             <ListItem button selected={selectedIndex === 21} onClick={(event) => handleListItemClick(event, 21)} >
-                                <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Walk-in" />
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Walk-in" />
                             </ListItem>
-                            <ListItem button primaryTypographyProps={{style: setFontSize}} selected={selectedIndex === 22} onClick={(event) => handleListItemClick(event, 22)} >
-                                <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Check-in" />
+                            <ListItem button primaryTypographyProps={{ style: setFontSize }} selected={selectedIndex === 22} onClick={(event) => handleListItemClick(event, 22)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Check-in" />
                             </ListItem>
-                            <ListItem button primaryTypographyProps={{style: setFontSize}} selected={selectedIndex === 23} onClick={(event) => handleListItemClick(event, 23)} >
-                                <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Check-out" />
+                            <ListItem button primaryTypographyProps={{ style: setFontSize }} selected={selectedIndex === 23} onClick={(event) => handleListItemClick(event, 23)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Check-out" />
                             </ListItem>
                             <ListItem button selected={selectedIndex === 24} onClick={(event) => handleListItemClick(event, 24)} >
-                                <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Room Status" />
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Room Status" />
                             </ListItem>
                         </List>
                     </Collapse>
                 </List>
                 : null}
-            {cashier ?
-                <List style={{marginTop:-15}}>
+            {comps.includes("C04") ?
+                <List style={{ marginTop: -15 }}>
                     <ListItem button button selected={selectedIndex === 3} onClick={handleOpenCashier}>
                         <ListItemIcon style={{ color: "white" }} >
                             <MonetizationOnIcon />
                         </ListItemIcon>
-                        <ListItemText primaryTypographyProps={{style: setFontSize}} primary={translate.Cashier} />
+                        <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.Cashier} />
                         {openCashier ? <IconExpandLess /> : <IconExpandMore />}
                     </ListItem>
                     <Collapse in={openCashier} timeout="auto" unmountOnExit>
                         <Divider />
                         <List component="div" disablePadding>
                             <ListItem button selected={selectedIndex === 31} onClick={(event) => handleListItemClick(event, 31)} >
-                                <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Folio Management" />
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Folio Management" />
                             </ListItem>
                             <ListItem button selected={selectedIndex === 32} onClick={(event) => handleListItemClick(event, 32)} >
-                                <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Report" />
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Report" />
                             </ListItem>
                         </List>
                     </Collapse>
                 </List>
                 : null}
-            {setting ? 
-            <List style={{marginTop:-15}}>
-                <ListItem button selected={selectedIndex === 4} onClick={handleOpenProfile}>
-                    <ListItemIcon style={{ color: "white" }} >
-                        <PeopleIcon />
-                    </ListItemIcon>
-                    <ListItemText primaryTypographyProps={{style: setFontSize}} primary={translate.Profile} />
-                    {openProfile ? <IconExpandLess /> : <IconExpandMore />}
-                </ListItem>
-                <Collapse in={openProfile} timeout="auto" unmountOnExit>
-                    <Divider />
-                    <List component="div" disablePadding>
-                        <ListItem button selected={selectedIndex === 41} onClick={(event) => handleListItemClick(event, 41)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Individual" />
-                        </ListItem>
-                        <ListItem button selected={selectedIndex === 42} onClick={(event) => handleListItemClick(event, 42)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Travel Agent" />
-                        </ListItem>
-                        <ListItem button selected={selectedIndex === 43} onClick={(event) => handleListItemClick(event, 43)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Company" />
-                        </ListItem>
-                        <ListItem button selected={selectedIndex === 44} onClick={(event) => handleListItemClick(event, 44)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Group" />
-                        </ListItem>
-                    </List>
-                </Collapse>
-                <ListItem button selected={selectedIndex === 5} onClick={handleOpenNA}>
-                    <ListItemIcon style={{ color: "white" }} >
-                        <NightsStayIcon />
-                    </ListItemIcon>
-                    <ListItemText primaryTypographyProps={{style: setFontSize}} primary={translate.NightAuditor} />
-                    {openNA ? <IconExpandLess /> : <IconExpandMore />}
-                </ListItem>
-                <Collapse in={openNA} timeout="auto" unmountOnExit>
-                    <Divider />
-                    <List component="div" disablePadding>
-                        <ListItem button selected={selectedIndex === 51} onClick={(event) => handleListItemClick(event, 51)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Reports" />
-                        </ListItem>
-                        <ListItem button selected={selectedIndex === 52} onClick={(event) => handleListItemClick(event, 52)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Hotel Date Maintenance" />
-                        </ListItem>
-                        <ListItem button selected={selectedIndex === 53} onClick={(event) => handleListItemClick(event, 53)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Close-Day Procedure" />
-                        </ListItem>
-                        <ListItem button selected={selectedIndex === 54} onClick={(event) => handleListItemClick(event, 54)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Auto-Sequence Reports" />
-                        </ListItem>
-                    </List>
-                </Collapse>
-                <ListItem button selected={selectedIndex === 6} onClick={handleOpenHK}>
-                    <ListItemIcon style={{ color: "white" }} >
-                        <DeleteSweepIcon />
-                    </ListItemIcon>
-                    <ListItemText primaryTypographyProps={{style: setFontSize}} primary={translate.HouseKeeping} />
-                    {openHK ? <IconExpandLess /> : <IconExpandMore />}
-                </ListItem>
-                <Collapse in={openHK} timeout="auto" unmountOnExit>
-                    <Divider />
-                    <List component="div" disablePadding>
-                        <ListItem button selected={selectedIndex === 61} onClick={(event) => handleListItemClick(event, 61)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Item Management" />
-                        </ListItem>
-                        <ListItem button selected={selectedIndex === 62} onClick={(event) => handleListItemClick(event, 62)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Room Status" />
-                        </ListItem>
-                    </List>
-                </Collapse>
+            {comps.includes("C05") ?
+                <List style={{ marginTop: -15 }}>
+                    <ListItem button selected={selectedIndex === 4} onClick={handleOpenProfile}>
+                        <ListItemIcon style={{ color: "white" }} >
+                            <PeopleIcon />
+                        </ListItemIcon>
+                        <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.Profile} />
+                        {openProfile ? <IconExpandLess /> : <IconExpandMore />}
+                    </ListItem>
+                    <Collapse in={openProfile} timeout="auto" unmountOnExit>
+                        <Divider />
+                        <List component="div" disablePadding>
+                            <ListItem button selected={selectedIndex === 41} onClick={(event) => handleListItemClick(event, 41)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Individual" />
+                            </ListItem>
+                            <ListItem button selected={selectedIndex === 42} onClick={(event) => handleListItemClick(event, 42)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Travel Agent" />
+                            </ListItem>
+                            <ListItem button selected={selectedIndex === 43} onClick={(event) => handleListItemClick(event, 43)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Company" />
+                            </ListItem>
+                            <ListItem button selected={selectedIndex === 44} onClick={(event) => handleListItemClick(event, 44)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Group" />
+                            </ListItem>
+                        </List>
+                    </Collapse>
+                </List>
+                : null}
+            {comps.includes("C06") ?
+                <List style={{ marginTop: -15 }}>
+                    <ListItem button selected={selectedIndex === 5} onClick={handleOpenNA}>
+                        <ListItemIcon style={{ color: "white" }} >
+                            <NightsStayIcon />
+                        </ListItemIcon>
+                        <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.NightAuditor} />
+                        {openNA ? <IconExpandLess /> : <IconExpandMore />}
+                    </ListItem>
+                    <Collapse in={openNA} timeout="auto" unmountOnExit>
+                        <Divider />
+                        <List component="div" disablePadding>
+                            <ListItem button selected={selectedIndex === 51} onClick={(event) => handleListItemClick(event, 51)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Reports" />
+                            </ListItem>
+                            <ListItem button selected={selectedIndex === 52} onClick={(event) => handleListItemClick(event, 52)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Hotel Date Maintenance" />
+                            </ListItem>
+                            <ListItem button selected={selectedIndex === 53} onClick={(event) => handleListItemClick(event, 53)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Close-Day Procedure" />
+                            </ListItem>
+                            <ListItem button selected={selectedIndex === 54} onClick={(event) => handleListItemClick(event, 54)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Auto-Sequence Reports" />
+                            </ListItem>
+                        </List>
+                    </Collapse>
+                </List>
+                : null}
+            {comps.includes("C07") ?
+                <List style={{ marginTop: -15 }}>
+                    <ListItem button selected={selectedIndex === 6} onClick={handleOpenHK}>
+                        <ListItemIcon style={{ color: "white" }} >
+                            <DeleteSweepIcon />
+                        </ListItemIcon>
+                        <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.HouseKeeping} />
+                        {openHK ? <IconExpandLess /> : <IconExpandMore />}
+                    </ListItem>
+                    <Collapse in={openHK} timeout="auto" unmountOnExit>
+                        <Divider />
+                        <List component="div" disablePadding>
+                            <ListItem button selected={selectedIndex === 61} onClick={(event) => handleListItemClick(event, 61)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Item Management" />
+                            </ListItem>
+                            <ListItem button selected={selectedIndex === 62} onClick={(event) => handleListItemClick(event, 62)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Room Status" />
+                            </ListItem>
+                        </List>
+                    </Collapse>
+                </List>
+                : null}
+            {comps.includes("C08") ?
                 <ListItem button selected={selectedIndex === 7} onClick={(event) => handleListItemClick(event, 7)} >
                     <ListItemIcon style={{ color: "white" }} >
                         <BuildIcon />
                     </ListItemIcon>
-                    <ListItemText primaryTypographyProps={{style: setFontSize}} primary={translate.Engineer} />
+                    <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.Engineer} />
                 </ListItem>
-                <ListItem button button selected={selectedIndex === 8} onClick={handleOpenRS}>
-                    <ListItemIcon style={{ color: "white" }} >
-                        <LayersIcon />
-                    </ListItemIcon>
-                    <ListItemText primaryTypographyProps={{style: setFontSize}} primary="Reports" />
-                    {openRS ? <IconExpandLess /> : <IconExpandMore />}
-                </ListItem>
-                <Collapse in={openRS} timeout="auto" unmountOnExit>
-                    <Divider />
-                    <List component="div" disablePadding>
-                        <ListItem button selected={selectedIndex === 81} onClick={(event) => handleListItemClick(event, 81)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Customizable" />
-                        </ListItem>
-                    </List>
-                </Collapse>
+                : null}
+            {comps.includes("C09") ?
+                <List style={{ marginTop: -15 }}>
+                    <ListItem button button selected={selectedIndex === 8} onClick={handleOpenRS}>
+                        <ListItemIcon style={{ color: "white" }} >
+                            <LayersIcon />
+                        </ListItemIcon>
+                        <ListItemText primaryTypographyProps={{ style: setFontSize }} primary="Reports" />
+                        {openRS ? <IconExpandLess /> : <IconExpandMore />}
+                    </ListItem>
+                    <Collapse in={openRS} timeout="auto" unmountOnExit>
+                        <Divider />
+                        <List component="div" disablePadding>
+                            <ListItem button selected={selectedIndex === 81} onClick={(event) => handleListItemClick(event, 81)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Customizable" />
+                            </ListItem>
+                        </List>
+                    </Collapse>
+                </List>
+                : null}
+            {comps.includes("C10") ?
                 <ListItem button selected={selectedIndex === 9} onClick={handleOpenConfig}>
                     <ListItemIcon style={{ color: "white" }} >
                         <SettingsIcon />
                     </ListItemIcon>
-                    <ListItemText primaryTypographyProps={{style: setFontSize}} primary={translate.Configuration} />
+                    <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.Configuration} />
                     {/* {openConfig ? <IconExpandLess /> : <IconExpandMore />} */}
                 </ListItem>
-                <ListItem button selected={selectedIndex === 10} onClick={handleOpenSystemsTools}>
-                    <ListItemIcon style={{ color: "white" }} >
-                        <AssignmentIcon />
-                    </ListItemIcon>
-                    <ListItemText primaryTypographyProps={{style: setFontSize}} primary={translate.SystemsTools} />
-                    {openSystemTools ? <IconExpandLess /> : <IconExpandMore />}
-                </ListItem>
-                <Collapse in={openSystemTools} timeout="auto" unmountOnExit>
-                    <Divider />
-                    <List component="div" disablePadding>
-                        <ListItem button selected={selectedIndex === 101} onClick={(event) => handleListItemClick(event, 101)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Hotel Status" />
-                        </ListItem>
-                        <ListItem button selected={selectedIndex === 102} onClick={(event) => handleListItemClick(event, 102)} >
-                            <ListItemText primaryTypographyProps={{style: setFontSize}} inset primary="Room Rack" />
-                        </ListItem>
-                    </List>
-                </Collapse>
-            </List>
                 : null}
+            {comps.includes("C11") ?
+                <List style={{ marginTop: -15 }}>
+                    <ListItem button selected={selectedIndex === 10} onClick={handleOpenSystemsTools}>
+                        <ListItemIcon style={{ color: "white" }} >
+                            <AssignmentIcon />
+                        </ListItemIcon>
+                        <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.SystemsTools} />
+                        {openSystemTools ? <IconExpandLess /> : <IconExpandMore />}
+                    </ListItem>
+                    <Collapse in={openSystemTools} timeout="auto" unmountOnExit>
+                        <Divider />
+                        <List component="div" disablePadding>
+                            <ListItem button selected={selectedIndex === 101} onClick={(event) => handleListItemClick(event, 101)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Hotel Status" />
+                            </ListItem>
+                            <ListItem button selected={selectedIndex === 102} onClick={(event) => handleListItemClick(event, 102)} >
+                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Room Rack" />
+                            </ListItem>
+                        </List>
+                    </Collapse>
+                </List>
+                : null}
+
         </List>
     );
 }

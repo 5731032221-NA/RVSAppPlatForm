@@ -96,7 +96,6 @@ export default function RoleManagement() {
     const data = await getuser(sessionStorage.getItem("auth"));
     let userdata = [];
     let i = 0;
-    console.log("aaa",data)
     data.content[data.content.length-1].forEach(element =>
       userdata.push(createData(
 

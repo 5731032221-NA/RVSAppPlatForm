@@ -14,12 +14,18 @@ import Container from "@material-ui/core/Container";
 import Divider from "@material-ui/core/Divider";
 import { FormControl, FormLabel,Select, MenuItem } from '@material-ui/core';
 import menus from "../services/menus.service";
+import propertypermission from "../services/propertypermission.service";
+import propertyrole from "../services/propertyrole.service"
 
 // import {
 //     EDIT_AUTHORIZATION
 // } from "../middleware/action";
 import {
     EDIT_PROPERTY
+} from "../middleware/action";
+
+import {
+    EDIT_PERMISSION
 } from "../middleware/action";
 
 import { ReactReduxContext } from 'react-redux'
@@ -57,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Property({ setToken, setProperty }) {
     const { store } = useContext(ReactReduxContext);
     const classes = useStyles();
-    const [selectedProperty, setSelectedProperty] = useState(store.getState().reducer.propertys[0].propertyid);
+    const [selectedProperty, setSelectedProperty] = useState(JSON.parse(sessionStorage.getItem("grantproperty"))[0].propertycode);
 
     //const [list, setList] = useState([]);
 
@@ -74,14 +80,25 @@ export default function Property({ setToken, setProperty }) {
 
     // };
     const handleSelect = async () => {
-        const menu = await menus(sessionStorage.getItem("auth"),selectedProperty);
-        sessionStorage.setItem('comp', JSON.stringify(menu.content.components));
- 
+        const permission = await propertypermission(sessionStorage.getItem("auth"),selectedProperty);
+        console.log("permission",permission)
+        store.dispatch({
+            type: EDIT_PERMISSION,
+            payload: permission.content[permission.content.length-1],
+          });
+
+    const role = await propertyrole(sessionStorage.getItem("auth"), selectedProperty);
+    sessionStorage.setItem("role",role.content[role.content.length-1]);
+        // const menu = await menus(sessionStorage.getItem("auth"),selectedProperty);
+        // sessionStorage.setItem('comp', JSON.stringify(menu.content.components));
         store.dispatch({
             type: EDIT_PROPERTY,
-            payload: selectedProperty
-        })
-        setProperty(selectedProperty)
+            payload: selectedProperty,
+          });
+        sessionStorage.setItem('property', selectedProperty);
+        setProperty(selectedProperty);
+
+        
     };
     console.log("store1", store.getState())
     console.log("store2", store.getState().reducer)
@@ -102,11 +119,11 @@ export default function Property({ setToken, setProperty }) {
                     <FormControl component="fieldset">
                         <FormLabel component="legend" className={classes.seletprop}>Please Select Your Property</FormLabel>
                         <Select name="gender1" id="select" value={selectedProperty} onChange={handleChange} style={{ width: 280 }} defaultValue={selectedProperty} >
-                            {(store.getState().reducer.propertys).map((item) => (
-                                <MenuItem key={item.propertyid} value={item.propertyid} label={item.propertyid} >
+                            {JSON.parse(sessionStorage.getItem("grantproperty")).map((item) => (
+                                <MenuItem key={item.propertycode} value={item.propertycode} label={item.propertycode} >
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                         <BusinessIcon style={{ paddingRight: 20, color: '#2D62ED' }} />
-                                        <div> {item.propertyid} </div>
+                                        <div> {item.propertycode} </div>
                                     </div>
                                 </MenuItem>
                             ))}

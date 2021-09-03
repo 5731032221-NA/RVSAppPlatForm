@@ -112,8 +112,7 @@ export default function RoleManagement() {
     let data = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", listrole)
     let userdata = [];
-    // let i = 0;
-    console.log("aaa", data);
+
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
@@ -140,14 +139,7 @@ export default function RoleManagement() {
     setDialogAddRole(false);
   };
   const handleDialogEditRole = async (idForEdit) => {
-<<<<<<< HEAD
-    // const databyid = await getuserbyid(
-    //   sessionStorage.getItem("auth"),
-    //   idForEdit
-    // );
-    // setStatusRec(databyid.content[databyid.content.length - 1].status_record);
-    // console.log("idForEdit", idForEdit);
-=======
+
     const databyid = await getuserbyid(
       sessionStorage.getItem("auth"),
       idForEdit
@@ -155,7 +147,6 @@ export default function RoleManagement() {
     setStatusRec(databyid.content[databyid.content.length - 1].status_record);
     setEditID(idForEdit);
     console.log("idForEdit", idForEdit);
->>>>>>> 30fa22ebb42b6ed307b0941f441d3ef5f37ce171
     setDialogEditRole(true);
   };
 
@@ -179,7 +170,6 @@ export default function RoleManagement() {
 
     const data = await getuser(sessionStorage.getItem("auth"));
     let userdata = [];
-    console.log("aaa", data);
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
