@@ -53,7 +53,7 @@ import {
   updaterole,
   postrole,
   deleterolebyid,
-} from "../services/user.service";
+} from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
 // Generate Order Data
@@ -674,20 +674,20 @@ export default function RoleManagement() {
     ]
     // }
   );
-  const demoUser = [
-    {
-      key: "1",
-      label: "Admin",
-    },
-    {
-      key: "2",
-      label: "User1",
-    },
-    {
-      key: "3",
-      label: "User1",
-    },
-  ];
+  // const demoUser = [
+  //   {
+  //     key: "1",
+  //     label: "Admin",
+  //   },
+  //   {
+  //     key: "2",
+  //     label: "User1",
+  //   },
+  //   {
+  //     key: "3",
+  //     label: "User1",
+  //   },
+  // ];
 
   const attribute = [
     {
@@ -699,6 +699,7 @@ export default function RoleManagement() {
       label: "Novotel Rayong",
     },
   ];
+
   const userValues = "";
   const handleSelectAttribute = (event) => {
     const temp = new Set();
