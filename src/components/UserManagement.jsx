@@ -49,7 +49,7 @@ import {
   updateuser,
   getuserbyid,
   deleteuserbyid,
-  listrole,
+  // listrole,
   listpropertybyroles,
   listallproperty
 

@@ -980,8 +980,8 @@ export default function RoleManagement() {
   //   },
   // ];
 
-<<<<<<< HEAD
-  // const AllProperty = [
+
+  // const attribute = [
   //   {
   //     key: "1",
   //     label: "Novotel Pattaya",
@@ -991,19 +991,7 @@ export default function RoleManagement() {
   //     label: "Novotel Rayong",
   //   },
   // ];
-=======
-  const attribute = [
-    {
-      key: "1",
-      label: "Novotel Pattaya",
-    },
-    {
-      key: "2",
-      label: "Novotel Rayong",
-    },
-  ];
 
->>>>>>> f59037e3458f0b8a0e1e846955533a9852bd1bac
   const userValues = "";
   const handleSelectProperty = (event) => {
     if (event.target.value == "*ALL") setChipPropertyDialog([

@@ -28,16 +28,6 @@ module.exports = {
       },
     }).then(async (res) => res.json());
   },
-  listrole: async function (accessToken, req) {
-    return fetch("http://localhost:8082/listrole", {
-      method: "GET",
-      headers: {
-        Authorization: accessToken,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(req),
-    }).then(async (res) => res.json());
-  },
 
   postuser: async function (accessToken, req) {
     return fetch("http://localhost:8082/user", {
@@ -49,8 +39,6 @@ module.exports = {
       body: JSON.stringify(req),
     }).then(async (res) => res.json());
   },
-<<<<<<< HEAD
-
   postrole: async function (accessToken, req) {
     return fetch("http://localhost:8082/rolegroup", {
       method: "POST",
@@ -62,9 +50,7 @@ module.exports = {
     }).then(async (res) => res.json());
   },
 
-=======
-  
->>>>>>> f59037e3458f0b8a0e1e846955533a9852bd1bac
+
   getuser: async function (accessToken) {
     return fetch("http://localhost:8082/user-management/users", {
       method: "GET",
