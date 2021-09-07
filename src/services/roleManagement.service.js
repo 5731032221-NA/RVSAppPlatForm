@@ -1,13 +1,4 @@
 module.exports = {
-  listallproperty: async function (accessToken) {
-    return fetch("http://localhost:8082/listallproperty", {
-      method: "GET",
-      headers: {
-        Authorization: accessToken,
-        "Content-Type": "application/json",
-      },
-    }).then(async (res) => res.json());
-  },
   listrole: async function (accessToken, req) {
     return fetch("http://localhost:8082/listrole", {
       method: "GET",

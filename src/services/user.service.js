@@ -1,4 +1,14 @@
 module.exports = {
+  listrole: async function (accessToken, req) {
+    return fetch("http://localhost:8082/listrole", {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req),
+    }).then(async (res) => res.json());
+  },
   listuser: async function (accessToken, req) {
     return fetch("http://localhost:8082/listuser", {
       method: "GET",
@@ -50,6 +60,24 @@ module.exports = {
     }).then(async (res) => res.json());
   },
 
+  deleteuserbyusername: async function (accessToken, username) {
+    return fetch(`http://localhost:8082/user/${username}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
+  deleterolebycode: async function (accessToken, code) {
+    return fetch(`http://localhost:8082/rolegroup/${code}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
 
   getuser: async function (accessToken) {
     return fetch("http://localhost:8082/user-management/users", {

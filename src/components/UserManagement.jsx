@@ -51,8 +51,8 @@ import {
   deleteuserbyid,
   // listrole,
   listpropertybyroles,
-  listallproperty
-
+  listallproperty,
+  deleteuserbyusername
 } from "../services/user.service";
 import { listrole } from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -173,8 +173,8 @@ export default function UserManagement() {
   const [editFirstName, setEditFirstName] = React.useState(null);
   const [editUserName, setEditUserName] = React.useState(null);
   const [editUserID, setEditUserID] = React.useState(null);
-  const [editFirstname, setEditFirstname] = React.useState(null);
-  const [editLastname, setEditLastname] = React.useState(null);
+  // const [editFirstname, setEditFirstname] = React.useState(null);
+  // const [editLastname, setEditLastname] = React.useState(null);
   const [properties, setProperties] = React.useState([]);
   const [editID, setEditID] = React.useState(null);
   const [editStatus, setEditStatus] = React.useState(false);
@@ -363,11 +363,14 @@ export default function UserManagement() {
     let changeproperty = await listpropertybyroles(sessionStorage.getItem("auth"), { roles: roles });
     console.log("changeproperty", changeproperty);
     let tempproperty = [];
-    changeproperty.content[changeproperty.content.length - 1].split(",").forEach((element) =>
-      tempproperty.push({
-        key: element,
-        label: element,
-      })
+    changeproperty.content[changeproperty.content.length - 1].split(",").forEach((element) => {
+      if (tempproperty.filter(x => x.label === element).length == 0) {
+        tempproperty.push({
+          key: element,
+          label: element,
+        })
+      }
+    }
     );
     console.log("tempproperty", tempproperty)
     setProperties(tempproperty)
@@ -407,8 +410,8 @@ export default function UserManagement() {
     );
     const temp = new Set();
     for (var i in chipRolesDialog) {
-      if(chipRolesDialog[i].key!=chipToDelete.key)
-      temp.add(chipRolesDialog[i].key);
+      if (chipRolesDialog[i].key != chipToDelete.key)
+        temp.add(chipRolesDialog[i].key);
     }
     listproperty(Array.from(temp))
   };
@@ -1084,29 +1087,26 @@ export default function UserManagement() {
   const handleDialogDeleteUserClose = () => {
     setDialogDeleteUser(false);
   };
-  const handleDialogDeleteUserOpen = async (id) => {
-    setEditID(id);
-    const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    setEditUserName(databyid.content[databyid.content.length - 1].username);
-    setEditFirstName(databyid.content[databyid.content.length - 1].firstname);
-    setEditLastName(databyid.content[databyid.content.length - 1].lastname);
+  const handleDialogDeleteUserOpen = async (username,firstname,lastname) => {
+    // setEditID(id);
+    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    console.log("delete dialog",username,firstname,lastname)
+    setEditUserName(username);
+    setEditFirstName(firstname);
+    setEditLastName(lastname);
 
     setDialogDeleteUser(true);
   };
 
-  const handleDialogDelete = async (id, username, fname, lname) => {
-    console.log("DeleteID:", id);
+  const handleDialogDelete = async (username, fname, lname) => {
+    // console.log("DeleteID:", id);
     console.log("DeleteUsername:", username);
     console.log("DeleteFname:", fname);
     console.log("DeleteLname:", lname);
 
-    const deleteuser = await deleteuserbyid(
+    const deleteuser = await deleteuserbyusername(
       sessionStorage.getItem("auth"),
-      {
-        id: id,
-        username: username,
-      },
-      id
+      username
     );
     console.log("userupdate func:", deleteuser);
     const data = await listuser(sessionStorage.getItem("auth"));
@@ -1115,13 +1115,13 @@ export default function UserManagement() {
       userdata.push(
         createData(
           element.id,
-          element.userid,
+          element.username,
           element.firstname,
           element.lastname,
-          "",
-          element.role,
-          element.status_record
-
+          element.position,
+          element.roles,
+          element.property,
+          element.status
         )
       )
     );
@@ -1260,7 +1260,7 @@ export default function UserManagement() {
                           <EditRoundedIcon />
                         </IconButton>
                         <IconButton
-                          onClick={() => handleDialogDeleteUserOpen(row.id)}
+                          onClick={() => handleDialogDeleteUserOpen(row.userID,row.firstname,row.lastname)}
                         >
                           <DeleteRoundedIcon />
                         </IconButton>
@@ -1451,19 +1451,7 @@ export default function UserManagement() {
                 );
               })}
               <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    id="outlined-basic"
-                    label="username@mail.com"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-                  // value={" "}
-                  // onChange={" "}
-                  ></TextField>
-                </Grid>
+                
                 <Grid
                   container
                   xs={6}
@@ -1856,7 +1844,7 @@ export default function UserManagement() {
               </DialogTitle>
               <DialogContent>
                 <Typography variant="h5" color="initial">
-                  Confirm Delete {editUserID} {editFirstname} {editLastname}
+                  Confirm Delete {editUserName} {editFirstName} {editLastName}
                 </Typography>
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
@@ -1882,7 +1870,6 @@ export default function UserManagement() {
                       fullWidth
                       onClick={() =>
                         handleDialogDelete(
-                          editID,
                           editUserName,
                           editFirstName,
                           editLastName

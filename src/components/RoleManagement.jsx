@@ -53,8 +53,10 @@ import {
   updaterole,
   postrole,
   deleterolebyid,
-  listallproperty
- } from "../services/roleManagement.service";
+  listallproperty,
+  deleterolebycode
+} from "../services/user.service";
+// from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
 // Generate Order Data
@@ -98,318 +100,320 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const defaultdata = [
+  {
+    name: "Dashboard",
+    code: "DB",
+    permision: true,
+    create: false,
+    read: false,
+    update: false,
+    delete: false,
+    edited_create: false,
+    edited_read: false,
+    edited_update: false,
+    edited_delete: false,
+  },
+  {
+    name: "Reservartion",
+    code: "RV",
+    permision: true,
+    create: false,
+    read: false,
+    update: false,
+    delete: false,
+    edited_create: false,
+    edited_read: false,
+    edited_update: false,
+    edited_delete: false,
+  },
+  {
+    name: "Front Desk",
+    code: "FD",
+    permision: false,
+    children: [
+      {
+        name: "Walk-in",
+        code: "FD-WN",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Check-in",
+        code: "FD-CI",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Checkout",
+        code: "FD-CO",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "RoomStatus",
+        code: "FD-RS",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+    ],
+  },
+  {
+    name: "Cashier",
+    code: "CS",
+    permision: false,
+    children: [
+      {
+        name: "Folio Management",
+        code: "CS-FM",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Reports",
+        code: "CS-RP",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      }
+    ],
+  },
+  {
+    name: "Profile",
+    code: "PF",
+    permision: false,
+    children: [
+      {
+        name: "Individual",
+        code: "PF-ID",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Travel Agen",
+        code: "PF-TA",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Company",
+        code: "PF-CP",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Group",
+        code: "PF-GR",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+    ],
+  },
+  {
+    name: "Night Auditor",
+    code: "NA",
+    permision: false,
+    children: [
+      {
+        name: "Reports",
+        code: "NA-RP",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Hotel Date Maintenance",
+        code: "NA-HD",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Close-Day Procedure",
+        code: "NA-CD",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Auto-Sequence Reports",
+        code: "NA-AS",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+    ],
+  },
+  {
+    name: "House Keeping",
+    code: "HK",
+    permision: false,
+    children: [
+      {
+        name: "Item Management",
+        code: "HK-IM",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Room Status",
+        code: "HK-RS",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      }
+    ],
+  },
+  {
+    name: "Engineering",
+    code: "EN",
+    permision: true,
+    create: false,
+    read: false,
+    update: false,
+    delete: false,
+    edited_create: false,
+    edited_read: false,
+    edited_update: false,
+    edited_delete: false,
+  },
+  {
+    name: "Reporting Systems",
+    code: "RS",
+    permision: true,
+    create: false,
+    read: false,
+    update: false,
+    delete: false,
+    edited_create: false,
+    edited_read: false,
+    edited_update: false,
+    edited_delete: false,
+  },
+  {
+    name: "Configuration",
+    code: "CF",
+    permision: true,
+    create: false,
+    read: false,
+    update: false,
+    delete: false,
+    edited_create: false,
+    edited_read: false,
+    edited_update: false,
+    edited_delete: false,
+  },
+];
+
 export default function RoleManagement() {
   const classes = useStyles();
-  const [data, setData] = React.useState([
-    {
-      name: "Dashboard",
-      code: "DB",
-      permision: true,
-      create: false,
-      read: false,
-      update: false,
-      delete: false,
-      edited_create: false,
-      edited_read: false,
-      edited_update: false,
-      edited_delete: false,
-    },
-    {
-      name: "Reservartion",
-      code: "RV",
-      permision: true,
-      create: false,
-      read: false,
-      update: false,
-      delete: false,
-      edited_create: false,
-      edited_read: false,
-      edited_update: false,
-      edited_delete: false,
-    },
-    {
-      name: "Front Desk",
-      code: "FD",
-      permision: false,
-      children: [
-        {
-          name: "Walk-in",
-          code: "FD-WN",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          name: "Check-in",
-          code: "FD-CI",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          name: "Checkout",
-          code: "FD-CO",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          name: "RoomStatus",
-          code: "FD-RS",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-      ],
-    },
-    {
-      name: "Cashier",
-      code: "CS",
-      permision: false,
-      children: [
-        {
-          name: "Folio Management",
-          code: "CS-FM",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          name: "Reports",
-          code: "CS-RP",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        }
-      ],
-    },
-    {
-      name: "Profile",
-      code: "PF",
-      permision: false,
-      children: [
-        {
-          name: "Individual",
-          code: "PF-ID",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          name: "Travel Agen",
-          code: "PF-TA",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          name: "Company",
-          code: "PF-CP",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          name: "Group",
-          code: "PF-GR",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-      ],
-    },
-    {
-      name: "Night Auditor",
-      code: "NA",
-      permision: false,
-      children: [
-        {
-          name: "Reports",
-          code: "NA-RP",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          name: "Hotel Date Maintenance",
-          code: "NA-HD",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          name: "Close-Day Procedure",
-          code: "NA-CD",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          name: "Auto-Sequence Reports",
-          code: "NA-AS",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-      ],
-    },
-    {
-      name: "House Keeping",
-      code: "HK",
-      permision: false,
-      children: [
-        {
-          name: "Item Management",
-          code: "HK-IM",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          name: "Room Status",
-          code: "HK-RS",
-          permision: true,
-          create: false,
-          read: false,
-          update: false,
-          delete: false,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        }
-      ],
-    },
-    {
-      name: "Engineering",
-      code: "EN",
-      permision: true,
-      create: false,
-      read: false,
-      update: false,
-      delete: false,
-      edited_create: false,
-      edited_read: false,
-      edited_update: false,
-      edited_delete: false,
-    },
-    {
-      name: "Reporting Systems",
-      code: "RS",
-      permision: true,
-      create: false,
-      read: false,
-      update: false,
-      delete: false,
-      edited_create: false,
-      edited_read: false,
-      edited_update: false,
-      edited_delete: false,
-    },
-    {
-      name: "Configuration",
-      code: "CF",
-      permision: true,
-      create: false,
-      read: false,
-      update: false,
-      delete: false,
-      edited_create: false,
-      edited_read: false,
-      edited_update: false,
-      edited_delete: false,
-    },
-  ]);
+  const [data, setData] = React.useState([]);
 
   const [dialogAddRole, setDialogAddRole] = React.useState(false);
   const [dialogEditRole, setDialogEditRole] = React.useState(false);
@@ -463,14 +467,21 @@ export default function RoleManagement() {
       key: "*ALL",
       label: "*ALL",
     }];
-    propertydata.content[propertydata.content.length - 1].split(",").forEach((element) =>
-      tempproperty.push({
-        key: element,
-        label: element,
-      })
+    propertydata.content[propertydata.content.length - 1].split(",").forEach((element) => {
+      if (tempproperty.filter(x => x.label === element).length == 0) {
+        tempproperty.push({
+          key: element,
+          label: element,
+        })
+      }
+    }
+
     );
     console.log("tempproperty", tempproperty)
-    setAllProperty(tempproperty)
+    // console.log(defaultdata.val());
+    // let _data = defaultdata.val();
+    setData(JSON.parse(JSON.stringify(defaultdata)));
+    setAllProperty(tempproperty);
     setRoleCode(null);
     setRoleName(null);
     setDescriptionsRole(null);
@@ -492,10 +503,10 @@ export default function RoleManagement() {
           {
             rolecode: rolecode,
             componentcode: obj.code,
-            permission_create: +obj.create,
-            permission_read: +obj.read,
-            permission_update: +obj.update,
-            permission_delete: +obj.delete
+            permissioncreate: +obj.create,
+            permissionread: +obj.read,
+            permissionupdate: +obj.update,
+            permissiondelete: +obj.delete
           }
         )
       }
@@ -558,13 +569,20 @@ export default function RoleManagement() {
     setDialogAddRole(false);
   };
 
+  const mergePerm = async (rolecode) => {
+
+
+  }
+
   const handleDialogEditRole = async (rolecode, rolename, description, status) => {
+
     // const databyid = await getuserbyid(
     //   sessionStorage.getItem("auth"),
     //   idForEdit
     // );
     // setStatusRec(databyid.content[databyid.content.length - 1].status_record);
     // console.log("idForEdit", idForEdit);
+    mergePerm(rolecode);
     setEditRolecode(rolecode);
     setEditRolename(rolename);
     setEditDescription(description);
@@ -616,7 +634,9 @@ export default function RoleManagement() {
     console.log("roleupdate func:", roleupdate);
 
     let data = await listrole(sessionStorage.getItem("auth"));
+    console.log("listrole", listrole);
     let userdata = [];
+    // let i = 0;
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
@@ -625,7 +645,6 @@ export default function RoleManagement() {
           element.rolename,
           element.description,
           element.count,
-          "",
           element.status
         )
       )
@@ -642,27 +661,27 @@ export default function RoleManagement() {
     setDialogDeleteRole(false);
   };
 
-  const handleDialogDeleteRoleOpen = async (id) => {
-    console.log("idForDelete", id);
-    const rolebyid = await getrolebyid(sessionStorage.getItem("auth"), id);
-    setRoleID(rolebyid.content[rolebyid.content.length - 1].code);
-    setRoleCode(rolebyid.content[rolebyid.content.length - 1].rolecode);
-    setRoleName(rolebyid.content[rolebyid.content.length - 1].rolename);
-    setDescriptionsRole(
-      rolebyid.content[rolebyid.content.length - 1].description
-    );
+  const handleDialogDeleteRoleOpen = async (rolecode,rolename,description) => {
+    // console.log("idForDelete", id);
+    // const rolebyid = await getrolebyid(sessionStorage.getItem("auth"), id);
+    // setRoleID(rolebyid.content[rolebyid.content.length - 1].code);
+    setRoleCode(rolecode);
+    setRoleName(rolename);
+    setDescriptionsRole(description);
 
     setDialogDeleteRole(true);
   };
 
-  const handleDialogDelete = async (id) => {
-    console.log("id for delete", id);
+  const handleDialogDelete = async (code) => {
+    // console.log("id for delete", id);
 
-    const roleDelete = await deleterolebyid(sessionStorage.getItem("auth"), id);
+    const roleDelete = await deleterolebycode(sessionStorage.getItem("auth"), code);
     console.log("roleuDelete func:", roleDelete);
 
     let data = await listrole(sessionStorage.getItem("auth"));
+    console.log("listrole", listrole);
     let userdata = [];
+    // let i = 0;
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
@@ -671,7 +690,6 @@ export default function RoleManagement() {
           element.rolename,
           element.description,
           element.count,
-          "",
           element.status
         )
       )
@@ -1002,9 +1020,9 @@ export default function RoleManagement() {
 
       if (ChipPropertyDialog.length) {
         for (var i in ChipPropertyDialog) {
-          if(ChipPropertyDialog[i].label == "*ALL")  setChipPropertyDialog((chips) =>
-          chips.filter((chips) => chips.key !== "*ALL")
-        );
+          if (ChipPropertyDialog[i].label == "*ALL") setChipPropertyDialog((chips) =>
+            chips.filter((chips) => chips.key !== "*ALL")
+          );
           // setChipPropertyDialog(prevState => prevState.filter((_, index) => index !== i)) 
           temp.add(ChipPropertyDialog[i].label);
         }
@@ -1579,7 +1597,7 @@ export default function RoleManagement() {
                               <EditRoundedIcon />
                             </IconButton>
                             <IconButton
-                              onClick={() => handleDialogDeleteRoleOpen(row.code)}
+                              onClick={() => handleDialogDeleteRoleOpen(row.rolecode,row.rolename, row.description)}
                             >
                               <DeleteRoundedIcon />
                             </IconButton>
@@ -2148,7 +2166,7 @@ export default function RoleManagement() {
                   Code: {roleCode}
                 </Typography>
                 <Typography variant="title1" color="initial">
-                  Descrioption: {roleName}
+                  Descrioption: {descriptionsRole}
                 </Typography>
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
@@ -2172,7 +2190,7 @@ export default function RoleManagement() {
                   <Grid item sm={6} md={6} lg={6} xl={6}>
                     <Button
                       fullWidth
-                      onClick={() => handleDialogDelete(roleID)}
+                      onClick={() => handleDialogDelete(roleCode)}
                       variant="contained"
                       // color="primary"
                       style={{ backgroundColor: "red", color: "white" }}

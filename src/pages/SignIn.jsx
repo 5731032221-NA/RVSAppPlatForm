@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import "../assets/login.css";
 import "../assets/variable.css";
 import background from "../assets/img/imgbackground.jpg";
@@ -6,7 +6,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
-import {InputAdornment, TextField, Container, Button, Paper, Grid, Divider} from "@material-ui/core";
+import { InputAdornment, TextField, Container, Button, Paper, Grid, Divider } from "@material-ui/core";
 
 import PropTypes from "prop-types";
 import auth from "../services/auth.service";
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#393737", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 15
   },
   errorMessage: {
-    color: "#ff0033", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 12, paddingTop:10,
+    color: "#ff0033", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 12, paddingTop: 10,
   }
 }));
 
@@ -74,10 +74,10 @@ export default function Login({ setToken }) {
     } else {
       setErrorPassword(false);
     }
-    
+
     console.log("up", username, password)
-    console.log((username === null || username === ''),(password === null || password === ''),
-    !(username === null || username === '') && !(password === null || password === ''))
+    console.log((username === null || username === ''), (password === null || password === ''),
+      !(username === null || username === '') && !(password === null || password === ''))
     if (!(username === null || username === '') && !(password === null || password === '')) {
       const token = await auth({
         user: {
@@ -85,8 +85,8 @@ export default function Login({ setToken }) {
           password,
         },
       });
-      console.log("token", token);  
-      
+      console.log("token", token);
+
       // try{
       // store.dispatch({
       //   type: EDIT_AUTHORIZATION,
@@ -95,17 +95,18 @@ export default function Login({ setToken }) {
       // }catch(err){
       //   console.log("de2",err.stack)
       // }
-      const apitest = await propertys(token.contents[token.contents.length-2].refreshToken);
-      store.dispatch({
-        type: EDIT_PROPERTYS,
-        payload: apitest.content
-      })
-      console.log("store authen",store.getState().reducer)
-      console.log("apitest",apitest)
-      setErrorLogin(true);
+      if (token.status == 2000) {
+        const apitest = await propertys(token.contents[token.contents.length - 2].refreshToken);
+        store.dispatch({
+          type: EDIT_PROPERTYS,
+          payload: apitest.content
+        })
+        console.log("store authen", store.getState().reducer)
+        console.log("apitest", apitest)
 
-      setToken(token);
-      
+        setToken(token);
+      }
+      setErrorLogin(true);
     }
   };
 
@@ -121,7 +122,7 @@ export default function Login({ setToken }) {
           <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
           <h5 className={classes.sysname} >Hotel Property Management System </h5>
           <Divider variant="middle" />
-          
+
           {errorUsername ? <div className={classes.errorMessage}>Username is required</div> : (errorPassword ? <div className={classes.errorMessage}>Password is required</div> : (errorLogin ? <div className={classes.errorMessage}>Invalid Username or Password</div> : null))}
 
           <Grid item className={classes.formlogin}>
@@ -143,10 +144,10 @@ export default function Login({ setToken }) {
                     ),
                   }}
                 >
-                </TextField> 
+                </TextField>
               </Grid>
 
-              <Grid item spacing={5} style={{ marginTop: 0  }}>
+              <Grid item spacing={5} style={{ marginTop: 0 }}>
                 <TextField
                   id="password"
                   label="Password"
@@ -162,9 +163,9 @@ export default function Login({ setToken }) {
                     ),
                   }}
                 >
-                </TextField>  
+                </TextField>
               </Grid>
-              <Grid item style={{ paddingTop: 25, paddingBottom:20 }} >
+              <Grid item style={{ paddingTop: 25, paddingBottom: 20 }} >
                 <Button
                   fullWidth
                   type="submit"
