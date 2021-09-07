@@ -53,6 +53,7 @@ import {
   updaterole,
   postrole,
   deleterolebyid,
+  listallproperty
 } from "../services/user.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
@@ -99,6 +100,317 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RoleManagement() {
   const classes = useStyles();
+  const [data, setData] = React.useState([
+    {
+      name: "Dashboard",
+      code: "DB",
+      permision: true,
+      create: false,
+      read: false,
+      update: false,
+      delete: false,
+      edited_create: false,
+      edited_read: false,
+      edited_update: false,
+      edited_delete: false,
+    },
+    {
+      name: "Reservartion",
+      code: "RV",
+      permision: true,
+      create: false,
+      read: false,
+      update: false,
+      delete: false,
+      edited_create: false,
+      edited_read: false,
+      edited_update: false,
+      edited_delete: false,
+    },
+    {
+      name: "Front Desk",
+      code: "FD",
+      permision: false,
+      children: [
+        {
+          name: "Walk-in",
+          code: "FD-WN",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+        {
+          name: "Check-in",
+          code: "FD-CI",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+        {
+          name: "Checkout",
+          code: "FD-CO",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+        {
+          name: "RoomStatus",
+          code: "FD-RS",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+      ],
+    },
+    {
+      name: "Cashier",
+      code: "CS",
+      permision: false,
+      children: [
+        {
+          name: "Folio Management",
+          code: "CS-FM",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+        {
+          name: "Reports",
+          code: "CS-RP",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        }
+      ],
+    },
+    {
+      name: "Profile",
+      code: "PF",
+      permision: false,
+      children: [
+        {
+          name: "Individual",
+          code: "PF-ID",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+        {
+          name: "Travel Agen",
+          code: "PF-TA",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+        {
+          name: "Company",
+          code: "PF-CP",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+        {
+          name: "Group",
+          code: "PF-GR",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+      ],
+    },
+    {
+      name: "Night Auditor",
+      code: "NA",
+      permision: false,
+      children: [
+        {
+          name: "Reports",
+          code: "NA-RP",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+        {
+          name: "Hotel Date Maintenance",
+          code: "NA-HD",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+        {
+          name: "Close-Day Procedure",
+          code: "NA-CD",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+        {
+          name: "Auto-Sequence Reports",
+          code: "NA-AS",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+      ],
+    },
+    {
+      name: "House Keeping",
+      code: "HK",
+      permision: false,
+      children: [
+        {
+          name: "Item Management",
+          code: "HK-IM",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        },
+        {
+          name: "Room Status",
+          code: "HK-RS",
+          permision: true,
+          create: false,
+          read: false,
+          update: false,
+          delete: false,
+          edited_create: false,
+          edited_read: false,
+          edited_update: false,
+          edited_delete: false,
+        }
+      ],
+    },
+    {
+      name: "Engineering",
+      code: "EN",
+      permision: true,
+      create: false,
+      read: false,
+      update: false,
+      delete: false,
+      edited_create: false,
+      edited_read: false,
+      edited_update: false,
+      edited_delete: false,
+    },
+    {
+      name: "Reporting Systems",
+      code: "RS",
+      permision: true,
+      create: false,
+      read: false,
+      update: false,
+      delete: false,
+      edited_create: false,
+      edited_read: false,
+      edited_update: false,
+      edited_delete: false,
+    },
+    {
+      name: "Configuration",
+      code: "CF",
+      permision: true,
+      create: false,
+      read: false,
+      update: false,
+      delete: false,
+      edited_create: false,
+      edited_read: false,
+      edited_update: false,
+      edited_delete: false,
+    },
+  ]);
+
   const [dialogAddRole, setDialogAddRole] = React.useState(false);
   const [dialogEditRole, setDialogEditRole] = React.useState(false);
   const [dialogDeleteRole, setDialogDeleteRole] = React.useState(false);
@@ -115,12 +427,12 @@ export default function RoleManagement() {
   const [editRolename, setEditRolename] = useState([]);
   const [editDescription, setEditDescription] = useState([]);
   const [editStatus, setEditStatus] = useState([]);
-
+  const [allProperty, setAllProperty] = useState([]);
 
   const [pageData, setPageData] = React.useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [chipAttributeDialog, setChipAttributeDialog] = React.useState([]);
+  const [ChipPropertyDialog, setChipPropertyDialog] = React.useState([]);
   React.useEffect(async () => {
     let data = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", listrole);
@@ -129,7 +441,7 @@ export default function RoleManagement() {
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
-          element.id,
+          element.code,
           element.rolecode,
           element.rolename,
           element.description,
@@ -144,7 +456,21 @@ export default function RoleManagement() {
     updatePageData(userdata, page, rowsPerPage);
   }, []);
 
-  const handleDialogAddRole = () => {
+  const handleDialogAddRole = async () => {
+    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    console.log("propertydata", propertydata);
+    let tempproperty = [{
+      key: "*ALL",
+      label: "*ALL",
+    }];
+    propertydata.content[propertydata.content.length - 1].split(",").forEach((element) =>
+      tempproperty.push({
+        key: element,
+        label: element,
+      })
+    );
+    console.log("tempproperty", tempproperty)
+    setAllProperty(tempproperty)
     setRoleCode(null);
     setRoleName(null);
     setDescriptionsRole(null);
@@ -153,30 +479,69 @@ export default function RoleManagement() {
     setDialogAddRole(true);
   };
 
+
+  const propertylist = async (array, rolecode) => {
+    let list = [];
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      if (obj.edited_create ||
+        obj.edited_read ||
+        obj.edited_update ||
+        obj.edited_delete) {
+        list.push(
+          {
+            rolecode: rolecode,
+            componentcode: obj.code,
+            permission_create: +obj.create,
+            permission_read: +obj.read,
+            permission_update: +obj.update,
+            permission_delete: +obj.delete
+          }
+        )
+      }
+      if (obj.children) {
+        // list = [...list, ...propertylist(obj.children)];
+        let append = await propertylist(obj.children, rolecode);
+        if (append.length > 0) list = list.concat(append);
+      }
+    }
+    return list;
+  };
+
+
   const handleDialogAddRoleSave = async (
     rolecode,
     rolename,
     description,
     status
   ) => {
+    let perm = await propertylist(data, rolecode);
+    const temp = new Set();
+    if (ChipPropertyDialog.length) {
+      for (var i in ChipPropertyDialog) {
+        temp.add(ChipPropertyDialog[i].key);
+      }
+    }
+    const tempArray = Array.from(temp).join(",");
     let insert = await postrole(sessionStorage.getItem("auth"), {
       rolecode: rolecode,
       rolename: rolename,
       description: description,
       status: status,
+      applyproperty: tempArray,
+      permission: perm
     });
     console.log(insert);
-    let data = await listrole(sessionStorage.getItem("auth"));
+    let roledata = await listrole(sessionStorage.getItem("auth"));
     let userdata = [];
-    data.content[data.content.length - 1].forEach((element) =>
+    roledata.content[roledata.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
-          element.id,
+          element.code,
           element.rolecode,
           element.rolename,
           element.description,
           element.count,
-          "",
           element.status
         )
       )
@@ -209,7 +574,7 @@ export default function RoleManagement() {
   // const handleDialogEditRole = async (id) => {
   //   console.log("idForEdit", id);
   //   const rolebyid = await getrolebyid(sessionStorage.getItem("auth"), id);
-  //   setRoleID(rolebyid.content[rolebyid.content.length - 1].id);
+  //   setRoleID(rolebyid.content[rolebyid.content.length - 1].code);
   //   setRoleCode(rolebyid.content[rolebyid.content.length - 1].rolecode);
   //   setRoleName(rolebyid.content[rolebyid.content.length - 1].rolename);
   //   setDescriptionsRole(
@@ -255,7 +620,7 @@ export default function RoleManagement() {
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
-          element.id,
+          element.code,
           element.rolecode,
           element.rolename,
           element.description,
@@ -280,7 +645,7 @@ export default function RoleManagement() {
   const handleDialogDeleteRoleOpen = async (id) => {
     console.log("idForDelete", id);
     const rolebyid = await getrolebyid(sessionStorage.getItem("auth"), id);
-    setRoleID(rolebyid.content[rolebyid.content.length - 1].id);
+    setRoleID(rolebyid.content[rolebyid.content.length - 1].code);
     setRoleCode(rolebyid.content[rolebyid.content.length - 1].rolecode);
     setRoleName(rolebyid.content[rolebyid.content.length - 1].rolename);
     setDescriptionsRole(
@@ -301,7 +666,7 @@ export default function RoleManagement() {
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
-          element.id,
+          element.code,
           element.rolecode,
           element.rolename,
           element.description,
@@ -348,8 +713,8 @@ export default function RoleManagement() {
   const editing_create = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label);
-      if (obj.id === label) {
+      console.log(obj.code, label);
+      if (obj.code === label) {
         obj.edited_create = !obj.edited_create;
         obj.create = !obj.create;
       } else if (obj.children) {
@@ -360,8 +725,8 @@ export default function RoleManagement() {
 
   const handleCheckPermision_create = async (nodes) => {
     let _data = data;
-    console.log("nid", nodes.id);
-    await editing_create(_data, nodes.id);
+    console.log("nid", nodes.code);
+    await editing_create(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
@@ -369,8 +734,8 @@ export default function RoleManagement() {
   const editing_read = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label);
-      if (obj.id === label) {
+      console.log(obj.code, label);
+      if (obj.code === label) {
         obj.edited_read = !obj.edited_read;
         obj.read = !obj.read;
       } else if (obj.children) {
@@ -381,8 +746,8 @@ export default function RoleManagement() {
 
   const handleCheckPermision_read = async (nodes) => {
     let _data = data;
-    console.log("nid", nodes.id);
-    await editing_read(_data, nodes.id);
+    console.log("nid", nodes.code);
+    await editing_read(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
@@ -390,8 +755,8 @@ export default function RoleManagement() {
   const editing_update = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label);
-      if (obj.id === label) {
+      console.log(obj.code, label);
+      if (obj.code === label) {
         obj.edited_update = !obj.edited_update;
         obj.update = !obj.update;
       } else if (obj.children) {
@@ -402,8 +767,8 @@ export default function RoleManagement() {
 
   const handleCheckPermision_update = async (nodes) => {
     let _data = data;
-    console.log("nid", nodes.id);
-    await editing_update(_data, nodes.id);
+    console.log("nid", nodes.code);
+    await editing_update(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
@@ -411,8 +776,8 @@ export default function RoleManagement() {
   const editing_delete = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label);
-      if (obj.id === label) {
+      console.log(obj.code, label);
+      if (obj.code === label) {
         obj.edited_delete = !obj.edited_delete;
         obj.delete = !obj.delete;
       } else if (obj.children) {
@@ -423,8 +788,8 @@ export default function RoleManagement() {
 
   const handleCheckPermision_delete = async (nodes) => {
     let _data = data;
-    console.log("nid", nodes.id);
-    await editing_delete(_data, nodes.id);
+    console.log("nid", nodes.code);
+    await editing_delete(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
@@ -432,8 +797,8 @@ export default function RoleManagement() {
   const editing_all = async (array, label, checked) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label);
-      if (obj.id === label) {
+      console.log(obj.code, label);
+      if (obj.code === label) {
         if (obj.delete == checked) {
           obj.edited_delete = !obj.edited_delete;
           obj.delete = !obj.delete;
@@ -458,106 +823,12 @@ export default function RoleManagement() {
 
   const handleCheckPermision_all = async (nodes, event) => {
     let _data = data;
-    console.log("nid", nodes.id, event.target.checked);
-    await editing_all(_data, nodes.id, !event.target.checked);
+    console.log("nid", nodes.code, event.target.checked);
+    await editing_all(_data, nodes.code, !event.target.checked);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
 
-  const [data, setData] = React.useState([
-    {
-      id: "1.1",
-      name: "Dashboard",
-      code: "DB",
-      permision: true,
-      create: false,
-      read: true,
-      update: false,
-      delete: false,
-      edited_create: false,
-      edited_read: false,
-      edited_update: false,
-      edited_delete: false,
-    },
-    {
-      id: "1.2",
-      name: "Reservartion",
-      code: "RS",
-      permision: true,
-      create: false,
-      read: true,
-      update: false,
-      delete: false,
-      edited_create: false,
-      edited_read: false,
-      edited_update: false,
-      edited_delete: false,
-    },
-    {
-      id: "1.3",
-      name: "Front Desk",
-      code: "FD",
-      permision: false,
-      children: [
-        {
-          id: "1.3.1",
-          name: "Walk-in",
-          code: "FD-WN",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          id: "1.3.2",
-          name: "Check-in",
-          code: "FD-CI",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          id: "1.3.3",
-          name: "Checkout",
-          code: "FD-CO",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          id: "1.3.4",
-          name: "RoomStatus",
-          code: "FD-RS",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-      ],
-    },
-  ]);
 
   const [dataMenu, setDataMenu] = React.useState(
     [
@@ -709,41 +980,50 @@ export default function RoleManagement() {
     },
   ];
 
-  const attribute = [
-    {
-      key: "1",
-      label: "Novotel Pattaya",
-    },
-    {
-      key: "2",
-      label: "Novotel Rayong",
-    },
-  ];
+  // const AllProperty = [
+  //   {
+  //     key: "1",
+  //     label: "Novotel Pattaya",
+  //   },
+  //   {
+  //     key: "2",
+  //     label: "Novotel Rayong",
+  //   },
+  // ];
   const userValues = "";
-  const handleSelectAttribute = (event) => {
-    const temp = new Set();
+  const handleSelectProperty = (event) => {
+    if (event.target.value == "*ALL") setChipPropertyDialog([
+      { key: event.target.value, label: event.target.value }
+    ]);
+    else {
+      const temp = new Set();
 
-    if (chipAttributeDialog.length) {
-      for (var i in chipAttributeDialog) {
-        temp.add(chipAttributeDialog[i].label);
-      }
-      if (temp.has(event.target.value)) {
-        // console.log("had value");
+      if (ChipPropertyDialog.length) {
+        for (var i in ChipPropertyDialog) {
+          if(ChipPropertyDialog[i].label == "*ALL")  setChipPropertyDialog((chips) =>
+          chips.filter((chips) => chips.key !== "*ALL")
+        );
+          // setChipPropertyDialog(prevState => prevState.filter((_, index) => index !== i)) 
+          temp.add(ChipPropertyDialog[i].label);
+        }
+        if (temp.has(event.target.value)) {
+          // console.log("had value");
+        } else {
+          setChipPropertyDialog((chips) => ([
+            ...chips,
+            { key: event.target.value, label: event.target.value },
+          ]));
+        }
       } else {
-        setChipAttributeDialog([
-          ...chipAttributeDialog,
+        setChipPropertyDialog((chips) => ([
+          ...chips,
           { key: event.target.value, label: event.target.value },
-        ]);
+        ]));
       }
-    } else {
-      setChipAttributeDialog([
-        ...chipAttributeDialog,
-        { key: event.target.value, label: event.target.value },
-      ]);
     }
   };
-  const handleDeleteAttribute = (chipToDelete) => () => {
-    setChipAttributeDialog((chips) =>
+  const handleDeleteProperty = (chipToDelete) => () => {
+    setChipPropertyDialog((chips) =>
       chips.filter((chips) => chips.key !== chipToDelete.key)
     );
   };
@@ -751,8 +1031,8 @@ export default function RoleManagement() {
   const renderTree = (nodes) => (
     <div>
       <TreeItem
-        key={nodes.id}
-        nodeId={nodes.id}
+        key={nodes.code}
+        nodeId={nodes.code}
         label={
           <div>
             {nodes.permision ? (
@@ -1102,7 +1382,7 @@ export default function RoleManagement() {
   );
 
   const renderTreeSubMenu = (nodes) => (
-    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+    <TreeItem key={nodes.code} nodeId={nodes.code} label={nodes.name}>
       {Array.isArray(nodes.children)
         ? nodes.children.map((node) => renderTreeSubMenu(node))
         : null}
@@ -1257,7 +1537,7 @@ export default function RoleManagement() {
                     </TableHead>
                     <TableBody>
                       {pageData.map((row) => (
-                        <TableRow key={row.id}>
+                        <TableRow key={row.code}>
                           <TableCell>{row.rolecode}</TableCell>
                           <TableCell>{row.rolename}</TableCell>
                           <TableCell>{row.description}</TableCell>
@@ -1297,7 +1577,7 @@ export default function RoleManagement() {
                               <EditRoundedIcon />
                             </IconButton>
                             <IconButton
-                              onClick={() => handleDialogDeleteRoleOpen(row.id)}
+                              onClick={() => handleDialogDeleteRoleOpen(row.code)}
                             >
                               <DeleteRoundedIcon />
                             </IconButton>
@@ -1435,21 +1715,21 @@ export default function RoleManagement() {
                       label="Property"
                       select
                       value={userValues}
-                      onChange={(event) => handleSelectAttribute(event)}
+                      onChange={(event) => handleSelectProperty(event)}
                     >
-                      {attribute.map((option) => (
+                      {allProperty.map((option) => (
                         <MenuItem key={option.key} value={option.label}>
                           {option.label}
                         </MenuItem>
                       ))}
                     </TextField>
-                    {chipAttributeDialog.map((data, index) => {
+                    {ChipPropertyDialog.map((data, index) => {
                       return (
                         <Chip
                           style={{ marginTop: 10 }}
                           key={data.key + index}
                           label={data.label}
-                          onDelete={handleDeleteAttribute(data)}
+                          onDelete={handleDeleteProperty(data)}
                         />
                       );
                     })}
@@ -1679,21 +1959,21 @@ export default function RoleManagement() {
                       label="Property"
                       select
                       value={userValues}
-                      onChange={(event) => handleSelectAttribute(event)}
+                      onChange={(event) => handleSelectProperty(event)}
                     >
-                      {attribute.map((option) => (
+                      {allProperty.map((option) => (
                         <MenuItem key={option.key} value={option.label}>
                           {option.label}
                         </MenuItem>
                       ))}
                     </TextField>
-                    {chipAttributeDialog.map((data, index) => {
+                    {ChipPropertyDialog.map((data, index) => {
                       return (
                         <Chip
                           style={{ marginTop: 10 }}
                           key={data.key + index}
                           label={data.label}
-                          onDelete={handleDeleteAttribute(data)}
+                          onDelete={handleDeleteProperty(data)}
                         />
                       );
                     })}

@@ -340,10 +340,8 @@ export default function UserManagement() {
     let insert = await postuser(sessionStorage.getItem("auth"), {
       firstname: firstName,
       lastname: lastName,
-      age: 1,
       role: tempArray,
       status_record: statusRec,
-      status_marriaged: "S",
     });
     console.log(insert);
     const data = await getuser(sessionStorage.getItem("auth"));

@@ -50,6 +50,8 @@ import {
   getuserbyid,
   deleteuserbyid,
   listrole,
+  listpropertybyroles,
+  listallproperty
 } from "../services/user.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
@@ -62,7 +64,7 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 // import user from "../services/user.service";
 
 // Generate Order Data
-function createData(id, userID, firstname,lastname, position, roles, property, status) {
+function createData(id, userID, firstname, lastname, position, roles, property, status) {
   return {
     id,
     userID,
@@ -127,6 +129,7 @@ const property = [
   },
 ];
 const RoleValues = "";
+const PropertyValues = "";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -160,6 +163,7 @@ export default function UserManagement() {
   const [selectProperty, setSelectProperty] = React.useState(null);
   const [permissionDialog, setPermissionDialog] = React.useState(false);
   const [chipRolesDialog, setChipRolesDialog] = React.useState([]);
+  const [chipPropertyDialog, setChipPropertyDialog] = React.useState([]);
   const [dialogSize, setDialogSize] = React.useState("sm");
   const [dialogRatio, setDialogRatio] = React.useState(12);
   const [pageData, setPageData] = React.useState([]);
@@ -169,7 +173,7 @@ export default function UserManagement() {
   const [editUserID, setEditUserID] = React.useState(null);
   const [editFirstname, setEditFirstname] = React.useState(null);
   const [editLastname, setEditLastname] = React.useState(null);
-
+  const [properties, setProperties] = React.useState([]);
   const [editID, setEditID] = React.useState(null);
   const [editStatus, setEditStatus] = React.useState(false);
   const [rows, setRows] = useState([]);
@@ -210,6 +214,7 @@ export default function UserManagement() {
     console.log(userdata);
     setRows(userdata);
     updatePageData(userdata, page, rowsPerPage);
+    setSelectPosition(position[0].label)
   }, []);
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
@@ -288,6 +293,7 @@ export default function UserManagement() {
   };
 
   const handleInsertUser = async (
+    code,
     firstName,
     lastName,
     status,
@@ -296,24 +302,29 @@ export default function UserManagement() {
   ) => {
     setEditFirstName(null);
     setEditLastName(null);
-    const temp = new Set();
+    const roletemp = new Set();
     if (chipRolesDialog.length) {
       for (var i in chipRolesDialog) {
-        temp.add(chipRolesDialog[i].key);
+        roletemp.add(chipRolesDialog[i].key);
       }
     }
-    const tempArray = Array.from(temp).join(",");
-
-    console.log("role for insert", role);
-    console.log("tempArray for insert", tempArray);
+    const roleTempArray = Array.from(roletemp).join(",");
+    const propertytemp = new Set();
+    if (chipPropertyDialog.length) {
+      for (var i in chipPropertyDialog) {
+        propertytemp.add(chipPropertyDialog[i].key);
+      }
+    }
+    const propertyTempArray = Array.from(propertytemp).join(",");
     console.log(firstName, lastName, status, position, role);
     let insert = await postuser(sessionStorage.getItem("auth"), {
       firstname: firstName,
       lastname: lastName,
+      code: code,
       status: status,
       position: position,
-      userproperty: "GRPCSH",
-      role: tempArray,
+      userproperty: propertyTempArray,
+      role: roleTempArray,
     });
     console.log(insert);
 
@@ -342,11 +353,25 @@ export default function UserManagement() {
   const handleSelectPosition = (event) => {
     setSelectPosition(event.target.value);
   };
-  const handleSelectProperty = (event) => {
-    setSelectProperty(event.target.value);
-  };
+  // const handleSelectProperty = (event) => {
+  //   setSelectProperty(event.target.value);
+  // };
 
-  const handleSelectRoles = (event, key) => {
+  const listproperty = async (roles) => {
+    let changeproperty = await listpropertybyroles(sessionStorage.getItem("auth"), { roles: roles });
+    console.log("changeproperty", changeproperty);
+    let tempproperty = [];
+    changeproperty.content[changeproperty.content.length - 1].split(",").forEach((element) =>
+      tempproperty.push({
+        key: element,
+        label: element,
+      })
+    );
+    console.log("tempproperty", tempproperty)
+    setProperties(tempproperty)
+  }
+
+  const handleSelectRoles = async (event, key) => {
     const temp = new Set();
     if (chipRolesDialog.length) {
       for (var i in chipRolesDialog) {
@@ -359,19 +384,60 @@ export default function UserManagement() {
           ...chipRolesDialog,
           { key: key.props.name, label: event.target.value },
         ]);
+        temp.add(key.props.name);
+        console.log("temp", temp)
+        listproperty(Array.from(temp))
       }
     } else {
       setChipRolesDialog([
         ...chipRolesDialog,
         { key: key.props.name, label: event.target.value },
       ]);
+      temp.add(key.props.name);
+      console.log("temp", temp)
+      listproperty(Array.from(temp))
     }
+
   };
   const handleDeleteRoles = (chipToDelete) => () => {
     setChipRolesDialog((chips) =>
       chips.filter((chips) => chips.key !== chipToDelete.key)
     );
+    const temp = new Set();
+    for (var i in chipRolesDialog) {
+      if(chipRolesDialog[i].key!=chipToDelete.key)
+      temp.add(chipRolesDialog[i].key);
+    }
+    listproperty(Array.from(temp))
   };
+
+  const handleSelectProperty = (event, key) => {
+    const temp = new Set();
+    if (chipPropertyDialog.length) {
+      for (var i in chipPropertyDialog) {
+        temp.add(chipPropertyDialog[i].key);
+      }
+      if (temp.has(key.props.name)) {
+        // console.log("had value");
+      } else {
+        setChipPropertyDialog([
+          ...chipPropertyDialog,
+          { key: key.props.name, label: event.target.value },
+        ]);
+      }
+    } else {
+      setChipPropertyDialog([
+        ...chipPropertyDialog,
+        { key: key.props.name, label: event.target.value },
+      ]);
+    }
+  };
+  const handleDeleteProperty = (chipToDelete) => () => {
+    setChipPropertyDialog((chips) =>
+      chips.filter((chips) => chips.key !== chipToDelete.key)
+    );
+  };
+
 
   const renderTreeSubMenu = (nodes) => (
     <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
@@ -1155,7 +1221,7 @@ export default function UserManagement() {
                       <TableCell>{row.roles}</TableCell>
                       <TableCell>{row.property}</TableCell>
                       {`${row.status}` === "Active" ||
-                      `${row.status}` === "active" ? (
+                        `${row.status}` === "active" ? (
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -1228,7 +1294,7 @@ export default function UserManagement() {
                     rowsPerPage={rowsPerPage}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
-                    // onRowsPerPageChange={handleChangeRowsPerPage}
+                  // onRowsPerPageChange={handleChangeRowsPerPage}
                   />
                 </Grid>
               </Grid>
@@ -1250,7 +1316,7 @@ export default function UserManagement() {
           <DialogContent>
             <Container maxWidth="xl" disableGutters>
               <Grid container spacing={2} style={{ paddingTop: 10 }}>
-              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                   <TextField
                     // autoFocus
                     id="outlined-basic"
@@ -1286,7 +1352,7 @@ export default function UserManagement() {
               </Grid>
 
               <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                   <TextField
                     select
                     id="outlined-basic"
@@ -1300,27 +1366,6 @@ export default function UserManagement() {
                     onChange={handleSelectPosition}
                   >
                     {position.map((option) => (
-                      <option key={option.key} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    // autoFocus
-                    select
-                    id="outlined-basic"
-                    label="Property"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-                    value={selectProperty}
-                    onChange={handleSelectProperty}
-                  >
-                    {property.map((option) => (
                       <option key={option.key} value={option.label}>
                         {option.label}
                       </option>
@@ -1368,6 +1413,41 @@ export default function UserManagement() {
                   );
                 })}
               </Grid>
+              <Grid style={{ paddingTop: 10 }}>
+                <Divider />
+              </Grid>
+              <TextField
+                fullWidth
+                // autoFocus
+                variant="outlined"
+                selectSelectProps={{
+                  native: true,
+                }}
+                label="Property"
+                select
+                value={PropertyValues}
+                onChange={(event, name) => handleSelectProperty(event, name)}
+              >
+                {properties.map((option) => (
+                  <MenuItem
+                    key={option.key}
+                    name={option.key}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              {chipPropertyDialog.map((data, index) => {
+                return (
+                  <Chip
+                    style={{ marginTop: 10 }}
+                    key={data.key + index}
+                    label={data.label}
+                    onDelete={handleDeleteProperty(data)}
+                  />
+                );
+              })}
               <Grid container spacing={2} style={{ paddingTop: 10 }}>
                 <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                   <TextField
@@ -1378,8 +1458,8 @@ export default function UserManagement() {
                     SelectProps={{
                       native: true,
                     }}
-                    // value={" "}
-                    // onChange={" "}
+                  // value={" "}
+                  // onChange={" "}
                   ></TextField>
                 </Grid>
                 <Grid
@@ -1439,6 +1519,7 @@ export default function UserManagement() {
               color="primary"
               onClick={() =>
                 handleInsertUser(
+                  editUserID,
                   editFirstName,
                   editLastName,
                   editStatus,
@@ -1510,18 +1591,18 @@ export default function UserManagement() {
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
 
-                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <TextField
-                    // autoFocus
-                    id="outlined-basic"
-                    label="UserID"
-                    variant="outlined"
-                    value={editUserID}
-                    fullWidth
-                    onChange={(e) => setEditUserID(e.target.value)}
-                  />
-                </Grid>
-                
+                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                      <TextField
+                        // autoFocus
+                        id="outlined-basic"
+                        label="UserID"
+                        variant="outlined"
+                        value={editUserID}
+                        fullWidth
+                        onChange={(e) => setEditUserID(e.target.value)}
+                      />
+                    </Grid>
+
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
                         // autoFocus
@@ -1613,28 +1694,6 @@ export default function UserManagement() {
                       );
                     })}
                   </Grid>
-                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <TextField
-                      // autoFocus
-                      select
-                      style={{ marginTop: 15 }}
-                      id="outlined-basic"
-                      label="Property"
-                      variant="outlined"
-                      fullWidth
-                      SelectProps={{
-                        native: true,
-                      }}
-                      value={selectProperty}
-                      onChange={handleSelectProperty}
-                    >
-                      {property.map((option) => (
-                        <option key={option.key} value={option.label}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
@@ -1646,8 +1705,8 @@ export default function UserManagement() {
                           native: true,
                         }}
 
-                        // value={" "}
-                        // onChange={" "}
+                      // value={" "}
+                      // onChange={" "}
                       ></TextField>
                     </Grid>
                     <Grid

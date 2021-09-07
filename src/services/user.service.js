@@ -9,7 +9,25 @@ module.exports = {
       body: JSON.stringify(req),
     }).then(async (res) => res.json());
   },
-
+  listpropertybyroles: async function (accessToken, req) {
+    return fetch("http://localhost:8082/listpropertybyroles", {
+      method: "POST",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req),
+    }).then(async (res) => res.json());
+  },
+  listallproperty: async function (accessToken) {
+    return fetch("http://localhost:8082/listallproperty", {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
   listrole: async function (accessToken, req) {
     return fetch("http://localhost:8082/listrole", {
       method: "GET",
@@ -21,7 +39,7 @@ module.exports = {
     }).then(async (res) => res.json());
   },
   postuser: async function (accessToken, req) {
-    return fetch("http://localhost:8082/listuser", {
+    return fetch("http://localhost:8082/user", {
       method: "POST",
       headers: {
         Authorization: accessToken,
@@ -32,7 +50,7 @@ module.exports = {
   },
 
   postrole: async function (accessToken, req) {
-    return fetch("http://localhost:8082/listrole", {
+    return fetch("http://localhost:8082/rolegroup", {
       method: "POST",
       headers: {
         Authorization: accessToken,
