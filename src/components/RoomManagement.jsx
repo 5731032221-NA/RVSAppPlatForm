@@ -203,7 +203,7 @@ const roomStatus = [
 ];
 const attribute = [
   {
-    key: "Minibar",
+    key: "MINIBAR",
     label: "Minibar",
   },
   {
@@ -259,18 +259,6 @@ export default function RoomManagement() {
     //   "8038",
     //   "SUPERVISOR",
     //   "3RDFLOOR",
-    //   "TOWER1",
-    //   "Desription",
-    //   "IN",
-    //   "-"
-    // ),
-    // createData(1, "FSDH", "8038", "DELUX", "F4", "A", "Desription", "VC", "-"),
-    // createData(
-    //   2,
-    //   "FSDH",
-    //   "8038",
-    //   "SUPERVISOR",
-    //   "F5",
     //   "TOWER1",
     //   "Desription",
     //   "IN",
@@ -341,6 +329,7 @@ export default function RoomManagement() {
   };
 
   const handlePropertyDialog = (event) => {
+    console.log(event.target.value);
     setPropertyDialog(event.target.value);
   };
   const handleRoomTypeDialog = (event) => {
@@ -391,7 +380,7 @@ export default function RoomManagement() {
     setRoomDesc(dataRoombyid.content[0].description);
     setRoomFloor(dataRoombyid.content[0].floor);
     const roomDataEdit = dataRoombyid.content[0].attribute;
-    var tempRoom = roomDataEdit.split(", ");
+    var tempRoom = roomDataEdit.split(",");
     for (let i in attribute) {
       if (tempRoom.includes(attribute[i].key)) {
         setChipAttributeDialog((prevState) => [
@@ -418,22 +407,47 @@ export default function RoomManagement() {
     roomDesc,
     roomFloor
   ) => {
-    console.log(
+    console.log(`
+      roomNo : ${roomNo},
+      propertyDialog : ${propertyDialog},
+      roomTypeDialog : ${roomTypeDialog},
+      buildingDialog : ${buildingDialog},
+      wingDialog : ${wingDialog},
+      exposureDialog : ${exposureDialog},
+      roomSizeDialog : ${roomSizeDialog},
+      roomSegDialog : ${roomSegDialog},
+      roomStatusDialog : ${roomStatusDialog},
+      chipAttributeDialog : ${chipAttributeDialog},
+      roomDesc : ${roomDesc},
+      roomFloor : ${roomFloor}`);
+
+    const AttributeTemp = new Set();
+    if (chipAttributeDialog.length) {
+      for (var A in chipAttributeDialog) {
+        AttributeTemp.add(chipAttributeDialog[A].key);
+      }
+    }
+    const attributeTempArray = Array.from(AttributeTemp).join(",");
+
+    const dataRoombyid = await updateRoom(
+      sessionStorage.getItem("auth"),
       roomNo,
-      propertyDialog,
-      roomTypeDialog,
-      buildingDialog,
-      wingDialog,
-      exposureDialog,
-      roomSizeDialog,
-      roomSegDialog,
-      roomStatusDialog,
-      chipAttributeDialog,
-      roomDesc,
-      roomFloor
+      {
+        roomNo: roomNo,
+        propertyDialog: propertyDialog,
+        roomTypeDialog: roomTypeDialog,
+        buildingDialog: buildingDialog,
+        wingDialog: wingDialog,
+        exposureDialog: exposureDialog,
+        roomSizeDialog: roomSizeDialog,
+        roomSegDialog: roomSegDialog,
+        roomStatusDialog: roomStatusDialog,
+        chipAttributeDialog: attributeTempArray,
+        roomDesc: roomDesc,
+        roomFloor: roomFloor,
+      }
     );
-    // const dataRoombyid = await postRoom(sessionStorage.getItem("auth"), roomNo);
-    // console.log("dataRoombyid", dataRoombyid);
+    console.log("dataRoombyid", dataRoombyid);
 
     const data = await listRoom(sessionStorage.getItem("auth"));
     console.log("data", data);
@@ -465,7 +479,9 @@ export default function RoomManagement() {
     setDialogEditRoom(false);
   };
 
-  const handleSelectAttribute = (event) => {
+  const handleSelectAttribute = (event, key) => {
+    console.log(event);
+    console.log(key.props);
     const temp = new Set();
 
     if (chipAttributeDialog.length) {
@@ -477,13 +493,13 @@ export default function RoomManagement() {
       } else {
         setChipAttributeDialog([
           ...chipAttributeDialog,
-          { key: event.target.value, label: event.target.value },
+          { key: key.props.name, label: event.target.value },
         ]);
       }
     } else {
       setChipAttributeDialog([
         ...chipAttributeDialog,
-        { key: event.target.value, label: event.target.value },
+        { key: key.props.name, label: event.target.value },
       ]);
     }
   };
@@ -898,7 +914,7 @@ export default function RoomManagement() {
                   <Container maxWidth="xl" disableGutters>
                     <Grid container>
                       <TextField
-                        autoFocus
+                        // autoFocus
                         select
                         id="outlined-basic"
                         label="Property"
@@ -907,8 +923,8 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
-                        value={propertyDialog}
-                        onChange={(e) => handlePropertyDialog(e.target.value)}
+                        defaultValue={propertyDialog}
+                        onChange={(event) => handlePropertyDialog(event)}
                       >
                         {properties.map((option) => (
                           <option key={option.value} value={option.value}>
@@ -926,7 +942,7 @@ export default function RoomManagement() {
                           variant="outlined"
                           fullWidth
                           value={roomNumber}
-                          onChange={(e) => handleRoomNumber(e.target.value)}
+                          onChange={(e) => handleRoomNumber(e)}
                         />
                       </Grid>
                       <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -941,7 +957,7 @@ export default function RoomManagement() {
                             native: true,
                           }}
                           value={roomTypeDialog}
-                          onChange={(e) => handleRoomTypeDialog(e.target.value)}
+                          onChange={(e) => handleRoomTypeDialog(e)}
                         >
                           {roomType.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -960,7 +976,7 @@ export default function RoomManagement() {
                           variant="outlined"
                           fullWidth
                           value={roomFloor}
-                          onChange={(e) => handleFloor(e.target.value)}
+                          onChange={(e) => handleFloor(e)}
                         />
                       </Grid>
                       <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
@@ -975,7 +991,7 @@ export default function RoomManagement() {
                             native: true,
                           }}
                           value={buildingDialog}
-                          onChange={(e) => handleBuildingDialog(e.target.value)}
+                          onChange={(e) => handleBuildingDialog(e)}
                         >
                           {building.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -996,7 +1012,7 @@ export default function RoomManagement() {
                             native: true,
                           }}
                           value={wingDialog}
-                          onChange={(e) => handleWingDialog(e.target.value)}
+                          onChange={(e) => handleWingDialog(e)}
                         >
                           {wing.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -1019,7 +1035,7 @@ export default function RoomManagement() {
                             native: true,
                           }}
                           value={exposureDialog}
-                          onChange={(e) => handleExposureDialog(e.target.value)}
+                          onChange={(e) => handleExposureDialog(e)}
                         >
                           {exposure.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -1040,7 +1056,7 @@ export default function RoomManagement() {
                             native: true,
                           }}
                           value={roomSizeDialog}
-                          onChange={(e) => handleRoomSizeDialog(e.target.value)}
+                          onChange={(e) => handleRoomSizeDialog(e)}
                         >
                           {roomSize.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -1063,7 +1079,7 @@ export default function RoomManagement() {
                             native: true,
                           }}
                           value={roomSegDialog}
-                          onChange={(e) => handleRoomSegDialog(e.target.value)}
+                          onChange={(e) => handleRoomSegDialog(e)}
                         >
                           {roomSeg.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -1084,9 +1100,7 @@ export default function RoomManagement() {
                             native: true,
                           }}
                           value={roomStatusDialog}
-                          onChange={(e) =>
-                            handleRoomStatusDialog(e.target.value)
-                          }
+                          onChange={(e) => handleRoomStatusDialog(e)}
                         >
                           {roomStatus.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -1112,11 +1126,18 @@ export default function RoomManagement() {
                         }}
                         label="Attribute"
                         select
+                        // name={key}
                         value={chipAttributeDialog}
-                        onChange={(event) => handleSelectAttribute(event)}
+                        onChange={(event, key) =>
+                          handleSelectAttribute(event, key)
+                        }
                       >
                         {attribute.map((option) => (
-                          <MenuItem key={option.key} value={option.label}>
+                          <MenuItem
+                            key={option.key}
+                            name={option.key}
+                            value={option.label}
+                          >
                             {option.label}
                           </MenuItem>
                         ))}
@@ -1147,7 +1168,7 @@ export default function RoomManagement() {
                         rows={4}
                         variant="outlined"
                         value={roomDesc}
-                        onChange={(e) => handleDescription(e.target.value)}
+                        onChange={(e) => handleDescription(e)}
                       />
                     </Grid>
                   </Container>
