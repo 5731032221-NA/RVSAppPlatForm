@@ -52,7 +52,9 @@ import {
   listrole,
   listpropertybyroles,
   listallproperty
+
 } from "../services/user.service";
+import { listrole } from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
 import Checkbox from "@material-ui/core/Checkbox";

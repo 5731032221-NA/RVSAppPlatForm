@@ -54,7 +54,7 @@ import {
   postrole,
   deleterolebyid,
   listallproperty
-} from "../services/user.service";
+ } from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
 // Generate Order Data
@@ -965,21 +965,22 @@ export default function RoleManagement() {
     ]
     // }
   );
-  const demoUser = [
-    {
-      key: "1",
-      label: "Admin",
-    },
-    {
-      key: "2",
-      label: "User1",
-    },
-    {
-      key: "3",
-      label: "User1",
-    },
-  ];
+  // const demoUser = [
+  //   {
+  //     key: "1",
+  //     label: "Admin",
+  //   },
+  //   {
+  //     key: "2",
+  //     label: "User1",
+  //   },
+  //   {
+  //     key: "3",
+  //     label: "User1",
+  //   },
+  // ];
 
+<<<<<<< HEAD
   // const AllProperty = [
   //   {
   //     key: "1",
@@ -990,6 +991,19 @@ export default function RoleManagement() {
   //     label: "Novotel Rayong",
   //   },
   // ];
+=======
+  const attribute = [
+    {
+      key: "1",
+      label: "Novotel Pattaya",
+    },
+    {
+      key: "2",
+      label: "Novotel Rayong",
+    },
+  ];
+
+>>>>>>> f59037e3458f0b8a0e1e846955533a9852bd1bac
   const userValues = "";
   const handleSelectProperty = (event) => {
     if (event.target.value == "*ALL") setChipPropertyDialog([
