@@ -66,7 +66,16 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 // import user from "../services/user.service";
 
 // Generate Order Data
-function createData(id, userID, firstname, lastname, position, roles, property, status) {
+function createData(
+  id,
+  userID,
+  firstname,
+  lastname,
+  position,
+  roles,
+  property,
+  status
+) {
   return {
     id,
     userID,
@@ -216,7 +225,7 @@ export default function UserManagement() {
     console.log(userdata);
     setRows(userdata);
     updatePageData(userdata, page, rowsPerPage);
-    setSelectPosition(position[0].label)
+    setSelectPosition(position[0].label);
   }, []);
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
@@ -306,14 +315,14 @@ export default function UserManagement() {
     setEditLastName(null);
     const roletemp = new Set();
     if (chipRolesDialog.length) {
-      for (var i in chipRolesDialog) {
+      for (let i in chipRolesDialog) {
         roletemp.add(chipRolesDialog[i].key);
       }
     }
     const roleTempArray = Array.from(roletemp).join(",");
     const propertytemp = new Set();
     if (chipPropertyDialog.length) {
-      for (var i in chipPropertyDialog) {
+      for (let i in chipPropertyDialog) {
         propertytemp.add(chipPropertyDialog[i].key);
       }
     }
@@ -360,21 +369,28 @@ export default function UserManagement() {
   // };
 
   const listproperty = async (roles) => {
-    let changeproperty = await listpropertybyroles(sessionStorage.getItem("auth"), { roles: roles });
+    let changeproperty = await listpropertybyroles(
+      sessionStorage.getItem("auth"),
+      { roles: roles }
+    );
     console.log("changeproperty", changeproperty);
     let tempproperty = [];
+
     changeproperty.content[changeproperty.content.length - 1].split(",").forEach((element) => {
       if (tempproperty.filter(x => x.label === element).length == 0) {
+
         tempproperty.push({
           key: element,
           label: element,
         })
+
       }
     }
     );
     console.log("tempproperty", tempproperty)
     setProperties(tempproperty)
   }
+
 
   const handleSelectRoles = async (event, key) => {
     const temp = new Set();
@@ -390,8 +406,8 @@ export default function UserManagement() {
           { key: key.props.name, label: event.target.value },
         ]);
         temp.add(key.props.name);
-        console.log("temp", temp)
-        listproperty(Array.from(temp))
+        console.log("temp", temp);
+        listproperty(Array.from(temp));
       }
     } else {
       setChipRolesDialog([
@@ -399,10 +415,9 @@ export default function UserManagement() {
         { key: key.props.name, label: event.target.value },
       ]);
       temp.add(key.props.name);
-      console.log("temp", temp)
-      listproperty(Array.from(temp))
+      console.log("temp", temp);
+      listproperty(Array.from(temp));
     }
-
   };
   const handleDeleteRoles = (chipToDelete) => () => {
     setChipRolesDialog((chips) =>
@@ -413,7 +428,7 @@ export default function UserManagement() {
       if (chipRolesDialog[i].key != chipToDelete.key)
         temp.add(chipRolesDialog[i].key);
     }
-    listproperty(Array.from(temp))
+    listproperty(Array.from(temp));
   };
 
   const handleSelectProperty = (event, key) => {
@@ -442,7 +457,6 @@ export default function UserManagement() {
       chips.filter((chips) => chips.key !== chipToDelete.key)
     );
   };
-
 
   const renderTreeSubMenu = (nodes) => (
     <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
@@ -1122,6 +1136,7 @@ export default function UserManagement() {
           element.roles,
           element.property,
           element.status
+
         )
       )
     );
@@ -1218,12 +1233,14 @@ export default function UserManagement() {
                   {pageData.map((row) => (
                     <TableRow key={row.id}>
                       <TableCell>{row.userID}</TableCell>
-                      <TableCell>{row.firstname} {row.lastname}</TableCell>
+                      <TableCell>
+                        {row.firstname} {row.lastname}
+                      </TableCell>
                       <TableCell>{row.position}</TableCell>
                       <TableCell>{row.roles}</TableCell>
                       <TableCell>{row.property}</TableCell>
                       {`${row.status}` === "Active" ||
-                        `${row.status}` === "active" ? (
+                      `${row.status}` === "active" ? (
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -1253,9 +1270,7 @@ export default function UserManagement() {
                       )}
                       <TableCell align="center">
                         <IconButton
-
                           onClick={() => handleDialogEditUser(row.id)}
-
                         >
                           <EditRoundedIcon />
                         </IconButton>
@@ -1296,7 +1311,7 @@ export default function UserManagement() {
                     rowsPerPage={rowsPerPage}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
-                  // onRowsPerPageChange={handleChangeRowsPerPage}
+                    // onRowsPerPageChange={handleChangeRowsPerPage}
                   />
                 </Grid>
               </Grid>
@@ -1451,7 +1466,21 @@ export default function UserManagement() {
                 );
               })}
               <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                
+
+                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  {/* <TextField
+                    id="outlined-basic"
+                    label="username@mail.com"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    // value={" "}
+                    // onChange={" "}
+                  ></TextField> */}
+                </Grid>
+
                 <Grid
                   container
                   xs={6}
@@ -1580,7 +1609,6 @@ export default function UserManagement() {
               <DialogContent>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
-
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                       <TextField
                         // autoFocus
@@ -1695,8 +1723,8 @@ export default function UserManagement() {
                           native: true,
                         }}
 
-                      // value={" "}
-                      // onChange={" "}
+                        // value={" "}
+                        // onChange={" "}
                       ></TextField>
                     </Grid>
                     <Grid

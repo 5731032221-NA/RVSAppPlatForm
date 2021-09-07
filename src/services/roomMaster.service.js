@@ -31,7 +31,7 @@ module.exports = {
       },
     }).then(async (res) => res.json());
   },
-  updateRoom: async function (accessToken, req, id) {
+  updateRoom: async function (accessToken, id, req) {
     return fetch(`http://localhost:8082/room-masters/${id}`, {
       method: "PUT",
       headers: {
