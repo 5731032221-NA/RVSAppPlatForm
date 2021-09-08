@@ -56,7 +56,7 @@ export default function MainListItems() {
     // const front = true;
     // const setting = true;
     const comps = useSelector(state => state.reducer.permission);
-    console.log("comps",comps);
+    console.log("comps", comps);
 
     const [selectedIndex, setSelectedIndex] = React.useState(1)
     const handleListItemClick = (event, index) => {
@@ -132,7 +132,7 @@ export default function MainListItems() {
 
     return (
         <List >
-            {comps.includes("C01") ?
+            {comps.includes("DB") || comps.includes("*ALL") ?
                 <ListItem button selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)} >
                     <ListItemIcon style={{ color: "white" }} >
                         <DashboardIcon />
@@ -140,7 +140,7 @@ export default function MainListItems() {
                     <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.Dashboard} />
                 </ListItem>
                 : null}
-            {comps.includes("C02") ?
+            {comps.includes("RV") || comps.includes("*ALL") ?
                 <ListItem button selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)} >
                     <ListItemIcon style={{ color: "white" }} >
                         <KingBedIcon />
@@ -148,7 +148,7 @@ export default function MainListItems() {
                     <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.Reservation} />
                 </ListItem>
                 : null}
-            {comps.includes("C03") ?
+            {comps.includes("FD-WN") || comps.includes("FD-CI") || comps.includes("*FD-CO") || comps.includes("FD-RS") || comps.includes("*ALL") ?
                 <List style={{ marginTop: -10 }}>
                     <ListItem button selected={selectedIndex === 2} onClick={handleOpenFrontDesk}>
                         <ListItemIcon style={{ color: "white" }} >
@@ -160,23 +160,31 @@ export default function MainListItems() {
                     <Collapse in={openFrontDesk} timeout="auto" unmountOnExit>
                         <Divider />
                         <List component="div" disablePadding>
-                            <ListItem button selected={selectedIndex === 21} onClick={(event) => handleListItemClick(event, 21)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Walk-in" />
-                            </ListItem>
-                            <ListItem button primaryTypographyProps={{ style: setFontSize }} selected={selectedIndex === 22} onClick={(event) => handleListItemClick(event, 22)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Check-in" />
-                            </ListItem>
-                            <ListItem button primaryTypographyProps={{ style: setFontSize }} selected={selectedIndex === 23} onClick={(event) => handleListItemClick(event, 23)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Check-out" />
-                            </ListItem>
-                            <ListItem button selected={selectedIndex === 24} onClick={(event) => handleListItemClick(event, 24)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Room Status" />
-                            </ListItem>
+                            {comps.includes("FD-WN") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 21} onClick={(event) => handleListItemClick(event, 21)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Walk-in" />
+                                </ListItem>
+                                : null}
+                            {comps.includes("FD-CI") || comps.includes("*ALL") ?
+                                <ListItem button primaryTypographyProps={{ style: setFontSize }} selected={selectedIndex === 22} onClick={(event) => handleListItemClick(event, 22)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Check-in" />
+                                </ListItem>
+                                : null}
+                            {comps.includes("FD-CO") || comps.includes("*ALL") ?
+                                <ListItem button primaryTypographyProps={{ style: setFontSize }} selected={selectedIndex === 23} onClick={(event) => handleListItemClick(event, 23)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Check-out" />
+                                </ListItem>
+                                : null}
+                            {comps.includes("FD-RS") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 24} onClick={(event) => handleListItemClick(event, 24)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Room Status" />
+                                </ListItem>
+                                : null}
                         </List>
                     </Collapse>
                 </List>
                 : null}
-            {comps.includes("C04") ?
+            {comps.includes("CS-RP") || comps.includes("CS-FM") || comps.includes("*ALL") ?
                 <List style={{ marginTop: -15 }}>
                     <ListItem button button selected={selectedIndex === 3} onClick={handleOpenCashier}>
                         <ListItemIcon style={{ color: "white" }} >
@@ -188,17 +196,21 @@ export default function MainListItems() {
                     <Collapse in={openCashier} timeout="auto" unmountOnExit>
                         <Divider />
                         <List component="div" disablePadding>
-                            <ListItem button selected={selectedIndex === 31} onClick={(event) => handleListItemClick(event, 31)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Folio Management" />
-                            </ListItem>
-                            <ListItem button selected={selectedIndex === 32} onClick={(event) => handleListItemClick(event, 32)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Report" />
-                            </ListItem>
+                            {comps.includes("CS-FM") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 31} onClick={(event) => handleListItemClick(event, 31)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Folio Management" />
+                                </ListItem>
+                                : null}
+                            {comps.includes("CS-RP") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 32} onClick={(event) => handleListItemClick(event, 32)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Report" />
+                                </ListItem>
+                                : null}
                         </List>
                     </Collapse>
                 </List>
                 : null}
-            {comps.includes("C05") ?
+            {comps.includes("PF-ID") || comps.includes("PF-TA") || comps.includes("PF-CP") || comps.includes("PF-GR") || comps.includes("*ALL") ?
                 <List style={{ marginTop: -15 }}>
                     <ListItem button selected={selectedIndex === 4} onClick={handleOpenProfile}>
                         <ListItemIcon style={{ color: "white" }} >
@@ -210,23 +222,31 @@ export default function MainListItems() {
                     <Collapse in={openProfile} timeout="auto" unmountOnExit>
                         <Divider />
                         <List component="div" disablePadding>
-                            <ListItem button selected={selectedIndex === 41} onClick={(event) => handleListItemClick(event, 41)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Individual" />
-                            </ListItem>
-                            <ListItem button selected={selectedIndex === 42} onClick={(event) => handleListItemClick(event, 42)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Travel Agent" />
-                            </ListItem>
-                            <ListItem button selected={selectedIndex === 43} onClick={(event) => handleListItemClick(event, 43)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Company" />
-                            </ListItem>
-                            <ListItem button selected={selectedIndex === 44} onClick={(event) => handleListItemClick(event, 44)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Group" />
-                            </ListItem>
+                            {comps.includes("PF-ID") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 41} onClick={(event) => handleListItemClick(event, 41)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Individual" />
+                                </ListItem>
+                                : null}
+                            {comps.includes("PF-TA") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 42} onClick={(event) => handleListItemClick(event, 42)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Travel Agent" />
+                                </ListItem>
+                                : null}
+                            {comps.includes("PF-CP") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 43} onClick={(event) => handleListItemClick(event, 43)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Company" />
+                                </ListItem>
+                                : null}
+                            {comps.includes("PF-GR") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 44} onClick={(event) => handleListItemClick(event, 44)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Group" />
+                                </ListItem>
+                                : null}
                         </List>
                     </Collapse>
                 </List>
                 : null}
-            {comps.includes("C06") ?
+            {comps.includes("NA-RP") || comps.includes("NA-HD") || comps.includes("NA-CD") || comps.includes("NA-AS") || comps.includes("*ALL") ?
                 <List style={{ marginTop: -15 }}>
                     <ListItem button selected={selectedIndex === 5} onClick={handleOpenNA}>
                         <ListItemIcon style={{ color: "white" }} >
@@ -238,23 +258,31 @@ export default function MainListItems() {
                     <Collapse in={openNA} timeout="auto" unmountOnExit>
                         <Divider />
                         <List component="div" disablePadding>
-                            <ListItem button selected={selectedIndex === 51} onClick={(event) => handleListItemClick(event, 51)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Reports" />
-                            </ListItem>
-                            <ListItem button selected={selectedIndex === 52} onClick={(event) => handleListItemClick(event, 52)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Hotel Date Maintenance" />
-                            </ListItem>
-                            <ListItem button selected={selectedIndex === 53} onClick={(event) => handleListItemClick(event, 53)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Close-Day Procedure" />
-                            </ListItem>
-                            <ListItem button selected={selectedIndex === 54} onClick={(event) => handleListItemClick(event, 54)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Auto-Sequence Reports" />
-                            </ListItem>
+                            {comps.includes("NA-RP") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 51} onClick={(event) => handleListItemClick(event, 51)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Reports" />
+                                </ListItem>
+                                : null}
+                            {comps.includes("NA-HD") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 52} onClick={(event) => handleListItemClick(event, 52)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Hotel Date Maintenance" />
+                                </ListItem>
+                                : null}
+                            {comps.includes("NA-CD") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 53} onClick={(event) => handleListItemClick(event, 53)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Close-Day Procedure" />
+                                </ListItem>
+                                : null}
+                            {comps.includes("NA-AS") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 54} onClick={(event) => handleListItemClick(event, 54)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Auto-Sequence Reports" />
+                                </ListItem>
+                                : null}
                         </List>
                     </Collapse>
                 </List>
                 : null}
-            {comps.includes("C07") ?
+            {comps.includes("HK-IM") || comps.includes("HK-RS") || comps.includes("*ALL") ?
                 <List style={{ marginTop: -15 }}>
                     <ListItem button selected={selectedIndex === 6} onClick={handleOpenHK}>
                         <ListItemIcon style={{ color: "white" }} >
@@ -266,17 +294,21 @@ export default function MainListItems() {
                     <Collapse in={openHK} timeout="auto" unmountOnExit>
                         <Divider />
                         <List component="div" disablePadding>
-                            <ListItem button selected={selectedIndex === 61} onClick={(event) => handleListItemClick(event, 61)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Item Management" />
-                            </ListItem>
-                            <ListItem button selected={selectedIndex === 62} onClick={(event) => handleListItemClick(event, 62)} >
-                                <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Room Status" />
-                            </ListItem>
+                            {comps.includes("HK-IM") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 61} onClick={(event) => handleListItemClick(event, 61)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Item Management" />
+                                </ListItem>
+                                : null}
+                            {comps.includes("HK-RS") || comps.includes("*ALL") ?
+                                <ListItem button selected={selectedIndex === 62} onClick={(event) => handleListItemClick(event, 62)} >
+                                    <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Room Status" />
+                                </ListItem>
+                                : null}
                         </List>
                     </Collapse>
                 </List>
                 : null}
-            {comps.includes("C08") ?
+            {comps.includes("EN") || comps.includes("*ALL") ?
                 <ListItem button selected={selectedIndex === 7} onClick={(event) => handleListItemClick(event, 7)} >
                     <ListItemIcon style={{ color: "white" }} >
                         <BuildIcon />
@@ -284,7 +316,7 @@ export default function MainListItems() {
                     <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.Engineer} />
                 </ListItem>
                 : null}
-            {comps.includes("C09") ?
+            {comps.includes("RS") || comps.includes("*ALL") ?
                 <List style={{ marginTop: -15 }}>
                     <ListItem button button selected={selectedIndex === 8} onClick={handleOpenRS}>
                         <ListItemIcon style={{ color: "white" }} >
@@ -303,7 +335,7 @@ export default function MainListItems() {
                     </Collapse>
                 </List>
                 : null}
-            {comps.includes("C10") ?
+            {comps.includes("CF") || comps.includes("*ALL") ?
                 <ListItem button selected={selectedIndex === 9} onClick={handleOpenConfig}>
                     <ListItemIcon style={{ color: "white" }} >
                         <SettingsIcon />
@@ -312,7 +344,7 @@ export default function MainListItems() {
                     {/* {openConfig ? <IconExpandLess /> : <IconExpandMore />} */}
                 </ListItem>
                 : null}
-            {comps.includes("C11") ?
+            {comps.includes("CF") || comps.includes("*ALL") ?
                 <List style={{ marginTop: -15 }}>
                     <ListItem button selected={selectedIndex === 10} onClick={handleOpenSystemsTools}>
                         <ListItemIcon style={{ color: "white" }} >

@@ -54,19 +54,21 @@ import {
   postrole,
   deleterolebyid,
   listallproperty,
-  deleterolebycode
+  deleterolebycode,
+  rolepermissionbyrole
 } from "../services/user.service";
 // from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
 // Generate Order Data
-function createData(id, rolecode, rolename, description, count, status) {
+function createData(id, rolecode, rolename, description, count, applyproperty, status) {
   return {
     id,
     rolecode,
     rolename,
     description,
     count,
+    applyproperty,
     status
   };
 }
@@ -423,6 +425,7 @@ export default function RoleManagement() {
   const [selectUser, setSelectUser] = React.useState(null);
   const [roleID, setRoleID] = React.useState(null);
   const [roleCode, setRoleCode] = React.useState(null);
+  const [oldrolecode,setOldRoleCode] = React.useState(null);
   const [roleName, setRoleName] = React.useState(null);
   const [descriptionsRole, setDescriptionsRole] = React.useState(null);
   const [rows, setRows] = useState([]);
@@ -450,6 +453,7 @@ export default function RoleManagement() {
           element.rolename,
           element.description,
           element.count,
+          element.applyproperty,
           element.status
         )
       )
@@ -553,6 +557,7 @@ export default function RoleManagement() {
           element.rolename,
           element.description,
           element.count,
+          element.createData,
           element.status
         )
       )
@@ -566,27 +571,89 @@ export default function RoleManagement() {
   };
 
   const handleDialogAddRoleClose = () => {
+    setChipPropertyDialog([]);
     setDialogAddRole(false);
   };
 
-  const mergePerm = async (rolecode) => {
+  const rolepermission = async (array, permission) => {
+    let list = [];
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      if (permission.hasOwnProperty(obj.code)) {
+        console.log("dd", obj.code, !!permission[obj.code].permissioncreate)
+        obj.create = !!permission[obj.code].permissioncreate;
+        obj.read = !!permission[obj.code].permissionread;
+        obj.update = !!permission[obj.code].permissionupdate;
+        obj.delete = !!permission[obj.code].permissiondelete;
 
+        obj.edited_create = !!permission[obj.code].permissioncreate;
+        obj.edited_read = !!permission[obj.code].permissionread;
+        obj.edited_update = !!permission[obj.code].permissionupdate;
+        obj.edited_delete = !!permission[obj.code].permissiondelete;
+      }
+      if (obj.children) {
+        // list = [...list, ...propertylist(obj.children)];
+        rolepermission(obj.children, permission);
+      }
+    }
+    return list;
+  };
 
-  }
+  const handleDialogEditRole = async (rolecode, rolename, description, applyproperty, status) => {
+    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    console.log("propertydata", propertydata);
+    let tempproperty = [{
+      key: "*ALL",
+      label: "*ALL",
+    }];
+    propertydata.content[propertydata.content.length - 1].split(",").forEach((element) => {
+      if (tempproperty.filter(x => x.label === element).length == 0) {
+        tempproperty.push({
+          key: element,
+          label: element,
+        })
+      }
+    }
 
-  const handleDialogEditRole = async (rolecode, rolename, description, status) => {
+    );
+    console.log("tempproperty", tempproperty)
 
+    if (applyproperty.indexOf("*ALL") < 0) {
+      let property = []
+      applyproperty.split(",").forEach((element) => {
+        if (property.filter(x => x.label === element).length == 0) {
+          property.push({ key: element, label: element })
+        }
+      })
+      setChipPropertyDialog((chips) => property)
+    } else {
+      setChipPropertyDialog((chips) => [
+        { key: "*ALL", label: "*ALL" }
+      ])
+    }
+
+    // console.log(defaultdata.val());
+    // let _data = defaultdata.val();
+    setAllProperty(tempproperty);
+
+    let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), { roles: [rolecode] })
+    console.log("roleper", roleper)
+    let _data = JSON.parse(JSON.stringify(defaultdata));
+    rolepermission(_data, roleper.content[roleper.content.length - 1])
+    setData(_data);
+    setData((prevState) => [...prevState]);
     // const databyid = await getuserbyid(
     //   sessionStorage.getItem("auth"),
     //   idForEdit
     // );
     // setStatusRec(databyid.content[databyid.content.length - 1].status_record);
     // console.log("idForEdit", idForEdit);
-    mergePerm(rolecode);
-    setEditRolecode(rolecode);
-    setEditRolename(rolename);
-    setEditDescription(description);
-    setEditStatus(status);
+
+    setRoleCode(rolecode);
+    setRoleName(rolename);
+    setDescriptionsRole(description);
+    setStatus(status);
+    setOldRoleCode(rolecode);
     setDialogEditRole(true);
   }
   // const handleDialogEditRole = async (id) => {
@@ -604,40 +671,47 @@ export default function RoleManagement() {
   //   setDialogEditRole(true);
   // };
 
+
   const handleDialogEditRoleSave = async (
-    id,
     rolecode,
     rolename,
     description,
     status
   ) => {
     console.log(
-      "id,rolecode,rolename,description,status",
-      id,
+      "rolecode,rolename,description,status",
       rolecode,
       rolename,
       description,
       status
     );
-
+    let perm = await propertylist(data, rolecode);
+    const temp = new Set();
+    if (ChipPropertyDialog.length) {
+      for (var i in ChipPropertyDialog) {
+        temp.add(ChipPropertyDialog[i].key);
+      }
+    }
+    const tempArray = Array.from(temp).join(",");
     const roleupdate = await updaterole(
       sessionStorage.getItem("auth"),
       {
-        id: id,
+        oldrolecode: oldrolecode,
         rolecode: rolecode,
         rolename: rolename,
         description: description,
         status: status,
-      },
-      id
+        applyproperty: tempArray,
+        permission: perm
+      }
     );
     console.log("roleupdate func:", roleupdate);
 
-    let data = await listrole(sessionStorage.getItem("auth"));
+    let _data = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", listrole);
     let userdata = [];
     // let i = 0;
-    data.content[data.content.length - 1].forEach((element) =>
+    _data.content[_data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
           element.code,
@@ -645,6 +719,7 @@ export default function RoleManagement() {
           element.rolename,
           element.description,
           element.count,
+          element.applyproperty,
           element.status
         )
       )
@@ -661,7 +736,7 @@ export default function RoleManagement() {
     setDialogDeleteRole(false);
   };
 
-  const handleDialogDeleteRoleOpen = async (rolecode,rolename,description) => {
+  const handleDialogDeleteRoleOpen = async (rolecode, rolename, description) => {
     // console.log("idForDelete", id);
     // const rolebyid = await getrolebyid(sessionStorage.getItem("auth"), id);
     // setRoleID(rolebyid.content[rolebyid.content.length - 1].code);
@@ -690,6 +765,7 @@ export default function RoleManagement() {
           element.rolename,
           element.description,
           element.count,
+          element.createData,
           element.status
         )
       )
@@ -1592,12 +1668,12 @@ export default function RoleManagement() {
                           )}
                           <TableCell align="center">
                             <IconButton
-                              onClick={() => handleDialogEditRole(row.rolecode, row.rolename, row.description, row.status)}
+                              onClick={() => handleDialogEditRole(row.rolecode, row.rolename, row.description, row.applyproperty, row.status)}
                             >
                               <EditRoundedIcon />
                             </IconButton>
                             <IconButton
-                              onClick={() => handleDialogDeleteRoleOpen(row.rolecode,row.rolename, row.description)}
+                              onClick={() => handleDialogDeleteRoleOpen(row.rolecode, row.rolename, row.description)}
                             >
                               <DeleteRoundedIcon />
                             </IconButton>
@@ -1939,7 +2015,7 @@ export default function RoleManagement() {
                         id="outlined-basic"
                         label="Role Code"
                         variant="outlined"
-                        value={editRolecode}
+                        // value={editRolecode}
                         fullWidth
                         defaultValue={roleCode}
                         onChange={(e) => setRoleCode(e.target.value)}
@@ -1978,7 +2054,7 @@ export default function RoleManagement() {
                       }}
                       label="Property"
                       select
-                      value={userValues}
+                      // value={userValues}
                       onChange={(event) => handleSelectProperty(event)}
                     >
                       {allProperty.map((option) => (
@@ -2008,7 +2084,7 @@ export default function RoleManagement() {
                     <TextField
                       fullWidth
                       label="Description"
-                      value={editDescription}
+                      // value={editDescription}
                       multiline
                       rows={4}
                       variant="outlined"
@@ -2129,7 +2205,6 @@ export default function RoleManagement() {
                 <Button
                   onClick={() =>
                     handleDialogEditRoleSave(
-                      roleID,
                       roleCode,
                       roleName,
                       descriptionsRole,

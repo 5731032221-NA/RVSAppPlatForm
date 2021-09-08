@@ -1,4 +1,32 @@
 module.exports = {
+  userpropertybyusername: async function (accessToken,username) {
+    return fetch(`http://localhost:8082/userpropertybyusername/${username}`, {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
+  userrolebyusername: async function (accessToken,username) {
+    return fetch(`http://localhost:8082/userrolebyusername/${username}`, {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
+  rolepermissionbyrole: async function (accessToken, req) {
+    return fetch("http://localhost:8082/rolepermissionbyrole", {
+      method: "POST",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req),
+    }).then(async (res) => res.json());
+  },
   listrole: async function (accessToken, req) {
     return fetch("http://localhost:8082/listrole", {
       method: "GET",
@@ -49,9 +77,29 @@ module.exports = {
       body: JSON.stringify(req),
     }).then(async (res) => res.json());
   },
+  updateuser: async function (accessToken, req) {
+    return fetch("http://localhost:8082/user", {
+      method: "PUT",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req),
+    }).then(async (res) => res.json());
+  },
   postrole: async function (accessToken, req) {
     return fetch("http://localhost:8082/rolegroup", {
       method: "POST",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req),
+    }).then(async (res) => res.json());
+  },
+  updaterole: async function (accessToken, req) {
+    return fetch("http://localhost:8082/rolegroup", {
+      method: "PUT",
       headers: {
         Authorization: accessToken,
         "Content-Type": "application/json",
@@ -99,16 +147,16 @@ module.exports = {
     }).then(async (res) => res.json());
   },
 
-  updateuser: async function (accessToken, req, id) {
-    return fetch(`http://localhost:8082/listuser/${id}`, {
-      method: "PUT",
-      headers: {
-        Authorization: accessToken,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(req),
-    }).then(async (res) => res.json());
-  },
+  // updateuser: async function (accessToken, req, id) {
+  //   return fetch(`http://localhost:8082/listuser/${id}`, {
+  //     method: "PUT",
+  //     headers: {
+  //       Authorization: accessToken,
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(req),
+  //   }).then(async (res) => res.json());
+  // },
 
   deleteuserbyid: async function (accessToken, req, id) {
     return fetch(`http://localhost:8082/listuser/${id}`, {

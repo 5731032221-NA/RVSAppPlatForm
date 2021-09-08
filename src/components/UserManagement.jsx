@@ -52,7 +52,10 @@ import {
   // listrole,
   listpropertybyroles,
   listallproperty,
-  deleteuserbyusername
+  deleteuserbyusername,
+  rolepermissionbyrole,
+  userrolebyusername,
+  userpropertybyusername
 } from "../services/user.service";
 import { listrole } from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -165,6 +168,317 @@ const useStyles = makeStyles((theme) => ({
 
 var roles = [];
 
+const defaultdata = [
+  {
+    name: "Dashboard",
+    code: "DB",
+    permision: true,
+    create: false,
+    read: false,
+    update: false,
+    delete: false,
+    edited_create: false,
+    edited_read: false,
+    edited_update: false,
+    edited_delete: false,
+  },
+  {
+    name: "Reservartion",
+    code: "RV",
+    permision: true,
+    create: false,
+    read: false,
+    update: false,
+    delete: false,
+    edited_create: false,
+    edited_read: false,
+    edited_update: false,
+    edited_delete: false,
+  },
+  {
+    name: "Front Desk",
+    code: "FD",
+    permision: false,
+    children: [
+      {
+        name: "Walk-in",
+        code: "FD-WN",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Check-in",
+        code: "FD-CI",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Checkout",
+        code: "FD-CO",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "RoomStatus",
+        code: "FD-RS",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+    ],
+  },
+  {
+    name: "Cashier",
+    code: "CS",
+    permision: false,
+    children: [
+      {
+        name: "Folio Management",
+        code: "CS-FM",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Reports",
+        code: "CS-RP",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      }
+    ],
+  },
+  {
+    name: "Profile",
+    code: "PF",
+    permision: false,
+    children: [
+      {
+        name: "Individual",
+        code: "PF-ID",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Travel Agen",
+        code: "PF-TA",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Company",
+        code: "PF-CP",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Group",
+        code: "PF-GR",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+    ],
+  },
+  {
+    name: "Night Auditor",
+    code: "NA",
+    permision: false,
+    children: [
+      {
+        name: "Reports",
+        code: "NA-RP",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Hotel Date Maintenance",
+        code: "NA-HD",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Close-Day Procedure",
+        code: "NA-CD",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Auto-Sequence Reports",
+        code: "NA-AS",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+    ],
+  },
+  {
+    name: "House Keeping",
+    code: "HK",
+    permision: false,
+    children: [
+      {
+        name: "Item Management",
+        code: "HK-IM",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      },
+      {
+        name: "Room Status",
+        code: "HK-RS",
+        permision: true,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+      }
+    ],
+  },
+  {
+    name: "Engineering",
+    code: "EN",
+    permision: true,
+    create: false,
+    read: false,
+    update: false,
+    delete: false,
+    edited_create: false,
+    edited_read: false,
+    edited_update: false,
+    edited_delete: false,
+  },
+  {
+    name: "Reporting Systems",
+    code: "RS",
+    permision: true,
+    create: false,
+    read: false,
+    update: false,
+    delete: false,
+    edited_create: false,
+    edited_read: false,
+    edited_update: false,
+    edited_delete: false,
+  },
+  {
+    name: "Configuration",
+    code: "CF",
+    permision: true,
+    create: false,
+    read: false,
+    update: false,
+    delete: false,
+    edited_create: false,
+    edited_read: false,
+    edited_update: false,
+    edited_delete: false,
+  },
+];
+
 export default function UserManagement() {
   const classes = useStyles();
   const [dialogAddUser, setDialogAddUser] = React.useState(false);
@@ -182,11 +496,12 @@ export default function UserManagement() {
   const [editFirstName, setEditFirstName] = React.useState(null);
   const [editUserName, setEditUserName] = React.useState(null);
   const [editUserID, setEditUserID] = React.useState(null);
+  const [oldUserName, setoldUserName] = React.useState(null);
   // const [editFirstname, setEditFirstname] = React.useState(null);
   // const [editLastname, setEditLastname] = React.useState(null);
   const [properties, setProperties] = React.useState([]);
   const [editID, setEditID] = React.useState(null);
-  const [editStatus, setEditStatus] = React.useState(false);
+  const [editStatus, setEditStatus] = React.useState(true);
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -210,7 +525,7 @@ export default function UserManagement() {
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
-          element.id,
+          element.code,
           element.username,
           element.firstname,
           element.lastname,
@@ -237,7 +552,12 @@ export default function UserManagement() {
   };
 
   const handleDialogAddUser = () => {
+    setPermissionDialog(false);
     setChipRolesDialog([]);
+    setChipPropertyDialog([]);
+    setEditFirstName(null);
+    setEditLastName(null);
+    setEditStatus(true)
     setDialogAddUser(true);
   };
 
@@ -245,7 +565,7 @@ export default function UserManagement() {
     setDialogAddUser(false);
   };
 
-  const handleDialogEditUser = async (id, chipRolesDialog) => {
+  const handleDialogEditUser = async (username, firstname, lastname, position, status) => {
     // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
     // setEditFirstName(databyid.content[databyid.content.length - 1].firstname);
     // setEditLastName(databyid.content[databyid.content.length - 1].lastname);
@@ -269,7 +589,33 @@ export default function UserManagement() {
     // console.log("Edit databyid:", databyid);
     // console.log("Edit ID:", id);
     // setEditID(id);
+    let userrole = await userrolebyusername(sessionStorage.getItem("auth"),username);
+    let userproperty = await userpropertybyusername(sessionStorage.getItem("auth"),username);
+    console.log(userproperty.content[userproperty.content.length - 1])
+    console.log(userrole.content[userrole.content.length - 1])
+    let role = []
+    userrole.content[userrole.content.length - 1].split(",").forEach((element) => {
+        if (role.filter(x => x.label === element).length == 0) {
+          role.push({ key: element, label: element })
+        }
+      })
 
+      let property = []
+      userproperty.content[userproperty.content.length - 1].split(",").forEach((element) => {
+        if (property.filter(x => x.label === element).length == 0) {
+          property.push({ key: element, label: element })
+        }
+      })
+
+    setEditUserName(username);
+    setoldUserName(username);
+    setEditFirstName(firstname);
+    setEditLastName(lastname);
+    setSelectPosition(position);
+    setPermissionDialog(false);
+    setEditStatus(status)
+    setChipRolesDialog((chips) => role);
+    setChipPropertyDialog((chips) => property);
     setDialogEditUser(true);
   };
 
@@ -277,7 +623,44 @@ export default function UserManagement() {
     setDialogEditUser(false);
   };
 
-  const handlePermission = () => {
+  const rolepermission = async (array, permission) => {
+    let list = [];
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      if (permission.hasOwnProperty(obj.code)) {
+        console.log("dd", obj.code, !!permission[obj.code].permissioncreate)
+        obj.create = !!permission[obj.code].permissioncreate;
+        obj.read = !!permission[obj.code].permissionread;
+        obj.update = !!permission[obj.code].permissionupdate;
+        obj.delete = !!permission[obj.code].permissiondelete;
+
+      }
+      if (obj.children) {
+        // list = [...list, ...propertylist(obj.children)];
+        rolepermission(obj.children, permission);
+      }
+    }
+    return list;
+  };
+
+  const handlePermission = async (roles) => {
+    const temp = new Set();
+    if (chipRolesDialog.length) {
+      for (var i in chipRolesDialog) {
+        temp.add(chipRolesDialog[i].key);
+      }
+      let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), { roles: Array.from(temp) })
+      console.log("roleper", roleper)
+      let _data = JSON.parse(JSON.stringify(defaultdata));
+      rolepermission(_data, roleper.content[roleper.content.length - 1])
+      setData(_data);
+      setData((prevState) => [...prevState]);
+
+    } else {
+      setData(JSON.parse(JSON.stringify(defaultdata)))
+    }
+
+
     setPermissionDialog(!permissionDialog);
     if (permissionDialog) {
       setDialogSize("sm");
@@ -303,6 +686,34 @@ export default function UserManagement() {
     updatePageData(rows, 0, event.target.value);
   };
 
+  const propertylist = async (array, code) => {
+    let list = [];
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+      if (obj.edited_create ||
+        obj.edited_read ||
+        obj.edited_update ||
+        obj.edited_delete) {
+        list.push(
+          {
+            username: code,
+            componentcode: obj.code,
+            permissioncreate: obj.edited_create ? (obj.create ? 1 : -1) : 0,
+            permissionread: obj.edited_read ? (obj.read ? 1 : -1) : 0,
+            permissionupdate: obj.edited_update ? (obj.update ? 1 : -1) : 0,
+            permissiondelete: obj.edited_delete ? (obj.delete ? 1 : -1) : 0,
+          }
+        )
+      }
+      if (obj.children) {
+        // list = [...list, ...propertylist(obj.children)];
+        let append = await propertylist(obj.children, code);
+        if (append.length > 0) list = list.concat(append);
+      }
+    }
+    return list;
+  };
+
   const handleInsertUser = async (
     code,
     firstName,
@@ -311,8 +722,10 @@ export default function UserManagement() {
     position,
     role
   ) => {
-    setEditFirstName(null);
-    setEditLastName(null);
+    // setEditFirstName(null);
+    // setEditLastName(null);
+    let perm = await propertylist(data, code);
+    console.log(perm)
     const roletemp = new Set();
     if (chipRolesDialog.length) {
       for (let i in chipRolesDialog) {
@@ -332,33 +745,36 @@ export default function UserManagement() {
       firstname: firstName,
       lastname: lastName,
       code: code,
-      status: status,
+      status: status ? 'Active' : 'Inactive',
       position: position,
       userproperty: propertyTempArray,
       role: roleTempArray,
+      permission: perm
     });
     console.log(insert);
-
-    const data = await listuser(sessionStorage.getItem("auth"));
-    let userdata = [];
-    data.content[data.content.length - 1].forEach((element) =>
-      userdata.push(
-        createData(
-          element.id,
-          element.username,
-          element.firstname,
-          element.lastname,
-          element.position,
-          element.roles,
-          element.property,
-          element.status
+    if (insert.status == '2000') {
+      const data = await listuser(sessionStorage.getItem("auth"));
+      let userdata = [];
+      data.content[data.content.length - 1].forEach((element) =>
+        userdata.push(
+          createData(
+            element.code,
+            element.username,
+            element.firstname,
+            element.lastname,
+            element.position,
+            element.roles,
+            element.property,
+            element.status
+          )
         )
-      )
-    );
+      );
+      setRows(userdata);
+      updatePageData(userdata, page, rowsPerPage);
+      setDialogAddUser(false);
+    }
 
-    setRows(userdata);
-    updatePageData(userdata, page, rowsPerPage);
-    setDialogAddUser(false);
+
   };
 
   const handleSelectPosition = (event) => {
@@ -393,6 +809,7 @@ export default function UserManagement() {
 
 
   const handleSelectRoles = async (event, key) => {
+    setPermissionDialog(false);
     const temp = new Set();
     if (chipRolesDialog.length) {
       for (var i in chipRolesDialog) {
@@ -420,6 +837,7 @@ export default function UserManagement() {
     }
   };
   const handleDeleteRoles = (chipToDelete) => () => {
+    setPermissionDialog(false);
     setChipRolesDialog((chips) =>
       chips.filter((chips) => chips.key !== chipToDelete.key)
     );
@@ -459,7 +877,7 @@ export default function UserManagement() {
   };
 
   const renderTreeSubMenu = (nodes) => (
-    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+    <TreeItem key={nodes.code} nodeId={nodes.code} label={nodes.name}>
       {Array.isArray(nodes.children)
         ? nodes.children.map((node) => renderTreeSubMenu(node))
         : null}
@@ -469,8 +887,8 @@ export default function UserManagement() {
   const editing_create = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label);
-      if (obj.id === label) {
+      console.log(obj.code, label);
+      if (obj.code === label) {
         obj.edited_create = !obj.edited_create;
         obj.create = !obj.create;
       } else if (obj.children) {
@@ -479,10 +897,12 @@ export default function UserManagement() {
     }
   };
 
+
+
   const handleCheckPermision_create = async (nodes) => {
     let _data = data;
-    console.log("nid", nodes.id);
-    await editing_create(_data, nodes.id);
+    console.log("nid", nodes.code);
+    await editing_create(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
@@ -490,8 +910,8 @@ export default function UserManagement() {
   const editing_read = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label);
-      if (obj.id === label) {
+      console.log(obj.code, label);
+      if (obj.code === label) {
         obj.edited_read = !obj.edited_read;
         obj.read = !obj.read;
       } else if (obj.children) {
@@ -502,8 +922,8 @@ export default function UserManagement() {
 
   const handleCheckPermision_read = async (nodes) => {
     let _data = data;
-    console.log("nid", nodes.id);
-    await editing_read(_data, nodes.id);
+    console.log("nid", nodes.code);
+    await editing_read(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
@@ -511,8 +931,8 @@ export default function UserManagement() {
   const editing_update = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label);
-      if (obj.id === label) {
+      console.log(obj.code, label);
+      if (obj.code === label) {
         obj.edited_update = !obj.edited_update;
         obj.update = !obj.update;
       } else if (obj.children) {
@@ -523,8 +943,8 @@ export default function UserManagement() {
 
   const handleCheckPermision_update = async (nodes) => {
     let _data = data;
-    console.log("nid", nodes.id);
-    await editing_update(_data, nodes.id);
+    console.log("nid", nodes.code);
+    await editing_update(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
@@ -532,8 +952,8 @@ export default function UserManagement() {
   const editing_delete = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label);
-      if (obj.id === label) {
+      console.log(obj.code, label);
+      if (obj.code === label) {
         obj.edited_delete = !obj.edited_delete;
         obj.delete = !obj.delete;
       } else if (obj.children) {
@@ -544,8 +964,8 @@ export default function UserManagement() {
 
   const handleCheckPermision_delete = async (nodes) => {
     let _data = data;
-    console.log("nid", nodes.id);
-    await editing_delete(_data, nodes.id);
+    console.log("nid", nodes.code);
+    await editing_delete(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
@@ -553,8 +973,8 @@ export default function UserManagement() {
   const editing_all = async (array, label, checked) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.id, label);
-      if (obj.id === label) {
+      console.log(obj.code, label);
+      if (obj.code === label) {
         if (obj.delete == checked) {
           obj.edited_delete = !obj.edited_delete;
           obj.delete = !obj.delete;
@@ -579,112 +999,19 @@ export default function UserManagement() {
 
   const handleCheckPermision_all = async (nodes, event) => {
     let _data = data;
-    console.log("nid", nodes.id, event.target.checked);
-    await editing_all(_data, nodes.id, !event.target.checked);
+    console.log("nid", nodes.code, event.target.checked);
+    await editing_all(_data, nodes.code, !event.target.checked);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
 
-  const [data, setData] = React.useState([
-    {
-      id: "1.1",
-      name: "Dashboard",
-      code: "DB",
-      permision: true,
-      create: false,
-      read: true,
-      update: false,
-      delete: false,
-      edited_create: false,
-      edited_read: false,
-      edited_update: false,
-      edited_delete: false,
-    },
-    {
-      id: "1.2",
-      name: "Reservartion",
-      code: "RS",
-      permision: true,
-      create: false,
-      read: true,
-      update: false,
-      delete: false,
-      edited_create: false,
-      edited_read: false,
-      edited_update: false,
-      edited_delete: false,
-    },
-    {
-      id: "1.3",
-      name: "Front Desk",
-      code: "FD",
-      permision: false,
-      children: [
-        {
-          id: "1.3.1",
-          name: "Walk-in",
-          code: "FD-WN",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          id: "1.3.2",
-          name: "Check-in",
-          code: "FD-CI",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          id: "1.3.3",
-          name: "Checkout",
-          code: "FD-CO",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-        {
-          id: "1.3.4",
-          name: "RoomStatus",
-          code: "FD-RS",
-          permision: true,
-          create: true,
-          read: true,
-          update: true,
-          delete: true,
-          edited_create: false,
-          edited_read: false,
-          edited_update: false,
-          edited_delete: false,
-        },
-      ],
-    },
-  ]);
+  const [data, setData] = React.useState([]);
 
   const renderTree = (nodes) => (
     <div>
       <TreeItem
-        key={nodes.id}
-        nodeId={nodes.id}
+        key={nodes.code}
+        nodeId={nodes.code}
         label={
           <div>
             {nodes.permision ? (
@@ -1033,55 +1360,80 @@ export default function UserManagement() {
     </div>
   );
 
+
   const handleSaveEdit = async (
-    id,
-    username,
+    code,
     firstName,
     lastName,
-
     status,
     position,
     role
   ) => {
     console.log(
       "Handle save Edit : id, firstname, userName, status",
-      id,
-      username,
+      code,
       firstName,
       lastName,
       status,
       position,
       role
     );
-    const temp = new Set();
-    if (role.length) {
-      for (var i in role) {
-        temp.add(role[i].key);
+    let perm = await propertylist(data, code);
+    console.log(perm)
+    const roletemp = new Set();
+    if (chipRolesDialog.length) {
+      for (let i in chipRolesDialog) {
+        roletemp.add(chipRolesDialog[i].key);
       }
     }
-    const roleArray = Array.from(temp).join(",");
-    console.log("roleArray", roleArray);
+    const roleTempArray = Array.from(roletemp).join(",");
+    const propertytemp = new Set();
+    if (chipPropertyDialog.length) {
+      for (let i in chipPropertyDialog) {
+        propertytemp.add(chipPropertyDialog[i].key);
+      }
+    }
+    const propertyTempArray = Array.from(propertytemp).join(",");
+    console.log(firstName, lastName, status, position, role);
+    let update = await updateuser(sessionStorage.getItem("auth"), {
+      oldUserName: oldUserName,
+      firstname: firstName,
+      lastname: lastName,
+      code: code,
+      status: status,
+      position: position,
+      userproperty: propertyTempArray,
+      role: roleTempArray,
+      permission: perm
+    });
+    // const temp = new Set();
+    // if (role.length) {
+    //   for (var i in role) {
+    //     temp.add(role[i].key);
+    //   }
+    // }
+    // const roleArray = Array.from(temp).join(",");
+    // console.log("roleArray", roleArray);
 
-    const userupdate = await updateuser(
-      sessionStorage.getItem("auth"),
-      {
-        id: id,
-        username: username,
-        firstname: firstName,
-        lastname: lastName,
-        status: status,
-        position: position,
-        role: roleArray,
-      },
-      id
-    );
-    console.log("userupdate func:", userupdate);
-    const data = await listuser(sessionStorage.getItem("auth"));
+    // const userupdate = await updateuser(
+    //   sessionStorage.getItem("auth"),
+    //   {
+    //     username: username,
+    //     firstname: firstName,
+    //     lastname: lastName,
+    //     status: status,
+    //     position: position,
+    //     role: roleArray,
+    //   },
+    //   id
+    // );
+    // console.log("userupdate func:", userupdate);
+    const _data = await listuser(sessionStorage.getItem("auth"));
     let userdata = [];
-    data.content[data.content.length - 1].forEach((element) =>
+    _data.content[_data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
-          element.id,
+          element.code,
           element.username,
           element.firstname,
           element.lastname,
@@ -1101,10 +1453,10 @@ export default function UserManagement() {
   const handleDialogDeleteUserClose = () => {
     setDialogDeleteUser(false);
   };
-  const handleDialogDeleteUserOpen = async (username,firstname,lastname) => {
+  const handleDialogDeleteUserOpen = async (username, firstname, lastname) => {
     // setEditID(id);
     // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    console.log("delete dialog",username,firstname,lastname)
+    console.log("delete dialog", username, firstname, lastname)
     setEditUserName(username);
     setEditFirstName(firstname);
     setEditLastName(lastname);
@@ -1128,7 +1480,7 @@ export default function UserManagement() {
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
-          element.id,
+          element.code,
           element.username,
           element.firstname,
           element.lastname,
@@ -1231,7 +1583,7 @@ export default function UserManagement() {
                 </TableHead>
                 <TableBody>
                   {pageData.map((row) => (
-                    <TableRow key={row.id}>
+                    <TableRow key={row.code}>
                       <TableCell>{row.userID}</TableCell>
                       <TableCell>
                         {row.firstname} {row.lastname}
@@ -1240,7 +1592,7 @@ export default function UserManagement() {
                       <TableCell>{row.roles}</TableCell>
                       <TableCell>{row.property}</TableCell>
                       {`${row.status}` === "Active" ||
-                      `${row.status}` === "active" ? (
+                        `${row.status}` === "active" ? (
                         <TableCell align="center">
                           <Button
                             variant="contained"
@@ -1270,12 +1622,12 @@ export default function UserManagement() {
                       )}
                       <TableCell align="center">
                         <IconButton
-                          onClick={() => handleDialogEditUser(row.id)}
+                          onClick={() => handleDialogEditUser(row.userID, row.firstname, row.lastname, row.position, row.status)}
                         >
                           <EditRoundedIcon />
                         </IconButton>
                         <IconButton
-                          onClick={() => handleDialogDeleteUserOpen(row.userID,row.firstname,row.lastname)}
+                          onClick={() => handleDialogDeleteUserOpen(row.userID, row.firstname, row.lastname)}
                         >
                           <DeleteRoundedIcon />
                         </IconButton>
@@ -1311,7 +1663,7 @@ export default function UserManagement() {
                     rowsPerPage={rowsPerPage}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
-                    // onRowsPerPageChange={handleChangeRowsPerPage}
+                  // onRowsPerPageChange={handleChangeRowsPerPage}
                   />
                 </Grid>
               </Grid>
@@ -1326,49 +1678,93 @@ export default function UserManagement() {
           onClose={handleDialogAddUserClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-            New User
-          </DialogTitle>
-
-          <DialogContent>
-            <Container maxWidth="xl" disableGutters>
-              <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <TextField
-                    // autoFocus
-                    id="outlined-basic"
-                    label="UserID"
-                    variant="outlined"
-                    fullWidth
-                    onChange={(e) => setEditUserID(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    // autoFocus
-                    id="outlined-basic"
-                    label="Firstname"
-                    variant="outlined"
-                    fullWidth
-                    onChange={(e) => setEditFirstName(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  <TextField
-                    id="outlined-basic"
-                    label="Lastname"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-                    // value={" "}
-                    onChange={(e) => setEditLastName(e.target.value)}
-                  ></TextField>
-                </Grid>
+          <Grid container>
+            {permissionDialog ? (
+              <Grid
+                item
+                sm={3}
+                md={3}
+                lg={3}
+                xl={3}
+                style={{ backgroundColor: "#F5F5F5" }}
+              >
+                <TreeView
+                  style={{ padding: 20 }}
+                  defaultCollapseIcon={
+                    <RemoveRoundedIcon
+                      style={{
+                        backgroundColor: "#717171",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                  defaultExpandIcon={
+                    <AddRoundedIcon
+                      style={{
+                        backgroundColor: "#2D62ED",
+                        borderRadius: 2,
+                        color: "white",
+                      }}
+                    />
+                  }
+                >
+                  {data.map((node) => renderTreeSubMenu(node))}
+                </TreeView>
               </Grid>
+            ) : null}
+            <Grid
+              item
+              xs={dialogRatio}
+              sm={dialogRatio}
+              md={dialogRatio}
+              lg={dialogRatio}
+              xl={dialogRatio}
+            >
+            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              New User
+            </DialogTitle>
 
-              <Grid container spacing={2} style={{ paddingTop: 5 }}>
+            <DialogContent>
+
+              <Container maxWidth="xl" disableGutters>
+                <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <TextField
+                      // autoFocus
+                      id="outlined-basic"
+                      label="UserID"
+                      variant="outlined"
+                      fullWidth
+                      onChange={(e) => setEditUserID(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      // autoFocus
+                      id="outlined-basic"
+                      label="Firstname"
+                      variant="outlined"
+                      fullWidth
+                      onChange={(e) => setEditFirstName(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      id="outlined-basic"
+                      label="Lastname"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      // value={" "}
+                      onChange={(e) => setEditLastName(e.target.value)}
+                    ></TextField>
+                  </Grid>
+                </Grid>
+
+                {/* <Grid container spacing={2} style={{ paddingTop: 5 }}>
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                   <TextField
                     select
@@ -1389,14 +1785,50 @@ export default function UserManagement() {
                     ))}
                   </TextField>
                 </Grid>
-              </Grid>
-              <Grid
-                container
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
-                style={{ paddingTop: 10 }}
-              >
+              </Grid> */}
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  style={{ paddingTop: 10 }}
+                >
+                  <TextField
+                    fullWidth
+                    // autoFocus
+                    variant="outlined"
+                    selectSelectProps={{
+                      native: true,
+                    }}
+                    label="Roles"
+                    select
+                    value={RoleValues}
+                    onChange={(event, name) => handleSelectRoles(event, name)}
+                  >
+                    {roles.map((option) => (
+                      <MenuItem
+                        key={option.key}
+                        name={option.key}
+                        value={option.label}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  {chipRolesDialog.map((data, index) => {
+                    return (
+                      <Chip
+                        style={{ marginTop: 10 }}
+                        key={data.key + index}
+                        label={data.label}
+                        onDelete={handleDeleteRoles(data)}
+                      />
+                    );
+                  })}
+                </Grid>
+                <Grid style={{ paddingTop: 10 }}>
+                  <Divider />
+                </Grid>
                 <TextField
                   fullWidth
                   // autoFocus
@@ -1404,12 +1836,12 @@ export default function UserManagement() {
                   selectSelectProps={{
                     native: true,
                   }}
-                  label="Roles"
+                  label="Property"
                   select
-                  value={RoleValues}
-                  onChange={(event, name) => handleSelectRoles(event, name)}
+                  value={PropertyValues}
+                  onChange={(event, name) => handleSelectProperty(event, name)}
                 >
-                  {roles.map((option) => (
+                  {properties.map((option) => (
                     <MenuItem
                       key={option.key}
                       name={option.key}
@@ -1419,56 +1851,40 @@ export default function UserManagement() {
                     </MenuItem>
                   ))}
                 </TextField>
-                {chipRolesDialog.map((data, index) => {
+                {chipPropertyDialog.map((data, index) => {
                   return (
                     <Chip
                       style={{ marginTop: 10 }}
                       key={data.key + index}
                       label={data.label}
-                      onDelete={handleDeleteRoles(data)}
+                      onDelete={handleDeleteProperty(data)}
                     />
                   );
                 })}
-              </Grid>
-              <Grid style={{ paddingTop: 10 }}>
-                <Divider />
-              </Grid>
-              <TextField
-                fullWidth
-                // autoFocus
-                variant="outlined"
-                selectSelectProps={{
-                  native: true,
-                }}
-                label="Property"
-                select
-                value={PropertyValues}
-                onChange={(event, name) => handleSelectProperty(event, name)}
-              >
-                {properties.map((option) => (
-                  <MenuItem
-                    key={option.key}
-                    name={option.key}
-                    value={option.label}
-                  >
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              {chipPropertyDialog.map((data, index) => {
-                return (
-                  <Chip
-                    style={{ marginTop: 10 }}
-                    key={data.key + index}
-                    label={data.label}
-                    onDelete={handleDeleteProperty(data)}
-                  />
-                );
-              })}
-              <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                <Grid container spacing={2} style={{ paddingTop: 10 }}>
 
-                <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                  {/* <TextField
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+
+                    <TextField
+                      select
+                      id="outlined-basic"
+                      label="Position"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      value={selectPosition}
+                      onChange={handleSelectPosition}
+                    >
+                      {position.map((option) => (
+                        <option key={option.key} value={option.label}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+
+                    {/* <TextField
                     id="outlined-basic"
                     label="username@mail.com"
                     variant="outlined"
@@ -1479,21 +1895,21 @@ export default function UserManagement() {
                     // value={" "}
                     // onChange={" "}
                   ></TextField> */}
-                </Grid>
+                  </Grid>
 
-                <Grid
-                  container
-                  xs={6}
-                  sm={6}
-                  md={6}
-                  lg={6}
-                  xl={6}
-                  style={{ alignContent: "center", padding: 20 }}
-                >
-                  <FormControlLabel
-                    value="Status"
-                    control={
-                      editStatus === "Active" || editStatus === "active" ? (
+                  <Grid
+                    container
+                    xs={6}
+                    sm={6}
+                    md={6}
+                    lg={6}
+                    xl={6}
+                    style={{ alignContent: "center", padding: 20 }}
+                  >
+                    <FormControlLabel
+                      value="Status"
+                      control={
+
                         <Switch
                           defaultChecked={true}
                           color="primary"
@@ -1503,29 +1919,73 @@ export default function UserManagement() {
                               : setEditStatus("Inactive")
                           }
                         />
-                      ) : (
-                        <Switch
-                          defaultChecked={false}
-                          color="primary"
-                          // value={checked}
-                          // onChange={(e) => setEditStatus(e.target.checked)}
 
-                          onChange={(e) =>
-                            e.target.checked
-                              ? setEditStatus("Active")
-                              : setEditStatus("Inactive")
-                          }
-                        />
-                      )
-                    }
-                    label="Status"
-                    labelPlacement="start"
-                  />
+                      }
+                      label="Status"
+                      labelPlacement="start"
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Container>
-          </DialogContent>
+
+              </Container>
+              {permissionDialog ? (
+                <Grid>
+                  <Grid
+                    container
+                    alignItems="center"
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                    style={{ paddingTop: 10 }}
+                  ></Grid>
+                  <Divider style={{ marginTop: 10 }} />
+                  <Container disableGutters>
+                    <Button style={{ margin: 15 }} variant="contained" onClick={() => setPermissionDialog(!permissionDialog)}>
+                      Reset to Default
+                    </Button>
+                    <TreeView
+                      // className={classes.root}
+                      defaultCollapseIcon={
+                        <RemoveRoundedIcon
+                          style={{
+                            backgroundColor: "#717171",
+                            borderRadius: 2,
+                            color: "white",
+                          }}
+                        />
+                      }
+                      defaultExpandIcon={
+                        <AddRoundedIcon
+                          style={{
+                            backgroundColor: "#2D62ED",
+                            borderRadius: 2,
+                            color: "white",
+                          }}
+                        />
+                      }
+                    >
+                      {data.map((node) => renderTree(node))}
+                    </TreeView>
+                  </Container>
+                </Grid>
+              ) : null}
+            </DialogContent>
+            </Grid>
+          </Grid>
           <DialogActions style={{ padding: 20 }}>
+            <Grid item style={{ flexGrow: 1 }}>
+              <Button
+                onClick={handlePermission}
+                variant="contained"
+                // color="#20C1BB"
+                style={{ backgroundColor: "#20C1BB", color: "white" }}
+              >
+                <VpnKeyOutlinedIcon style={{ marginRight: 15 }} />
+                Permission
+              </Button>
+            </Grid>
             <Button
               onClick={handleDialogAddUserClose}
               variant="text"
@@ -1607,6 +2067,7 @@ export default function UserManagement() {
                 Edit User
               </DialogTitle>
               <DialogContent>
+
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -1615,27 +2076,26 @@ export default function UserManagement() {
                         id="outlined-basic"
                         label="UserID"
                         variant="outlined"
-                        value={editUserID}
                         fullWidth
-                        onChange={(e) => setEditUserID(e.target.value)}
+                        onChange={(e) => setEditUserName(e.target.value)}
+                        defaultValue={editUserName}
                       />
                     </Grid>
-
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
                         // autoFocus
-                        label="Username"
-                        variant="outlined"
                         id="outlined-basic"
-                        defaultValue={editFirstName}
-                        onChange={(e) => setEditFirstName(e.target.value)}
+                        label="Firstname"
+                        variant="outlined"
                         fullWidth
+                        onChange={(e) => setEditFirstName(e.target.value)}
+                        defaultValue={editFirstName}
                       />
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
                         id="outlined-basic"
-                        label="Name"
+                        label="Lastname"
                         variant="outlined"
                         fullWidth
                         SelectProps={{
@@ -1648,34 +2108,34 @@ export default function UserManagement() {
                     </Grid>
                   </Grid>
 
-                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <TextField
-                      select
-                      style={{ marginTop: 15 }}
-                      id="outlined-basic"
-                      label="Position"
-                      variant="outlined"
-                      fullWidth
-                      SelectProps={{
-                        native: true,
-                      }}
-                      value={selectPosition}
-                      onChange={handleSelectPosition}
-                    >
-                      {position.map((option) => (
-                        <option key={option.key} value={option.label}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-
+                  {/* <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <TextField
+                    select
+                    id="outlined-basic"
+                    label="Position"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    value={selectPosition}
+                    onChange={handleSelectPosition}
+                  >
+                    {position.map((option) => (
+                      <option key={option.key} value={option.label}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Grid> */}
                   <Grid
                     container
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="center"
-                    style={{ marginTop: 15 }}
+                    style={{ paddingTop: 10 }}
                   >
                     <TextField
                       fullWidth
@@ -1686,8 +2146,6 @@ export default function UserManagement() {
                       }}
                       label="Roles"
                       select
-                      key={""}
-                      name={""}
                       value={RoleValues}
                       onChange={(event, name) => handleSelectRoles(event, name)}
                     >
@@ -1712,20 +2170,76 @@ export default function UserManagement() {
                       );
                     })}
                   </Grid>
+                  <Grid style={{ paddingTop: 10 }}>
+                    <Divider />
+                  </Grid>
+                  <TextField
+                    fullWidth
+                    // autoFocus
+                    variant="outlined"
+                    selectSelectProps={{
+                      native: true,
+                    }}
+                    label="Property"
+                    select
+                    value={PropertyValues}
+                    onChange={(event, name) => handleSelectProperty(event, name)}
+                  >
+                    {properties.map((option) => (
+                      <MenuItem
+                        key={option.key}
+                        name={option.key}
+                        value={option.label}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  {chipPropertyDialog.map((data, index) => {
+                    return (
+                      <Chip
+                        style={{ marginTop: 10 }}
+                        key={data.key + index}
+                        label={data.label}
+                        onDelete={handleDeleteProperty(data)}
+                      />
+                    );
+                  })}
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
+
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+
                       <TextField
+                        select
                         id="outlined-basic"
-                        label="username@mail.com"
+                        label="Position"
                         variant="outlined"
                         fullWidth
                         SelectProps={{
                           native: true,
                         }}
+                        value={selectPosition}
+                        // defaultValue={selectPosition}
+                        onChange={handleSelectPosition}
+                      >
+                        {position.map((option) => (
+                          <option key={option.key} value={option.label}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
 
-                        // value={" "}
-                        // onChange={" "}
-                      ></TextField>
+                      {/* <TextField
+                    id="outlined-basic"
+                    label="username@mail.com"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    // value={" "}
+                    // onChange={" "}
+                  ></TextField> */}
                     </Grid>
                     <Grid
                       container
@@ -1782,7 +2296,7 @@ export default function UserManagement() {
                     ></Grid>
                     <Divider style={{ marginTop: 10 }} />
                     <Container disableGutters>
-                      <Button style={{ margin: 15 }} variant="contained">
+                      <Button style={{ margin: 15 }} variant="contained" onClick={() => setPermissionDialog(!permissionDialog)}>
                         Reset to Default
                       </Button>
                       <TreeView
@@ -1836,7 +2350,6 @@ export default function UserManagement() {
                     <Button
                       onClick={() =>
                         handleSaveEdit(
-                          editID,
                           editUserName,
                           editFirstName,
                           editLastName,
