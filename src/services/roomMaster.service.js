@@ -31,6 +31,16 @@ module.exports = {
       },
     }).then(async (res) => res.json());
   },
+
+  getRoombykey: async function (accessToken, keySearch) {
+    return fetch(`http://localhost:8082/room-masters-keySearch/${keySearch}`, {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
   updateRoom: async function (accessToken, id, req) {
     return fetch(`http://localhost:8082/room-masters/${id}`, {
       method: "PUT",

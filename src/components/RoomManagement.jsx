@@ -40,6 +40,7 @@ import {
   postRoom,
   getRoombyid,
   updateRoom,
+  getRoombykey,
 } from "../services/roomMaster.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
@@ -251,6 +252,7 @@ export default function RoomManagement() {
   const [roomNumber, setRoomNumber] = React.useState(null);
   const [roomDesc, setRoomDesc] = React.useState(null);
   const [roomFloor, setRoomFloor] = React.useState(null);
+  const [searchKey, setSearchKey] = React.useState(null);
 
   const [rows, setRows] = useState([
     // createData(
@@ -509,6 +511,123 @@ export default function RoomManagement() {
     );
   };
 
+  const handleDialogInsert = async (
+    roomNo,
+    propertyDialog,
+    roomTypeDialog,
+    buildingDialog,
+    wingDialog,
+    exposureDialog,
+    roomSizeDialog,
+    roomSegDialog,
+    roomStatusDialog,
+    chipAttributeDialog,
+    roomDesc,
+    roomFloor
+  ) => {
+    console.log(`
+    ================= Insert ================
+      roomNo : ${roomNo},
+      propertyDialog : ${propertyDialog},
+      roomTypeDialog : ${roomTypeDialog},
+      buildingDialog : ${buildingDialog},
+      wingDialog : ${wingDialog},
+      exposureDialog : ${exposureDialog},
+      roomSizeDialog : ${roomSizeDialog},
+      roomSegDialog : ${roomSegDialog},
+      roomStatusDialog : ${roomStatusDialog},
+      chipAttributeDialog : ${chipAttributeDialog},
+      roomDesc : ${roomDesc},
+      roomFloor : ${roomFloor}`);
+
+    const AttributeTemp = new Set();
+    if (chipAttributeDialog.length) {
+      for (var A in chipAttributeDialog) {
+        AttributeTemp.add(chipAttributeDialog[A].key);
+      }
+    }
+    const attributeTempArray = Array.from(AttributeTemp).join(",");
+
+    const postData = await postRoom(sessionStorage.getItem("auth"), {
+      roomNo: roomNo,
+      propertyDialog: propertyDialog,
+      roomTypeDialog: roomTypeDialog,
+      buildingDialog: buildingDialog,
+      wingDialog: wingDialog,
+      exposureDialog: exposureDialog,
+      roomSizeDialog: roomSizeDialog,
+      roomSegDialog: roomSegDialog,
+      roomStatusDialog: roomStatusDialog,
+      chipAttributeDialog: attributeTempArray,
+      roomDesc: roomDesc,
+      roomFloor: roomFloor,
+    });
+    console.log("postData", postData);
+
+    const data = await listRoom(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let roomdata = [];
+    let i = 0;
+    data.content[data.content.length - 1].forEach((element) =>
+      roomdata.push(
+        createData(
+          i++,
+          element.propertycode,
+          element.no,
+          element.type,
+          element.floor,
+          element.building,
+          element.description,
+          element.status,
+          element.attribute
+        )
+      )
+    );
+    console.log("a", roomdata);
+    setRows(roomdata);
+    updatePageData(roomdata, page, rowsPerPage);
+
+    setDialogAddRoom(false);
+  };
+
+  const handleSeaarch = (event) => {
+    setSearchKey(event.target.value);
+  };
+
+  const handleSeaarchRequest = async (forSearch) => {
+    if (forSearch) {
+      console.log("forSerach ", forSearch);
+      const databysearch = await getRoombykey(
+        sessionStorage.getItem("auth"),
+        forSearch
+      );
+      console.log("databysearch", databysearch);
+      if (databysearch.content.length != null) {
+        let roomdata = [];
+        let i = 0;
+        databysearch.content[databysearch.content.length - 1].forEach(
+          (element) =>
+            roomdata.push(
+              createData(
+                i++,
+                element.propertycode,
+                element.no,
+                element.type,
+                element.floor,
+                element.building,
+                element.description,
+                element.status,
+                element.attribute
+              )
+            )
+        );
+        console.log("a", roomdata);
+        setRows(roomdata);
+        updatePageData(roomdata, page, rowsPerPage);
+      }
+    }
+  };
+
   return (
     <Container maxWidth="xl">
       <React.Fragment>
@@ -543,12 +662,20 @@ export default function RoomManagement() {
                   htmlFor="Search"
                   href="#"
                   type="text"
-                  onChange={" "}
                   style={{ maxWidth: 600 }}
                   fullWidth
+                  onChange={(e) => handleSeaarch(e)}
+                  onKeyDown={(event) =>
+                    event.key === "Enter"
+                      ? handleSeaarchRequest(searchKey)
+                      : null
+                  }
                   InputProps={{
                     endAdornment: (
-                      <InputAdornment position="end">
+                      <InputAdornment
+                        onClick={() => handleSeaarchRequest(searchKey)}
+                        position="end"
+                      >
                         <SearchRoundedIcon />
                       </InputAdornment>
                     ),
@@ -643,8 +770,9 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
-                        value={propertyDialog}
-                        onChange={handlePropertyDialog}
+                        defaultValue={""}
+                        // value={propertyDialog}
+                        onChange={(event) => handlePropertyDialog(event)}
                       >
                         {properties.map((option) => (
                           <option key={option.value} value={option.value}>
@@ -660,6 +788,9 @@ export default function RoomManagement() {
                           id="outlined-basic"
                           label="Room Number"
                           variant="outlined"
+                          // value={roomNumber}
+                          defaultValue={""}
+                          onChange={(e) => handleRoomNumber(e)}
                           fullWidth
                         />
                       </Grid>
@@ -674,8 +805,9 @@ export default function RoomManagement() {
                           SelectProps={{
                             native: true,
                           }}
-                          value={roomTypeDialog}
-                          onChange={handleRoomTypeDialog}
+                          // value={roomTypeDialog}
+                          defaultValue={""}
+                          onChange={(e) => handleRoomTypeDialog(e)}
                         >
                           {roomType.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -693,6 +825,9 @@ export default function RoomManagement() {
                           label="Floor"
                           variant="outlined"
                           fullWidth
+                          // value={roomFloor}
+                          defaultValue={""}
+                          onChange={(e) => handleFloor(e)}
                         />
                       </Grid>
                       <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
@@ -706,8 +841,9 @@ export default function RoomManagement() {
                           SelectProps={{
                             native: true,
                           }}
-                          value={buildingDialog}
-                          onChange={handleBuildingDialog}
+                          // value={buildingDialog}
+                          defaultValue={""}
+                          onChange={(e) => handleBuildingDialog(e)}
                         >
                           {building.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -727,8 +863,9 @@ export default function RoomManagement() {
                           SelectProps={{
                             native: true,
                           }}
-                          value={wingDialog}
-                          onChange={handleWingDialog}
+                          // value={wingDialog}
+                          defaultValue={""}
+                          onChange={(e) => handleWingDialog(e)}
                         >
                           {wing.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -750,8 +887,9 @@ export default function RoomManagement() {
                           SelectProps={{
                             native: true,
                           }}
-                          value={exposureDialog}
-                          onChange={handleExposureDialog}
+                          // value={exposureDialog}
+                          defaultValue={""}
+                          onChange={(e) => handleExposureDialog(e)}
                         >
                           {exposure.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -771,8 +909,9 @@ export default function RoomManagement() {
                           SelectProps={{
                             native: true,
                           }}
-                          value={roomSizeDialog}
-                          onChange={handleRoomSizeDialog}
+                          // value={roomSizeDialog}
+                          defaultValue={""}
+                          onChange={(e) => handleRoomSizeDialog(e)}
                         >
                           {roomSize.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -794,8 +933,9 @@ export default function RoomManagement() {
                           SelectProps={{
                             native: true,
                           }}
-                          value={roomSegDialog}
-                          onChange={handleRoomSegDialog}
+                          // value={roomSegDialog}
+                          defaultValue={""}
+                          onChange={(e) => handleRoomSegDialog(e)}
                         >
                           {roomSeg.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -815,8 +955,9 @@ export default function RoomManagement() {
                           SelectProps={{
                             native: true,
                           }}
-                          value={roomStatusDialog}
-                          onChange={handleRoomStatusDialog}
+                          // value={roomStatusDialog}
+                          defaultValue={""}
+                          onChange={(e) => handleRoomStatusDialog(e)}
                         >
                           {roomStatus.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -842,11 +983,18 @@ export default function RoomManagement() {
                         }}
                         label="Attribute"
                         select
-                        value={userValues}
-                        onChange={(event) => handleSelectAttribute(event)}
+                        // value={" "}
+                        defaultValue={""}
+                        onChange={(event, key) =>
+                          handleSelectAttribute(event, key)
+                        }
                       >
                         {attribute.map((option) => (
-                          <MenuItem key={option.key} value={option.label}>
+                          <MenuItem
+                            key={option.key}
+                            name={option.key}
+                            value={option.label}
+                          >
                             {option.label}
                           </MenuItem>
                         ))}
@@ -876,6 +1024,8 @@ export default function RoomManagement() {
                         multiline
                         rows={4}
                         variant="outlined"
+                        defaultValue={""}
+                        onChange={(e) => handleDescription(e)}
                       />
                     </Grid>
                   </Container>
@@ -889,9 +1039,24 @@ export default function RoomManagement() {
                     Cancel
                   </Button>
                   <Button
-                    onClick={handleDialogAddRoomClose}
                     variant="contained"
                     color="primary"
+                    onClick={() =>
+                      handleDialogInsert(
+                        roomNumber,
+                        propertyDialog,
+                        roomTypeDialog,
+                        buildingDialog,
+                        wingDialog,
+                        exposureDialog,
+                        roomSizeDialog,
+                        roomSegDialog,
+                        roomStatusDialog,
+                        chipAttributeDialog,
+                        roomDesc,
+                        roomFloor
+                      )
+                    }
                   >
                     Save
                   </Button>
