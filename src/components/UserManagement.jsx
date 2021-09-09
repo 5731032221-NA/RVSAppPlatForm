@@ -26,6 +26,7 @@ import {
   Divider,
 } from "@material-ui/core";
 
+import UpdateIcon from '@material-ui/icons/Update';
 import IconButton from "@material-ui/core/IconButton";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
@@ -66,6 +67,7 @@ import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import { EDIT_CONFIGSTATE } from "../middleware/action";
 // import user from "../services/user.service";
 
 // Generate Order Data
@@ -543,6 +545,14 @@ export default function UserManagement() {
     setSelectPosition(position[0].label);
   }, []);
 
+  const handleComponentState = async(comp) => {
+    console.log("setcomp",comp)
+    store.dispatch({
+      type: EDIT_CONFIGSTATE,
+      payload: comp
+    })
+  }
+
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
     let data = [];
     for (let i = _page * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
@@ -667,7 +677,7 @@ export default function UserManagement() {
       setDialogRatio(12);
     } else {
       setDialogSize("md");
-      setDialogRatio(9);
+      setDialogRatio(12);
     }
   };
 
@@ -876,13 +886,7 @@ export default function UserManagement() {
     );
   };
 
-  const renderTreeSubMenu = (nodes) => (
-    <TreeItem key={nodes.code} nodeId={nodes.code} label={nodes.name}>
-      {Array.isArray(nodes.children)
-        ? nodes.children.map((node) => renderTreeSubMenu(node))
-        : null}
-    </TreeItem>
-  );
+ 
 
   const editing_create = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
@@ -1017,14 +1021,24 @@ export default function UserManagement() {
             {nodes.permision ? (
               <div>
                 <Grid container direction="row" alignItems="center">
-                  <Grid item style={{ flexGrow: 1 }}>
-                    <Typography
-                      variant="h6"
-                      color="initial"
-                      style={{ paddind: 5, fontSize: 16 }}
-                    >
-                      {nodes.name}
-                    </Typography>
+                  <Grid item style={{ flexGrow: 1 }} >
+                    {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
+                      <Typography
+                        variant="h6"
+                        color="initial"
+                        style={{ color: '#1F51FF', fontSize: 16 }}
+                      >
+                        {nodes.name}  <UpdateIcon />
+                      </Typography>
+                      :
+                      <Typography
+                        variant="h6"
+                        color="initial"
+                        style={{ fontSize: 16 }}
+                      >
+                        {nodes.name}
+                      </Typography>
+                    }
                   </Grid>
                   <Grid item>
                     <FormControlLabel
@@ -1060,7 +1074,9 @@ export default function UserManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "green",
+                              }}
                               checked={nodes.create}
                               onChange={() =>
                                 handleCheckPermision_create(nodes)
@@ -1083,7 +1099,9 @@ export default function UserManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "red",
+                              }}
                               checked={nodes.create}
                               onChange={() =>
                                 handleCheckPermision_create(nodes)
@@ -1130,7 +1148,9 @@ export default function UserManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "green",
+                              }}
                               checked={nodes.read}
                               onChange={() => handleCheckPermision_read(nodes)}
                             />
@@ -1151,7 +1171,9 @@ export default function UserManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "red",
+                              }}
                               checked={nodes.read}
                               onChange={() => handleCheckPermision_read(nodes)}
                             />
@@ -1196,7 +1218,9 @@ export default function UserManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "green",
+                              }}
                               checked={nodes.update}
                               onChange={() =>
                                 handleCheckPermision_update(nodes)
@@ -1219,7 +1243,9 @@ export default function UserManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "red",
+                              }}
                               checked={nodes.update}
                               onChange={() =>
                                 handleCheckPermision_update(nodes)
@@ -1266,7 +1292,9 @@ export default function UserManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "green",
+                              }}
                               checked={nodes.delete}
                               onChange={() =>
                                 handleCheckPermision_delete(nodes)
@@ -1289,7 +1317,9 @@ export default function UserManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "red",
+                              }}
                               checked={nodes.delete}
                               onChange={() =>
                                 handleCheckPermision_delete(nodes)
@@ -1338,13 +1368,28 @@ export default function UserManagement() {
               <div>
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
-                    <Typography
-                      variant="h6"
-                      color="initial"
-                      style={{ paddind: 5, fontSize: 16 }}
-                    >
-                      {nodes.name}
-                    </Typography>
+                    {
+                      nodes.children.some(item => item.edited_create === true) ||
+                        nodes.children.some(item => item.edited_read === true) ||
+                        nodes.children.some(item => item.edited_update === true) ||
+                        nodes.children.some(item => item.edited_delete === true)
+                        ?
+                        <Typography
+                          variant="h6"
+                          color="initial"
+                          style={{ color: '#1F51FF', fontSize: 16 }}
+                        >
+                          {nodes.name}  <UpdateIcon />
+                        </Typography>
+                        :
+                        <Typography
+                          variant="h6"
+                          color="initial"
+                          style={{ fontSize: 16 }}
+                        >
+                          {nodes.name}
+                        </Typography>
+                    }
                   </Grid>
                 </Grid>
                 <Divider />
@@ -1521,7 +1566,7 @@ export default function UserManagement() {
                 </Typography>
               }
             >
-              <Link color="inherit" href="#" onClick={" "}>
+              <Link color="inherit" href="#" onClick={()=>handleComponentState("Configuration")}>
                 <Typography
                   variant="h6"
                   style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
@@ -1534,7 +1579,7 @@ export default function UserManagement() {
                   variant="h6"
                   style={{ marginBottom: 15, fontSize: 14 }}
                 >
-                  Permission
+                  System Configuration
                 </Typography>
               </Link>
               <Typography>
@@ -1673,46 +1718,13 @@ export default function UserManagement() {
         {/* ==================== Dialog New User========================= */}
         <Dialog
           fullWidth="true"
-          maxWidth="sm"
+          maxWidth={dialogSize}
           open={dialogAddUser}
           onClose={handleDialogAddUserClose}
           aria-labelledby="form-dialog-title"
         >
           <Grid container>
-            {permissionDialog ? (
-              <Grid
-                item
-                sm={3}
-                md={3}
-                lg={3}
-                xl={3}
-                style={{ backgroundColor: "#F5F5F5" }}
-              >
-                <TreeView
-                  style={{ padding: 20 }}
-                  defaultCollapseIcon={
-                    <RemoveRoundedIcon
-                      style={{
-                        backgroundColor: "#717171",
-                        borderRadius: 2,
-                        color: "white",
-                      }}
-                    />
-                  }
-                  defaultExpandIcon={
-                    <AddRoundedIcon
-                      style={{
-                        backgroundColor: "#2D62ED",
-                        borderRadius: 2,
-                        color: "white",
-                      }}
-                    />
-                  }
-                >
-                  {data.map((node) => renderTreeSubMenu(node))}
-                </TreeView>
-              </Grid>
-            ) : null}
+            
             <Grid
               item
               xs={dialogRatio}
@@ -1975,6 +1987,7 @@ export default function UserManagement() {
             </Grid>
           </Grid>
           <DialogActions style={{ padding: 20 }}>
+          {!permissionDialog ?
             <Grid item style={{ flexGrow: 1 }}>
               <Button
                 onClick={handlePermission}
@@ -1986,6 +1999,7 @@ export default function UserManagement() {
                 Permission
               </Button>
             </Grid>
+: null}
             <Button
               onClick={handleDialogAddUserClose}
               variant="text"
@@ -2021,40 +2035,7 @@ export default function UserManagement() {
           aria-labelledby="form-dialog-title"
         >
           <Grid container>
-            {permissionDialog ? (
-              <Grid
-                item
-                sm={3}
-                md={3}
-                lg={3}
-                xl={3}
-                style={{ backgroundColor: "#F5F5F5" }}
-              >
-                <TreeView
-                  style={{ padding: 20 }}
-                  defaultCollapseIcon={
-                    <RemoveRoundedIcon
-                      style={{
-                        backgroundColor: "#717171",
-                        borderRadius: 2,
-                        color: "white",
-                      }}
-                    />
-                  }
-                  defaultExpandIcon={
-                    <AddRoundedIcon
-                      style={{
-                        backgroundColor: "#2D62ED",
-                        borderRadius: 2,
-                        color: "white",
-                      }}
-                    />
-                  }
-                >
-                  {data.map((node) => renderTreeSubMenu(node))}
-                </TreeView>
-              </Grid>
-            ) : null}
+            
             <Grid
               item
               xs={dialogRatio}
