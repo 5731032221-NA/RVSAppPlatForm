@@ -43,6 +43,7 @@ import Configuration from "../components/Dashboard/Configuration";
 import RoleManagement from "../components/RoleManagement";
 import UserManagement from "../components/UserManagement";
 import DashboardDetail from "../components/Dashboard/DashboardDetail";
+import Calendar from "../components/Dashboard/Calendar";
 
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
@@ -60,18 +61,15 @@ import mainListItems_th from "../middleware/listitems/dropDownItems";
 import secondaryListItems_th from "../middleware/listitems/dropDownItems";
 // import { mainListItems_en, secondaryListItems_en } from '../middleware/listitems/dropDownItems';
 // import { mainListItems_th, secondaryListItems_th } from '../middleware/listitems/dropDownItems';
-import propertypermission from "../services/propertypermission.service"
+import propertypermission from "../services/propertypermission.service";
 
-import {
-  EDIT_PERMISSION
-} from "../middleware/action";
+import { EDIT_PERMISSION } from "../middleware/action";
 
-import propertyrole from "../services/propertyrole.service"
+import propertyrole from "../services/propertyrole.service";
 
 // import {
 //   EDIT_PERMISSION
 // } from "../middleware/action";
-
 
 const drawerWidth = 240;
 
@@ -336,21 +334,27 @@ export default function Dashboard() {
   }, 1000);
 
   const handleChangeProperty = async (event) => {
-    const permission = await propertypermission(sessionStorage.getItem("auth"), event.target.value);
-    console.log("permission", permission)
-    const role = await propertyrole(sessionStorage.getItem("auth"), event.target.value);
-    console.log("role", role.content[role.content.length-1]);
-    sessionStorage.setItem("role",role.content[role.content.length-1]);
+    const permission = await propertypermission(
+      sessionStorage.getItem("auth"),
+      event.target.value
+    );
+    console.log("permission", permission);
+    const role = await propertyrole(
+      sessionStorage.getItem("auth"),
+      event.target.value
+    );
+    console.log("role", role.content[role.content.length - 1]);
+    sessionStorage.setItem("role", role.content[role.content.length - 1]);
     store.dispatch({
       type: EDIT_PERMISSION,
-      payload: permission.content[permission.content.length-1],
+      payload: permission.content[permission.content.length - 1],
     });
     store.dispatch({
       type: EDIT_PROPERTY,
       payload: event.target.value,
     });
     setSelectedProperty(event.target.value);
-    sessionStorage.setItem('property', event.target.value);
+    sessionStorage.setItem("property", event.target.value);
     // setSelectedProperty(event.target.value);
     // setSelectedProperty(event.target.value);
   };
@@ -777,18 +781,20 @@ export default function Dashboard() {
                       onChange={handleChangeProperty}
                       defaultValue={sessionStorage.getItem("property")}
                     >
-                      {JSON.parse(sessionStorage.getItem("grantproperty")).map((item) => (
-                        <MenuItem
-                          key={item.propertycode}
-                          value={item.propertycode}
-                          label={item.propertycode}
-                        >
-                          <div style={{ marginTop: -7 }}>
-                            {" "}
-                            {item.propertycode}{" "}
-                          </div>
-                        </MenuItem>
-                      ))}
+                      {JSON.parse(sessionStorage.getItem("grantproperty")).map(
+                        (item) => (
+                          <MenuItem
+                            key={item.propertycode}
+                            value={item.propertycode}
+                            label={item.propertycode}
+                          >
+                            <div style={{ marginTop: -7 }}>
+                              {" "}
+                              {item.propertycode}{" "}
+                            </div>
+                          </MenuItem>
+                        )
+                      )}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -833,7 +839,10 @@ export default function Dashboard() {
           <HeaderTabs />
           {/* <DashboardDetail/> */}
           {store.getState().reducer.componentState == "FrontDesk" ? (
-            <FrontDesk />
+            <div>
+              <FrontDesk />
+              <Calendar />
+            </div>
           ) : store.getState().reducer.componentState == "Configuration" ? (
             <div>
               <Configuration />
