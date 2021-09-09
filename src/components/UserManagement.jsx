@@ -1369,10 +1369,18 @@ export default function UserManagement() {
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
                     {
-                      nodes.children.some(item => item.edited_create === true) ||
-                        nodes.children.some(item => item.edited_read === true) ||
-                        nodes.children.some(item => item.edited_update === true) ||
-                        nodes.children.some(item => item.edited_delete === true)
+                      nodes.children.some(item => {
+                        if(item.permision == false) return item.children.some(childitem => childitem.edited_create === true)
+                        else return item.edited_create === true}) ||
+                        nodes.children.some(item => {
+                        if(item.permision == false) return item.children.some(childitem => childitem.edited_read === true)
+                        else return item.edited_read === true}) ||
+                        nodes.children.some(item => {
+                        if(item.permision == false) return item.children.some(childitem => childitem.edited_update === true)
+                        else return item.edited_update === true}) ||
+                        nodes.children.some(item => {
+                        if(item.permision == false) return item.children.some(childitem => childitem.edited_delete === true)
+                        else return item.edited_delete === true}) 
                         ?
                         <Typography
                           variant="h6"
