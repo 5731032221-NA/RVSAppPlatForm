@@ -47,6 +47,7 @@ import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import UpdateIcon from '@material-ui/icons/Update';
 import {
   listrole,
   getrolebyid,
@@ -59,6 +60,7 @@ import {
 } from "../services/user.service";
 // from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
+import { EDIT_CONFIGSTATE } from "../middleware/action";
 
 // Generate Order Data
 function createData(id, rolecode, rolename, description, count, applyproperty, status) {
@@ -401,7 +403,7 @@ const defaultdata = [
   {
     name: "Configuration",
     code: "CF",
-    permision: true,
+    permision: false,
     create: false,
     read: false,
     update: false,
@@ -410,11 +412,122 @@ const defaultdata = [
     edited_read: false,
     edited_update: false,
     edited_delete: false,
+    children: [
+      {
+        name: "PMS Configuration",
+        code: "CF-PC",
+        permision: false,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+        children: [
+          {
+            name: "Property Configuration",
+            code: "CF-PC-PC",
+            permision: true,
+            create: false,
+            read: false,
+            update: false,
+            delete: false,
+            edited_create: false,
+            edited_read: false,
+            edited_update: false,
+            edited_delete: false,
+          },
+          {
+            name: "Room Configuration",
+            code: "CF-PC-RC",
+            permision: true,
+            create: false,
+            read: false,
+            update: false,
+            delete: false,
+            edited_create: false,
+            edited_read: false,
+            edited_update: false,
+            edited_delete: false,
+          },
+          {
+            name: "Item Configuration",
+            code: "CF-PC-IC",
+            permision: true,
+            create: false,
+            read: false,
+            update: false,
+            delete: false,
+            edited_create: false,
+            edited_read: false,
+            edited_update: false,
+            edited_delete: false,
+          },
+          {
+            name: "Reservation Configuration",
+            code: "CF-PC-RE",
+            permision: true,
+            create: false,
+            read: false,
+            update: false,
+            delete: false,
+            edited_create: false,
+            edited_read: false,
+            edited_update: false,
+            edited_delete: false,
+          }
+        ]
+      },
+      {
+        name: "System Configuration",
+        code: "CF-SC",
+        permision: false,
+        create: false,
+        read: false,
+        update: false,
+        delete: false,
+        edited_create: false,
+        edited_read: false,
+        edited_update: false,
+        edited_delete: false,
+        children: [
+          {
+            name: "User Management",
+            code: "CF-UM",
+            permision: true,
+            create: false,
+            read: false,
+            update: false,
+            delete: false,
+            edited_create: false,
+            edited_read: false,
+            edited_update: false,
+            edited_delete: false,
+          },
+          {
+            name: "Role Management",
+            code: "CF-RM",
+            permision: true,
+            create: false,
+            read: false,
+            update: false,
+            delete: false,
+            edited_create: false,
+            edited_read: false,
+            edited_update: false,
+            edited_delete: false,
+          }
+        ]
+      }
+    ],
   },
 ];
 
 export default function RoleManagement() {
   const classes = useStyles();
+  const { store } = useContext(ReactReduxContext);
   const [data, setData] = React.useState([]);
 
   const [dialogAddRole, setDialogAddRole] = React.useState(false);
@@ -425,7 +538,7 @@ export default function RoleManagement() {
   const [selectUser, setSelectUser] = React.useState(null);
   const [roleID, setRoleID] = React.useState(null);
   const [roleCode, setRoleCode] = React.useState(null);
-  const [oldrolecode,setOldRoleCode] = React.useState(null);
+  const [oldrolecode, setOldRoleCode] = React.useState(null);
   const [roleName, setRoleName] = React.useState(null);
   const [descriptionsRole, setDescriptionsRole] = React.useState(null);
   const [rows, setRows] = useState([]);
@@ -485,6 +598,7 @@ export default function RoleManagement() {
     // console.log(defaultdata.val());
     // let _data = defaultdata.val();
     setData(JSON.parse(JSON.stringify(defaultdata)));
+    setChipPropertyDialog([])
     setAllProperty(tempproperty);
     setRoleCode(null);
     setRoleName(null);
@@ -817,6 +931,14 @@ export default function RoleManagement() {
     }
   };
 
+  const handleComponentState = async(comp) => {
+    console.log("setcomp",comp)
+    store.dispatch({
+      type: EDIT_CONFIGSTATE,
+      payload: comp
+    })
+  }
+
   const handleCheckPermision_create = async (nodes) => {
     let _data = data;
     console.log("nid", nodes.code);
@@ -1134,14 +1256,24 @@ export default function RoleManagement() {
             {nodes.permision ? (
               <div>
                 <Grid container direction="row" alignItems="center">
-                  <Grid item style={{ flexGrow: 1 }}>
-                    <Typography
-                      variant="h6"
-                      color="initial"
-                      style={{ paddind: 5, fontSize: 16 }}
-                    >
-                      {nodes.name}
-                    </Typography>
+                  <Grid item style={{ flexGrow: 1 }} >
+                    {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
+                      <Typography
+                        variant="h6"
+                        color="initial"
+                        style={{ color: '#1F51FF', fontSize: 16 }}
+                      >
+                        {nodes.name}  <UpdateIcon />
+                      </Typography>
+                      :
+                      <Typography
+                        variant="h6"
+                        color="initial"
+                        style={{ fontSize: 16 }}
+                      >
+                        {nodes.name}
+                      </Typography>
+                    }
                   </Grid>
                   <Grid item>
                     <FormControlLabel
@@ -1177,7 +1309,9 @@ export default function RoleManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "green",
+                              }}
                               checked={nodes.create}
                               onChange={() =>
                                 handleCheckPermision_create(nodes)
@@ -1200,7 +1334,9 @@ export default function RoleManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "red",
+                              }}
                               checked={nodes.create}
                               onChange={() =>
                                 handleCheckPermision_create(nodes)
@@ -1247,7 +1383,9 @@ export default function RoleManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "green",
+                              }}
                               checked={nodes.read}
                               onChange={() => handleCheckPermision_read(nodes)}
                             />
@@ -1268,7 +1406,9 @@ export default function RoleManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "red",
+                              }}
                               checked={nodes.read}
                               onChange={() => handleCheckPermision_read(nodes)}
                             />
@@ -1313,7 +1453,9 @@ export default function RoleManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "green",
+                              }}
                               checked={nodes.update}
                               onChange={() =>
                                 handleCheckPermision_update(nodes)
@@ -1336,7 +1478,9 @@ export default function RoleManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "red",
+                              }}
                               checked={nodes.update}
                               onChange={() =>
                                 handleCheckPermision_update(nodes)
@@ -1383,7 +1527,9 @@ export default function RoleManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "green",
+                              }}
                               checked={nodes.delete}
                               onChange={() =>
                                 handleCheckPermision_delete(nodes)
@@ -1406,7 +1552,9 @@ export default function RoleManagement() {
                           value="end"
                           control={
                             <Checkbox
-                              color="primary"
+                              style={{
+                                color: "red",
+                              }}
                               checked={nodes.delete}
                               onChange={() =>
                                 handleCheckPermision_delete(nodes)
@@ -1455,13 +1603,36 @@ export default function RoleManagement() {
               <div>
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
-                    <Typography
-                      variant="h6"
-                      color="initial"
-                      style={{ paddind: 5, fontSize: 16 }}
-                    >
-                      {nodes.name}
-                    </Typography>
+                    {
+                      nodes.children.some(item => {
+                        if(item.permision == false) return item.children.some(childitem => childitem.edited_create === true)
+                        else return item.edited_create === true}) ||
+                        nodes.children.some(item => {
+                        if(item.permision == false) return item.children.some(childitem => childitem.edited_read === true)
+                        else return item.edited_read === true}) ||
+                        nodes.children.some(item => {
+                        if(item.permision == false) return item.children.some(childitem => childitem.edited_update === true)
+                        else return item.edited_update === true}) ||
+                        nodes.children.some(item => {
+                        if(item.permision == false) return item.children.some(childitem => childitem.edited_delete === true)
+                        else return item.edited_delete === true}) 
+                        ?
+                        <Typography
+                          variant="h6"
+                          color="initial"
+                          style={{ color: '#1F51FF', fontSize: 16 }}
+                        >
+                          {nodes.name}  <UpdateIcon />
+                        </Typography>
+                        :
+                        <Typography
+                          variant="h6"
+                          color="initial"
+                          style={{ fontSize: 16 }}
+                        >
+                          {nodes.name}
+                        </Typography>
+                    }
                   </Grid>
                 </Grid>
                 <Divider />
@@ -1477,14 +1648,7 @@ export default function RoleManagement() {
     </div>
   );
 
-  const renderTreeSubMenu = (nodes) => (
-    <TreeItem key={nodes.code} nodeId={nodes.code} label={nodes.name}>
-      {Array.isArray(nodes.children)
-        ? nodes.children.map((node) => renderTreeSubMenu(node))
-        : null}
-    </TreeItem>
-  );
-
+  
   return (
     <Container maxWidth="xl">
       <React.Fragment>
@@ -1506,7 +1670,7 @@ export default function RoleManagement() {
                 </Typography>
               }
             >
-              <Link color="inherit" href="#" onClick={" "}>
+              <Link color="inherit" href="#" onClick={()=>handleComponentState("Configuration")}>
                 <Typography
                   variant="h6"
                   style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
@@ -1519,7 +1683,7 @@ export default function RoleManagement() {
                   variant="h6"
                   style={{ marginBottom: 15, fontSize: 14 }}
                 >
-                  Permission
+                  System Configuration
                 </Typography>
               </Link>
               <Typography>
@@ -1729,234 +1893,203 @@ export default function RoleManagement() {
           aria-labelledby="form-dialog-title"
         >
           <Grid container>
-            <Grid
-              item
-              sm={3}
-              md={3}
-              lg={3}
-              xl={3}
-              style={{ backgroundColor: "#F5F5F5" }}
-            >
-              <TreeView
-                style={{ padding: 20 }}
-                defaultCollapseIcon={
-                  <RemoveRoundedIcon
-                    style={{
-                      backgroundColor: "#717171",
-                      borderRadius: 2,
-                      color: "white",
-                    }}
-                  />
-                }
-                defaultExpandIcon={
-                  <AddRoundedIcon
-                    style={{
-                      backgroundColor: "#2D62ED",
-                      borderRadius: 2,
-                      color: "white",
-                    }}
-                  />
-                }
-              >
-                {data.map((node) => renderTreeSubMenu(node))}
-              </TreeView>
-            </Grid>
-            <Grid item xs={9} sm={9} md={9} lg={9} xl={9}>
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                New Role
-              </DialogTitle>
 
-              <DialogContent>
-                <Container maxWidth="xl" disableGutters>
-                  <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        // autoFocus
-                        id="outlined-basic"
-                        label="Role Code"
-                        variant="outlined"
-                        fullWidth
-                        defaultValue={""}
-                        onChange={(e) => setRoleCode(e.target.value)}
-                      />
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        id="outlined-basic"
-                        label="Role Name"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        defaultValue={""}
-                        onChange={(e) => setRoleName(e.target.value)}
-                      ></TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    style={{ paddingTop: 10 }}
-                  >
+            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              New Role
+            </DialogTitle>
+
+            <DialogContent>
+              <Container maxWidth="xl" disableGutters>
+                <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                     <TextField
-                      fullWidth
                       // autoFocus
+                      id="outlined-basic"
+                      label="Role Code"
                       variant="outlined"
-                      selectSelectProps={{
+                      fullWidth
+                      defaultValue={""}
+                      onChange={(e) => setRoleCode(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      id="outlined-basic"
+                      label="Role Name"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
                         native: true,
                       }}
-                      label="Property"
-                      select
-                      value={userValues}
-                      onChange={(event) => handleSelectProperty(event)}
-                    >
-                      {allProperty.map((option) => (
-                        <MenuItem key={option.key} value={option.label}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    {ChipPropertyDialog.map((data, index) => {
-                      return (
-                        <Chip
-                          style={{ marginTop: 10 }}
-                          key={data.key + index}
-                          label={data.label}
-                          onDelete={handleDeleteProperty(data)}
-                        />
-                      );
-                    })}
-                  </Grid>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    style={{ paddingTop: 10 }}
-                  >
-                    <TextField
-                      fullWidth
-                      label="Description"
-                      multiline
-                      rows={4}
-                      variant="outlined"
                       defaultValue={""}
-                      onChange={(e) => setDescriptionsRole(e.target.value)}
-                    />
+                      onChange={(e) => setRoleName(e.target.value)}
+                    ></TextField>
                   </Grid>
-                  <Grid
-                    container
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                  // spacing={2}
-                  // style={{ paddingTop: 10 }}
+                </Grid>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  style={{ paddingTop: 10 }}
+                >
+                  <TextField
+                    fullWidth
+                    // autoFocus
+                    variant="outlined"
+                    selectSelectProps={{
+                      native: true,
+                    }}
+                    label="Property"
+                    select
+                    value={userValues}
+                    onChange={(event) => handleSelectProperty(event)}
                   >
-                    <FormControlLabel
-                      style={{ paddingTop: 15 }}
-                      value="Status"
-                      control={
-                        <Switch
-                          defaultChecked={true}
-                          color="primary"
-                          onChange={(e) =>
-                            e.target.checked
-                              ? setStatus("Active")
-                              : setStatus("Inactive")
-                          }
-                        />
-                      }
-                      label="Status"
-                      labelPlacement="start"
-                    />
-                  </Grid>
-                  <Divider style={{ marginTop: 15 }} />
-                  <Grid
-                    container
-                    alignItems="center"
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    style={{ paddingTop: 10 }}
+                    {allProperty.map((option) => (
+                      <MenuItem key={option.key} value={option.label}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  {ChipPropertyDialog.map((data, index) => {
+                    return (
+                      <Chip
+                        style={{ marginTop: 10 }}
+                        key={data.key + index}
+                        label={data.label}
+                        onDelete={handleDeleteProperty(data)}
+                      />
+                    );
+                  })}
+                </Grid>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  style={{ paddingTop: 10 }}
+                >
+                  <TextField
+                    fullWidth
+                    label="Description"
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    defaultValue={""}
+                    onChange={(e) => setDescriptionsRole(e.target.value)}
+                  />
+                </Grid>
+                <Grid
+                  container
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                // spacing={2}
+                // style={{ paddingTop: 10 }}
+                >
+                  <FormControlLabel
+                    style={{ paddingTop: 15 }}
+                    value="Status"
+                    control={
+                      <Switch
+                        defaultChecked={true}
+                        color="primary"
+                        onChange={(e) =>
+                          e.target.checked
+                            ? setStatus("Active")
+                            : setStatus("Inactive")
+                        }
+                      />
+                    }
+                    label="Status"
+                    labelPlacement="start"
+                  />
+                </Grid>
+                <Divider style={{ marginTop: 15 }} />
+                <Grid
+                  container
+                  alignItems="center"
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  style={{ paddingTop: 10 }}
+                >
+                  <FormControlLabel
+                    value="end"
+                    control={<Checkbox color="primary" />}
+                    label={
+                      <Typography
+                        variant="title1"
+                        color="initial"
+                        style={{ fontSize: 18 }}
+                      >
+                        Select Permission All
+                      </Typography>
+                    }
+                    labelPlacement="end"
+                  />
+                </Grid>
+                <Divider style={{ marginTop: 10 }} />
+                <Container disableGutters>
+                  <TreeView
+                    // className={classes.root}
+                    defaultCollapseIcon={
+                      <RemoveRoundedIcon
+                        style={{
+                          backgroundColor: "#717171",
+                          borderRadius: 2,
+                          color: "white",
+                        }}
+                      />
+                    }
+                    defaultExpandIcon={
+                      <AddRoundedIcon
+                        style={{
+                          backgroundColor: "#2D62ED",
+                          borderRadius: 2,
+                          color: "white",
+                        }}
+                      />
+                    }
+                  // expanded={expanded}
+                  // selected={selected}
+                  // onNodeToggle={handleToggle}
+                  // onNodeSelect={handleSelect}
                   >
-                    <FormControlLabel
-                      value="end"
-                      control={<Checkbox color="primary" />}
-                      label={
-                        <Typography
-                          variant="title1"
-                          color="initial"
-                          style={{ fontSize: 18 }}
-                        >
-                          Select Permission All
-                        </Typography>
-                      }
-                      labelPlacement="end"
-                    />
-                  </Grid>
-                  <Divider style={{ marginTop: 10 }} />
-                  <Container disableGutters>
-                    <TreeView
-                      // className={classes.root}
-                      defaultCollapseIcon={
-                        <RemoveRoundedIcon
-                          style={{
-                            backgroundColor: "#717171",
-                            borderRadius: 2,
-                            color: "white",
-                          }}
-                        />
-                      }
-                      defaultExpandIcon={
-                        <AddRoundedIcon
-                          style={{
-                            backgroundColor: "#2D62ED",
-                            borderRadius: 2,
-                            color: "white",
-                          }}
-                        />
-                      }
-                    // expanded={expanded}
-                    // selected={selected}
-                    // onNodeToggle={handleToggle}
-                    // onNodeSelect={handleSelect}
-                    >
-                      {data.map((node) => renderTree(node))}
-                    </TreeView>
-                  </Container>
+                    {data.map((node) => renderTree(node))}
+                  </TreeView>
                 </Container>
-              </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
-                <Button
-                  onClick={handleDialogAddRoleClose}
-                  variant="text"
-                  color="primary"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() =>
-                    handleDialogAddRoleSave(
-                      roleCode,
-                      roleName,
-                      descriptionsRole,
-                      status
-                    )
-                  }
-                >
-                  Save
-                </Button>
-              </DialogActions>
-            </Grid>
+              </Container>
+            </DialogContent>
+            <DialogActions style={{ padding: 20 }}>
+              <Button
+                onClick={handleDialogAddRoleClose}
+                variant="text"
+                color="primary"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() =>
+                  handleDialogAddRoleSave(
+                    roleCode,
+                    roleName,
+                    descriptionsRole,
+                    status
+                  )
+                }
+              >
+                Save
+              </Button>
+            </DialogActions>
+          </Grid>
           </Grid>
         </Dialog>
         {/* ---------------------------------------- */}
@@ -1969,39 +2102,8 @@ export default function RoleManagement() {
           aria-labelledby="form-dialog-title"
         >
           <Grid container>
-            <Grid
-              item
-              sm={3}
-              md={3}
-              lg={3}
-              xl={3}
-              style={{ backgroundColor: "#F5F5F5" }}
-            >
-              <TreeView
-                style={{ padding: 20 }}
-                defaultCollapseIcon={
-                  <RemoveRoundedIcon
-                    style={{
-                      backgroundColor: "#717171",
-                      borderRadius: 2,
-                      color: "white",
-                    }}
-                  />
-                }
-                defaultExpandIcon={
-                  <AddRoundedIcon
-                    style={{
-                      backgroundColor: "#2D62ED",
-                      borderRadius: 2,
-                      color: "white",
-                    }}
-                  />
-                }
-              >
-                {data.map((node) => renderTreeSubMenu(node))}
-              </TreeView>
-            </Grid>
-            <Grid item xs={9} sm={9} md={9} lg={9} xl={9}>
+            
+            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
               <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
                 Edit Role
               </DialogTitle>

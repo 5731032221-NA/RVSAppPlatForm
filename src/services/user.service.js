@@ -1,4 +1,32 @@
 module.exports = {
+  getuserpermission: async function (accessToken,username) {
+    return fetch(`http://localhost:8082/userpermissionbyusername/${username}`, {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
+  getposition: async function (accessToken) {
+    return fetch(`http://localhost:8082/position`, {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
+  postposition: async function (accessToken, req) {
+    return fetch(`http://localhost:8082/position`, {
+      method: "POST",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req),
+    }).then(async (res) => res.json());
+  },
   userpropertybyusername: async function (accessToken,username) {
     return fetch(`http://localhost:8082/userpropertybyusername/${username}`, {
       method: "GET",
