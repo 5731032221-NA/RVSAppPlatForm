@@ -683,11 +683,12 @@ export default function RoleManagement() {
               element.rolename,
               element.description,
               element.count,
-              element.createData,
+              element.applyproperty,
               element.status
             )
           )
         );
+
         console.log(sessionStorage.getItem("auth"));
         console.log("userdata", userdata);
         setRows(userdata);
@@ -708,16 +709,15 @@ export default function RoleManagement() {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       if (permission.hasOwnProperty(obj.code)) {
-        console.log("dd", obj.code, !!permission[obj.code].permissioncreate)
-        obj.create = !!permission[obj.code].permissioncreate;
-        obj.read = !!permission[obj.code].permissionread;
-        obj.update = !!permission[obj.code].permissionupdate;
-        obj.delete = !!permission[obj.code].permissiondelete;
+        obj.create = !!parseInt(permission[obj.code].permissioncreate);
+        obj.read = !!parseInt(permission[obj.code].permissionread);
+        obj.update = !!parseInt(permission[obj.code].permissionupdate);
+        obj.delete = !!parseInt(permission[obj.code].permissiondelete);
 
-        obj.edited_create = !!permission[obj.code].permissioncreate;
-        obj.edited_read = !!permission[obj.code].permissionread;
-        obj.edited_update = !!permission[obj.code].permissionupdate;
-        obj.edited_delete = !!permission[obj.code].permissiondelete;
+        obj.edited_create = !!parseInt(permission[obj.code].permissioncreate);
+        obj.edited_read = !!parseInt(permission[obj.code].permissionread);
+        obj.edited_update = !!parseInt(permission[obj.code].permissionupdate);
+        obj.edited_delete = !!parseInt(permission[obj.code].permissiondelete);
       }
       if (obj.children) {
         // list = [...list, ...propertylist(obj.children)];
@@ -905,7 +905,7 @@ export default function RoleManagement() {
           element.rolename,
           element.description,
           element.count,
-          element.createData,
+          element.applyproperty,
           element.status
         )
       )
@@ -1093,9 +1093,36 @@ export default function RoleManagement() {
     }
   };
 
+  const clear_all = async (array) => {
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+
+      obj.edited_delete = false;
+      obj.delete = false;
+
+      obj.edited_update = false;
+      obj.update = false;
+
+      obj.edited_read = false;
+      obj.read = false;
+
+      obj.edited_create = false;
+      obj.create = false;
+
+      if (obj.children) {
+        clear_all(obj.children);
+      }
+    }
+  };
   const handleSelectAllPermission = async () => {
     let _data = data;
     await select_all(_data);
+    setData(_data);
+    setData((prevState) => [...prevState]);
+  }
+  const handleClearAllPermission = async () => {
+    let _data = data;
+    await clear_all(_data);
     setData(_data);
     setData((prevState) => [...prevState]);
   }
@@ -1324,7 +1351,7 @@ export default function RoleManagement() {
                       <Typography
                         variant="h6"
                         color="initial"
-                        style={{ fontSize: 16 , paddingTop: 10, paddingBottom: 10}}
+                        style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
                       >
                         {nodes.name}
                       </Typography>
@@ -2078,20 +2105,22 @@ export default function RoleManagement() {
                     xl={12}
                     style={{ paddingTop: 10 }}
                   >
-                    <FormControlLabel
-                      value="end"
-                      control={<Checkbox color="primary" onClick={handleSelectAllPermission} />}
-                      label={
-                        <Typography
-                          variant="title1"
-                          color="initial"
-                          style={{ fontSize: 18 }}
-                        >
-                          Select Permission All
-                        </Typography>
-                      }
-                      labelPlacement="end"
-                    />
+                    <Button
+                      onClick={handleSelectAllPermission}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Select All Permission
+                    </Button>
+
+                    <Button
+                      onClick={handleClearAllPermission}
+                      variant="contained"
+                      color="inherit"
+                      style={{ marginLeft: 20 }}
+                    >
+                      Clear All Permission
+                    </Button>
                   </Grid>
                   <Divider style={{ marginTop: 10 }} />
                   <Container disableGutters>
@@ -2124,7 +2153,7 @@ export default function RoleManagement() {
                     </TreeView>
                   </Container>
                 </Container>
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center",color: "white" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white" }}>{errorParameter} is required</div> : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
@@ -2309,20 +2338,22 @@ export default function RoleManagement() {
                     xl={12}
                     style={{ paddingTop: 10 }}
                   >
-                    <FormControlLabel
-                      value="end"
-                      control={<Checkbox color="primary" onClick={handleSelectAllPermission} />}
-                      label={
-                        <Typography
-                          variant="title1"
-                          color="initial"
-                          style={{ fontSize: 18 }}
-                        >
-                          Select Permission All
-                        </Typography>
-                      }
-                      labelPlacement="end"
-                    />
+                    <Button
+                      onClick={handleSelectAllPermission}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Select All Permission
+                    </Button>
+
+                    <Button
+                      onClick={handleClearAllPermission}
+                      variant="contained"
+                      color="inherit"
+                      style={{ marginLeft: 20 }}
+                    >
+                      Clear All Permission
+                    </Button>
                   </Grid>
                   <Divider style={{ marginTop: 10 }} />
                   <Container disableGutters>
@@ -2355,7 +2386,7 @@ export default function RoleManagement() {
                     </TreeView>
                   </Container>
                 </Container>
-                {errorMessage ? <div style={{ background: "#ff0033", justifyContent: "center",color: "white" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", justifyContent: "center", color: "white" }}>{errorParameter} is required</div> : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
@@ -2389,7 +2420,7 @@ export default function RoleManagement() {
           open={dialogDeleteRole}
           onClose={handleDialogDeleteRoleClose}
           aria-labelledby="form-dialog-title"
-        
+
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>

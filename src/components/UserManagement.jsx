@@ -771,11 +771,10 @@ export default function UserManagement() {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       if (permission.hasOwnProperty(obj.code)) {
-        console.log("dd", obj.code, !!permission[obj.code].permissioncreate)
-        obj.create = !!permission[obj.code].permissioncreate;
-        obj.read = !!permission[obj.code].permissionread;
-        obj.update = !!permission[obj.code].permissionupdate;
-        obj.delete = !!permission[obj.code].permissiondelete;
+        obj.create = !!parseInt(permission[obj.code].permissioncreate);
+        obj.read = !!parseInt(permission[obj.code].permissionread);
+        obj.update = !!parseInt(permission[obj.code].permissionupdate);
+        obj.delete = !!parseInt(permission[obj.code].permissiondelete);
 
       }
       if (obj.children) {
@@ -820,32 +819,32 @@ export default function UserManagement() {
       var obj = array[i];
       if (permission.hasOwnProperty(obj.code)) {
         if (userpermission.hasOwnProperty(obj.code)) {
-          if (userpermission[obj.code].permissioncreate == 0) obj.create = !!permission[obj.code].permissioncreate;
+          if (userpermission[obj.code].permissioncreate == 0) obj.create = !!parseInt(permission[obj.code].permissioncreate);
           else {
             obj.create = (userpermission[obj.code].permissioncreate == 1);
             obj.edited_create = true;
           }
-          if (userpermission[obj.code].permissionread == 0) obj.read = !!permission[obj.code].permissionread;
+          if (userpermission[obj.code].permissionread == 0) obj.read = !!parseInt(permission[obj.code].permissionread);
           else {
             obj.read = (userpermission[obj.code].permissionread == 1);
             obj.edited_read = true;
           }
-          if (userpermission[obj.code].permissionupdate == 0) obj.update = !!permission[obj.code].permissionupdate;
+          if (userpermission[obj.code].permissionupdate == 0) obj.update = !!parseInt(permission[obj.code].permissionupdate);
           else {
             obj.update = (userpermission[obj.code].permissionupdate == 1);
             obj.edited_update = true;
           }
-          if (userpermission[obj.code].permissiondelete == 0) obj.delete = !!permission[obj.code].permissiondelete;
+          if (userpermission[obj.code].permissiondelete == 0) obj.delete = !!parseInt(permission[obj.code].permissiondelete);
           else {
             obj.delete = (userpermission[obj.code].permissiondelete == 1);
             obj.edited_delete = true;
           }
         }
         else {
-          obj.create = !!permission[obj.code].permissioncreate;
-          obj.read = !!permission[obj.code].permissionread;
-          obj.update = !!permission[obj.code].permissionupdate;
-          obj.delete = !!permission[obj.code].permissiondelete;
+          obj.create = !!parseInt(permission[obj.code].permissioncreate);
+          obj.read = !!parseInt(permission[obj.code].permissionread);
+          obj.update = !!parseInt(permission[obj.code].permissionupdate);
+          obj.delete = !!parseInt(permission[obj.code].permissiondelete);
         }
       } else if (userpermission.hasOwnProperty(obj.code)) {
         if (userpermission[obj.code].permissioncreate == 1) {
