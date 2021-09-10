@@ -565,8 +565,8 @@ export default function RoomManagement() {
       chipAttributeDialog : ${chipAttributeDialog},
       roomDesc : ${roomDesc},
       roomFloor : ${roomFloor}`);
-    if (roomNo == null) {setErrorMessage(true); setErrorParameter("Room Number");}
-    else if (roomFloor == null) {setErrorMessage(true); setErrorParameter("Floor");}
+    if (roomNo == null) { setErrorMessage(true); setErrorParameter("Room Number"); }
+    else if (roomFloor == null) { setErrorMessage(true); setErrorParameter("Floor"); }
     else {
       setErrorMessage(false);
       const AttributeTemp = new Set();
@@ -686,8 +686,8 @@ export default function RoomManagement() {
       chipAttributeDialog : ${chipAttributeDialog},
       roomDesc : ${roomDesc},
       roomFloor : ${roomFloor}`);
-    if (roomNo == null) {setErrorMessage(true); setErrorParameter("Room Number");}
-    else if (roomFloor == null) {setErrorMessage(true); setErrorParameter("Floor");}
+    if (roomNo == null) { setErrorMessage(true); setErrorParameter("Room Number"); }
+    else if (roomFloor == null) { setErrorMessage(true); setErrorParameter("Floor"); }
     else {
       setErrorMessage(false);
       const AttributeTemp = new Set();
@@ -849,884 +849,885 @@ export default function RoomManagement() {
   return (
     <Container maxWidth="xl">
       <React.Fragment>
-        <Typography
-          variant="h6"
-          style={{ marginBottom: 15, fontSize: 18, color: "#2B4EAD" }}
-        >
-          {/* Role Management */}
-        </Typography>
-        <Paper>
-        <Grid item style={{ flexGrow: 1 }}>
-            <Breadcrumbs
-              separator={
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20 }}
-                >
-                  /
-                </Typography>
-              }
-            >
-              <Link color="inherit" href="#" onClick={() => handleComponentState("Configuration")}>
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
-                >
-                  Configuration
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={" "}>
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 14 }}
-                >
-                  PMS Configuration
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={" "}>
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 14 }}
-                >
-                  Room Configuration
-                </Typography>
-              </Link>
-              <Typography>
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 14 }}
-                >
-                  Role Management
-                </Typography>
-              </Typography>
-            </Breadcrumbs>
-          </Grid>
 
-          <Grid container style={{ padding: 30 }}>
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="center"
-              style={{ marginBottom: 30 }}
-            >
-              <Grid item style={{ marginLeft: 10, marginRight: 20 }}>
-                <Typography
-                  variant="h6"
-                  style={{ fontSize: 25, color: "black" }}
-                >
-                  Room Master
+        <Paper>
+          <Grid
+            container
+
+            style={{ padding: 20 }}
+          >
+            <Grid item style={{ flexGrow: 1 }}>
+              <Breadcrumbs
+                separator={
+                  <Typography
+                    variant="h6"
+                    style={{ marginBottom: 15, fontSize: 20 }}
+                  >
+                    /
+                  </Typography>
+                }
+              >
+                <Link color="inherit" href="#" onClick={() => handleComponentState("Configuration")}>
+                  <Typography
+                    variant="h6"
+                    style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
+                  >
+                    Configuration
+                  </Typography>
+                </Link>
+                <Link color="inherit" href="#" onClick={" "}>
+                  <Typography
+                    variant="h6"
+                    style={{ marginBottom: 15, fontSize: 14 }}
+                  >
+                    PMS Configuration
+                  </Typography>
+                </Link>
+                <Link color="inherit" href="#" onClick={" "}>
+                  <Typography
+                    variant="h6"
+                    style={{ marginBottom: 15, fontSize: 14 }}
+                  >
+                    Room Configuration
+                  </Typography>
+                </Link>
+                <Typography>
+                  <Typography
+                    variant="h6"
+                    style={{ marginBottom: 15, fontSize: 14 }}
+                  >
+                    Room Master Maintenance
+                  </Typography>
                 </Typography>
-              </Grid>
-              <Divider orientation="vertical" flexItem />
-              <Grid item className={classes.searchLayout}>
-                <TextField
-                  id="standard-basic"
-                  label=" Search "
-                  htmlFor="Search"
-                  href="#"
-                  type="text"
-                  style={{ maxWidth: 600 }}
-                  fullWidth
-                  onChange={(e) => handleSeaarch(e)}
-                  onKeyDown={(event) =>
-                    event.key === "Enter"
-                      ? handleSeaarchRequest(searchKey)
-                      : null
-                  }
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment
-                        onClick={() => handleSeaarchRequest(searchKey)}
-                        position="end"
-                      >
-                        <SearchRoundedIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Divider orientation="vertical" flexItem />
-              <Grid item style={{ marginLeft: 20, marginRight: 20 }}>
-                <Button
-                  variant="contained"
-                  style={{
-                    backgroundColor: "#2D62ED",
-                    color: "white",
-                    textAlign: "center",
-                  }}
-                  onClick={handleDialogAddRoom}
-                >
-                  NEW ROOM MASTER
-                </Button>
-              </Grid>
+              </Breadcrumbs>
             </Grid>
 
-            <Grid container>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Property</TableCell>
-                    <TableCell>#Number</TableCell>
-                    <TableCell>Room Type</TableCell>
-                    <TableCell>Floor</TableCell>
-                    <TableCell>Building</TableCell>
-                    <TableCell>Desc</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Attribute</TableCell>
-                    <TableCell align="center">Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {pageData.map((row) => (
-                    <TableRow key={row.id}>
-                      <TableCell>{row.property}</TableCell>
-                      <TableCell style={{ color: "blue" }}>
-                        {row.number}
-                      </TableCell>
-                      <TableCell>{row.roomType}</TableCell>
-                      <TableCell>{row.floor}</TableCell>
-                      <TableCell>{row.building}</TableCell>
-                      <TableCell>{row.desc}</TableCell>
-                      <TableCell>{row.status}</TableCell>
-                      <TableCell>{row.attribute}</TableCell>
-
-                      <TableCell align="center">
-                        <IconButton
-                          onClick={() =>
-                            handleDialogEditRoom(
-                              row.number,
-                              row.property,
-                              row.roomType
-                            )
-                          }
-                        >
-                          <EditRoundedIcon />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => handleDialogDeleteRoomOpen(row.number)}
-                        >
-                          <DeleteRoundedIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-
-              {/* ==================== Dialog New Room========================= */}
-              <Dialog
-                fullWidth="true"
-                maxWidth="sm"
-                open={dialogAddRoom}
-                onClose={handleDialogAddRoomClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                  New Room Master
-                </DialogTitle>
-
-                <DialogContent>
-                  <Container maxWidth="xl" disableGutters>
-                    <Grid container>
-                      <TextField
-                        autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Property"
-                        variant="outlined"
-                        defaultValue={pageProperty}
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        // value={propertyDialog}
-                        onChange={(event) => handlePropertyDialog(event)}
-                      >
-                        {properties.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          id="outlined-basic"
-                          label="Room Number"
-                          variant="outlined"
-                          // value={roomNumber}
-                          defaultValue={""}
-                          onChange={(e) => handleRoomNumber(e)}
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Type"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          // value={roomTypeDialog}
-                          defaultValue={""}
-                          onChange={(e) => handleRoomTypeDialog(e)}
-                        >
-                          {roomType.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 15 }}>
-                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                        <TextField
-                          // autoFocus
-                          id="outlined-basic"
-                          label="Floor"
-                          variant="outlined"
-                          fullWidth
-                          // value={roomFloor}
-                          defaultValue={""}
-                          onChange={(e) => handleFloor(e)}
-                        />
-                      </Grid>
-                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Building"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          // value={buildingDialog}
-                          defaultValue={""}
-                          onChange={(e) => handleBuildingDialog(e)}
-                        >
-                          {building.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Wing"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          // value={wingDialog}
-                          defaultValue={""}
-                          onChange={(e) => handleWingDialog(e)}
-                        >
-                          {wing.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Exposure"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          // value={exposureDialog}
-                          defaultValue={""}
-                          onChange={(e) => handleExposureDialog(e)}
-                        >
-                          {exposure.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Size"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          // value={roomSizeDialog}
-                          defaultValue={""}
-                          onChange={(e) => handleRoomSizeDialog(e)}
-                        >
-                          {roomSize.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Seg"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          // value={roomSegDialog}
-                          defaultValue={""}
-                          onChange={(e) => handleRoomSegDialog(e)}
-                        >
-                          {roomSeg.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Status"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          // value={roomStatusDialog}
-                          defaultValue={""}
-                          onChange={(e) => handleRoomStatusDialog(e)}
-                        >
-                          {roomStatus.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="flex-start"
-                      alignItems="center"
-                      style={{ paddingTop: 10 }}
-                    >
-                      <TextField
-                        fullWidth
-                        // autoFocus
-                        variant="outlined"
-                        selectSelectProps={{
-                          native: true,
-                        }}
-                        label="Attribute"
-                        select
-                        // value={" "}
-                        defaultValue={""}
-                        onChange={(event, key) =>
-                          handleSelectAttribute(event, key)
-                        }
-                      >
-                        {attribute.map((option) => (
-                          <MenuItem
-                            key={option.key}
-                            name={option.key}
-                            value={option.label}
-                          >
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                      {chipAttributeDialog.map((data, index) => {
-                        return (
-                          <Chip
-                            style={{ marginTop: 10 }}
-                            key={data.key + index}
-                            label={data.label}
-                            onDelete={handleDeleteAttribute(data)}
-                          />
-                        );
-                      })}
-                    </Grid>
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="flex-start"
-                      alignItems="center"
-                      style={{ paddingTop: 10 }}
-                    >
-                      <TextField
-                        fullWidth
-                        // id="outlined-multiline-static"
-                        label="Description"
-                        multiline
-                        rows={4}
-                        variant="outlined"
-                        defaultValue={""}
-                        onChange={(e) => handleDescription(e)}
-                      />
-                    </Grid>
-                  </Container>
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
-                </DialogContent>
-                <DialogActions style={{ padding: 20 }}>
-                  <Button
-                    onClick={handleDialogAddRoomClose}
-                    variant="text"
-                    color="primary"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() =>
-                      handleDialogInsert(
-                        roomNumber,
-                        propertyDialog,
-                        roomTypeDialog,
-                        buildingDialog,
-                        wingDialog,
-                        exposureDialog,
-                        roomSizeDialog,
-                        roomSegDialog,
-                        roomStatusDialog,
-                        chipAttributeDialog,
-                        roomDesc,
-                        roomFloor
-                      )
-                    }
-                  >
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-              {/* ---------------------------------------- */}
-              {/* ==================== Dialog Edit Room ========================= */}
-              <Dialog
-                fullWidth="true"
-                maxWidth="sm"
-                open={dialogEditRoom}
-                onClose={handleDialogEditRoomClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                  Edit Room Master
-                </DialogTitle>
-
-                <DialogContent>
-                  <Container maxWidth="xl" disableGutters>
-                    <Grid container>
-                      <TextField
-                        // autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Property"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        defaultValue={propertyDialog}
-                        onChange={(event) => handlePropertyDialog(event)}
-                      >
-                        {properties.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          id="outlined-basic"
-                          label="Room Number"
-                          variant="outlined"
-                          fullWidth
-                          value={roomNumber}
-                          onChange={(e) => handleRoomNumber(e)}
-                        />
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Type"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={roomTypeDialog}
-                          onChange={(e) => handleRoomTypeDialog(e)}
-                        >
-                          {roomType.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 15 }}>
-                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                        <TextField
-                          // autoFocus
-                          id="outlined-basic"
-                          label="Floor"
-                          variant="outlined"
-                          fullWidth
-                          value={roomFloor}
-                          onChange={(e) => handleFloor(e)}
-                        />
-                      </Grid>
-                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Building"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={buildingDialog}
-                          onChange={(e) => handleBuildingDialog(e)}
-                        >
-                          {building.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Wing"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={wingDialog}
-                          onChange={(e) => handleWingDialog(e)}
-                        >
-                          {wing.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Exposure"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={exposureDialog}
-                          onChange={(e) => handleExposureDialog(e)}
-                        >
-                          {exposure.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Size"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={roomSizeDialog}
-                          onChange={(e) => handleRoomSizeDialog(e)}
-                        >
-                          {roomSize.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Seg"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={roomSegDialog}
-                          onChange={(e) => handleRoomSegDialog(e)}
-                        >
-                          {roomSeg.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                        <TextField
-                          // autoFocus
-                          select
-                          id="outlined-basic"
-                          label="Room Status"
-                          variant="outlined"
-                          fullWidth
-                          SelectProps={{
-                            native: true,
-                          }}
-                          value={roomStatusDialog}
-                          onChange={(e) => handleRoomStatusDialog(e)}
-                        >
-                          {roomStatus.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="flex-start"
-                      alignItems="center"
-                      style={{ paddingTop: 10 }}
-                    >
-                      <TextField
-                        fullWidth
-                        // autoFocus
-                        variant="outlined"
-                        selectSelectProps={{
-                          native: true,
-                        }}
-                        label="Attribute"
-                        select
-                        // name={key}
-                        value={chipAttributeDialog}
-                        onChange={(event, key) =>
-                          handleSelectAttribute(event, key)
-                        }
-                      >
-                        {attribute.map((option) => (
-                          <MenuItem
-                            key={option.key}
-                            name={option.key}
-                            value={option.label}
-                          >
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                      {chipAttributeDialog.map((data, index) => {
-                        return (
-                          <Chip
-                            style={{ marginTop: 10 }}
-                            key={data.key + index}
-                            label={data.label}
-                            onDelete={handleDeleteAttribute(data)}
-                          />
-                        );
-                      })}
-                    </Grid>
-
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="flex-start"
-                      alignItems="center"
-                      style={{ paddingTop: 10 }}
-                    >
-                      <TextField
-                        fullWidth
-                        label="Description"
-                        multiline
-                        rows={4}
-                        variant="outlined"
-                        value={roomDesc}
-                        onChange={(e) => handleDescription(e)}
-                      />
-                    </Grid>
-                  </Container>
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
-                </DialogContent>
-                <DialogActions style={{ padding: 20 }}>
-                  <Button
-                    onClick={handleDialogEditRoomClose}
-                    variant="text"
-                    color="primary"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={() =>
-                      handleDialogEditRoomSave(
-                        roomNumber,
-                        propertyDialog,
-                        roomTypeDialog,
-                        buildingDialog,
-                        wingDialog,
-                        exposureDialog,
-                        roomSizeDialog,
-                        roomSegDialog,
-                        roomStatusDialog,
-                        chipAttributeDialog,
-                        roomDesc,
-                        roomFloor
-                      )
-                    }
-                    variant="contained"
-                    color="primary"
-                  >
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-              {/* -------------------------------------- */}
-
-              {/* ==================== Dialog Delete User========================= */}
-              <Dialog
-                maxWidth="sm"
-                open={dialogDeleteRoom}
-                onClose={handleDialogDeleteRoomClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <Grid container>
-                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <DialogTitle
-                      id="form-dialog-title"
-                      style={{ color: "blue" }}
-                    >
-                      Confirm Delete Room Information
-                    </DialogTitle>
-                    <DialogContent>
-                      <Typography variant="h5" color="initial">
-                        Confirm Delete Room : {roomNumber}
-                      </Typography>
-                    </DialogContent>
-                    <DialogActions style={{ padding: 20 }}>
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="space-evenly"
-                        alignItems="center"
-                        spacing={4}
-                      >
-                        <Grid item sm={6} md={6} lg={6} xl={6}>
-                          <Button
-                            fullWidth
-                            onClick={handleDialogDeleteRoomClose}
-                            variant="contained"
-                            color="default"
-                          >
-                            Cancel
-                          </Button>
-                        </Grid>
-                        <Grid item sm={6} md={6} lg={6} xl={6}>
-                          <Button
-                            fullWidth
-                            onClick={() => handleDialogDelete(roomNumber)}
-                            variant="contained"
-                            // color="primary"
-                            style={{ backgroundColor: "red", color: "white" }}
-                          >
-                            Delete
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </DialogActions>
-                  </Grid>
-                </Grid>
-              </Dialog>
-              {/* ---------------------------------------- */}
+            <Grid container style={{ padding: 30 }}>
               <Grid
                 container
                 direction="row"
                 justifyContent="flex-start"
                 alignItems="center"
-                spacing={3}
-                style={{ marginTop: 15 }}
+                style={{ marginBottom: 30 }}
               >
-                <Grid item style={{ flexGrow: 1 }}>
-                  <Typography variant="title1" color="initial">
-                    item {page * rowsPerPage + 1}-
-                    {(page + 1) * rowsPerPage > rows.length
-                      ? rows.length
-                      : (page + 1) * rowsPerPage}{" "}
-                    of {rows.length} Total
+                <Grid item style={{ marginLeft: 10, marginRight: 20 }}>
+                  <Typography
+                    variant="h6"
+                    style={{ fontSize: 25, color: "black" }}
+                  >
+                    Room Master
                   </Typography>
                 </Grid>
-                <Grid item>
-                  <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={rows.length}
-                    page={page}
-                    // onPageChange={handleChangePage}
-                    rowsPerPage={rowsPerPage}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                  // onRowsPerPageChange={handleChangeRowsPerPage}
+                <Divider orientation="vertical" flexItem />
+                <Grid item className={classes.searchLayout}>
+                  <TextField
+                    id="standard-basic"
+                    label=" Search "
+                    htmlFor="Search"
+                    href="#"
+                    type="text"
+                    style={{ maxWidth: 600 }}
+                    fullWidth
+                    onChange={(e) => handleSeaarch(e)}
+                    onKeyDown={(event) =>
+                      event.key === "Enter"
+                        ? handleSeaarchRequest(searchKey)
+                        : null
+                    }
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment
+                          onClick={() => handleSeaarchRequest(searchKey)}
+                          position="end"
+                        >
+                          <SearchRoundedIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                   />
+                </Grid>
+                <Divider orientation="vertical" flexItem />
+                <Grid item style={{ marginLeft: 20, marginRight: 20 }}>
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: "#2D62ED",
+                      color: "white",
+                      textAlign: "center",
+                    }}
+                    onClick={handleDialogAddRoom}
+                  >
+                    NEW ROOM MASTER
+                  </Button>
+                </Grid>
+              </Grid>
+
+              <Grid container>
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Property</TableCell>
+                      <TableCell>#Number</TableCell>
+                      <TableCell>Room Type</TableCell>
+                      <TableCell>Floor</TableCell>
+                      <TableCell>Building</TableCell>
+                      <TableCell>Desc</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Attribute</TableCell>
+                      <TableCell align="center">Action</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {pageData.map((row) => (
+                      <TableRow key={row.id}>
+                        <TableCell>{row.property}</TableCell>
+                        <TableCell style={{ color: "blue" }}>
+                          {row.number}
+                        </TableCell>
+                        <TableCell>{row.roomType}</TableCell>
+                        <TableCell>{row.floor}</TableCell>
+                        <TableCell>{row.building}</TableCell>
+                        <TableCell>{row.desc}</TableCell>
+                        <TableCell>{row.status}</TableCell>
+                        <TableCell>{row.attribute}</TableCell>
+
+                        <TableCell align="center">
+                          <IconButton
+                            onClick={() =>
+                              handleDialogEditRoom(
+                                row.number,
+                                row.property,
+                                row.roomType
+                              )
+                            }
+                          >
+                            <EditRoundedIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleDialogDeleteRoomOpen(row.number)}
+                          >
+                            <DeleteRoundedIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+
+                {/* ==================== Dialog New Room========================= */}
+                <Dialog
+                  fullWidth="true"
+                  maxWidth="sm"
+                  open={dialogAddRoom}
+                  onClose={handleDialogAddRoomClose}
+                  aria-labelledby="form-dialog-title"
+                >
+                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                    New Room Master
+                  </DialogTitle>
+
+                  <DialogContent>
+                    <Container maxWidth="xl" disableGutters>
+                      <Grid container>
+                        <TextField
+                          autoFocus
+                          select
+                          id="outlined-basic"
+                          label="Property"
+                          variant="outlined"
+                          defaultValue={pageProperty}
+                          fullWidth
+                          SelectProps={{
+                            native: true,
+                          }}
+                          // value={propertyDialog}
+                          onChange={(event) => handlePropertyDialog(event)}
+                        >
+                          {properties.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </TextField>
+                      </Grid>
+                      <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            id="outlined-basic"
+                            label="Room Number"
+                            variant="outlined"
+                            // value={roomNumber}
+                            defaultValue={""}
+                            onChange={(e) => handleRoomNumber(e)}
+                            fullWidth
+                          />
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Room Type"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            // value={roomTypeDialog}
+                            defaultValue={""}
+                            onChange={(e) => handleRoomTypeDialog(e)}
+                          >
+                            {roomType.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid>
+                      <Grid container spacing={2} style={{ paddingTop: 15 }}>
+                        <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                          <TextField
+                            // autoFocus
+                            id="outlined-basic"
+                            label="Floor"
+                            variant="outlined"
+                            fullWidth
+                            // value={roomFloor}
+                            defaultValue={""}
+                            onChange={(e) => handleFloor(e)}
+                          />
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Building"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            // value={buildingDialog}
+                            defaultValue={""}
+                            onChange={(e) => handleBuildingDialog(e)}
+                          >
+                            {building.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Wing"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            // value={wingDialog}
+                            defaultValue={""}
+                            onChange={(e) => handleWingDialog(e)}
+                          >
+                            {wing.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid>
+                      <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Exposure"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            // value={exposureDialog}
+                            defaultValue={""}
+                            onChange={(e) => handleExposureDialog(e)}
+                          >
+                            {exposure.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Room Size"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            // value={roomSizeDialog}
+                            defaultValue={""}
+                            onChange={(e) => handleRoomSizeDialog(e)}
+                          >
+                            {roomSize.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid>
+                      <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Room Seg"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            // value={roomSegDialog}
+                            defaultValue={""}
+                            onChange={(e) => handleRoomSegDialog(e)}
+                          >
+                            {roomSeg.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Room Status"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            // value={roomStatusDialog}
+                            defaultValue={""}
+                            onChange={(e) => handleRoomStatusDialog(e)}
+                          >
+                            {roomStatus.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="center"
+                        style={{ paddingTop: 10 }}
+                      >
+                        <TextField
+                          fullWidth
+                          // autoFocus
+                          variant="outlined"
+                          selectSelectProps={{
+                            native: true,
+                          }}
+                          label="Attribute"
+                          select
+                          // value={" "}
+                          defaultValue={""}
+                          onChange={(event, key) =>
+                            handleSelectAttribute(event, key)
+                          }
+                        >
+                          {attribute.map((option) => (
+                            <MenuItem
+                              key={option.key}
+                              name={option.key}
+                              value={option.label}
+                            >
+                              {option.label}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                        {chipAttributeDialog.map((data, index) => {
+                          return (
+                            <Chip
+                              style={{ marginTop: 10 }}
+                              key={data.key + index}
+                              label={data.label}
+                              onDelete={handleDeleteAttribute(data)}
+                            />
+                          );
+                        })}
+                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="center"
+                        style={{ paddingTop: 10 }}
+                      >
+                        <TextField
+                          fullWidth
+                          // id="outlined-multiline-static"
+                          label="Description"
+                          multiline
+                          rows={4}
+                          variant="outlined"
+                          defaultValue={""}
+                          onChange={(e) => handleDescription(e)}
+                        />
+                      </Grid>
+                    </Container>
+                    {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                  </DialogContent>
+                  <DialogActions style={{ padding: 20 }}>
+                    <Button
+                      onClick={handleDialogAddRoomClose}
+                      variant="text"
+                      color="primary"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() =>
+                        handleDialogInsert(
+                          roomNumber,
+                          propertyDialog,
+                          roomTypeDialog,
+                          buildingDialog,
+                          wingDialog,
+                          exposureDialog,
+                          roomSizeDialog,
+                          roomSegDialog,
+                          roomStatusDialog,
+                          chipAttributeDialog,
+                          roomDesc,
+                          roomFloor
+                        )
+                      }
+                    >
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                {/* ---------------------------------------- */}
+                {/* ==================== Dialog Edit Room ========================= */}
+                <Dialog
+                  fullWidth="true"
+                  maxWidth="sm"
+                  open={dialogEditRoom}
+                  onClose={handleDialogEditRoomClose}
+                  aria-labelledby="form-dialog-title"
+                >
+                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                    Edit Room Master
+                  </DialogTitle>
+
+                  <DialogContent>
+                    <Container maxWidth="xl" disableGutters>
+                      <Grid container>
+                        <TextField
+                          // autoFocus
+                          select
+                          id="outlined-basic"
+                          label="Property"
+                          variant="outlined"
+                          fullWidth
+                          SelectProps={{
+                            native: true,
+                          }}
+                          defaultValue={propertyDialog}
+                          onChange={(event) => handlePropertyDialog(event)}
+                        >
+                          {properties.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </TextField>
+                      </Grid>
+                      <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            id="outlined-basic"
+                            label="Room Number"
+                            variant="outlined"
+                            fullWidth
+                            value={roomNumber}
+                            onChange={(e) => handleRoomNumber(e)}
+                          />
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Room Type"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            value={roomTypeDialog}
+                            onChange={(e) => handleRoomTypeDialog(e)}
+                          >
+                            {roomType.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid>
+                      <Grid container spacing={2} style={{ paddingTop: 15 }}>
+                        <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                          <TextField
+                            // autoFocus
+                            id="outlined-basic"
+                            label="Floor"
+                            variant="outlined"
+                            fullWidth
+                            value={roomFloor}
+                            onChange={(e) => handleFloor(e)}
+                          />
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Building"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            value={buildingDialog}
+                            onChange={(e) => handleBuildingDialog(e)}
+                          >
+                            {building.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Wing"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            value={wingDialog}
+                            onChange={(e) => handleWingDialog(e)}
+                          >
+                            {wing.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid>
+                      <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Exposure"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            value={exposureDialog}
+                            onChange={(e) => handleExposureDialog(e)}
+                          >
+                            {exposure.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Room Size"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            value={roomSizeDialog}
+                            onChange={(e) => handleRoomSizeDialog(e)}
+                          >
+                            {roomSize.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid>
+                      <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Room Seg"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            value={roomSegDialog}
+                            onChange={(e) => handleRoomSegDialog(e)}
+                          >
+                            {roomSeg.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                          <TextField
+                            // autoFocus
+                            select
+                            id="outlined-basic"
+                            label="Room Status"
+                            variant="outlined"
+                            fullWidth
+                            SelectProps={{
+                              native: true,
+                            }}
+                            value={roomStatusDialog}
+                            onChange={(e) => handleRoomStatusDialog(e)}
+                          >
+                            {roomStatus.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="center"
+                        style={{ paddingTop: 10 }}
+                      >
+                        <TextField
+                          fullWidth
+                          // autoFocus
+                          variant="outlined"
+                          selectSelectProps={{
+                            native: true,
+                          }}
+                          label="Attribute"
+                          select
+                          // name={key}
+                          value={chipAttributeDialog}
+                          onChange={(event, key) =>
+                            handleSelectAttribute(event, key)
+                          }
+                        >
+                          {attribute.map((option) => (
+                            <MenuItem
+                              key={option.key}
+                              name={option.key}
+                              value={option.label}
+                            >
+                              {option.label}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                        {chipAttributeDialog.map((data, index) => {
+                          return (
+                            <Chip
+                              style={{ marginTop: 10 }}
+                              key={data.key + index}
+                              label={data.label}
+                              onDelete={handleDeleteAttribute(data)}
+                            />
+                          );
+                        })}
+                      </Grid>
+
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="center"
+                        style={{ paddingTop: 10 }}
+                      >
+                        <TextField
+                          fullWidth
+                          label="Description"
+                          multiline
+                          rows={4}
+                          variant="outlined"
+                          value={roomDesc}
+                          onChange={(e) => handleDescription(e)}
+                        />
+                      </Grid>
+                    </Container>
+                    {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                  </DialogContent>
+                  <DialogActions style={{ padding: 20 }}>
+                    <Button
+                      onClick={handleDialogEditRoomClose}
+                      variant="text"
+                      color="primary"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        handleDialogEditRoomSave(
+                          roomNumber,
+                          propertyDialog,
+                          roomTypeDialog,
+                          buildingDialog,
+                          wingDialog,
+                          exposureDialog,
+                          roomSizeDialog,
+                          roomSegDialog,
+                          roomStatusDialog,
+                          chipAttributeDialog,
+                          roomDesc,
+                          roomFloor
+                        )
+                      }
+                      variant="contained"
+                      color="primary"
+                    >
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                {/* -------------------------------------- */}
+
+                {/* ==================== Dialog Delete User========================= */}
+                <Dialog
+                  maxWidth="sm"
+                  open={dialogDeleteRoom}
+                  onClose={handleDialogDeleteRoomClose}
+                  aria-labelledby="form-dialog-title"
+                >
+                  <Grid container>
+                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                      <DialogTitle
+                        id="form-dialog-title"
+                        style={{ color: "blue" }}
+                      >
+                        Confirm Delete Room Information
+                      </DialogTitle>
+                      <DialogContent>
+                        <Typography variant="h5" color="initial">
+                          Confirm Delete Room : {roomNumber}
+                        </Typography>
+                      </DialogContent>
+                      <DialogActions style={{ padding: 20 }}>
+                        <Grid
+                          container
+                          direction="row"
+                          justifyContent="space-evenly"
+                          alignItems="center"
+                          spacing={4}
+                        >
+                          <Grid item sm={6} md={6} lg={6} xl={6}>
+                            <Button
+                              fullWidth
+                              onClick={handleDialogDeleteRoomClose}
+                              variant="contained"
+                              color="default"
+                            >
+                              Cancel
+                            </Button>
+                          </Grid>
+                          <Grid item sm={6} md={6} lg={6} xl={6}>
+                            <Button
+                              fullWidth
+                              onClick={() => handleDialogDelete(roomNumber)}
+                              variant="contained"
+                              // color="primary"
+                              style={{ backgroundColor: "red", color: "white" }}
+                            >
+                              Delete
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      </DialogActions>
+                    </Grid>
+                  </Grid>
+                </Dialog>
+                {/* ---------------------------------------- */}
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  spacing={3}
+                  style={{ marginTop: 15 }}
+                >
+                  <Grid item style={{ flexGrow: 1 }}>
+                    <Typography variant="title1" color="initial">
+                      item {page * rowsPerPage + 1}-
+                      {(page + 1) * rowsPerPage > rows.length
+                        ? rows.length
+                        : (page + 1) * rowsPerPage}{" "}
+                      of {rows.length} Total
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <TablePagination
+                      rowsPerPageOptions={[5, 10, 25]}
+                      component="div"
+                      count={rows.length}
+                      page={page}
+                      // onPageChange={handleChangePage}
+                      rowsPerPage={rowsPerPage}
+                      onChangePage={handleChangePage}
+                      onChangeRowsPerPage={handleChangeRowsPerPage}
+                    // onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>

@@ -1824,9 +1824,6 @@ export default function UserManagement() {
       <React.Fragment>
         <Grid
           container
-          //   direction="row"
-          //   justifyContent="flex-start"
-          //   alignItems="center"
           style={{ padding: 20 }}
         >
           <Grid item style={{ flexGrow: 1 }}>
