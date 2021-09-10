@@ -51,13 +51,13 @@ module.exports = {
       body: JSON.stringify(req),
     }).then(async (res) => res.json());
   },
-  //   deleteRoombyid: async function (accessToken, id) {
-  //     return fetch(`http://localhost:8082/room-masters/${id}`, {
-  //       method: "DELETE",
-  //       headers: {
-  //         Authorization: accessToken,
-  //         "Content-Type": "application/json",
-  //       },
-  //     }).then(async (res) => res.json());
-  //   },
+  deletebyroomnum: async function (accessToken, roomnum) {
+    return fetch(`http://localhost:8082/room-masters/${roomnum}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
 };
