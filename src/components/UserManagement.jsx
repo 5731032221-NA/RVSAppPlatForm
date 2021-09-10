@@ -1268,6 +1268,8 @@ export default function UserManagement() {
             {nodes.permision ? (
               <div>
                 <Grid container direction="row" alignItems="center">
+
+
                   <Grid item style={{ flexGrow: 1 }} >
                     {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
                       <Typography
@@ -1644,7 +1646,7 @@ export default function UserManagement() {
                         <Typography
                           variant="h6"
                           color="initial"
-                          style={{ fontSize: 16 }}
+                          style={{ fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
                         >
                           {nodes.name}
                         </Typography>
@@ -2270,7 +2272,7 @@ export default function UserManagement() {
                     </Container>
                   </Grid>
                 ) : null}
-                {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center",color: "white" }}>{errorParameter} is required</div> : null}
               </DialogContent>
             </Grid>
           </Grid>
@@ -2597,7 +2599,7 @@ export default function UserManagement() {
                     </Container>
                   </Grid>
                 ) : null}
-                {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center",color: "white" }}>{errorParameter} is required</div> : null}
               </DialogContent>
 
               <DialogActions style={{ padding: 20 }}>
@@ -2648,7 +2650,6 @@ export default function UserManagement() {
 
         {/* ==================== Dialog Delete User========================= */}
         <Dialog
-          fullWidth="true"
           maxWidth="sm"
           open={dialogDeleteUser}
           onClose={handleDialogDeleteUserClose}
@@ -2677,7 +2678,7 @@ export default function UserManagement() {
                       fullWidth
                       onClick={handleDialogDeleteUserClose}
                       variant="contained"
-                      color="primary"
+                      color="default"
                     >
                       Cancel
                     </Button>

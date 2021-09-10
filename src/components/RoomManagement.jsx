@@ -21,6 +21,8 @@ import {
   Select,
   MenuItem,
   Chip,
+  Breadcrumbs,
+  Link
 } from "@material-ui/core";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import IconButton from "@material-ui/core/IconButton";
@@ -846,6 +848,52 @@ export default function RoomManagement() {
           {/* Role Management */}
         </Typography>
         <Paper>
+        <Grid item style={{ flexGrow: 1 }}>
+            <Breadcrumbs
+              separator={
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20 }}
+                >
+                  /
+                </Typography>
+              }
+            >
+              <Link color="inherit" href="#" onClick={() => handleComponentState("Configuration")}>
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
+                >
+                  Configuration
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 14 }}
+                >
+                  PMS Configuration
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 14 }}
+                >
+                  Room Configuration
+                </Typography>
+              </Link>
+              <Typography>
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 14 }}
+                >
+                  Role Management
+                </Typography>
+              </Typography>
+            </Breadcrumbs>
+          </Grid>
+
           <Grid container style={{ padding: 30 }}>
             <Grid
               container
@@ -1242,7 +1290,7 @@ export default function RoomManagement() {
                       />
                     </Grid>
                   </Container>
-                  {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
+                  {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center",color: "white" }}>{errorParameter} is required</div> : null}
                 </DialogContent>
                 <DialogActions style={{ padding: 20 }}>
                   <Button
@@ -1551,7 +1599,7 @@ export default function RoomManagement() {
                       />
                     </Grid>
                   </Container>
-                  {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
+                  {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center",color: "white" }}>{errorParameter} is required</div> : null}
                 </DialogContent>
                 <DialogActions style={{ padding: 20 }}>
                   <Button
@@ -1589,7 +1637,6 @@ export default function RoomManagement() {
 
               {/* ==================== Dialog Delete User========================= */}
               <Dialog
-                fullWidth="true"
                 maxWidth="sm"
                 open={dialogDeleteRoom}
                 onClose={handleDialogDeleteRoomClose}
@@ -1621,7 +1668,7 @@ export default function RoomManagement() {
                             fullWidth
                             onClick={handleDialogDeleteRoomClose}
                             variant="contained"
-                            color="primary"
+                            color="default"
                           >
                             Cancel
                           </Button>

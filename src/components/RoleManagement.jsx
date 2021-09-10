@@ -651,8 +651,8 @@ export default function RoleManagement() {
     setErrorMessage(true);
     if (rolecode == null) setErrorParameter("Role Code");
     else if (rolename == null) setErrorParameter("Role Name");
-    else if (description == null) setErrorParameter("Description");
     else if (ChipPropertyDialog.length == 0) setErrorParameter("Property");
+    else if (description == null) setErrorParameter("Description");
     else {
       setErrorMessage(false);
 
@@ -820,8 +820,8 @@ export default function RoleManagement() {
     setErrorMessage(true);
     if (rolecode == null) setErrorParameter("Role Code");
     else if (rolename == null) setErrorParameter("Role Name");
-    else if (description == null) setErrorParameter("Description");
     else if (ChipPropertyDialog.length == 0) setErrorParameter("Property");
+    else if (description == null) setErrorParameter("Description");
     else {
       let perm = await propertylist(data, rolecode);
       const temp = new Set();
@@ -1324,7 +1324,7 @@ export default function RoleManagement() {
                       <Typography
                         variant="h6"
                         color="initial"
-                        style={{ fontSize: 16 }}
+                        style={{ fontSize: 16 , paddingTop: 10, paddingBottom: 10}}
                       >
                         {nodes.name}
                       </Typography>
@@ -2124,7 +2124,7 @@ export default function RoleManagement() {
                     </TreeView>
                   </Container>
                 </Container>
-                {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center",color: "white" }}>{errorParameter} is required</div> : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
@@ -2355,7 +2355,7 @@ export default function RoleManagement() {
                     </TreeView>
                   </Container>
                 </Container>
-                {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", justifyContent: "center",color: "white" }}>{errorParameter} is required</div> : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
@@ -2385,11 +2385,11 @@ export default function RoleManagement() {
         </Dialog>
         {/* ==================== Dialog Delete User========================= */}
         <Dialog
-          fullWidth="true"
           maxWidth="sm"
           open={dialogDeleteRole}
           onClose={handleDialogDeleteRoleClose}
           aria-labelledby="form-dialog-title"
+        
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -2420,7 +2420,7 @@ export default function RoleManagement() {
                       fullWidth
                       onClick={handleDialogDeleteRoleClose}
                       variant="contained"
-                      color="primary"
+                      color="default"
                     >
                       Cancel
                     </Button>
