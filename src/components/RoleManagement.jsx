@@ -648,11 +648,10 @@ export default function RoleManagement() {
     description,
     status
   ) => {
-    setErrorMessage(true);
-    if (rolecode == null) setErrorParameter("Role Code");
-    else if (rolename == null) setErrorParameter("Role Name");
-    else if (ChipPropertyDialog.length == 0) setErrorParameter("Property");
-    else if (description == null) setErrorParameter("Description");
+    if (rolecode == null) {setErrorMessage(true); setErrorParameter("Role Code");}
+    else if (rolename == null) {setErrorMessage(true); setErrorParameter("Role Name");}
+    else if (ChipPropertyDialog.length == 0) {setErrorMessage(true); setErrorParameter("Property");}
+    else if (description == null) {setErrorMessage(true); setErrorParameter("Description");}
     else {
       setErrorMessage(false);
 
@@ -817,12 +816,12 @@ export default function RoleManagement() {
       description,
       status
     );
-    setErrorMessage(true);
-    if (rolecode == null) setErrorParameter("Role Code");
-    else if (rolename == null) setErrorParameter("Role Name");
-    else if (ChipPropertyDialog.length == 0) setErrorParameter("Property");
-    else if (description == null) setErrorParameter("Description");
+    if (rolecode == null) {setErrorMessage(true); setErrorParameter("Role Code");}
+    else if (rolename == null) {setErrorMessage(true); setErrorParameter("Role Name");}
+    else if (ChipPropertyDialog.length == 0) {setErrorMessage(true); setErrorParameter("Property");}
+    else if (description == null) {setErrorMessage(true); setErrorParameter("Description");}
     else {
+      setErrorMessage(false);
       let perm = await propertylist(data, rolecode);
       const temp = new Set();
       if (ChipPropertyDialog.length) {
@@ -2153,7 +2152,7 @@ export default function RoleManagement() {
                     </TreeView>
                   </Container>
                 </Container>
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
@@ -2386,7 +2385,7 @@ export default function RoleManagement() {
                     </TreeView>
                   </Container>
                 </Container>
-                {errorMessage ? <div style={{ background: "#ff0033", justifyContent: "center", color: "white" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button

@@ -968,12 +968,11 @@ export default function UserManagement() {
   ) => {
     // setEditFirstName(null);
     // setEditLastName(null);
-    setErrorMessage(true);
-    if (code == null) setErrorParameter("UserID");
-    else if (firstName == null) setErrorParameter("Firstname");
-    else if (lastName == null) setErrorParameter("Lastname");
-    else if (chipRolesDialog.length == 0) setErrorParameter("Roles");
-    else if (chipPropertyDialog.length == 0) setErrorParameter("Property");
+    if (code == null) {setErrorMessage(true); setErrorParameter("UserID");}
+    else if (firstName == null) {setErrorMessage(true); setErrorParameter("Firstname");}
+    else if (lastName == null) {setErrorMessage(true); setErrorParameter("Lastname");}
+    else if (chipRolesDialog.length == 0) {setErrorMessage(true); setErrorParameter("Roles");}
+    else if (chipPropertyDialog.length == 0) {setErrorMessage(true); setErrorParameter("Property");}
     else {
       setErrorMessage(false);
       if (position == "Add new position") {
@@ -1683,12 +1682,11 @@ export default function UserManagement() {
       position,
       role
     );
-    setErrorMessage(true);
-    if (code == null) setErrorParameter("UserID");
-    else if (firstName == null) setErrorParameter("Firstname");
-    else if (lastName == null) setErrorParameter("Lastname");
-    else if (chipRolesDialog.length == 0) setErrorParameter("Roles");
-    else if (chipPropertyDialog.length == 0) setErrorParameter("Property");
+    if (code == null) {setErrorMessage(true); setErrorParameter("UserID");}
+    else if (firstName == null) {setErrorMessage(true); setErrorParameter("Firstname");}
+    else if (lastName == null) {setErrorMessage(true); setErrorParameter("Lastname");}
+    else if (chipRolesDialog.length == 0) {setErrorMessage(true); setErrorParameter("Roles");}
+    else if (chipPropertyDialog.length == 0) {setErrorMessage(true); setErrorParameter("Property");}
     else {
       setErrorMessage(false);
       if (position == "Add new position") {
@@ -2271,7 +2269,7 @@ export default function UserManagement() {
                     </Container>
                   </Grid>
                 ) : null}
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center",color: "white" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
               </DialogContent>
             </Grid>
           </Grid>
@@ -2598,7 +2596,7 @@ export default function UserManagement() {
                     </Container>
                   </Grid>
                 ) : null}
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center",color: "white" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
               </DialogContent>
 
               <DialogActions style={{ padding: 20 }}>

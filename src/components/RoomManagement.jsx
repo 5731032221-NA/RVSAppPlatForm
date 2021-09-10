@@ -470,7 +470,7 @@ export default function RoomManagement() {
       payload: comp
     })
   }
-  
+
   const handleDialogEditRoom = async (roomNo) => {
     let propertydata = await listallproperty(sessionStorage.getItem("auth"));
     let tempproperty = [];
@@ -565,9 +565,8 @@ export default function RoomManagement() {
       chipAttributeDialog : ${chipAttributeDialog},
       roomDesc : ${roomDesc},
       roomFloor : ${roomFloor}`);
-    setErrorMessage(true);
-    if (roomNo == null) setErrorParameter("Room Number");
-    else if (roomFloor == null) setErrorParameter("Floor");
+    if (roomNo == null) {setErrorMessage(true); setErrorParameter("Room Number");}
+    else if (roomFloor == null) {setErrorMessage(true); setErrorParameter("Floor");}
     else {
       setErrorMessage(false);
       const AttributeTemp = new Set();
@@ -687,9 +686,8 @@ export default function RoomManagement() {
       chipAttributeDialog : ${chipAttributeDialog},
       roomDesc : ${roomDesc},
       roomFloor : ${roomFloor}`);
-    setErrorMessage(true);
-    if (roomNo == null) setErrorParameter("Room Number");
-    else if (roomFloor == null) setErrorParameter("Floor");
+    if (roomNo == null) {setErrorMessage(true); setErrorParameter("Room Number");}
+    else if (roomFloor == null) {setErrorMessage(true); setErrorParameter("Floor");}
     else {
       setErrorMessage(false);
       const AttributeTemp = new Set();
@@ -1300,7 +1298,7 @@ export default function RoomManagement() {
                       />
                     </Grid>
                   </Container>
-                  {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center",color: "white" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
                 </DialogContent>
                 <DialogActions style={{ padding: 20 }}>
                   <Button
@@ -1609,7 +1607,7 @@ export default function RoomManagement() {
                       />
                     </Grid>
                   </Container>
-                  {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center",color: "white" }}>{errorParameter} is required</div> : null}
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
                 </DialogContent>
                 <DialogActions style={{ padding: 20 }}>
                   <Button
