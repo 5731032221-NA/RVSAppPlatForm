@@ -516,7 +516,7 @@ export default function RoomManagement() {
     setRoomTypeDialog(dataRoombyid.content[0].type);
     setBuildingDialog(dataRoombyid.content[0].building);
     setWingDialog(dataRoombyid.content[0].wing);
-    setExposureDialog(dataRoombyid.content[0].exposureids);
+    setExposureDialog(dataRoombyid.content[0].exposure);
     setRoomSizeDialog(dataRoombyid.content[0].sqsize);
     setRoomSegDialog(dataRoombyid.content[0].seq);
     setRoomStatusDialog(dataRoombyid.content[0].status);
