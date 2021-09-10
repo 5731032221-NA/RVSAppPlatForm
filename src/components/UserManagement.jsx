@@ -611,6 +611,9 @@ export default function UserManagement() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [errorParameter, setErrorParameter] = useState(null);
+
   const { store } = useContext(ReactReduxContext);
 
   React.useEffect(async () => {
@@ -682,6 +685,7 @@ export default function UserManagement() {
     setEditFirstName(null);
     setEditLastName(null);
     setEditStatus(true)
+    setErrorMessage(false);
     setDialogAddUser(true);
   };
 
@@ -754,6 +758,7 @@ export default function UserManagement() {
     setPosition((prev) => position_json);
     setSelectPosition(position_json[0].label);
     setNewPosition(null);
+    setErrorMessage(false);
     setDialogEditUser(true);
   };
 
@@ -809,65 +814,72 @@ export default function UserManagement() {
     }
   };
 
-  const rolepermissionedit = async (array, permission,userpermission) => {
+  const rolepermissionedit = async (array, permission, userpermission) => {
     let list = [];
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       if (permission.hasOwnProperty(obj.code)) {
-        if(userpermission.hasOwnProperty(obj.code)){
-          if(userpermission[obj.code].permissioncreate == 0) obj.create = !!permission[obj.code].permissioncreate;
-          else {obj.create = (userpermission[obj.code].permissioncreate== 1);
+        if (userpermission.hasOwnProperty(obj.code)) {
+          if (userpermission[obj.code].permissioncreate == 0) obj.create = !!permission[obj.code].permissioncreate;
+          else {
+            obj.create = (userpermission[obj.code].permissioncreate == 1);
             obj.edited_create = true;
           }
-          if(userpermission[obj.code].permissionread == 0) obj.read = !!permission[obj.code].permissionread;
-          else {obj.read = (userpermission[obj.code].permissionread== 1);
-            obj.edited_read = true;}
-          if(userpermission[obj.code].permissionupdate == 0) obj.update = !!permission[obj.code].permissionupdate;
-          else {obj.update = (userpermission[obj.code].permissionupdate== 1);
-            obj.edited_update = true;}
-          if(userpermission[obj.code].permissiondelete == 0) obj.delete = !!permission[obj.code].permissiondelete;
-          else {obj.delete = (userpermission[obj.code].permissiondelete == 1);
-            obj.edited_delete = true;}
+          if (userpermission[obj.code].permissionread == 0) obj.read = !!permission[obj.code].permissionread;
+          else {
+            obj.read = (userpermission[obj.code].permissionread == 1);
+            obj.edited_read = true;
+          }
+          if (userpermission[obj.code].permissionupdate == 0) obj.update = !!permission[obj.code].permissionupdate;
+          else {
+            obj.update = (userpermission[obj.code].permissionupdate == 1);
+            obj.edited_update = true;
+          }
+          if (userpermission[obj.code].permissiondelete == 0) obj.delete = !!permission[obj.code].permissiondelete;
+          else {
+            obj.delete = (userpermission[obj.code].permissiondelete == 1);
+            obj.edited_delete = true;
+          }
         }
-        else{
-        obj.create = !!permission[obj.code].permissioncreate;
-        obj.read = !!permission[obj.code].permissionread;
-        obj.update = !!permission[obj.code].permissionupdate;
-        obj.delete = !!permission[obj.code].permissiondelete;
+        else {
+          obj.create = !!permission[obj.code].permissioncreate;
+          obj.read = !!permission[obj.code].permissionread;
+          obj.update = !!permission[obj.code].permissionupdate;
+          obj.delete = !!permission[obj.code].permissiondelete;
         }
-      }else if(userpermission.hasOwnProperty(obj.code)){
-        if(userpermission[obj.code].permissioncreate == 1) {
-          obj.create =true;
+      } else if (userpermission.hasOwnProperty(obj.code)) {
+        if (userpermission[obj.code].permissioncreate == 1) {
+          obj.create = true;
           obj.edited_create = true;
-        }else if(userpermission[obj.code].permissioncreate == -1){
+        } else if (userpermission[obj.code].permissioncreate == -1) {
           obj.edited_create = true;
         }
 
-        if(userpermission[obj.code].permissionread == 1) {
-          obj.read =true;
+        if (userpermission[obj.code].permissionread == 1) {
+          obj.read = true;
           obj.edited_read = true;
-        }else if(userpermission[obj.code].permissionread == -1){
+        } else if (userpermission[obj.code].permissionread == -1) {
           obj.edited_read = true;
         }
 
-        if(userpermission[obj.code].permissionupdate == 1) {
-          obj.update =true;
+        if (userpermission[obj.code].permissionupdate == 1) {
+          obj.update = true;
           obj.edited_update = true;
-        }else if(userpermission[obj.code].permissionupdate == -1){
+        } else if (userpermission[obj.code].permissionupdate == -1) {
           obj.edited_update = true;
         }
 
-        if(userpermission[obj.code].permissiondelete == 1) {
-          obj.delete =true;
+        if (userpermission[obj.code].permissiondelete == 1) {
+          obj.delete = true;
           obj.edited_delete = true;
-        }else if(userpermission[obj.code].permissiondelete == -1){
+        } else if (userpermission[obj.code].permissiondelete == -1) {
           obj.edited_delete = true;
         }
 
       }
       if (obj.children) {
         // list = [...list, ...propertylist(obj.children)];
-        rolepermissionedit(obj.children, permission,userpermission);
+        rolepermissionedit(obj.children, permission, userpermission);
       }
     }
     return list;
@@ -884,8 +896,8 @@ export default function UserManagement() {
       console.log("roleper", roleper)
       let _data = JSON.parse(JSON.stringify(defaultdata));
       let userper = await getuserpermission(sessionStorage.getItem("auth"), oldUserName);
-      
-      rolepermissionedit(_data, roleper.content[roleper.content.length - 1],userper.content[userper.content.length - 1])
+
+      rolepermissionedit(_data, roleper.content[roleper.content.length - 1], userper.content[userper.content.length - 1])
       setData(_data);
       setData((prevState) => [...prevState]);
 
@@ -957,57 +969,66 @@ export default function UserManagement() {
   ) => {
     // setEditFirstName(null);
     // setEditLastName(null);
-    if (position == "Add new position") 
-    {
-      let addPosition = await postposition(sessionStorage.getItem("auth"), { "position": newPosition });}
-    let perm = await propertylist(data, code);
-    console.log(perm)
-    const roletemp = new Set();
-    if (chipRolesDialog.length) {
-      for (let i in chipRolesDialog) {
-        roletemp.add(chipRolesDialog[i].key);
+    setErrorMessage(true);
+    if (code == null) setErrorParameter("UserID");
+    else if (firstName == null) setErrorParameter("Firstname");
+    else if (lastName == null) setErrorParameter("Lastname");
+    else if (chipRolesDialog.length == 0) setErrorParameter("Roles");
+    else if (chipPropertyDialog.length == 0) setErrorParameter("Property");
+    else {
+      setErrorMessage(false);
+      if (position == "Add new position") {
+        let addPosition = await postposition(sessionStorage.getItem("auth"), { "position": newPosition });
       }
-    }
-    const roleTempArray = Array.from(roletemp).join(",");
-    const propertytemp = new Set();
-    if (chipPropertyDialog.length) {
-      for (let i in chipPropertyDialog) {
-        propertytemp.add(chipPropertyDialog[i].key);
+      let perm = await propertylist(data, code);
+      console.log(perm)
+      const roletemp = new Set();
+      if (chipRolesDialog.length) {
+        for (let i in chipRolesDialog) {
+          roletemp.add(chipRolesDialog[i].key);
+        }
       }
-    }
-    const propertyTempArray = Array.from(propertytemp).join(",");
-    console.log(firstName, lastName, status, position, role);
-    let insert = await postuser(sessionStorage.getItem("auth"), {
-      firstname: firstName,
-      lastname: lastName,
-      code: code,
-      status: status ? 'Active' : 'Inactive',
-      position: (position == "Add new position") ? newPosition : position,
-      userproperty: propertyTempArray,
-      role: roleTempArray,
-      permission: perm
-    });
-    console.log(insert);
-    if (insert.status == '2000') {
-      const data = await listuser(sessionStorage.getItem("auth"));
-      let userdata = [];
-      data.content[data.content.length - 1].forEach((element) =>
-        userdata.push(
-          createData(
-            element.code,
-            element.username,
-            element.firstname,
-            element.lastname,
-            element.position,
-            element.roles,
-            element.property,
-            element.status
+      const roleTempArray = Array.from(roletemp).join(",");
+      const propertytemp = new Set();
+      if (chipPropertyDialog.length) {
+        for (let i in chipPropertyDialog) {
+          propertytemp.add(chipPropertyDialog[i].key);
+        }
+      }
+      const propertyTempArray = Array.from(propertytemp).join(",");
+      console.log(firstName, lastName, status, position, role);
+      let insert = await postuser(sessionStorage.getItem("auth"), {
+        firstname: firstName,
+        lastname: lastName,
+        code: code,
+        status: status ? 'Active' : 'Inactive',
+        position: (position == "Add new position") ? newPosition : position,
+        userproperty: propertyTempArray,
+        role: roleTempArray,
+        permission: perm
+      });
+      console.log(insert);
+      if (insert.status == '2000') {
+        const data = await listuser(sessionStorage.getItem("auth"));
+        let userdata = [];
+        data.content[data.content.length - 1].forEach((element) =>
+          userdata.push(
+            createData(
+              element.code,
+              element.username,
+              element.firstname,
+              element.lastname,
+              element.position,
+              element.roles,
+              element.property,
+              element.status
+            )
           )
         )
-      );
-      setRows(userdata);
-      updatePageData(userdata, page, rowsPerPage);
-      setDialogAddUser(false);
+        setRows(userdata);
+        updatePageData(userdata, page, rowsPerPage);
+        setDialogAddUser(false);
+      }
     }
 
 
@@ -1252,7 +1273,7 @@ export default function UserManagement() {
                       <Typography
                         variant="h6"
                         color="initial"
-                        style={{ color: '#1F51FF', fontSize: 16 }}
+                        style={{ color: '#1F51FF', fontSize: 16 ,paddingTop:5,paddingBottom:10 }}
                       >
                         {nodes.name}  <UpdateIcon />
                       </Typography>
@@ -1260,7 +1281,7 @@ export default function UserManagement() {
                       <Typography
                         variant="h6"
                         color="initial"
-                        style={{ fontSize: 16 }}
+                        style={{ fontSize: 16,paddingTop:10,paddingBottom:10  }}
                       >
                         {nodes.name}
                       </Typography>
@@ -1661,9 +1682,17 @@ export default function UserManagement() {
       position,
       role
     );
-    if (position == "Add new position") 
-    {
-      let addPosition = await postposition(sessionStorage.getItem("auth"), { "position": newPosition });}
+    setErrorMessage(true);
+    if (code == null) setErrorParameter("UserID");
+    else if (firstName == null) setErrorParameter("Firstname");
+    else if (lastName == null) setErrorParameter("Lastname");
+    else if (chipRolesDialog.length == 0) setErrorParameter("Roles");
+    else if (chipPropertyDialog.length == 0) setErrorParameter("Property");
+    else {
+      setErrorMessage(false);
+    if (position == "Add new position") {
+      let addPosition = await postposition(sessionStorage.getItem("auth"), { "position": newPosition });
+    }
     let perm = await propertylist(data, code);
     console.log(perm)
     const roletemp = new Set();
@@ -1714,26 +1743,31 @@ export default function UserManagement() {
     //   id
     // );
     // console.log("userupdate func:", userupdate);
-    const _data = await listuser(sessionStorage.getItem("auth"));
-    let userdata = [];
-    _data.content[_data.content.length - 1].forEach((element) =>
-      userdata.push(
-        createData(
-          element.code,
-          element.username,
-          element.firstname,
-          element.lastname,
-          element.position,
-          element.roles,
-          element.property,
-          element.status
-        )
-      )
-    );
 
-    setRows(userdata);
-    updatePageData(userdata, page, rowsPerPage);
-    setDialogEditUser(false);
+    if (update.status == '2000') {
+      const _data = await listuser(sessionStorage.getItem("auth"));
+      let userdata = [];
+      _data.content[_data.content.length - 1].forEach((element) =>
+        userdata.push(
+          createData(
+            element.code,
+            element.username,
+            element.firstname,
+            element.lastname,
+            element.position,
+            element.roles,
+            element.property,
+            element.status
+          )
+        )
+      );
+
+      setRows(userdata);
+      updatePageData(userdata, page, rowsPerPage);
+      setDialogEditUser(false);
+    }
+  }
+
   };
 
   const handleDialogDeleteUserClose = () => {
@@ -2236,6 +2270,7 @@ export default function UserManagement() {
                     </Container>
                   </Grid>
                 ) : null}
+                {errorMessage ?<div style={{ color: "#ff0033"}}>{errorParameter} is required</div>:null}
               </DialogContent>
             </Grid>
           </Grid>
@@ -2505,17 +2540,17 @@ export default function UserManagement() {
                     </Grid>
 
                     {selectPosition == "Add new position" ?
-                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                      <TextField
-                        // autoFocus
-                        id="outlined-basic"
-                        label="Position"
-                        variant="outlined"
-                        fullWidth
-                        onChange={(e) => setNewPosition(e.target.value)}
-                      />
-                    </Grid>
-                    : null}
+                      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                        <TextField
+                          // autoFocus
+                          id="outlined-basic"
+                          label="Position"
+                          variant="outlined"
+                          fullWidth
+                          onChange={(e) => setNewPosition(e.target.value)}
+                        />
+                      </Grid>
+                      : null}
                   </Grid>
                 </Container>
 
@@ -2562,22 +2597,24 @@ export default function UserManagement() {
                     </Container>
                   </Grid>
                 ) : null}
+              {errorMessage ?<div style={{ color: "#ff0033"}}>{errorParameter} is required</div>:null}
               </DialogContent>
+             
               <DialogActions style={{ padding: 20 }}>
                 <Grid container>
                   <Grid item style={{ flexGrow: 1 }}>
-                  {!permissionDialog ?
-                    <Button
-                      onClick={handlePermissionEdit}
-                      variant="contained"
-                      // color="#20C1BB"
-                      style={{ backgroundColor: "#20C1BB", color: "white" }}
-                    >
-                      <VpnKeyOutlinedIcon style={{ marginRight: 15 }} />
-                      Permission
-                    </Button>
-                    : null}
-                  </Grid>                  
+                    {!permissionDialog ?
+                      <Button
+                        onClick={handlePermissionEdit}
+                        variant="contained"
+                        // color="#20C1BB"
+                        style={{ backgroundColor: "#20C1BB", color: "white" }}
+                      >
+                        <VpnKeyOutlinedIcon style={{ marginRight: 15 }} />
+                        Permission
+                      </Button>
+                      : null}
+                  </Grid>
                   <Grid item>
                     <Button
                       onClick={handleDialogEditUserClose}

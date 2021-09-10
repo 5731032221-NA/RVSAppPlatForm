@@ -553,6 +553,10 @@ export default function RoleManagement() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [ChipPropertyDialog, setChipPropertyDialog] = React.useState([]);
+
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [errorParameter, setErrorParameter] = useState(null);
+
   React.useEffect(async () => {
     let data = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", listrole);
@@ -604,7 +608,7 @@ export default function RoleManagement() {
     setRoleName(null);
     setDescriptionsRole(null);
     setStatus("Active");
-
+    setErrorMessage(false);
     setDialogAddRole(true);
   };
 
@@ -644,44 +648,54 @@ export default function RoleManagement() {
     description,
     status
   ) => {
-    let perm = await propertylist(data, rolecode);
-    const temp = new Set();
-    if (ChipPropertyDialog.length) {
-      for (var i in ChipPropertyDialog) {
-        temp.add(ChipPropertyDialog[i].key);
+    setErrorMessage(true);
+    if (rolecode == null) setErrorParameter("Role Code");
+    else if (rolename == null) setErrorParameter("Role Name");
+    else if (description == null) setErrorParameter("Description");
+    else if (ChipPropertyDialog.length == 0) setErrorParameter("Property");
+    else {
+      setErrorMessage(false);
+
+      let perm = await propertylist(data, rolecode);
+      const temp = new Set();
+      if (ChipPropertyDialog.length) {
+        for (var i in ChipPropertyDialog) {
+          temp.add(ChipPropertyDialog[i].key);
+        }
+      }
+      const tempArray = Array.from(temp).join(",");
+      let insert = await postrole(sessionStorage.getItem("auth"), {
+        rolecode: rolecode,
+        rolename: rolename,
+        description: description,
+        status: status,
+        applyproperty: tempArray,
+        permission: perm
+      });
+      if (insert.status == '2000') {
+        let roledata = await listrole(sessionStorage.getItem("auth"));
+        let userdata = [];
+        roledata.content[roledata.content.length - 1].forEach((element) =>
+          userdata.push(
+            createData(
+              element.code,
+              element.rolecode,
+              element.rolename,
+              element.description,
+              element.count,
+              element.createData,
+              element.status
+            )
+          )
+        );
+        console.log(sessionStorage.getItem("auth"));
+        console.log("userdata", userdata);
+        setRows(userdata);
+        updatePageData(userdata, page, rowsPerPage);
+
+        setDialogAddRole(false);
       }
     }
-    const tempArray = Array.from(temp).join(",");
-    let insert = await postrole(sessionStorage.getItem("auth"), {
-      rolecode: rolecode,
-      rolename: rolename,
-      description: description,
-      status: status,
-      applyproperty: tempArray,
-      permission: perm
-    });
-    console.log(insert);
-    let roledata = await listrole(sessionStorage.getItem("auth"));
-    let userdata = [];
-    roledata.content[roledata.content.length - 1].forEach((element) =>
-      userdata.push(
-        createData(
-          element.code,
-          element.rolecode,
-          element.rolename,
-          element.description,
-          element.count,
-          element.createData,
-          element.status
-        )
-      )
-    );
-    console.log(sessionStorage.getItem("auth"));
-    console.log("userdata", userdata);
-    setRows(userdata);
-    updatePageData(userdata, page, rowsPerPage);
-
-    setDialogAddRole(false);
   };
 
   const handleDialogAddRoleClose = () => {
@@ -714,6 +728,7 @@ export default function RoleManagement() {
   };
 
   const handleDialogEditRole = async (rolecode, rolename, description, applyproperty, status) => {
+
     let propertydata = await listallproperty(sessionStorage.getItem("auth"));
     console.log("propertydata", propertydata);
     let tempproperty = [{
@@ -768,7 +783,10 @@ export default function RoleManagement() {
     setDescriptionsRole(description);
     setStatus(status);
     setOldRoleCode(rolecode);
+    setErrorMessage(false);
     setDialogEditRole(true);
+
+
   }
   // const handleDialogEditRole = async (id) => {
   //   console.log("idForEdit", id);
@@ -799,51 +817,59 @@ export default function RoleManagement() {
       description,
       status
     );
-    let perm = await propertylist(data, rolecode);
-    const temp = new Set();
-    if (ChipPropertyDialog.length) {
-      for (var i in ChipPropertyDialog) {
-        temp.add(ChipPropertyDialog[i].key);
+    setErrorMessage(true);
+    if (rolecode == null) setErrorParameter("Role Code");
+    else if (rolename == null) setErrorParameter("Role Name");
+    else if (description == null) setErrorParameter("Description");
+    else if (ChipPropertyDialog.length == 0) setErrorParameter("Property");
+    else {
+      let perm = await propertylist(data, rolecode);
+      const temp = new Set();
+      if (ChipPropertyDialog.length) {
+        for (var i in ChipPropertyDialog) {
+          temp.add(ChipPropertyDialog[i].key);
+        }
+      }
+      const tempArray = Array.from(temp).join(",");
+      const roleupdate = await updaterole(
+        sessionStorage.getItem("auth"),
+        {
+          oldrolecode: oldrolecode,
+          rolecode: rolecode,
+          rolename: rolename,
+          description: description,
+          status: status,
+          applyproperty: tempArray,
+          permission: perm
+        }
+      );
+      console.log("roleupdate func:", roleupdate);
+      if (roleupdate.status == '2000') {
+        let _data = await listrole(sessionStorage.getItem("auth"));
+        console.log("listrole", listrole);
+        let userdata = [];
+        // let i = 0;
+        _data.content[_data.content.length - 1].forEach((element) =>
+          userdata.push(
+            createData(
+              element.code,
+              element.rolecode,
+              element.rolename,
+              element.description,
+              element.count,
+              element.applyproperty,
+              element.status
+            )
+          )
+        );
+
+
+        setRows(userdata);
+        updatePageData(userdata, page, rowsPerPage);
+        setErrorMessage(false);
+        setDialogEditRole(false);
       }
     }
-    const tempArray = Array.from(temp).join(",");
-    const roleupdate = await updaterole(
-      sessionStorage.getItem("auth"),
-      {
-        oldrolecode: oldrolecode,
-        rolecode: rolecode,
-        rolename: rolename,
-        description: description,
-        status: status,
-        applyproperty: tempArray,
-        permission: perm
-      }
-    );
-    console.log("roleupdate func:", roleupdate);
-
-    let _data = await listrole(sessionStorage.getItem("auth"));
-    console.log("listrole", listrole);
-    let userdata = [];
-    // let i = 0;
-    _data.content[_data.content.length - 1].forEach((element) =>
-      userdata.push(
-        createData(
-          element.code,
-          element.rolecode,
-          element.rolename,
-          element.description,
-          element.count,
-          element.applyproperty,
-          element.status
-        )
-      )
-    );
-    console.log(sessionStorage.getItem("auth"));
-    console.log("userdata", userdata);
-    setRows(userdata);
-    updatePageData(userdata, page, rowsPerPage);
-
-    setDialogEditRole(false);
   };
 
   const handleDialogDeleteRoleClose = () => {
@@ -931,8 +957,8 @@ export default function RoleManagement() {
     }
   };
 
-  const handleComponentState = async(comp) => {
-    console.log("setcomp",comp)
+  const handleComponentState = async (comp) => {
+    console.log("setcomp", comp)
     store.dispatch({
       type: EDIT_CONFIGSTATE,
       payload: comp
@@ -1605,22 +1631,26 @@ export default function RoleManagement() {
                   <Grid item style={{ flexGrow: 1 }}>
                     {
                       nodes.children.some(item => {
-                        if(item.permision == false) return item.children.some(childitem => childitem.edited_create === true)
-                        else return item.edited_create === true}) ||
+                        if (item.permision == false) return item.children.some(childitem => childitem.edited_create === true)
+                        else return item.edited_create === true
+                      }) ||
                         nodes.children.some(item => {
-                        if(item.permision == false) return item.children.some(childitem => childitem.edited_read === true)
-                        else return item.edited_read === true}) ||
+                          if (item.permision == false) return item.children.some(childitem => childitem.edited_read === true)
+                          else return item.edited_read === true
+                        }) ||
                         nodes.children.some(item => {
-                        if(item.permision == false) return item.children.some(childitem => childitem.edited_update === true)
-                        else return item.edited_update === true}) ||
+                          if (item.permision == false) return item.children.some(childitem => childitem.edited_update === true)
+                          else return item.edited_update === true
+                        }) ||
                         nodes.children.some(item => {
-                        if(item.permision == false) return item.children.some(childitem => childitem.edited_delete === true)
-                        else return item.edited_delete === true}) 
+                          if (item.permision == false) return item.children.some(childitem => childitem.edited_delete === true)
+                          else return item.edited_delete === true
+                        })
                         ?
                         <Typography
                           variant="h6"
                           color="initial"
-                          style={{ color: '#1F51FF', fontSize: 16 }}
+                          style={{ color: '#1F51FF', fontSize: 16 ,paddingTop:5,paddingBottom:10 }}
                         >
                           {nodes.name}  <UpdateIcon />
                         </Typography>
@@ -1628,7 +1658,7 @@ export default function RoleManagement() {
                         <Typography
                           variant="h6"
                           color="initial"
-                          style={{ fontSize: 16 }}
+                          style={{ fontSize: 16 ,paddingTop:10,paddingBottom:10}}
                         >
                           {nodes.name}
                         </Typography>
@@ -1648,7 +1678,7 @@ export default function RoleManagement() {
     </div>
   );
 
-  
+
   return (
     <Container maxWidth="xl">
       <React.Fragment>
@@ -1670,7 +1700,7 @@ export default function RoleManagement() {
                 </Typography>
               }
             >
-              <Link color="inherit" href="#" onClick={()=>handleComponentState("Configuration")}>
+              <Link color="inherit" href="#" onClick={() => handleComponentState("Configuration")}>
                 <Typography
                   variant="h6"
                   style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
@@ -1895,201 +1925,202 @@ export default function RoleManagement() {
           <Grid container>
 
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-              New Role
-            </DialogTitle>
+              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                New Role
+              </DialogTitle>
 
-            <DialogContent>
-              <Container maxWidth="xl" disableGutters>
-                <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                    <TextField
-                      // autoFocus
-                      id="outlined-basic"
-                      label="Role Code"
-                      variant="outlined"
-                      fullWidth
-                      defaultValue={""}
-                      onChange={(e) => setRoleCode(e.target.value)}
-                    />
+              <DialogContent>
+                <Container maxWidth="xl" disableGutters>
+                  <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        // autoFocus
+                        id="outlined-basic"
+                        label="Role Code"
+                        variant="outlined"
+                        fullWidth
+                        defaultValue={""}
+                        onChange={(e) => setRoleCode(e.target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        id="outlined-basic"
+                        label="Role Name"
+                        variant="outlined"
+                        fullWidth
+                        SelectProps={{
+                          native: true,
+                        }}
+                        defaultValue={""}
+                        onChange={(e) => setRoleName(e.target.value)}
+                      ></TextField>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    style={{ paddingTop: 10 }}
+                  >
                     <TextField
-                      id="outlined-basic"
-                      label="Role Name"
-                      variant="outlined"
                       fullWidth
-                      SelectProps={{
+                      // autoFocus
+                      variant="outlined"
+                      selectSelectProps={{
                         native: true,
                       }}
-                      defaultValue={""}
-                      onChange={(e) => setRoleName(e.target.value)}
-                    ></TextField>
+                      label="Property"
+                      select
+                      value={userValues}
+                      onChange={(event) => handleSelectProperty(event)}
+                    >
+                      {allProperty.map((option) => (
+                        <MenuItem key={option.key} value={option.label}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    {ChipPropertyDialog.map((data, index) => {
+                      return (
+                        <Chip
+                          style={{ marginTop: 10 }}
+                          key={data.key + index}
+                          label={data.label}
+                          onDelete={handleDeleteProperty(data)}
+                        />
+                      );
+                    })}
                   </Grid>
-                </Grid>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  style={{ paddingTop: 10 }}
-                >
-                  <TextField
-                    fullWidth
-                    // autoFocus
-                    variant="outlined"
-                    selectSelectProps={{
-                      native: true,
-                    }}
-                    label="Property"
-                    select
-                    value={userValues}
-                    onChange={(event) => handleSelectProperty(event)}
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    style={{ paddingTop: 10 }}
                   >
-                    {allProperty.map((option) => (
-                      <MenuItem key={option.key} value={option.label}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  {ChipPropertyDialog.map((data, index) => {
-                    return (
-                      <Chip
-                        style={{ marginTop: 10 }}
-                        key={data.key + index}
-                        label={data.label}
-                        onDelete={handleDeleteProperty(data)}
-                      />
-                    );
-                  })}
-                </Grid>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  style={{ paddingTop: 10 }}
-                >
-                  <TextField
-                    fullWidth
-                    label="Description"
-                    multiline
-                    rows={4}
-                    variant="outlined"
-                    defaultValue={""}
-                    onChange={(e) => setDescriptionsRole(e.target.value)}
-                  />
-                </Grid>
-                <Grid
-                  container
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                // spacing={2}
-                // style={{ paddingTop: 10 }}
-                >
-                  <FormControlLabel
-                    style={{ paddingTop: 15 }}
-                    value="Status"
-                    control={
-                      <Switch
-                        defaultChecked={true}
-                        color="primary"
-                        onChange={(e) =>
-                          e.target.checked
-                            ? setStatus("Active")
-                            : setStatus("Inactive")
-                        }
-                      />
-                    }
-                    label="Status"
-                    labelPlacement="start"
-                  />
-                </Grid>
-                <Divider style={{ marginTop: 15 }} />
-                <Grid
-                  container
-                  alignItems="center"
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  style={{ paddingTop: 10 }}
-                >
-                  <FormControlLabel
-                    value="end"
-                    control={<Checkbox color="primary" />}
-                    label={
-                      <Typography
-                        variant="title1"
-                        color="initial"
-                        style={{ fontSize: 18 }}
-                      >
-                        Select Permission All
-                      </Typography>
-                    }
-                    labelPlacement="end"
-                  />
-                </Grid>
-                <Divider style={{ marginTop: 10 }} />
-                <Container disableGutters>
-                  <TreeView
-                    // className={classes.root}
-                    defaultCollapseIcon={
-                      <RemoveRoundedIcon
-                        style={{
-                          backgroundColor: "#717171",
-                          borderRadius: 2,
-                          color: "white",
-                        }}
-                      />
-                    }
-                    defaultExpandIcon={
-                      <AddRoundedIcon
-                        style={{
-                          backgroundColor: "#2D62ED",
-                          borderRadius: 2,
-                          color: "white",
-                        }}
-                      />
-                    }
-                  // expanded={expanded}
-                  // selected={selected}
-                  // onNodeToggle={handleToggle}
-                  // onNodeSelect={handleSelect}
+                    <TextField
+                      fullWidth
+                      label="Description"
+                      multiline
+                      rows={4}
+                      variant="outlined"
+                      defaultValue={""}
+                      onChange={(e) => setDescriptionsRole(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid
+                    container
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                  // spacing={2}
+                  // style={{ paddingTop: 10 }}
                   >
-                    {data.map((node) => renderTree(node))}
-                  </TreeView>
+                    <FormControlLabel
+                      style={{ paddingTop: 15 }}
+                      value="Status"
+                      control={
+                        <Switch
+                          defaultChecked={true}
+                          color="primary"
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setStatus("Active")
+                              : setStatus("Inactive")
+                          }
+                        />
+                      }
+                      label="Status"
+                      labelPlacement="start"
+                    />
+                  </Grid>
+                  <Divider style={{ marginTop: 15 }} />
+                  <Grid
+                    container
+                    alignItems="center"
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                    style={{ paddingTop: 10 }}
+                  >
+                    <FormControlLabel
+                      value="end"
+                      control={<Checkbox color="primary" />}
+                      label={
+                        <Typography
+                          variant="title1"
+                          color="initial"
+                          style={{ fontSize: 18 }}
+                        >
+                          Select Permission All
+                        </Typography>
+                      }
+                      labelPlacement="end"
+                    />
+                  </Grid>
+                  <Divider style={{ marginTop: 10 }} />
+                  <Container disableGutters>
+                    <TreeView
+                      // className={classes.root}
+                      defaultCollapseIcon={
+                        <RemoveRoundedIcon
+                          style={{
+                            backgroundColor: "#717171",
+                            borderRadius: 2,
+                            color: "white",
+                          }}
+                        />
+                      }
+                      defaultExpandIcon={
+                        <AddRoundedIcon
+                          style={{
+                            backgroundColor: "#2D62ED",
+                            borderRadius: 2,
+                            color: "white",
+                          }}
+                        />
+                      }
+                    // expanded={expanded}
+                    // selected={selected}
+                    // onNodeToggle={handleToggle}
+                    // onNodeSelect={handleSelect}
+                    >
+                      {data.map((node) => renderTree(node))}
+                    </TreeView>
+                  </Container>
                 </Container>
-              </Container>
-            </DialogContent>
-            <DialogActions style={{ padding: 20 }}>
-              <Button
-                onClick={handleDialogAddRoleClose}
-                variant="text"
-                color="primary"
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() =>
-                  handleDialogAddRoleSave(
-                    roleCode,
-                    roleName,
-                    descriptionsRole,
-                    status
-                  )
-                }
-              >
-                Save
-              </Button>
-            </DialogActions>
-          </Grid>
+                {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
+              </DialogContent>
+              <DialogActions style={{ padding: 20 }}>
+                <Button
+                  onClick={handleDialogAddRoleClose}
+                  variant="text"
+                  color="primary"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    handleDialogAddRoleSave(
+                      roleCode,
+                      roleName,
+                      descriptionsRole,
+                      status
+                    )
+                  }
+                >
+                  Save
+                </Button>
+              </DialogActions>
+            </Grid>
           </Grid>
         </Dialog>
         {/* ---------------------------------------- */}
@@ -2102,7 +2133,7 @@ export default function RoleManagement() {
           aria-labelledby="form-dialog-title"
         >
           <Grid container>
-            
+
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
               <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
                 Edit Role
@@ -2295,6 +2326,7 @@ export default function RoleManagement() {
                     </TreeView>
                   </Container>
                 </Container>
+                {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button

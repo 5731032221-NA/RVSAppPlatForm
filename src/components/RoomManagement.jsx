@@ -269,6 +269,8 @@ export default function RoomManagement() {
   const [roomSeg, setRoomSeg] = React.useState([]);
   const [roomStatus, setRoomStatus] = React.useState([]);
   const [wing, setWing] = React.useState([]);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [errorParameter, setErrorParameter] = useState(null);
   //Master Config
   const [rows, setRows] = useState([
     // createData(
@@ -451,8 +453,7 @@ export default function RoomManagement() {
     setRoomSegDialog(listRoomSeg[0].value);
     setRoomStatusDialog(listRoomStatus[0].value);
 
-
-
+    setErrorMessage(false);
     setDialogAddRoom(true);
   };
 
@@ -521,6 +522,7 @@ export default function RoomManagement() {
       }
     }
 
+    setErrorMessage(false);
     setDialogEditRoom(true);
   };
 
@@ -551,59 +553,64 @@ export default function RoomManagement() {
       chipAttributeDialog : ${chipAttributeDialog},
       roomDesc : ${roomDesc},
       roomFloor : ${roomFloor}`);
-
-    const AttributeTemp = new Set();
-    if (chipAttributeDialog.length) {
-      for (var A in chipAttributeDialog) {
-        AttributeTemp.add(chipAttributeDialog[A].key);
+    setErrorMessage(true);
+    if (roomNo == null) setErrorParameter("Room Number");
+    else if (roomFloor == null) setErrorParameter("Floor");
+    else {
+      setErrorMessage(false);
+      const AttributeTemp = new Set();
+      if (chipAttributeDialog.length) {
+        for (var A in chipAttributeDialog) {
+          AttributeTemp.add(chipAttributeDialog[A].key);
+        }
       }
-    }
-    const attributeTempArray = Array.from(AttributeTemp).join(",");
+      const attributeTempArray = Array.from(AttributeTemp).join(",");
 
-    const dataRoombyid = await updateRoom(
-      sessionStorage.getItem("auth"),
-      roomID,
-      {
-        roomNo: roomNo,
-        propertyDialog: propertyDialog,
-        roomTypeDialog: roomTypeDialog,
-        buildingDialog: buildingDialog,
-        wingDialog: wingDialog,
-        exposureDialog: exposureDialog,
-        roomSizeDialog: roomSizeDialog,
-        roomSegDialog: roomSegDialog,
-        roomStatusDialog: roomStatusDialog,
-        chipAttributeDialog: attributeTempArray,
-        roomDesc: roomDesc,
-        roomFloor: roomFloor,
-      }
-    );
-    console.log("dataRoombyid", dataRoombyid);
+      const dataRoombyid = await updateRoom(
+        sessionStorage.getItem("auth"),
+        roomID,
+        {
+          roomNo: roomNo,
+          propertyDialog: propertyDialog,
+          roomTypeDialog: roomTypeDialog,
+          buildingDialog: buildingDialog,
+          wingDialog: wingDialog,
+          exposureDialog: exposureDialog,
+          roomSizeDialog: roomSizeDialog,
+          roomSegDialog: roomSegDialog,
+          roomStatusDialog: roomStatusDialog,
+          chipAttributeDialog: attributeTempArray,
+          roomDesc: roomDesc,
+          roomFloor: roomFloor,
+        }
+      );
+      console.log("dataRoombyid", dataRoombyid);
 
-    const data = await listRoom(sessionStorage.getItem("auth"));
-    console.log("data", data);
-    let roomdata = [];
-    let i = 0;
-    data.content[data.content.length - 1].forEach((element) =>
-      roomdata.push(
-        createData(
-          element.id,
-          element.propertycode,
-          element.no,
-          element.type,
-          element.floor,
-          element.building,
-          element.description,
-          element.status,
-          element.attribute
+      const data = await listRoom(sessionStorage.getItem("auth"));
+      console.log("data", data);
+      let roomdata = [];
+      let i = 0;
+      data.content[data.content.length - 1].forEach((element) =>
+        roomdata.push(
+          createData(
+            element.id,
+            element.propertycode,
+            element.no,
+            element.type,
+            element.floor,
+            element.building,
+            element.description,
+            element.status,
+            element.attribute
+          )
         )
-      )
-    );
-    console.log("a", roomdata);
-    setRows(roomdata);
-    updatePageData(roomdata, page, rowsPerPage);
+      );
+      console.log("a", roomdata);
+      setRows(roomdata);
+      updatePageData(roomdata, page, rowsPerPage);
 
-    setDialogEditRoom(false);
+      setDialogEditRoom(false);
+    }
   };
 
   const handleDialogEditRoomClose = () => {
@@ -668,55 +675,60 @@ export default function RoomManagement() {
       chipAttributeDialog : ${chipAttributeDialog},
       roomDesc : ${roomDesc},
       roomFloor : ${roomFloor}`);
-
-    const AttributeTemp = new Set();
-    if (chipAttributeDialog.length) {
-      for (var A in chipAttributeDialog) {
-        AttributeTemp.add(chipAttributeDialog[A].key);
+    setErrorMessage(true);
+    if (roomNo == null) setErrorParameter("Room Number");
+    else if (roomFloor == null) setErrorParameter("Floor");
+    else {
+      setErrorMessage(false);
+      const AttributeTemp = new Set();
+      if (chipAttributeDialog.length) {
+        for (var A in chipAttributeDialog) {
+          AttributeTemp.add(chipAttributeDialog[A].key);
+        }
       }
-    }
-    const attributeTempArray = Array.from(AttributeTemp).join(",");
+      const attributeTempArray = Array.from(AttributeTemp).join(",");
 
-    const postData = await postRoom(sessionStorage.getItem("auth"), {
-      roomNo: roomNo,
-      propertyDialog: propertyDialog,
-      roomTypeDialog: roomTypeDialog,
-      buildingDialog: buildingDialog,
-      wingDialog: wingDialog,
-      exposureDialog: exposureDialog,
-      roomSizeDialog: roomSizeDialog,
-      roomSegDialog: roomSegDialog,
-      roomStatusDialog: roomStatusDialog,
-      chipAttributeDialog: attributeTempArray,
-      roomDesc: roomDesc,
-      roomFloor: roomFloor,
-    });
-    console.log("postData", postData);
+      const postData = await postRoom(sessionStorage.getItem("auth"), {
+        roomNo: roomNo,
+        propertyDialog: propertyDialog,
+        roomTypeDialog: roomTypeDialog,
+        buildingDialog: buildingDialog,
+        wingDialog: wingDialog,
+        exposureDialog: exposureDialog,
+        roomSizeDialog: roomSizeDialog,
+        roomSegDialog: roomSegDialog,
+        roomStatusDialog: roomStatusDialog,
+        chipAttributeDialog: attributeTempArray,
+        roomDesc: roomDesc,
+        roomFloor: roomFloor,
+      });
+      console.log("postData", postData);
 
-    const data = await listRoom(sessionStorage.getItem("auth"));
-    console.log("data", data);
-    let roomdata = [];
-    let i = 0;
-    data.content[data.content.length - 1].forEach((element) =>
-      roomdata.push(
-        createData(
-          element.id,
-          element.propertycode,
-          element.no,
-          element.type,
-          element.floor,
-          element.building,
-          element.description,
-          element.status,
-          element.attribute
+      const data = await listRoom(sessionStorage.getItem("auth"));
+      console.log("data", data);
+      let roomdata = [];
+      let i = 0;
+      data.content[data.content.length - 1].forEach((element) =>
+        roomdata.push(
+          createData(
+            element.id,
+            element.propertycode,
+            element.no,
+            element.type,
+            element.floor,
+            element.building,
+            element.description,
+            element.status,
+            element.attribute
+          )
         )
-      )
-    );
-    console.log("a", roomdata);
-    setRows(roomdata);
-    updatePageData(roomdata, page, rowsPerPage);
+      );
+      console.log("a", roomdata);
+      setRows(roomdata);
+      updatePageData(roomdata, page, rowsPerPage);
 
-    setDialogAddRoom(false);
+      setDialogAddRoom(false);
+    }
   };
 
   const handleSeaarch = (event) => {
@@ -1230,6 +1242,7 @@ export default function RoomManagement() {
                       />
                     </Grid>
                   </Container>
+                  {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
                 </DialogContent>
                 <DialogActions style={{ padding: 20 }}>
                   <Button
@@ -1538,6 +1551,7 @@ export default function RoomManagement() {
                       />
                     </Grid>
                   </Container>
+                  {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
                 </DialogContent>
                 <DialogActions style={{ padding: 20 }}>
                   <Button
