@@ -40,10 +40,12 @@ import SettingsIcon from "@material-ui/icons/PlayForWork";
 
 import FrontDesk from "../components/Dashboard/FrontDesk";
 import Configuration from "../components/Dashboard/Configuration";
+import ReservationPage from "./ReservationPage";
+
 import RoleManagement from "../components/RoleManagement";
 import UserManagement from "../components/UserManagement";
 import DashboardDetail from "../components/Dashboard/DashboardDetail";
-import Calendar from "../components/Dashboard/Calendar";
+
 
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
@@ -841,7 +843,7 @@ export default function Dashboard() {
           {store.getState().reducer.componentState == "FrontDesk" ? (
             <div>
               <FrontDesk />
-              <Calendar />
+              <ReservationPage />
             </div>
           ) : store.getState().reducer.componentState == "Configuration" ? (
             <div>

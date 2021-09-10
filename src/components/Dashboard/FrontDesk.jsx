@@ -31,8 +31,7 @@ export class FrontDesk extends Component {
       Dashboard: en_lang.Dashboard,
       color: this.props.color,
       themeBackground: "#FFFFFF",
-      themeState: { background: '#FFFFFF',
-      color: '#000000'},
+      themeState: { background: "#FFFFFF", color: "#000000" },
       // matStyle: classes.normalmode
     };
   }
@@ -45,7 +44,7 @@ export class FrontDesk extends Component {
           this.setState({
             lang: "th",
             Dashboard: th_lang.Dashboard,
-            color: this.props.color
+            color: this.props.color,
           });
         } else if (this.props.lang == "en") {
           this.setState({
@@ -56,20 +55,26 @@ export class FrontDesk extends Component {
         }
       }
 
-      if(this.state.themeBackground != this.props.themeBackground){
-        console.log(this.state.themeBackground,this.props.themeBackground)
-        if(this.props.themeBackground === "#FFFFFF"){
-          this.setState({themeState:{ background: '#FFFFFF',
-          color: '#000000',
-          // matStyle: this.classes.normalmode
-        }})
-        }else{
-          this.setState({themeState:{ background: '#363537',
-          color: '#FAFAFA',
-            // matStyle: this.classes.darkmode
-          }})
+      if (this.state.themeBackground != this.props.themeBackground) {
+        console.log(this.state.themeBackground, this.props.themeBackground);
+        if (this.props.themeBackground === "#FFFFFF") {
+          this.setState({
+            themeState: {
+              background: "#FFFFFF",
+              color: "#000000",
+              // matStyle: this.classes.normalmode
+            },
+          });
+        } else {
+          this.setState({
+            themeState: {
+              background: "#363537",
+              color: "#FAFAFA",
+              // matStyle: this.classes.darkmode
+            },
+          });
         }
-        this.setState({themeBackground:this.props.themeBackground})
+        this.setState({ themeBackground: this.props.themeBackground });
       }
     }, 1000);
   }
@@ -80,7 +85,7 @@ export class FrontDesk extends Component {
   render() {
     return (
       <div style={this.state.themeState}>
-        <Container maxWidth="xl" >
+        <Container maxWidth="xl">
           {/* <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
           <Grid container spacing={3}>
             <Grid item xs={12} md={12} lg={9} xl={9}>
@@ -88,8 +93,13 @@ export class FrontDesk extends Component {
                 <Paper elevation={3} style={{ minHeight: 300 }}>
                   Gride layout 12 */}
 
-          <h3 style={{ color: this.state.color, marginBottom: 25 },this.state.themeState}>
-           Property - {this.props.property}
+          <h3
+            style={
+              ({ color: this.state.color, marginBottom: 25 },
+              this.state.themeState)
+            }
+          >
+            Property - {this.props.property}
           </h3>
           <Grid
             container
@@ -105,14 +115,14 @@ export class FrontDesk extends Component {
             <Grid container spacing={3} xs={12} md={12} lg={9} xl={9}>
               <Grid item xs={12} md={12} lg={12} xl={12}>
                 <Paper elevation={3} style={{ minHeight: 430 }}>
-                  <Grid container >
+                  <Grid container>
                     <Grid
                       container
                       direction="row"
                       style={{ marginBottom: 20, marginLeft: 20 }}
                     >
                       <Grid container style={{ marginBottom: 10 }}>
-                        <Typography variant="h6" component="h6" >
+                        <Typography variant="h6" component="h6">
                           Sales Statistical Overview
                         </Typography>
                       </Grid>
@@ -516,7 +526,7 @@ const mapStateToProps = (state) => {
     lang: state.reducer.lang,
     color: state.reducer.color,
     themeBackground: state.reducer.themeBackground,
-    property: state.reducer.property
+    property: state.reducer.property,
   };
 };
 

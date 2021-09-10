@@ -24,8 +24,8 @@ import {
 } from "@material-ui/core";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import IconButton from "@material-ui/core/IconButton";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-// import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
+import EditRoundedIcon from "@material-ui/icons/EditRounded";
+import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
 import FirstPageRoundedIcon from "@material-ui/icons/FirstPageRounded";
@@ -41,6 +41,7 @@ import {
   getRoombyid,
   updateRoom,
   getRoombykey,
+  deletebyroomnum,
 } from "../services/roomMaster.service";
 import TablePagination from "@material-ui/core/TablePagination";
 
@@ -239,6 +240,7 @@ export default function RoomManagement() {
   const classes = useStyles();
   const [dialogAddRoom, setDialogAddRoom] = React.useState(false);
   const [dialogEditRoom, setDialogEditRoom] = React.useState(false);
+  const [dialogDeleteRoom, setDialogDeleteRoom] = React.useState(false);
   // const [attributeDialog, setAttributeDialog] = React.useState("Minibar");
   const [propertyDialog, setPropertyDialog] = React.useState("");
   const [roomTypeDialog, setRoomTypeDialog] = React.useState("");
@@ -595,8 +597,31 @@ export default function RoomManagement() {
   };
 
   const handleSeaarchRequest = async (forSearch) => {
-    if (forSearch) {
-      console.log("forSerach ", forSearch);
+    console.log("forSearch", forSearch);
+    if (forSearch === null || forSearch === undefined || forSearch === "") {
+      const data = await listRoom(sessionStorage.getItem("auth"));
+      console.log("data", data);
+      let roomdata = [];
+      let i = 0;
+      data.content[data.content.length - 1].forEach((element) =>
+        roomdata.push(
+          createData(
+            i++,
+            element.propertycode,
+            element.no,
+            element.type,
+            element.floor,
+            element.building,
+            element.description,
+            element.status,
+            element.attribute
+          )
+        )
+      );
+      console.log("a", roomdata);
+      setRows(roomdata);
+      updatePageData(roomdata, page, rowsPerPage);
+    } else {
       const databysearch = await getRoombykey(
         sessionStorage.getItem("auth"),
         forSearch
@@ -626,6 +651,50 @@ export default function RoomManagement() {
         updatePageData(roomdata, page, rowsPerPage);
       }
     }
+  };
+
+  const handleDialogDeleteRoomClose = () => {
+    setDialogDeleteRoom(false);
+  };
+
+  const handleDialogDeleteRoomOpen = async (roomNum) => {
+    setRoomNumber(roomNum);
+    setDialogDeleteRoom(true);
+  };
+
+  const handleDialogDelete = async (roomNum) => {
+    console.log("roomNum for delete : ", roomNum);
+
+    const roomDelete = await deletebyroomnum(
+      sessionStorage.getItem("auth"),
+      roomNum
+    );
+    console.log("roomDelete func:", roomDelete);
+
+    const data = await listRoom(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let roomdata = [];
+    let i = 0;
+    data.content[data.content.length - 1].forEach((element) =>
+      roomdata.push(
+        createData(
+          i++,
+          element.propertycode,
+          element.no,
+          element.type,
+          element.floor,
+          element.building,
+          element.description,
+          element.status,
+          element.attribute
+        )
+      )
+    );
+    console.log("a", roomdata);
+    setRows(roomdata);
+    updatePageData(roomdata, page, rowsPerPage);
+
+    setDialogDeleteRoom(false);
   };
 
   return (
@@ -737,7 +806,12 @@ export default function RoomManagement() {
                             )
                           }
                         >
-                          <EditOutlinedIcon />
+                          <EditRoundedIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => handleDialogDeleteRoomOpen(row.number)}
+                        >
+                          <DeleteRoundedIcon />
                         </IconButton>
                       </TableCell>
                     </TableRow>
@@ -1371,6 +1445,63 @@ export default function RoomManagement() {
                 </DialogActions>
               </Dialog>
               {/* -------------------------------------- */}
+
+              {/* ==================== Dialog Delete User========================= */}
+              <Dialog
+                fullWidth="true"
+                maxWidth="sm"
+                open={dialogDeleteRoom}
+                onClose={handleDialogDeleteRoomClose}
+                aria-labelledby="form-dialog-title"
+              >
+                <Grid container>
+                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <DialogTitle
+                      id="form-dialog-title"
+                      style={{ color: "blue" }}
+                    >
+                      Confirm Delete Room Information
+                    </DialogTitle>
+                    <DialogContent>
+                      <Typography variant="h5" color="initial">
+                        Confirm Delete Room : {roomNumber}
+                      </Typography>
+                    </DialogContent>
+                    <DialogActions style={{ padding: 20 }}>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-evenly"
+                        alignItems="center"
+                        spacing={4}
+                      >
+                        <Grid item sm={6} md={6} lg={6} xl={6}>
+                          <Button
+                            fullWidth
+                            onClick={handleDialogDeleteRoomClose}
+                            variant="contained"
+                            color="primary"
+                          >
+                            Cancel
+                          </Button>
+                        </Grid>
+                        <Grid item sm={6} md={6} lg={6} xl={6}>
+                          <Button
+                            fullWidth
+                            onClick={() => handleDialogDelete(roomNumber)}
+                            variant="contained"
+                            // color="primary"
+                            style={{ backgroundColor: "red", color: "white" }}
+                          >
+                            Delete
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </DialogActions>
+                  </Grid>
+                </Grid>
+              </Dialog>
+              {/* ---------------------------------------- */}
               <Grid
                 container
                 direction="row"
