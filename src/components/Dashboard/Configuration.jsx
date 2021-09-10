@@ -36,7 +36,10 @@ import RoomManagement from "../RoomManagement";
 import { ReactReduxContext, useSelector } from "react-redux";
 import LockIcon from '@material-ui/icons/Https';
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
-
+import {
+  updateconfiguration,
+  getconfigurationbypropertycode
+} from "../../services/user.service";
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -80,245 +83,260 @@ export default function Configuration() {
   const [addChildValue, setAddChuldValue] = React.useState(null);
   const testa = "testa2";
   const [page, setPage] = React.useState("");
-  const [data, setData] = React.useState(
-    // {
-    // id: "root",
-    // name_en: "Configuration",
-    // children: 
-    [
-      {
-        id: 1000000001,
-        RefNo: "1.1",
-        code: "CFGPMS",
-        name_en: "PMS Configuration",
-        name_th: "การกำหนดค่า PMS",
-        name_cn: "PMS 配置",
-        description: "CFGPMS description",
-        createdate: "2021-08-13 12:03:00",
-        master: true,
-        addchild: false,
-        children: [
-          {
-            id: 1000000002,
-            RefNo: "1.1.1",
-            code: "CFGPROP",
-            name_en: "Property Configuration",
-            name_th: "การกำหนดค่า Property",
-            description: "CFGPROP Configuration",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-            addchild: false,
-            children: [
-              {
-                id: 1000000003,
-                RefNo: "1.1.1.1",
-                code: "PROPERTY",
-                name_en: "Property Master",
-                description: "PROPERTY description",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-                addchild: true,
-              },
-              {
-                id: 1000000004,
-                RefNo: "1.1.1.2",
-                code: "BUILDING",
-                name_en: "Building Master",
-                description: "BUILDING description",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-                addchild: true,
-              },
-              {
-                id: 1000000005,
-                RefNo: "1.1.1.3",
-                code: "EXPOSURE",
-                name_en: "Exposure",
-                description: "EXPOSURE description",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-                addchild: true,
-              },
-              {
-                id: 1000000006,
-                RefNo: "1.1.1.4",
-                code: "FLOOR",
-                name_en: "Floor",
-                name_th: "ชั้น",
-                description: "FLOOR description",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-                addchild: true,
-              },
-              {
-                id: 1000000007,
-                RefNo: "1.1.1.5",
-                code: "ZONE",
-                name_en: "Zone/Wing",
-                description: "ZONE description",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-                addchild: true,
-              },
-            ],
-          },
-          {
-            id: 1000000008,
-            RefNo: "1.1.2",
-            code: "CFGROOM",
-            name_en: "Room Configuration",
-            name_th: "การกำหนดค่าห้อง",
-            description: "CFGROOM description",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-            addchild: false,
-            children: [
-              {
-                id: 1000000009,
-                RefNo: "1.1.2.1",
-                code: "RMTYPE",
-                name_en: "Room Type",
-                name_th: "ประเภทห้อง",
-                description: "RMTYPE description",
-                master: true,
-                addchild: true,
-                createdate: "2021-08-13 12:03:00",
-              },
-              {
-                id: 1000000010,
-                RefNo: "1.1.2.2",
-                code: "RMCAT",
-                name_en: "Room Category",
-                name_th: "ประเภทห้อง",
-                description: "RMCAT description",
-                master: true,
-                addchild: true,
-                createdate: "2021-08-13 12:03:00",
-              },
-              {
-                id: 1000000011,
-                RefNo: "1.1.2.3",
-                code: "ROOM",
-                name_en: "Room Master Maintenance",
-                name_th: "การบำรุงรักษาห้องมาสเตอร์",
-                description: "ROOM description",
-                master: true,
-                addchild: true,
-                createdate: "2021-08-13 12:03:00",
-              },
-            ],
-          },
-          {
-            id: 1000000012,
-            RefNo: "1.1.3",
-            code: "CFGITEM",
-            name_en: "Item Configuration",
-            name_th: "การกำหนดค่ารายการ",
-            description: "CFGITEM description",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-            addchild: false,
-            children: [
-              {
-                id: 1000000013,
-                RefNo: "1.1.3.1",
-                code: "ITEMTYPE",
-                name_en: "Item Type",
-                name_th: "ประเภทรายการ",
-                description: "ITEMTYPE description",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-                addchild: true,
-              },
-              {
-                id: 1000000014,
-                RefNo: "1.1.3.2",
-                code: "ITEMCAT",
-                name_en: "Item Category",
-                name_th: "หมวดหมู่รายการ",
-                description: "ITEMCAT description",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-                addchild: true,
-              },
-            ],
-          },
-          {
-            id: 1000000015,
-            RefNo: "1.1.4",
-            code: "CFGRSVN",
-            name_en: "Reservation Configuration",
-            name_th: "การกำหนดค่าการจอง",
-            description: "CFGRSVN description",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-            addchild: false,
-            children: [
-              {
-                id: 1000000016,
-                RefNo: "1.1.4.1",
-                code: "MARKET",
-                name_en: "Market segment Maintenance",
-                name_th: "การบำรุงรักษาส่วนตลาด",
-                description: "MARKET description",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-                addchild: true,
-              },
-              {
-                id: 1000000017,
-                RefNo: "1.1.4.2",
-                code: "SOURCE",
-                name_en: "Source Maintenance",
-                name_th: "การบำรุงรักษาแหล่งที่มา",
-                description: "SOURCE description",
-                createdate: "2021-08-13 12:03:00",
-                master: true,
-                addchild: true,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        id: 1000000018,
-        RefNo: "1.2",
-        code: "CFGSYS",
-        name_en: "System Configuration",
-        name_th: "การกำหนดค่าระบบ",
-        description: "CFGSYS description",
-        createdate: "2021-08-13 12:03:00",
-        master: true,
-        addchild: false,
-        children: [
-          {
-            id: 1000000019,
-            RefNo: "1.2.1",
-            code: "USER",
-            name_en: "User Management",
-            name_th: "การจัดการผู้ใช้",
-            description: "USER description",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-            addchild: true,
-          },
-          {
-            id: 1000000020,
-            RefNo: "1.2.2",
-            code: "ROLE",
-            name_en: "Role Management",
-            name_th: "การจัดการบทบาท",
-            description: "ROLE description",
-            createdate: "2021-08-13 12:03:00",
-            master: true,
-            addchild: true,
-          },
-        ],
-      },
-    ]
+  const [data, setData] = React.useState([
+    {
+      id: 1000000001,
+      RefNo: "1.1",
+      code: "CFGPMS",
+      name_en: "PMS Configuration",
+      name_th: "การกำหนดค่า PMS",
+      name_cn: "PMS 配置",
+      description: "CFGPMS description",
+      createdate: "2021-08-13 12:03:00",
+      master: true,
+      addchild: false,
+      children: [
+        {
+          id: 1000000002,
+          RefNo: "1.1.1",
+          code: "CFGPROP",
+          name_en: "Property Configuration",
+          name_th: "การกำหนดค่า Property",
+          description: "CFGPROP Configuration",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
+          addchild: false,
+          children: [
+            {
+              id: 1000000003,
+              RefNo: "1.1.1.1",
+              code: "PROPERTY",
+              name_en: "Property Master",
+              description: "PROPERTY description",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
+              addchild: true,
+            },
+            {
+              id: 1000000004,
+              RefNo: "1.1.1.2",
+              code: "BUILDING",
+              name_en: "Building Master",
+              description: "BUILDING description",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
+              addchild: true,
+            },
+            {
+              id: 1000000005,
+              RefNo: "1.1.1.3",
+              code: "EXPOSURE",
+              name_en: "Exposure",
+              description: "EXPOSURE description",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
+              addchild: true,
+            },
+            {
+              id: 1000000006,
+              RefNo: "1.1.1.4",
+              code: "FLOOR",
+              name_en: "Floor",
+              name_th: "ชั้น",
+              description: "FLOOR description",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
+              addchild: true,
+            },
+            {
+              id: 1000000007,
+              RefNo: "1.1.1.5",
+              code: "ZONE",
+              name_en: "Zone/Wing",
+              description: "ZONE description",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
+              addchild: true,
+            },
+          ],
+        },
+        {
+          id: 1000000008,
+          RefNo: "1.1.2",
+          code: "CFGROOM",
+          name_en: "Room Configuration",
+          name_th: "การกำหนดค่าห้อง",
+          description: "CFGROOM description",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
+          addchild: false,
+          children: [
+            {
+              id: 1000000009,
+              RefNo: "1.1.2.1",
+              code: "RMTYPE",
+              name_en: "Room Type",
+              name_th: "ประเภทห้อง",
+              description: "RMTYPE description",
+              master: true,
+              addchild: true,
+              createdate: "2021-08-13 12:03:00",
+            },
+            {
+              id: 1000000010,
+              RefNo: "1.1.2.2",
+              code: "RMCAT",
+              name_en: "Room Category",
+              name_th: "ประเภทห้อง",
+              description: "RMCAT description",
+              master: true,
+              addchild: true,
+              createdate: "2021-08-13 12:03:00",
+            },
+            {
+              id: 1000000011,
+              RefNo: "1.1.2.3",
+              code: "ROOM",
+              name_en: "Room Master Maintenance",
+              name_th: "การบำรุงรักษาห้องมาสเตอร์",
+              description: "ROOM description",
+              master: true,
+              addchild: true,
+              createdate: "2021-08-13 12:03:00",
+            },
+          ],
+        },
+        {
+          id: 1000000012,
+          RefNo: "1.1.3",
+          code: "CFGITEM",
+          name_en: "Item Configuration",
+          name_th: "การกำหนดค่ารายการ",
+          description: "CFGITEM description",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
+          addchild: false,
+          children: [
+            {
+              id: 1000000013,
+              RefNo: "1.1.3.1",
+              code: "ITEMTYPE",
+              name_en: "Item Type",
+              name_th: "ประเภทรายการ",
+              description: "ITEMTYPE description",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
+              addchild: true,
+            },
+            {
+              id: 1000000014,
+              RefNo: "1.1.3.2",
+              code: "ITEMCAT",
+              name_en: "Item Category",
+              name_th: "หมวดหมู่รายการ",
+              description: "ITEMCAT description",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
+              addchild: true,
+            },
+          ],
+        },
+        {
+          id: 1000000015,
+          RefNo: "1.1.4",
+          code: "CFGRSVN",
+          name_en: "Reservation Configuration",
+          name_th: "การกำหนดค่าการจอง",
+          description: "CFGRSVN description",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
+          addchild: false,
+          children: [
+            {
+              id: 1000000016,
+              RefNo: "1.1.4.1",
+              code: "MARKET",
+              name_en: "Market segment Maintenance",
+              name_th: "การบำรุงรักษาส่วนตลาด",
+              description: "MARKET description",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
+              addchild: true,
+            },
+            {
+              id: 1000000017,
+              RefNo: "1.1.4.2",
+              code: "SOURCE",
+              name_en: "Source Maintenance",
+              name_th: "การบำรุงรักษาแหล่งที่มา",
+              description: "SOURCE description",
+              createdate: "2021-08-13 12:03:00",
+              master: true,
+              addchild: true,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 1000000018,
+      RefNo: "1.2",
+      code: "CFGSYS",
+      name_en: "System Configuration",
+      name_th: "การกำหนดค่าระบบ",
+      description: "CFGSYS description",
+      createdate: "2021-08-13 12:03:00",
+      master: true,
+      addchild: false,
+      children: [
+        {
+          id: 1000000019,
+          RefNo: "1.2.1",
+          code: "USER",
+          name_en: "User Management",
+          name_th: "การจัดการผู้ใช้",
+          description: "USER description",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
+          addchild: true,
+        },
+        {
+          id: 1000000020,
+          RefNo: "1.2.2",
+          code: "ROLE",
+          name_en: "Role Management",
+          name_th: "การจัดการบทบาท",
+          description: "ROLE description",
+          createdate: "2021-08-13 12:03:00",
+          master: true,
+          addchild: true,
+        },
+      ],
+    },
+  ])
+  const updateproperty = useSelector(state => state.reducer.property);
+  const [property,setProperty] = React.useState(updateproperty)
 
-  )
+  React.useEffect(async () => {
+    console.log("useEffect")
+    let configdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"),updateproperty);
+    setData(configdata.content[configdata.content.length-1])
+    setProperty(prev => updateproperty);
+  
+   
+  }, []);
 
+  setInterval(async() => {
+    let _property = updateproperty;
+    let currentProp = property;
+    // console.log("property",property,_property)
+    if (currentProp !== _property && currentProp !== null) {
+      console.log("property2",currentProp,_property)
+      let configdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"),_property);
+      setProperty(prev => _property);
+      setData(configdata.content[configdata.content.length-1])
+    }
+  }, 1000);
   // const [store.getState().reducer.configState, setstore.getState().reducer.configState] = React.useState("Configuration");
   const configState = useSelector(state => state.reducer.configState);
   const lang = useSelector(state => state.reducer.lang);
@@ -359,6 +377,7 @@ export default function Configuration() {
     // setAddChuldid(event.target.id.split("-")[0]);
     // setAddChuldName(event.target.id.split("-")[1]);
     // setAddchild(null);
+    setAddChuldValue(null);
     setAddchild(false);
     setDialogAdd(true);
   };
@@ -375,7 +394,7 @@ export default function Configuration() {
     setAddChuldValue(name);
     setCode(node.code);
     setDescription(node.description)
-    setAddChuldNameLang(node["name_"+lang])
+    setAddChuldNameLang(node["name_" + lang])
     // setRow(node)
     setDialogEdit(true);
   };
@@ -406,7 +425,7 @@ export default function Configuration() {
   const handleChangeLang = (event) => {
     setAddChuldNameLang(event.target.value);
   };
-  
+
 
   const handleChangeCode = (event) => {
     setCode(event.target.value);
@@ -459,6 +478,7 @@ export default function Configuration() {
   const handleDelete = async (id) => {
     console.log("deleteid", id);
     await prune(data, id);
+    let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"),{"configuration":data,"propertycode":property})
   }
 
   const maxchildid = async (array, parentid) => {
@@ -543,6 +563,7 @@ export default function Configuration() {
     console.log("newid", newid)
     await (adding(data, id, addChildValue, newid))
     console.log("added", data)
+    let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"),{"configuration":data,"propertycode":property})
     // setData(data)
     setDialogAdd(false);
   }
@@ -569,6 +590,7 @@ export default function Configuration() {
     // console.log("newid", newid)
     await (editing(data, id, addChildValue))
     console.log(data)
+    let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"),{"configuration":data,"propertycode":property})
     // setData(data)
     setDialogEdit(false);
   }
@@ -576,7 +598,7 @@ export default function Configuration() {
   const editingLang = async (array, label, name) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.RefNo, label,addChildNameLang)
+      console.log(obj.RefNo, label, addChildNameLang)
       if (obj.RefNo === label) {
 
         obj.code = code;
@@ -628,7 +650,7 @@ export default function Configuration() {
                 </Typography>
               </Grid>
               <Grid item>
-                {nodes.master == false || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root" ) ?
+                {nodes.master == false || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root") ?
                   <IconButton
                     onClick={() => handleDialogEdit(nodes.name_en, nodes.RefNo, nodes)}>
                     <EditRoundedIcon />
@@ -638,7 +660,7 @@ export default function Configuration() {
                     <EditRoundedIcon style={{ color: "#d8d8d8" }} />
                   </IconButton>
                 }
-                {nodes.master == false || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root" )  ?
+                {nodes.master == false || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root") ?
                   <IconButton onClick={() => handleDelete(nodes.RefNo)}>
                     <DeleteRoundedIcon />
                   </IconButton>
@@ -647,7 +669,7 @@ export default function Configuration() {
                     <DeleteRoundedIcon style={{ color: "#d8d8d8" }} />
                   </IconButton>
                 }
-                {nodes.addchild == true || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root" )  ?
+                {nodes.addchild == true || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root") ?
                   <IconButton
                     aria-controls={nodes.RefNo}
                     aria-haspopup="true"
@@ -836,30 +858,30 @@ export default function Configuration() {
                   </Grid>
 
                   {lang != "en" ?
-                  <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                    <TextField
-                      autoFocus
-                      id="outlined-basic"
-                      label={"Name ("+lang.toUpperCase()+")"}
-                      variant="outlined"
-                      value={addChildNameLang}
-                      onChange={(e) => handleChangeLang(e)}
-                      helperText={
-                        <Grid
-                          container
-                          justifyContent="flex-end"
-                          alignItems="center"
-                        >
-                          <Typography variant="title1" color="initial">
-                            0/50
-                          </Typography>
-                        </Grid>
-                      }
-                      fullWidth
-                    />
-                  </Grid>
-                  :
-                  null}
+                    <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                      <TextField
+                        autoFocus
+                        id="outlined-basic"
+                        label={"Name (" + lang.toUpperCase() + ")"}
+                        variant="outlined"
+                        value={addChildNameLang}
+                        onChange={(e) => handleChangeLang(e)}
+                        helperText={
+                          <Grid
+                            container
+                            justifyContent="flex-end"
+                            alignItems="center"
+                          >
+                            <Typography variant="title1" color="initial">
+                              0/50
+                            </Typography>
+                          </Grid>
+                        }
+                        fullWidth
+                      />
+                    </Grid>
+                    :
+                    null}
 
                   <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
                     <TextField
@@ -935,7 +957,8 @@ export default function Configuration() {
             variant="h6"
             style={{ marginBottom: 15, fontSize: 18, color: "blue" }}
           >
-            Configuration {data[0][testa]}
+            Configuration 
+            {/* {data[0][testa]} */}
           </Typography>
           <Paper elevation={3} style={{ minHeight: 150, width: "100%" }}>
             <Grid container style={{ padding: 20 }}>

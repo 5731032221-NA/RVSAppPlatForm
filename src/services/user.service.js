@@ -1,4 +1,23 @@
 module.exports = {
+  getconfigurationbypropertycode: async function (accessToken,propertycode) {
+    return fetch(`http://localhost:8082/configurationbypropertycode/${propertycode}`, {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
+  updateconfiguration: async function (accessToken,req) {
+    return fetch(`http://localhost:8082/configuration`, {
+      method: "PUT",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req),
+    }).then(async (res) => res.json());
+  },
   getuserpermission: async function (accessToken,username) {
     return fetch(`http://localhost:8082/userpermissionbyusername/${username}`, {
       method: "GET",

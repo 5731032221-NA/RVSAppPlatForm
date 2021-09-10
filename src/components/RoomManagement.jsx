@@ -6,7 +6,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { ReactReduxContext } from "react-redux";
+import { ReactReduxContext, useSelector } from "react-redux";
 import {
   Container,
   Grid,
@@ -42,6 +42,11 @@ import {
   updateRoom,
   getRoombykey,
 } from "../services/roomMaster.service";
+import {
+  listallproperty,
+  getconfigurationbypropertycode
+} from "../services/user.service"
+
 import TablePagination from "@material-ui/core/TablePagination";
 
 // Generate Order Data
@@ -69,140 +74,135 @@ function createData(
   };
 }
 
-const properties = [
-  {
-    value: "1",
-    label: "Novotel Pattaya",
-  },
-  {
-    value: "FSDH",
-    label: "Novotel Bangkok",
-  },
-];
-const roomType = [
-  {
-    value: "SUPERIOR",
-    label: "SUPERIOR",
-  },
-  {
-    value: "DELUX",
-    label: "DELUX",
-  },
-];
-const building = [
-  {
-    value: "A",
-    label: "A",
-  },
-  {
-    value: "TOWER1",
-    label: "TOWER 1",
-  },
 
-  {
-    value: "TOWER2",
-    label: "TOWER 2",
-  },
-  {
-    value: "TOWER3",
-    label: "TOWER 3",
-  },
-];
-const wing = [
-  {
-    value: "East",
-    label: "East",
-  },
-  {
-    value: "North",
-    label: "North",
-  },
-  {
-    value: "South",
-    label: "South",
-  },
-  {
-    value: "West",
-    label: "West",
-  },
-];
-const exposure = [
-  {
-    value: "{1}",
-    label: "Mountain View",
-  },
-  {
-    value: "{2}",
-    label: "Sea View",
-  },
-  {
-    value: "{3}",
-    label: "Town View",
-  },
-  {
-    value: "{4}",
-    label: "Market View",
-  },
-];
-const roomSize = [
-  {
-    value: "SQ56",
-    label: "56 sq.m",
-  },
-  {
-    value: "SQ100",
-    label: "100 sq.m",
-  },
-];
-const roomSeg = [
-  {
-    value: "1",
-    label: "1",
-  },
-  {
-    value: "2",
-    label: "2",
-  },
-  {
-    value: "3",
-    label: "3",
-  },
-  {
-    value: "90",
-    label: "90",
-  },
-  {
-    value: "100",
-    label: "100",
-  },
-  {
-    value: "110",
-    label: "110",
-  },
-  {
-    value: "120",
-    label: "120",
-  },
-  {
-    value: "130",
-    label: "130",
-  },
-  {
-    value: "140",
-    label: "140",
-  },
-];
-const roomStatus = [
-  {
-    value: "IN",
-    label: "In House",
-  },
-  {
-    value: "VC",
-    label: "Vacant Clean",
-  },
-];
+// const roomType = [
+//   {
+//     value: "SUPERIOR",
+//     label: "SUPERIOR",
+//   },
+//   {
+//     value: "DELUX",
+//     label: "DELUX",
+//   },
+// ];
+// const building = [
+//   {
+//     value: "A",
+//     label: "A",
+//   },
+//   {
+//     value: "TOWER1",
+//     label: "TOWER 1",
+//   },
+
+//   {
+//     value: "TOWER2",
+//     label: "TOWER 2",
+//   },
+//   {
+//     value: "TOWER3",
+//     label: "TOWER 3",
+//   },
+// ];
+// const wing = [
+//   {
+//     value: "East",
+//     label: "East",
+//   },
+//   {
+//     value: "North",
+//     label: "North",
+//   },
+//   {
+//     value: "South",
+//     label: "South",
+//   },
+//   {
+//     value: "West",
+//     label: "West",
+//   },
+// ];
+// const exposure = [
+//   {
+//     value: "{1}",
+//     label: "Mountain View",
+//   },
+//   {
+//     value: "{2}",
+//     label: "Sea View",
+//   },
+//   {
+//     value: "{3}",
+//     label: "Town View",
+//   },
+//   {
+//     value: "{4}",
+//     label: "Market View",
+//   },
+// ];
+// const roomSize = [
+//   {
+//     value: "SQ56",
+//     label: "56 sq.m",
+//   },
+//   {
+//     value: "SQ100",
+//     label: "100 sq.m",
+//   },
+// ];
+// const roomSeg = [
+//   {
+//     value: "1",
+//     label: "1",
+//   },
+//   {
+//     value: "2",
+//     label: "2",
+//   },
+//   {
+//     value: "3",
+//     label: "3",
+//   },
+//   {
+//     value: "90",
+//     label: "90",
+//   },
+//   {
+//     value: "100",
+//     label: "100",
+//   },
+//   {
+//     value: "110",
+//     label: "110",
+//   },
+//   {
+//     value: "120",
+//     label: "120",
+//   },
+//   {
+//     value: "130",
+//     label: "130",
+//   },
+//   {
+//     value: "140",
+//     label: "140",
+//   },
+// ];
+// const roomStatus = [
+//   {
+//     value: "IN",
+//     label: "In House",
+//   },
+//   {
+//     value: "VC",
+//     label: "Vacant Clean",
+//   },
+// ];
 const attribute = [
+  {
+    key: "BC",
+    label: "BC",
+  },
   {
     key: "MINIBAR",
     label: "Minibar",
@@ -211,6 +211,10 @@ const attribute = [
     key: "NTV",
     label: "NTV",
   },
+  {
+    key: "SM",
+    label: "SM",
+  }
 ];
 const userValues = "";
 
@@ -240,6 +244,7 @@ export default function RoomManagement() {
   const [dialogAddRoom, setDialogAddRoom] = React.useState(false);
   const [dialogEditRoom, setDialogEditRoom] = React.useState(false);
   // const [attributeDialog, setAttributeDialog] = React.useState("Minibar");
+  const [roomID, setRoomID] = React.useState("");
   const [propertyDialog, setPropertyDialog] = React.useState("");
   const [roomTypeDialog, setRoomTypeDialog] = React.useState("");
   const [buildingDialog, setBuildingDialog] = React.useState("");
@@ -253,7 +258,16 @@ export default function RoomManagement() {
   const [roomDesc, setRoomDesc] = React.useState(null);
   const [roomFloor, setRoomFloor] = React.useState(null);
   const [searchKey, setSearchKey] = React.useState(null);
-
+  const pageProperty = useSelector(state => state.reducer.property);
+  const [properties, setProperty] = React.useState([]);
+  const [roomType, setRoomType] = React.useState([]);
+  const [building, setBuilding] = React.useState([]);
+  const [exposure, setExposure] = React.useState([]);
+  const [roomSize, setRoomSize] = React.useState([]);
+  const [roomSeg, setRoomSeg] = React.useState([]);
+  const [roomStatus, setRoomStatus] = React.useState([]);
+  const [wing, setWing] = React.useState([]);
+  //Master Config
   const [rows, setRows] = useState([
     // createData(
     //   0,
@@ -279,7 +293,7 @@ export default function RoomManagement() {
     data.content[data.content.length - 1].forEach((element) =>
       roomdata.push(
         createData(
-          i++,
+          element.id,
           element.propertycode,
           element.no,
           element.type,
@@ -330,8 +344,24 @@ export default function RoomManagement() {
     setRoomFloor(event.target.value);
   };
 
-  const handlePropertyDialog = (event) => {
-    console.log(event.target.value);
+  const handlePropertyDialog = async (event) => {
+    let getconfigdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"), event.target.value);
+    let configdata = getconfigdata.content[getconfigdata.content.length - 1]
+    let listroomtype = await getlist(configdata, "Room Type");
+    let listWing = await getlist(configdata, "Zone/Wing");
+    let listBuilding = await getlist(configdata, "Building Master");
+    let listExposure = await getlist(configdata, "Exposure");
+    let listRoomSize = await getlist(configdata, "Room Size");
+    let listRoomSeg = await getlist(configdata, "Room Seg");
+    let listRoomStatus = await getlist(configdata, "Room Status");
+
+    setWing(listWing)
+    setRoomType(listroomtype);
+    setBuilding(listBuilding);
+    setExposure(listExposure);
+    setRoomSize(listRoomSize);
+    setRoomSeg(listRoomSeg);
+    setRoomStatus(listRoomStatus);
     setPropertyDialog(event.target.value);
   };
   const handleRoomTypeDialog = (event) => {
@@ -355,7 +385,72 @@ export default function RoomManagement() {
   const handleRoomStatusDialog = (event) => {
     setRoomStatusDialog(event.target.value);
   };
-  const handleDialogAddRoom = () => {
+
+  async function getlist(config, field) {
+
+    for (var i = 0; i < config.length; i++) {
+      var obj = config[i];
+      if (obj.name_en === field) {
+        let list = [];
+        obj.children.forEach(element =>
+          list.push({
+            value: element.name_en,
+            label: element.name_en
+          })
+        );
+        return list;
+      }
+      else if (obj.children) {
+        let _getlist = await getlist(obj.children, field);
+        if (_getlist) return _getlist;
+
+      }
+    }
+  }
+
+  const handleDialogAddRoom = async () => {
+    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    let tempproperty = [];
+    propertydata.content[propertydata.content.length - 1].split(",").forEach((element) => {
+      if (tempproperty.filter(x => x.label === element).length == 0) {
+        tempproperty.push({
+          value: element,
+          label: element,
+        })
+      }
+    }
+    );
+    let getconfigdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"), pageProperty);
+    let configdata = getconfigdata.content[getconfigdata.content.length - 1]
+    let listroomtype = await getlist(configdata, "Room Type");
+    let listWing = await getlist(configdata, "Zone/Wing");
+    let listBuilding = await getlist(configdata, "Building Master");
+    let listExposure = await getlist(configdata, "Exposure");
+    let listRoomSize = await getlist(configdata, "Room Size");
+    let listRoomSeg = await getlist(configdata, "Room Seg");
+    let listRoomStatus = await getlist(configdata, "Room Status");
+
+    setProperty(tempproperty);
+    setWing(listWing);
+    setRoomType(listroomtype);
+    setBuilding(listBuilding);
+    setExposure(listExposure);
+    setRoomSize(listRoomSize);
+    setRoomSeg(listRoomSeg);
+    setRoomStatus(listRoomStatus);
+
+    setChipAttributeDialog([]);
+    setPropertyDialog(pageProperty);
+    setRoomTypeDialog(listroomtype[0].value);
+    setBuildingDialog(listBuilding[0].value);
+    setWingDialog(listWing[0].value);
+    setExposureDialog(listExposure[0].value);
+    setRoomSizeDialog(listRoomSize[0].value);
+    setRoomSegDialog(listRoomSeg[0].value);
+    setRoomStatusDialog(listRoomStatus[0].value);
+
+
+
     setDialogAddRoom(true);
   };
 
@@ -363,13 +458,45 @@ export default function RoomManagement() {
     setDialogAddRoom(false);
   };
   const handleDialogEditRoom = async (roomNo) => {
+    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    let tempproperty = [];
+    propertydata.content[propertydata.content.length - 1].split(",").forEach((element) => {
+      if (tempproperty.filter(x => x.label === element).length == 0) {
+        tempproperty.push({
+          value: element,
+          label: element,
+        })
+      }
+    }
+    );
+
     const dataRoombyid = await getRoombyid(
       sessionStorage.getItem("auth"),
       roomNo
     );
     console.log("dataRoombyid", dataRoombyid);
 
+    let getconfigdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"), dataRoombyid.content[0].propertycode);
+    let configdata = getconfigdata.content[getconfigdata.content.length - 1]
+    let listroomtype = await getlist(configdata, "Room Type");
+    let listWing = await getlist(configdata, "Zone/Wing");
+    let listBuilding = await getlist(configdata, "Building Master");
+    let listExposure = await getlist(configdata, "Exposure");
+    let listRoomSize = await getlist(configdata, "Room Size");
+    let listRoomSeg = await getlist(configdata, "Room Seg");
+    let listRoomStatus = await getlist(configdata, "Room Status");
+
+    setProperty(tempproperty);
+    setWing(listWing);
+    setRoomType(listroomtype);
+    setBuilding(listBuilding);
+    setExposure(listExposure);
+    setRoomSize(listRoomSize);
+    setRoomSeg(listRoomSeg);
+    setRoomStatus(listRoomStatus);
+
     setChipAttributeDialog([]);
+    setRoomID(dataRoombyid.content[0].id)
     setPropertyDialog(dataRoombyid.content[0].propertycode);
     setRoomTypeDialog(dataRoombyid.content[0].type);
     setBuildingDialog(dataRoombyid.content[0].building);
@@ -433,7 +560,7 @@ export default function RoomManagement() {
 
     const dataRoombyid = await updateRoom(
       sessionStorage.getItem("auth"),
-      roomNo,
+      roomID,
       {
         roomNo: roomNo,
         propertyDialog: propertyDialog,
@@ -458,7 +585,7 @@ export default function RoomManagement() {
     data.content[data.content.length - 1].forEach((element) =>
       roomdata.push(
         createData(
-          i++,
+          element.id,
           element.propertycode,
           element.no,
           element.type,
@@ -571,7 +698,7 @@ export default function RoomManagement() {
     data.content[data.content.length - 1].forEach((element) =>
       roomdata.push(
         createData(
-          i++,
+          element.id,
           element.propertycode,
           element.no,
           element.type,
@@ -609,7 +736,7 @@ export default function RoomManagement() {
           (element) =>
             roomdata.push(
               createData(
-                i++,
+                element.id,
                 element.propertycode,
                 element.no,
                 element.type,
@@ -766,11 +893,11 @@ export default function RoomManagement() {
                         id="outlined-basic"
                         label="Property"
                         variant="outlined"
+                        defaultValue={pageProperty}
                         fullWidth
                         SelectProps={{
                           native: true,
                         }}
-                        defaultValue={""}
                         // value={propertyDialog}
                         onChange={(event) => handlePropertyDialog(event)}
                       >
@@ -1398,7 +1525,7 @@ export default function RoomManagement() {
                     rowsPerPage={rowsPerPage}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
-                    // onRowsPerPageChange={handleChangeRowsPerPage}
+                  // onRowsPerPageChange={handleChangeRowsPerPage}
                   />
                 </Grid>
               </Grid>
