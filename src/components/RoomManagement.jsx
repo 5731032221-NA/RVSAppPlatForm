@@ -51,7 +51,7 @@ import {
 } from "../services/user.service"
 
 import TablePagination from "@material-ui/core/TablePagination";
-
+import { EDIT_CONFIGSTATE } from "../middleware/action";
 // Generate Order Data
 function createData(
   id,
@@ -462,6 +462,15 @@ export default function RoomManagement() {
   const handleDialogAddRoomClose = () => {
     setDialogAddRoom(false);
   };
+
+  const handleComponentState = async (comp) => {
+    console.log("setcomp", comp)
+    store.dispatch({
+      type: EDIT_CONFIGSTATE,
+      payload: comp
+    })
+  }
+  
   const handleDialogEditRoom = async (roomNo) => {
     let propertydata = await listallproperty(sessionStorage.getItem("auth"));
     let tempproperty = [];
@@ -474,6 +483,7 @@ export default function RoomManagement() {
       }
     }
     );
+
 
     const dataRoombyid = await getRoombyid(
       sessionStorage.getItem("auth"),
