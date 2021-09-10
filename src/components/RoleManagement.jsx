@@ -1071,6 +1071,35 @@ export default function RoleManagement() {
     setData((prevState) => [...prevState]);
   };
 
+  const select_all = async (array) => {
+    for (var i = 0; i < array.length; i++) {
+      var obj = array[i];
+
+      obj.edited_delete = true;
+      obj.delete = true;
+
+      obj.edited_update = true;
+      obj.update = true;
+
+      obj.edited_read = true;
+      obj.read = true;
+
+      obj.edited_create = true;
+      obj.create = true;
+
+      if (obj.children) {
+        select_all(obj.children);
+      }
+    }
+  };
+
+  const handleSelectAllPermission = async () => {
+    let _data = data;
+    await select_all(_data);
+    setData(_data);
+    setData((prevState) => [...prevState]);
+  }
+
 
   const [dataMenu, setDataMenu] = React.useState(
     [
@@ -1287,9 +1316,9 @@ export default function RoleManagement() {
                       <Typography
                         variant="h6"
                         color="initial"
-                        style={{ color: '#1F51FF', fontSize: 16 }}
+                        style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
                       >
-                        {nodes.name}  <UpdateIcon />
+                        {nodes.name}  <UpdateIcon style={{ fontSize: 16 }} />
                       </Typography>
                       :
                       <Typography
@@ -1650,15 +1679,15 @@ export default function RoleManagement() {
                         <Typography
                           variant="h6"
                           color="initial"
-                          style={{ color: '#1F51FF', fontSize: 16 ,paddingTop:5,paddingBottom:10 }}
+                          style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
                         >
-                          {nodes.name}  <UpdateIcon />
+                          {nodes.name}  <UpdateIcon style={{ fontSize: 16 }} />
                         </Typography>
                         :
                         <Typography
                           variant="h6"
                           color="initial"
-                          style={{ fontSize: 16 ,paddingTop:10,paddingBottom:10}}
+                          style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
                         >
                           {nodes.name}
                         </Typography>
@@ -2051,7 +2080,7 @@ export default function RoleManagement() {
                   >
                     <FormControlLabel
                       value="end"
-                      control={<Checkbox color="primary" />}
+                      control={<Checkbox color="primary" onClick={handleSelectAllPermission} />}
                       label={
                         <Typography
                           variant="title1"
@@ -2282,7 +2311,7 @@ export default function RoleManagement() {
                   >
                     <FormControlLabel
                       value="end"
-                      control={<Checkbox color="primary" />}
+                      control={<Checkbox color="primary" onClick={handleSelectAllPermission} />}
                       label={
                         <Typography
                           variant="title1"

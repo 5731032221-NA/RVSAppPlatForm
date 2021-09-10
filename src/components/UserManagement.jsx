@@ -1273,15 +1273,15 @@ export default function UserManagement() {
                       <Typography
                         variant="h6"
                         color="initial"
-                        style={{ color: '#1F51FF', fontSize: 16 ,paddingTop:5,paddingBottom:10 }}
+                        style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
                       >
-                        {nodes.name}  <UpdateIcon />
+                        {nodes.name}  <UpdateIcon style={{ fontSize: 16 }} />
                       </Typography>
                       :
                       <Typography
                         variant="h6"
                         color="initial"
-                        style={{ fontSize: 16,paddingTop:10,paddingBottom:10  }}
+                        style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
                       >
                         {nodes.name}
                       </Typography>
@@ -1636,9 +1636,9 @@ export default function UserManagement() {
                         <Typography
                           variant="h6"
                           color="initial"
-                          style={{ color: '#1F51FF', fontSize: 16 }}
+                          style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
                         >
-                          {nodes.name}  <UpdateIcon />
+                          {nodes.name}  <UpdateIcon style={{ fontSize: 16 }} />
                         </Typography>
                         :
                         <Typography
@@ -1690,83 +1690,83 @@ export default function UserManagement() {
     else if (chipPropertyDialog.length == 0) setErrorParameter("Property");
     else {
       setErrorMessage(false);
-    if (position == "Add new position") {
-      let addPosition = await postposition(sessionStorage.getItem("auth"), { "position": newPosition });
-    }
-    let perm = await propertylist(data, code);
-    console.log(perm)
-    const roletemp = new Set();
-    if (chipRolesDialog.length) {
-      for (let i in chipRolesDialog) {
-        roletemp.add(chipRolesDialog[i].key);
+      if (position == "Add new position") {
+        let addPosition = await postposition(sessionStorage.getItem("auth"), { "position": newPosition });
       }
-    }
-    const roleTempArray = Array.from(roletemp).join(",");
-    const propertytemp = new Set();
-    if (chipPropertyDialog.length) {
-      for (let i in chipPropertyDialog) {
-        propertytemp.add(chipPropertyDialog[i].key);
+      let perm = await propertylist(data, code);
+      console.log(perm)
+      const roletemp = new Set();
+      if (chipRolesDialog.length) {
+        for (let i in chipRolesDialog) {
+          roletemp.add(chipRolesDialog[i].key);
+        }
       }
-    }
-    const propertyTempArray = Array.from(propertytemp).join(",");
-    console.log(firstName, lastName, status, position, role);
-    let update = await updateuser(sessionStorage.getItem("auth"), {
-      oldUserName: oldUserName,
-      firstname: firstName,
-      lastname: lastName,
-      code: code,
-      status: status,
-      position: (position == "Add new position") ? newPosition : position,
-      userproperty: propertyTempArray,
-      role: roleTempArray,
-      permission: perm
-    });
-    // const temp = new Set();
-    // if (role.length) {
-    //   for (var i in role) {
-    //     temp.add(role[i].key);
-    //   }
-    // }
-    // const roleArray = Array.from(temp).join(",");
-    // console.log("roleArray", roleArray);
+      const roleTempArray = Array.from(roletemp).join(",");
+      const propertytemp = new Set();
+      if (chipPropertyDialog.length) {
+        for (let i in chipPropertyDialog) {
+          propertytemp.add(chipPropertyDialog[i].key);
+        }
+      }
+      const propertyTempArray = Array.from(propertytemp).join(",");
+      console.log(firstName, lastName, status, position, role);
+      let update = await updateuser(sessionStorage.getItem("auth"), {
+        oldUserName: oldUserName,
+        firstname: firstName,
+        lastname: lastName,
+        code: code,
+        status: status,
+        position: (position == "Add new position") ? newPosition : position,
+        userproperty: propertyTempArray,
+        role: roleTempArray,
+        permission: perm
+      });
+      // const temp = new Set();
+      // if (role.length) {
+      //   for (var i in role) {
+      //     temp.add(role[i].key);
+      //   }
+      // }
+      // const roleArray = Array.from(temp).join(",");
+      // console.log("roleArray", roleArray);
 
-    // const userupdate = await updateuser(
-    //   sessionStorage.getItem("auth"),
-    //   {
-    //     username: username,
-    //     firstname: firstName,
-    //     lastname: lastName,
-    //     status: status,
-    //     position: position,
-    //     role: roleArray,
-    //   },
-    //   id
-    // );
-    // console.log("userupdate func:", userupdate);
+      // const userupdate = await updateuser(
+      //   sessionStorage.getItem("auth"),
+      //   {
+      //     username: username,
+      //     firstname: firstName,
+      //     lastname: lastName,
+      //     status: status,
+      //     position: position,
+      //     role: roleArray,
+      //   },
+      //   id
+      // );
+      // console.log("userupdate func:", userupdate);
 
-    if (update.status == '2000') {
-      const _data = await listuser(sessionStorage.getItem("auth"));
-      let userdata = [];
-      _data.content[_data.content.length - 1].forEach((element) =>
-        userdata.push(
-          createData(
-            element.code,
-            element.username,
-            element.firstname,
-            element.lastname,
-            element.position,
-            element.roles,
-            element.property,
-            element.status
+      if (update.status == '2000') {
+        const _data = await listuser(sessionStorage.getItem("auth"));
+        let userdata = [];
+        _data.content[_data.content.length - 1].forEach((element) =>
+          userdata.push(
+            createData(
+              element.code,
+              element.username,
+              element.firstname,
+              element.lastname,
+              element.position,
+              element.roles,
+              element.property,
+              element.status
+            )
           )
-        )
-      );
+        );
 
-      setRows(userdata);
-      updatePageData(userdata, page, rowsPerPage);
-      setDialogEditUser(false);
+        setRows(userdata);
+        updatePageData(userdata, page, rowsPerPage);
+        setDialogEditUser(false);
+      }
     }
-  }
 
   };
 
@@ -2270,7 +2270,7 @@ export default function UserManagement() {
                     </Container>
                   </Grid>
                 ) : null}
-                {errorMessage ?<div style={{ color: "#ff0033"}}>{errorParameter} is required</div>:null}
+                {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
               </DialogContent>
             </Grid>
           </Grid>
@@ -2597,9 +2597,9 @@ export default function UserManagement() {
                     </Container>
                   </Grid>
                 ) : null}
-              {errorMessage ?<div style={{ color: "#ff0033"}}>{errorParameter} is required</div>:null}
+                {errorMessage ? <div style={{ color: "#ff0033" }}>{errorParameter} is required</div> : null}
               </DialogContent>
-             
+
               <DialogActions style={{ padding: 20 }}>
                 <Grid container>
                   <Grid item style={{ flexGrow: 1 }}>
