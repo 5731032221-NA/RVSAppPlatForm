@@ -648,10 +648,10 @@ export default function RoleManagement() {
     description,
     status
   ) => {
-    if (rolecode == null) {setErrorMessage(true); setErrorParameter("Role Code");}
-    else if (rolename == null) {setErrorMessage(true); setErrorParameter("Role Name");}
+    if (rolecode == null || rolecode == '') {setErrorMessage(true); setErrorParameter("Role Code");}
+    else if (rolename == null || rolename == '') {setErrorMessage(true); setErrorParameter("Role Name");}
     else if (ChipPropertyDialog.length == 0) {setErrorMessage(true); setErrorParameter("Property");}
-    else if (description == null) {setErrorMessage(true); setErrorParameter("Description");}
+    else if (description == null || description == '') {setErrorMessage(true); setErrorParameter("Description");}
     else {
       setErrorMessage(false);
 
@@ -816,10 +816,10 @@ export default function RoleManagement() {
       description,
       status
     );
-    if (rolecode == null) {setErrorMessage(true); setErrorParameter("Role Code");}
-    else if (rolename == null) {setErrorMessage(true); setErrorParameter("Role Name");}
+    if (rolecode == null || rolecode == '') {setErrorMessage(true); setErrorParameter("Role Code");}
+    else if (rolename == null || rolename == '') {setErrorMessage(true); setErrorParameter("Role Name");}
     else if (ChipPropertyDialog.length == 0) {setErrorMessage(true); setErrorParameter("Property");}
-    else if (description == null) {setErrorMessage(true); setErrorParameter("Description");}
+    else if (description == null || description == '') {setErrorMessage(true); setErrorParameter("Description");}
     else {
       setErrorMessage(false);
       let perm = await propertylist(data, rolecode);

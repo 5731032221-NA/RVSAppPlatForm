@@ -5,6 +5,7 @@ import App from './App';
 import { createStore } from "redux";
 import reportWebVitals from './reportWebVitals';
 
+console.warn =  () => {};
 ReactDOM.render(
   <React.StrictMode>
     <App />

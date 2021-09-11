@@ -253,6 +253,7 @@ export default function RoomManagement() {
   const [roomTypeDialog, setRoomTypeDialog] = React.useState("");
   const [buildingDialog, setBuildingDialog] = React.useState("");
   const [wingDialog, setWingDialog] = React.useState("");
+  const [roomFloorDialog, setRoomFloorDialog] = React.useState("");
   const [exposureDialog, setExposureDialog] = React.useState("");
   const [roomSizeDialog, setRoomSizeDialog] = React.useState("");
   const [roomSegDialog, setRoomSegDialog] = React.useState("");
@@ -260,7 +261,7 @@ export default function RoomManagement() {
   const [chipAttributeDialog, setChipAttributeDialog] = React.useState([]);
   const [roomNumber, setRoomNumber] = React.useState(null);
   const [roomDesc, setRoomDesc] = React.useState(null);
-  const [roomFloor, setRoomFloor] = React.useState(null);
+  const [roomFloor, setRoomFloor] = React.useState([]);
   const [searchKey, setSearchKey] = React.useState(null);
   const pageProperty = useSelector(state => state.reducer.property);
   const [properties, setProperty] = React.useState([]);
@@ -346,9 +347,9 @@ export default function RoomManagement() {
   const handleDescription = (event) => {
     setRoomDesc(event.target.value);
   };
-  const handleFloor = (event) => {
-    setRoomFloor(event.target.value);
-  };
+  // const handleFloor = (event) => {
+  //   setRoomFloor(event.target.value);
+  // };
 
   const handlePropertyDialog = async (event) => {
     let getconfigdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"), event.target.value);
@@ -360,7 +361,9 @@ export default function RoomManagement() {
     let listRoomSize = await getlist(configdata, "Room Size");
     let listRoomSeg = await getlist(configdata, "Room Seg");
     let listRoomStatus = await getlist(configdata, "Room Status");
-
+    let listFloor = await getlist(configdata, "Floor");
+    console.log("aaa",listFloor,listRoomStatus)
+    setRoomFloor(listFloor)
     setWing(listWing)
     setRoomType(listroomtype);
     setBuilding(listBuilding);
@@ -384,6 +387,9 @@ export default function RoomManagement() {
   };
   const handleRoomSizeDialog = (event) => {
     setRoomSizeDialog(event.target.value);
+  };
+  const handleRoomFloorDialog = (event) => {
+    setRoomFloorDialog(event.target.value);
   };
   const handleRoomSegDialog = (event) => {
     setRoomSegDialog(event.target.value);
@@ -435,7 +441,9 @@ export default function RoomManagement() {
     let listRoomSize = await getlist(configdata, "Room Size");
     let listRoomSeg = await getlist(configdata, "Room Seg");
     let listRoomStatus = await getlist(configdata, "Room Status");
+    let listFloor = await getlist(configdata, "Floor");
 
+    setRoomFloor(listFloor)
     setProperty(tempproperty);
     setWing(listWing);
     setRoomType(listroomtype);
@@ -447,6 +455,7 @@ export default function RoomManagement() {
 
     setChipAttributeDialog([]);
     setPropertyDialog(pageProperty);
+    setRoomFloorDialog(listFloor[0].value);
     setRoomTypeDialog(listroomtype[0].value);
     setBuildingDialog(listBuilding[0].value);
     setWingDialog(listWing[0].value);
@@ -500,7 +509,9 @@ export default function RoomManagement() {
     let listRoomSize = await getlist(configdata, "Room Size");
     let listRoomSeg = await getlist(configdata, "Room Seg");
     let listRoomStatus = await getlist(configdata, "Room Status");
+    let listFloor = await getlist(configdata, "Floor");
 
+    setRoomFloor(listFloor)
     setProperty(tempproperty);
     setWing(listWing);
     setRoomType(listroomtype);
@@ -522,7 +533,7 @@ export default function RoomManagement() {
     setRoomStatusDialog(dataRoombyid.content[0].status);
     setRoomNumber(dataRoombyid.content[0].no);
     setRoomDesc(dataRoombyid.content[0].description);
-    setRoomFloor(dataRoombyid.content[0].floor);
+    setRoomFloorDialog(dataRoombyid.content[0].floor);
     const roomDataEdit = dataRoombyid.content[0].attribute;
     var tempRoom = roomDataEdit.split(",");
     for (let i in attribute) {
@@ -550,7 +561,7 @@ export default function RoomManagement() {
     roomStatusDialog,
     chipAttributeDialog,
     roomDesc,
-    roomFloor
+    roomFloorDialog
   ) => {
     console.log(`
       roomNo : ${roomNo},
@@ -564,9 +575,9 @@ export default function RoomManagement() {
       roomStatusDialog : ${roomStatusDialog},
       chipAttributeDialog : ${chipAttributeDialog},
       roomDesc : ${roomDesc},
-      roomFloor : ${roomFloor}`);
-    if (roomNo == null) { setErrorMessage(true); setErrorParameter("Room Number"); }
-    else if (roomFloor == null) { setErrorMessage(true); setErrorParameter("Floor"); }
+      roomFloor : ${roomFloorDialog}`);
+    if (roomNo == null || roomNo == '') { setErrorMessage(true); setErrorParameter("Room Number"); }
+    // else if (roomFloor == null || roomFloor == '') { setErrorMessage(true); setErrorParameter("Floor"); }
     else {
       setErrorMessage(false);
       const AttributeTemp = new Set();
@@ -592,7 +603,7 @@ export default function RoomManagement() {
           roomStatusDialog: roomStatusDialog,
           chipAttributeDialog: attributeTempArray,
           roomDesc: roomDesc,
-          roomFloor: roomFloor,
+          roomFloor: roomFloorDialog,
         }
       );
       console.log("dataRoombyid", dataRoombyid);
@@ -670,7 +681,7 @@ export default function RoomManagement() {
     roomStatusDialog,
     chipAttributeDialog,
     roomDesc,
-    roomFloor
+    roomFloorDialog
   ) => {
     console.log(`
     ================= Insert ================
@@ -685,9 +696,9 @@ export default function RoomManagement() {
       roomStatusDialog : ${roomStatusDialog},
       chipAttributeDialog : ${chipAttributeDialog},
       roomDesc : ${roomDesc},
-      roomFloor : ${roomFloor}`);
-    if (roomNo == null) { setErrorMessage(true); setErrorParameter("Room Number"); }
-    else if (roomFloor == null) { setErrorMessage(true); setErrorParameter("Floor"); }
+      roomFloor : ${roomFloorDialog}`);
+    if (roomNo == null || roomNo == '') { setErrorMessage(true); setErrorParameter("Room Number"); }
+    // else if (roomFloor == null || roomFloor == '') { setErrorMessage(true); setErrorParameter("Floor"); }
     else {
       setErrorMessage(false);
       const AttributeTemp = new Set();
@@ -710,7 +721,7 @@ export default function RoomManagement() {
         roomStatusDialog: roomStatusDialog,
         chipAttributeDialog: attributeTempArray,
         roomDesc: roomDesc,
-        roomFloor: roomFloor,
+        roomFloor: roomFloorDialog,
       });
       console.log("postData", postData);
 
@@ -755,7 +766,7 @@ export default function RoomManagement() {
       data.content[data.content.length - 1].forEach((element) =>
         roomdata.push(
           createData(
-            i++,
+            element.id,
             element.propertycode,
             element.no,
             element.type,
@@ -827,7 +838,7 @@ export default function RoomManagement() {
     data.content[data.content.length - 1].forEach((element) =>
       roomdata.push(
         createData(
-          i++,
+          element.id,
           element.propertycode,
           element.no,
           element.type,
@@ -1090,14 +1101,24 @@ export default function RoomManagement() {
                         <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                           <TextField
                             // autoFocus
+                            select
                             id="outlined-basic"
                             label="Floor"
                             variant="outlined"
                             fullWidth
-                            // value={roomFloor}
+                            SelectProps={{
+                              native: true,
+                            }}
+                            // value={buildingDialog}
                             defaultValue={""}
-                            onChange={(e) => handleFloor(e)}
-                          />
+                            onChange={(e) => handleRoomFloorDialog(e)}
+                          >
+                            {roomFloor.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
                         </Grid>
                         <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                           <TextField
@@ -1324,7 +1345,7 @@ export default function RoomManagement() {
                           roomStatusDialog,
                           chipAttributeDialog,
                           roomDesc,
-                          roomFloor
+                          roomFloorDialog
                         )
                       }
                     >
@@ -1403,16 +1424,26 @@ export default function RoomManagement() {
                         </Grid>
                       </Grid>
                       <Grid container spacing={2} style={{ paddingTop: 15 }}>
-                        <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                           <TextField
                             // autoFocus
+                            select
                             id="outlined-basic"
-                            label="Floor"
+                            label="roomFloor"
                             variant="outlined"
                             fullWidth
-                            value={roomFloor}
-                            onChange={(e) => handleFloor(e)}
-                          />
+                            SelectProps={{
+                              native: true,
+                            }}
+                            value={roomFloorDialog}
+                            onChange={(e) => handleRoomFloorDialog(e)}
+                          >
+                            {roomFloor.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
                         </Grid>
                         <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                           <TextField
@@ -1631,7 +1662,7 @@ export default function RoomManagement() {
                           roomStatusDialog,
                           chipAttributeDialog,
                           roomDesc,
-                          roomFloor
+                          roomFloorDialog
                         )
                       }
                       variant="contained"

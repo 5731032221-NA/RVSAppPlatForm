@@ -615,7 +615,6 @@ export default function UserManagement() {
   const [errorParameter, setErrorParameter] = useState(null);
 
   const { store } = useContext(ReactReduxContext);
-
   React.useEffect(async () => {
     let dataRole = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", dataRole.content[dataRole.content.length - 1]);
@@ -719,39 +718,71 @@ export default function UserManagement() {
     // console.log("Edit databyid:", databyid);
     // console.log("Edit ID:", id);
     // setEditID(id);
+
+    setPermissionDialog(false);
     let userrole = await userrolebyusername(sessionStorage.getItem("auth"), username);
     let userproperty = await userpropertybyusername(sessionStorage.getItem("auth"), username);
-    console.log(userproperty.content[userproperty.content.length - 1])
-    console.log(userrole.content[userrole.content.length - 1])
-    let role = []
-    userrole.content[userrole.content.length - 1].split(",").forEach((element) => {
-      if (role.filter(x => x.label === element).length == 0) {
-        role.push({ key: element, label: element })
-      }
-    })
+    console.log("userrole", userrole.content[userrole.content.length - 1]);
+    let role = [];
+    const setrole = new Set();
+    if (userrole.content[userrole.content.length - 1] != "") {
+      userrole.content[userrole.content.length - 1].split(",").forEach((element) => {
+        if (role.filter(x => x.label === element).length == 0) {
+          role.push({ key: element, label: element })
+          setrole.add(element);
+        }
+      })
+    }
+    console.log("role", role)
 
+
+    await listproperty(Array.from(setrole));
     let property = []
-    userproperty.content[userproperty.content.length - 1].split(",").forEach((element) => {
-      if (property.filter(x => x.label === element).length == 0) {
-        property.push({ key: element, label: element })
-      }
-    })
-
+    if (userproperty.content[userproperty.content.length - 1] != "") {
+      userproperty.content[userproperty.content.length - 1].split(",").forEach((element) => {
+        if (property.filter(x => x.label === element).length == 0) {
+          property.push({ key: element, label: element })
+        }
+      })
+    }
     let position_json = []
     let listposition = await getposition(sessionStorage.getItem("auth"));
     listposition.content[listposition.content.length - 1].forEach((element) => {
 
-      position_json.push({ key: element.position, label: element.position })
+      if (position_json.filter(x => x.label === element.position).length == 0) {
+        position_json.push({ key: element.position, label: element.position })
+      }
 
     })
     position_json.push({ key: "Add new position", label: "Add new position" })
+
+
+    const temp = new Set();
+    if (role.length) {
+
+      let userper = await getuserpermission(sessionStorage.getItem("auth"), username);
+
+      if (Object.keys(userper.content[userper.content.length - 1]).length > 0) {
+        for (var i in role) {
+          temp.add(role[i].key);
+        }
+        let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), { roles: Array.from(temp) });
+        console.log("roleper", roleper)
+        let _data = JSON.parse(JSON.stringify(defaultdata));
+
+
+        rolepermissionedit(_data, roleper.content[roleper.content.length - 1], userper.content[userper.content.length - 1])
+        setData(_data);
+        setData((prevState) => [...prevState]);
+        setPermissionDialog(true);
+      }
+    }
 
     setEditUserName(username);
     setoldUserName(username);
     setEditFirstName(firstname);
     setEditLastName(lastname);
     setSelectPosition(position);
-    setPermissionDialog(false);
     setEditStatus(status)
     setChipRolesDialog((prev) => role);
     setChipPropertyDialog((prev) => property);
@@ -785,7 +816,7 @@ export default function UserManagement() {
     return list;
   };
 
-  const handlePermission = async (roles) => {
+  const handlePermission = async () => {
     const temp = new Set();
     if (chipRolesDialog.length) {
       for (var i in chipRolesDialog) {
@@ -803,14 +834,14 @@ export default function UserManagement() {
     }
 
 
-    setPermissionDialog(!permissionDialog);
-    if (permissionDialog) {
-      setDialogSize("sm");
-      setDialogRatio(12);
-    } else {
-      setDialogSize("md");
-      setDialogRatio(12);
-    }
+    setPermissionDialog(true);
+    // if (permissionDialog) {
+    //   setDialogSize("sm");
+    //   setDialogRatio(12);
+    // } else {
+    //   setDialogSize("md");
+    //   setDialogRatio(12);
+    // }
   };
 
   const rolepermissionedit = async (array, permission, userpermission) => {
@@ -885,7 +916,7 @@ export default function UserManagement() {
   };
 
 
-  const handlePermissionEdit = async (roles) => {
+  const handlePermissionEdit = async () => {
     const temp = new Set();
     if (chipRolesDialog.length) {
       for (var i in chipRolesDialog) {
@@ -968,11 +999,11 @@ export default function UserManagement() {
   ) => {
     // setEditFirstName(null);
     // setEditLastName(null);
-    if (code == null) {setErrorMessage(true); setErrorParameter("UserID");}
-    else if (firstName == null) {setErrorMessage(true); setErrorParameter("Firstname");}
-    else if (lastName == null) {setErrorMessage(true); setErrorParameter("Lastname");}
-    else if (chipRolesDialog.length == 0) {setErrorMessage(true); setErrorParameter("Roles");}
-    else if (chipPropertyDialog.length == 0) {setErrorMessage(true); setErrorParameter("Property");}
+    if (code == null || code == '') { setErrorMessage(true); setErrorParameter("UserID"); }
+    else if (firstName == null || firstName == '') { setErrorMessage(true); setErrorParameter("Firstname"); }
+    else if (lastName == null || lastName == '') { setErrorMessage(true); setErrorParameter("Lastname"); }
+    else if (chipRolesDialog.length == 0) { setErrorMessage(true); setErrorParameter("Roles"); }
+    else if (chipPropertyDialog.length == 0) { setErrorMessage(true); setErrorParameter("Property"); }
     else {
       setErrorMessage(false);
       if (position == "Add new position") {
@@ -1039,10 +1070,11 @@ export default function UserManagement() {
   //   setSelectProperty(event.target.value);
   // };
 
-  const listproperty = async (roles) => {
+  const listproperty = async (role) => {
+    // let oldproperty = properties;
     let changeproperty = await listpropertybyroles(
       sessionStorage.getItem("auth"),
-      { roles: roles }
+      { roles: role }
     );
     console.log("changeproperty", changeproperty);
     let tempproperty = [];
@@ -1060,8 +1092,13 @@ export default function UserManagement() {
     );
     console.log("tempproperty", tempproperty)
     setProperties(tempproperty)
-  }
 
+    // console.log("prop",oldproperty,properties)
+    setChipPropertyDialog((chips) =>
+      chips.filter((chips) => tempproperty.some(property =>
+        property.key === chips.key))
+    );
+  }
 
   const handleSelectRoles = async (event, key) => {
     setPermissionDialog(false);
@@ -1091,7 +1128,7 @@ export default function UserManagement() {
       listproperty(Array.from(temp));
     }
   };
-  const handleDeleteRoles = (chipToDelete) => () => {
+  const handleDeleteRoles = (chipToDelete) => async () => {
     setPermissionDialog(false);
     setChipRolesDialog((chips) =>
       chips.filter((chips) => chips.key !== chipToDelete.key)
@@ -1682,11 +1719,11 @@ export default function UserManagement() {
       position,
       role
     );
-    if (code == null) {setErrorMessage(true); setErrorParameter("UserID");}
-    else if (firstName == null) {setErrorMessage(true); setErrorParameter("Firstname");}
-    else if (lastName == null) {setErrorMessage(true); setErrorParameter("Lastname");}
-    else if (chipRolesDialog.length == 0) {setErrorMessage(true); setErrorParameter("Roles");}
-    else if (chipPropertyDialog.length == 0) {setErrorMessage(true); setErrorParameter("Property");}
+    if (code == null || code == '') { setErrorMessage(true); setErrorParameter("UserID"); }
+    else if (firstName == null || firstName == '') { setErrorMessage(true); setErrorParameter("Firstname"); }
+    else if (lastName == null || lastName == '') { setErrorMessage(true); setErrorParameter("Lastname"); }
+    else if (chipRolesDialog.length == 0) { setErrorMessage(true); setErrorParameter("Roles"); }
+    else if (chipPropertyDialog.length == 0) { setErrorMessage(true); setErrorParameter("Property"); }
     else {
       setErrorMessage(false);
       if (position == "Add new position") {
@@ -1768,6 +1805,10 @@ export default function UserManagement() {
     }
 
   };
+
+  const handleResetToDefault = () => {
+    handlePermission()
+  }
 
   const handleDialogDeleteUserClose = () => {
     setDialogDeleteUser(false);
@@ -2237,7 +2278,7 @@ export default function UserManagement() {
                     ></Grid>
                     <Divider style={{ marginTop: 10 }} />
                     <Container disableGutters>
-                      <Button style={{ margin: 15 }} variant="contained" onClick={() => setPermissionDialog(!permissionDialog)}>
+                      <Button style={{ margin: 15 }} variant="contained" onClick={() => handleResetToDefault()}>
                         Reset to Default
                       </Button>
                       <TreeView
@@ -2564,7 +2605,7 @@ export default function UserManagement() {
                     ></Grid>
                     <Divider style={{ marginTop: 10 }} />
                     <Container disableGutters>
-                      <Button style={{ margin: 15 }} variant="contained" onClick={() => setPermissionDialog(!permissionDialog)}>
+                      <Button style={{ margin: 15 }} variant="contained" onClick={() => handleResetToDefault()}>
                         Reset to Default
                       </Button>
                       <TreeView
