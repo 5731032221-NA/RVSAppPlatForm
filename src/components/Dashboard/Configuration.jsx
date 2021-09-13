@@ -83,6 +83,8 @@ export default function Configuration() {
   const [addChildValue, setAddChuldValue] = React.useState(null);
   const testa = "testa2";
   const [page, setPage] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState(false);
+  const [errorParameter, setErrorParameter] = React.useState(null);
   const [data, setData] = React.useState([
     {
       id: 1000000001,
@@ -315,26 +317,26 @@ export default function Configuration() {
     },
   ])
   const updateproperty = useSelector(state => state.reducer.property);
-  const [property,setProperty] = React.useState(updateproperty)
+  const [property, setProperty] = React.useState(updateproperty)
 
   React.useEffect(async () => {
     console.log("useEffect")
-    let configdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"),updateproperty);
-    setData(configdata.content[configdata.content.length-1])
+    let configdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"), updateproperty);
+    setData(configdata.content[configdata.content.length - 1])
     setProperty(prev => updateproperty);
-  
-   
+
+
   }, []);
 
-  setInterval(async() => {
+  setInterval(async () => {
     let _property = updateproperty;
     let currentProp = property;
     // console.log("property",property,_property)
     if (currentProp !== _property && currentProp !== null) {
-      console.log("property2",currentProp,_property)
-      let configdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"),_property);
+      console.log("property2", currentProp, _property)
+      let configdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"), _property);
       setProperty(prev => _property);
-      setData(configdata.content[configdata.content.length-1])
+      setData(configdata.content[configdata.content.length - 1])
     }
   }, 1000);
   // const [store.getState().reducer.configState, setstore.getState().reducer.configState] = React.useState("Configuration");
@@ -377,6 +379,7 @@ export default function Configuration() {
     // setAddChuldid(event.target.id.split("-")[0]);
     // setAddChuldName(event.target.id.split("-")[1]);
     // setAddchild(null);
+    setErrorMessage(false);
     setAddChuldValue(null);
     setAddchild(false);
     setDialogAdd(true);
@@ -390,6 +393,7 @@ export default function Configuration() {
     // setAddChuldid(event.target.id.split("-")[0]);
     // setAddChuldName(event.target.id.split("-")[1]);
     // setAddchild(null);
+    setErrorMessage(false);
     setAddChuldid(id);
     setAddChuldValue(name);
     setCode(node.code);
@@ -400,6 +404,7 @@ export default function Configuration() {
   };
 
   const handleDialogEditLang = (name, namelang, id) => {
+    setErrorMessage(false);
     setAddChuldid(id);
     setAddChuldName(name);
     setAddChuldNameLang(namelang);
@@ -478,7 +483,7 @@ export default function Configuration() {
   const handleDelete = async (id) => {
     console.log("deleteid", id);
     await prune(data, id);
-    let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"),{"configuration":data,"propertycode":property})
+    let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"), { "configuration": data, "propertycode": property })
   }
 
   const maxchildid = async (array, parentid) => {
@@ -557,15 +562,21 @@ export default function Configuration() {
 
 
   const handleAdd = async () => {
-    let id = addChildid;
-    console.log("addparentid", id);
-    let newid = await runningid(data, id)
-    console.log("newid", newid)
-    await (adding(data, id, addChildValue, newid))
-    console.log("added", data)
-    let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"),{"configuration":data,"propertycode":property})
-    // setData(data)
-    setDialogAdd(false);
+    if (code == null || code == '') { setErrorMessage(true); setErrorParameter("Code"); }
+    else if (addChildValue == null || addChildValue == '') { setErrorMessage(true); setErrorParameter("Name (EN)"); }
+    else if (description == null || description == '') { setErrorMessage(true); setErrorParameter("Description"); }
+    else {
+      setErrorMessage(false);
+      let id = addChildid;
+      console.log("addparentid", id);
+      let newid = await runningid(data, id)
+      console.log("newid", newid)
+      await (adding(data, id, addChildValue, newid))
+      console.log("added", data)
+      let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"), { "configuration": data, "propertycode": property })
+      // setData(data)
+      setDialogAdd(false);
+    }
   }
 
   const editing = async (array, label, name) => {
@@ -584,15 +595,20 @@ export default function Configuration() {
   }
 
   const handleEdit = async () => {
-    let id = addChildid;
-    console.log("editparentid", id);
-    // let newid = await runningid(data, id)
-    // console.log("newid", newid)
-    await (editing(data, id, addChildValue))
-    console.log(data)
-    let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"),{"configuration":data,"propertycode":property})
-    // setData(data)
-    setDialogEdit(false);
+    if (addChildValue == null || addChildValue == '') { setErrorMessage(true); setErrorParameter("Name (EN)"); }
+    else if (description == null || description == '') { setErrorMessage(true); setErrorParameter("Description"); }
+    else {
+      setErrorMessage(false);
+      let id = addChildid;
+      console.log("editparentid", id);
+      // let newid = await runningid(data, id)
+      // console.log("newid", newid)
+      await (editing(data, id, addChildValue))
+      console.log(data)
+      let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"), { "configuration": data, "propertycode": property })
+      // setData(data)
+      setDialogEdit(false);
+    }
   }
 
   const editingLang = async (array, label, name) => {
@@ -613,14 +629,20 @@ export default function Configuration() {
   }
 
   const handleEditLang = async () => {
-    let id = addChildid;
-    console.log("editparentid", id);
-    // let newid = await runningid(data, id)
-    // console.log("newid", newid)
-    await (editingLang(data, id, addChildValue))
-    console.log(data)
-    // setData(data)
-    setDialogEdit(false);
+    if (addChildValue == null || addChildValue == '') { setErrorMessage(true); setErrorParameter("Name (EN)"); }
+    else if (addChildNameLang == null || addChildNameLang == '') { setErrorMessage(true); setErrorParameter("Name (" + lang.toUpperCase() + ")"); }
+    else if (description == null || description == '') { setErrorMessage(true); setErrorParameter("Description"); }
+    else {
+      setErrorMessage(false);
+      let id = addChildid;
+      console.log("editparentid", id);
+      // let newid = await runningid(data, id)
+      // console.log("newid", newid)
+      await (editingLang(data, id, addChildValue))
+      console.log(data)
+      // setData(data)
+      setDialogEdit(false);
+    }
   }
 
 
@@ -800,6 +822,7 @@ export default function Configuration() {
                   </Grid>
 
                 </Container>
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
@@ -908,6 +931,7 @@ export default function Configuration() {
                   </Grid>
 
                 </Container>
+                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
@@ -957,7 +981,7 @@ export default function Configuration() {
             variant="h6"
             style={{ marginBottom: 15, fontSize: 18, color: "blue" }}
           >
-            Configuration 
+            Configuration
             {/* {data[0][testa]} */}
           </Typography>
           <Paper elevation={3} style={{ minHeight: 150, width: "100%" }}>
