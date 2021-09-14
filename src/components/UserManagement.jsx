@@ -1929,8 +1929,8 @@ export default function UserManagement() {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>User ID</TableCell>
-                    <TableCell>User Name</TableCell>
+                    <TableCell>Username</TableCell>
+                    <TableCell>Full Name</TableCell>
                     <TableCell>Position</TableCell>
                     <TableCell>Roles</TableCell>
                     <TableCell>Property</TableCell>
@@ -2057,7 +2057,7 @@ export default function UserManagement() {
                       <TextField
                         // autoFocus
                         id="outlined-basic"
-                        label="UserID"
+                        label="Username"
                         variant="outlined"
                         fullWidth
                         onChange={(e) => setEditUserID(e.target.value)}
@@ -2380,7 +2380,7 @@ export default function UserManagement() {
                       <TextField
                         // autoFocus
                         id="outlined-basic"
-                        label="UserID"
+                        label="Username"
                         variant="outlined"
                         fullWidth
                         onChange={(e) => setEditUserName(e.target.value)}
@@ -2696,8 +2696,29 @@ export default function UserManagement() {
                 Confirm Delete User
               </DialogTitle>
               <DialogContent>
-                <Typography variant="h5" color="initial">
-                  Confirm Delete {editUserName} {editFirstName} {editLastName}
+                <Typography>
+                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                    Username:&nbsp;
+                  </Typography>
+                  <Typography color="initial" display="inline">
+                    {editUserName}
+                  </Typography>
+                </Typography>
+                <Typography>
+                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                    Firstname:&nbsp;
+                  </Typography>
+                  <Typography color="initial" display="inline">
+                    {editFirstName}
+                  </Typography>
+                </Typography>
+                <Typography>
+                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                    Lastname:&nbsp;
+                  </Typography>
+                  <Typography color="initial" display="inline">
+                    {editLastName}
+                  </Typography>
                 </Typography>
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>

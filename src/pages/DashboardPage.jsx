@@ -782,6 +782,7 @@ export default function Dashboard() {
                       value={selectedProperty}
                       onChange={handleChangeProperty}
                       defaultValue={sessionStorage.getItem("property")}
+                      style={{width:160, height:40}}
                     >
                       {JSON.parse(sessionStorage.getItem("grantproperty")).map(
                         (item) => (
