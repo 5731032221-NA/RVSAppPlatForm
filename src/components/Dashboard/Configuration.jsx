@@ -770,9 +770,9 @@ export default function Configuration() {
               open={dialogAdd}
               onClose={handleDialogAddClose}
               aria-labelledby="form-dialog-title"
-              style={{
-                backgroundColor: "#000000",
-                opacity: 0.1,
+              style={{ 
+                backgroundColor: '#000000',
+                opacity: 0.13,
               }}
             >
               <DialogTitle id="form-dialog-title" style={{ color: "#2D62ED" }}>
@@ -898,9 +898,10 @@ export default function Configuration() {
               open={dialogEdit}
               onClose={handleDialogAddClose}
               aria-labelledby="form-dialog-title"
-              style={{
-                backgroundColor: "#000000",
-                opacity: 0.1,
+
+              style={{ 
+                backgroundColor: '#000000',
+                opacity: 0.13,
               }}
             >
               <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
