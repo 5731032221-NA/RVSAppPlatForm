@@ -630,7 +630,6 @@ export default function RoomManagement() {
       console.log("a", roomdata);
       setRows(roomdata);
       updatePageData(roomdata, page, rowsPerPage);
-
       setDialogEditRoom(false);
     }
   };
@@ -757,6 +756,7 @@ export default function RoomManagement() {
   };
 
   const handleSeaarchRequest = async (forSearch) => {
+    setPage(0);
     console.log("forSearch", forSearch);
     if (forSearch === null || forSearch === undefined || forSearch === "") {
       const data = await listRoom(sessionStorage.getItem("auth"));
@@ -780,7 +780,7 @@ export default function RoomManagement() {
       );
       console.log("a", roomdata);
       setRows(roomdata);
-      updatePageData(roomdata, page, rowsPerPage);
+      updatePageData(roomdata, 0, rowsPerPage);
     } else {
       const databysearch = await getRoombykey(
         sessionStorage.getItem("auth"),
@@ -808,7 +808,7 @@ export default function RoomManagement() {
         );
         console.log("a", roomdata);
         setRows(roomdata);
-        updatePageData(roomdata, page, rowsPerPage);
+        updatePageData(roomdata, 0, rowsPerPage);
       }
     }
   };
