@@ -2429,7 +2429,7 @@ export default function RoleManagement() {
               <DialogContent>
                 <Typography>
                   <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
-                      Name:&nbsp;
+                    Name:&nbsp;
                   </Typography>
                   <Typography color="initial" display="inline">
                     {roleName}
@@ -2437,14 +2437,15 @@ export default function RoleManagement() {
                 </Typography>
                 <Typography>
                   <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
-                  Code:&nbsp;
+                    Code:&nbsp;
                   </Typography>
                   <Typography color="initial" display="inline">
                     {roleCode}
                   </Typography>
-                </Typography><Typography>
+                </Typography>
+                <Typography>
                   <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
-                  Descrioption:&nbsp;
+                    Descrioption:&nbsp;
                   </Typography>
                   <Typography color="initial" display="inline">
                     {descriptionsRole}

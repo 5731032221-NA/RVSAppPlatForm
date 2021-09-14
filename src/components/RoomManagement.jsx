@@ -273,6 +273,7 @@ export default function RoomManagement() {
   const [roomStatus, setRoomStatus] = React.useState([]);
   const [wing, setWing] = React.useState([]);
   const [errorMessage, setErrorMessage] = useState(false);
+  const [errorDuplicate, setErrorDuplicate] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
   //Master Config
   const [rows, setRows] = useState([
@@ -464,6 +465,7 @@ export default function RoomManagement() {
     setRoomSegDialog(listRoomSeg[0].value);
     setRoomStatusDialog(listRoomStatus[0].value);
 
+    setErrorDuplicate(false);
     setErrorMessage(false);
     setDialogAddRoom(true);
   };
@@ -545,6 +547,7 @@ export default function RoomManagement() {
       }
     }
 
+    setErrorDuplicate(false);
     setErrorMessage(false);
     setDialogEditRoom(true);
   };
@@ -607,30 +610,34 @@ export default function RoomManagement() {
         }
       );
       console.log("dataRoombyid", dataRoombyid);
-
-      const data = await listRoom(sessionStorage.getItem("auth"));
-      console.log("data", data);
-      let roomdata = [];
-      let i = 0;
-      data.content[data.content.length - 1].forEach((element) =>
-        roomdata.push(
-          createData(
-            element.id,
-            element.propertycode,
-            element.no,
-            element.type,
-            element.floor,
-            element.building,
-            element.description,
-            element.status,
-            element.attribute
+      if (dataRoombyid.status == '1000') {
+        setErrorDuplicate(true);
+      }
+      else if (dataRoombyid.status == '2000') {
+        const data = await listRoom(sessionStorage.getItem("auth"));
+        console.log("data", data);
+        let roomdata = [];
+        let i = 0;
+        data.content[data.content.length - 1].forEach((element) =>
+          roomdata.push(
+            createData(
+              element.id,
+              element.propertycode,
+              element.no,
+              element.type,
+              element.floor,
+              element.building,
+              element.description,
+              element.status,
+              element.attribute
+            )
           )
-        )
-      );
-      console.log("a", roomdata);
-      setRows(roomdata);
-      updatePageData(roomdata, page, rowsPerPage);
-      setDialogEditRoom(false);
+        );
+        console.log("a", roomdata);
+        setRows(roomdata);
+        updatePageData(roomdata, page, rowsPerPage);
+        setDialogEditRoom(false);
+      }
     }
   };
 
@@ -724,30 +731,34 @@ export default function RoomManagement() {
       });
       console.log("postData", postData);
 
-      const data = await listRoom(sessionStorage.getItem("auth"));
-      console.log("data", data);
-      let roomdata = [];
-      let i = 0;
-      data.content[data.content.length - 1].forEach((element) =>
-        roomdata.push(
-          createData(
-            element.id,
-            element.propertycode,
-            element.no,
-            element.type,
-            element.floor,
-            element.building,
-            element.description,
-            element.status,
-            element.attribute
+      if (postData.status == '1000') {
+        setErrorDuplicate(true);
+      } else if (postData.status == '2000') {
+        const data = await listRoom(sessionStorage.getItem("auth"));
+        console.log("data", data);
+        let roomdata = [];
+        let i = 0;
+        data.content[data.content.length - 1].forEach((element) =>
+          roomdata.push(
+            createData(
+              element.id,
+              element.propertycode,
+              element.no,
+              element.type,
+              element.floor,
+              element.building,
+              element.description,
+              element.status,
+              element.attribute
+            )
           )
-        )
-      );
-      console.log("a", roomdata);
-      setRows(roomdata);
-      updatePageData(roomdata, page, rowsPerPage);
+        );
+        console.log("a", roomdata);
+        setRows(roomdata);
+        updatePageData(roomdata, page, rowsPerPage);
 
-      setDialogAddRoom(false);
+        setDialogAddRoom(false);
+      }
     }
   };
 
@@ -1320,6 +1331,7 @@ export default function RoomManagement() {
                       </Grid>
                     </Container>
                     {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                    {errorDuplicate ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>Duplicate Room Number</div> : null}
                   </DialogContent>
                   <DialogActions style={{ padding: 20 }}>
                     <Button
@@ -1639,6 +1651,7 @@ export default function RoomManagement() {
                       </Grid>
                     </Container>
                     {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                    {errorDuplicate ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>Duplicate Room Number</div> : null}
                   </DialogContent>
                   <DialogActions style={{ padding: 20 }}>
                     <Button
