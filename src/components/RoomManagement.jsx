@@ -362,7 +362,7 @@ export default function RoomManagement() {
     let listRoomSeg = await getlist(configdata, "Room Seg");
     let listRoomStatus = await getlist(configdata, "Room Status");
     let listFloor = await getlist(configdata, "Floor");
-    console.log("aaa",listFloor,listRoomStatus)
+    console.log("aaa", listFloor, listRoomStatus)
     setRoomFloor(listFloor)
     setWing(listWing)
     setRoomType(listroomtype);
@@ -1424,7 +1424,7 @@ export default function RoomManagement() {
                         </Grid>
                       </Grid>
                       <Grid container spacing={2} style={{ paddingTop: 15 }}>
-                      <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                        <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                           <TextField
                             // autoFocus
                             select
@@ -1690,8 +1690,13 @@ export default function RoomManagement() {
                         Confirm Delete Room Information
                       </DialogTitle>
                       <DialogContent>
-                        <Typography variant="h5" color="initial">
-                          Confirm Delete Room : {roomNumber}
+                        <Typography>
+                          <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                            Room Number:&nbsp;
+                          </Typography>
+                          <Typography color="initial" display="inline">
+                            {roomNumber}
+                          </Typography>
                         </Typography>
                       </DialogContent>
                       <DialogActions style={{ padding: 20 }}>

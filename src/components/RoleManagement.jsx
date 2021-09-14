@@ -648,10 +648,10 @@ export default function RoleManagement() {
     description,
     status
   ) => {
-    if (rolecode == null || rolecode == '') {setErrorMessage(true); setErrorParameter("Role Code");}
-    else if (rolename == null || rolename == '') {setErrorMessage(true); setErrorParameter("Role Name");}
-    else if (ChipPropertyDialog.length == 0) {setErrorMessage(true); setErrorParameter("Property");}
-    else if (description == null || description == '') {setErrorMessage(true); setErrorParameter("Description");}
+    if (rolecode == null || rolecode == '') { setErrorMessage(true); setErrorParameter("Role Code"); }
+    else if (rolename == null || rolename == '') { setErrorMessage(true); setErrorParameter("Role Name"); }
+    else if (ChipPropertyDialog.length == 0) { setErrorMessage(true); setErrorParameter("Property"); }
+    else if (description == null || description == '') { setErrorMessage(true); setErrorParameter("Description"); }
     else {
       setErrorMessage(false);
 
@@ -816,10 +816,10 @@ export default function RoleManagement() {
       description,
       status
     );
-    if (rolecode == null || rolecode == '') {setErrorMessage(true); setErrorParameter("Role Code");}
-    else if (rolename == null || rolename == '') {setErrorMessage(true); setErrorParameter("Role Name");}
-    else if (ChipPropertyDialog.length == 0) {setErrorMessage(true); setErrorParameter("Property");}
-    else if (description == null || description == '') {setErrorMessage(true); setErrorParameter("Description");}
+    if (rolecode == null || rolecode == '') { setErrorMessage(true); setErrorParameter("Role Code"); }
+    else if (rolename == null || rolename == '') { setErrorMessage(true); setErrorParameter("Role Name"); }
+    else if (ChipPropertyDialog.length == 0) { setErrorMessage(true); setErrorParameter("Property"); }
+    else if (description == null || description == '') { setErrorMessage(true); setErrorParameter("Description"); }
     else {
       setErrorMessage(false);
       let perm = await propertylist(data, rolecode);
@@ -2424,17 +2424,31 @@ export default function RoleManagement() {
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
               <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
-                Confirm Delete User
+                Confirm Delete Role
               </DialogTitle>
               <DialogContent>
-                <Typography variant="h5" color="initial">
-                  Confirm Delete {roleName}
+                <Typography>
+                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                      Name:&nbsp;
+                  </Typography>
+                  <Typography color="initial" display="inline">
+                    {roleName}
+                  </Typography>
                 </Typography>
-                <Typography variant="body1" color="initial">
-                  Code: {roleCode}
-                </Typography>
-                <Typography variant="title1" color="initial">
-                  Descrioption: {descriptionsRole}
+                <Typography>
+                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                  Code:&nbsp;
+                  </Typography>
+                  <Typography color="initial" display="inline">
+                    {roleCode}
+                  </Typography>
+                </Typography><Typography>
+                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                  Descrioption:&nbsp;
+                  </Typography>
+                  <Typography color="initial" display="inline">
+                    {descriptionsRole}
+                  </Typography>
                 </Typography>
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
