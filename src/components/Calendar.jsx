@@ -24,15 +24,16 @@ import {
   KeyboardDatePicker,
   DateRangePicker,
 } from "@material-ui/pickers";
-// const dataEvent = [
-//   { id: 1, title: "ROOM8050", start: "2021-09-15T21:11:54", end: "2021-09-17T21:11:54" },
-//   { id: 2, title: "ROOM8050", start: "2021-09-20", end: "2021-09-25" },
-// ];
+
+import {
+  getreservationroom,
+  postreservationroom,
+  getreservationroombyid,
+  updatereservationroom,
+  deletereservationroom,
+} from "../services/reservationRoom.service";
 
 const Calendar = (props) => {
-  // React.useEffect(() => {
-  //   console.log("Calendar",props.dataEventmain);
-  // });
   const [dialogReservationEdit, setDialogReservationEdit] =
     React.useState(false);
   const [selectedDateStartEdit, setSelectedDateStartEdit] = React.useState(
@@ -43,6 +44,22 @@ const Calendar = (props) => {
   );
   const [roomNum, setRoomNum] = React.useState("0000");
   const [dataDate, setDataDate] = React.useState([]);
+
+  React.useEffect(async () => {
+    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let datedata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      datedata.push({
+        id: element.roomno,
+        title: element.description,
+        start: element.startdate,
+        end: element.enddate,
+      })
+    );
+    setDataDate(datedata);
+    console.log("datedata", datedata);
+  }, []);
 
   const handleDateStartEdit = (date) => {
     // let dateNoTiome = date.toISOString();
@@ -65,8 +82,25 @@ const Calendar = (props) => {
     setDialogReservationEdit(false);
   };
 
-  const handleDialogReservationOpen = () => {
-    setDialogReservationEdit(true);
+  const handleDialogReservationDelete = async (roomno) => {
+    const deletedate = await deletereservationroom(
+      sessionStorage.getItem("auth"),
+      roomno
+    );
+    console.log("deletedate", deletedate);
+
+    // const data = await getreservationroom(sessionStorage.getItem("auth"));
+    // console.log("data", data);
+    // let datedata = [];
+    // data.content[data.content.length - 1].forEach((element) =>
+    //   datedata.push({
+    //     id: element.roomno,
+    //     title: element.description,
+    //     start: element.startdate,
+    //     end: element.enddate,
+    //   })
+    // );
+    // setDialogReservationEdit(false);
   };
 
   const handleDialogReservationSave = () => {
@@ -81,9 +115,6 @@ const Calendar = (props) => {
     // ]);
     // console.log("dateData", dataDate);
     setDialogReservationEdit(false);
-  };
-  const handleprop = (data) => {
-    console.log(props.dataEventmain);
   };
 
   const handleClick = (data) => {
@@ -103,9 +134,6 @@ const Calendar = (props) => {
   const printdataselect = (data) => {
     console.log("printdataselect", data);
   };
-  const [datadate, setDatadate] = React.useState([
-    { title: "ROOM8067", start: "2021-09-15", end: "2021-09-17" },
-  ]);
 
   return (
     <Container maxWidth="xl" disableGutters>
@@ -121,7 +149,7 @@ const Calendar = (props) => {
           editable={true}
           selectable={true}
           weekends={true}
-          events={props.dataEventmain}
+          events={dataDate}
           droppable={true}
           draggable={true}
           startEditable={true}
@@ -131,9 +159,6 @@ const Calendar = (props) => {
           eventChange={printdatachange}
           eventClick={handleClick}
         />
-        <Button onClick={handleprop} variant="contained" color="default">
-          Try
-        </Button>
       </Paper>
       {/* ----------------------EDTI RESERVATION------------------ */}
       <Dialog
@@ -229,7 +254,7 @@ const Calendar = (props) => {
                     label="Departure - Date/Time"
                     inputVariant="outlined"
                     // format="dd/MM/yyyy"
-                    // value={selectedDateEndEdit}
+                    value={selectedDateEndEdit}
                     onChange={handleDateEndEdit}
                     fullWidth
                   />
@@ -258,6 +283,16 @@ const Calendar = (props) => {
           </Container>
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
+          <Grid container style={{ flexGrow: 1 }}>
+            <Button
+              onClick={() => handleDialogReservationDelete(roomNum)}
+              variant="text"
+              style={{ backgroundColor: "red", color: "white" }}
+            >
+              Delete
+            </Button>
+          </Grid>
+
           <Button
             onClick={handleDialogReservationClose}
             variant="text"
