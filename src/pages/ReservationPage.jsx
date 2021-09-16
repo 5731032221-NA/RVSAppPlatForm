@@ -15,7 +15,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import { TextField } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
-
+import {
+  getreservationroom,
+  postreservationroom,
+  getreservationroombyid,
+  updatereservationroom,
+  deletereservationroom,
+} from "../services/reservationRoom.service";
 import {
   DatePicker,
   TimePicker,
@@ -26,22 +32,39 @@ import {
   DateRangePicker,
 } from "@material-ui/pickers";
 
-const dataEvent = [
-  { id: 1, title: "ROOM8050", start: "2021-09-15", end: "2021-09-17" },
-  { id: 2, title: "ROOM8050", start: "2021-09-20", end: "2021-09-25" },
-];
+// const dataEvent = [
+//   { id: 1, title: "ROOM8050", start: "2021-09-15", end: "2021-09-17" },
+//   { id: 2, title: "ROOM8050", start: "2021-09-20", end: "2021-09-25" },
+// ];
 
 export const ReservationPage = (props) => {
-  // var dateData = [];
   const [dialogReservation, setDialogReservation] = React.useState(false);
   const [selectedDateStart, setSelectedDateStart] = React.useState(
-    new Date("2021-09-13T21:11:54")
+    // new Date("2021-09-13T21:11:54")
+    new Date("2021-09-13")
   );
   const [selectedDateEnd, setSelectedDateEnd] = React.useState(
-    new Date("2021-09-13T21:11:54")
+    // new Date("2021-09-13T21:11:54")
+    new Date("2021-09-13")
   );
   const [roomNum, setRoomNum] = React.useState("0000");
   const [dataDate, setDataDate] = React.useState([]);
+
+  React.useEffect(async () => {
+    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let datedata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      datedata.push({
+        id: element.roomno,
+        title: element.description,
+        start: element.startdate,
+        end: element.enddate,
+      })
+    );
+    setDataDate(datedata);
+    console.log("datedata", datedata);
+  }, []); 
 
   const handleDateStart = (date) => {
     let dateNoTiome = date.toISOString();
@@ -68,29 +91,29 @@ export const ReservationPage = (props) => {
     setDialogReservation(true);
   };
 
-  const handleDialogReservationSave = () => {
-    // var dateData = [];
-    // dateData.push({
-    //   id: roomNum,
-    //   title: "ROOM" + roomNum,
-    //   start: selectedDateStart,
-    //   end: selectedDateEnd,
-    // });
-    // console.log("dateData", dateData);
-    setDataDate((prevState) => [
-      ...prevState,
-      {
-        id: roomNum,
-        title: "ROOM" + roomNum,
-        start: selectedDateStart,
-        end: selectedDateEnd,
-      },
-    ]);
-    // console.log("dateData", dataDate);
+  const handleDialogReservationSave = async (roomno, startdate, enddate) => {
+    const postdate = await postreservationroom(sessionStorage.getItem("auth"), {
+      roomno: roomno,
+      startdate: startdate,
+      enddate: enddate,
+      description: "ROOM" + roomno,
+    });
+    
+    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let datedata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      datedata.push({
+        id: element.roomno,
+        title: element.description,
+        start: element.startdate,
+        end: element.enddate,
+      })
+    );
+    setDataDate(datedata);
+    
+    console.log("postdate", postdate);
     setDialogReservation(false);
-  };
-  const handleprop = () => {
-    console.log("dateData", dataDate);
   };
 
   return (
@@ -125,13 +148,6 @@ export const ReservationPage = (props) => {
                   onClick={handleDialogReservationOpen}
                 >
                   New Reservation
-                </Button>
-                <Button
-                  onClick={handleprop}
-                  variant="contained"
-                  color="default"
-                >
-                  Try
                 </Button>
               </Grid>
             </Paper>
@@ -177,7 +193,7 @@ export const ReservationPage = (props) => {
         </Grid>
         <Grid item xs={12} sm={12} md={9} lg={9} xl={9}>
           {/* ----------------------Calendar------------------ */}
-          <Calendar dataEventmain={dataDate} />
+          <Calendar dataDate={dataDate} />
           {/* ----------------------Calendar------------------ */}
         </Grid>
       </Grid>
@@ -262,7 +278,7 @@ export const ReservationPage = (props) => {
                     label="Arrival - Date/Time"
                     inputVariant="outlined"
                     // format="dd/MM/yyyy"
-                    value={selectedDateStart}
+                    defaultValue={selectedDateStart}
                     onChange={handleDateStart}
                     fullWidth
                   />
@@ -276,7 +292,7 @@ export const ReservationPage = (props) => {
                     label="Departure - Date/Time"
                     inputVariant="outlined"
                     // format="dd/MM/yyyy"
-                    value={selectedDateEnd}
+                    defaultValue={selectedDateEnd}
                     onChange={handleDateEnd}
                     fullWidth
                   />
@@ -301,6 +317,7 @@ export const ReservationPage = (props) => {
                   fullWidth
                 />
               </Grid>
+              {/* ==== DateRangePicker available in v4 alpha, not v3 ====*/}
               {/* <DateRangePicker
                 renderInput={(startProps, endProps) => (
                   <Grid container>
@@ -308,7 +325,6 @@ export const ReservationPage = (props) => {
                   </Grid>
                 )}
               /> */}
-              {/* DateRangePicker available in v4 alpha, not v3 */}
             </Grid>
           </Container>
         </DialogContent>
@@ -321,7 +337,13 @@ export const ReservationPage = (props) => {
             Cancel
           </Button>
           <Button
-            onClick={() => handleDialogReservationSave()}
+            onClick={() =>
+              handleDialogReservationSave(
+                roomNum,
+                selectedDateStart,
+                selectedDateEnd
+              )
+            }
             variant="contained"
             color="primary"
           >
