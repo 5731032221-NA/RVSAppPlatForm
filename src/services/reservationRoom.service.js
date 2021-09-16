@@ -51,6 +51,7 @@ module.exports = {
       body: JSON.stringify(req),
     }).then(async (res) => res.json());
   },
+  
   deletereservationroom: async function (accessToken, roomno) {
     return fetch(`http://localhost:8082/reservation-room/${roomno}`, {
       method: "DELETE",

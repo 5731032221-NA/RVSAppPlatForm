@@ -36,6 +36,8 @@ import {
 const Calendar = (props) => {
   const [dialogReservationEdit, setDialogReservationEdit] =
     React.useState(false);
+  const [dialogReservationChange, setDialogReservationChange] =
+    React.useState(false);
   const [selectedDateStartEdit, setSelectedDateStartEdit] = React.useState(
     new Date("2021-09-13T21:11:54")
   );
@@ -43,9 +45,46 @@ const Calendar = (props) => {
     new Date("2021-09-13T21:11:54")
   );
   const [roomNum, setRoomNum] = React.useState("0000");
-  const [dataDate, setDataDate] = React.useState([]);
+  const [dataDate, setDataDate] = React.useState(props.dataDate);
+  const [oldDate, setOldDate] = React.useState({
+    id: "0000",
+    title: "oldDescription",
+    start: "start",
+    end: "end",
+  });
+  const [newDate, setNewDate] = React.useState({
+    id: "0000",
+    title: "newDescription",
+    start: "start",
+    end: "end",
+  });
 
-  React.useEffect(async () => {
+  React.useEffect(() => {
+    setDataDate(props.dataDate);
+  }, [props.dataDate]);
+
+  const handleDateStartEdit = (date) => {
+    let dateNoTiome = date.toISOString();
+    let T = dateNoTiome.split("T");
+    setSelectedDateStartEdit(T[0]);
+    console.log("dateNoTiome", T);
+  };
+  const handleDateEndEdit = (date) => {
+    let dateNoTiome = date.toISOString();
+    let T = dateNoTiome.split("T");
+    setSelectedDateEndEdit(T[0]);
+    console.log("dateNoTiome", T);
+  };
+  const handleRoomNum = (event) => {
+    setRoomNum(event.target.value);
+    console.log(event.target.value);
+  };
+
+  const handleDialogReservationClose = () => {
+    setDialogReservationEdit(false);
+  };
+
+  const handleDialogReservationChangeClose = async () => {
     const data = await getreservationroom(sessionStorage.getItem("auth"));
     console.log("data", data);
     let datedata = [];
@@ -58,28 +97,7 @@ const Calendar = (props) => {
       })
     );
     setDataDate(datedata);
-    console.log("datedata", datedata);
-  }, []);
-
-  const handleDateStartEdit = (date) => {
-    // let dateNoTiome = date.toISOString();
-    // let T = dateNoTiome.split("T");
-    // setSelectedDateStartEdit(T[0]);
-    // console.log("dateNoTiome", T);
-  };
-  const handleDateEndEdit = (date) => {
-    // let dateNoTiome = date.toISOString();
-    // let T = dateNoTiome.split("T");
-    // setSelectedDateEndEdit(T[0]);
-    // console.log("dateNoTiome", T);
-  };
-  const handleRoomNum = (event) => {
-    setRoomNum(event.target.value);
-    console.log(event.target.value);
-  };
-
-  const handleDialogReservationClose = () => {
-    setDialogReservationEdit(false);
+    setDialogReservationChange(false);
   };
 
   const handleDialogReservationDelete = async (roomno) => {
@@ -89,31 +107,48 @@ const Calendar = (props) => {
     );
     console.log("deletedate", deletedate);
 
-    // const data = await getreservationroom(sessionStorage.getItem("auth"));
-    // console.log("data", data);
-    // let datedata = [];
-    // data.content[data.content.length - 1].forEach((element) =>
-    //   datedata.push({
-    //     id: element.roomno,
-    //     title: element.description,
-    //     start: element.startdate,
-    //     end: element.enddate,
-    //   })
-    // );
-    // setDialogReservationEdit(false);
+    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let datedata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      datedata.push({
+        id: element.roomno,
+        title: element.description,
+        start: element.startdate,
+        end: element.enddate,
+      })
+    );
+    setDataDate(datedata);
+
+    setDialogReservationEdit(false);
   };
 
-  const handleDialogReservationSave = () => {
-    // setDataDate((prevState) => [
-    //   ...prevState,
-    //   {
-    //     id: roomNum,
-    //     title: "ROOM" + roomNum,
-    //     start: selectedDateStartEdit,
-    //     end: selectedDateEndEdit,
-    //   },
-    // ]);
-    // console.log("dateData", dataDate);
+  const handleDialogReservationSave = async () => {
+    const roomno = roomNum;
+    const updatedata = await updatereservationroom(
+      sessionStorage.getItem("auth"),
+      roomno,
+      {
+        id: roomno,
+        title: "ROOM" + roomno,
+        start: selectedDateStartEdit,
+        end: selectedDateEndEdit,
+      }
+    );
+    console.log("updatedata", updatedata);
+    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let datedata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      datedata.push({
+        id: element.roomno,
+        title: element.description,
+        start: element.startdate,
+        end: element.enddate,
+      })
+    );
+    setDataDate(datedata);
+
     setDialogReservationEdit(false);
   };
 
@@ -125,9 +160,53 @@ const Calendar = (props) => {
     setRoomNum(data.event.id);
     setDialogReservationEdit(true);
   };
-  const printdatachange = (data) => {
+  const handleChangeDnD = (data) => {
     console.log("printdatachange", data);
+    setOldDate({
+      id: data.oldEvent.id,
+      title: data.oldEvent.title,
+      start: data.oldEvent.startStr,
+      end: data.oldEvent.endStr,
+    });
+    setNewDate({
+      id: data.event.id,
+      title: data.event.title,
+      start: data.event.startStr,
+      end: data.event.endStr,
+    });
+    setDialogReservationChange(true);
   };
+
+  const handleChangeDnDSave = async (newDate) => {
+    // console.log("newDate", newDate);
+    const roomno = newDate.id;
+    const updatedata = await updatereservationroom(
+      sessionStorage.getItem("auth"),
+      roomno,
+      {
+        id: newDate.id,
+        title: newDate.title,
+        start: newDate.start,
+        end: newDate.end,
+      }
+    );
+    console.log("updatedata", updatedata);
+    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let datedata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      datedata.push({
+        id: element.roomno,
+        title: element.description,
+        start: element.startdate,
+        end: element.enddate,
+      })
+    );
+    setDataDate(datedata);
+
+    setDialogReservationChange(false);
+  };
+
   const printdatadrop = (data) => {
     console.log("printdatadrop", data);
   };
@@ -156,8 +235,9 @@ const Calendar = (props) => {
           // ------------------
           select={printdataselect}
           drop={printdatadrop}
-          eventChange={printdatachange}
+          eventChange={handleChangeDnD}
           eventClick={handleClick}
+          rerenderDelay
         />
       </Paper>
       {/* ----------------------EDTI RESERVATION------------------ */}
@@ -270,6 +350,7 @@ const Calendar = (props) => {
               <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                 <TextField
                   // autoFocus
+                  disabled
                   id="outlined-basic"
                   label="Room Number"
                   variant="outlined"
@@ -292,7 +373,6 @@ const Calendar = (props) => {
               Delete
             </Button>
           </Grid>
-
           <Button
             onClick={handleDialogReservationClose}
             variant="text"
@@ -302,6 +382,93 @@ const Calendar = (props) => {
           </Button>
           <Button
             onClick={() => handleDialogReservationSave()}
+            variant="contained"
+            color="primary"
+          >
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* -------------------------------------- */}
+
+      {/* ----------------------Handle drang and drop change------------------ */}
+      <Dialog
+        fullWidth="true"
+        maxWidth="sm"
+        open={dialogReservationChange}
+        onClose={handleDialogReservationChangeClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+          CONFIRM CHANGE RESERVATION INFORMATION
+        </DialogTitle>
+
+        <DialogContent>
+          <Container maxWidth="xl" disableGutters>
+            <Grid container spacing={2} style={{ paddingTop: 20 }}>
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                <Typography variant="h5" color="initial">
+                  Current information
+                </Typography>
+              </Grid>
+
+              <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                <TextField
+                  disabled
+                  label="Start date"
+                  variant="outlined"
+                  value={oldDate.start}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                <TextField
+                  disabled
+                  label="End date"
+                  variant="outlined"
+                  value={oldDate.end}
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={2} style={{ paddingTop: 20 }}>
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                <Typography variant="h5" color="primary">
+                  New information
+                </Typography>
+              </Grid>
+
+              <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                <TextField
+                  disabled
+                  label="Start date"
+                  variant="outlined"
+                  value={newDate.start}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                <TextField
+                  disabled
+                  label="End date"
+                  variant="outlined"
+                  value={newDate.end}
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+          </Container>
+        </DialogContent>
+        <DialogActions style={{ padding: 20 }}>
+          <Button
+            onClick={handleDialogReservationChangeClose}
+            variant="text"
+            color="primary"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleChangeDnDSave(newDate)}
             variant="contained"
             color="primary"
           >

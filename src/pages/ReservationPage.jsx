@@ -48,7 +48,23 @@ export const ReservationPage = (props) => {
     new Date("2021-09-13")
   );
   const [roomNum, setRoomNum] = React.useState("0000");
-  // const [dataDate, setDataDate] = React.useState([]);
+  const [dataDate, setDataDate] = React.useState([]);
+
+  React.useEffect(async () => {
+    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let datedata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      datedata.push({
+        id: element.roomno,
+        title: element.description,
+        start: element.startdate,
+        end: element.enddate,
+      })
+    );
+    setDataDate(datedata);
+    console.log("datedata", datedata);
+  }, []); 
 
   const handleDateStart = (date) => {
     let dateNoTiome = date.toISOString();
@@ -82,23 +98,20 @@ export const ReservationPage = (props) => {
       enddate: enddate,
       description: "ROOM" + roomno,
     });
-    // var dateData = [];
-    // dateData.push({
-    //   id: roomNum,
-    //   title: "ROOM" + roomNum,
-    //   start: selectedDateStart,
-    //   end: selectedDateEnd,
-    // });
-    // console.log("dateData", dateData);
-    // setDataDate((prevState) => [
-    //   ...prevState,
-    //   {
-    //     id: roomNum,
-    //     title: "ROOM" + roomNum,
-    //     start: selectedDateStart,
-    //     end: selectedDateEnd,
-    //   },
-    // ]);
+    
+    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let datedata = [];
+    data.content[data.content.length - 1].forEach((element) =>
+      datedata.push({
+        id: element.roomno,
+        title: element.description,
+        start: element.startdate,
+        end: element.enddate,
+      })
+    );
+    setDataDate(datedata);
+    
     console.log("postdate", postdate);
     setDialogReservation(false);
   };
@@ -180,7 +193,7 @@ export const ReservationPage = (props) => {
         </Grid>
         <Grid item xs={12} sm={12} md={9} lg={9} xl={9}>
           {/* ----------------------Calendar------------------ */}
-          <Calendar />
+          <Calendar dataDate={dataDate} />
           {/* ----------------------Calendar------------------ */}
         </Grid>
       </Grid>
