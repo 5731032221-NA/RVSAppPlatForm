@@ -1334,7 +1334,7 @@ export default function UserManagement() {
                       display="inline"
                         variant="h6"
                         color="initial"
-                        style={{ color: 'green', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
+                        style={{ color: 'green', fontSize: 16, paddingTop: 5, paddingBottom: 10 , paddingLeft: 5}}
                       >
                          <PersonAddIcon style={{ fontSize: 16 }} />
                       </Typography>
@@ -1730,7 +1730,7 @@ export default function UserManagement() {
                             display="inline"
                             variant="h6"
                             color="initial"
-                            style={{ color: "green", fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
+                            style={{ color: "green", fontSize: 16, paddingTop: 5, paddingBottom: 10, paddingLeft: 5 }}
                           >
                              <PersonAddIcon style={{ fontSize: 16 }} />
                           </Typography>
