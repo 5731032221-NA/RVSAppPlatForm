@@ -201,24 +201,24 @@ function createData(
 //     label: "Vacant Clean",
 //   },
 // ];
-const attribute = [
-  {
-    key: "BC",
-    label: "BC",
-  },
-  {
-    key: "MINIBAR",
-    label: "Minibar",
-  },
-  {
-    key: "NTV",
-    label: "NTV",
-  },
-  {
-    key: "SM",
-    label: "SM",
-  }
-];
+// const attribute = [
+//   {
+//     key: "BC",
+//     label: "BC",
+//   },
+//   {
+//     key: "MINIBAR",
+//     label: "Minibar",
+//   },
+//   {
+//     key: "NTV",
+//     label: "NTV",
+//   },
+//   {
+//     key: "SM",
+//     label: "SM",
+//   }
+// ];
 const userValues = "";
 
 function preventDefault(event) {
@@ -271,6 +271,7 @@ export default function RoomManagement() {
   const [roomSize, setRoomSize] = React.useState([]);
   const [roomSeg, setRoomSeg] = React.useState([]);
   const [roomStatus, setRoomStatus] = React.useState([]);
+  const [attribute, setAttribute] = React.useState([]);
   const [wing, setWing] = React.useState([]);
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorDuplicate, setErrorDuplicate] = useState(false);
@@ -363,7 +364,9 @@ export default function RoomManagement() {
     let listRoomSeg = await getlist(configdata, "Room Seg");
     let listRoomStatus = await getlist(configdata, "Room Status");
     let listFloor = await getlist(configdata, "Floor");
-    console.log("aaa", listFloor, listRoomStatus)
+    let listattribute = await getlist(configdata, "Attribute");
+    setChipAttributeDialog([]);
+    setAttribute(listattribute);
     setRoomFloor(listFloor)
     setWing(listWing)
     setRoomType(listroomtype);
@@ -443,7 +446,9 @@ export default function RoomManagement() {
     let listRoomSeg = await getlist(configdata, "Room Seg");
     let listRoomStatus = await getlist(configdata, "Room Status");
     let listFloor = await getlist(configdata, "Floor");
-
+    let listattribute = await getlist(configdata, "Attribute");
+    setChipAttributeDialog([]);
+    setAttribute(listattribute);
     setRoomFloor(listFloor)
     setProperty(tempproperty);
     setWing(listWing);
@@ -454,7 +459,6 @@ export default function RoomManagement() {
     setRoomSeg(listRoomSeg);
     setRoomStatus(listRoomStatus);
 
-    setChipAttributeDialog([]);
     setPropertyDialog(pageProperty);
     setRoomFloorDialog(listFloor[0].value);
     setRoomTypeDialog(listroomtype[0].value);
@@ -512,8 +516,10 @@ export default function RoomManagement() {
     let listRoomSeg = await getlist(configdata, "Room Seg");
     let listRoomStatus = await getlist(configdata, "Room Status");
     let listFloor = await getlist(configdata, "Floor");
-
-    setRoomFloor(listFloor)
+    let listattribute = await getlist(configdata, "Attribute");
+    setChipAttributeDialog([]);
+    setAttribute(listattribute);
+    setRoomFloor(listFloor);
     setProperty(tempproperty);
     setWing(listWing);
     setRoomType(listroomtype);
@@ -523,7 +529,6 @@ export default function RoomManagement() {
     setRoomSeg(listRoomSeg);
     setRoomStatus(listRoomStatus);
 
-    setChipAttributeDialog([]);
     setRoomID(dataRoombyid.content[0].id)
     setPropertyDialog(dataRoombyid.content[0].propertycode);
     setRoomTypeDialog(dataRoombyid.content[0].type);
@@ -1292,8 +1297,8 @@ export default function RoomManagement() {
                         >
                           {attribute.map((option) => (
                             <MenuItem
-                              key={option.key}
-                              name={option.key}
+                              label={option.label}
+                              name={option.label}
                               value={option.label}
                             >
                               {option.label}
@@ -1612,8 +1617,8 @@ export default function RoomManagement() {
                         >
                           {attribute.map((option) => (
                             <MenuItem
-                              key={option.key}
-                              name={option.key}
+                              label={option.label}
+                              name={option.label}
                               value={option.label}
                             >
                               {option.label}

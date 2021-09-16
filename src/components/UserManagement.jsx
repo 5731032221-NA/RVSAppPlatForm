@@ -1306,16 +1306,19 @@ export default function UserManagement() {
 
 
                   <Grid item style={{ flexGrow: 1 }} >
-                    {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
+                  <Typography>
+                    {nodes.create || nodes.read || nodes.update || nodes.delete ?
                       <Typography
+                      display="inline"
                         variant="h6"
                         color="initial"
                         style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
                       >
-                        {nodes.name}  <UpdateIcon style={{ fontSize: 16 }} />
+                        {nodes.name} 
                       </Typography>
                       :
                       <Typography
+                      display="inline"
                         variant="h6"
                         color="initial"
                         style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
@@ -1323,6 +1326,19 @@ export default function UserManagement() {
                         {nodes.name}
                       </Typography>
                     }
+                    {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
+                      <Typography
+                      display="inline"
+                        variant="h6"
+                        color="initial"
+                        style={{ color: 'green', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
+                      >
+                         <UpdateIcon style={{ fontSize: 16 }} />
+                      </Typography>
+                      :
+                      null
+                    }
+                    </Typography>
                   </Grid>
                   <Grid item>
                     <FormControlLabel
@@ -1652,40 +1668,73 @@ export default function UserManagement() {
               <div>
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
-                    {
-                      nodes.children.some(item => {
-                        if (item.permision == false) return item.children.some(childitem => childitem.edited_create === true)
-                        else return item.edited_create === true
-                      }) ||
+                    <Typography>
+                      {
                         nodes.children.some(item => {
-                          if (item.permision == false) return item.children.some(childitem => childitem.edited_read === true)
-                          else return item.edited_read === true
+                          if (item.permision == false) return item.children.some(childitem => childitem.create === true)
+                          else return item.create === true
                         }) ||
+                          nodes.children.some(item => {
+                            if (item.permision == false) return item.children.some(childitem => childitem.read === true)
+                            else return item.read === true
+                          }) ||
+                          nodes.children.some(item => {
+                            if (item.permision == false) return item.children.some(childitem => childitem.update === true)
+                            else return item.update === true
+                          }) ||
+                          nodes.children.some(item => {
+                            if (item.permision == false) return item.children.some(childitem => childitem.delete === true)
+                            else return item.delete === true
+                          })
+                          ?
+                          <Typography
+                            display="inline"
+                            variant="h6"
+                            color="initial"
+                            style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
+                          >
+                            {nodes.name} 
+                          </Typography>
+                          :
+                          <Typography
+                            display="inline"
+                            variant="h6"
+                            color="initial"
+                            style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                          >
+                            {nodes.name}
+                          </Typography>
+                      }
+                      {
                         nodes.children.some(item => {
-                          if (item.permision == false) return item.children.some(childitem => childitem.edited_update === true)
-                          else return item.edited_update === true
+                          if (item.permision == false) return item.children.some(childitem => childitem.edited_create === true)
+                          else return item.edited_create === true
                         }) ||
-                        nodes.children.some(item => {
-                          if (item.permision == false) return item.children.some(childitem => childitem.edited_delete === true)
-                          else return item.edited_delete === true
-                        })
-                        ?
-                        <Typography
-                          variant="h6"
-                          color="initial"
-                          style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
-                        >
-                          {nodes.name}  <UpdateIcon style={{ fontSize: 16 }} />
-                        </Typography>
-                        :
-                        <Typography
-                          variant="h6"
-                          color="initial"
-                          style={{ fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
-                        >
-                          {nodes.name}
-                        </Typography>
-                    }
+                          nodes.children.some(item => {
+                            if (item.permision == false) return item.children.some(childitem => childitem.edited_read === true)
+                            else return item.edited_read === true
+                          }) ||
+                          nodes.children.some(item => {
+                            if (item.permision == false) return item.children.some(childitem => childitem.edited_update === true)
+                            else return item.edited_update === true
+                          }) ||
+                          nodes.children.some(item => {
+                            if (item.permision == false) return item.children.some(childitem => childitem.edited_delete === true)
+                            else return item.edited_delete === true
+                          })
+                          ?
+                          <Typography
+                            display="inline"
+                            variant="h6"
+                            color="initial"
+                            style={{ color: "green", fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
+                          >
+                            <UpdateIcon style={{ fontSize: 16 }} />
+                          </Typography>
+                          :
+                          null
+                      }
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Divider />
@@ -2030,7 +2079,7 @@ export default function UserManagement() {
         {/* ==================== Dialog New User========================= */}
         <Dialog
           fullWidth="true"
-          maxWidth={dialogSize}
+          maxWidth="md"
           open={dialogAddUser}
           onClose={handleDialogAddUserClose}
           aria-labelledby="form-dialog-title"
@@ -2354,7 +2403,7 @@ export default function UserManagement() {
         {/* ==================== Dialog Edit User========================= */}
         <Dialog
           fullWidth="true"
-          maxWidth={dialogSize}
+          maxWidth="md"
           open={dialogEditUser}
           onClose={handleDialogEditUserClose}
           aria-labelledby="form-dialog-title"

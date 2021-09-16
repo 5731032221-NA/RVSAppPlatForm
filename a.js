@@ -262,6 +262,54 @@ async function tojs() {
                             ],
                             "createdate": "2021-08-13 12:03:00",
                             "description": "ZONE description"
+                        },
+                        {
+                            "id": 1000000007,
+                            "code": "ATTRIBUTE",
+                            "RefNo": "1.1.1.6",
+                            "master": true,
+                            "name_en": "Attribute",
+                            "addchild": true,
+                            "children": [
+                                {
+                                    "code": "BC",
+                                    "RefNo": "1.1.1.6.1",
+                                    "master": false,
+                                    "name_en": "BC",
+                                    "addchild": false,
+                                    "createdate": "2021-09-10 14:10:4",
+                                    "description": "BC Desc"
+                                },
+                                {
+                                    "code": "MINIBAR",
+                                    "RefNo": "1.1.1.6.2",
+                                    "master": false,
+                                    "name_en": "Minibar",
+                                    "addchild": false,
+                                    "createdate": "2021-09-10 14:11:11",
+                                    "description": "Minibar Desc"
+                                },
+                                {
+                                    "code": "NTV",
+                                    "RefNo": "1.1.1.6.3",
+                                    "master": false,
+                                    "name_en": "NTV",
+                                    "addchild": false,
+                                    "createdate": "2021-09-10 14:11:34",
+                                    "description": "NTV Desc"
+                                },
+                                {
+                                    "code": "SM",
+                                    "RefNo": "1.1.1.6.4",
+                                    "master": false,
+                                    "name_en": "SM",
+                                    "addchild": false,
+                                    "createdate": "2021-09-10 14:11:57",
+                                    "description": "SM Desc"
+                                }
+                            ],
+                            "createdate": "2021-08-13 12:03:00",
+                            "description": "Attribute description"
                         }
                     ],
                     "createdate": "2021-08-13 12:03:00",

@@ -75,12 +75,12 @@ export default function Configuration() {
   const [dialogEdit, setDialogEdit] = React.useState(false);
   const [languageDialog, setLanguageDialog] = React.useState("EN");
   const [addChildid, setAddChuldid] = React.useState(null);
-  const [addChildName, setAddChuldName] = React.useState(null);
+  const [addChildName, setAddChuldName] = React.useState("");
   const [addChildNameLang, setAddChuldNameLang] = React.useState("");
   const [row, setRow] = React.useState(null);
-  const [code, setCode] = React.useState(null);
-  const [description, setDescription] = React.useState(null);
-  const [addChildValue, setAddChuldValue] = React.useState(null);
+  const [code, setCode] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [addChildValue, setAddChuldValue] = React.useState("");
   const testa = "testa2";
   const [page, setPage] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState(false);
@@ -379,8 +379,12 @@ export default function Configuration() {
     // setAddChuldid(event.target.id.split("-")[0]);
     // setAddChuldName(event.target.id.split("-")[1]);
     // setAddchild(null);
+
+    setAddChuldValue("");
+    setDescription("");
+    setCode("");
+
     setErrorMessage(false);
-    setAddChuldValue(null);
     setAddchild(false);
     setDialogAdd(true);
   };
@@ -730,7 +734,7 @@ export default function Configuration() {
               open={dialogAdd}
               onClose={handleDialogAddClose}
               aria-labelledby="form-dialog-title"
-              style={{ 
+              style={{
                 backgroundColor: '#000000',
                 opacity: 0.1,
               }}
@@ -766,7 +770,7 @@ export default function Configuration() {
                       id="outlined-basic"
                       label="Code"
                       variant="outlined"
-                      // value={code}
+                      value={code}
                       onChange={(e) => handleChangeCode(e)}
                       helperText={
                         <Grid
@@ -775,7 +779,7 @@ export default function Configuration() {
                           alignItems="center"
                         >
                           <Typography variant="title1" color="initial">
-                            0/50
+                            {code.length}/50
                           </Typography>
                         </Grid>
                       }
@@ -796,7 +800,7 @@ export default function Configuration() {
                           alignItems="center"
                         >
                           <Typography variant="title1" color="initial">
-                            0/50
+                            {addChildValue.length}/50
                           </Typography>
                         </Grid>
                       }
@@ -808,7 +812,7 @@ export default function Configuration() {
                       id="outlined-basic"
                       label="Description"
                       variant="outlined"
-                      // value={description}
+                      value={description}
                       onChange={(e) => handleChangeDescription(e)}
                       helperText={
                         <Grid
@@ -817,7 +821,7 @@ export default function Configuration() {
                           alignItems="center"
                         >
                           <Typography variant="title1" color="initial">
-                            0/50
+                            {description.length}/50
                           </Typography>
                         </Grid>
                       }
@@ -851,7 +855,7 @@ export default function Configuration() {
               open={dialogEdit}
               onClose={handleDialogAddClose}
               aria-labelledby="form-dialog-title"
-              style={{ 
+              style={{
                 backgroundColor: '#000000',
                 opacity: 0.1,
               }}
@@ -880,7 +884,7 @@ export default function Configuration() {
                           alignItems="center"
                         >
                           <Typography variant="title1" color="initial">
-                            0/50
+                            {addChildValue.length}/50
                           </Typography>
                         </Grid>
                       }
@@ -904,7 +908,7 @@ export default function Configuration() {
                             alignItems="center"
                           >
                             <Typography variant="title1" color="initial">
-                              0/50
+                              {addChildNameLang.length}/50
                             </Typography>
                           </Grid>
                         }
@@ -930,7 +934,7 @@ export default function Configuration() {
                           alignItems="center"
                         >
                           <Typography variant="title1" color="initial">
-                            0/50
+                            {description.length}/50
                           </Typography>
                         </Grid>
                       }
