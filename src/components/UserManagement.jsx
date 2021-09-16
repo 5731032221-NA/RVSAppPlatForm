@@ -27,6 +27,8 @@ import {
 } from "@material-ui/core";
 
 import UpdateIcon from '@material-ui/icons/Update';
+import PeopleIcon from '@material-ui/icons/People';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import IconButton from "@material-ui/core/IconButton";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
@@ -71,6 +73,7 @@ import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { EDIT_CONFIGSTATE } from "../middleware/action";
+import { VpnKey } from "@material-ui/icons";
 // import user from "../services/user.service";
 
 // Generate Order Data
@@ -1314,7 +1317,7 @@ export default function UserManagement() {
                         color="initial"
                         style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
                       >
-                        {nodes.name} 
+                        {nodes.name} <VpnKey style={{ fontSize: 16 }} />
                       </Typography>
                       :
                       <Typography
@@ -1323,7 +1326,7 @@ export default function UserManagement() {
                         color="initial"
                         style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
                       >
-                        {nodes.name}
+                        {nodes.name}  
                       </Typography>
                     }
                     {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
@@ -1333,7 +1336,7 @@ export default function UserManagement() {
                         color="initial"
                         style={{ color: 'green', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
                       >
-                         <UpdateIcon style={{ fontSize: 16 }} />
+                         <PersonAddIcon style={{ fontSize: 16 }} />
                       </Typography>
                       :
                       null
@@ -1693,7 +1696,7 @@ export default function UserManagement() {
                             color="initial"
                             style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
                           >
-                            {nodes.name} 
+                            {nodes.name}  <VpnKey style={{ fontSize: 16 }} />
                           </Typography>
                           :
                           <Typography
@@ -1729,7 +1732,7 @@ export default function UserManagement() {
                             color="initial"
                             style={{ color: "green", fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
                           >
-                            <UpdateIcon style={{ fontSize: 16 }} />
+                             <PersonAddIcon style={{ fontSize: 16 }} />
                           </Typography>
                           :
                           null
