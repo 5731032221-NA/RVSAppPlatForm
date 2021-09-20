@@ -547,7 +547,7 @@ export default function RoomManagement() {
       if (tempRoom.includes(listattribute[i].value)) {
         setChipAttributeDialog((prevState) => [
           ...prevState,
-          { key: attribute[i].value, label: attribute[i].label },
+          { key: listattribute[i].value, label: listattribute[i].label },
         ]);
       }
     }
