@@ -547,7 +547,7 @@ export default function RoomManagement() {
       if (tempRoom.includes(listattribute[i].value)) {
         setChipAttributeDialog((prevState) => [
           ...prevState,
-          { key: attribute[i].key, label: attribute[i].label },
+          { key: attribute[i].value, label: attribute[i].label },
         ]);
       }
     }
@@ -571,6 +571,7 @@ export default function RoomManagement() {
     roomDesc,
     roomFloorDialog
   ) => {
+    console.log(chipAttributeDialog)
     console.log(`
       roomNo : ${roomNo},
       propertyDialog : ${propertyDialog},
