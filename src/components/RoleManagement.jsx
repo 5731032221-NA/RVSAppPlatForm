@@ -6,6 +6,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import MaterialTable from "material-table";
 import {
   Container,
   Grid,
@@ -1868,7 +1869,7 @@ export default function RoleManagement() {
             <Paper square style={{ minHeight: "100%" }}>
               <Grid container style={{ padding: 30 }}>
                 <Grid container>
-                  <Table size="small">
+                  {/* <Table size="small">
                     <TableHead>
                       <TableRow>
                         <TableCell>Role Code</TableCell>
@@ -1877,8 +1878,7 @@ export default function RoleManagement() {
                         <TableCell>#User</TableCell>
                         <TableCell align="center">Status</TableCell>
                         <TableCell align="center">Action</TableCell>
-                        {/* <TableCell align="center">Sale Amount</TableCell> */}
-                      </TableRow>
+                         </TableRow>
                     </TableHead>
                     <TableBody>
                       {pageData.map((row) => (
@@ -1927,7 +1927,7 @@ export default function RoleManagement() {
                               <DeleteRoundedIcon />
                             </IconButton>
                           </TableCell>
-                          {/* <TableCell align="right">{row.amount}</TableCell> */}
+                        
                         </TableRow>
                       ))}
                     </TableBody>
@@ -1962,11 +1962,61 @@ export default function RoleManagement() {
                       // onRowsPerPageChange={handleChangeRowsPerPage}
                       />
                     </Grid>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </Grid>
             </Paper>
           </Grid>
+        </Grid>
+        <Grid container>
+          <MaterialTable
+            style={{ paddingLeft: 30, paddingRight: 30 }}
+            title={
+              <Grid>
+                <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
+                  Room Master
+                </Typography>
+              </Grid>
+            }
+            columns={[
+              { title: "Role Code", field: "rolecode" },
+              {
+                title: "Role Name",
+                field: "rolename"
+              },
+              { title: "Description", field: "description" },
+              { title: "#User", field: "count" }
+            ]}
+            data={rows}
+            // totalCount={rows.length}
+            // page={page}
+            options={{
+              actionsColumnIndex: -1,
+              filtering: true,
+              searchFieldAlignment: "left",
+              page: page,
+              pageSize: rowsPerPage,
+              pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
+            }}
+            actions={[
+              {
+                icon: EditRoundedIcon,
+                tooltip: "Edit",
+                onClick: (event, rowData) => {
+                  handleDialogEditRole(event, rowData.rolecode, rowData.rolename, rowData.description, rowData.applyproperty, rowData.status);
+                },
+              },
+              {
+                icon: DeleteRoundedIcon,
+                tooltip: "Delete",
+                onClick: (event, rowData) => {
+                  handleDialogDeleteRoleOpen(event, rowData.rolecode, rowData.rolename, rowData.description);
+                },
+              },
+            ]}
+            onChangePage={(page) => console.log("page")}
+          // onChangePage={(event, page) => console.log(event, page)}
+          />
         </Grid>
 
         {/* ==================== Dialog New Role ========================= */}
