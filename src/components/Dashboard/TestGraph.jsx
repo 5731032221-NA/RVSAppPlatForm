@@ -1,6 +1,5 @@
 import React from "react";
 import {
- 
   AreaChart,
   XAxis,
   YAxis,
@@ -12,45 +11,57 @@ import {
 const data = [
   {
     name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
+    uv: 40,
+    pv: 24,
+    amt: 24,
   },
   {
     name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
+    uv: 30,
+    pv: 13,
+    amt: 22,
   },
   {
     name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
+    uv: 20,
+    pv: 80,
+    amt: 22,
   },
   {
     name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
+    uv: 27,
+    pv: 39,
+    amt: 20,
   },
   {
     name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
+    uv: 18,
+    pv: 48,
+    amt: 21,
   },
   {
     name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
+    uv: 23,
+    pv: 38,
+    amt: 25,
   },
   {
     name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
+    uv: 34,
+    pv: 43,
+    amt: 21,
+  },
+  {
+    name: "Page H",
+    uv: 60,
+    pv: 70,
+    amt: 22,
+  },
+  {
+    name: "Page I",
+    uv: 75,
+    pv: 98,
+    amt: 22,
   },
 ];
 
@@ -65,30 +76,34 @@ export default function TestGraph() {
       >
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+            <stop offset="5%" stopColor="#BDA4FE" stopOpacity={0.4} />
+            <stop offset="95%" stopColor="#BDA4FE" stopOpacity={0} />
           </linearGradient>
           <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#35D1DF" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#35D1DF" stopOpacity={0} />
+            <stop offset="5%" stopColor="#72E6D8" stopOpacity={0.4} />
+            <stop offset="95%" stopColor="#72E6D8" stopOpacity={0} />
           </linearGradient>
         </defs>
-        <XAxis dataKey="name" />
-        <YAxis />
+        {/* <XAxis dataKey="name" /> */}
+        <YAxis unit="k" />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />
         <Area
-          type="monotone"
           dataKey="uv"
           stroke="#8884d8"
           fillOpacity={1}
+          strokeWidth={2}
+          activeDot={{ r: 8 }}
+          dot={{ r: 3 }}
           fill="url(#colorUv)"
         />
         <Area
-          type="monotone"
           dataKey="pv"
           stroke="#82ca9d"
           fillOpacity={1}
+          strokeWidth={2}
+          activeDot={{ r: 8 }}
+          dot={{ r: 3 }}
           fill="url(#colorPv)"
         />
       </AreaChart>
