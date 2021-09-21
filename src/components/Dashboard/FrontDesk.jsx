@@ -13,13 +13,21 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import WorkIcon from "@material-ui/icons/Work";
 import Avatar from "@material-ui/core/Avatar";
+import RemoveIcon from "@material-ui/icons/Remove";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import LayersIcon from "@material-ui/icons/Layers";
 
 import Button from "@material-ui/core/Button";
 import TestGraph from "./TestGraph";
+import Divider from "@material-ui/core/Divider";
 
 import ButtomBar from "../../layouts/ButtomBar";
 import TestGraph2 from "./TestGraph2";
+import Barchart from "./Barchart";
+import WorldMap from "./WorldMap";
+import Piechart from "./Piechart";
 import { makeStyles } from "@material-ui/core/styles";
+import { blue } from "@material-ui/core/colors";
 
 export class FrontDesk extends Component {
   constructor(props) {
@@ -200,11 +208,13 @@ export class FrontDesk extends Component {
                         <Grid
                           container
                           direction="row"
-                          justifyContent="space-around"
+                          justifyContent="space-evenly"
                           alignItems="center"
                           spacing={3}
                         >
+                          <RemoveIcon style={{ color: "#72E6D8" }} />
                           <Typography variant="body1">Sales</Typography>
+                          <RemoveIcon style={{ color: "#BDA4FE" }} />
                           <Typography variant="body1">Avenue</Typography>
                         </Grid>
                       </Grid>
@@ -224,7 +234,7 @@ export class FrontDesk extends Component {
                         style={{
                           // backgroundColor: "#BDBFC3",
                           width: "100%",
-                          height: 190,
+                          height: 250,
                           marginTop: 20,
                         }}
                         elevation={0}
@@ -269,23 +279,71 @@ export class FrontDesk extends Component {
                     >
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
+                          elevation={0}
                           style={{
-                            backgroundColor: "#BDBFC3",
+                            // backgroundColor: "#BDBFC3",
                             width: "100%",
-                            height: 150,
+                            height: 65,
                             marginBottom: 20,
                           }}
-                        ></Paper>
+                        >
+                          <Typography variant="h6" color="initial">
+                            523,200
+                          </Typography>
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                          >
+                            <Typography variant="subtitle1" color="initial">
+                              Page Views
+                            </Typography>
+                            <FiberManualRecordIcon
+                              style={{ color: "#EEEEEE" }}
+                            />
+                          </Grid>
+                        </Paper>
+                        <Divider />
+                        <Paper
+                          elevation={0}
+                          style={{
+                            // backgroundColor: "#BDBFC3",
+                            width: "100%",
+                            height: 64,
+                            marginBottom: 20,
+                          }}
+                        >
+                          <Typography variant="h6" color="initial">
+                            753,098
+                          </Typography>
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                          >
+                            <Typography variant="subtitle1" color="initial">
+                              Bounce Rate
+                            </Typography>
+                            <FiberManualRecordIcon
+                              style={{ color: "#2D62ED" }}
+                            />
+                          </Grid>
+                        </Paper>
                       </Grid>
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
+                          variant="outlined"
                           style={{
-                            backgroundColor: "#BDBFC3",
+                            /* backgroundColor: "#BDBFC3", */
                             width: "100%",
                             height: 150,
                             marginBottom: 20,
                           }}
-                        ></Paper>
+                        >
+                          <Barchart />
+                        </Paper>
                       </Grid>
                     </Grid>
                     <Grid
@@ -302,23 +360,59 @@ export class FrontDesk extends Component {
                     >
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
+                          elevation={0}
                           style={{
-                            backgroundColor: "#BDBFC3",
+                            // backgroundColor: "#BDBFC3",
                             width: "100%",
                             height: 120,
                             marginBottom: 20,
                           }}
-                        ></Paper>
+                        >
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="start"
+                            alignItems="center"
+                          >
+                            <Button
+                              size="small"
+                              style={{
+                                backgroundColor: "#2D99FF",
+                                marginRight: 10,
+                              }}
+                            >
+                              <LayersIcon
+                                style={{
+                                  color: "white",
+                                  fontSize: 28,
+                                }}
+                              />
+                            </Button>
+                            <Typography variant="h3" color="initial">
+                              3,605
+                            </Typography>
+                          </Grid>
+                          <Typography variant="subtitle1" color="initial">
+                            Since Last Week
+                          </Typography>
+                          <Typography variant="subtitle1" color="initial">
+                            0.51% (30 Days)
+                          </Typography>
+                        </Paper>
                       </Grid>
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
+                          elevation={0}
+                          variant="outlined"
                           style={{
-                            backgroundColor: "#BDBFC3",
+                            // backgroundColor: "#BDBFC3",
                             width: "100%",
                             height: 120,
                             marginBottom: 20,
                           }}
-                        ></Paper>
+                        >
+                          {/* <Piechart /> */}
+                        </Paper>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -334,13 +428,16 @@ export class FrontDesk extends Component {
                     </Grid>
                     <Grid container justifyContent="center" alignItems="center">
                       <Paper
+                        elevation={0}
                         style={{
-                          backgroundColor: "#BDBFC3",
+                          // backgroundColor: "#BDBFC3",
                           width: "100%",
-                          height: 200,
+                          height: "auto",
                           marginBottom: 20,
                         }}
-                      ></Paper>
+                      >
+                        <WorldMap />
+                      </Paper>
                     </Grid>
                     <Grid container direction="row" style={{ marginTop: 5 }}>
                       <Grid item style={{ flexGrow: 1 }}>
@@ -469,7 +566,7 @@ export class FrontDesk extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={12} lg={12} xl={12}>
-                <Paper elevation={3} style={{ minHeight: 700, marginTop: 20 }}>
+                <Paper elevation={3} style={{ minHeight: 720, marginTop: 20 }}>
                   <Grid container style={{ padding: 20 }}>
                     <Grid container style={{ marginBottom: 20 }}>
                       <Typography variant="h6" component="h6">
