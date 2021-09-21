@@ -1314,38 +1314,39 @@ export default function UserManagement() {
 
 
                   <Grid item style={{ flexGrow: 1 }} >
-                    <Typography>
-                      {nodes.create || nodes.read || nodes.update || nodes.delete ?
-                        <Typography
-                          display="inline"
-                          variant="h6"
-                          color="initial"
-                          style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
-                        >
-                          {nodes.name} <VpnKey style={{ fontSize: 16 }} />
-                        </Typography>
-                        :
-                        <Typography
-                          display="inline"
-                          variant="h6"
-                          color="initial"
-                          style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
-                        >
-                          {nodes.name}
-                        </Typography>
-                      }
-                      {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
-                        <Typography
-                          display="inline"
-                          variant="h6"
-                          color="initial"
-                          style={{ color: 'green', fontSize: 16, paddingTop: 5, paddingBottom: 10, paddingLeft: 10 }}
-                        >
-                          <PersonAddIcon style={{ fontSize: 16 }} />
-                        </Typography>
-                        :
-                        null
-                      }
+
+                  <Typography>
+                    {nodes.create || nodes.read || nodes.update || nodes.delete ?
+                      <Typography
+                      display="inline"
+                        variant="h6"
+                        color="initial"
+                        style={{ color: '#1F51FF', fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                      >
+                        {nodes.name} <VpnKey style={{ fontSize: 16 }} />
+                      </Typography>
+                      :
+                      <Typography
+                      display="inline"
+                        variant="h6"
+                        color="initial"
+                        style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                      >
+                        {nodes.name}  
+                      </Typography>
+                    }
+                    {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
+                      <Typography
+                      display="inline"
+                        variant="h6"
+                        color="initial"
+                        style={{ color: 'green', fontSize: 16, paddingTop: 10, paddingBottom: 10 , paddingLeft: 10}}
+                      >
+                         <PersonAddIcon style={{ fontSize: 16 }} />
+                      </Typography>
+                      :
+                      null
+                    }
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1676,7 +1677,7 @@ export default function UserManagement() {
               <div>
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
-                    <Typography>
+                    <Typography  style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}>
                       {
                         nodes.children.some(item => {
                           if (item.permision == false) return item.children.some(childitem => childitem.create === true)
@@ -1699,7 +1700,7 @@ export default function UserManagement() {
                             display="inline"
                             variant="h6"
                             color="initial"
-                            style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
+                            style={{ color: '#1F51FF', fontSize: 16 }}
                           >
                             {nodes.name}  <VpnKey style={{ fontSize: 16 }} />
                           </Typography>
@@ -1708,7 +1709,7 @@ export default function UserManagement() {
                             display="inline"
                             variant="h6"
                             color="initial"
-                            style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                            style={{ fontSize: 16, height:50}}
                           >
                             {nodes.name}
                           </Typography>
@@ -1735,7 +1736,7 @@ export default function UserManagement() {
                             display="inline"
                             variant="h6"
                             color="initial"
-                            style={{ color: "green", fontSize: 16, paddingTop: 5, paddingBottom: 10, paddingLeft: 10 }}
+                            style={{ color: "green", fontSize: 16, paddingLeft: 10 }}
                           >
                             <PersonAddIcon style={{ fontSize: 16 }} />
                           </Typography>

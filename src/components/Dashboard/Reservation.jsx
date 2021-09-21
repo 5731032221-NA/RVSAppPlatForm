@@ -55,17 +55,9 @@ export class Reservation extends Component {
     return (
       <div>
         <Container maxWidth="xl">
-          {/* <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={12} lg={9} xl={9}>
-              <Grid item spacing={1} xs={12} md={12} lg={12} xl={12}>
-                <Paper elevation={3} style={{ minHeight: 300 }}>
-                  Gride layout 12 */}
-
-          <h3 style={{ color: this.state.color, marginBottom: 50 }}>
-            Reservation
+          <h3 style={{ color: this.state.color, marginBottom: 45, marginTop:-5, fontWeight: '500' }}>
+            &nbsp;Reservation
           </h3>
-
           <Grid
             container
             spacing={3}
@@ -125,14 +117,15 @@ export class Reservation extends Component {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="flex-end"
-                    style={{ padding: 10, paddingLeft: 60, paddingRight: 50 }}
-                  >
-                    <Button size="large" variant="contained" fullWidth>
-                      CHECK UOT
+                  <Grid container justifyContent="center" alignItems="flex-end">
+                    <Button
+                      size="large"
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                      style={{marginTop:30, backgroundColor:'#2b2b2b'}}
+                    >
+                      CHECK OUT
                     </Button>
                   </Grid>
                 </Paper>
@@ -156,17 +149,13 @@ export class Reservation extends Component {
                       ></Paper>
                     </Grid>
                   </Grid>
-                  <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="flex-end"
-                    style={{ padding: 10, paddingLeft: 60, paddingRight: 50 }}
-                  >
+                  <Grid container justifyContent="center" alignItems="flex-end">
                     <Button
                       size="large"
                       variant="contained"
                       color="primary"
                       fullWidth
+                      style={{marginTop:30}}
                     >
                       CHECK IN
                     </Button>
@@ -280,14 +269,15 @@ export class Reservation extends Component {
                     </Grid>
                   </Grid>
 
-                  <Grid container justifyContent="center" alignItems="center">
+                  <Grid container justifyContent="center" alignItems="flex-end">
                     <Button
                       size="large"
                       variant="contained"
-                      //   color="primary"
+                      color="primary"
                       fullWidth
+                      style={{backgroundColor:'#2b2b2b'}}
                     >
-                      CHECKOUT
+                      CHECK OUT
                     </Button>
                   </Grid>
                 </Paper>
