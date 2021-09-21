@@ -29,6 +29,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
+import {
+Breadcrumbs
+} from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import RoleManagement from "../RoleManagement";
 import UserManagement from "../UserManagement";
@@ -336,7 +339,7 @@ export default function Configuration() {
     setLanguageDialog(event.target.value);
   };
 
-  
+
   const handleClick = (event, name, id) => {
     // console.log(event)
     // console.log("ids",event.target.id);
@@ -705,8 +708,8 @@ export default function Configuration() {
               </Grid>
               <Grid item>
                 {nodes.master == false ||
-                sessionStorage.getItem("role") == "root" ||
-                sessionStorage.getItem("role") == "Root" ? (
+                  sessionStorage.getItem("role") == "root" ||
+                  sessionStorage.getItem("role") == "Root" ? (
                   <IconButton
                     onClick={() =>
                       handleDialogEdit(nodes.name_en, nodes.RefNo, nodes)
@@ -720,8 +723,8 @@ export default function Configuration() {
                   </IconButton>
                 )}
                 {nodes.master == false ||
-                sessionStorage.getItem("role") == "root" ||
-                sessionStorage.getItem("role") == "Root" ? (
+                  sessionStorage.getItem("role") == "root" ||
+                  sessionStorage.getItem("role") == "Root" ? (
                   <IconButton onClick={() => handleDelete(nodes.RefNo)}>
                     <DeleteRoundedIcon />
                   </IconButton>
@@ -731,8 +734,8 @@ export default function Configuration() {
                   </IconButton>
                 )}
                 {nodes.addchild == true ||
-                sessionStorage.getItem("role") == "root" ||
-                sessionStorage.getItem("role") == "Root" ? (
+                  sessionStorage.getItem("role") == "root" ||
+                  sessionStorage.getItem("role") == "Root" ? (
                   <IconButton
                     aria-controls={nodes.RefNo}
                     aria-haspopup="true"
@@ -1040,102 +1043,125 @@ export default function Configuration() {
     <div>
       {configState == "Configuration" ? (
         <Container maxWidth="xl">
-          <Typography
-            variant="h6"
-            style={{ marginBottom: 15, fontSize: 18, color: "blue" }}
-          >
-            Configuration
-            {/* {data[0][testa]} */}
-          </Typography>
-          <Paper elevation={3} style={{ minHeight: 150, width: "100%" }}>
-            <Grid container style={{ padding: 20 }}>
-              <TreeView
-                className={classes.root}
-                defaultCollapseIcon={
-                  <RemoveRoundedIcon
-                    style={{
-                      backgroundColor: "#717171",
-                      borderRadius: 2,
-                      color: "white",
-                    }}
-                  />
-                }
-                defaultExpandIcon={
-                  <AddRoundedIcon
-                    style={{
-                      backgroundColor: "#2D62ED",
-                      borderRadius: 2,
-                      color: "white",
-                    }}
-                  />
-                }
-                expanded={expanded}
-                selected={selected}
-                onNodeToggle={handleToggle}
-                onNodeSelect={handleSelect}
-              >
-                {/* {renderTree(data)} */}
-                {data.map((node) => renderTree(node))}
-              </TreeView>
-              <Grid
-                container
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
-                spacing={3}
-                style={{ marginTop: 15 }}
-              >
-                <Grid item style={{ flexGrow: 1 }}>
-                  <Typography variant="title1" color="initial">
-                    item 11-13 of 13 Total
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant="title1" color="initial">
-                    Row per Page
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <FormControl
-                    variant="outlined"
-                    size="small"
-                    className={classes.selectPage}
-                  >
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Page
-                    </InputLabel>
-                    <Select
-                      //   labelId="demo-simple-select-outlined-label"
-                      //   id="demo-simple-select-outlined"
-                      value={page}
-                      onChange={handleChangePage}
-                      label="Page"
+          <React.Fragment>
+            <Grid
+              container
+              //   direction="row"
+              //   justifyContent="flex-start"
+              //   alignItems="center"
+              style={{ padding: 20 }}
+            >
+              <Grid item style={{ flexGrow: 1 }}>
+                <Breadcrumbs
+                  separator={
+                    <Typography
+                      variant="h6"
+                      style={{ marginBottom: 15, fontSize: 20 }}
                     >
-                      <MenuItem value="">None</MenuItem>
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item>1-4 of 10</Grid>
-                <Grid item>
-                  <IconButton>
-                    <FirstPageRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <NavigateBeforeRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <NavigateNextRoundedIcon />
-                  </IconButton>
-                  <IconButton>
-                    <LastPageRoundedIcon />
-                  </IconButton>
-                </Grid>
+                      /
+                    </Typography>
+                  }
+                >
+                  <Typography
+                    variant="h6"
+                    style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
+                  >
+                    Configuration
+                    {/* {data[0][testa]} */}
+                  </Typography>
+                </Breadcrumbs>
               </Grid>
+              <Paper elevation={3} style={{ minHeight: 150, width: "100%" }}>
+                <Grid container style={{ padding: 20 }}>
+                  <TreeView
+                    className={classes.root}
+                    defaultCollapseIcon={
+                      <RemoveRoundedIcon
+                        style={{
+                          backgroundColor: "#717171",
+                          borderRadius: 2,
+                          color: "white",
+                        }}
+                      />
+                    }
+                    defaultExpandIcon={
+                      <AddRoundedIcon
+                        style={{
+                          backgroundColor: "#2D62ED",
+                          borderRadius: 2,
+                          color: "white",
+                        }}
+                      />
+                    }
+                    expanded={expanded}
+                    selected={selected}
+                    onNodeToggle={handleToggle}
+                    onNodeSelect={handleSelect}
+                  >
+                    {/* {renderTree(data)} */}
+                    {data.map((node) => renderTree(node))}
+                  </TreeView>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    spacing={3}
+                    style={{ marginTop: 15 }}
+                  >
+                    <Grid item style={{ flexGrow: 1 }}>
+                      <Typography variant="title1" color="initial">
+                        item 11-13 of 13 Total
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="title1" color="initial">
+                        Row per Page
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <FormControl
+                        variant="outlined"
+                        size="small"
+                        className={classes.selectPage}
+                      >
+                        <InputLabel id="demo-simple-select-outlined-label">
+                          Page
+                        </InputLabel>
+                        <Select
+                          //   labelId="demo-simple-select-outlined-label"
+                          //   id="demo-simple-select-outlined"
+                          value={page}
+                          onChange={handleChangePage}
+                          label="Page"
+                        >
+                          <MenuItem value="">None</MenuItem>
+                          <MenuItem value={1}>1</MenuItem>
+                          <MenuItem value={2}>2</MenuItem>
+                          <MenuItem value={3}>3</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item>1-4 of 10</Grid>
+                    <Grid item>
+                      <IconButton>
+                        <FirstPageRoundedIcon />
+                      </IconButton>
+                      <IconButton>
+                        <NavigateBeforeRoundedIcon />
+                      </IconButton>
+                      <IconButton>
+                        <NavigateNextRoundedIcon />
+                      </IconButton>
+                      <IconButton>
+                        <LastPageRoundedIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Paper>
             </Grid>
-          </Paper>
+          </React.Fragment>
         </Container>
       ) : configState == "RoleManagement" ? (
         <RoleManagement />
