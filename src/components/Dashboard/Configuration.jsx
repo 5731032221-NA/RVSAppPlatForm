@@ -318,30 +318,17 @@ export default function Configuration() {
   const updateproperty = useSelector((state) => state.reducer.property);
   const [property, setProperty] = React.useState(updateproperty);
 
-  React.useEffect(async () => {
-    console.log("useEffect");
-    let configdata = await getconfigurationbypropertycode(
-      sessionStorage.getItem("auth"),
-      updateproperty
-    );
-    setData(configdata.content[configdata.content.length - 1]);
-    setProperty((prev) => updateproperty);
-  }, []);
 
-  setInterval(async () => {
-    let _property = updateproperty;
-    let currentProp = property;
-    // console.log("property",property,_property)
-    if (currentProp !== _property && currentProp !== null) {
-      console.log("property2", currentProp, _property);
-      let configdata = await getconfigurationbypropertycode(
-        sessionStorage.getItem("auth"),
-        _property
-      );
-      setProperty((prev) => _property);
-      setData(configdata.content[configdata.content.length - 1]);
-    }
-  }, 1000);
+  React.useEffect(async () => {
+    console.log("useEffect")
+    let configdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"), updateproperty);
+    setData(configdata.content[configdata.content.length - 1])
+    setProperty(prev => updateproperty);
+
+
+  }, [updateproperty]);
+
+
   // const [store.getState().reducer.configState, setstore.getState().reducer.configState] = React.useState("Configuration");
   const configState = useSelector((state) => state.reducer.configState);
   const lang = useSelector((state) => state.reducer.lang);
@@ -349,6 +336,7 @@ export default function Configuration() {
     setLanguageDialog(event.target.value);
   };
 
+  
   const handleClick = (event, name, id) => {
     // console.log(event)
     // console.log("ids",event.target.id);

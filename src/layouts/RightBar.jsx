@@ -85,7 +85,7 @@ const useStyles = makeStyles({
 export default function RighBar() {
   const classes = useStyles();
   const { store } = useContext(ReactReduxContext);
-
+  const [darkMode, setDarkmode] = React.useState(false);
   function handlelanguageEN() {
     // setOpenSystemsTools(!openSystemTools)
     store.dispatch({
@@ -144,7 +144,15 @@ export default function RighBar() {
   }
 
   function handleDarkMode(e) {
-    console.log("darkmode",e)
+    let _darkmode = !darkMode;
+    setDarkmode(_darkmode)
+    console.log("darkmode",_darkmode)
+    if(_darkmode){
+    store.dispatch({
+      type: EDIT_COLOR,
+      payload: "#1F1B24",
+    });
+    }
   }
 
   return (
@@ -259,7 +267,7 @@ export default function RighBar() {
             </Typography>
           </Grid>
           <Grid item>
-            <Switch onChange={handleDarkMode} />
+            <Switch value={darkMode} onChange={handleDarkMode} />
           </Grid>
         </Grid>
         <Grid container alignItems="center">

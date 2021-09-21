@@ -25,6 +25,7 @@ import {
   FormControl,
   Select,
   MenuItem,
+  ThemeProvider,
 } from "@material-ui/core";
 
 import MenuIcon from "@material-ui/icons/Menu";
@@ -98,6 +99,9 @@ const useStyles = makeStyles((theme) => ({
   },
   themeDefault: {
     backgroundColor: "#2D62ED",
+  },
+  themeDarkmode: {
+    backgroundColor: "#1F1B24",
   },
   themeGreen: {
     backgroundColor: green[600],
@@ -288,6 +292,7 @@ export default function Dashboard() {
     sessionStorage.getItem("property")
   );
   const ratio = window.devicePixelRatio || 1;
+  
   setInterval(() => {
     // console.log(parseInt(store.getState().reducer.compwidth) !== parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(store.getState().reducer.compwidth))
     if (compWidthState != document.getElementById("compwidth").offsetWidth) {
@@ -307,7 +312,12 @@ export default function Dashboard() {
   setInterval(() => {
     let settingColor = store.getState().reducer.color;
     if (wordColor != settingColor && wordColor != null) {
-      if (settingColor == purple[600]) {
+      if (settingColor == "#1F1B24") {
+        setThemeState(classes.themeDarkmode);
+        setWordColor("#1F1B24");
+        setThemeFontState(classes.themeDarkmode);
+      }
+      else if (settingColor == purple[600]) {
         setThemeState(classes.themePurple);
         setWordColor(purple[600]);
         setThemeFontState(classes.themeFontPurple);
@@ -505,6 +515,7 @@ export default function Dashboard() {
     </div>
   );
   return (
+    // <ThemeProvider theme={(store.getState().reducer.color == "#1F1B24") ?  : }>
     <div className={classes.root}>
       <CssBaseline />
       <AppBar

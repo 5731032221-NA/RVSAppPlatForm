@@ -556,11 +556,11 @@ export default function RoomManagement() {
     setRoomFloorDialog(dataRoombyid.content[0].floor);
     const roomDataEdit = dataRoombyid.content[0].attribute;
     var tempRoom = roomDataEdit.split(",");
-    for (let i in attribute) {
-      if (tempRoom.includes(attribute[i].key)) {
+    for (let i in listattribute) {
+      if (tempRoom.includes(listattribute[i].value)) {
         setChipAttributeDialog((prevState) => [
           ...prevState,
-          { key: attribute[i].key, label: attribute[i].label },
+          { key: listattribute[i].value, label: listattribute[i].label },
         ]);
       }
     }
@@ -584,6 +584,7 @@ export default function RoomManagement() {
     roomDesc,
     roomFloorDialog
   ) => {
+    console.log(chipAttributeDialog)
     console.log(`
       roomNo : ${roomNo},
       propertyDialog : ${propertyDialog},
