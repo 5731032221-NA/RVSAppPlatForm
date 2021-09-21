@@ -34,11 +34,11 @@ import RoleManagement from "../RoleManagement";
 import UserManagement from "../UserManagement";
 import RoomManagement from "../RoomManagement";
 import { ReactReduxContext, useSelector } from "react-redux";
-import LockIcon from '@material-ui/icons/Https';
+import LockIcon from "@material-ui/icons/Https";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import {
   updateconfiguration,
-  getconfigurationbypropertycode
+  getconfigurationbypropertycode,
 } from "../../services/user.service";
 const useStyles = makeStyles({
   root: {
@@ -65,7 +65,6 @@ const language = [
 ];
 
 export default function Configuration() {
-
   const classes = useStyles();
   const { store } = useContext(ReactReduxContext);
   const [expanded, setExpanded] = React.useState([]);
@@ -315,17 +314,18 @@ export default function Configuration() {
         },
       ],
     },
-  ])
-  const updateproperty = useSelector(state => state.reducer.property);
-  const [property, setProperty] = React.useState(updateproperty)
+  ]);
+  const updateproperty = useSelector((state) => state.reducer.property);
+  const [property, setProperty] = React.useState(updateproperty);
 
   React.useEffect(async () => {
-    console.log("useEffect")
-    let configdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"), updateproperty);
-    setData(configdata.content[configdata.content.length - 1])
-    setProperty(prev => updateproperty);
-
-
+    console.log("useEffect");
+    let configdata = await getconfigurationbypropertycode(
+      sessionStorage.getItem("auth"),
+      updateproperty
+    );
+    setData(configdata.content[configdata.content.length - 1]);
+    setProperty((prev) => updateproperty);
   }, []);
 
   setInterval(async () => {
@@ -333,15 +333,18 @@ export default function Configuration() {
     let currentProp = property;
     // console.log("property",property,_property)
     if (currentProp !== _property && currentProp !== null) {
-      console.log("property2", currentProp, _property)
-      let configdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"), _property);
-      setProperty(prev => _property);
-      setData(configdata.content[configdata.content.length - 1])
+      console.log("property2", currentProp, _property);
+      let configdata = await getconfigurationbypropertycode(
+        sessionStorage.getItem("auth"),
+        _property
+      );
+      setProperty((prev) => _property);
+      setData(configdata.content[configdata.content.length - 1]);
     }
   }, 1000);
   // const [store.getState().reducer.configState, setstore.getState().reducer.configState] = React.useState("Configuration");
-  const configState = useSelector(state => state.reducer.configState);
-  const lang = useSelector(state => state.reducer.lang);
+  const configState = useSelector((state) => state.reducer.configState);
+  const lang = useSelector((state) => state.reducer.lang);
   const handleLanguageDialog = (event) => {
     setLanguageDialog(event.target.value);
   };
@@ -401,8 +404,8 @@ export default function Configuration() {
     setAddChuldid(id);
     setAddChuldValue(name);
     setCode(node.code);
-    setDescription(node.description)
-    setAddChuldNameLang(node["name_" + lang])
+    setDescription(node.description);
+    setAddChuldNameLang(node["name_" + lang]);
     // setRow(node)
     setDialogEdit(true);
   };
@@ -423,7 +426,6 @@ export default function Configuration() {
     setDialogEdit(false);
   };
 
-
   const handleChangeAdd = (event) => {
     setAddChuldValue(event.target.value);
   };
@@ -434,7 +436,6 @@ export default function Configuration() {
   const handleChangeLang = (event) => {
     setAddChuldNameLang(event.target.value);
   };
-
 
   const handleChangeCode = (event) => {
     setCode(event.target.value);
@@ -448,85 +449,82 @@ export default function Configuration() {
     if (name == "ROLE") {
       store.dispatch({
         type: EDIT_CONFIGSTATE,
-        payload: "RoleManagement"
-      })
+        payload: "RoleManagement",
+      });
     } else if (name == "USER") {
       store.dispatch({
         type: EDIT_CONFIGSTATE,
-        payload: "UserManagement"
-      })
+        payload: "UserManagement",
+      });
     } else if (name == "ROOM") {
       store.dispatch({
         type: EDIT_CONFIGSTATE,
-        payload: "RoomManagement"
-      })
+        payload: "RoomManagement",
+      });
     }
-  }
-
+  };
 
   async function prune(array, label) {
-    console.log("pr")
-    console.log(array)
-    console.log(array.length)
+    console.log("pr");
+    console.log(array);
+    console.log(array.length);
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.RefNo, label)
+      console.log(obj.RefNo, label);
       if (obj.RefNo === label) {
         // splice out 1 element starting at position i
         array.splice(i, 1);
         return true;
-      }
-      else if (obj.children) {
-        prune(obj.children, label)
-
+      } else if (obj.children) {
+        prune(obj.children, label);
       }
     }
   }
 
-
   const handleDelete = async (id) => {
     console.log("deleteid", id);
     await prune(data, id);
-    let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"), { "configuration": data, "propertycode": property })
-  }
+    let updateconfig = await updateconfiguration(
+      sessionStorage.getItem("auth"),
+      { configuration: data, propertycode: property }
+    );
+  };
 
   const maxchildid = async (array, parentid) => {
     let max = 0;
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       let num = parseInt(obj.RefNo.replace(parentid + ".", ""));
-      console.log("cc", max, num)
-      if (num > max) max = num
+      console.log("cc", max, num);
+      if (num > max) max = num;
     }
     return max;
-  }
+  };
 
   const runningid = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.RefNo, label)
+      console.log(obj.RefNo, label);
       if (obj.RefNo === label) {
         if (obj.children) {
           let newmaxid = await maxchildid(obj.children, obj.RefNo);
-          return obj.RefNo + "." + (newmaxid + 1)
+          return obj.RefNo + "." + (newmaxid + 1);
+        } else {
+          console.log("label", label);
+          console.log("labelid", label + ".1");
+          return label + ".1";
         }
-        else {
-          console.log("label", label)
-          console.log("labelid", label + ".1")
-          return label + ".1"
-        }
-      }
-      else if (obj.children) {
+      } else if (obj.children) {
         let a = await runningid(obj.children, label);
         if (a != undefined) return a;
       }
     }
-  }
+  };
 
   const adding = async (array, label, name, newid) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.RefNo, label)
+      console.log(obj.RefNo, label);
       if (obj.RefNo === label) {
         let currentdate = new Date();
         let day = ("0" + currentdate.getDate()).slice(-2);
@@ -537,119 +535,161 @@ export default function Configuration() {
         let seconds = currentdate.getSeconds();
 
         if (obj.children) {
-          obj.children = [...obj.children, {
-            RefNo: newid,
-            code: code,
-            name_en: name,
-            description: description,
-            createdate: (year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds),
-            master: false,
-            addchild: false,
-          }]
+          obj.children = [
+            ...obj.children,
+            {
+              RefNo: newid,
+              code: code,
+              name_en: name,
+              description: description,
+              createdate:
+                year +
+                "-" +
+                month +
+                "-" +
+                day +
+                " " +
+                hours +
+                ":" +
+                minutes +
+                ":" +
+                seconds,
+              master: false,
+              addchild: false,
+            },
+          ];
         } else {
-          obj.children = [{
-            RefNo: newid,
-            code: code,
-            name_en: name,
-            description: description,
-            createdate: (year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds),
-            master: false,
-            addchild: false,
-          }]
+          obj.children = [
+            {
+              RefNo: newid,
+              code: code,
+              name_en: name,
+              description: description,
+              createdate:
+                year +
+                "-" +
+                month +
+                "-" +
+                day +
+                " " +
+                hours +
+                ":" +
+                minutes +
+                ":" +
+                seconds,
+              master: false,
+              addchild: false,
+            },
+          ];
         }
-      }
-      else if (obj.children) {
+      } else if (obj.children) {
         adding(obj.children, label, name, newid);
       }
     }
-  }
-
+  };
 
   const handleAdd = async () => {
-    if (code == null || code == '') { setErrorMessage(true); setErrorParameter("Code"); }
-    else if (addChildValue == null || addChildValue == '') { setErrorMessage(true); setErrorParameter("Name (EN)"); }
-    else if (description == null || description == '') { setErrorMessage(true); setErrorParameter("Description"); }
-    else {
+    if (code == null || code == "") {
+      setErrorMessage(true);
+      setErrorParameter("Code");
+    } else if (addChildValue == null || addChildValue == "") {
+      setErrorMessage(true);
+      setErrorParameter("Name (EN)");
+    } else if (description == null || description == "") {
+      setErrorMessage(true);
+      setErrorParameter("Description");
+    } else {
       setErrorMessage(false);
       let id = addChildid;
       console.log("addparentid", id);
-      let newid = await runningid(data, id)
-      console.log("newid", newid)
-      await (adding(data, id, addChildValue, newid))
-      console.log("added", data)
-      let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"), { "configuration": data, "propertycode": property })
+      let newid = await runningid(data, id);
+      console.log("newid", newid);
+      await adding(data, id, addChildValue, newid);
+      console.log("added", data);
+      let updateconfig = await updateconfiguration(
+        sessionStorage.getItem("auth"),
+        { configuration: data, propertycode: property }
+      );
       // setData(data)
       setDialogAdd(false);
     }
-  }
+  };
 
   const editing = async (array, label, name) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.RefNo, label)
+      console.log(obj.RefNo, label);
       if (obj.RefNo === label) {
         obj.code = code;
         obj.name_en = name;
         obj.description = description;
-      }
-      else if (obj.children) {
+      } else if (obj.children) {
         editing(obj.children, label, name);
       }
     }
-  }
+  };
 
   const handleEdit = async () => {
-    if (addChildValue == null || addChildValue == '') { setErrorMessage(true); setErrorParameter("Name (EN)"); }
-    else if (description == null || description == '') { setErrorMessage(true); setErrorParameter("Description"); }
-    else {
+    if (addChildValue == null || addChildValue == "") {
+      setErrorMessage(true);
+      setErrorParameter("Name (EN)");
+    } else if (description == null || description == "") {
+      setErrorMessage(true);
+      setErrorParameter("Description");
+    } else {
       setErrorMessage(false);
       let id = addChildid;
       console.log("editparentid", id);
       // let newid = await runningid(data, id)
       // console.log("newid", newid)
-      await (editing(data, id, addChildValue))
-      console.log(data)
-      let updateconfig = await updateconfiguration(sessionStorage.getItem("auth"), { "configuration": data, "propertycode": property })
+      await editing(data, id, addChildValue);
+      console.log(data);
+      let updateconfig = await updateconfiguration(
+        sessionStorage.getItem("auth"),
+        { configuration: data, propertycode: property }
+      );
       // setData(data)
       setDialogEdit(false);
     }
-  }
+  };
 
   const editingLang = async (array, label, name) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.RefNo, label, addChildNameLang)
+      console.log(obj.RefNo, label, addChildNameLang);
       if (obj.RefNo === label) {
-
         obj.code = code;
         obj.name_en = name;
         obj["name_" + lang] = addChildNameLang;
         obj.description = description;
-      }
-      else if (obj.children) {
+      } else if (obj.children) {
         editingLang(obj.children, label, name);
       }
     }
-  }
+  };
 
   const handleEditLang = async () => {
-    if (addChildValue == null || addChildValue == '') { setErrorMessage(true); setErrorParameter("Name (EN)"); }
-    else if (addChildNameLang == null || addChildNameLang == '') { setErrorMessage(true); setErrorParameter("Name (" + lang.toUpperCase() + ")"); }
-    else if (description == null || description == '') { setErrorMessage(true); setErrorParameter("Description"); }
-    else {
+    if (addChildValue == null || addChildValue == "") {
+      setErrorMessage(true);
+      setErrorParameter("Name (EN)");
+    } else if (addChildNameLang == null || addChildNameLang == "") {
+      setErrorMessage(true);
+      setErrorParameter("Name (" + lang.toUpperCase() + ")");
+    } else if (description == null || description == "") {
+      setErrorMessage(true);
+      setErrorParameter("Description");
+    } else {
       setErrorMessage(false);
       let id = addChildid;
       console.log("editparentid", id);
       // let newid = await runningid(data, id)
       // console.log("newid", newid)
-      await (editingLang(data, id, addChildValue))
-      console.log(data)
+      await editingLang(data, id, addChildValue);
+      console.log(data);
       // setData(data)
       setDialogEdit(false);
     }
-  }
-
-
+  };
 
   const renderTree = (nodes) => (
     <div>
@@ -666,36 +706,45 @@ export default function Configuration() {
                   style={{ paddind: 5 }}
                 >
                   <div onClick={() => handleConfig(nodes.code)}>
-                    {nodes["name_" + lang] != null ? nodes["name_" + lang] : nodes["name_en"]}
-                    {
-                      nodes.master == true ?
-                        <LockIcon style={{ paddingTop: 10, color: "blue" }} /> :
-                        null
-                    }
+                    {nodes["name_" + lang] != null
+                      ? nodes["name_" + lang]
+                      : nodes["name_en"]}
+                    {nodes.master == true ? (
+                      <LockIcon style={{ paddingTop: 10, color: "blue" }} />
+                    ) : null}
                   </div>
                 </Typography>
               </Grid>
               <Grid item>
-                {nodes.master == false || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root") ?
+                {nodes.master == false ||
+                sessionStorage.getItem("role") == "root" ||
+                sessionStorage.getItem("role") == "Root" ? (
                   <IconButton
-                    onClick={() => handleDialogEdit(nodes.name_en, nodes.RefNo, nodes)}>
+                    onClick={() =>
+                      handleDialogEdit(nodes.name_en, nodes.RefNo, nodes)
+                    }
+                  >
                     <EditRoundedIcon />
                   </IconButton>
-                  :
+                ) : (
                   <IconButton>
                     <EditRoundedIcon style={{ color: "#d8d8d8" }} />
                   </IconButton>
-                }
-                {nodes.master == false || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root") ?
+                )}
+                {nodes.master == false ||
+                sessionStorage.getItem("role") == "root" ||
+                sessionStorage.getItem("role") == "Root" ? (
                   <IconButton onClick={() => handleDelete(nodes.RefNo)}>
                     <DeleteRoundedIcon />
                   </IconButton>
-                  :
-                  <IconButton >
+                ) : (
+                  <IconButton>
                     <DeleteRoundedIcon style={{ color: "#d8d8d8" }} />
                   </IconButton>
-                }
-                {nodes.addchild == true || (sessionStorage.getItem("role") == "root" || sessionStorage.getItem("role") == "Root") ?
+                )}
+                {nodes.addchild == true ||
+                sessionStorage.getItem("role") == "root" ||
+                sessionStorage.getItem("role") == "Root" ? (
                   <IconButton
                     aria-controls={nodes.RefNo}
                     aria-haspopup="true"
@@ -703,15 +752,11 @@ export default function Configuration() {
                   >
                     <MoreVertRoundedIcon />
                   </IconButton>
-                  :
-                  <IconButton
-                    aria-controls={nodes.RefNo}
-                    aria-haspopup="true"
-
-                  >
+                ) : (
+                  <IconButton aria-controls={nodes.RefNo} aria-haspopup="true">
                     <MoreVertRoundedIcon style={{ color: "#d8d8d8" }} />
                   </IconButton>
-                }
+                )}
               </Grid>
             </Grid>
             <Divider />
@@ -722,7 +767,10 @@ export default function Configuration() {
               open={Boolean(addChild)}
               onClose={handleClose}
             >
-              <MenuItem id={nodes.RefNo + "-" + nodes.code} onClick={handleDialogAdd}>
+              <MenuItem
+                id={nodes.RefNo + "-" + nodes.code}
+                onClick={handleDialogAdd}
+              >
                 {/* <MenuItem onClick={handleClose}> */}
                 <AddRoundedIcon /> Add child
               </MenuItem>
@@ -735,7 +783,7 @@ export default function Configuration() {
               onClose={handleDialogAddClose}
               aria-labelledby="form-dialog-title"
               style={{
-                backgroundColor: '#000000',
+                backgroundColor: "#000000",
                 opacity: 0.1,
               }}
             >
@@ -828,9 +876,20 @@ export default function Configuration() {
                       fullWidth
                     />
                   </Grid>
-
                 </Container>
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                {errorMessage ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameter} is required
+                  </div>
+                ) : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
@@ -840,11 +899,7 @@ export default function Configuration() {
                 >
                   Cancel
                 </Button>
-                <Button
-                  onClick={handleAdd}
-                  variant="contained"
-                  color="primary"
-                >
+                <Button onClick={handleAdd} variant="contained" color="primary">
                   Save
                 </Button>
               </DialogActions>
@@ -856,7 +911,7 @@ export default function Configuration() {
               onClose={handleDialogAddClose}
               aria-labelledby="form-dialog-title"
               style={{
-                backgroundColor: '#000000',
+                backgroundColor: "#000000",
                 opacity: 0.1,
               }}
             >
@@ -866,7 +921,6 @@ export default function Configuration() {
 
               <DialogContent>
                 <Container maxWidth="xl" disableGutters>
-
                   <h2>Code: {code}</h2>
                   <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
                     <TextField
@@ -892,7 +946,7 @@ export default function Configuration() {
                     />
                   </Grid>
 
-                  {lang != "en" ?
+                  {lang != "en" ? (
                     <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
                       <TextField
                         autoFocus
@@ -915,8 +969,7 @@ export default function Configuration() {
                         fullWidth
                       />
                     </Grid>
-                    :
-                    null}
+                  ) : null}
 
                   <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
                     <TextField
@@ -941,9 +994,20 @@ export default function Configuration() {
                       fullWidth
                     />
                   </Grid>
-
                 </Container>
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                {errorMessage ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameter} is required
+                  </div>
+                ) : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
@@ -953,27 +1017,27 @@ export default function Configuration() {
                 >
                   Cancel
                 </Button>
-                {lang == 'en' ?
+                {lang == "en" ? (
                   <Button
                     onClick={handleEdit}
                     variant="contained"
                     color="primary"
-                  > Save
+                  >
+                    {" "}
+                    Save
                   </Button>
-                  :
+                ) : (
                   <Button
                     onClick={handleEditLang}
                     variant="contained"
                     color="primary"
-                  > Save
+                  >
+                    {" "}
+                    Save
                   </Button>
-                }
-
+                )}
               </DialogActions>
             </Dialog>
-
-
-
           </div>
         }
       >
@@ -981,7 +1045,6 @@ export default function Configuration() {
           ? nodes.children.map((node) => renderTree(node))
           : null}
       </TreeItem>
-
     </div>
   );
 
@@ -1086,10 +1149,13 @@ export default function Configuration() {
             </Grid>
           </Paper>
         </Container>
-      ) : configState == "RoleManagement" ? <RoleManagement />
-        : configState == "RoomManagement" ? <RoomManagement />
-          : <UserManagement />
-      }
+      ) : configState == "RoleManagement" ? (
+        <RoleManagement />
+      ) : configState == "RoomManagement" ? (
+        <RoomManagement />
+      ) : (
+        <UserManagement />
+      )}
     </div>
   );
 }

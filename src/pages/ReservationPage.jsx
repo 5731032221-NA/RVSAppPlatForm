@@ -32,10 +32,10 @@ import {
   DateRangePicker,
 } from "@material-ui/pickers";
 
-// const dataEvent = [
-//   { id: 1, title: "ROOM8050", start: "2021-09-15", end: "2021-09-17" },
-//   { id: 2, title: "ROOM8050", start: "2021-09-20", end: "2021-09-25" },
-// ];
+const dataEvent = [
+  { id: 1, title: "ROOM8050", start: "2021-09-15", end: "2021-09-17" },
+  { id: 2, title: "ROOM8050", start: "2021-09-20", end: "2021-09-25" },
+];
 
 export const ReservationPage = (props) => {
   const [dialogReservation, setDialogReservation] = React.useState(false);
@@ -64,7 +64,7 @@ export const ReservationPage = (props) => {
     );
     setDataDate(datedata);
     console.log("datedata", datedata);
-  }, []); 
+  }, []);
 
   const handleDateStart = (date) => {
     let dateNoTiome = date.toISOString();
@@ -91,6 +91,14 @@ export const ReservationPage = (props) => {
     setDialogReservation(true);
   };
 
+  const drag = () => {
+    let dragable = document.getElementById("eventItem");
+    console.log(dragable);
+    new Draggable(dragable,{
+      
+    });
+  };
+
   const handleDialogReservationSave = async (roomno, startdate, enddate) => {
     const postdate = await postreservationroom(sessionStorage.getItem("auth"), {
       roomno: roomno,
@@ -98,7 +106,7 @@ export const ReservationPage = (props) => {
       enddate: enddate,
       description: "ROOM" + roomno,
     });
-    
+
     const data = await getreservationroom(sessionStorage.getItem("auth"));
     console.log("data", data);
     let datedata = [];
@@ -111,7 +119,7 @@ export const ReservationPage = (props) => {
       })
     );
     setDataDate(datedata);
-    
+
     console.log("postdate", postdate);
     setDialogReservation(false);
   };
@@ -175,17 +183,21 @@ export const ReservationPage = (props) => {
                 style={{ paddingTop: 20 }}
               >
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <Paper
-                    variant="outlined"
-                    style={{
-                      borderColor: "#2D62ED",
-                      padding: 10,
-                    }}
-                  >
-                    <Typography variant="subtitle" color="initial">
-                      Task Room N
-                    </Typography>
-                  </Paper>
+                  {dataEvent.map((option) => (
+                    <Paper
+                      id="eventItem"
+                      variant="outlined"
+                      style={{
+                        borderColor: "#2D62ED",
+                        padding: 10,
+                        marginTop: 10,
+                      }}
+                    >
+                      <Typography variant="subtitle" color="initial">
+                        <li>{option.title}</li>
+                      </Typography>
+                    </Paper>
+                  ))}
                 </Grid>
               </Grid>
             </Container>
