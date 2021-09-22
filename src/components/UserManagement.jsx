@@ -2101,7 +2101,8 @@ export default function UserManagement() {
               { title: "Full Name", field: "name" },
               { title: "Position", field: "position" },
               { title: "Roles", field: "roles" },
-              { title: "Property", field: "property" }
+              { title: "Property", field: "property" },
+              { title: "Status", field: "status" }
             ]}
             data={rows}
             // totalCount={rows.length}

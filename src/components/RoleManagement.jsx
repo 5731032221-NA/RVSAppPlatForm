@@ -1919,7 +1919,8 @@ export default function RoleManagement() {
                           field: "rolename"
                         },
                         { title: "Description", field: "description" },
-                        { title: "#User", field: "count" }
+                        { title: "#User", field: "count" },
+                        { title: "Status", field: "status" }
                       ]}
                       data={rows}
                       // totalCount={rows.length}
