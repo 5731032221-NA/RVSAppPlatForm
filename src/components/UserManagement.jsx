@@ -625,11 +625,13 @@ export default function UserManagement() {
     let dataRole = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", dataRole.content[dataRole.content.length - 1]);
     roles = [];
-    dataRole.content[dataRole.content.length - 1].forEach((element) =>
-      roles.push({
-        key: element.rolecode,
-        label: element.rolename,
-      })
+    dataRole.content[dataRole.content.length - 1].forEach((element) => {
+      if (element.status == 'Active')
+        roles.push({
+          key: element.rolecode,
+          label: element.rolename,
+        })
+    }
     );
     console.log("roles", roles);
 
@@ -1315,38 +1317,38 @@ export default function UserManagement() {
 
                   <Grid item style={{ flexGrow: 1 }} >
 
-                  <Typography>
-                    {nodes.create || nodes.read || nodes.update || nodes.delete ?
-                      <Typography
-                      display="inline"
-                        variant="h6"
-                        color="initial"
-                        style={{ color: '#1F51FF', fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
-                      >
-                        {nodes.name} <VpnKey style={{ fontSize: 16 }} />
-                      </Typography>
-                      :
-                      <Typography
-                      display="inline"
-                        variant="h6"
-                        color="initial"
-                        style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
-                      >
-                        {nodes.name}  
-                      </Typography>
-                    }
-                    {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
-                      <Typography
-                      display="inline"
-                        variant="h6"
-                        color="initial"
-                        style={{ color: 'green', fontSize: 16, paddingTop: 10, paddingBottom: 10 , paddingLeft: 10}}
-                      >
-                         <PersonAddIcon style={{ fontSize: 16 }} />
-                      </Typography>
-                      :
-                      null
-                    }
+                    <Typography>
+                      {nodes.create || nodes.read || nodes.update || nodes.delete ?
+                        <Typography
+                          display="inline"
+                          variant="h6"
+                          color="initial"
+                          style={{ color: '#1F51FF', fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                        >
+                          {nodes.name} <VpnKey style={{ fontSize: 16 }} />
+                        </Typography>
+                        :
+                        <Typography
+                          display="inline"
+                          variant="h6"
+                          color="initial"
+                          style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                        >
+                          {nodes.name}
+                        </Typography>
+                      }
+                      {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
+                        <Typography
+                          display="inline"
+                          variant="h6"
+                          color="initial"
+                          style={{ color: 'green', fontSize: 16, paddingTop: 10, paddingBottom: 10, paddingLeft: 10 }}
+                        >
+                          <PersonAddIcon style={{ fontSize: 16 }} />
+                        </Typography>
+                        :
+                        null
+                      }
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1677,7 +1679,7 @@ export default function UserManagement() {
               <div>
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
-                    <Typography  style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}>
+                    <Typography style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}>
                       {
                         nodes.children.some(item => {
                           if (item.permision == false) return item.children.some(childitem => childitem.create === true)
@@ -1709,7 +1711,7 @@ export default function UserManagement() {
                             display="inline"
                             variant="h6"
                             color="initial"
-                            style={{ fontSize: 16, height:50}}
+                            style={{ fontSize: 16, height: 50 }}
                           >
                             {nodes.name}
                           </Typography>
@@ -1984,7 +1986,7 @@ export default function UserManagement() {
         </Grid>
 
 
-            {/* <Grid container>
+        {/* <Grid container>
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -2084,54 +2086,54 @@ export default function UserManagement() {
                 </Grid>
               </Grid>
             </Grid> */}
-            <div style={{ maxWidth: "100%" }}>
-              <MaterialTable
-                style={{ paddingLeft: 30, paddingRight: 30 }}
-                title={
-                  <Grid>
-                    <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
-                      User Management
-                    </Typography>
-                  </Grid>
-                }
-                columns={[
-                  { title: "Username", field: "userID" },
-                  { title: "Full Name", field: "name" },
-                  { title: "Position", field: "position" },
-                  { title: "Roles", field: "roles" },
-                  { title: "Property", field: "property" }
-                ]}
-                data={rows}
-                // totalCount={rows.length}
-                // page={page}
-                options={{
-                  actionsColumnIndex: -1,
-                  filtering: true,
-                  searchFieldAlignment: "left",
-                  page: page,
-                  pageSize: rowsPerPage,
-                  pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
-                }}
-                actions={[
-                  {
-                    icon: EditRoundedIcon,
-                    tooltip: "Edit",
-                    onClick: (event, rowData) => {
-                      handleDialogEditUser(rowData.userID, rowData.firstname, rowData.lastname, rowData.position, rowData.status);
-                    },
-                  },
-                  {
-                    icon: DeleteRoundedIcon,
-                    tooltip: "Delete",
-                    onClick: (event, rowData) => {
-                      handleDialogDeleteUserOpen(rowData.userID, rowData.firstname, rowData.lastname);
-                    },
-                  },
-                ]}
-                onChangePage={(page) => console.log("page")}
-              // onChangePage={(event, page) => console.log(event, page)}
-              />
-            </div>
+        <div style={{ maxWidth: "100%" }}>
+          <MaterialTable
+            style={{ paddingLeft: 30, paddingRight: 30 }}
+            title={
+              <Grid>
+                <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
+                  User Management
+                </Typography>
+              </Grid>
+            }
+            columns={[
+              { title: "Username", field: "userID" },
+              { title: "Full Name", field: "name" },
+              { title: "Position", field: "position" },
+              { title: "Roles", field: "roles" },
+              { title: "Property", field: "property" }
+            ]}
+            data={rows}
+            // totalCount={rows.length}
+            // page={page}
+            options={{
+              actionsColumnIndex: -1,
+              filtering: true,
+              searchFieldAlignment: "left",
+              page: page,
+              pageSize: rowsPerPage,
+              pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
+            }}
+            actions={[
+              {
+                icon: EditRoundedIcon,
+                tooltip: "Edit",
+                onClick: (event, rowData) => {
+                  handleDialogEditUser(rowData.userID, rowData.firstname, rowData.lastname, rowData.position, rowData.status);
+                },
+              },
+              {
+                icon: DeleteRoundedIcon,
+                tooltip: "Delete",
+                onClick: (event, rowData) => {
+                  handleDialogDeleteUserOpen(rowData.userID, rowData.firstname, rowData.lastname);
+                },
+              },
+            ]}
+            onChangePage={(page) => console.log("page")}
+          // onChangePage={(event, page) => console.log(event, page)}
+          />
+        </div>
 
         {/* ==================== Dialog New User========================= */}
         <Dialog
@@ -2239,9 +2241,9 @@ export default function UserManagement() {
                         <MenuItem
                           key={option.key}
                           name={option.key}
-                          value={option.label}
+                          value={option.key}
                         >
-                          {option.label}
+                          {option.key}
                         </MenuItem>
                       ))}
                     </TextField>
