@@ -1926,7 +1926,7 @@ export default function RoleManagement() {
                       // page={page}
                       options={{
                         actionsColumnIndex: -1,
-                        filtering: true,
+                        // filtering: true,
                         searchFieldAlignment: "left",
                         page: page,
                         pageSize: rowsPerPage,
