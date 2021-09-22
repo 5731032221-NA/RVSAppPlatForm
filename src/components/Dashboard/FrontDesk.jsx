@@ -23,6 +23,7 @@ import Divider from "@material-ui/core/Divider";
 
 import ButtomBar from "../../layouts/ButtomBar";
 import TestGraph2 from "./TestGraph2";
+
 import Barchart from "./Barchart";
 import WorldMap from "./WorldMap";
 import Piechart from "./Piechart";
@@ -121,8 +122,20 @@ export class FrontDesk extends Component {
             // gradient: 'linear-gradient(#091236, #1E215D)',}}
           >
             <Grid container spacing={3} xs={12} md={12} lg={9} xl={9}>
-              <Grid item xs={12} md={12} lg={12} xl={12}>
-                <Paper elevation={3} style={{ minHeight: 430 }}>
+              <Grid
+                item
+                xs={12}
+                md={12}
+                lg={12}
+                xl={12}
+                style={{ marginTop: 15 }}
+              >
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 430 }}
+                >
                   <Grid container>
                     <Grid
                       container
@@ -247,7 +260,12 @@ export class FrontDesk extends Component {
               </Grid>
 
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 430 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 430 }}
+                >
                   <Grid
                     container
                     direction="row"
@@ -402,8 +420,9 @@ export class FrontDesk extends Component {
                       </Grid>
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
-                          elevation={0}
                           variant="outlined"
+                          elevation={0}
+                          square
                           style={{
                             // backgroundColor: "#BDBFC3",
                             width: "100%",
@@ -419,7 +438,12 @@ export class FrontDesk extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 430 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 430 }}
+                >
                   <Grid container spacing={3} style={{ padding: 20 }}>
                     <Grid container style={{ marginBottom: 20 }}>
                       <Typography variant="h6" component="h6">
@@ -486,7 +510,12 @@ export class FrontDesk extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 430 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 430 }}
+                >
                   <Grid container spacing={3} style={{ padding: 20 }}>
                     <Grid
                       container
@@ -523,7 +552,8 @@ export class FrontDesk extends Component {
             <Grid item xs={12} md={12} lg={3} xl={3}>
               <Grid item xs={12} md={12} lg={12} xl={12}>
                 <Paper
-                  elevation={3}
+                  variant="outlined"
+                  square
                   style={{ minHeight: 150, backgroundColor: "#030AAC" }}
                 >
                   <Grid
@@ -566,7 +596,12 @@ export class FrontDesk extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={12} lg={12} xl={12}>
-                <Paper elevation={3} style={{ minHeight: 720, marginTop: 20 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 720, marginTop: 20 }}
+                >
                   <Grid container style={{ padding: 20 }}>
                     <Grid container style={{ marginBottom: 20 }}>
                       <Typography variant="h6" component="h6">

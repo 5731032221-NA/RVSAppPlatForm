@@ -14,14 +14,21 @@ import Typography from "@material-ui/core/Typography";
 import WorkIcon from "@material-ui/icons/Work";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 import TestGraph from "./TestGraph";
-
+import Radialbarchart from "./Radialbarchart";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import ArrivalBarChart from "./ArrivalBarChart";
+import InHouseBarChart from "./InHouseBarChart";
+import TodayPickupBarChart from "./TodayPickupBarChart";
+// import { getweather } from "../../services/weather.service";
 export class Reservation extends Component {
   constructor(props) {
     super(props);
     this.props.getUserList();
     this.state = {
       lang: "en",
+
       Dashboard: en_lang.Dashboard,
       color: this.props.color,
     };
@@ -47,6 +54,7 @@ export class Reservation extends Component {
       }
     }, 1000);
   }
+
   componentWillUnmount() {
     clearInterval(this.interval);
   }
@@ -62,7 +70,7 @@ export class Reservation extends Component {
                 <Paper elevation={3} style={{ minHeight: 300 }}>
                   Gride layout 12 */}
 
-          <h3 style={{ color: this.state.color, marginBottom: 50 }}>
+          <h3 style={{ color: this.state.color, marginBottom: 30 }}>
             Reservation
           </h3>
 
@@ -75,7 +83,12 @@ export class Reservation extends Component {
           >
             <Grid container spacing={3} xs={12} md={12} lg={9} xl={9}>
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 430 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 430 }}
+                >
                   <Grid
                     container
                     direction="row"
@@ -105,67 +118,301 @@ export class Reservation extends Component {
                     >
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
+                          variant="outlined"
+                          elevation={0}
                           style={{
-                            backgroundColor: "#BDBFC3",
+                            backgroundColor: "#F7F7F7",
                             width: "100%",
-                            height: 260,
-                            marginBottom: 20,
+                            height: 140,
+                            borderRadius: 15,
                           }}
-                        ></Paper>
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70 }}
+                            >
+                              28
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              80% Out
+                            </Typography>
+                          </Grid>
+                        </Paper>
                       </Grid>
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
+                          variant="outlined"
+                          elevation={0}
                           style={{
-                            backgroundColor: "#BDBFC3",
+                            backgroundColor: "#F7F7F7",
                             width: "100%",
-                            height: 260,
+                            height: 140,
+                            borderRadius: 15,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "red" }}
+                            >
+                              35
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              Expected
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
                             marginBottom: 20,
                           }}
-                        ></Paper>
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "red" }}
+                            >
+                              5
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              Due Out
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          // variant="outlined"
+                          elevation={0}
+                          style={{
+                            // backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                            marginBottom: 20,
+                          }}
+                        >
+                          <Radialbarchart />
+                        </Paper>
                       </Grid>
                     </Grid>
                   </Grid>
                   <Grid
                     container
                     justifyContent="center"
-                    alignItems="flex-end"
-                    style={{ padding: 10, paddingLeft: 60, paddingRight: 50 }}
+                    alignItems="stretch"
+                    style={{ minHeight: 55 }}
                   >
-                    <Button size="large" variant="contained" fullWidth>
-                      CHECK UOT
+                    <Button
+                      size="large"
+                      variant="contained"
+                      style={{
+                        backgroundColor: "#4A4A4A",
+                        color: "white",
+                        fontSize: 18,
+                      }}
+                      fullWidth
+                    >
+                      CHECK OUT
                     </Button>
                   </Grid>
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 430 }}>
-                  <Grid container spacing={3} style={{ padding: 20 }}>
-                    <Grid container style={{ marginBottom: 20 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 430 }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={3}
+                    style={{ padding: 20 }}
+                  >
+                    <Grid
+                      container
+                      style={{ marginBottom: 20, marginLeft: 20 }}
+                    >
                       <Typography variant="h6" component="h6">
                         Arrival Today (Rooms)
                       </Typography>
                     </Grid>
-                    <Grid container justifyContent="center" alignItems="center">
-                      <Paper
-                        style={{
-                          backgroundColor: "#BDBFC3",
-                          width: "100%",
-                          height: 260,
-                          marginBottom: 20,
-                        }}
-                      ></Paper>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing={3}
+                      xs={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "black" }}
+                            >
+                              28
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              Expected
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "blue" }}
+                            >
+                              32
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              20 % Arrival
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={4} lg={4} xl={4}>
+                        <Paper
+                          elevation={0}
+                          style={{
+                            width: "100%",
+                            marginBottom: 20,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="start"
+                            alignItems="center"
+                          >
+                            <FiberManualRecordIcon
+                              style={{ color: "#2D62ED", marginRight: 5 }}
+                            />
+                            <Typography variant="h6" color="initial">
+                              Desktop
+                            </Typography>
+                          </Grid>
+                          <Divider
+                            style={{ marginTop: 10, marginBottom: 10 }}
+                          />
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="start"
+                            alignItems="center"
+                          >
+                            <FiberManualRecordIcon
+                              style={{ color: "#D8D8D8", marginRight: 5 }}
+                            />
+                            <Typography variant="h6" color="initial">
+                              Mobile
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={8} lg={8} xl={8}>
+                        <Paper
+                          // variant="outlined"
+                          elevation={0}
+                          style={{
+                            // backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            marginBottom: 20,
+                          }}
+                        >
+                          <ArrivalBarChart />
+                        </Paper>
+                      </Grid>
                     </Grid>
                   </Grid>
                   <Grid
                     container
                     justifyContent="center"
-                    alignItems="flex-end"
-                    style={{ padding: 10, paddingLeft: 60, paddingRight: 50 }}
+                    alignItems="stretch"
+                    style={{ minHeight: 55 }}
                   >
                     <Button
                       size="large"
                       variant="contained"
-                      color="primary"
+                      style={{
+                        backgroundColor: "#164BD8",
+                        color: "white",
+                        fontSize: 18,
+                      }}
                       fullWidth
                     >
                       CHECK IN
@@ -173,51 +420,161 @@ export class Reservation extends Component {
                   </Grid>
                 </Paper>
               </Grid>
-
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 430 }}>
-                  <Grid container spacing={3} style={{ padding: 20 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 430 }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={3}
+                    style={{ padding: 20 }}
+                  >
                     <Grid
                       container
-                      direction="column"
-                      style={{ marginBottom: 20 }}
+                      style={{ marginBottom: 20, marginLeft: 20 }}
                     >
                       <Typography variant="h6" component="h6">
                         In-house Today (Rooms)
                       </Typography>
                     </Grid>
-                    <Grid container justifyContent="center" alignItems="center">
-                      <Paper
-                        style={{
-                          backgroundColor: "#BDBFC3",
-                          width: "100%",
-                          height: 245,
-                        }}
-                      ></Paper>
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="space-around"
-                        alignItems="center"
-                        style={{ padding: 20 }}
-                      >
-                        <Typography variant="body1" component="body1">
-                          Income
-                        </Typography>
-                        <Typography variant="body1" component="body1">
-                          cashflow
-                        </Typography>
-                        <Typography variant="body1" component="body1">
-                          Revenue
-                        </Typography>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing={3}
+                      xs={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "black" }}
+                            >
+                              28
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              OCC 90 %
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "black" }}
+                            >
+                              32
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              Out
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+
+                      <Grid item xs={12} md={12} lg={12} xl={12}>
+                        <Paper
+                          // variant="outlined"
+                          elevation={0}
+                          style={{
+                            // backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 135,
+                            // marginBottom: 20,
+                          }}
+                        >
+                          <InHouseBarChart />
+                        </Paper>
+                        <Grid
+                          container
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <FiberManualRecordIcon
+                            style={{ color: "#2D62ED", marginRight: 5 }}
+                          />
+                          <Typography variant="body1" component="body1">
+                            Income
+                          </Typography>
+
+                          <FiberManualRecordIcon
+                            style={{ color: "#21C5FB", marginRight: 5 }}
+                          />
+                          <Typography variant="body1" component="body1">
+                            cashflow
+                          </Typography>
+
+                          <FiberManualRecordIcon
+                            style={{ color: "#D8D8D8", marginRight: 5 }}
+                          />
+                          <Typography variant="body1" component="body1">
+                            Revenue
+                          </Typography>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid container justifyContent="center" alignItems="flex-end">
+
+                  <Grid
+                    container
+                    justifyContent="center"
+                    alignItems="stretch"
+                    style={{ minHeight: 55 }}
+                  >
                     <Button
                       size="large"
                       variant="contained"
-                      color="primary"
+                      style={{
+                        backgroundColor: "#164BD8",
+                        color: "white",
+                        fontSize: 18,
+                      }}
                       fullWidth
                     >
                       AMENTMENT
@@ -227,14 +584,18 @@ export class Reservation extends Component {
               </Grid>
 
               {/* -----------------------2-------------------------------- */}
-
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 430 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 430 }}
+                >
                   <Grid
                     container
                     direction="row"
                     justifyContent="center"
-                    alignItems="flex-end"
+                    alignItems="center"
                     spacing={3}
                     style={{ padding: 20 }}
                   >
@@ -259,63 +620,329 @@ export class Reservation extends Component {
                     >
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
+                          variant="outlined"
+                          elevation={0}
                           style={{
-                            backgroundColor: "#BDBFC3",
+                            backgroundColor: "#F7F7F7",
                             width: "100%",
-                            height: 290,
-                            marginBottom: 20,
+                            height: 140,
+                            borderRadius: 15,
                           }}
-                        ></Paper>
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "black" }}
+                            >
+                              35
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              80 % Out
+                            </Typography>
+                          </Grid>
+                        </Paper>
                       </Grid>
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
+                          variant="outlined"
+                          elevation={0}
                           style={{
-                            backgroundColor: "#BDBFC3",
+                            backgroundColor: "#F7F7F7",
                             width: "100%",
-                            height: 290,
+                            height: 140,
+                            borderRadius: 15,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "red" }}
+                            >
+                              28
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              Expected
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
                             marginBottom: 20,
                           }}
-                        ></Paper>
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "red" }}
+                            >
+                              5
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              Due Out
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                            marginBottom: 20,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "black" }}
+                            >
+                              7
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              Left to Out
+                            </Typography>
+                          </Grid>
+                        </Paper>
                       </Grid>
                     </Grid>
                   </Grid>
-
-                  <Grid container justifyContent="center" alignItems="center">
+                  <Grid
+                    container
+                    justifyContent="center"
+                    alignItems="stretch"
+                    style={{ minHeight: 55 }}
+                  >
                     <Button
                       size="large"
                       variant="contained"
-                      //   color="primary"
+                      style={{
+                        backgroundColor: "#4A4A4A",
+                        color: "white",
+                        fontSize: 18,
+                      }}
                       fullWidth
                     >
-                      CHECKOUT
+                      CHECK OUT
                     </Button>
                   </Grid>
                 </Paper>
               </Grid>
+
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 430 }}>
-                  <Grid container spacing={3} style={{ padding: 20 }}>
-                    <Grid container style={{ marginBottom: 20 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 430 }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={3}
+                    style={{ padding: 20 }}
+                  >
+                    <Grid
+                      container
+                      style={{ marginBottom: 20, marginLeft: 20 }}
+                    >
                       <Typography variant="h6" component="h6">
                         Today Hotel Statistic
                       </Typography>
                     </Grid>
-                    <Grid container justifyContent="center" alignItems="center">
-                      <Paper
-                        style={{
-                          backgroundColor: "#BDBFC3",
-                          width: "100%",
-                          height: 290,
-                          marginBottom: 20,
-                        }}
-                      ></Paper>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing={3}
+                      xs={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#376CF7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              style={{ fontSize: 70, color: "white" }}
+                            >
+                              90<span style={{ fontSize: 50 }}>%</span>
+                            </Typography>
+                            <Typography variant="h5" style={{ color: "white" }}>
+                              Occ.
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "blue" }}
+                            >
+                              15
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              Vc+Vl
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                            marginBottom: 20,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "red" }}
+                            >
+                              13
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              VD
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                            marginBottom: 20,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              color="initial"
+                              style={{ fontSize: 70, color: "black" }}
+                            >
+                              3
+                            </Typography>
+                            <Typography variant="h5" color="initial">
+                              0-0-0
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
                     </Grid>
                   </Grid>
-                  <Grid container justifyContent="center" alignItems="center">
+                  <Grid
+                    container
+                    justifyContent="center"
+                    alignItems="stretch"
+                    style={{ minHeight: 55 }}
+                  >
                     <Button
                       size="large"
                       variant="contained"
-                      color="primary"
+                      style={{
+                        backgroundColor: "#164BD8",
+                        color: "white",
+                        fontSize: 18,
+                      }}
                       fullWidth
                     >
                       ROOM INQUIRY
@@ -324,48 +951,131 @@ export class Reservation extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={4} xl={4}>
-                <Paper elevation={3} style={{ minHeight: 430 }}>
-                  <Grid container spacing={3} style={{ padding: 20 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 430 }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={3}
+                    style={{ padding: 20 }}
+                  >
                     <Grid
                       container
-                      direction="column"
-                      style={{ marginBottom: 20 }}
+                      style={{ marginBottom: 20, marginLeft: 20 }}
                     >
                       <Typography variant="h6" component="h6">
                         Today Pickup
                       </Typography>
+                    </Grid>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing={3}
+                      xs={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                    >
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#376CF7",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              style={{ fontSize: 70, color: "white" }}
+                            >
+                              12
+                            </Typography>
+                            <Typography variant="h5" style={{ color: "white" }}>
+                              Booking
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6} xl={6}>
+                        <Paper
+                          variant="outlined"
+                          elevation={0}
+                          style={{
+                            backgroundColor: "#214EC4",
+                            width: "100%",
+                            height: 140,
+                            borderRadius: 15,
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            style={{ padding: 10 }}
+                          >
+                            <Typography
+                              variant="h3"
+                              style={{ fontSize: 70, color: "white" }}
+                            >
+                              15
+                            </Typography>
+                            <Typography variant="h5" style={{ color: "white" }}>
+                              Rooms
+                            </Typography>
+                          </Grid>
+                        </Paper>
+                      </Grid>
 
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="space-around"
-                        alignItems="center"
-                        style={{ padding: 20 }}
-                      >
-                        <Typography variant="body1" component="body1">
-                          Orders
-                        </Typography>
-                        <Typography variant="body1" component="body1">
-                          Sales
-                        </Typography>
+                      <Grid item xs={12} md={12} lg={12} xl={12}>
+                        <Paper
+                          // variant="outlined"
+                          elevation={0}
+                          style={{
+                            // backgroundColor: "#F7F7F7",
+                            width: "100%",
+                            height: 140,
+                            marginBottom: 20,
+                          }}
+                        >
+                          <TodayPickupBarChart />
+                        </Paper>
                       </Grid>
                     </Grid>
-                    <Grid container justifyContent="center" alignItems="center">
-                      <Paper
-                        style={{
-                          backgroundColor: "#BDBFC3",
-                          width: "100%",
-                          height: 225,
-                          marginBottom: 20,
-                        }}
-                      ></Paper>
-                    </Grid>
                   </Grid>
-                  <Grid container justifyContent="center" alignItems="center">
+
+                  <Grid
+                    container
+                    justifyContent="center"
+                    alignItems="stretch"
+                    style={{ minHeight: 55 }}
+                  >
                     <Button
                       size="large"
                       variant="contained"
-                      color="primary"
+                      style={{
+                        backgroundColor: "#164BD8",
+                        color: "white",
+                        fontSize: 18,
+                      }}
                       fullWidth
                     >
                       MAKE A BOOKING
@@ -430,7 +1140,12 @@ export class Reservation extends Component {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={12} lg={12} xl={12}>
-                <Paper elevation={3} style={{ minHeight: 570 }}>
+                <Paper
+                  variant="outlined"
+                  elevation={0}
+                  square
+                  style={{ minHeight: 620 }}
+                >
                   <Grid container style={{ padding: 20 }}>
                     <Grid container style={{ marginBottom: 20 }}>
                       <Typography variant="h6" component="h6">
