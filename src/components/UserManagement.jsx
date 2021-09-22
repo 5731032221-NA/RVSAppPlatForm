@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { ReactReduxContext } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import MaterialTable from "material-table";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -85,7 +86,8 @@ function createData(
   position,
   roles,
   property,
-  status
+  status,
+  name
 ) {
   return {
     id,
@@ -96,6 +98,7 @@ function createData(
     roles,
     property,
     status,
+    name
   };
 }
 // const rows = [
@@ -622,11 +625,13 @@ export default function UserManagement() {
     let dataRole = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", dataRole.content[dataRole.content.length - 1]);
     roles = [];
-    dataRole.content[dataRole.content.length - 1].forEach((element) =>
-      roles.push({
-        key: element.rolecode,
-        label: element.rolename,
-      })
+    dataRole.content[dataRole.content.length - 1].forEach((element) => {
+      if (element.status == 'Active')
+        roles.push({
+          key: element.rolecode,
+          label: element.rolename,
+        })
+    }
     );
     console.log("roles", roles);
 
@@ -642,7 +647,8 @@ export default function UserManagement() {
           element.position,
           element.roles,
           element.property,
-          element.status
+          element.status,
+          element.firstname + " " + element.lastname
         )
       )
     );
@@ -1053,7 +1059,8 @@ export default function UserManagement() {
               element.position,
               element.roles,
               element.property,
-              element.status
+              element.status,
+              element.firstname + " " + element.lastname
             )
           )
         )
@@ -1309,38 +1316,39 @@ export default function UserManagement() {
 
 
                   <Grid item style={{ flexGrow: 1 }} >
-                  <Typography>
-                    {nodes.create || nodes.read || nodes.update || nodes.delete ?
-                      <Typography
-                      display="inline"
-                        variant="h6"
-                        color="initial"
-                        style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
-                      >
-                        {nodes.name} <VpnKey style={{ fontSize: 16 }} />
-                      </Typography>
-                      :
-                      <Typography
-                      display="inline"
-                        variant="h6"
-                        color="initial"
-                        style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
-                      >
-                        {nodes.name}  
-                      </Typography>
-                    }
-                    {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
-                      <Typography
-                      display="inline"
-                        variant="h6"
-                        color="initial"
-                        style={{ color: 'green', fontSize: 16, paddingTop: 5, paddingBottom: 10 , paddingLeft: 10}}
-                      >
-                         <PersonAddIcon style={{ fontSize: 16 }} />
-                      </Typography>
-                      :
-                      null
-                    }
+
+                    <Typography>
+                      {nodes.create || nodes.read || nodes.update || nodes.delete ?
+                        <Typography
+                          display="inline"
+                          variant="h6"
+                          color="initial"
+                          style={{ color: '#1F51FF', fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                        >
+                          {nodes.name} <VpnKey style={{ fontSize: 16 }} />
+                        </Typography>
+                        :
+                        <Typography
+                          display="inline"
+                          variant="h6"
+                          color="initial"
+                          style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                        >
+                          {nodes.name}
+                        </Typography>
+                      }
+                      {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
+                        <Typography
+                          display="inline"
+                          variant="h6"
+                          color="initial"
+                          style={{ color: 'green', fontSize: 16, paddingTop: 10, paddingBottom: 10, paddingLeft: 10 }}
+                        >
+                          <PersonAddIcon style={{ fontSize: 16 }} />
+                        </Typography>
+                        :
+                        null
+                      }
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1671,7 +1679,7 @@ export default function UserManagement() {
               <div>
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
-                    <Typography>
+                    <Typography style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}>
                       {
                         nodes.children.some(item => {
                           if (item.permision == false) return item.children.some(childitem => childitem.create === true)
@@ -1694,7 +1702,7 @@ export default function UserManagement() {
                             display="inline"
                             variant="h6"
                             color="initial"
-                            style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
+                            style={{ color: '#1F51FF', fontSize: 16 }}
                           >
                             {nodes.name}  <VpnKey style={{ fontSize: 16 }} />
                           </Typography>
@@ -1703,7 +1711,7 @@ export default function UserManagement() {
                             display="inline"
                             variant="h6"
                             color="initial"
-                            style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                            style={{ fontSize: 16, height: 50 }}
                           >
                             {nodes.name}
                           </Typography>
@@ -1730,9 +1738,9 @@ export default function UserManagement() {
                             display="inline"
                             variant="h6"
                             color="initial"
-                            style={{ color: "green", fontSize: 16, paddingTop: 5, paddingBottom: 10, paddingLeft: 10 }}
+                            style={{ color: "green", fontSize: 16, paddingLeft: 10 }}
                           >
-                             <PersonAddIcon style={{ fontSize: 16 }} />
+                            <PersonAddIcon style={{ fontSize: 16 }} />
                           </Typography>
                           :
                           null
@@ -1845,7 +1853,8 @@ export default function UserManagement() {
               element.position,
               element.roles,
               element.property,
-              element.status
+              element.status,
+              element.firstname + " " + element.lastname
             )
           )
         );
@@ -1899,7 +1908,8 @@ export default function UserManagement() {
           element.position,
           element.roles,
           element.property,
-          element.status
+          element.status,
+          element.firstname + " " + element.lastname
 
         )
       )
@@ -1975,9 +1985,8 @@ export default function UserManagement() {
           </Grid>
         </Grid>
 
-        <Paper>
-          <Grid container style={{ padding: 30 }}>
-            <Grid container>
+
+        {/* <Grid container>
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -2076,9 +2085,56 @@ export default function UserManagement() {
                   />
                 </Grid>
               </Grid>
-            </Grid>
-          </Grid>
-        </Paper>
+            </Grid> */}
+        <div style={{ maxWidth: "100%" }}>
+          <MaterialTable
+            style={{ paddingLeft: 30, paddingRight: 30 }}
+            title={
+              <Grid>
+                <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
+                  User Management
+                </Typography>
+              </Grid>
+            }
+            columns={[
+              { title: "Username", field: "userID" },
+              { title: "Full Name", field: "name" },
+              { title: "Position", field: "position" },
+              { title: "Roles", field: "roles" },
+              { title: "Property", field: "property" }
+            ]}
+            data={rows}
+            // totalCount={rows.length}
+            // page={page}
+            options={{
+              actionsColumnIndex: -1,
+              filtering: true,
+              searchFieldAlignment: "left",
+              page: page,
+              pageSize: rowsPerPage,
+              pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
+            }}
+            actions={[
+              {
+                icon: EditRoundedIcon,
+                tooltip: "Edit",
+                onClick: (event, rowData) => {
+                  handleDialogEditUser(rowData.userID, rowData.firstname, rowData.lastname, rowData.position, rowData.status);
+                },
+              },
+              {
+                icon: DeleteRoundedIcon,
+                tooltip: "Delete",
+                onClick: (event, rowData) => {
+                  handleDialogDeleteUserOpen(rowData.userID, rowData.firstname, rowData.lastname);
+                },
+              },
+            ]}
+            onChangePage={(page) => console.log("page")}
+          // onChangePage={(event, page) => console.log(event, page)}
+          />
+        </div>
+
         {/* ==================== Dialog New User========================= */}
         <Dialog
           fullWidth="true"

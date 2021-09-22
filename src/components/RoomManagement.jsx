@@ -1770,9 +1770,7 @@ export default function RoomManagement() {
             { title: "Property", field: "property" },
             {
               title: "#Number",
-              field: "number",
-              type: "numeric",
-              align: "left",
+              field: "number"
             },
             { title: "Room Type", field: "roomType" },
             { title: "Floor", field: "floor" },

@@ -6,6 +6,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import MaterialTable from "material-table";
 import {
   Container,
   Grid,
@@ -1799,76 +1800,15 @@ export default function RoleManagement() {
             </Button>
           </Grid>
         </Grid>
-        <Grid container>
-          <Paper
-            square
-            style={{
-              minHeight: 50,
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <Grid
-              style={{ padding: 15 }}
-              container
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={3}
-                lg={3}
-                xl={3}
-                style={{ flexGrow: 1 }}
-              >
-                <Typography variant="h6" style={{ fontSize: 25 }}>
-                  Role Management
-                </Typography>
-              </Grid>
-              {/* <Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
-                <TextField
-                  select
-                  // id="outlined-basic"
-                  label="Select Username"
-                  variant="outlined"
-                  fullWidth
-                  SelectProps={{
-                    native: true,
-                  }}
-                  value={selectUser}
-                  onChange={handleSelectUser}
-                >
-                  {demoUser.map((option) => (
-                    <option key={option.key} value={option.key}>
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid> */}
-            </Grid>
-            <Divider />
-          </Paper>
-        </Grid>
+        
 
-        <Grid container>
-          {/* <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-            <Paper square style={{ minHeight: "100%", padding: 20 }}>
-              <TreeView
-                defaultCollapseIcon={<ArrowDropDownIcon />}
-                defaultExpandIcon={<ArrowRightIcon />}
-              >
-                {dataMenu.map((node) => renderTreeSubMenu(node))}
-              </TreeView>
-            </Paper>
-          </Grid> */}
+        {/* <Grid container>
+         
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
             <Paper square style={{ minHeight: "100%" }}>
               <Grid container style={{ padding: 30 }}>
-                <Grid container>
-                  <Table size="small">
+                <Grid container> */}
+                  {/* <Table size="small">
                     <TableHead>
                       <TableRow>
                         <TableCell>Role Code</TableCell>
@@ -1877,8 +1817,7 @@ export default function RoleManagement() {
                         <TableCell>#User</TableCell>
                         <TableCell align="center">Status</TableCell>
                         <TableCell align="center">Action</TableCell>
-                        {/* <TableCell align="center">Sale Amount</TableCell> */}
-                      </TableRow>
+                         </TableRow>
                     </TableHead>
                     <TableBody>
                       {pageData.map((row) => (
@@ -1927,7 +1866,7 @@ export default function RoleManagement() {
                               <DeleteRoundedIcon />
                             </IconButton>
                           </TableCell>
-                          {/* <TableCell align="right">{row.amount}</TableCell> */}
+                        
                         </TableRow>
                       ))}
                     </TableBody>
@@ -1962,12 +1901,63 @@ export default function RoleManagement() {
                       // onRowsPerPageChange={handleChangeRowsPerPage}
                       />
                     </Grid>
-                  </Grid>
+                  </Grid> */}
+                   <div style={{ maxWidth: "100%" }}>
+                    <MaterialTable
+                      style={{ paddingLeft: 30, paddingRight: 30 }}
+                      title={
+                        <Grid>
+                          <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
+                            Role Management
+                          </Typography>
+                        </Grid>
+                      }
+                      columns={[
+                        { title: "Role Code", field: "rolecode" },
+                        {
+                          title: "Role Name",
+                          field: "rolename"
+                        },
+                        { title: "Description", field: "description" },
+                        { title: "#User", field: "count" }
+                      ]}
+                      data={rows}
+                      // totalCount={rows.length}
+                      // page={page}
+                      options={{
+                        actionsColumnIndex: -1,
+                        filtering: true,
+                        searchFieldAlignment: "left",
+                        page: page,
+                        pageSize: rowsPerPage,
+                        pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
+                      }}
+                      actions={[
+                        {
+                          icon: EditRoundedIcon,
+                          tooltip: "Edit",
+                          onClick: (event, rowData) => {
+                            handleDialogEditRole(rowData.rolecode, rowData.rolename, rowData.description, rowData.applyproperty, rowData.status);
+                          },
+                        },
+                        {
+                          icon: DeleteRoundedIcon,
+                          tooltip: "Delete",
+                          onClick: (event, rowData) => {
+                            handleDialogDeleteRoleOpen(rowData.rolecode, rowData.rolename, rowData.description);
+                          },
+                        },
+                      ]}
+                      onChangePage={(page) => console.log("page")}
+                    // onChangePage={(event, page) => console.log(event, page)}
+                    />
+                  </div>
+{/* 
                 </Grid>
               </Grid>
             </Paper>
           </Grid>
-        </Grid>
+        </Grid> */}
 
         {/* ==================== Dialog New Role ========================= */}
         <Dialog

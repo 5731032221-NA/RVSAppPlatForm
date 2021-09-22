@@ -95,20 +95,8 @@ export class FrontDesk extends Component {
     return (
       <div style={this.state.themeState}>
         <Container maxWidth="xl">
-          {/* <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={12} lg={9} xl={9}>
-              <Grid item spacing={1} xs={12} md={12} lg={12} xl={12}>
-                <Paper elevation={3} style={{ minHeight: 300 }}>
-                  Gride layout 12 */}
-
-          <h3
-            style={
-              ({ color: this.state.color, marginBottom: 25 },
-              this.state.themeState)
-            }
-          >
-            Property - {this.props.property}
+          <h3 style={{ color: this.state.color, marginBottom: 40, marginTop:-25, fontWeight: '500', fontSize:18 }}>
+            &nbsp;Dashboard
           </h3>
           <Grid
             container
