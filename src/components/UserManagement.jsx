@@ -736,7 +736,7 @@ export default function UserManagement() {
     const setrole = new Set();
     if (userrole.content[userrole.content.length - 1] != "") {
       userrole.content[userrole.content.length - 1].split(",").forEach((element) => {
-        if (role.filter(x => x.label === element).length == 0 && roles.some(role => role.label == element)) {
+        if (role.filter(x => x.label === element).length == 0 ) { //&& roles.some(role => role.label == element)
           role.push({ key: element, label: element })
           setrole.add(element);
         }
