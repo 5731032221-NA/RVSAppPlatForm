@@ -2241,9 +2241,9 @@ export default function UserManagement() {
                         <MenuItem
                           key={option.key}
                           name={option.key}
-                          value={option.key}
+                          value={option.label}
                         >
-                          {option.key}
+                          {option.label}
                         </MenuItem>
                       ))}
                     </TextField>
