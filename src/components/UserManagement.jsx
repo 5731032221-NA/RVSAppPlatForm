@@ -736,7 +736,7 @@ export default function UserManagement() {
     const setrole = new Set();
     if (userrole.content[userrole.content.length - 1] != "") {
       userrole.content[userrole.content.length - 1].split(",").forEach((element) => {
-        if (role.filter(x => x.label === element).length == 0) {
+        if (role.filter(x => x.label === element).length == 0 ) { //&& roles.some(role => role.label == element)
           role.push({ key: element, label: element })
           setrole.add(element);
         }
@@ -2101,14 +2101,15 @@ export default function UserManagement() {
               { title: "Full Name", field: "name" },
               { title: "Position", field: "position" },
               { title: "Roles", field: "roles" },
-              { title: "Property", field: "property" }
+              { title: "Property", field: "property" },
+              { title: "Status", field: "status" }
             ]}
             data={rows}
             // totalCount={rows.length}
             // page={page}
             options={{
               actionsColumnIndex: -1,
-              filtering: true,
+              // filtering: true,
               searchFieldAlignment: "left",
               page: page,
               pageSize: rowsPerPage,

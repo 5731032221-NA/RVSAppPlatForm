@@ -1784,7 +1784,7 @@ export default function RoomManagement() {
           // page={page}
           options={{
             actionsColumnIndex: -1,
-            filtering: true,
+            // filtering: true,
             searchFieldAlignment: "left",
             page: page,
             pageSize: rowsPerPage,

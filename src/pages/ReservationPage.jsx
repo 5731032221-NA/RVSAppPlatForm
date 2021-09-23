@@ -51,19 +51,19 @@ export const ReservationPage = (props) => {
   const [dataDate, setDataDate] = React.useState([]);
 
   React.useEffect(async () => {
-    const data = await getreservationroom(sessionStorage.getItem("auth"));
-    console.log("data", data);
-    let datedata = [];
-    data.content[data.content.length - 1].forEach((element) =>
-      datedata.push({
-        id: element.roomno,
-        title: element.description,
-        start: element.startdate,
-        end: element.enddate,
-      })
-    );
-    setDataDate(datedata);
-    console.log("datedata", datedata);
+    // const data = await getreservationroom(sessionStorage.getItem("auth"));
+    // console.log("data", data);
+    // let datedata = [];
+    // data.content[data.content.length - 1].forEach((element) =>
+    //   datedata.push({
+    //     id: element.roomno,
+    //     title: element.description,
+    //     start: element.startdate,
+    //     end: element.enddate,
+    //   })
+    // );
+    // setDataDate(datedata);
+    // console.log("datedata", datedata);
   }, []);
 
   const handleDateStart = (date) => {
