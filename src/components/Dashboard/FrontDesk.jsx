@@ -23,6 +23,7 @@ import Divider from "@material-ui/core/Divider";
 
 import ButtomBar from "../../layouts/ButtomBar";
 import TestGraph2 from "./TestGraph2";
+import GaugeChart from "react-gauge-chart";
 
 import Barchart from "./Barchart";
 import WorldMap from "./WorldMap";
@@ -95,7 +96,15 @@ export class FrontDesk extends Component {
     return (
       <div style={this.state.themeState}>
         <Container maxWidth="xl">
-          <h3 style={{ color: this.state.color, marginBottom: 40, marginTop:-25, fontWeight: '500', fontSize:18 }}>
+          <h3
+            style={{
+              color: this.state.color,
+              marginBottom: 40,
+              marginTop: -25,
+              fontWeight: "500",
+              fontSize: 18,
+            }}
+          >
             &nbsp;Dashboard
           </h3>
           <Grid
@@ -408,7 +417,7 @@ export class FrontDesk extends Component {
                       </Grid>
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
-                          variant="outlined"
+                          // variant="outlined"
                           elevation={0}
                           square
                           style={{
@@ -418,6 +427,15 @@ export class FrontDesk extends Component {
                             marginBottom: 20,
                           }}
                         >
+                          <GaugeChart
+                            id="gauge-chart1"
+                            nrOfLevels={420}
+                            arcsLength={[0.25, 0.25, 0.25, 0.25]}
+                            colors={["#4BB3FC", "#2D62ED", "#030AAC"]}
+                            percent={0.25}
+                            style={{ width: "110%" }}
+                            textColor={{ color: "black" }}
+                          />
                           {/* <Piechart /> */}
                         </Paper>
                       </Grid>
@@ -445,7 +463,7 @@ export class FrontDesk extends Component {
                           // backgroundColor: "#BDBFC3",
                           width: "100%",
                           height: "auto",
-                          marginBottom: 20,
+                          marginBottom: 5,
                         }}
                       >
                         <WorldMap />
