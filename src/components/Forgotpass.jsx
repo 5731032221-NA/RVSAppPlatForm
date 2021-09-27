@@ -28,7 +28,6 @@ import {
   engineName,
   osVersion,
 } from "react-device-detect";
-const computerName  = require('computer-name')
 function showMacAddress() {
   // var obj = new ActiveXObject("WbemScripting.SWbemLocator");
   // var s = obj.ConnectServer(".");
@@ -210,7 +209,7 @@ export default function ForgotPass() {
                 style={{ padding: 0 }}
               >
                 {" "}
-                computerName : { computerName()}
+                computerName : {}
               </Typography>
             </Container>
           </Paper>

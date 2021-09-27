@@ -21,7 +21,7 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import ArrivalBarChart from "./ArrivalBarChart";
 import InHouseBarChart from "./InHouseBarChart";
 import TodayPickupBarChart from "./TodayPickupBarChart";
-// import { getweather } from "../../services/weather.service";
+import { getweather } from "../../services/weather.service";
 export class Reservation extends Component {
   constructor(props) {
     super(props);
@@ -31,10 +31,12 @@ export class Reservation extends Component {
 
       Dashboard: en_lang.Dashboard,
       color: this.props.color,
+      weather: [],
+      weatherIcon: "",
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.interval = setInterval(() => {
       if (this.state.lang != this.props.lang) {
         this.setState({ lang: "th" });
@@ -53,6 +55,9 @@ export class Reservation extends Component {
         }
       }
     }, 1000);
+    const item = await getweather();
+    this.setState({ weather: item });
+    this.setState({ weatherIcon: item.weather.icon });
   }
 
   componentWillUnmount() {
@@ -1105,20 +1110,15 @@ export class Reservation extends Component {
                   >
                     <Grid item style={{ flexGrow: 1 }}>
                       <Typography variant="" component="h1">
-                        Weather content
+                        {/* Weather content */}
+                        {this.state.weather.name}
                       </Typography>
                     </Grid>
 
                     <Grid item>
-                      <WorkIcon
-                        style={{
-                          backgroundColor: "#2A31B9",
-                          color: "#FFFFFF",
-                          padding: 10,
-                          borderRadius: 8,
-                          width: 35,
-                          height: 35,
-                        }}
+                      <img
+                        src="http://openweathermap.org/img/wn/04d@2x.png"
+                        alt="weatherIMG"
                       />
                     </Grid>
                     <Grid container direction="row" alignItems="center">
@@ -1135,6 +1135,17 @@ export class Reservation extends Component {
                           Since last month
                         </Typography>
                       </Grid>
+                    </Grid>
+                    <Grid container direction="row" alignItems="center">
+                      <Grid
+                        item
+                        style={{ flexGrow: 1, padding: 20, color: "#FFFFFF" }}
+                      >
+                        <Typography variant="h6" component="h1">
+                          {/* {this.state.weather.main} */}
+                        </Typography>
+                      </Grid>
+                      <Grid item style={{ padding: 10 }}></Grid>
                     </Grid>
                   </Grid>
                 </Paper>
