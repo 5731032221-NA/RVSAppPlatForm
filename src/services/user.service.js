@@ -1,4 +1,22 @@
 module.exports = {
+  getusercomponentpermision: async function (accessToken,username,component) {
+    return fetch(`http://localhost:8082/usercomponentpermision/${username}/${component}`, {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
+  getusernamebyproperty: async function (accessToken,propertycode) {
+    return fetch(`http://localhost:8082/usernamebyproperty/${propertycode}`, {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => res.json());
+  },
   getconfigurationbypropertycode: async function (accessToken,propertycode) {
     return fetch(`http://localhost:8082/configurationbypropertycode/${propertycode}`, {
       method: "GET",

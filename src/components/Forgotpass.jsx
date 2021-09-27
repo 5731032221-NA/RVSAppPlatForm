@@ -20,12 +20,41 @@ import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import Paper from "@material-ui/core/Paper";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import getMAC, { isMAC } from 'getmac';
 import {
   browserName,
   fullBrowserVersion,
   osName,
+  engineName,
   osVersion,
 } from "react-device-detect";
+function showMacAddress() {
+  // var obj = new ActiveXObject("WbemScripting.SWbemLocator");
+  // var s = obj.ConnectServer(".");
+  // var properties = s.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration");
+  // var e = new Enumerator(properties);
+  // console.log(e);
+  // while (!e.atEnd()) {
+  //   var p = e.item();
+  //   console.log("p",p.MACAddress)
+  // }
+  return "";
+  // var output;
+  // output = '<table border="0" cellPadding="5px" cellSpacing="1px" bgColor="#CCCCCC">';
+  // output = output + '<tr bgColor="#EAEAEA"><td>Caption</td><td>MACAddress</td></tr>';
+  // while (!e.atEnd()) {
+  //     e.moveNext();
+  //     var p = e.item();
+  //     if (!p) continue;
+  //     output = output + '<tr bgColor="#FFFFFF">';
+  //     output = output + '<td>' + p.Caption; +'</td>';
+  //     output = output + '<td>' + p.MACAddress + '</td>';
+  //     output = output + '</tr>';
+  // }
+  // output = output + '</table>';
+  // document.getElementById("box").innerHTML = output;
+}
+
 
 const theme = createTheme({
   palette: {
@@ -86,6 +115,7 @@ export default function ForgotPass() {
   useEffect(() => {
     //passing getData method to the lifecycle method
     getData();
+    console.log("mac",showMacAddress())
   }, []);
 
   console.log(`${browserName} ${fullBrowserVersion} ${osName} ${osVersion}`);
@@ -171,7 +201,15 @@ export default function ForgotPass() {
                 style={{ padding: 0 }}
               >
                 {" "}
-                Browser : {osName} Version : {osVersion}
+                OS : {osName} Version : {osVersion}
+              </Typography>
+              <Typography
+                component="h4"
+                variant="subtitle1"
+                style={{ padding: 0 }}
+              >
+                {" "}
+                computerName : {}
               </Typography>
             </Container>
           </Paper>

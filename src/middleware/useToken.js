@@ -61,6 +61,7 @@ export default function useToken() {
         console.log("userToken", userToken)
         if (userToken != null) {
             if (userToken.msg === "Success!") {
+                sessionStorage.setItem('username', userToken.contents[userToken.contents.length-1].username)
                 sessionStorage.setItem('name', userToken.contents[userToken.contents.length-1].firstname +" "+userToken.contents[userToken.contents.length-1].lastname+".")
                 let grantproperty = []
                 userToken.contents[userToken.contents.length-1].property.split(",").forEach(element => grantproperty.push({propertycode: element}));
