@@ -85,9 +85,36 @@ export class FrontDesk extends Component {
           });
         }
         this.setState({ themeBackground: this.props.themeBackground });
+        console.log(this.props.themeBackground);
       }
     }, 1000);
   }
+
+  // componentWillUpdate() {
+  //   if (this.state.themeBackground != this.props.color) {
+  //     console.log(this.state.themeBackground, this.props.themeBackground);
+  //     if (this.props.themeBackground === "#FFFFFF") {
+  //       this.setState({
+  //         themeState: {
+  //           background: "#FFFFFF",
+  //           color: "#000000",
+  //           // matStyle: this.classes.normalmode
+  //         },
+  //       });
+  //     } else {
+  //       this.setState({
+  //         themeState: {
+  //           background: "#363537",
+  //           color: "#FAFAFA",
+  //           // matStyle: this.classes.darkmode
+  //         },
+  //       });
+  //     }
+  //     this.setState({ themeBackground: this.props.themeBackground });
+  //     console.log(this.props.themeBackground);
+  //   }
+  // }
+
   componentWillUnmount() {
     clearInterval(this.interval);
   }
@@ -98,7 +125,8 @@ export class FrontDesk extends Component {
         <Container maxWidth="xl">
           <h3
             style={{
-              color: this.state.color,
+              color: this.state.themeState.color,
+              backgroundColor: this.state.themeState.background,
               marginBottom: 40,
               marginTop: -25,
               fontWeight: "500",
@@ -131,7 +159,10 @@ export class FrontDesk extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 430 }}
+                  style={{
+                    minHeight: 430,
+                    backgroundColor: this.state.themeState.background,
+                  }}
                 >
                   <Grid container>
                     <Grid
@@ -139,7 +170,10 @@ export class FrontDesk extends Component {
                       direction="row"
                       style={{ marginBottom: 20, marginLeft: 20 }}
                     >
-                      <Grid container style={{ marginBottom: 10 }}>
+                      <Grid
+                        container
+                        style={{ marginBottom: 10, color: this.state.color }}
+                      >
                         <Typography variant="h6" component="h6">
                           Sales Statistical Overview
                         </Typography>

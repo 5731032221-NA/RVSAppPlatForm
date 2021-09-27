@@ -17,13 +17,10 @@ import Switch from "@material-ui/core/Switch";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { purple, green, orange, red, yellow } from "@material-ui/core/colors";
-import { ReactReduxContext } from 'react-redux';
-import {
-  EDIT_LANG
-} from "../middleware/action";
-import {
-  EDIT_COLOR
-} from "../middleware/action";
+import { ReactReduxContext } from "react-redux";
+import { EDIT_LANG } from "../middleware/action";
+import { EDIT_COLOR } from "../middleware/action";
+import { EDIT_DARKMODE } from "../middleware/action";
 
 const useStyles = makeStyles({
   list: {
@@ -41,7 +38,7 @@ const useStyles = makeStyles({
   },
   purple: {
     backgroundColor: purple[600],
-    backgroundColor: "#9c28b1",
+    // backgroundColor: "#9c28b1",
     width: 20,
     height: 20,
   },
@@ -127,8 +124,8 @@ export default function RighBar() {
   function handleThemeYellow() {
     store.dispatch({
       type: EDIT_COLOR,
-      payload: "#ff5253"
-    })
+      payload: "#ff5253",
+    });
   }
   function handleThemeDefault() {
     store.dispatch({
@@ -138,20 +135,24 @@ export default function RighBar() {
   }
 
   function handleLogOut() {
-    console.log("log out")
-    sessionStorage.setItem('token', false);
+    console.log("log out");
+    sessionStorage.setItem("token", false);
     window.location.reload(false);
   }
 
   function handleDarkMode(e) {
     let _darkmode = !darkMode;
-    setDarkmode(_darkmode)
-    console.log("darkmode",_darkmode)
-    if(_darkmode){
-    store.dispatch({
-      type: EDIT_COLOR,
-      payload: "#1F1B24",
-    });
+    setDarkmode(_darkmode);
+    console.log("darkmode", _darkmode);
+    if (_darkmode) {
+      store.dispatch({
+        type: EDIT_COLOR,
+        payload: "#1F1B24",
+      });
+      // store.dispatch({
+      //   type: EDIT_DARKMODE,
+      //   payload: "#1F1B24",
+      // });
     }
   }
 
@@ -247,13 +248,24 @@ export default function RighBar() {
             alignItems="center"
             style={{ padding: 20 }}
           >
-            <Avatar onClick={handleThemePurple} className={classes.purple}>{" "}</Avatar>
-            <Avatar onClick={handleThemeDefault} className={classes.blue}>{" "}</Avatar>
-            <Avatar onClick={handleThemeGreen} className={classes.green}>{" "}</Avatar>
-            <Avatar onClick={handleThemeOrange} className={classes.orange}>{" "}</Avatar>
-            <Avatar onClick={handleThemeRed} className={classes.red}>{" "}</Avatar>
-            <Avatar onClick={handleThemeYellow} className={classes.coral}>{" "}</Avatar>
-
+            <Avatar onClick={handleThemePurple} className={classes.purple}>
+              {" "}
+            </Avatar>
+            <Avatar onClick={handleThemeDefault} className={classes.blue}>
+              {" "}
+            </Avatar>
+            <Avatar onClick={handleThemeGreen} className={classes.green}>
+              {" "}
+            </Avatar>
+            <Avatar onClick={handleThemeOrange} className={classes.orange}>
+              {" "}
+            </Avatar>
+            <Avatar onClick={handleThemeRed} className={classes.red}>
+              {" "}
+            </Avatar>
+            <Avatar onClick={handleThemeYellow} className={classes.coral}>
+              {" "}
+            </Avatar>
           </Grid>
         </Grid>
       </Grid>

@@ -21,7 +21,8 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import ArrivalBarChart from "./ArrivalBarChart";
 import InHouseBarChart from "./InHouseBarChart";
 import TodayPickupBarChart from "./TodayPickupBarChart";
-import { getweather } from "../../services/weather.service";
+import { getweather, forecastweather } from "../../services/weather.service";
+
 export class Reservation extends Component {
   constructor(props) {
     super(props);
@@ -31,8 +32,13 @@ export class Reservation extends Component {
 
       Dashboard: en_lang.Dashboard,
       color: this.props.color,
-      weather: [],
-      weatherIcon: "",
+      weatherdata: {
+        city: "city",
+        icon: "icon",
+        temperature: "temp",
+        des: "des",
+      },
+      forcast: [],
     };
   }
 
@@ -56,13 +62,46 @@ export class Reservation extends Component {
       }
     }, 1000);
     const item = await getweather();
-    this.setState({ weather: item });
-    this.setState({ weatherIcon: item.weather.icon });
+
+    this.setState({
+      weatherdata: {
+        day: new Date(item.dt * 1000).toLocaleString("en-us", {
+          weekday: "short",
+        }),
+        date: new Date(item.dt * 1000).toLocaleString("en-us"),
+        city: item.name,
+        icon: item.weather[0].icon,
+        des: item.weather[0].description,
+        temperature: Math.floor(item.main.temp),
+      },
+    });
+    console.log("weatherdata", this.state.weatherdata);
+
+    const forcastdata = await forecastweather();
+    let forecasttemp = [];
+    console.log("forcastdata", forcastdata.daily);
+
+    for (let i = 0; i < forcastdata.daily.length - 1; i++) {
+      forecasttemp.push({
+        day: new Date(forcastdata.daily[i].dt * 1000).toLocaleString("en-us", {
+          weekday: "long",
+        }),
+        icon: forcastdata.daily[i].weather[0].icon,
+        maxtemp: forcastdata.daily[i].temp.max,
+        mintemp: forcastdata.daily[i].temp.min,
+      });
+    }
+    console.log("forecasttemp", forecasttemp);
+    this.setState({ forcast: forecasttemp });
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
+  Test = () => {
+    console.log("weatherdata", this.state.weatherdata);
+    console.log("forcast", this.state.forcast);
+  };
 
   render() {
     return (
@@ -1109,43 +1148,48 @@ export class Reservation extends Component {
                     direction="row"
                   >
                     <Grid item style={{ flexGrow: 1 }}>
-                      <Typography variant="" component="h1">
+                      <Typography variant="h3" component="h1">
                         {/* Weather content */}
-                        {this.state.weather.name}
+                        {this.state.weatherdata.city}
                       </Typography>
+                      <Typography
+                        variant="subtitle1"
+                        component="h3"
+                        style={{ fontSize: 20 }}
+                      >
+                        {/* Weather content */}
+                        {this.state.weatherdata.day},
+                        {this.state.weatherdata.date}
+                      </Typography>
+                      <Grid item style={{ padding: 20, color: "#FFFFFF" }}>
+                        <Typography variant="h1" component="h1">
+                          {this.state.weatherdata.temperature}&deg;
+                          <span style={{ fontSize: 70 }}>C</span>
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        style={{
+                          flexGrow: 1,
+                          paddingLeft: 20,
+                          color: "#FFFFFF",
+                        }}
+                      >
+                        <Typography
+                          variant="subtitle1"
+                          component="h1"
+                          style={{ fontSize: 30 }}
+                        >
+                          {this.state.weatherdata.des}
+                        </Typography>
+                      </Grid>
                     </Grid>
 
                     <Grid item>
                       <img
-                        src="http://openweathermap.org/img/wn/04d@2x.png"
+                        src={`http://openweathermap.org/img/wn/${this.state.weatherdata.icon}@2x.png`}
                         alt="weatherIMG"
                       />
-                    </Grid>
-                    <Grid container direction="row" alignItems="center">
-                      <Grid
-                        item
-                        style={{ flexGrow: 1, padding: 20, color: "#FFFFFF" }}
-                      >
-                        <Typography variant="h6" component="h1">
-                          Average Booking
-                        </Typography>
-                      </Grid>
-                      <Grid item style={{ padding: 10 }}>
-                        <Typography variant="p1" component="p1">
-                          Since last month
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                    <Grid container direction="row" alignItems="center">
-                      <Grid
-                        item
-                        style={{ flexGrow: 1, padding: 20, color: "#FFFFFF" }}
-                      >
-                        <Typography variant="h6" component="h1">
-                          {/* {this.state.weather.main} */}
-                        </Typography>
-                      </Grid>
-                      <Grid item style={{ padding: 10 }}></Grid>
                     </Grid>
                   </Grid>
                 </Paper>
@@ -1155,48 +1199,42 @@ export class Reservation extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 620 }}
+                  style={{ minHeight: 610 }}
                 >
-                  <Grid container style={{ padding: 20 }}>
-                    <Grid container style={{ marginBottom: 20 }}>
-                      <Typography variant="h6" component="h6">
-                        Top Performance
-                      </Typography>
-                    </Grid>
-                    <Grid container alignItems="center">
-                      <Grid item>
-                        <Avatar
-                          style={{
-                            width: 50,
-                            height: 50,
-                          }}
-                          alt="Remy Sharp"
-                          src="https://images.generated.photos/Vju0wVYI8Qk7k-sFT6qguoAvnNa2pzgUFOTG8jx9UWU/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzAyOTg4MTAuanBn.jpg"
-                        />
-                      </Grid>
-                      <Grid item style={{ marginLeft: 10, flexGrow: 1 }}>
+                  {this.state.forcast.map((weatherforcast, i) => (
+                    <Grid
+                      key={i}
+                      container
+                      style={{ paddingLeft: 20, paddingRight: 20 }}
+                    >
+                      <Grid
+                        container
+                        alignItems="center"
+                        justifyContent="space-between"
+                      >
                         <Grid item>
                           <Typography variant="h6" component="h6">
-                            Remy Sharp
+                            {weatherforcast.day}
                           </Typography>
                         </Grid>
                         <Grid item>
-                          <Typography variant="body2" component="body1">
-                            162543
+                          <img
+                            width="80"
+                            height="80"
+                            src={`http://openweathermap.org/img/wn/${weatherforcast.icon}@2x.png`}
+                            alt="weatherIMG"
+                          />
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="h6" component="h6">
+                            {/* min/max */}
+                            {Math.floor(weatherforcast.mintemp)}&deg;C/
+                            {Math.floor(weatherforcast.maxtemp)}&deg;C
                           </Typography>
                         </Grid>
                       </Grid>
-                      <Grid item>
-                        <Typography
-                          variant="p1"
-                          component="h6"
-                          style={{ color: "lightgrey" }}
-                        >
-                          3 Hours ago
-                        </Typography>
-                      </Grid>
                     </Grid>
-                  </Grid>
+                  ))}
                 </Paper>
               </Grid>
             </Grid>
@@ -1208,7 +1246,7 @@ export class Reservation extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("mapStateToProps");
+  // console.log("mapStateToProps");
   return {
     lang: state.reducer.lang,
     color: state.reducer.color,
