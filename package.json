@@ -17,9 +17,12 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
+    "computer-name": "^0.1.0",
     "date-fns": "^2.23.0",
+    "getmac": "^5.20.0",
     "material-table": "^1.69.3",
     "material-ui-chip-input": "^2.0.0-beta.2",
+    "name-my-computer": "^1.0.2",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-device-detect": "^1.17.0",
@@ -41,6 +44,10 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "globals": {
+      "window": true,
+      "ActiveXObject": true
+    },
     "extends": [
       "react-app",
       "react-app/jest"

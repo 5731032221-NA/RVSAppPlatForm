@@ -120,7 +120,7 @@ export default function Login({ setToken }) {
       >
         <Paper className={classes.paper}>
           <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
-          <h5 className={classes.sysname} >Hotel Property Management System </h5>
+          <h5 className={classes.sysname} >Hotel Property Management System</h5>
           <Divider variant="middle" />
 
           {errorUsername ? <div className={classes.errorMessage}>Username is required</div> : (errorPassword ? <div className={classes.errorMessage}>Password is required</div> : (errorLogin ? <div className={classes.errorMessage}>Invalid Username or Password</div> : null))}

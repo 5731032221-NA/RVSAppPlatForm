@@ -57,7 +57,8 @@ import {
   deleterolebyid,
   listallproperty,
   deleterolebycode,
-  rolepermissionbyrole
+  rolepermissionbyrole,
+  getusercomponentpermision
 } from "../services/user.service";
 // from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -528,6 +529,7 @@ const defaultdata = [
 
 export default function RoleManagement() {
   const classes = useStyles();
+  const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false })
   const { store } = useContext(ReactReduxContext);
   const [data, setData] = React.useState([]);
 
@@ -559,6 +561,16 @@ export default function RoleManagement() {
   const [errorParameter, setErrorParameter] = useState(null);
 
   React.useEffect(async () => {
+    let usercomponentpermission = await getusercomponentpermision(sessionStorage.getItem("auth"), sessionStorage.getItem("username"), "CF-RM");
+    setCRUD({
+      C: usercomponentpermission.content[0].permissioncreate,
+      R: usercomponentpermission.content[0].permissionread,
+      U: usercomponentpermission.content[0].permissionupdate,
+      D: usercomponentpermission.content[0].permissiondelete
+    })
+    // macaddress.all().then(function (all) {
+    //   console.log(JSON.stringify(all, null, 2));
+    // });
     let data = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", listrole);
     let userdata = [];
@@ -1782,25 +1794,27 @@ export default function RoleManagement() {
               </Typography>
             </Breadcrumbs>
           </Grid>
-          <Grid item>
-            <Button
-              variant="outlined"
-              style={{
-                backgroundColor: "#2949A0",
-                color: "white",
-                alignItems: "center",
-              }}
-              size="large"
-              onClick={handleDialogAddRole}
-            >
-              <AddRoundedIcon />
-              <Typography variant="body1" style={{}}>
-                New Role
-              </Typography>
-            </Button>
-          </Grid>
+          {CRUD.C ?
+            <Grid item>
+              <Button
+                variant="outlined"
+                style={{
+                  backgroundColor: "#2949A0",
+                  color: "white",
+                  alignItems: "center",
+                }}
+                size="large"
+                onClick={handleDialogAddRole}
+              >
+                <AddRoundedIcon />
+                <Typography variant="body1" style={{}}>
+                  New Role
+                </Typography>
+              </Button>
+            </Grid>
+            : null}
         </Grid>
-        
+
 
         {/* <Grid container>
          
@@ -1808,7 +1822,7 @@ export default function RoleManagement() {
             <Paper square style={{ minHeight: "100%" }}>
               <Grid container style={{ padding: 30 }}>
                 <Grid container> */}
-                  {/* <Table size="small">
+        {/* <Table size="small">
                     <TableHead>
                       <TableRow>
                         <TableCell>Role Code</TableCell>
@@ -1902,58 +1916,92 @@ export default function RoleManagement() {
                       />
                     </Grid>
                   </Grid> */}
-                   <div style={{ maxWidth: "100%" }}>
-                    <MaterialTable
-                      style={{ paddingLeft: 30, paddingRight: 30 }}
-                      title={
-                        <Grid>
-                          <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
-                            Role Management
-                          </Typography>
-                        </Grid>
-                      }
-                      columns={[
-                        { title: "Role Code", field: "rolecode" },
-                        {
-                          title: "Role Name",
-                          field: "rolename"
-                        },
-                        { title: "Description", field: "description" },
-                        { title: "#User", field: "count" },
-                        { title: "Status", field: "status" }
-                      ]}
-                      data={rows}
-                      // totalCount={rows.length}
-                      // page={page}
-                      options={{
-                        actionsColumnIndex: -1,
-                        // filtering: true,
-                        searchFieldAlignment: "left",
-                        page: page,
-                        pageSize: rowsPerPage,
-                        pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
-                      }}
-                      actions={[
-                        {
-                          icon: EditRoundedIcon,
-                          tooltip: "Edit",
-                          onClick: (event, rowData) => {
-                            handleDialogEditRole(rowData.rolecode, rowData.rolename, rowData.description, rowData.applyproperty, rowData.status);
-                          },
-                        },
-                        {
-                          icon: DeleteRoundedIcon,
-                          tooltip: "Delete",
-                          onClick: (event, rowData) => {
-                            handleDialogDeleteRoleOpen(rowData.rolecode, rowData.rolename, rowData.description);
-                          },
-                        },
-                      ]}
-                      onChangePage={(page) => console.log("page")}
-                    // onChangePage={(event, page) => console.log(event, page)}
-                    />
-                  </div>
-{/* 
+        <div style={{ maxWidth: "100%" }}>
+          {CRUD.R ?
+            <MaterialTable
+              style={{ paddingLeft: 30, paddingRight: 30 }}
+              title={
+                <Grid>
+                  <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
+                    Role Management
+                  </Typography>
+                </Grid>
+              }
+              columns={[
+                { title: "Role Code", field: "rolecode" },
+                {
+                  title: "Role Name",
+                  field: "rolename"
+                },
+                { title: "Description", field: "description" },
+                { title: "#User", field: "count" },
+                {
+                  render: rowData => {
+                    return rowData.status == "Active" ?
+                      <Button
+                        variant="contained"
+                        style={{
+                          borderRadius: 20,
+                          backgroundColor: "#2D62ED",
+                          color: "white",
+                        }}
+                      >
+                        {rowData.status}
+                      </Button> : <Button
+                        variant="contained"
+                        style={{
+                          borderRadius: 20,
+                          backgroundColor: "#DEDFE0",
+                          color: "black",
+                        }}
+                      >
+                        {rowData.status}
+                      </Button>
+                  },
+                  cellStyle: { textAlign: 'center' },
+                  headerStyle: {
+                    textAlign: 'center',
+                    paddingLeft: 37
+                  }
+                  ,
+                  title: "Status", field: "status"
+                }
+              ]}
+              data={rows}
+              // totalCount={rows.length}
+              // page={page}
+              options={{
+                actionsColumnIndex: -1,
+                // filtering: true,
+                searchFieldAlignment: "left",
+                page: page,
+                pageSize: rowsPerPage,
+                pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
+              }}
+              actions={[
+                {
+                  icon: EditRoundedIcon,
+                  tooltip: "Edit",
+                  disabled: !CRUD.U,
+                  onClick: (event, rowData) => {
+                    handleDialogEditRole(rowData.rolecode, rowData.rolename, rowData.description, rowData.applyproperty, rowData.status);
+                  },
+                },
+                {
+                  icon: DeleteRoundedIcon,
+                  tooltip: "Delete",
+                  disabled: !CRUD.D,
+                  onClick: (event, rowData) => {
+                    handleDialogDeleteRoleOpen(rowData.rolecode, rowData.rolename, rowData.description);
+                  },
+                },
+              ]}
+              onChangePage={(page) => console.log("page")}
+            // onChangePage={(event, page) => console.log(event, page)}
+            />
+            : null}
+        </div>
+        {/* 
                 </Grid>
               </Grid>
             </Paper>

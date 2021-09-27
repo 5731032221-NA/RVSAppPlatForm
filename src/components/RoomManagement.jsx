@@ -49,6 +49,7 @@ import {
 import {
   listallproperty,
   getconfigurationbypropertycode,
+  getusercomponentpermision
 } from "../services/user.service";
 
 import TablePagination from "@material-ui/core/TablePagination";
@@ -244,6 +245,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RoomManagement() {
   const classes = useStyles();
+  const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false })
   const [dialogAddRoom, setDialogAddRoom] = React.useState(false);
   const [dialogEditRoom, setDialogEditRoom] = React.useState(false);
   const [dialogDeleteRoom, setDialogDeleteRoom] = React.useState(false);
@@ -295,6 +297,13 @@ export default function RoomManagement() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
+    let usercomponentpermission = await getusercomponentpermision(sessionStorage.getItem("auth"), sessionStorage.getItem("username"), "CF-RM");
+    setCRUD({
+      C: usercomponentpermission.content[0].permissioncreate,
+      R: usercomponentpermission.content[0].permissionread,
+      U: usercomponentpermission.content[0].permissionupdate,
+      D: usercomponentpermission.content[0].permissiondelete
+    })
     const data = await listRoom(sessionStorage.getItem("auth"));
     console.log("data", data);
     let roomdata = [];
@@ -948,19 +957,21 @@ export default function RoomManagement() {
               </Breadcrumbs>
             </Grid>
             <Divider orientation="vertical" flexItem />
-            <Grid item style={{ marginLeft: 20, marginRight: 20 }}>
-              <Button
-                variant="contained"
-                style={{
-                  backgroundColor: "#2D62ED",
-                  color: "white",
-                  textAlign: "center",
-                }}
-                onClick={handleDialogAddRoom}
-              >
-                NEW ROOM MASTER
-              </Button>
-            </Grid>
+            {CRUD.C ?
+              <Grid item style={{ marginLeft: 20, marginRight: 20 }}>
+                <Button
+                  variant="contained"
+                  style={{
+                    backgroundColor: "#2D62ED",
+                    color: "white",
+                    textAlign: "center",
+                  }}
+                  onClick={handleDialogAddRoom}
+                >
+                  NEW ROOM MASTER
+                </Button>
+              </Grid>
+              : null}
 
             {/* ==================== Dialog New Room========================= */}
             <Dialog
@@ -1755,8 +1766,7 @@ export default function RoomManagement() {
           </Grid>
         </Paper>
       </React.Fragment>
-
-      <Grid container>
+      {CRUD.R ?
         <MaterialTable
           style={{ paddingLeft: 30, paddingRight: 30 }}
           title={
@@ -1794,6 +1804,7 @@ export default function RoomManagement() {
             {
               icon: EditRoundedIcon,
               tooltip: "Edit",
+              disabled: !CRUD.U,
               onClick: (event, rowData) => {
                 handleDialogEditRoom(event, rowData);
               },
@@ -1801,15 +1812,16 @@ export default function RoomManagement() {
             {
               icon: DeleteRoundedIcon,
               tooltip: "Delete",
+              disabled: !CRUD.D,
               onClick: (event, rowData) => {
                 handleDialogDeleteRoomOpen(event, rowData);
               },
             },
           ]}
           onChangePage={(page) => console.log("page")}
-          // onChangePage={(event, page) => console.log(event, page)}
+        // onChangePage={(event, page) => console.log(event, page)}
         />
-      </Grid>
+        : null}
     </Container>
   );
 }

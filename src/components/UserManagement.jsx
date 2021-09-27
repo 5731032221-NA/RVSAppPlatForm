@@ -62,7 +62,8 @@ import {
   userpropertybyusername,
   getposition,
   postposition,
-  getuserpermission
+  getuserpermission,
+  getusercomponentpermision
 } from "../services/user.service";
 import { listrole } from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -590,6 +591,7 @@ const defaultdata = [
 
 export default function UserManagement() {
   const classes = useStyles();
+  const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false })
   const [position, setPosition] = useState([{ "key": "Administrator", "label": "Administrator" }])
   const [dialogAddUser, setDialogAddUser] = React.useState(false);
   const [dialogEditUser, setDialogEditUser] = React.useState(false);
@@ -622,6 +624,14 @@ export default function UserManagement() {
 
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
+
+    let usercomponentpermission = await getusercomponentpermision(sessionStorage.getItem("auth"), sessionStorage.getItem("username"), "CF-UM");
+    setCRUD({
+      C: usercomponentpermission.content[0].permissioncreate,
+      R: usercomponentpermission.content[0].permissionread,
+      U: usercomponentpermission.content[0].permissionupdate,
+      D: usercomponentpermission.content[0].permissiondelete
+    })
     let dataRole = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", dataRole.content[dataRole.content.length - 1]);
     roles = [];
@@ -736,7 +746,7 @@ export default function UserManagement() {
     const setrole = new Set();
     if (userrole.content[userrole.content.length - 1] != "") {
       userrole.content[userrole.content.length - 1].split(",").forEach((element) => {
-        if (role.filter(x => x.label === element).length == 0 ) { //&& roles.some(role => role.label == element)
+        if (role.filter(x => x.label === element).length == 0) { //&& roles.some(role => role.label == element)
           role.push({ key: element, label: element })
           setrole.add(element);
         }
@@ -1966,23 +1976,25 @@ export default function UserManagement() {
               </Typography>
             </Breadcrumbs>
           </Grid>
-          <Grid item>
-            <Button
-              variant="outlined"
-              style={{
-                backgroundColor: "#2949A0",
-                color: "white",
-                alignItems: "center",
-              }}
-              size="large"
-              onClick={handleDialogAddUser}
-            >
-              <AddRoundedIcon />
-              <Typography variant="body1" style={{}}>
-                New User
-              </Typography>
-            </Button>
-          </Grid>
+          {CRUD.C ?
+            <Grid item>
+              <Button
+                variant="outlined"
+                style={{
+                  backgroundColor: "#2949A0",
+                  color: "white",
+                  alignItems: "center",
+                }}
+                size="large"
+                onClick={handleDialogAddUser}
+              >
+                <AddRoundedIcon />
+                <Typography variant="body1" style={{}}>
+                  New User
+                </Typography>
+              </Button>
+            </Grid>
+            : null}
         </Grid>
 
 
@@ -2087,53 +2099,86 @@ export default function UserManagement() {
               </Grid>
             </Grid> */}
         <div style={{ maxWidth: "100%" }}>
-          <MaterialTable
-            style={{ paddingLeft: 30, paddingRight: 30 }}
-            title={
-              <Grid>
-                <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
-                  User Management
-                </Typography>
-              </Grid>
-            }
-            columns={[
-              { title: "Username", field: "userID" },
-              { title: "Full Name", field: "name" },
-              { title: "Position", field: "position" },
-              { title: "Roles", field: "roles" },
-              { title: "Property", field: "property" },
-              { title: "Status", field: "status" }
-            ]}
-            data={rows}
-            // totalCount={rows.length}
-            // page={page}
-            options={{
-              actionsColumnIndex: -1,
-              // filtering: true,
-              searchFieldAlignment: "left",
-              page: page,
-              pageSize: rowsPerPage,
-              pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
-            }}
-            actions={[
-              {
-                icon: EditRoundedIcon,
-                tooltip: "Edit",
-                onClick: (event, rowData) => {
-                  handleDialogEditUser(rowData.userID, rowData.firstname, rowData.lastname, rowData.position, rowData.status);
+          {CRUD.R ?
+            <MaterialTable
+              style={{ paddingLeft: 30, paddingRight: 30 }}
+              title={
+                <Grid>
+                  <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
+                    User Management
+                  </Typography>
+                </Grid>
+              }
+              columns={[
+                { title: "Username", field: "userID" },
+                { title: "Full Name", field: "name" },
+                { title: "Position", field: "position" },
+                { title: "Roles", field: "roles" },
+                { title: "Property", field: "property" },
+                {
+                  render: rowData => {
+                    return rowData.status == "Active" ?
+                      <Button
+                        variant="contained"
+                        style={{
+                          borderRadius: 20,
+                          backgroundColor: "#2D62ED",
+                          color: "white",
+                        }}
+                      >
+                        {rowData.status}
+                      </Button> : <Button
+                        variant="contained"
+                        style={{
+                          borderRadius: 20,
+                          backgroundColor: "#DEDFE0",
+                          color: "black",
+                        }}
+                      >
+                        {rowData.status}
+                      </Button>
+                  },
+                  cellStyle: { textAlign: 'center' },
+                  headerStyle: {
+                    textAlign: 'center',
+                    paddingLeft: 37
+                  }
+                  , title: "Status", field: "status"
+                }
+              ]}
+              data={rows}
+              // totalCount={rows.length}
+              // page={page}
+              options={{
+                actionsColumnIndex: -1,
+                // filtering: true,
+                searchFieldAlignment: "left",
+                page: page,
+                pageSize: rowsPerPage,
+                pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
+              }}
+              actions={[
+                {
+                  icon: EditRoundedIcon,
+                  tooltip: "Edit",
+                  disabled: !CRUD.U,
+                  onClick: (event, rowData) => {
+                    handleDialogEditUser(rowData.userID, rowData.firstname, rowData.lastname, rowData.position, rowData.status);
+                  },
                 },
-              },
-              {
-                icon: DeleteRoundedIcon,
-                tooltip: "Delete",
-                onClick: (event, rowData) => {
-                  handleDialogDeleteUserOpen(rowData.userID, rowData.firstname, rowData.lastname);
+                {
+                  icon: DeleteRoundedIcon,
+                  tooltip: "Delete",
+                  disabled: !CRUD.D,
+                  onClick: (event, rowData) => {
+                    handleDialogDeleteUserOpen(rowData.userID, rowData.firstname, rowData.lastname);
+                  },
                 },
-              },
-            ]}
-            onChangePage={(page) => console.log("page")}
-          // onChangePage={(event, page) => console.log(event, page)}
-          />
+              ]}
+              onChangePage={(page) => console.log("page")}
+            // onChangePage={(event, page) => console.log(event, page)}
+            />
+            : null}
         </div>
 
         {/* ==================== Dialog New User========================= */}

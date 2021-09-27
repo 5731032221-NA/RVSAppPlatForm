@@ -30,12 +30,14 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import {
-Breadcrumbs
+  Breadcrumbs
 } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import RoleManagement from "../RoleManagement";
 import UserManagement from "../UserManagement";
 import RoomManagement from "../RoomManagement";
+import DeviceManager from "../DeviceManager";
+import ComputerPrinter from "../ComputerPrinter";
 import { ReactReduxContext, useSelector } from "react-redux";
 import LockIcon from "@material-ui/icons/Https";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
@@ -452,7 +454,18 @@ export default function Configuration() {
         type: EDIT_CONFIGSTATE,
         payload: "RoomManagement",
       });
+    }else if (name == "DEVICE") {
+      store.dispatch({
+        type: EDIT_CONFIGSTATE,
+        payload: "DeviceManager",
+      });
+    }else if (name == "COMPRT") {
+      store.dispatch({
+        type: EDIT_CONFIGSTATE,
+        payload: "ComputerPrinter",
+      });
     }
+
   };
 
   async function prune(array, label) {
@@ -773,7 +786,7 @@ export default function Configuration() {
               open={dialogAdd}
               onClose={handleDialogAddClose}
               aria-labelledby="form-dialog-title"
-              style={{ 
+              style={{
                 backgroundColor: '#000000',
                 opacity: 0.13,
               }}
@@ -902,7 +915,7 @@ export default function Configuration() {
               onClose={handleDialogAddClose}
               aria-labelledby="form-dialog-title"
 
-              style={{ 
+              style={{
                 backgroundColor: '#000000',
                 opacity: 0.13,
               }}
@@ -1168,6 +1181,10 @@ export default function Configuration() {
         <RoleManagement />
       ) : configState == "RoomManagement" ? (
         <RoomManagement />
+      ) : configState == "DeviceManager" ? (
+        <DeviceManager />
+      ) : configState == "ComputerPrinter" ? (
+        <ComputerPrinter />
       ) : (
         <UserManagement />
       )}
