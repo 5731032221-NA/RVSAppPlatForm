@@ -20,7 +20,7 @@ import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import Paper from "@material-ui/core/Paper";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import getMAC, { isMAC } from 'getmac';
+// import getMAC, { isMAC } from 'getmac';
 import {
   browserName,
   fullBrowserVersion,

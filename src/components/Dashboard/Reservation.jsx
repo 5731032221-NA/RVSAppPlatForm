@@ -22,6 +22,7 @@ import ArrivalBarChart from "./ArrivalBarChart";
 import InHouseBarChart from "./InHouseBarChart";
 import TodayPickupBarChart from "./TodayPickupBarChart";
 import { getweather, forecastweather } from "../../services/weather.service";
+import { blue } from "@material-ui/core/colors";
 
 export class Reservation extends Component {
   constructor(props) {
@@ -39,6 +40,13 @@ export class Reservation extends Component {
         des: "des",
       },
       forcast: [],
+      themeBackground: "#FFFFFF",
+      themeState: {
+        background: "#FFFFFF",
+        color: "#000000",
+        paper: "#FFFFFF",
+        colorlevel: "900",
+      },
     };
   }
 
@@ -59,6 +67,33 @@ export class Reservation extends Component {
             color: this.props.color,
           });
         }
+      }
+
+      if (this.state.themeBackground != this.props.themeBackground) {
+        console.log(this.state.themeBackground, this.props.themeBackground);
+        if (this.props.themeBackground === "#FFFFFF") {
+          this.setState({
+            themeState: {
+              background: "#FFFFFF",
+              color: "#000000",
+              paper: "#FFFFFF",
+              colorlevel: "A900",
+              // matStyle: this.classes.normalmode
+            },
+          });
+        } else {
+          this.setState({
+            themeState: {
+              background: "#212121",
+              color: "#FAFAFA",
+              paper: "#424242",
+              colorlevel: "800",
+              // matStyle: this.classes.darkmode
+            },
+          });
+        }
+        this.setState({ themeBackground: this.props.themeBackground });
+        console.log(this.props.themeBackground);
       }
     }, 1000);
     const item = await getweather();
@@ -98,14 +133,19 @@ export class Reservation extends Component {
   componentWillUnmount() {
     clearInterval(this.interval);
   }
-  Test = () => {
-    console.log("weatherdata", this.state.weatherdata);
-    console.log("forcast", this.state.forcast);
-  };
+  // Test = () => {
+  //   console.log("weatherdata", this.state.weatherdata);
+  //   console.log("forcast", this.state.forcast);
+  // };
 
   render() {
     return (
-      <div>
+      <div
+        style={{
+          color: this.state.themeState.color,
+          backgroundColor: this.state.themeState.background,
+        }}
+      >
         <Container maxWidth="xl">
           {/* <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
           <Grid container spacing={3}>
@@ -114,7 +154,7 @@ export class Reservation extends Component {
                 <Paper elevation={3} style={{ minHeight: 300 }}>
                   Gride layout 12 */}
 
-          <h3 style={{ color: this.state.color, marginBottom: 30 }}>
+          <h3 style={{ color: this.state.themeState.color, marginBottom: 30 }}>
             Reservation
           </h3>
 
@@ -131,7 +171,11 @@ export class Reservation extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 430 }}
+                  style={{
+                    minHeight: 430,
+                    color: this.state.themeState.color,
+                    backgroundColor: this.state.themeState.paper,
+                  }}
                 >
                   <Grid
                     container
@@ -165,7 +209,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -196,7 +241,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -227,7 +273,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -259,7 +306,8 @@ export class Reservation extends Component {
                           // variant="outlined"
                           elevation={0}
                           style={{
-                            // backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -297,7 +345,11 @@ export class Reservation extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 430 }}
+                  style={{
+                    minHeight: 430,
+                    color: this.state.themeState.color,
+                    backgroundColor: this.state.themeState.paper,
+                  }}
                 >
                   <Grid
                     container
@@ -309,7 +361,10 @@ export class Reservation extends Component {
                   >
                     <Grid
                       container
-                      style={{ marginBottom: 20, marginLeft: 20 }}
+                      style={{
+                        marginBottom: 20,
+                        marginLeft: 20,
+                      }}
                     >
                       <Typography variant="h6" component="h6">
                         Arrival Today (Rooms)
@@ -331,7 +386,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -347,7 +403,10 @@ export class Reservation extends Component {
                             <Typography
                               variant="h3"
                               color="initial"
-                              style={{ fontSize: 70, color: "black" }}
+                              style={{
+                                fontSize: 70,
+                                color: this.state.themeState.color,
+                              }}
                             >
                               28
                             </Typography>
@@ -362,7 +421,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -394,6 +454,8 @@ export class Reservation extends Component {
                           style={{
                             width: "100%",
                             marginBottom: 20,
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                           }}
                         >
                           <Grid
@@ -410,7 +472,11 @@ export class Reservation extends Component {
                             </Typography>
                           </Grid>
                           <Divider
-                            style={{ marginTop: 10, marginBottom: 10 }}
+                            style={{
+                              marginTop: 10,
+                              marginBottom: 10,
+                              backgroundColor: this.state.themeState.color,
+                            }}
                           />
                           <Grid
                             container
@@ -432,7 +498,8 @@ export class Reservation extends Component {
                           // variant="outlined"
                           elevation={0}
                           style={{
-                            // backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             marginBottom: 20,
@@ -469,7 +536,11 @@ export class Reservation extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 430 }}
+                  style={{
+                    minHeight: 430,
+                    color: this.state.themeState.color,
+                    backgroundColor: this.state.themeState.paper,
+                  }}
                 >
                   <Grid
                     container
@@ -503,7 +574,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -519,7 +591,10 @@ export class Reservation extends Component {
                             <Typography
                               variant="h3"
                               color="initial"
-                              style={{ fontSize: 70, color: "black" }}
+                              style={{
+                                fontSize: 70,
+                                color: this.state.themeState.color,
+                              }}
                             >
                               28
                             </Typography>
@@ -534,7 +609,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -550,7 +626,10 @@ export class Reservation extends Component {
                             <Typography
                               variant="h3"
                               color="initial"
-                              style={{ fontSize: 70, color: "black" }}
+                              style={{
+                                fontSize: 70,
+                                color: this.state.themeState.color,
+                              }}
                             >
                               32
                             </Typography>
@@ -563,13 +642,11 @@ export class Reservation extends Component {
 
                       <Grid item xs={12} md={12} lg={12} xl={12}>
                         <Paper
-                          // variant="outlined"
                           elevation={0}
                           style={{
-                            // backgroundColor: "#F7F7F7",
+                            backgroundColor: "#F7F7F7",
                             width: "100%",
                             height: 135,
-                            // marginBottom: 20,
                           }}
                         >
                           <InHouseBarChart />
@@ -633,7 +710,11 @@ export class Reservation extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 430 }}
+                  style={{
+                    minHeight: 430,
+                    color: this.state.themeState.color,
+                    backgroundColor: this.state.themeState.paper,
+                  }}
                 >
                   <Grid
                     container
@@ -667,7 +748,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -683,7 +765,10 @@ export class Reservation extends Component {
                             <Typography
                               variant="h3"
                               color="initial"
-                              style={{ fontSize: 70, color: "black" }}
+                              style={{
+                                fontSize: 70,
+                                color: this.state.themeState.color,
+                              }}
                             >
                               35
                             </Typography>
@@ -698,7 +783,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -729,7 +815,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -761,7 +848,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -778,7 +866,10 @@ export class Reservation extends Component {
                             <Typography
                               variant="h3"
                               color="initial"
-                              style={{ fontSize: 70, color: "black" }}
+                              style={{
+                                fontSize: 70,
+                                color: this.state.themeState.color,
+                              }}
                             >
                               7
                             </Typography>
@@ -817,7 +908,11 @@ export class Reservation extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 430 }}
+                  style={{
+                    minHeight: 430,
+                    color: this.state.themeState.color,
+                    backgroundColor: this.state.themeState.paper,
+                  }}
                 >
                   <Grid
                     container
@@ -881,7 +976,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -912,7 +1008,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -944,7 +1041,8 @@ export class Reservation extends Component {
                           variant="outlined"
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             borderRadius: 15,
@@ -961,7 +1059,10 @@ export class Reservation extends Component {
                             <Typography
                               variant="h3"
                               color="initial"
-                              style={{ fontSize: 70, color: "black" }}
+                              style={{
+                                fontSize: 70,
+                                color: this.state.themeState.color,
+                              }}
                             >
                               3
                             </Typography>
@@ -999,7 +1100,11 @@ export class Reservation extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 430 }}
+                  style={{
+                    minHeight: 430,
+                    color: this.state.themeState.color,
+                    backgroundColor: this.state.themeState.paper,
+                  }}
                 >
                   <Grid
                     container
@@ -1094,7 +1199,8 @@ export class Reservation extends Component {
                           // variant="outlined"
                           elevation={0}
                           style={{
-                            // backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 140,
                             marginBottom: 20,
@@ -1137,7 +1243,7 @@ export class Reservation extends Component {
                   elevation={3}
                   style={{
                     minHeight: 300,
-                    backgroundColor: "#030AAC",
+                    backgroundColor: blue[this.state.themeState.colorlevel],
                     borderRadius: 0,
                   }}
                 >
@@ -1199,7 +1305,11 @@ export class Reservation extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 610 }}
+                  style={{
+                    minHeight: 610,
+                    color: this.state.themeState.color,
+                    backgroundColor: this.state.themeState.paper,
+                  }}
                 >
                   {this.state.forcast.map((weatherforcast, i) => (
                     <Grid

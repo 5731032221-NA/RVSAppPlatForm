@@ -27,8 +27,8 @@ const initialState = {
   compwidth: 0,
   componentState: "FrontDesk",
   themeBackground: "#FFFFFF",
-  //   fontColor: "black",
-  //   backgroundColor: "#ffffff",
+  fontColor: "black",
+  //   darkbackgroundColor: "#212121",
   property: "",
   role: "Admin",
   configState: "Configuration",
@@ -36,7 +36,11 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  //   console.log("action", state);
+  console.log("themeBackground", state.themeBackground);
+  console.log("color", state.color);
+  if (action.type != EDIT_COMPWIDTH) {
+    console.log("action,payload", action.type, action.payload);
+  }
   const allUsers = [...state.users];
   switch (action.type) {
     case EDIT_PERMISSION:
@@ -57,7 +61,7 @@ const reducer = (state = initialState, action) => {
     case EDIT_DARKMODE:
       return {
         ...state,
-        backgroundColor: action.payload,
+        themeBackground: action.payload,
       };
     case EDIT_COMPONENT:
       return {

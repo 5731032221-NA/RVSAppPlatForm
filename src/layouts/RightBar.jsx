@@ -149,15 +149,24 @@ export default function RighBar() {
         type: EDIT_COLOR,
         payload: "#1F1B24",
       });
-      // store.dispatch({
-      //   type: EDIT_DARKMODE,
-      //   payload: "#1F1B24",
-      // });
+      store.dispatch({
+        type: EDIT_DARKMODE,
+        payload: "#1F1B24",
+      });
     }
+    // else {
+    //   store.dispatch({
+    //     type: EDIT_COLOR,
+    //     payload: "#FFFFFF",
+    //   });
+    // }
   }
 
   return (
-    <Container className={classes.Container}>
+    <Container
+      className={classes.Container}
+      // style={{ backgroundColor: "#000000" }}
+    >
       <Grid container>
         <Grid container spacing={2}>
           <Grid container justifyContent="start" style={{ marginLeft: 90 }}>

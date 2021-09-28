@@ -41,8 +41,12 @@ export class FrontDesk extends Component {
       Dashboard: en_lang.Dashboard,
       color: this.props.color,
       themeBackground: "#FFFFFF",
-      themeState: { background: "#FFFFFF", color: "#000000" },
-      // matStyle: classes.normalmode
+      themeState: {
+        background: "#FFFFFF",
+        color: "#000000",
+        paper: "#FFFFFF",
+        colorlevel: "900",
+      },
     };
   }
 
@@ -72,14 +76,18 @@ export class FrontDesk extends Component {
             themeState: {
               background: "#FFFFFF",
               color: "#000000",
+              paper: "#FFFFFF",
+              colorlevel: "A900",
               // matStyle: this.classes.normalmode
             },
           });
         } else {
           this.setState({
             themeState: {
-              background: "#363537",
+              background: "#212121",
               color: "#FAFAFA",
+              paper: "#424242",
+              colorlevel: "800",
               // matStyle: this.classes.darkmode
             },
           });
@@ -90,31 +98,6 @@ export class FrontDesk extends Component {
     }, 1000);
   }
 
-  // componentWillUpdate() {
-  //   if (this.state.themeBackground != this.props.color) {
-  //     console.log(this.state.themeBackground, this.props.themeBackground);
-  //     if (this.props.themeBackground === "#FFFFFF") {
-  //       this.setState({
-  //         themeState: {
-  //           background: "#FFFFFF",
-  //           color: "#000000",
-  //           // matStyle: this.classes.normalmode
-  //         },
-  //       });
-  //     } else {
-  //       this.setState({
-  //         themeState: {
-  //           background: "#363537",
-  //           color: "#FAFAFA",
-  //           // matStyle: this.classes.darkmode
-  //         },
-  //       });
-  //     }
-  //     this.setState({ themeBackground: this.props.themeBackground });
-  //     console.log(this.props.themeBackground);
-  //   }
-  // }
-
   componentWillUnmount() {
     clearInterval(this.interval);
   }
@@ -123,18 +106,18 @@ export class FrontDesk extends Component {
     return (
       <div style={this.state.themeState}>
         <Container maxWidth="xl">
-          <h3
+          <div
             style={{
               color: this.state.themeState.color,
               backgroundColor: this.state.themeState.background,
-              marginBottom: 40,
-              marginTop: -25,
-              fontWeight: "500",
-              fontSize: 18,
+              marginBottom: 20,
+              marginTop: -20,
             }}
           >
-            &nbsp;Dashboard
-          </h3>
+            <Typography variant="h6" style={{ fontSize: 22 }}>
+              &nbsp;Dashboard
+            </Typography>
+          </div>
           <Grid
             container
             spacing={4}
@@ -161,7 +144,8 @@ export class FrontDesk extends Component {
                   square
                   style={{
                     minHeight: 430,
-                    backgroundColor: this.state.themeState.background,
+                    backgroundColor: this.state.themeState.paper,
+                    color: this.state.themeState.color,
                   }}
                 >
                   <Grid container>
@@ -172,7 +156,11 @@ export class FrontDesk extends Component {
                     >
                       <Grid
                         container
-                        style={{ marginBottom: 10, color: this.state.color }}
+                        style={{
+                          marginBottom: 10,
+                          marginTop: 15,
+                          color: this.state.themeState.color,
+                        }}
                       >
                         <Typography variant="h6" component="h6">
                           Sales Statistical Overview
@@ -184,13 +172,40 @@ export class FrontDesk extends Component {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <Button size="small">1D</Button>
-                        <Button size="small">5D</Button>
-                        <Button variant="contained" size="small">
+                        <Button
+                          size="small"
+                          style={{ color: this.state.themeState.color }}
+                        >
+                          1D
+                        </Button>
+                        <Button
+                          size="small"
+                          style={{ color: this.state.themeState.color }}
+                        >
+                          5D
+                        </Button>
+                        <Button
+                          variant="contained"
+                          style={{
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.background,
+                          }}
+                          size="small"
+                        >
                           1M
                         </Button>
-                        <Button size="small">1Y</Button>
-                        <Button size="small">Max</Button>
+                        <Button
+                          size="small"
+                          style={{ color: this.state.themeState.color }}
+                        >
+                          1Y
+                        </Button>
+                        <Button
+                          size="small"
+                          style={{ color: this.state.themeState.color }}
+                        >
+                          Max
+                        </Button>
                       </Grid>
                     </Grid>
                     <Grid
@@ -204,7 +219,9 @@ export class FrontDesk extends Component {
                       <Grid item sx={4} md={4} lg={4} xl={4}>
                         <Typography
                           variant="body1"
-                          style={{ color: "darkblue" }}
+                          style={{
+                            color: blue[this.state.themeState.colorlevel],
+                          }}
                         >
                           Total cost
                         </Typography>
@@ -227,7 +244,9 @@ export class FrontDesk extends Component {
                       <Grid item sx={4} md={4} lg={4} xl={4}>
                         <Typography
                           variant="body1"
-                          style={{ color: "darkblue" }}
+                          style={{
+                            color: blue[this.state.themeState.colorlevel],
+                          }}
                         >
                           Total Revenue
                         </Typography>
@@ -276,7 +295,7 @@ export class FrontDesk extends Component {
                     >
                       <Paper
                         style={{
-                          // backgroundColor: "#BDBFC3",
+                          backgroundColor: this.state.themeState.paper,
                           width: "100%",
                           height: 250,
                           marginTop: 20,
@@ -295,7 +314,11 @@ export class FrontDesk extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 430 }}
+                  style={{
+                    minHeight: 430,
+                    backgroundColor: this.state.themeState.paper,
+                    color: this.state.themeState.color,
+                  }}
                 >
                   <Grid
                     container
@@ -303,13 +326,14 @@ export class FrontDesk extends Component {
                     justifyContent="center"
                     alignItems="center"
                     spacing={3}
-                    style={{ padding: 20 }}
-                    background={this.state.themeBackground}
+                    style={{
+                      padding: 20,
+                    }}
                   >
                     <Grid
                       container
                       style={{ marginBottom: 20, marginLeft: 20 }}
-                      background="black"
+                      // background="black"
                     >
                       <Typography variant="h6" component="h6">
                         Website Audience Metrics
@@ -330,7 +354,8 @@ export class FrontDesk extends Component {
                         <Paper
                           elevation={0}
                           style={{
-                            // backgroundColor: "#BDBFC3",
+                            backgroundColor: this.state.themeState.paper,
+                            color: this.state.themeState.color,
                             width: "100%",
                             height: 65,
                             marginBottom: 20,
@@ -353,11 +378,16 @@ export class FrontDesk extends Component {
                             />
                           </Grid>
                         </Paper>
-                        <Divider />
+                        <Divider
+                          style={{
+                            backgroundColor: this.state.themeState.color,
+                          }}
+                        />
                         <Paper
                           elevation={0}
                           style={{
-                            // backgroundColor: "#BDBFC3",
+                            backgroundColor: this.state.themeState.paper,
+                            color: this.state.themeState.color,
                             width: "100%",
                             height: 64,
                             marginBottom: 20,
@@ -385,7 +415,7 @@ export class FrontDesk extends Component {
                         <Paper
                           variant="outlined"
                           style={{
-                            /* backgroundColor: "#BDBFC3", */
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 150,
                             marginBottom: 20,
@@ -411,7 +441,8 @@ export class FrontDesk extends Component {
                         <Paper
                           elevation={0}
                           style={{
-                            // backgroundColor: "#BDBFC3",
+                            backgroundColor: this.state.themeState.paper,
+                            color: this.state.themeState.color,
                             width: "100%",
                             height: 120,
                             marginBottom: 20,
@@ -451,11 +482,11 @@ export class FrontDesk extends Component {
                       </Grid>
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
-                          // variant="outlined"
                           elevation={0}
                           square
                           style={{
-                            // backgroundColor: "#BDBFC3",
+                            backgroundColor: this.state.themeState.paper,
+                            color: this.state.themeState.color,
                             width: "100%",
                             height: 120,
                             marginBottom: 20,
@@ -468,7 +499,9 @@ export class FrontDesk extends Component {
                             colors={["#4BB3FC", "#2D62ED", "#030AAC"]}
                             percent={0.25}
                             style={{ width: "110%" }}
-                            textColor={{ color: "black" }}
+                            textColor={this.state.themeState.color}
+                            needleColor={this.state.themeState.color}
+                            needleBaseColor={this.state.themeState.color}
                           />
                           {/* <Piechart /> */}
                         </Paper>
@@ -482,7 +515,11 @@ export class FrontDesk extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 430 }}
+                  style={{
+                    minHeight: 430,
+                    backgroundColor: this.state.themeState.paper,
+                    color: this.state.themeState.color,
+                  }}
                 >
                   <Grid container spacing={3} style={{ padding: 20 }}>
                     <Grid container style={{ marginBottom: 20 }}>
@@ -494,7 +531,7 @@ export class FrontDesk extends Component {
                       <Paper
                         elevation={0}
                         style={{
-                          // backgroundColor: "#BDBFC3",
+                          backgroundColor: this.state.themeState.paper,
                           width: "100%",
                           height: "auto",
                           marginBottom: 5,
@@ -554,7 +591,11 @@ export class FrontDesk extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 430 }}
+                  style={{
+                    minHeight: 430,
+                    backgroundColor: this.state.themeState.paper,
+                    color: this.state.themeState.color,
+                  }}
                 >
                   <Grid container spacing={3} style={{ padding: 20 }}>
                     <Grid
@@ -574,12 +615,13 @@ export class FrontDesk extends Component {
                       <Paper
                         elevation={0}
                         style={{
-                          // backgroundColor: "#BDBFC3",
+                          backgroundColor: this.state.themeState.paper,
+                          color: this.state.themeState.color,
                           width: "100%",
                           height: 275,
                         }}
                       >
-                        <TestGraph2 />
+                        <TestGraph2 themeState={this.state.themeState} />
                       </Paper>
                     </Grid>
                   </Grid>
@@ -594,7 +636,10 @@ export class FrontDesk extends Component {
                 <Paper
                   variant="outlined"
                   square
-                  style={{ minHeight: 150, backgroundColor: "#030AAC" }}
+                  style={{
+                    minHeight: 150,
+                    backgroundColor: blue[this.state.themeState.colorlevel],
+                  }}
                 >
                   <Grid
                     container
@@ -640,7 +685,12 @@ export class FrontDesk extends Component {
                   variant="outlined"
                   elevation={0}
                   square
-                  style={{ minHeight: 720, marginTop: 20 }}
+                  style={{
+                    minHeight: 720,
+                    marginTop: 20,
+                    backgroundColor: this.state.themeState.paper,
+                    color: this.state.themeState.color,
+                  }}
                 >
                   <Grid container style={{ padding: 20 }}>
                     <Grid container style={{ marginBottom: 20 }}>

@@ -63,17 +63,18 @@ const useStyles = makeStyles((theme) => ({
     justifyItems: "center",
   },
   tabs: {
-    color: 'green'
-  }
+    color: "green",
+  },
 }));
 
 export default function HeaderTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [wordColor, setWordColor] = React.useState('#2D62ED');
+  const [wordColor, setWordColor] = React.useState("#2D62ED");
+  const [colorMode, setColorMode] = React.useState("#FFFFFF");
   const { store } = useContext(ReactReduxContext);
 
-  const compString = sessionStorage.getItem('comp');
+  const compString = sessionStorage.getItem("comp");
   const comps = JSON.parse(compString);
   // const cashier = comps.some(item => item.slug === 'ReportRoomMaster')
   // const front = comps.some(item => item.slug === 'ConfigMaster')
@@ -85,8 +86,8 @@ export default function HeaderTabs() {
   function handleComponentState(comp) {
     store.dispatch({
       type: EDIT_COMPONENT,
-      payload: comp
-    })
+      payload: comp,
+    });
   }
 
   setInterval(() => {
@@ -94,13 +95,18 @@ export default function HeaderTabs() {
     if (wordColor !== settingColor && wordColor !== null) {
       setWordColor(settingColor);
     }
+    // let darkColor = store.getState().reducer.darkbackgroundColor;
+    let themeBackground = store.getState().reducer.themeBackground;
+    if (themeBackground !== "#FFFFFF") {
+      setColorMode("#212121");
+    }
   }, 1000);
 
   const handleChange = (event, newValue) => {
-    console.log("newValue", newValue)
+    console.log("newValue", newValue);
     setValue(newValue);
-    if (newValue === 0) handleComponentState("FrontDesk")
-    console.log("st", store.getState().reducer.componentState)
+    if (newValue === 0) handleComponentState("FrontDesk");
+    console.log("st", store.getState().reducer.componentState);
   };
 
   return (
@@ -132,57 +138,68 @@ export default function HeaderTabs() {
             scrollButtons="auto"
             TabIndicatorProps={{ style: { backgroundColor: wordColor } }}
           >
-            {front ?
+            {front ? (
               <Tab
                 icon={<ImageAspectRatioIcon />}
                 style={{ color: wordColor }}
                 label="Front Desk"
                 {...a11yProps(0)}
               />
-              : null}
+            ) : null}
             <Tab
               style={{ color: wordColor }}
               icon={<KingBedIcon />}
               label="Reservation"
               {...a11yProps(1)}
             />
-            {cashier ?
+            {cashier ? (
               <Tab
                 icon={<MonetizationOnIcon />}
                 style={{ color: wordColor }}
                 label="Cashier"
                 {...a11yProps(2)}
               />
-              : null}
-            {setting ?
+            ) : null}
+            {setting ? (
               <Tab
                 icon={<NightsStayIcon />}
                 style={{ color: wordColor }}
                 label="Night Auditor"
                 {...a11yProps(3)}
               />
-              : null}
+            ) : null}
           </Tabs>
         </Grid>
       </AppBar>
-      {front ?
-        <TabPanel value={value} index={0-(front?0:1)}>
+      {front ? (
+        <TabPanel
+          style={{ backgroundColor: colorMode }}
+          value={value}
+          index={0 - (front ? 0 : 1)}
+        >
           {/* <FrontDesk /> */}
         </TabPanel>
-        : null}
-      <TabPanel value={value} index={1-(front?0:1)}>
+      ) : null}
+      <TabPanel
+        style={{ backgroundColor: colorMode }}
+        value={value}
+        index={1 - (front ? 0 : 1)}
+      >
         <Reservation />
       </TabPanel>
-      {cashier ?
-        <TabPanel value={value} index={2-(front?0:1)-(cashier?0:1)}>
+      {cashier ? (
+        <TabPanel value={value} index={2 - (front ? 0 : 1) - (cashier ? 0 : 1)}>
           Cashier
         </TabPanel>
-        : null}
-      {setting ?
-        <TabPanel value={value} index={3-(front?0:1)-(cashier?0:1)-(setting?0:1)}>
+      ) : null}
+      {setting ? (
+        <TabPanel
+          value={value}
+          index={3 - (front ? 0 : 1) - (cashier ? 0 : 1) - (setting ? 0 : 1)}
+        >
           Night Auditor
         </TabPanel>
-        : null}
+      ) : null}
     </div>
   );
 }

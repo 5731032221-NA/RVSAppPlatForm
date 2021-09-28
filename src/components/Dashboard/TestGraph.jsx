@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { ReactReduxContext, useSelector } from "react-redux";
 import {
   AreaChart,
   XAxis,
@@ -8,6 +9,7 @@ import {
   Area,
   ResponsiveContainer,
 } from "recharts";
+import { EDIT_DARKMODE } from "../../middleware/action";
 const data = [
   {
     name: "Page A",
@@ -66,8 +68,12 @@ const data = [
 ];
 
 export default function TestGraph() {
+  const { store } = useContext(ReactReduxContext);
+  // const pageProperty = useSelector((state) => state.reducer.property);
+  // React.useEffect();
+
   return (
-    <ResponsiveContainer>
+    <ResponsiveContainer style={{backgroundColor:"black"}}>
       <AreaChart
         width={730}
         height={250}

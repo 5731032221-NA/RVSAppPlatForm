@@ -59,12 +59,15 @@ const data = [
   },
 ];
 
-export default function TestGraph2() {
+export default function TestGraph2(props) {
   return (
     <ResponsiveContainer>
       <RadarChart outerRadius={90} width={730} height={250} data={data}>
         <PolarGrid />
-        <PolarAngleAxis dataKey="month" />
+        <PolarAngleAxis
+          dataKey="month"
+          tick={{ fill: props.themeState.color }}
+        />
         {/* <PolarRadiusAxis angle={30} domain={[0, 150]} /> */}
         <Radar
           name="Sale"
