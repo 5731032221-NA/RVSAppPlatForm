@@ -33,13 +33,6 @@ export class Reservation extends Component {
 
       Dashboard: en_lang.Dashboard,
       color: this.props.color,
-      weatherdata: {
-        city: "city",
-        icon: "icon",
-        temperature: "temp",
-        des: "des",
-      },
-      forcast: [],
       themeBackground: "#FFFFFF",
       themeState: {
         background: "#FFFFFF",
@@ -47,6 +40,13 @@ export class Reservation extends Component {
         paper: "#FFFFFF",
         colorlevel: "900",
       },
+      weatherdata: {
+        city: "city",
+        icon: "icon",
+        temperature: "temp",
+        des: "des",
+      },
+      forcast: [],
     };
   }
 
@@ -68,7 +68,6 @@ export class Reservation extends Component {
           });
         }
       }
-
       if (this.state.themeBackground != this.props.themeBackground) {
         console.log(this.state.themeBackground, this.props.themeBackground);
         if (this.props.themeBackground === "#FFFFFF") {
@@ -77,7 +76,7 @@ export class Reservation extends Component {
               background: "#FFFFFF",
               color: "#000000",
               paper: "#FFFFFF",
-              colorlevel: "A900",
+              colorlevel: "900",
               // matStyle: this.classes.normalmode
             },
           });
@@ -96,6 +95,7 @@ export class Reservation extends Component {
         console.log(this.props.themeBackground);
       }
     }, 1000);
+
     const item = await getweather();
 
     this.setState({
@@ -644,7 +644,8 @@ export class Reservation extends Component {
                         <Paper
                           elevation={0}
                           style={{
-                            backgroundColor: "#F7F7F7",
+                            color: this.state.themeState.color,
+                            backgroundColor: this.state.themeState.paper,
                             width: "100%",
                             height: 135,
                           }}

@@ -29,9 +29,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-import {
-  Breadcrumbs
-} from "@material-ui/core";
+import { Breadcrumbs } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import RoleManagement from "../RoleManagement";
 import UserManagement from "../UserManagement";
@@ -40,6 +38,7 @@ import DeviceManager from "../DeviceManager";
 import ComputerPrinter from "../ComputerPrinter";
 import { ReactReduxContext, useSelector } from "react-redux";
 import LockIcon from "@material-ui/icons/Https";
+import { blue } from "@material-ui/core/colors";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import {
   updateconfiguration,
@@ -89,6 +88,12 @@ export default function Configuration() {
   const [page, setPage] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState(false);
   const [errorParameter, setErrorParameter] = React.useState(null);
+  const [themeState, setThemeState] = React.useState({
+    background: "#FFFFFF",
+    color: "#000000",
+    paper: "#FFFFFF",
+    colorlevel: "900",
+  });
   const [data, setData] = React.useState([
     {
       id: 1000000001,
@@ -322,17 +327,37 @@ export default function Configuration() {
   ]);
   const updateproperty = useSelector((state) => state.reducer.property);
   const [property, setProperty] = React.useState(updateproperty);
+  const themeBackground = useSelector((state) => state.reducer.themeBackground);
 
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setThemeState({
+        background: "#FFFFFF",
+        color: "#000000",
+        paper: "#FFFFFF",
+        colorlevel: "900",
+        // matStyle: this.classes.normalmode
+      });
+    } else {
+      setThemeState({
+        background: "#212121",
+        color: "#FAFAFA",
+        paper: "#424242",
+        colorlevel: "A200",
+        // matStyle: this.classes.darkmode
+      });
+    }
+  }, [themeBackground]);
 
   React.useEffect(async () => {
-    console.log("useEffect")
-    let configdata = await getconfigurationbypropertycode(sessionStorage.getItem("auth"), updateproperty);
-    setData(configdata.content[configdata.content.length - 1])
-    setProperty(prev => updateproperty);
-
-
+    console.log("useEffect");
+    let configdata = await getconfigurationbypropertycode(
+      sessionStorage.getItem("auth"),
+      updateproperty
+    );
+    setData(configdata.content[configdata.content.length - 1]);
+    setProperty((prev) => updateproperty);
   }, [updateproperty]);
-
 
   // const [store.getState().reducer.configState, setstore.getState().reducer.configState] = React.useState("Configuration");
   const configState = useSelector((state) => state.reducer.configState);
@@ -340,7 +365,6 @@ export default function Configuration() {
   const handleLanguageDialog = (event) => {
     setLanguageDialog(event.target.value);
   };
-
 
   const handleClick = (event, name, id) => {
     // console.log(event)
@@ -454,18 +478,17 @@ export default function Configuration() {
         type: EDIT_CONFIGSTATE,
         payload: "RoomManagement",
       });
-    }else if (name == "DEVICE") {
+    } else if (name == "DEVICE") {
       store.dispatch({
         type: EDIT_CONFIGSTATE,
         payload: "DeviceManager",
       });
-    }else if (name == "COMPRT") {
+    } else if (name == "COMPRT") {
       store.dispatch({
         type: EDIT_CONFIGSTATE,
         payload: "ComputerPrinter",
       });
     }
-
   };
 
   async function prune(array, label) {
@@ -721,8 +744,8 @@ export default function Configuration() {
               </Grid>
               <Grid item>
                 {nodes.master == false ||
-                  sessionStorage.getItem("role") == "root" ||
-                  sessionStorage.getItem("role") == "Root" ? (
+                sessionStorage.getItem("role") == "root" ||
+                sessionStorage.getItem("role") == "Root" ? (
                   <IconButton
                     onClick={() =>
                       handleDialogEdit(nodes.name_en, nodes.RefNo, nodes)
@@ -736,8 +759,8 @@ export default function Configuration() {
                   </IconButton>
                 )}
                 {nodes.master == false ||
-                  sessionStorage.getItem("role") == "root" ||
-                  sessionStorage.getItem("role") == "Root" ? (
+                sessionStorage.getItem("role") == "root" ||
+                sessionStorage.getItem("role") == "Root" ? (
                   <IconButton onClick={() => handleDelete(nodes.RefNo)}>
                     <DeleteRoundedIcon />
                   </IconButton>
@@ -747,8 +770,8 @@ export default function Configuration() {
                   </IconButton>
                 )}
                 {nodes.addchild == true ||
-                  sessionStorage.getItem("role") == "root" ||
-                  sessionStorage.getItem("role") == "Root" ? (
+                sessionStorage.getItem("role") == "root" ||
+                sessionStorage.getItem("role") == "Root" ? (
                   <IconButton
                     aria-controls={nodes.RefNo}
                     aria-haspopup="true"
@@ -787,7 +810,7 @@ export default function Configuration() {
               onClose={handleDialogAddClose}
               aria-labelledby="form-dialog-title"
               style={{
-                backgroundColor: '#000000',
+                backgroundColor: "#000000",
                 opacity: 0.13,
               }}
             >
@@ -914,9 +937,8 @@ export default function Configuration() {
               open={dialogEdit}
               onClose={handleDialogAddClose}
               aria-labelledby="form-dialog-title"
-
               style={{
-                backgroundColor: '#000000',
+                backgroundColor: "#000000",
                 opacity: 0.13,
               }}
             >
@@ -1054,7 +1076,12 @@ export default function Configuration() {
   );
 
   return (
-    <div>
+    <div
+      style={{
+        backgroundColor: themeState.background,
+        color: themeState.color,
+      }}
+    >
       {configState == "Configuration" ? (
         <Container maxWidth="xl">
           <React.Fragment>
@@ -1070,7 +1097,11 @@ export default function Configuration() {
                   separator={
                     <Typography
                       variant="h6"
-                      style={{ marginBottom: 15, fontSize: 20 }}
+                      style={{
+                        marginBottom: 15,
+                        fontSize: 20,
+                        color: themeState.color,
+                      }}
                     >
                       /
                     </Typography>
@@ -1078,14 +1109,26 @@ export default function Configuration() {
                 >
                   <Typography
                     variant="h6"
-                    style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
+                    style={{
+                      marginBottom: 15,
+                      fontSize: 20,
+                      color: blue[themeState.colorlevel],
+                    }}
                   >
                     Configuration
                     {/* {data[0][testa]} */}
                   </Typography>
                 </Breadcrumbs>
               </Grid>
-              <Paper elevation={3} style={{ minHeight: 150, width: "100%" }}>
+              <Paper
+                elevation={3}
+                style={{
+                  minHeight: 150,
+                  width: "100%",
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Grid container style={{ padding: 20 }}>
                   <TreeView
                     className={classes.root}
@@ -1124,22 +1167,24 @@ export default function Configuration() {
                     style={{ marginTop: 15 }}
                   >
                     <Grid item style={{ flexGrow: 1 }}>
-                      <Typography variant="title1" color="initial">
+                      <Typography variant="title1">
                         item 11-13 of 13 Total
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <Typography variant="title1" color="initial">
-                        Row per Page
-                      </Typography>
+                      <Typography variant="title1">Row per Page</Typography>
                     </Grid>
                     <Grid item>
                       <FormControl
                         variant="outlined"
                         size="small"
                         className={classes.selectPage}
+                        style={{ color: themeState.color }}
                       >
-                        <InputLabel id="demo-simple-select-outlined-label">
+                        <InputLabel
+                          style={{ color: themeState.color }}
+                          id="demo-simple-select-outlined-label"
+                        >
                           Page
                         </InputLabel>
                         <Select
@@ -1148,6 +1193,7 @@ export default function Configuration() {
                           value={page}
                           onChange={handleChangePage}
                           label="Page"
+                          style={{ color: themeState.color }}
                         >
                           <MenuItem value="">None</MenuItem>
                           <MenuItem value={1}>1</MenuItem>
@@ -1158,16 +1204,16 @@ export default function Configuration() {
                     </Grid>
                     <Grid item>1-4 of 10</Grid>
                     <Grid item>
-                      <IconButton>
+                      <IconButton style={{ color: themeState.color }}>
                         <FirstPageRoundedIcon />
                       </IconButton>
-                      <IconButton>
+                      <IconButton style={{ color: themeState.color }}>
                         <NavigateBeforeRoundedIcon />
                       </IconButton>
-                      <IconButton>
+                      <IconButton style={{ color: themeState.color }}>
                         <NavigateNextRoundedIcon />
                       </IconButton>
-                      <IconButton>
+                      <IconButton style={{ color: themeState.color }}>
                         <LastPageRoundedIcon />
                       </IconButton>
                     </Grid>

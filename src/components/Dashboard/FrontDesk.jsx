@@ -77,7 +77,7 @@ export class FrontDesk extends Component {
               background: "#FFFFFF",
               color: "#000000",
               paper: "#FFFFFF",
-              colorlevel: "A900",
+              colorlevel: "900",
               // matStyle: this.classes.normalmode
             },
           });
@@ -87,7 +87,7 @@ export class FrontDesk extends Component {
               background: "#212121",
               color: "#FAFAFA",
               paper: "#424242",
-              colorlevel: "800",
+              colorlevel: "A200",
               // matStyle: this.classes.darkmode
             },
           });

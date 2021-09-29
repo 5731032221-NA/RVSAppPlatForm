@@ -36,8 +36,8 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log("themeBackground", state.themeBackground);
-  console.log("color", state.color);
+  //   console.log("themeBackground", state.themeBackground);
+  //   console.log("color", state.color);
   if (action.type != EDIT_COMPWIDTH) {
     console.log("action,payload", action.type, action.payload);
   }

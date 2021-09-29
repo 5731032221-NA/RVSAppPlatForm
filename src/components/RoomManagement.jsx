@@ -38,6 +38,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { blue } from "@material-ui/core/colors";
 import {
   listRoom,
   postRoom,
@@ -49,7 +50,7 @@ import {
 import {
   listallproperty,
   getconfigurationbypropertycode,
-  getusercomponentpermision
+  getusercomponentpermision,
 } from "../services/user.service";
 
 import TablePagination from "@material-ui/core/TablePagination";
@@ -245,7 +246,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RoomManagement() {
   const classes = useStyles();
-  const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false })
+  const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false });
   const [dialogAddRoom, setDialogAddRoom] = React.useState(false);
   const [dialogEditRoom, setDialogEditRoom] = React.useState(false);
   const [dialogDeleteRoom, setDialogDeleteRoom] = React.useState(false);
@@ -297,13 +298,17 @@ export default function RoomManagement() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
-    let usercomponentpermission = await getusercomponentpermision(sessionStorage.getItem("auth"), sessionStorage.getItem("username"), "CF-RM");
+    let usercomponentpermission = await getusercomponentpermision(
+      sessionStorage.getItem("auth"),
+      sessionStorage.getItem("username"),
+      "CF-RM"
+    );
     setCRUD({
       C: usercomponentpermission.content[0].permissioncreate,
       R: usercomponentpermission.content[0].permissionread,
       U: usercomponentpermission.content[0].permissionupdate,
-      D: usercomponentpermission.content[0].permissiondelete
-    })
+      D: usercomponentpermission.content[0].permissiondelete,
+    });
     const data = await listRoom(sessionStorage.getItem("auth"));
     console.log("data", data);
     let roomdata = [];
@@ -593,7 +598,7 @@ export default function RoomManagement() {
     roomDesc,
     roomFloorDialog
   ) => {
-    console.log(chipAttributeDialog)
+    console.log(chipAttributeDialog);
     console.log(`
       roomNo : ${roomNo},
       propertyDialog : ${propertyDialog},
@@ -901,18 +906,49 @@ export default function RoomManagement() {
 
     setDialogDeleteRoom(false);
   };
+  const [themeState, setThemeState] = React.useState({
+    background: "#FFFFFF",
+    color: "#000000",
+    paper: "#FFFFFF",
+    colorlevel: "900",
+  });
+  const themeBackground = useSelector((state) => state.reducer.themeBackground);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setThemeState({
+        background: "#FFFFFF",
+        color: "#000000",
+        paper: "#FFFFFF",
+        colorlevel: "900",
+        // matStyle: this.classes.normalmode
+      });
+    } else {
+      setThemeState({
+        background: "#212121",
+        color: "#FAFAFA",
+        paper: "#424242",
+        colorlevel: "A200",
+        // matStyle: this.classes.darkmode
+      });
+    }
+  }, [themeBackground]);
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" style={themeState}>
       <React.Fragment>
-        <Paper>
+        <Paper style={{ backgroundColor: themeState.paper }}>
           <Grid container style={{ padding: 20 }}>
             <Grid item style={{ flexGrow: 1 }}>
               <Breadcrumbs
                 separator={
                   <Typography
                     variant="h6"
-                    style={{ marginBottom: 15, fontSize: 20 }}
+                    style={{
+                      marginBottom: 15,
+                      fontSize: 20,
+                      color: themeState.color,
+                    }}
                   >
                     /
                   </Typography>
@@ -925,7 +961,11 @@ export default function RoomManagement() {
                 >
                   <Typography
                     variant="h6"
-                    style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
+                    style={{
+                      marginBottom: 15,
+                      fontSize: 20,
+                      color: blue[themeState.colorlevel],
+                    }}
                   >
                     Configuration
                   </Typography>
@@ -933,7 +973,11 @@ export default function RoomManagement() {
                 <Link color="inherit" href="#" onClick={" "}>
                   <Typography
                     variant="h6"
-                    style={{ marginBottom: 15, fontSize: 14 }}
+                    style={{
+                      marginBottom: 15,
+                      fontSize: 14,
+                      color: themeState.color,
+                    }}
                   >
                     PMS Configuration
                   </Typography>
@@ -941,7 +985,11 @@ export default function RoomManagement() {
                 <Link color="inherit" href="#" onClick={" "}>
                   <Typography
                     variant="h6"
-                    style={{ marginBottom: 15, fontSize: 14 }}
+                    style={{
+                      marginBottom: 15,
+                      fontSize: 14,
+                      color: themeState.color,
+                    }}
                   >
                     Room Configuration
                   </Typography>
@@ -949,15 +997,23 @@ export default function RoomManagement() {
                 <Typography>
                   <Typography
                     variant="h6"
-                    style={{ marginBottom: 15, fontSize: 14 }}
+                    style={{
+                      marginBottom: 15,
+                      fontSize: 14,
+                      color: themeState.color,
+                    }}
                   >
                     Room Master Maintenance
                   </Typography>
                 </Typography>
               </Breadcrumbs>
             </Grid>
-            <Divider orientation="vertical" flexItem />
-            {CRUD.C ?
+            <Divider
+              orientation="vertical"
+              flexItem
+              style={{ backgroundColor: themeState.color }}
+            />
+            {CRUD.C ? (
               <Grid item style={{ marginLeft: 20, marginRight: 20 }}>
                 <Button
                   variant="contained"
@@ -971,7 +1027,7 @@ export default function RoomManagement() {
                   NEW ROOM MASTER
                 </Button>
               </Grid>
-              : null}
+            ) : null}
 
             {/* ==================== Dialog New Room========================= */}
             <Dialog
@@ -981,12 +1037,23 @@ export default function RoomManagement() {
               onClose={handleDialogAddRoomClose}
               aria-labelledby="form-dialog-title"
             >
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: blue[themeState.colorlevel],
+                }}
+              >
                 New Room Master
               </DialogTitle>
 
-              <DialogContent>
-                <Container maxWidth="xl" disableGutters>
+              <DialogContent
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
+                <Container maxWidth="xl" disableGutters >
                   <Grid container>
                     <TextField
                       autoFocus
@@ -1001,6 +1068,7 @@ export default function RoomManagement() {
                       }}
                       // value={propertyDialog}
                       onChange={(event) => handlePropertyDialog(event)}
+                      
                     >
                       {properties.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -1766,28 +1834,86 @@ export default function RoomManagement() {
           </Grid>
         </Paper>
       </React.Fragment>
-      {CRUD.R ?
+      {CRUD.R ? (
         <MaterialTable
-          style={{ paddingLeft: 30, paddingRight: 30 }}
+          style={{
+            paddingLeft: 30,
+            paddingRight: 30,
+            color: themeState.color,
+            backgroundColor: themeState.paper,
+          }}
           title={
             <Grid>
-              <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
+              <Typography variant="h6" style={{ fontSize: 25 }}>
                 Room Master
               </Typography>
             </Grid>
           }
           columns={[
-            { title: "Property", field: "property" },
+            {
+              title: "Property",
+              field: "property",
+              headerStyle: {
+                backgroundColor: themeState.paper,
+                color: themeState.color,
+              },
+            },
             {
               title: "#Number",
-              field: "number"
+              field: "number",
+              headerStyle: {
+                backgroundColor: themeState.paper,
+                color: themeState.color,
+              },
             },
-            { title: "Room Type", field: "roomType" },
-            { title: "Floor", field: "floor" },
-            { title: "Building", field: "building" },
-            { title: "Desc", field: "desc" },
-            { title: "Status", field: "status" },
-            { title: "Attribute", field: "attribute" },
+            {
+              title: "Room Type",
+              field: "roomType",
+              headerStyle: {
+                backgroundColor: themeState.paper,
+                color: themeState.color,
+              },
+            },
+            {
+              title: "Floor",
+              field: "floor",
+              headerStyle: {
+                backgroundColor: themeState.paper,
+                color: themeState.color,
+              },
+            },
+            {
+              title: "Building",
+              field: "building",
+              headerStyle: {
+                backgroundColor: themeState.paper,
+                color: themeState.color,
+              },
+            },
+            {
+              title: "Desc",
+              field: "desc",
+              headerStyle: {
+                backgroundColor: themeState.paper,
+                color: themeState.color,
+              },
+            },
+            {
+              title: "Status",
+              field: "status",
+              headerStyle: {
+                backgroundColor: themeState.paper,
+                color: themeState.color,
+              },
+            },
+            {
+              title: "Attribute",
+              field: "attribute",
+              headerStyle: {
+                backgroundColor: themeState.paper,
+                color: themeState.color,
+              },
+            },
           ]}
           data={rows}
           // totalCount={rows.length}
@@ -1799,6 +1925,15 @@ export default function RoomManagement() {
             page: page,
             pageSize: rowsPerPage,
             pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
+            searchFieldStyle: {
+              backgroundColor: themeState.paper,
+              color: themeState.color,
+              // borderBottomColor: themeState.color,
+            },
+            headerStyle: {
+              backgroundColor: themeState.paper,
+              color: themeState.color,
+            },
           }}
           actions={[
             {
@@ -1819,9 +1954,9 @@ export default function RoomManagement() {
             },
           ]}
           onChangePage={(page) => console.log("page")}
-        // onChangePage={(event, page) => console.log(event, page)}
+          // onChangePage={(event, page) => console.log(event, page)}
         />
-        : null}
+      ) : null}
     </Container>
   );
 }

@@ -4,7 +4,14 @@ import { ReactReduxContext } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import { purple, green, orange, red, yellow } from "@material-ui/core/colors";
+import {
+  purple,
+  green,
+  orange,
+  red,
+  yellow,
+  blue,
+} from "@material-ui/core/colors";
 
 import {
   CssBaseline,
@@ -46,7 +53,6 @@ import ReservationPage from "./ReservationPage";
 import RoleManagement from "../components/RoleManagement";
 import UserManagement from "../components/UserManagement";
 import DashboardDetail from "../components/Dashboard/DashboardDetail";
-
 
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
@@ -292,7 +298,7 @@ export default function Dashboard() {
     sessionStorage.getItem("property")
   );
   const ratio = window.devicePixelRatio || 1;
-  
+
   setInterval(() => {
     // console.log(parseInt(store.getState().reducer.compwidth) !== parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(store.getState().reducer.compwidth))
     if (compWidthState != document.getElementById("compwidth").offsetWidth) {
@@ -316,8 +322,7 @@ export default function Dashboard() {
         setThemeState(classes.themeDarkmode);
         setWordColor("#1F1B24");
         setThemeFontState(classes.themeDarkmode);
-      }
-      else if (settingColor == purple[600]) {
+      } else if (settingColor == purple[600]) {
         setThemeState(classes.themePurple);
         setWordColor(purple[600]);
         setThemeFontState(classes.themeFontPurple);
@@ -793,7 +798,7 @@ export default function Dashboard() {
                       value={selectedProperty}
                       onChange={handleChangeProperty}
                       defaultValue={sessionStorage.getItem("property")}
-                      style={{width:160, height:40}}
+                      style={{ width: 160, height: 40 }}
                     >
                       {JSON.parse(sessionStorage.getItem("grantproperty")).map(
                         (item) => (

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { ReactReduxContext } from "react-redux";
+import { ReactReduxContext, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -7,6 +7,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import MaterialTable from "material-table";
+import { blue } from "@material-ui/core/colors";
 import {
   Container,
   Grid,
@@ -48,7 +49,7 @@ import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import UpdateIcon from '@material-ui/icons/Update';
+import UpdateIcon from "@material-ui/icons/Update";
 import {
   listrole,
   getrolebyid,
@@ -58,14 +59,22 @@ import {
   listallproperty,
   deleterolebycode,
   rolepermissionbyrole,
-  getusercomponentpermision
+  getusercomponentpermision,
 } from "../services/user.service";
 // from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
 import { EDIT_CONFIGSTATE } from "../middleware/action";
 
 // Generate Order Data
-function createData(id, rolecode, rolename, description, count, applyproperty, status) {
+function createData(
+  id,
+  rolecode,
+  rolename,
+  description,
+  count,
+  applyproperty,
+  status
+) {
   return {
     id,
     rolecode,
@@ -73,11 +82,9 @@ function createData(id, rolecode, rolename, description, count, applyproperty, s
     description,
     count,
     applyproperty,
-    status
+    status,
   };
 }
-
-
 
 // const rows = [
 //   createData(0, "CASHIER", "Cashier", "All Shifts Cashier", "5", "Active"),
@@ -222,7 +229,7 @@ const defaultdata = [
         edited_read: false,
         edited_update: false,
         edited_delete: false,
-      }
+      },
     ],
   },
   {
@@ -373,7 +380,7 @@ const defaultdata = [
         edited_read: false,
         edited_update: false,
         edited_delete: false,
-      }
+      },
     ],
   },
   {
@@ -479,8 +486,8 @@ const defaultdata = [
             edited_read: false,
             edited_update: false,
             edited_delete: false,
-          }
-        ]
+          },
+        ],
       },
       {
         name: "System Configuration",
@@ -520,16 +527,16 @@ const defaultdata = [
             edited_read: false,
             edited_update: false,
             edited_delete: false,
-          }
-        ]
-      }
+          },
+        ],
+      },
     ],
   },
 ];
 
 export default function RoleManagement() {
   const classes = useStyles();
-  const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false })
+  const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false });
   const { store } = useContext(ReactReduxContext);
   const [data, setData] = React.useState([]);
 
@@ -561,13 +568,17 @@ export default function RoleManagement() {
   const [errorParameter, setErrorParameter] = useState(null);
 
   React.useEffect(async () => {
-    let usercomponentpermission = await getusercomponentpermision(sessionStorage.getItem("auth"), sessionStorage.getItem("username"), "CF-RM");
+    let usercomponentpermission = await getusercomponentpermision(
+      sessionStorage.getItem("auth"),
+      sessionStorage.getItem("username"),
+      "CF-RM"
+    );
     setCRUD({
       C: usercomponentpermission.content[0].permissioncreate,
       R: usercomponentpermission.content[0].permissionread,
       U: usercomponentpermission.content[0].permissionupdate,
-      D: usercomponentpermission.content[0].permissiondelete
-    })
+      D: usercomponentpermission.content[0].permissiondelete,
+    });
     // macaddress.all().then(function (all) {
     //   console.log(JSON.stringify(all, null, 2));
     // });
@@ -597,25 +608,27 @@ export default function RoleManagement() {
   const handleDialogAddRole = async () => {
     let propertydata = await listallproperty(sessionStorage.getItem("auth"));
     console.log("propertydata", propertydata);
-    let tempproperty = [{
-      key: "*ALL",
-      label: "*ALL",
-    }];
-    propertydata.content[propertydata.content.length - 1].split(",").forEach((element) => {
-      if (tempproperty.filter(x => x.label === element).length == 0) {
-        tempproperty.push({
-          key: element,
-          label: element,
-        })
-      }
-    }
-
-    );
-    console.log("tempproperty", tempproperty)
+    let tempproperty = [
+      {
+        key: "*ALL",
+        label: "*ALL",
+      },
+    ];
+    propertydata.content[propertydata.content.length - 1]
+      .split(",")
+      .forEach((element) => {
+        if (tempproperty.filter((x) => x.label === element).length == 0) {
+          tempproperty.push({
+            key: element,
+            label: element,
+          });
+        }
+      });
+    console.log("tempproperty", tempproperty);
     // console.log(defaultdata.val());
     // let _data = defaultdata.val();
     setData(JSON.parse(JSON.stringify(defaultdata)));
-    setChipPropertyDialog([])
+    setChipPropertyDialog([]);
     setAllProperty(tempproperty);
     setRoleCode(null);
     setRoleName(null);
@@ -625,25 +638,24 @@ export default function RoleManagement() {
     setDialogAddRole(true);
   };
 
-
   const propertylist = async (array, rolecode) => {
     let list = [];
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      if (obj.edited_create ||
+      if (
+        obj.edited_create ||
         obj.edited_read ||
         obj.edited_update ||
-        obj.edited_delete) {
-        list.push(
-          {
-            rolecode: rolecode,
-            componentcode: obj.code,
-            permissioncreate: +obj.create,
-            permissionread: +obj.read,
-            permissionupdate: +obj.update,
-            permissiondelete: +obj.delete
-          }
-        )
+        obj.edited_delete
+      ) {
+        list.push({
+          rolecode: rolecode,
+          componentcode: obj.code,
+          permissioncreate: +obj.create,
+          permissionread: +obj.read,
+          permissionupdate: +obj.update,
+          permissiondelete: +obj.delete,
+        });
       }
       if (obj.children) {
         // list = [...list, ...propertylist(obj.children)];
@@ -654,18 +666,25 @@ export default function RoleManagement() {
     return list;
   };
 
-
   const handleDialogAddRoleSave = async (
     rolecode,
     rolename,
     description,
     status
   ) => {
-    if (rolecode == null || rolecode == '') { setErrorMessage(true); setErrorParameter("Role Code"); }
-    else if (rolename == null || rolename == '') { setErrorMessage(true); setErrorParameter("Role Name"); }
-    else if (ChipPropertyDialog.length == 0) { setErrorMessage(true); setErrorParameter("Property"); }
-    else if (description == null || description == '') { setErrorMessage(true); setErrorParameter("Description"); }
-    else {
+    if (rolecode == null || rolecode == "") {
+      setErrorMessage(true);
+      setErrorParameter("Role Code");
+    } else if (rolename == null || rolename == "") {
+      setErrorMessage(true);
+      setErrorParameter("Role Name");
+    } else if (ChipPropertyDialog.length == 0) {
+      setErrorMessage(true);
+      setErrorParameter("Property");
+    } else if (description == null || description == "") {
+      setErrorMessage(true);
+      setErrorParameter("Description");
+    } else {
       setErrorMessage(false);
 
       let perm = await propertylist(data, rolecode);
@@ -682,9 +701,9 @@ export default function RoleManagement() {
         description: description,
         status: status,
         applyproperty: tempArray,
-        permission: perm
+        permission: perm,
       });
-      if (insert.status == '2000') {
+      if (insert.status == "2000") {
         let roledata = await listrole(sessionStorage.getItem("auth"));
         let userdata = [];
         roledata.content[roledata.content.length - 1].forEach((element) =>
@@ -739,48 +758,55 @@ export default function RoleManagement() {
     return list;
   };
 
-  const handleDialogEditRole = async (rolecode, rolename, description, applyproperty, status) => {
-
+  const handleDialogEditRole = async (
+    rolecode,
+    rolename,
+    description,
+    applyproperty,
+    status
+  ) => {
     let propertydata = await listallproperty(sessionStorage.getItem("auth"));
     console.log("propertydata", propertydata);
-    let tempproperty = [{
-      key: "*ALL",
-      label: "*ALL",
-    }];
-    propertydata.content[propertydata.content.length - 1].split(",").forEach((element) => {
-      if (tempproperty.filter(x => x.label === element).length == 0) {
-        tempproperty.push({
-          key: element,
-          label: element,
-        })
-      }
-    }
-
-    );
-    console.log("tempproperty", tempproperty)
+    let tempproperty = [
+      {
+        key: "*ALL",
+        label: "*ALL",
+      },
+    ];
+    propertydata.content[propertydata.content.length - 1]
+      .split(",")
+      .forEach((element) => {
+        if (tempproperty.filter((x) => x.label === element).length == 0) {
+          tempproperty.push({
+            key: element,
+            label: element,
+          });
+        }
+      });
+    console.log("tempproperty", tempproperty);
 
     if (applyproperty.indexOf("*ALL") < 0) {
-      let property = []
+      let property = [];
       applyproperty.split(",").forEach((element) => {
-        if (property.filter(x => x.label === element).length == 0) {
-          property.push({ key: element, label: element })
+        if (property.filter((x) => x.label === element).length == 0) {
+          property.push({ key: element, label: element });
         }
-      })
-      setChipPropertyDialog((chips) => property)
+      });
+      setChipPropertyDialog((chips) => property);
     } else {
-      setChipPropertyDialog((chips) => [
-        { key: "*ALL", label: "*ALL" }
-      ])
+      setChipPropertyDialog((chips) => [{ key: "*ALL", label: "*ALL" }]);
     }
 
     // console.log(defaultdata.val());
     // let _data = defaultdata.val();
     setAllProperty(tempproperty);
 
-    let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), { roles: [rolecode] })
-    console.log("roleper", roleper)
+    let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), {
+      roles: [rolecode],
+    });
+    console.log("roleper", roleper);
     let _data = JSON.parse(JSON.stringify(defaultdata));
-    rolepermission(_data, roleper.content[roleper.content.length - 1])
+    rolepermission(_data, roleper.content[roleper.content.length - 1]);
     setData(_data);
     setData((prevState) => [...prevState]);
     // const databyid = await getuserbyid(
@@ -797,9 +823,7 @@ export default function RoleManagement() {
     setOldRoleCode(rolecode);
     setErrorMessage(false);
     setDialogEditRole(true);
-
-
-  }
+  };
   // const handleDialogEditRole = async (id) => {
   //   console.log("idForEdit", id);
   //   const rolebyid = await getrolebyid(sessionStorage.getItem("auth"), id);
@@ -815,7 +839,6 @@ export default function RoleManagement() {
   //   setDialogEditRole(true);
   // };
 
-
   const handleDialogEditRoleSave = async (
     rolecode,
     rolename,
@@ -829,11 +852,19 @@ export default function RoleManagement() {
       description,
       status
     );
-    if (rolecode == null || rolecode == '') { setErrorMessage(true); setErrorParameter("Role Code"); }
-    else if (rolename == null || rolename == '') { setErrorMessage(true); setErrorParameter("Role Name"); }
-    else if (ChipPropertyDialog.length == 0) { setErrorMessage(true); setErrorParameter("Property"); }
-    else if (description == null || description == '') { setErrorMessage(true); setErrorParameter("Description"); }
-    else {
+    if (rolecode == null || rolecode == "") {
+      setErrorMessage(true);
+      setErrorParameter("Role Code");
+    } else if (rolename == null || rolename == "") {
+      setErrorMessage(true);
+      setErrorParameter("Role Name");
+    } else if (ChipPropertyDialog.length == 0) {
+      setErrorMessage(true);
+      setErrorParameter("Property");
+    } else if (description == null || description == "") {
+      setErrorMessage(true);
+      setErrorParameter("Description");
+    } else {
       setErrorMessage(false);
       let perm = await propertylist(data, rolecode);
       const temp = new Set();
@@ -843,20 +874,17 @@ export default function RoleManagement() {
         }
       }
       const tempArray = Array.from(temp).join(",");
-      const roleupdate = await updaterole(
-        sessionStorage.getItem("auth"),
-        {
-          oldrolecode: oldrolecode,
-          rolecode: rolecode,
-          rolename: rolename,
-          description: description,
-          status: status,
-          applyproperty: tempArray,
-          permission: perm
-        }
-      );
+      const roleupdate = await updaterole(sessionStorage.getItem("auth"), {
+        oldrolecode: oldrolecode,
+        rolecode: rolecode,
+        rolename: rolename,
+        description: description,
+        status: status,
+        applyproperty: tempArray,
+        permission: perm,
+      });
       console.log("roleupdate func:", roleupdate);
-      if (roleupdate.status == '2000') {
+      if (roleupdate.status == "2000") {
         let _data = await listrole(sessionStorage.getItem("auth"));
         console.log("listrole", listrole);
         let userdata = [];
@@ -875,7 +903,6 @@ export default function RoleManagement() {
           )
         );
 
-
         setRows(userdata);
         updatePageData(userdata, page, rowsPerPage);
         setErrorMessage(false);
@@ -888,7 +915,11 @@ export default function RoleManagement() {
     setDialogDeleteRole(false);
   };
 
-  const handleDialogDeleteRoleOpen = async (rolecode, rolename, description) => {
+  const handleDialogDeleteRoleOpen = async (
+    rolecode,
+    rolename,
+    description
+  ) => {
     // console.log("idForDelete", id);
     // const rolebyid = await getrolebyid(sessionStorage.getItem("auth"), id);
     // setRoleID(rolebyid.content[rolebyid.content.length - 1].code);
@@ -902,7 +933,10 @@ export default function RoleManagement() {
   const handleDialogDelete = async (code) => {
     // console.log("id for delete", id);
 
-    const roleDelete = await deleterolebycode(sessionStorage.getItem("auth"), code);
+    const roleDelete = await deleterolebycode(
+      sessionStorage.getItem("auth"),
+      code
+    );
     console.log("roleuDelete func:", roleDelete);
 
     let data = await listrole(sessionStorage.getItem("auth"));
@@ -970,12 +1004,12 @@ export default function RoleManagement() {
   };
 
   const handleComponentState = async (comp) => {
-    console.log("setcomp", comp)
+    console.log("setcomp", comp);
     store.dispatch({
       type: EDIT_CONFIGSTATE,
-      payload: comp
-    })
-  }
+      payload: comp,
+    });
+  };
 
   const handleCheckPermision_create = async (nodes) => {
     let _data = data;
@@ -1131,14 +1165,13 @@ export default function RoleManagement() {
     await select_all(_data);
     setData(_data);
     setData((prevState) => [...prevState]);
-  }
+  };
   const handleClearAllPermission = async () => {
     let _data = data;
     await clear_all(_data);
     setData(_data);
     setData((prevState) => [...prevState]);
-  }
-
+  };
 
   const [dataMenu, setDataMenu] = React.useState(
     [
@@ -1290,7 +1323,6 @@ export default function RoleManagement() {
   //   },
   // ];
 
-
   // const attribute = [
   //   {
   //     key: "1",
@@ -1304,33 +1336,35 @@ export default function RoleManagement() {
 
   const userValues = "";
   const handleSelectProperty = (event) => {
-    if (event.target.value == "*ALL") setChipPropertyDialog([
-      { key: event.target.value, label: event.target.value }
-    ]);
+    if (event.target.value == "*ALL")
+      setChipPropertyDialog([
+        { key: event.target.value, label: event.target.value },
+      ]);
     else {
       const temp = new Set();
 
       if (ChipPropertyDialog.length) {
         for (var i in ChipPropertyDialog) {
-          if (ChipPropertyDialog[i].label == "*ALL") setChipPropertyDialog((chips) =>
-            chips.filter((chips) => chips.key !== "*ALL")
-          );
-          // setChipPropertyDialog(prevState => prevState.filter((_, index) => index !== i)) 
+          if (ChipPropertyDialog[i].label == "*ALL")
+            setChipPropertyDialog((chips) =>
+              chips.filter((chips) => chips.key !== "*ALL")
+            );
+          // setChipPropertyDialog(prevState => prevState.filter((_, index) => index !== i))
           temp.add(ChipPropertyDialog[i].label);
         }
         if (temp.has(event.target.value)) {
           // console.log("had value");
         } else {
-          setChipPropertyDialog((chips) => ([
+          setChipPropertyDialog((chips) => [
             ...chips,
             { key: event.target.value, label: event.target.value },
-          ]));
+          ]);
         }
       } else {
-        setChipPropertyDialog((chips) => ([
+        setChipPropertyDialog((chips) => [
           ...chips,
           { key: event.target.value, label: event.target.value },
-        ]));
+        ]);
       }
     }
   };
@@ -1339,6 +1373,34 @@ export default function RoleManagement() {
       chips.filter((chips) => chips.key !== chipToDelete.key)
     );
   };
+
+  const [themeState, setThemeState] = React.useState({
+    background: "#FFFFFF",
+    color: "#000000",
+    paper: "#FFFFFF",
+    colorlevel: "900",
+  });
+  const themeBackground = useSelector((state) => state.reducer.themeBackground);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setThemeState({
+        background: "#FFFFFF",
+        color: "#000000",
+        paper: "#FFFFFF",
+        colorlevel: "900",
+        // matStyle: this.classes.normalmode
+      });
+    } else {
+      setThemeState({
+        background: "#212121",
+        color: "#FAFAFA",
+        paper: "#424242",
+        colorlevel: "A200",
+        // matStyle: this.classes.darkmode
+      });
+    }
+  }, [themeBackground]);
 
   const renderTree = (nodes) => (
     <div>
@@ -1350,24 +1412,36 @@ export default function RoleManagement() {
             {nodes.permision ? (
               <div>
                 <Grid container direction="row" alignItems="center">
-                  <Grid item style={{ flexGrow: 1 }} >
-                    {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
+                  <Grid item style={{ flexGrow: 1 }}>
+                    {nodes.edited_create ||
+                    nodes.edited_read ||
+                    nodes.edited_update ||
+                    nodes.edited_delete ? (
                       <Typography
                         variant="h6"
                         color="initial"
-                        style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
+                        style={{
+                          color: "#1F51FF",
+                          fontSize: 16,
+                          paddingTop: 5,
+                          paddingBottom: 10,
+                        }}
                       >
-                        {nodes.name}  <UpdateIcon style={{ fontSize: 16 }} />
+                        {nodes.name} <UpdateIcon style={{ fontSize: 16 }} />
                       </Typography>
-                      :
+                    ) : (
                       <Typography
                         variant="h6"
                         color="initial"
-                        style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                        style={{
+                          fontSize: 16,
+                          paddingTop: 10,
+                          paddingBottom: 10,
+                        }}
                       >
                         {nodes.name}
                       </Typography>
-                    }
+                    )}
                   </Grid>
                   <Grid item>
                     <FormControlLabel
@@ -1697,40 +1771,59 @@ export default function RoleManagement() {
               <div>
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
-                    {
-                      nodes.children.some(item => {
-                        if (item.permision == false) return item.children.some(childitem => childitem.edited_create === true)
-                        else return item.edited_create === true
-                      }) ||
-                        nodes.children.some(item => {
-                          if (item.permision == false) return item.children.some(childitem => childitem.edited_read === true)
-                          else return item.edited_read === true
-                        }) ||
-                        nodes.children.some(item => {
-                          if (item.permision == false) return item.children.some(childitem => childitem.edited_update === true)
-                          else return item.edited_update === true
-                        }) ||
-                        nodes.children.some(item => {
-                          if (item.permision == false) return item.children.some(childitem => childitem.edited_delete === true)
-                          else return item.edited_delete === true
-                        })
-                        ?
-                        <Typography
-                          variant="h6"
-                          color="initial"
-                          style={{ color: '#1F51FF', fontSize: 16, paddingTop: 5, paddingBottom: 10 }}
-                        >
-                          {nodes.name}  <UpdateIcon style={{ fontSize: 16 }} />
-                        </Typography>
-                        :
-                        <Typography
-                          variant="h6"
-                          color="initial"
-                          style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
-                        >
-                          {nodes.name}
-                        </Typography>
-                    }
+                    {nodes.children.some((item) => {
+                      if (item.permision == false)
+                        return item.children.some(
+                          (childitem) => childitem.edited_create === true
+                        );
+                      else return item.edited_create === true;
+                    }) ||
+                    nodes.children.some((item) => {
+                      if (item.permision == false)
+                        return item.children.some(
+                          (childitem) => childitem.edited_read === true
+                        );
+                      else return item.edited_read === true;
+                    }) ||
+                    nodes.children.some((item) => {
+                      if (item.permision == false)
+                        return item.children.some(
+                          (childitem) => childitem.edited_update === true
+                        );
+                      else return item.edited_update === true;
+                    }) ||
+                    nodes.children.some((item) => {
+                      if (item.permision == false)
+                        return item.children.some(
+                          (childitem) => childitem.edited_delete === true
+                        );
+                      else return item.edited_delete === true;
+                    }) ? (
+                      <Typography
+                        variant="h6"
+                        color="initial"
+                        style={{
+                          color: "#1F51FF",
+                          fontSize: 16,
+                          paddingTop: 5,
+                          paddingBottom: 10,
+                        }}
+                      >
+                        {nodes.name} <UpdateIcon style={{ fontSize: 16 }} />
+                      </Typography>
+                    ) : (
+                      <Typography
+                        variant="h6"
+                        color="initial"
+                        style={{
+                          fontSize: 16,
+                          paddingTop: 10,
+                          paddingBottom: 10,
+                        }}
+                      >
+                        {nodes.name}
+                      </Typography>
+                    )}
                   </Grid>
                 </Grid>
                 <Divider />
@@ -1746,32 +1839,40 @@ export default function RoleManagement() {
     </div>
   );
 
-
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" style={themeState}>
       <React.Fragment>
         <Grid
           container
-          //   direction="row"
-          //   justifyContent="flex-start"
-          //   alignItems="center"
-          style={{ padding: 20 }}
+          style={{ padding: 20, backgroundColor: themeState.paper }}
         >
           <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
                 <Typography
                   variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20 }}
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: themeState.color,
+                  }}
                 >
                   /
                 </Typography>
               }
             >
-              <Link color="inherit" href="#" onClick={() => handleComponentState("Configuration")}>
+              <Link
+                color="inherit"
+                href="#"
+                onClick={() => handleComponentState("Configuration")}
+              >
                 <Typography
                   variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: blue[themeState.colorlevel],
+                  }}
                 >
                   Configuration
                 </Typography>
@@ -1779,7 +1880,11 @@ export default function RoleManagement() {
               <Link color="inherit" href="#" onClick={" "}>
                 <Typography
                   variant="h6"
-                  style={{ marginBottom: 15, fontSize: 14 }}
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
                 >
                   System Configuration
                 </Typography>
@@ -1787,19 +1892,23 @@ export default function RoleManagement() {
               <Typography>
                 <Typography
                   variant="h6"
-                  style={{ marginBottom: 15, fontSize: 14 }}
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
                 >
                   Role Management
                 </Typography>
               </Typography>
             </Breadcrumbs>
           </Grid>
-          {CRUD.C ?
+          {CRUD.C ? (
             <Grid item>
               <Button
                 variant="outlined"
                 style={{
-                  backgroundColor: "#2949A0",
+                  backgroundColor: blue[themeState.colorlevel],
                   color: "white",
                   alignItems: "center",
                 }}
@@ -1812,9 +1921,8 @@ export default function RoleManagement() {
                 </Typography>
               </Button>
             </Grid>
-            : null}
+          ) : null}
         </Grid>
-
 
         {/* <Grid container>
          
@@ -1917,27 +2025,60 @@ export default function RoleManagement() {
                     </Grid>
                   </Grid> */}
         <div style={{ maxWidth: "100%" }}>
-          {CRUD.R ?
+          {CRUD.R ? (
             <MaterialTable
-              style={{ paddingLeft: 30, paddingRight: 30 }}
+              style={{
+                paddingLeft: 30,
+                paddingRight: 30,
+                color: themeState.color,
+                backgroundColor: themeState.paper,
+              }}
               title={
                 <Grid>
-                  <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
+                  <Typography
+                    variant="h6"
+                    style={{ fontSize: 25, color: "black" }}
+                  >
                     Role Management
                   </Typography>
                 </Grid>
               }
               columns={[
-                { title: "Role Code", field: "rolecode" },
+                {
+                  title: "Role Code",
+                  field: "rolecode",
+                  headerStyle: {
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
+                },
                 {
                   title: "Role Name",
-                  field: "rolename"
+                  field: "rolename",
+                  headerStyle: {
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
                 },
-                { title: "Description", field: "description" },
-                { title: "#User", field: "count" },
                 {
-                  render: rowData => {
-                    return rowData.status == "Active" ?
+                  title: "Description",
+                  field: "description",
+                  headerStyle: {
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
+                },
+                {
+                  title: "#User",
+                  field: "count",
+                  headerStyle: {
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
+                },
+                {
+                  render: (rowData) => {
+                    return rowData.status == "Active" ? (
                       <Button
                         variant="contained"
                         style={{
@@ -1947,7 +2088,9 @@ export default function RoleManagement() {
                         }}
                       >
                         {rowData.status}
-                      </Button> : <Button
+                      </Button>
+                    ) : (
+                      <Button
                         variant="contained"
                         style={{
                           borderRadius: 20,
@@ -1957,15 +2100,18 @@ export default function RoleManagement() {
                       >
                         {rowData.status}
                       </Button>
+                    );
                   },
-                  cellStyle: { textAlign: 'center' },
+                  cellStyle: { textAlign: "center" },
                   headerStyle: {
-                    textAlign: 'center',
-                    paddingLeft: 37
-                  }
-                  ,
-                  title: "Status", field: "status"
-                }
+                    textAlign: "center",
+                    paddingLeft: 37,
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
+                  title: "Status",
+                  field: "status",
+                },
               ]}
               data={rows}
               // totalCount={rows.length}
@@ -1976,7 +2122,21 @@ export default function RoleManagement() {
                 searchFieldAlignment: "left",
                 page: page,
                 pageSize: rowsPerPage,
-                pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
+                pageSizeOptions: [
+                  5,
+                  10,
+                  20,
+                  { value: rows.length, label: "All" },
+                ],
+                searchFieldStyle: {
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                  // borderBottomColor: themeState.color,
+                },
+                headerStyle: {
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                },
               }}
               actions={[
                 {
@@ -1984,7 +2144,13 @@ export default function RoleManagement() {
                   tooltip: "Edit",
                   disabled: !CRUD.U,
                   onClick: (event, rowData) => {
-                    handleDialogEditRole(rowData.rolecode, rowData.rolename, rowData.description, rowData.applyproperty, rowData.status);
+                    handleDialogEditRole(
+                      rowData.rolecode,
+                      rowData.rolename,
+                      rowData.description,
+                      rowData.applyproperty,
+                      rowData.status
+                    );
                   },
                 },
                 {
@@ -1992,14 +2158,18 @@ export default function RoleManagement() {
                   tooltip: "Delete",
                   disabled: !CRUD.D,
                   onClick: (event, rowData) => {
-                    handleDialogDeleteRoleOpen(rowData.rolecode, rowData.rolename, rowData.description);
+                    handleDialogDeleteRoleOpen(
+                      rowData.rolecode,
+                      rowData.rolename,
+                      rowData.description
+                    );
                   },
                 },
               ]}
               onChangePage={(page) => console.log("page")}
-            // onChangePage={(event, page) => console.log(event, page)}
+              // onChangePage={(event, page) => console.log(event, page)}
             />
-            : null}
+          ) : null}
         </div>
         {/* 
                 </Grid>
@@ -2017,7 +2187,6 @@ export default function RoleManagement() {
           aria-labelledby="form-dialog-title"
         >
           <Grid container>
-
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
               <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
                 New Role
@@ -2111,8 +2280,8 @@ export default function RoleManagement() {
                     md={12}
                     lg={12}
                     xl={12}
-                  // spacing={2}
-                  // style={{ paddingTop: 10 }}
+                    // spacing={2}
+                    // style={{ paddingTop: 10 }}
                   >
                     <FormControlLabel
                       style={{ paddingTop: 15 }}
@@ -2182,16 +2351,28 @@ export default function RoleManagement() {
                           }}
                         />
                       }
-                    // expanded={expanded}
-                    // selected={selected}
-                    // onNodeToggle={handleToggle}
-                    // onNodeSelect={handleSelect}
+                      // expanded={expanded}
+                      // selected={selected}
+                      // onNodeToggle={handleToggle}
+                      // onNodeSelect={handleSelect}
                     >
                       {data.map((node) => renderTree(node))}
                     </TreeView>
                   </Container>
                 </Container>
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                {errorMessage ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameter} is required
+                  </div>
+                ) : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
@@ -2229,7 +2410,6 @@ export default function RoleManagement() {
           aria-labelledby="form-dialog-title"
         >
           <Grid container>
-
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
               <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
                 Edit Role
@@ -2259,7 +2439,6 @@ export default function RoleManagement() {
                         SelectProps={{
                           native: true,
                         }}
-
                         // value={editRolename}
 
                         defaultValue={roleName}
@@ -2328,8 +2507,8 @@ export default function RoleManagement() {
                     md={12}
                     lg={12}
                     xl={12}
-                  // spacing={2}
-                  // style={{ paddingTop: 10 }}
+                    // spacing={2}
+                    // style={{ paddingTop: 10 }}
                   >
                     <FormControlLabel
                       style={{ paddingTop: 15 }}
@@ -2351,7 +2530,6 @@ export default function RoleManagement() {
                             color="primary"
                             // value={editStatus}
                             // onChange={(e) => setEditStatus(e.target.checked)}
-
 
                             onChange={(e) =>
                               e.target.checked
@@ -2415,16 +2593,28 @@ export default function RoleManagement() {
                           }}
                         />
                       }
-                    // expanded={expanded}
-                    // selected={selected}
-                    // onNodeToggle={handleToggle}
-                    // onNodeSelect={handleSelect}
+                      // expanded={expanded}
+                      // selected={selected}
+                      // onNodeToggle={handleToggle}
+                      // onNodeSelect={handleSelect}
                     >
                       {data.map((node) => renderTree(node))}
                     </TreeView>
                   </Container>
                 </Container>
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                {errorMessage ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameter} is required
+                  </div>
+                ) : null}
               </DialogContent>
               <DialogActions style={{ padding: 20 }}>
                 <Button
@@ -2458,7 +2648,6 @@ export default function RoleManagement() {
           open={dialogDeleteRole}
           onClose={handleDialogDeleteRoleClose}
           aria-labelledby="form-dialog-title"
-
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -2467,7 +2656,11 @@ export default function RoleManagement() {
               </DialogTitle>
               <DialogContent>
                 <Typography>
-                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                  <Typography
+                    color="initial"
+                    style={{ fontWeight: 600 }}
+                    display="inline"
+                  >
                     Name:&nbsp;
                   </Typography>
                   <Typography color="initial" display="inline">
@@ -2475,7 +2668,11 @@ export default function RoleManagement() {
                   </Typography>
                 </Typography>
                 <Typography>
-                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                  <Typography
+                    color="initial"
+                    style={{ fontWeight: 600 }}
+                    display="inline"
+                  >
                     Code:&nbsp;
                   </Typography>
                   <Typography color="initial" display="inline">
@@ -2483,7 +2680,11 @@ export default function RoleManagement() {
                   </Typography>
                 </Typography>
                 <Typography>
-                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                  <Typography
+                    color="initial"
+                    style={{ fontWeight: 600 }}
+                    display="inline"
+                  >
                     Descrioption:&nbsp;
                   </Typography>
                   <Typography color="initial" display="inline">

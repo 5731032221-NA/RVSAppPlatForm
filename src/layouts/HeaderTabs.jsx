@@ -99,6 +99,8 @@ export default function HeaderTabs() {
     let themeBackground = store.getState().reducer.themeBackground;
     if (themeBackground !== "#FFFFFF") {
       setColorMode("#212121");
+    } else {
+      setColorMode(" ");
     }
   }, 1000);
 
@@ -188,12 +190,17 @@ export default function HeaderTabs() {
         <Reservation />
       </TabPanel>
       {cashier ? (
-        <TabPanel value={value} index={2 - (front ? 0 : 1) - (cashier ? 0 : 1)}>
+        <TabPanel
+          style={{ backgroundColor: colorMode }}
+          value={value}
+          index={2 - (front ? 0 : 1) - (cashier ? 0 : 1)}
+        >
           Cashier
         </TabPanel>
       ) : null}
       {setting ? (
         <TabPanel
+          style={{ backgroundColor: colorMode }}
           value={value}
           index={3 - (front ? 0 : 1) - (cashier ? 0 : 1) - (setting ? 0 : 1)}
         >
