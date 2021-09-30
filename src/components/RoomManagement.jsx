@@ -1053,7 +1053,7 @@ export default function RoomManagement() {
                   color: themeState.color,
                 }}
               >
-                <Container maxWidth="xl" disableGutters >
+                <Container maxWidth="xl" disableGutters>
                   <Grid container>
                     <TextField
                       autoFocus
@@ -1066,12 +1066,25 @@ export default function RoomManagement() {
                       SelectProps={{
                         native: true,
                       }}
+                      InputProps={{
+                        style: {
+                          backgroundColor: themeState.paper,
+                          color: themeState.color,
+                          borderColor: themeState.color,
+                        },
+                      }}
                       // value={propertyDialog}
                       onChange={(event) => handlePropertyDialog(event)}
-                      
                     >
                       {properties.map((option) => (
-                        <option key={option.value} value={option.value}>
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={{
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                          }}
+                        >
                           {option.label}
                         </option>
                       ))}
@@ -1088,6 +1101,13 @@ export default function RoomManagement() {
                         defaultValue={""}
                         onChange={(e) => handleRoomNumber(e)}
                         fullWidth
+                        InputProps={{
+                          style: {
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                            borderColor: themeState.color,
+                          },
+                        }}
                       />
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -1104,9 +1124,23 @@ export default function RoomManagement() {
                         // value={roomTypeDialog}
                         defaultValue={""}
                         onChange={(e) => handleRoomTypeDialog(e)}
+                        InputProps={{
+                          style: {
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                            borderColor: themeState.color,
+                          },
+                        }}
                       >
                         {roomType.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={{
+                              backgroundColor: themeState.paper,
+                              color: themeState.color,
+                            }}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1128,9 +1162,23 @@ export default function RoomManagement() {
                         // value={buildingDialog}
                         defaultValue={""}
                         onChange={(e) => handleRoomFloorDialog(e)}
+                        InputProps={{
+                          style: {
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                            borderColor: themeState.color,
+                          },
+                        }}
                       >
                         {roomFloor.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={{
+                              backgroundColor: themeState.paper,
+                              color: themeState.color,
+                            }}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1150,9 +1198,23 @@ export default function RoomManagement() {
                         // value={buildingDialog}
                         defaultValue={""}
                         onChange={(e) => handleBuildingDialog(e)}
+                        InputProps={{
+                          style: {
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                            borderColor: themeState.color,
+                          },
+                        }}
                       >
                         {building.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={{
+                              backgroundColor: themeState.paper,
+                              color: themeState.color,
+                            }}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1169,12 +1231,26 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: {
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                            borderColor: themeState.color,
+                          },
+                        }}
                         // value={wingDialog}
                         defaultValue={""}
                         onChange={(e) => handleWingDialog(e)}
                       >
                         {wing.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={{
+                              backgroundColor: themeState.paper,
+                              color: themeState.color,
+                            }}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1193,12 +1269,26 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: {
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                            borderColor: themeState.color,
+                          },
+                        }}
                         // value={exposureDialog}
                         defaultValue={""}
                         onChange={(e) => handleExposureDialog(e)}
                       >
                         {exposure.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={{
+                              backgroundColor: themeState.paper,
+                              color: themeState.color,
+                            }}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1215,12 +1305,26 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: {
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                            borderColor: themeState.color,
+                          },
+                        }}
                         // value={roomSizeDialog}
                         defaultValue={""}
                         onChange={(e) => handleRoomSizeDialog(e)}
                       >
                         {roomSize.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={{
+                              backgroundColor: themeState.paper,
+                              color: themeState.color,
+                            }}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1239,12 +1343,26 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: {
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                            borderColor: themeState.color,
+                          },
+                        }}
                         // value={roomSegDialog}
                         defaultValue={""}
                         onChange={(e) => handleRoomSegDialog(e)}
                       >
                         {roomSeg.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={{
+                              backgroundColor: themeState.paper,
+                              color: themeState.color,
+                            }}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1261,12 +1379,26 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: {
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                            borderColor: themeState.color,
+                          },
+                        }}
                         // value={roomStatusDialog}
                         defaultValue={""}
                         onChange={(e) => handleRoomStatusDialog(e)}
                       >
                         {roomStatus.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={{
+                              backgroundColor: themeState.paper,
+                              color: themeState.color,
+                            }}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1278,14 +1410,27 @@ export default function RoomManagement() {
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="center"
-                    style={{ paddingTop: 10 }}
+                    style={{
+                      paddingTop: 10,
+                      backgroundColor: themeState.paper,
+                      color: themeState.color,
+                    }}
                   >
                     <TextField
                       fullWidth
-                      // autoFocus
                       variant="outlined"
                       selectSelectProps={{
                         native: true,
+                      }}
+                      style={{
+                        backgroundColor: themeState.paper,
+                      }}
+                      InputProps={{
+                        style: {
+                          backgroundColor: themeState.paper,
+                          color: themeState.color,
+                          borderColor: themeState.color,
+                        },
                       }}
                       label="Attribute"
                       select
@@ -1297,6 +1442,10 @@ export default function RoomManagement() {
                     >
                       {attribute.map((option) => (
                         <MenuItem
+                          style={{
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                          }}
                           label={option.label}
                           name={option.label}
                           value={option.label}
@@ -1324,8 +1473,14 @@ export default function RoomManagement() {
                     style={{ paddingTop: 10 }}
                   >
                     <TextField
+                      InputProps={{
+                        style: {
+                          backgroundColor: themeState.paper,
+                          color: themeState.color,
+                          borderColor: themeState.color,
+                        },
+                      }}
                       fullWidth
-                      // id="outlined-multiline-static"
                       label="Description"
                       multiline
                       rows={4}
@@ -1362,7 +1517,13 @@ export default function RoomManagement() {
                   </div>
                 ) : null}
               </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
+              <DialogActions
+                style={{
+                  padding: 20,
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Button
                   onClick={handleDialogAddRoomClose}
                   variant="text"

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import { ReactReduxContext } from "react-redux";
+import { ReactReduxContext, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import MaterialTable from "material-table";
+import MaterialTable, { MTablePagination } from "material-table";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -27,9 +27,9 @@ import {
   Divider,
 } from "@material-ui/core";
 
-import UpdateIcon from '@material-ui/icons/Update';
-import PeopleIcon from '@material-ui/icons/People';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import UpdateIcon from "@material-ui/icons/Update";
+import PeopleIcon from "@material-ui/icons/People";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import IconButton from "@material-ui/core/IconButton";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
@@ -63,7 +63,7 @@ import {
   getposition,
   postposition,
   getuserpermission,
-  getusercomponentpermision
+  getusercomponentpermision,
 } from "../services/user.service";
 import { listrole } from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -76,6 +76,7 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { EDIT_CONFIGSTATE } from "../middleware/action";
 import { VpnKey } from "@material-ui/icons";
+import { blue, red } from "@material-ui/core/colors";
 // import user from "../services/user.service";
 
 // Generate Order Data
@@ -99,7 +100,7 @@ function createData(
     roles,
     property,
     status,
-    name
+    name,
   };
 }
 // const rows = [
@@ -125,7 +126,6 @@ function createData(
 //     label: "Accountant",
 //   },
 // ];
-
 
 const property = [
   {
@@ -283,7 +283,7 @@ const defaultdata = [
         edited_read: false,
         edited_update: false,
         edited_delete: false,
-      }
+      },
     ],
   },
   {
@@ -434,7 +434,7 @@ const defaultdata = [
         edited_read: false,
         edited_update: false,
         edited_delete: false,
-      }
+      },
     ],
   },
   {
@@ -540,8 +540,8 @@ const defaultdata = [
             edited_read: false,
             edited_update: false,
             edited_delete: false,
-          }
-        ]
+          },
+        ],
       },
       {
         name: "System Configuration",
@@ -581,18 +581,19 @@ const defaultdata = [
             edited_read: false,
             edited_update: false,
             edited_delete: false,
-          }
-        ]
-      }
+          },
+        ],
+      },
     ],
   },
 ];
 
-
 export default function UserManagement() {
   const classes = useStyles();
-  const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false })
-  const [position, setPosition] = useState([{ "key": "Administrator", "label": "Administrator" }])
+  const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false });
+  const [position, setPosition] = useState([
+    { key: "Administrator", label: "Administrator" },
+  ]);
   const [dialogAddUser, setDialogAddUser] = React.useState(false);
   const [dialogEditUser, setDialogEditUser] = React.useState(false);
   const [dialogDeleteUser, setDialogDeleteUser] = React.useState(false);
@@ -624,25 +625,27 @@ export default function UserManagement() {
 
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
-
-    let usercomponentpermission = await getusercomponentpermision(sessionStorage.getItem("auth"), sessionStorage.getItem("username"), "CF-UM");
+    let usercomponentpermission = await getusercomponentpermision(
+      sessionStorage.getItem("auth"),
+      sessionStorage.getItem("username"),
+      "CF-UM"
+    );
     setCRUD({
       C: usercomponentpermission.content[0].permissioncreate,
       R: usercomponentpermission.content[0].permissionread,
       U: usercomponentpermission.content[0].permissionupdate,
-      D: usercomponentpermission.content[0].permissiondelete
-    })
+      D: usercomponentpermission.content[0].permissiondelete,
+    });
     let dataRole = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", dataRole.content[dataRole.content.length - 1]);
     roles = [];
     dataRole.content[dataRole.content.length - 1].forEach((element) => {
-      if (element.status == 'Active')
+      if (element.status == "Active")
         roles.push({
           key: element.rolecode,
           label: element.rolename,
-        })
-    }
-    );
+        });
+    });
     console.log("roles", roles);
 
     const data = await listuser(sessionStorage.getItem("auth"));
@@ -670,12 +673,12 @@ export default function UserManagement() {
   }, []);
 
   const handleComponentState = async (comp) => {
-    console.log("setcomp", comp)
+    console.log("setcomp", comp);
     store.dispatch({
       type: EDIT_CONFIGSTATE,
-      payload: comp
-    })
-  }
+      payload: comp,
+    });
+  };
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
     let data = [];
@@ -686,14 +689,12 @@ export default function UserManagement() {
   };
 
   const handleDialogAddUser = async () => {
-    let position_json = []
+    let position_json = [];
     let listposition = await getposition(sessionStorage.getItem("auth"));
     listposition.content[listposition.content.length - 1].forEach((element) => {
-
-      position_json.push({ key: element.position, label: element.position })
-
-    })
-    position_json.push({ key: "Add new position", label: "Add new position" })
+      position_json.push({ key: element.position, label: element.position });
+    });
+    position_json.push({ key: "Add new position", label: "Add new position" });
     setPosition(position_json);
     setSelectPosition(position_json[0].label);
     setNewPosition(null);
@@ -702,7 +703,7 @@ export default function UserManagement() {
     setChipPropertyDialog([]);
     setEditFirstName(null);
     setEditLastName(null);
-    setEditStatus(true)
+    setEditStatus(true);
     setErrorMessage(false);
     setDialogAddUser(true);
   };
@@ -711,9 +712,13 @@ export default function UserManagement() {
     setDialogAddUser(false);
   };
 
-
-
-  const handleDialogEditUser = async (username, firstname, lastname, position, status) => {
+  const handleDialogEditUser = async (
+    username,
+    firstname,
+    lastname,
+    position,
+    status
+  ) => {
     // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
     // setEditFirstName(databyid.content[databyid.content.length - 1].firstname);
     // setEditLastName(databyid.content[databyid.content.length - 1].lastname);
@@ -739,58 +744,75 @@ export default function UserManagement() {
     // setEditID(id);
 
     setPermissionDialog(false);
-    let userrole = await userrolebyusername(sessionStorage.getItem("auth"), username);
-    let userproperty = await userpropertybyusername(sessionStorage.getItem("auth"), username);
+    let userrole = await userrolebyusername(
+      sessionStorage.getItem("auth"),
+      username
+    );
+    let userproperty = await userpropertybyusername(
+      sessionStorage.getItem("auth"),
+      username
+    );
     console.log("userrole", userrole.content[userrole.content.length - 1]);
     let role = [];
     const setrole = new Set();
     if (userrole.content[userrole.content.length - 1] != "") {
-      userrole.content[userrole.content.length - 1].split(",").forEach((element) => {
-        if (role.filter(x => x.label === element).length == 0) { //&& roles.some(role => role.label == element)
-          role.push({ key: element, label: element })
-          setrole.add(element);
-        }
-      })
+      userrole.content[userrole.content.length - 1]
+        .split(",")
+        .forEach((element) => {
+          if (role.filter((x) => x.label === element).length == 0) {
+            //&& roles.some(role => role.label == element)
+            role.push({ key: element, label: element });
+            setrole.add(element);
+          }
+        });
     }
-    console.log("role", role)
-
+    console.log("role", role);
 
     await listproperty(Array.from(setrole));
-    let property = []
+    let property = [];
     if (userproperty.content[userproperty.content.length - 1] != "") {
-      userproperty.content[userproperty.content.length - 1].split(",").forEach((element) => {
-        if (property.filter(x => x.label === element).length == 0) {
-          property.push({ key: element, label: element })
-        }
-      })
+      userproperty.content[userproperty.content.length - 1]
+        .split(",")
+        .forEach((element) => {
+          if (property.filter((x) => x.label === element).length == 0) {
+            property.push({ key: element, label: element });
+          }
+        });
     }
-    let position_json = []
+    let position_json = [];
     let listposition = await getposition(sessionStorage.getItem("auth"));
     listposition.content[listposition.content.length - 1].forEach((element) => {
-
-      if (position_json.filter(x => x.label === element.position).length == 0) {
-        position_json.push({ key: element.position, label: element.position })
+      if (
+        position_json.filter((x) => x.label === element.position).length == 0
+      ) {
+        position_json.push({ key: element.position, label: element.position });
       }
-
-    })
-    position_json.push({ key: "Add new position", label: "Add new position" })
-
+    });
+    position_json.push({ key: "Add new position", label: "Add new position" });
 
     const temp = new Set();
     if (role.length) {
-
-      let userper = await getuserpermission(sessionStorage.getItem("auth"), username);
+      let userper = await getuserpermission(
+        sessionStorage.getItem("auth"),
+        username
+      );
 
       if (Object.keys(userper.content[userper.content.length - 1]).length > 0) {
         for (var i in role) {
           temp.add(role[i].key);
         }
-        let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), { roles: Array.from(temp) });
-        console.log("roleper", roleper)
+        let roleper = await rolepermissionbyrole(
+          sessionStorage.getItem("auth"),
+          { roles: Array.from(temp) }
+        );
+        console.log("roleper", roleper);
         let _data = JSON.parse(JSON.stringify(defaultdata));
 
-
-        rolepermissionedit(_data, roleper.content[roleper.content.length - 1], userper.content[userper.content.length - 1])
+        rolepermissionedit(
+          _data,
+          roleper.content[roleper.content.length - 1],
+          userper.content[userper.content.length - 1]
+        );
         setData(_data);
         setData((prevState) => [...prevState]);
         setPermissionDialog(true);
@@ -802,7 +824,7 @@ export default function UserManagement() {
     setEditFirstName(firstname);
     setEditLastName(lastname);
     setSelectPosition(position);
-    setEditStatus(status)
+    setEditStatus(status);
     setChipRolesDialog((prev) => role);
     setChipPropertyDialog((prev) => property);
     setPosition((prev) => position_json);
@@ -825,7 +847,6 @@ export default function UserManagement() {
         obj.read = !!parseInt(permission[obj.code].permissionread);
         obj.update = !!parseInt(permission[obj.code].permissionupdate);
         obj.delete = !!parseInt(permission[obj.code].permissiondelete);
-
       }
       if (obj.children) {
         // list = [...list, ...propertylist(obj.children)];
@@ -841,17 +862,17 @@ export default function UserManagement() {
       for (var i in chipRolesDialog) {
         temp.add(chipRolesDialog[i].key);
       }
-      let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), { roles: Array.from(temp) })
-      console.log("roleper", roleper)
+      let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), {
+        roles: Array.from(temp),
+      });
+      console.log("roleper", roleper);
       let _data = JSON.parse(JSON.stringify(defaultdata));
-      rolepermission(_data, roleper.content[roleper.content.length - 1])
+      rolepermission(_data, roleper.content[roleper.content.length - 1]);
       setData(_data);
       setData((prevState) => [...prevState]);
-
     } else {
-      setData(JSON.parse(JSON.stringify(defaultdata)))
+      setData(JSON.parse(JSON.stringify(defaultdata)));
     }
-
 
     setPermissionDialog(true);
     // if (permissionDialog) {
@@ -869,28 +890,31 @@ export default function UserManagement() {
       var obj = array[i];
       if (permission.hasOwnProperty(obj.code)) {
         if (userpermission.hasOwnProperty(obj.code)) {
-          if (userpermission[obj.code].permissioncreate == 0) obj.create = !!parseInt(permission[obj.code].permissioncreate);
+          if (userpermission[obj.code].permissioncreate == 0)
+            obj.create = !!parseInt(permission[obj.code].permissioncreate);
           else {
-            obj.create = (userpermission[obj.code].permissioncreate == 1);
+            obj.create = userpermission[obj.code].permissioncreate == 1;
             obj.edited_create = true;
           }
-          if (userpermission[obj.code].permissionread == 0) obj.read = !!parseInt(permission[obj.code].permissionread);
+          if (userpermission[obj.code].permissionread == 0)
+            obj.read = !!parseInt(permission[obj.code].permissionread);
           else {
-            obj.read = (userpermission[obj.code].permissionread == 1);
+            obj.read = userpermission[obj.code].permissionread == 1;
             obj.edited_read = true;
           }
-          if (userpermission[obj.code].permissionupdate == 0) obj.update = !!parseInt(permission[obj.code].permissionupdate);
+          if (userpermission[obj.code].permissionupdate == 0)
+            obj.update = !!parseInt(permission[obj.code].permissionupdate);
           else {
-            obj.update = (userpermission[obj.code].permissionupdate == 1);
+            obj.update = userpermission[obj.code].permissionupdate == 1;
             obj.edited_update = true;
           }
-          if (userpermission[obj.code].permissiondelete == 0) obj.delete = !!parseInt(permission[obj.code].permissiondelete);
+          if (userpermission[obj.code].permissiondelete == 0)
+            obj.delete = !!parseInt(permission[obj.code].permissiondelete);
           else {
-            obj.delete = (userpermission[obj.code].permissiondelete == 1);
+            obj.delete = userpermission[obj.code].permissiondelete == 1;
             obj.edited_delete = true;
           }
-        }
-        else {
+        } else {
           obj.create = !!parseInt(permission[obj.code].permissioncreate);
           obj.read = !!parseInt(permission[obj.code].permissionread);
           obj.update = !!parseInt(permission[obj.code].permissionupdate);
@@ -924,7 +948,6 @@ export default function UserManagement() {
         } else if (userpermission[obj.code].permissiondelete == -1) {
           obj.edited_delete = true;
         }
-
       }
       if (obj.children) {
         // list = [...list, ...propertylist(obj.children)];
@@ -934,26 +957,32 @@ export default function UserManagement() {
     return list;
   };
 
-
   const handlePermissionEdit = async () => {
     const temp = new Set();
     if (chipRolesDialog.length) {
       for (var i in chipRolesDialog) {
         temp.add(chipRolesDialog[i].key);
       }
-      let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), { roles: Array.from(temp) });
-      console.log("roleper", roleper)
+      let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), {
+        roles: Array.from(temp),
+      });
+      console.log("roleper", roleper);
       let _data = JSON.parse(JSON.stringify(defaultdata));
-      let userper = await getuserpermission(sessionStorage.getItem("auth"), oldUserName);
+      let userper = await getuserpermission(
+        sessionStorage.getItem("auth"),
+        oldUserName
+      );
 
-      rolepermissionedit(_data, roleper.content[roleper.content.length - 1], userper.content[userper.content.length - 1])
+      rolepermissionedit(
+        _data,
+        roleper.content[roleper.content.length - 1],
+        userper.content[userper.content.length - 1]
+      );
       setData(_data);
       setData((prevState) => [...prevState]);
-
     } else {
-      setData(JSON.parse(JSON.stringify(defaultdata)))
+      setData(JSON.parse(JSON.stringify(defaultdata)));
     }
-
 
     setPermissionDialog(!permissionDialog);
     if (permissionDialog) {
@@ -984,20 +1013,20 @@ export default function UserManagement() {
     let list = [];
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      if (obj.edited_create ||
+      if (
+        obj.edited_create ||
         obj.edited_read ||
         obj.edited_update ||
-        obj.edited_delete) {
-        list.push(
-          {
-            username: code,
-            componentcode: obj.code,
-            permissioncreate: obj.edited_create ? (obj.create ? 1 : -1) : 0,
-            permissionread: obj.edited_read ? (obj.read ? 1 : -1) : 0,
-            permissionupdate: obj.edited_update ? (obj.update ? 1 : -1) : 0,
-            permissiondelete: obj.edited_delete ? (obj.delete ? 1 : -1) : 0,
-          }
-        )
+        obj.edited_delete
+      ) {
+        list.push({
+          username: code,
+          componentcode: obj.code,
+          permissioncreate: obj.edited_create ? (obj.create ? 1 : -1) : 0,
+          permissionread: obj.edited_read ? (obj.read ? 1 : -1) : 0,
+          permissionupdate: obj.edited_update ? (obj.update ? 1 : -1) : 0,
+          permissiondelete: obj.edited_delete ? (obj.delete ? 1 : -1) : 0,
+        });
       }
       if (obj.children) {
         // list = [...list, ...propertylist(obj.children)];
@@ -1018,18 +1047,30 @@ export default function UserManagement() {
   ) => {
     // setEditFirstName(null);
     // setEditLastName(null);
-    if (code == null || code == '') { setErrorMessage(true); setErrorParameter("UserID"); }
-    else if (firstName == null || firstName == '') { setErrorMessage(true); setErrorParameter("Firstname"); }
-    else if (lastName == null || lastName == '') { setErrorMessage(true); setErrorParameter("Lastname"); }
-    else if (chipRolesDialog.length == 0) { setErrorMessage(true); setErrorParameter("Roles"); }
-    else if (chipPropertyDialog.length == 0) { setErrorMessage(true); setErrorParameter("Property"); }
-    else {
+    if (code == null || code == "") {
+      setErrorMessage(true);
+      setErrorParameter("UserID");
+    } else if (firstName == null || firstName == "") {
+      setErrorMessage(true);
+      setErrorParameter("Firstname");
+    } else if (lastName == null || lastName == "") {
+      setErrorMessage(true);
+      setErrorParameter("Lastname");
+    } else if (chipRolesDialog.length == 0) {
+      setErrorMessage(true);
+      setErrorParameter("Roles");
+    } else if (chipPropertyDialog.length == 0) {
+      setErrorMessage(true);
+      setErrorParameter("Property");
+    } else {
       setErrorMessage(false);
       if (position == "Add new position") {
-        let addPosition = await postposition(sessionStorage.getItem("auth"), { "position": newPosition });
+        let addPosition = await postposition(sessionStorage.getItem("auth"), {
+          position: newPosition,
+        });
       }
       let perm = await propertylist(data, code);
-      console.log(perm)
+      console.log(perm);
       const roletemp = new Set();
       if (chipRolesDialog.length) {
         for (let i in chipRolesDialog) {
@@ -1049,14 +1090,14 @@ export default function UserManagement() {
         firstname: firstName,
         lastname: lastName,
         code: code,
-        status: status ? 'Active' : 'Inactive',
-        position: (position == "Add new position") ? newPosition : position,
+        status: status ? "Active" : "Inactive",
+        position: position == "Add new position" ? newPosition : position,
         userproperty: propertyTempArray,
         role: roleTempArray,
-        permission: perm
+        permission: perm,
       });
       console.log(insert);
-      if (insert.status == '2000') {
+      if (insert.status == "2000") {
         const data = await listuser(sessionStorage.getItem("auth"));
         let userdata = [];
         data.content[data.content.length - 1].forEach((element) =>
@@ -1073,14 +1114,12 @@ export default function UserManagement() {
               element.firstname + " " + element.lastname
             )
           )
-        )
+        );
         setRows(userdata);
         updatePageData(userdata, page, rowsPerPage);
         setDialogAddUser(false);
       }
     }
-
-
   };
 
   const handleSelectPosition = (event) => {
@@ -1099,26 +1138,26 @@ export default function UserManagement() {
     console.log("changeproperty", changeproperty);
     let tempproperty = [];
 
-    changeproperty.content[changeproperty.content.length - 1].split(",").forEach((element) => {
-      if (tempproperty.filter(x => x.label === element).length == 0) {
-
-        tempproperty.push({
-          key: element,
-          label: element,
-        })
-
-      }
-    }
-    );
-    console.log("tempproperty", tempproperty)
-    setProperties(tempproperty)
+    changeproperty.content[changeproperty.content.length - 1]
+      .split(",")
+      .forEach((element) => {
+        if (tempproperty.filter((x) => x.label === element).length == 0) {
+          tempproperty.push({
+            key: element,
+            label: element,
+          });
+        }
+      });
+    console.log("tempproperty", tempproperty);
+    setProperties(tempproperty);
 
     // console.log("prop",oldproperty,properties)
     setChipPropertyDialog((chips) =>
-      chips.filter((chips) => tempproperty.some(property =>
-        property.key === chips.key))
+      chips.filter((chips) =>
+        tempproperty.some((property) => property.key === chips.key)
+      )
     );
-  }
+  };
 
   const handleSelectRoles = async (event, key) => {
     setPermissionDialog(false);
@@ -1188,8 +1227,6 @@ export default function UserManagement() {
     );
   };
 
-
-
   const editing_create = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
@@ -1202,8 +1239,6 @@ export default function UserManagement() {
       }
     }
   };
-
-
 
   const handleCheckPermision_create = async (nodes) => {
     let _data = data;
@@ -1312,6 +1347,33 @@ export default function UserManagement() {
   };
 
   const [data, setData] = React.useState([]);
+  const [themeState, setThemeState] = React.useState({
+    background: "#FFFFFF",
+    color: "#000000",
+    paper: "#FFFFFF",
+    colorlevel: "900",
+  });
+  const themeBackground = useSelector((state) => state.reducer.themeBackground);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setThemeState({
+        background: "#FFFFFF",
+        color: "#000000",
+        paper: "#FFFFFF",
+        colorlevel: "900",
+        // matStyle: this.classes.normalmode
+      });
+    } else {
+      setThemeState({
+        background: "#212121",
+        color: "#FAFAFA",
+        paper: "#424242",
+        colorlevel: "A200",
+        // matStyle: this.classes.darkmode
+      });
+    }
+  }, [themeBackground]);
 
   const renderTree = (nodes) => (
     <div>
@@ -1323,42 +1385,58 @@ export default function UserManagement() {
             {nodes.permision ? (
               <div>
                 <Grid container direction="row" alignItems="center">
-
-
-                  <Grid item style={{ flexGrow: 1 }} >
-
+                  <Grid item style={{ flexGrow: 1 }}>
                     <Typography>
-                      {nodes.create || nodes.read || nodes.update || nodes.delete ?
+                      {nodes.create ||
+                      nodes.read ||
+                      nodes.update ||
+                      nodes.delete ? (
                         <Typography
                           display="inline"
                           variant="h6"
                           color="initial"
-                          style={{ color: '#1F51FF', fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                          style={{
+                            color: "#1F51FF",
+                            fontSize: 16,
+                            paddingTop: 10,
+                            paddingBottom: 10,
+                          }}
                         >
                           {nodes.name} <VpnKey style={{ fontSize: 16 }} />
                         </Typography>
-                        :
+                      ) : (
                         <Typography
                           display="inline"
                           variant="h6"
                           color="initial"
-                          style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}
+                          style={{
+                            fontSize: 16,
+                            paddingTop: 10,
+                            paddingBottom: 10,
+                          }}
                         >
                           {nodes.name}
                         </Typography>
-                      }
-                      {nodes.edited_create || nodes.edited_read || nodes.edited_update || nodes.edited_delete ?
+                      )}
+                      {nodes.edited_create ||
+                      nodes.edited_read ||
+                      nodes.edited_update ||
+                      nodes.edited_delete ? (
                         <Typography
                           display="inline"
                           variant="h6"
                           color="initial"
-                          style={{ color: 'green', fontSize: 16, paddingTop: 10, paddingBottom: 10, paddingLeft: 10 }}
+                          style={{
+                            color: "green",
+                            fontSize: 16,
+                            paddingTop: 10,
+                            paddingBottom: 10,
+                            paddingLeft: 10,
+                          }}
                         >
                           <PersonAddIcon style={{ fontSize: 16 }} />
                         </Typography>
-                        :
-                        null
-                      }
+                      ) : null}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1689,72 +1767,100 @@ export default function UserManagement() {
               <div>
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
-                    <Typography style={{ fontSize: 16, paddingTop: 10, paddingBottom: 10 }}>
-                      {
-                        nodes.children.some(item => {
-                          if (item.permision == false) return item.children.some(childitem => childitem.create === true)
-                          else return item.create === true
-                        }) ||
-                          nodes.children.some(item => {
-                            if (item.permision == false) return item.children.some(childitem => childitem.read === true)
-                            else return item.read === true
-                          }) ||
-                          nodes.children.some(item => {
-                            if (item.permision == false) return item.children.some(childitem => childitem.update === true)
-                            else return item.update === true
-                          }) ||
-                          nodes.children.some(item => {
-                            if (item.permision == false) return item.children.some(childitem => childitem.delete === true)
-                            else return item.delete === true
-                          })
-                          ?
-                          <Typography
-                            display="inline"
-                            variant="h6"
-                            color="initial"
-                            style={{ color: '#1F51FF', fontSize: 16 }}
-                          >
-                            {nodes.name}  <VpnKey style={{ fontSize: 16 }} />
-                          </Typography>
-                          :
-                          <Typography
-                            display="inline"
-                            variant="h6"
-                            color="initial"
-                            style={{ fontSize: 16, height: 50 }}
-                          >
-                            {nodes.name}
-                          </Typography>
-                      }
-                      {
-                        nodes.children.some(item => {
-                          if (item.permision == false) return item.children.some(childitem => childitem.edited_create === true)
-                          else return item.edited_create === true
-                        }) ||
-                          nodes.children.some(item => {
-                            if (item.permision == false) return item.children.some(childitem => childitem.edited_read === true)
-                            else return item.edited_read === true
-                          }) ||
-                          nodes.children.some(item => {
-                            if (item.permision == false) return item.children.some(childitem => childitem.edited_update === true)
-                            else return item.edited_update === true
-                          }) ||
-                          nodes.children.some(item => {
-                            if (item.permision == false) return item.children.some(childitem => childitem.edited_delete === true)
-                            else return item.edited_delete === true
-                          })
-                          ?
-                          <Typography
-                            display="inline"
-                            variant="h6"
-                            color="initial"
-                            style={{ color: "green", fontSize: 16, paddingLeft: 10 }}
-                          >
-                            <PersonAddIcon style={{ fontSize: 16 }} />
-                          </Typography>
-                          :
-                          null
-                      }
+                    <Typography
+                      style={{
+                        fontSize: 16,
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                      }}
+                    >
+                      {nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.create === true
+                          );
+                        else return item.create === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.read === true
+                          );
+                        else return item.read === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.update === true
+                          );
+                        else return item.update === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.delete === true
+                          );
+                        else return item.delete === true;
+                      }) ? (
+                        <Typography
+                          display="inline"
+                          variant="h6"
+                          color="initial"
+                          style={{ color: "#1F51FF", fontSize: 16 }}
+                        >
+                          {nodes.name} <VpnKey style={{ fontSize: 16 }} />
+                        </Typography>
+                      ) : (
+                        <Typography
+                          display="inline"
+                          variant="h6"
+                          color="initial"
+                          style={{ fontSize: 16, height: 50 }}
+                        >
+                          {nodes.name}
+                        </Typography>
+                      )}
+                      {nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.edited_create === true
+                          );
+                        else return item.edited_create === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.edited_read === true
+                          );
+                        else return item.edited_read === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.edited_update === true
+                          );
+                        else return item.edited_update === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.edited_delete === true
+                          );
+                        else return item.edited_delete === true;
+                      }) ? (
+                        <Typography
+                          display="inline"
+                          variant="h6"
+                          color="initial"
+                          style={{
+                            color: "green",
+                            fontSize: 16,
+                            paddingLeft: 10,
+                          }}
+                        >
+                          <PersonAddIcon style={{ fontSize: 16 }} />
+                        </Typography>
+                      ) : null}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -1770,7 +1876,6 @@ export default function UserManagement() {
       </TreeItem>
     </div>
   );
-
 
   const handleSaveEdit = async (
     code,
@@ -1789,18 +1894,30 @@ export default function UserManagement() {
       position,
       role
     );
-    if (code == null || code == '') { setErrorMessage(true); setErrorParameter("UserID"); }
-    else if (firstName == null || firstName == '') { setErrorMessage(true); setErrorParameter("Firstname"); }
-    else if (lastName == null || lastName == '') { setErrorMessage(true); setErrorParameter("Lastname"); }
-    else if (chipRolesDialog.length == 0) { setErrorMessage(true); setErrorParameter("Roles"); }
-    else if (chipPropertyDialog.length == 0) { setErrorMessage(true); setErrorParameter("Property"); }
-    else {
+    if (code == null || code == "") {
+      setErrorMessage(true);
+      setErrorParameter("UserID");
+    } else if (firstName == null || firstName == "") {
+      setErrorMessage(true);
+      setErrorParameter("Firstname");
+    } else if (lastName == null || lastName == "") {
+      setErrorMessage(true);
+      setErrorParameter("Lastname");
+    } else if (chipRolesDialog.length == 0) {
+      setErrorMessage(true);
+      setErrorParameter("Roles");
+    } else if (chipPropertyDialog.length == 0) {
+      setErrorMessage(true);
+      setErrorParameter("Property");
+    } else {
       setErrorMessage(false);
       if (position == "Add new position") {
-        let addPosition = await postposition(sessionStorage.getItem("auth"), { "position": newPosition });
+        let addPosition = await postposition(sessionStorage.getItem("auth"), {
+          position: newPosition,
+        });
       }
       let perm = await propertylist(data, code);
-      console.log(perm)
+      console.log(perm);
       const roletemp = new Set();
       if (chipRolesDialog.length) {
         for (let i in chipRolesDialog) {
@@ -1822,10 +1939,10 @@ export default function UserManagement() {
         lastname: lastName,
         code: code,
         status: status,
-        position: (position == "Add new position") ? newPosition : position,
+        position: position == "Add new position" ? newPosition : position,
         userproperty: propertyTempArray,
         role: roleTempArray,
-        permission: perm
+        permission: perm,
       });
       // const temp = new Set();
       // if (role.length) {
@@ -1850,7 +1967,7 @@ export default function UserManagement() {
       // );
       // console.log("userupdate func:", userupdate);
 
-      if (update.status == '2000') {
+      if (update.status == "2000") {
         const _data = await listuser(sessionStorage.getItem("auth"));
         let userdata = [];
         _data.content[_data.content.length - 1].forEach((element) =>
@@ -1874,12 +1991,11 @@ export default function UserManagement() {
         setDialogEditUser(false);
       }
     }
-
   };
 
   const handleResetToDefault = () => {
-    handlePermission()
-  }
+    handlePermission();
+  };
 
   const handleDialogDeleteUserClose = () => {
     setDialogDeleteUser(false);
@@ -1887,7 +2003,7 @@ export default function UserManagement() {
   const handleDialogDeleteUserOpen = async (username, firstname, lastname) => {
     // setEditID(id);
     // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
-    console.log("delete dialog", username, firstname, lastname)
+    console.log("delete dialog", username, firstname, lastname);
     setEditUserName(username);
     setEditFirstName(firstname);
     setEditLastName(lastname);
@@ -1920,7 +2036,6 @@ export default function UserManagement() {
           element.property,
           element.status,
           element.firstname + " " + element.lastname
-
         )
       )
     );
@@ -1935,25 +2050,34 @@ export default function UserManagement() {
   return (
     <Container maxWidth="xl">
       <React.Fragment>
-        <Grid
-          container
-          style={{ padding: 20 }}
-        >
+        <Grid container style={{ padding: 20 }}>
           <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
                 <Typography
                   variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20 }}
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: themeState.color,
+                  }}
                 >
                   /
                 </Typography>
               }
             >
-              <Link color="inherit" href="#" onClick={() => handleComponentState("Configuration")}>
+              <Link
+                color="inherit"
+                href="#"
+                onClick={() => handleComponentState("Configuration")}
+              >
                 <Typography
                   variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20, color: "#2B4EAD" }}
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: blue[themeState.colorlevel],
+                  }}
                 >
                   Configuration
                 </Typography>
@@ -1961,7 +2085,11 @@ export default function UserManagement() {
               <Link color="inherit" href="#" onClick={" "}>
                 <Typography
                   variant="h6"
-                  style={{ marginBottom: 15, fontSize: 14 }}
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
                 >
                   System Configuration
                 </Typography>
@@ -1969,19 +2097,23 @@ export default function UserManagement() {
               <Typography>
                 <Typography
                   variant="h6"
-                  style={{ marginBottom: 15, fontSize: 14 }}
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
                 >
                   User Management
                 </Typography>
               </Typography>
             </Breadcrumbs>
           </Grid>
-          {CRUD.C ?
+          {CRUD.C ? (
             <Grid item>
               <Button
                 variant="outlined"
                 style={{
-                  backgroundColor: "#2949A0",
+                  backgroundColor: blue[themeState.colorlevel],
                   color: "white",
                   alignItems: "center",
                 }}
@@ -1994,9 +2126,8 @@ export default function UserManagement() {
                 </Typography>
               </Button>
             </Grid>
-            : null}
+          ) : null}
         </Grid>
-
 
         {/* <Grid container>
               <Table size="small">
@@ -2099,25 +2230,84 @@ export default function UserManagement() {
               </Grid>
             </Grid> */}
         <div style={{ maxWidth: "100%" }}>
-          {CRUD.R ?
+          {CRUD.R ? (
             <MaterialTable
-              style={{ paddingLeft: 30, paddingRight: 30 }}
+              style={{
+                paddingLeft: 30,
+                paddingRight: 30,
+                color: themeState.color,
+                backgroundColor: themeState.paper,
+              }}
+              // components={{
+              //   Pagination: (props) => (
+              //     <div>
+              //       <MTablePagination
+              //         {...props}
+              //         style={{
+              //           color: themeState.color,
+              //           backgroundColor: themeState.paper,
+              //         }}
+              //         rowsPerPageOptions={[5, 10, 25]}
+              //         count={rows.length}
+              //         page={page}
+              //         rowsPerPage={rowsPerPage}
+              //         onChangePage={handleChangePage}
+              //         onChangeRowsPerPage={handleChangeRowsPerPage}
+              //       />
+              //     </div>
+              //   ),
+              // }}
               title={
                 <Grid>
-                  <Typography variant="h6" style={{ fontSize: 25, color: "black" }}>
+                  <Typography variant="h6" style={{ fontSize: 25 }}>
                     User Management
                   </Typography>
                 </Grid>
               }
               columns={[
-                { title: "Username", field: "userID" },
-                { title: "Full Name", field: "name" },
-                { title: "Position", field: "position" },
-                { title: "Roles", field: "roles" },
-                { title: "Property", field: "property" },
                 {
-                  render: rowData => {
-                    return rowData.status == "Active" ?
+                  title: "Username",
+                  field: "userID",
+                  headerStyle: {
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
+                },
+                {
+                  title: "Full Name",
+                  field: "name",
+                  headerStyle: {
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
+                },
+                {
+                  title: "Position",
+                  field: "position",
+                  headerStyle: {
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
+                },
+                {
+                  title: "Roles",
+                  field: "roles",
+                  headerStyle: {
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
+                },
+                {
+                  title: "Property",
+                  field: "property",
+                  headerStyle: {
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
+                },
+                {
+                  render: (rowData) => {
+                    return rowData.status == "Active" ? (
                       <Button
                         variant="contained"
                         style={{
@@ -2127,7 +2317,9 @@ export default function UserManagement() {
                         }}
                       >
                         {rowData.status}
-                      </Button> : <Button
+                      </Button>
+                    ) : (
+                      <Button
                         variant="contained"
                         style={{
                           borderRadius: 20,
@@ -2137,14 +2329,18 @@ export default function UserManagement() {
                       >
                         {rowData.status}
                       </Button>
+                    );
                   },
-                  cellStyle: { textAlign: 'center' },
+                  cellStyle: { textAlign: "center" },
                   headerStyle: {
-                    textAlign: 'center',
-                    paddingLeft: 37
-                  }
-                  , title: "Status", field: "status"
-                }
+                    textAlign: "center",
+                    paddingLeft: 37,
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
+                  title: "Status",
+                  field: "status",
+                },
               ]}
               data={rows}
               // totalCount={rows.length}
@@ -2155,7 +2351,21 @@ export default function UserManagement() {
                 searchFieldAlignment: "left",
                 page: page,
                 pageSize: rowsPerPage,
-                pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
+                pageSizeOptions: [
+                  5,
+                  10,
+                  20,
+                  { value: rows.length, label: "All" },
+                ],
+                headerStyle: {
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                },
+                searchFieldStyle: {
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                  borderBottomColor: themeState.color,
+                },
               }}
               actions={[
                 {
@@ -2163,7 +2373,13 @@ export default function UserManagement() {
                   tooltip: "Edit",
                   disabled: !CRUD.U,
                   onClick: (event, rowData) => {
-                    handleDialogEditUser(rowData.userID, rowData.firstname, rowData.lastname, rowData.position, rowData.status);
+                    handleDialogEditUser(
+                      rowData.userID,
+                      rowData.firstname,
+                      rowData.lastname,
+                      rowData.position,
+                      rowData.status
+                    );
                   },
                 },
                 {
@@ -2171,14 +2387,19 @@ export default function UserManagement() {
                   tooltip: "Delete",
                   disabled: !CRUD.D,
                   onClick: (event, rowData) => {
-                    handleDialogDeleteUserOpen(rowData.userID, rowData.firstname, rowData.lastname);
+                    handleDialogDeleteUserOpen(
+                      rowData.userID,
+                      rowData.firstname,
+                      rowData.lastname
+                    );
                   },
                 },
               ]}
+              // pagination={{}}
               onChangePage={(page) => console.log("page")}
-            // onChangePage={(event, page) => console.log(event, page)}
+              // onChangePage={(event, page) => console.log(event, page)}
             />
-            : null}
+          ) : null}
         </div>
 
         {/* ==================== Dialog New User========================= */}
@@ -2190,7 +2411,6 @@ export default function UserManagement() {
           aria-labelledby="form-dialog-title"
         >
           <Grid container>
-
             <Grid
               item
               xs={dialogRatio}
@@ -2204,7 +2424,6 @@ export default function UserManagement() {
               </DialogTitle>
 
               <DialogContent>
-
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -2317,7 +2536,9 @@ export default function UserManagement() {
                     label="Property"
                     select
                     value={PropertyValues}
-                    onChange={(event, name) => handleSelectProperty(event, name)}
+                    onChange={(event, name) =>
+                      handleSelectProperty(event, name)
+                    }
                   >
                     {properties.map((option) => (
                       <MenuItem
@@ -2340,9 +2561,7 @@ export default function UserManagement() {
                     );
                   })}
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
-
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-
                       <TextField
                         select
                         id="outlined-basic"
@@ -2387,7 +2606,6 @@ export default function UserManagement() {
                       <FormControlLabel
                         value="Status"
                         control={
-
                           <Switch
                             defaultChecked={true}
                             color="primary"
@@ -2397,14 +2615,13 @@ export default function UserManagement() {
                                 : setEditStatus("Inactive")
                             }
                           />
-
                         }
                         label="Status"
                         labelPlacement="start"
                       />
                     </Grid>
                   </Grid>
-                  {selectPosition == "Add new position" ?
+                  {selectPosition == "Add new position" ? (
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                       <TextField
                         // autoFocus
@@ -2415,8 +2632,7 @@ export default function UserManagement() {
                         onChange={(e) => setNewPosition(e.target.value)}
                       />
                     </Grid>
-                    : null}
-
+                  ) : null}
                 </Container>
                 {permissionDialog ? (
                   <Grid>
@@ -2432,7 +2648,11 @@ export default function UserManagement() {
                     ></Grid>
                     <Divider style={{ marginTop: 10 }} />
                     <Container disableGutters>
-                      <Button style={{ margin: 15 }} variant="contained" onClick={() => handleResetToDefault()}>
+                      <Button
+                        style={{ margin: 15 }}
+                        variant="contained"
+                        onClick={() => handleResetToDefault()}
+                      >
                         Reset to Default
                       </Button>
                       <TreeView
@@ -2461,12 +2681,24 @@ export default function UserManagement() {
                     </Container>
                   </Grid>
                 ) : null}
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                {errorMessage ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameter} is required
+                  </div>
+                ) : null}
               </DialogContent>
             </Grid>
           </Grid>
           <DialogActions style={{ padding: 20 }}>
-            {!permissionDialog ?
+            {!permissionDialog ? (
               <Grid item style={{ flexGrow: 1 }}>
                 <Button
                   onClick={handlePermission}
@@ -2478,7 +2710,7 @@ export default function UserManagement() {
                   Permission
                 </Button>
               </Grid>
-              : null}
+            ) : null}
             <Button
               onClick={handleDialogAddUserClose}
               variant="text"
@@ -2514,7 +2746,6 @@ export default function UserManagement() {
           aria-labelledby="form-dialog-title"
         >
           <Grid container>
-
             <Grid
               item
               xs={dialogRatio}
@@ -2527,7 +2758,6 @@ export default function UserManagement() {
                 Edit User
               </DialogTitle>
               <DialogContent>
-
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -2643,7 +2873,9 @@ export default function UserManagement() {
                     label="Property"
                     select
                     value={PropertyValues}
-                    onChange={(event, name) => handleSelectProperty(event, name)}
+                    onChange={(event, name) =>
+                      handleSelectProperty(event, name)
+                    }
                   >
                     {properties.map((option) => (
                       <MenuItem
@@ -2666,9 +2898,7 @@ export default function UserManagement() {
                     );
                   })}
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
-
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-
                       <TextField
                         select
                         id="outlined-basic"
@@ -2688,8 +2918,6 @@ export default function UserManagement() {
                           </option>
                         ))}
                       </TextField>
-
-
                     </Grid>
                     <Grid
                       container
@@ -2730,7 +2958,7 @@ export default function UserManagement() {
                       />
                     </Grid>
 
-                    {selectPosition == "Add new position" ?
+                    {selectPosition == "Add new position" ? (
                       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                         <TextField
                           // autoFocus
@@ -2741,7 +2969,7 @@ export default function UserManagement() {
                           onChange={(e) => setNewPosition(e.target.value)}
                         />
                       </Grid>
-                      : null}
+                    ) : null}
                   </Grid>
                 </Container>
 
@@ -2759,7 +2987,11 @@ export default function UserManagement() {
                     ></Grid>
                     <Divider style={{ marginTop: 10 }} />
                     <Container disableGutters>
-                      <Button style={{ margin: 15 }} variant="contained" onClick={() => handleResetToDefault()}>
+                      <Button
+                        style={{ margin: 15 }}
+                        variant="contained"
+                        onClick={() => handleResetToDefault()}
+                      >
                         Reset to Default
                       </Button>
                       <TreeView
@@ -2788,13 +3020,25 @@ export default function UserManagement() {
                     </Container>
                   </Grid>
                 ) : null}
-                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                {errorMessage ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameter} is required
+                  </div>
+                ) : null}
               </DialogContent>
 
               <DialogActions style={{ padding: 20 }}>
                 <Grid container>
                   <Grid item style={{ flexGrow: 1 }}>
-                    {!permissionDialog ?
+                    {!permissionDialog ? (
                       <Button
                         onClick={handlePermissionEdit}
                         variant="contained"
@@ -2804,7 +3048,7 @@ export default function UserManagement() {
                         <VpnKeyOutlinedIcon style={{ marginRight: 15 }} />
                         Permission
                       </Button>
-                      : null}
+                    ) : null}
                   </Grid>
                   <Grid item>
                     <Button
@@ -2851,7 +3095,11 @@ export default function UserManagement() {
               </DialogTitle>
               <DialogContent>
                 <Typography>
-                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                  <Typography
+                    color="initial"
+                    style={{ fontWeight: 600 }}
+                    display="inline"
+                  >
                     Username:&nbsp;
                   </Typography>
                   <Typography color="initial" display="inline">
@@ -2859,7 +3107,11 @@ export default function UserManagement() {
                   </Typography>
                 </Typography>
                 <Typography>
-                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                  <Typography
+                    color="initial"
+                    style={{ fontWeight: 600 }}
+                    display="inline"
+                  >
                     Firstname:&nbsp;
                   </Typography>
                   <Typography color="initial" display="inline">
@@ -2867,7 +3119,11 @@ export default function UserManagement() {
                   </Typography>
                 </Typography>
                 <Typography>
-                  <Typography color="initial" style={{ fontWeight: 600 }} display="inline">
+                  <Typography
+                    color="initial"
+                    style={{ fontWeight: 600 }}
+                    display="inline"
+                  >
                     Lastname:&nbsp;
                   </Typography>
                   <Typography color="initial" display="inline">

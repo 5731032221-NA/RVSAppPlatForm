@@ -69,7 +69,7 @@ function App() {
 
   //console.log(pathn);
   return (
-    <Provider store={store}>
+    <Provider store={store} >
       {!token ? (
         <SignIn setToken={setToken} store={store} />
       ) : !property ? (
@@ -77,11 +77,11 @@ function App() {
       ) : (
         <BrowserRouter>
           {/* <Leftbar /> */}
-          <Switch>
+          <Switch >
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/forgotpassword" component={ForgotPass} />
             <Route exact path="/userlist" component={UserList} />
-            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/" component={Dashboard} style={{ backgroundColor: "black" }}/>
             {/* <Route component={ErrorPage} /> */}
           </Switch>
           {/* <Header store={store} /> */}

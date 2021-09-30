@@ -2035,10 +2035,7 @@ export default function RoleManagement() {
               }}
               title={
                 <Grid>
-                  <Typography
-                    variant="h6"
-                    style={{ fontSize: 25, color: "black" }}
-                  >
+                  <Typography variant="h6" style={{ fontSize: 25 }}>
                     Role Management
                   </Typography>
                 </Grid>
