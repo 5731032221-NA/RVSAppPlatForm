@@ -30,7 +30,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import {
     listregisterdhardware,
-    inserthardware
+    inserthardware,
+    deletehardware,
+    updatehardware
 } from "../services/device.service";
 import {
     listallproperty
@@ -40,9 +42,9 @@ import TablePagination from "@material-ui/core/TablePagination";
 import { EDIT_CONFIGSTATE } from "../middleware/action";
 
 // Generate Order Data
-function createData(code, type, name, macaddress, ip) {
+function createData(id,propertycode, code, type, name, macaddress, ip) {
     return {
-        code, type, name, macaddress, ip
+        id,propertycode, code, type, name, macaddress, ip
     };
 }
 
@@ -107,7 +109,7 @@ export default function DeviceManager() {
         _data.content[_data.content.length - 1].forEach((element) =>
             devicedata.push(
                 createData(
-                    element.code, element.type, element.name, element.macaddress, element.ip
+                    element.id,element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
                 )
             )
         );
@@ -123,23 +125,15 @@ export default function DeviceManager() {
         })
     }
 
-    const handleDialogDeleteOpen = async (rolecode, rolename, description) => {
-
+    const handleDialogDeleteOpen = async (id, code, type, name) => {
+        setUpdateData({
+            code: code, type: type, name: name, id: id
+        });
+        setDialogDelete(true);
     };
 
-    const handleDialogEdit = async () => {
-        let propertydata = await listallproperty(sessionStorage.getItem("auth"));
-        let tempproperty = [];
-        propertydata.content[propertydata.content.length - 1]
-            .split(",")
-            .forEach((element) => {
-                if (tempproperty.filter((x) => x.label === element).length == 0) {
-                    tempproperty.push({
-                        value: element,
-                        label: element,
-                    });
-                }
-            });
+    const handleDialogDeleteClose = async () => {
+        setDialogDelete(false);
     };
 
     const handleDialogAdd = async () => {
@@ -165,6 +159,32 @@ export default function DeviceManager() {
         setDialogAdd(false);
     };
 
+    const handleDialogEdit = async (rowData) => {
+        let _rowData = JSON.parse(JSON.stringify(rowData));
+        _rowData.tableData = undefined;
+        console.log("handleDialogEdit",_rowData)
+        let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+        let tempproperty = [];
+        propertydata.content[propertydata.content.length - 1]
+            .split(",")
+            .forEach((element) => {
+                if (tempproperty.filter((x) => x.label === element).length == 0) {
+                    tempproperty.push({
+                        value: element,
+                        label: element,
+                    });
+                }
+            });
+        console.log("tempproperty", tempproperty);
+        setProperty(tempproperty);
+        setUpdateData(_rowData);
+        setDialogEdit(true);
+    };
+
+    const handleDialogEditClose = async () => {
+        setDialogEdit(false);
+    };
+
     const handleInsert = async () => {
         console.log(updateData);
         let _inserthardware = await inserthardware(sessionStorage.getItem("auth"), updateData);
@@ -175,7 +195,7 @@ export default function DeviceManager() {
             _data.content[_data.content.length - 1].forEach((element) =>
                 devicedata.push(
                     createData(
-                        element.code, element.type, element.name, element.macaddress, element.ip
+                        element.id,element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
                     )
                 )
             );
@@ -185,6 +205,44 @@ export default function DeviceManager() {
         }
     };
 
+    const handleDelete = async (id) => {
+        let _deletehardware = await deletehardware(sessionStorage.getItem("auth"), id);
+        if (_deletehardware.status == '2000') {
+            let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+            let devicedata = [];
+            // let i = 0;
+            _data.content[_data.content.length - 1].forEach((element) =>
+                devicedata.push(
+                    createData(
+                        element.id,element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
+                    )
+                )
+            );
+            setRows(devicedata);
+            updatePageData(devicedata, page, rowsPerPage);
+            setDialogDelete(false);
+        }
+    };
+
+    const handleEdit = async (id) => {
+        console.log("handleEdit",updateData)
+        let _updatehardware = await updatehardware(sessionStorage.getItem("auth"), id, updateData);
+        if (_updatehardware.status == '2000') {
+            let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+            let devicedata = [];
+            // let i = 0;
+            _data.content[_data.content.length - 1].forEach((element) =>
+                devicedata.push(
+                    createData(
+                        element.id,element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
+                    )
+                )
+            );
+            setRows(devicedata);
+            updatePageData(devicedata, page, rowsPerPage);
+            setDialogEdit(false);
+        }
+    };
 
     const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
         let data = [];
@@ -315,14 +373,14 @@ export default function DeviceManager() {
                                 icon: EditRoundedIcon,
                                 tooltip: "Edit",
                                 onClick: (event, rowData) => {
-                                    handleDialogEdit(rowData.rolecode, rowData.rolename, rowData.description, rowData.applyproperty, rowData.status);
+                                    handleDialogEdit(rowData);
                                 },
                             },
                             {
                                 icon: DeleteRoundedIcon,
                                 tooltip: "Delete",
                                 onClick: (event, rowData) => {
-                                    handleDialogDeleteOpen(rowData.rolecode, rowData.rolename, rowData.description);
+                                    handleDialogDeleteOpen(rowData.id, rowData.code, rowData.type, rowData.name);
                                 },
                             },
                         ]}
@@ -369,7 +427,7 @@ export default function DeviceManager() {
                                                 SelectProps={{
                                                     native: true,
                                                 }}
-                                                onChange={(e) => setUpdateData({ ...updateData, property: e.target.value })}
+                                                onChange={(e) => setUpdateData({ ...updateData, propertycode: e.target.value })}
                                             >
                                                 {properties.map((option) => (
                                                     <option key={option.value} value={option.value}>
@@ -465,6 +523,232 @@ export default function DeviceManager() {
                             Save
                         </Button>
                     </DialogActions>
+                </Dialog>
+
+                {/* ==================== Dialog Edit Device========================= */}
+                <Dialog
+                    fullWidth="true"
+                    maxWidth="md"
+                    open={dialogEdit}
+                    onClose={handleDialogEditClose}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <Grid container>
+
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            xl={12}
+                        >
+                            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                                Edit Device
+                            </DialogTitle>
+
+                            <DialogContent>
+
+                                <Container maxWidth="xl" disableGutters>
+                                    <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                autoFocus
+                                                select
+                                                id="outlined-basic"
+                                                label="Property"
+                                                variant="outlined"
+                                                defaultValue={updateData.propertycode}
+                                                fullWidth
+                                                SelectProps={{
+                                                    native: true,
+                                                }}
+                                                onChange={(e) => setUpdateData({ ...updateData, propertycode: e.target.value })}
+                                            >
+                                                {properties.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </TextField>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                // autoFocus
+                                                select
+                                                id="outlined-basic"
+                                                label="Device Type"
+                                                variant="outlined"
+                                                fullWidth
+                                                SelectProps={{
+                                                    native: true,
+                                                }}
+                                                defaultValue={updateData.type}
+                                                onChange={(e) => setUpdateData({ ...updateData, type: e.target.value })}
+                                            >
+                                                {deviceTypes.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </TextField>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                // autoFocus
+                                                id="outlined-basic"
+                                                label="Device Code"
+                                                variant="outlined"
+                                                value={updateData.code}
+                                                fullWidth
+                                                onChange={(e) => setUpdateData({ ...updateData, code: e.target.value })}
+                                            />
+                                        </Grid>
+
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                // autoFocus
+                                                id="outlined-basic"
+                                                label="Device Name"
+                                                variant="outlined"
+                                                value={updateData.name}
+                                                fullWidth
+                                                onChange={(e) => setUpdateData({ ...updateData, name: e.target.value })}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                // autoFocus
+                                                id="outlined-basic"
+                                                label="MAC Address"
+                                                variant="outlined"
+                                                value={updateData.macaddress}
+                                                fullWidth
+                                                onChange={(e) => setUpdateData({ ...updateData, macaddress: e.target.value })}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                // autoFocus
+                                                id="outlined-basic"
+                                                label="IP Address"
+                                                variant="outlined"
+                                                value={updateData.ip}
+                                                fullWidth
+                                                onChange={(e) => setUpdateData({ ...updateData, ip: e.target.value })}
+                                            />
+                                        </Grid>
+
+                                    </Grid>
+                                </Container>
+                                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                            </DialogContent>
+                        </Grid>
+                    </Grid>
+                    <DialogActions style={{ padding: 20 }}>
+                        <Button
+                            onClick={handleDialogEditClose}
+                            variant="text"
+                            color="primary"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() =>
+                                handleEdit(updateData.id)
+                            }
+                        >
+                            Save
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+
+
+                <Dialog
+                    maxWidth="sm"
+                    open={dialogDelete}
+                    onClose={handleDialogDeleteClose}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <Grid container>
+                        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                                Confirm Delete
+                            </DialogTitle>
+                            <DialogContent>
+                                <Typography>
+                                    <Typography
+                                        color="initial"
+                                        style={{ fontWeight: 600 }}
+                                        display="inline"
+                                    >
+                                        Code:&nbsp;
+                                    </Typography>
+                                    <Typography color="initial" display="inline">
+                                        {updateData.code}
+                                    </Typography>
+                                </Typography>
+                                <Typography>
+                                    <Typography
+                                        color="initial"
+                                        style={{ fontWeight: 600 }}
+                                        display="inline"
+                                    >
+                                        Type:&nbsp;
+                                    </Typography>
+                                    <Typography color="initial" display="inline">
+                                        {updateData.type}
+                                    </Typography>
+                                </Typography>
+                                <Typography>
+                                    <Typography
+                                        color="initial"
+                                        style={{ fontWeight: 600 }}
+                                        display="inline"
+                                    >
+                                        Name:&nbsp;
+                                    </Typography>
+                                    <Typography color="initial" display="inline">
+                                        {updateData.name}
+                                    </Typography>
+                                </Typography>
+                            </DialogContent>
+                            <DialogActions style={{ padding: 20 }}>
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="space-evenly"
+                                    alignItems="center"
+                                    spacing={4}
+                                >
+                                    <Grid item sm={6} md={6} lg={6} xl={6}>
+                                        <Button
+                                            fullWidth
+                                            onClick={handleDialogDeleteClose}
+                                            variant="contained"
+                                            color="default"
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </Grid>
+                                    <Grid item sm={6} md={6} lg={6} xl={6}>
+                                        <Button
+                                            fullWidth
+                                            onClick={() => handleDelete(updateData.id)}
+                                            variant="contained"
+                                            // color="primary"
+                                            style={{ backgroundColor: "red", color: "white" }}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </DialogActions>
+                        </Grid>
+                    </Grid>
                 </Dialog>
 
             </React.Fragment>

@@ -47,7 +47,7 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import UpdateIcon from '@material-ui/icons/Update';
 import {
-    listcomputerprinter, listregisterdhardware
+    updatecomputerprinter,listcomputerprinter, listregisterdhardware, insertcomputerprinter, deletecomputerprinter
 } from "../services/device.service";
 import {
     getusernamebyproperty,
@@ -58,9 +58,9 @@ import TablePagination from "@material-ui/core/TablePagination";
 import { EDIT_CONFIGSTATE } from "../middleware/action";
 
 // Generate Order Data
-function createData(username, computercode, action, devicecode, tray, remark) {
+function createData(id, username, computercode, action, devicecode, tray, remark, specialstrings, propertycode) {
     return {
-        username, computercode, action, devicecode, tray, remark
+        id, username, computercode, action, devicecode, tray, remark, specialstrings, propertycode
     };
 }
 
@@ -190,7 +190,7 @@ export default function ComputerPrinter() {
         data.content[data.content.length - 1].forEach((element) =>
             userdata.push(
                 createData(
-                    element.username, element.computercode, element.action, element.devicecode, element.tray, element.remark
+                    element.id, element.username, element.computercode, element.action, element.devicecode, element.tray, element.remark, element.specialstrings, element.propertycode
                 )
             )
         );
@@ -198,9 +198,9 @@ export default function ComputerPrinter() {
         updatePageData(userdata, page, rowsPerPage);
     }, []);
 
-    const handleChangeProperty= async (selectProperty) => {
+    const handleChangeProperty = async (selectProperty) => {
         let _userdata = await getusernamebyproperty(sessionStorage.getItem("auth"), selectProperty);
-        let _users = []
+        let _users = [{ key: 'ADMIN', label: 'ADMIN' }]
         if (_userdata.content[_userdata.content.length - 1] != "") {
             _userdata.content[_userdata.content.length - 1].split(",").forEach((element) => {
                 if (_users.filter(x => x.label === element).length == 0) {
@@ -208,6 +208,7 @@ export default function ComputerPrinter() {
                 }
             })
         }
+        setUpdateData({ ...updateData, propertycode: selectProperty })
         setUsernames(_users);
     }
     const handleComponentState = async (comp) => {
@@ -218,29 +219,23 @@ export default function ComputerPrinter() {
         })
     }
 
-    const handleDialogDeleteOpen = async () => {
-
+    const handleDialogDeleteOpen = async (id,computercode,devicecode) => {
+        setUpdateData({
+            computercode: computercode, devicecode: devicecode, id: id
+        });
+        setDialogDelete(true);
     };
 
-    const handleDialogEdit = async () => {
-        let propertydata = await listallproperty(sessionStorage.getItem("auth"));
-        let tempproperty = [];
-        propertydata.content[propertydata.content.length - 1]
-            .split(",")
-            .forEach((element) => {
-                if (tempproperty.filter((x) => x.label === element).length == 0) {
-                    tempproperty.push({
-                        value: element,
-                        label: element,
-                    });
-                }
-            });
+    const handleDialogDeleteClose = async () => {
+        setDialogDelete(false);
     };
+
+
 
     const handleDialogAdd = async () => {
         let _userdata = await getusernamebyproperty(sessionStorage.getItem("auth"), pageProperty);
         // username, computercode, action, devicecode, tray, remark
-        let _users = []
+        let _users = [{ key: 'ADMIN', label: 'ADMIN' }]
         if (_userdata.content[_userdata.content.length - 1] != "") {
             _userdata.content[_userdata.content.length - 1].split(",").forEach((element) => {
                 if (_users.filter(x => x.label === element).length == 0) {
@@ -272,8 +267,58 @@ export default function ComputerPrinter() {
         setUsernames(_users);
         setComputers(_computers);
         setPrintersCode(_listprinters);
-        setUpdateData({ computercode: _computers[0].label, devicecode: _listprinters[0].label });
+        setUpdateData({
+            propertycode: pageProperty,
+            computercode: _computers[0].value, devicecode: _listprinters[0].value, tray: trays[0].label, username: usernames[0].label
+            , action: actions[0].label, remark: remarks[0].label
+        });
         setDialogAdd(true);
+    };
+
+    const handleDialogEdit = async (rowData) => {
+        let _rowData = JSON.parse(JSON.stringify(rowData));
+        _rowData.tableData = undefined;
+        console.log("handleDialogEdit",_rowData)
+        let _userdata = await getusernamebyproperty(sessionStorage.getItem("auth"), rowData.propertycode);
+        // username, computercode, action, devicecode, tray, remark
+        let _users = [{ key: 'ADMIN', label: 'ADMIN' }]
+        if (_userdata.content[_userdata.content.length - 1] != "") {
+            _userdata.content[_userdata.content.length - 1].split(",").forEach((element) => {
+                if (_users.filter(x => x.label === element).length == 0) {
+                    _users.push({ key: element, label: element })
+                }
+            })
+        }
+        let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+        let _computers = [];
+        let _listprinters = [];
+        _data.content[_data.content.length - 1].forEach((element) => {
+            if (element.type == 'COMP') {
+                if (_computers.filter((x) => x.value === element.code).length == 0) {
+                    _computers.push({
+                        value: element.code,
+                        label: element.name,
+                    });
+                }
+            } else if (element.type == 'PRINT') {
+                if (_listprinters.filter((x) => x.value === element.code).length == 0) {
+                    _listprinters.push({
+                        value: element.code,
+                        label: element.name,
+                    });
+                }
+            }
+        }
+        );
+        setUsernames(_users);
+        setComputers(_computers);
+        setPrintersCode(_listprinters);
+        setUpdateData(_rowData);
+        setDialogEdit(true);
+    };
+
+    const handleDialogEditClose = async () => {
+        setDialogEdit(false);
     };
 
     const handleDialogAddClose = async () => {
@@ -281,20 +326,64 @@ export default function ComputerPrinter() {
     };
 
     const handleInsert = async () => {
-        let data = await listcomputerprinter(sessionStorage.getItem("auth"));
-        let userdata = [];
-        data.content[data.content.length - 1].forEach((element) =>
-            userdata.push(
-                createData(
-                    element.username, element.computercode, element.action, element.devicecode, element.tray, element.remark
+        console.log(updateData);
+        let _insertcomputerprinter = await insertcomputerprinter(sessionStorage.getItem("auth"), updateData);
+        if (_insertcomputerprinter.status == '2000') {
+
+            let data = await listcomputerprinter(sessionStorage.getItem("auth"));
+            let userdata = [];
+            data.content[data.content.length - 1].forEach((element) =>
+                userdata.push(
+                    createData(
+                        element.id, element.username, element.computercode, element.action, element.devicecode, element.tray, element.remark, element.specialstrings, element.propertycode
+                    )
                 )
-            )
-        );
-        setRows(userdata);
-        updatePageData(userdata, page, rowsPerPage);
-        setDialogAdd(false);
+            );
+            setRows(userdata);
+            updatePageData(userdata, page, rowsPerPage);
+            setDialogAdd(false);
+        }
     };
 
+
+    
+    const handleEdit = async (id) => {
+        console.log(id,"handleEdit",updateData)
+        let _updatecomputerprinter = await updatecomputerprinter(sessionStorage.getItem("auth"), id, updateData);
+        if (_updatecomputerprinter.status == '2000') {
+            let data = await listcomputerprinter(sessionStorage.getItem("auth"));
+            let userdata = [];
+            data.content[data.content.length - 1].forEach((element) =>
+                userdata.push(
+                    createData(
+                        element.id, element.username, element.computercode, element.action, element.devicecode, element.tray, element.remark, element.specialstrings, element.propertycode
+                    )
+                )
+            );
+            setRows(userdata);
+            updatePageData(userdata, page, rowsPerPage);
+            setDialogEdit(false);
+        }
+    };
+
+    const handleDelete = async (id) => {
+        let _deletecomputerprinter = await deletecomputerprinter(sessionStorage.getItem("auth"), id);
+        if (_deletecomputerprinter.status == '2000') {
+
+            let data = await listcomputerprinter(sessionStorage.getItem("auth"));
+            let userdata = [];
+            data.content[data.content.length - 1].forEach((element) =>
+                userdata.push(
+                    createData(
+                        element.id, element.username, element.computercode, element.action, element.devicecode, element.tray, element.remark, element.specialstrings, element.propertycode
+                    )
+                )
+            );
+            setRows(userdata);
+            updatePageData(userdata, page, rowsPerPage);
+            setDialogDelete(false);
+        }
+    };
 
     const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
         let data = [];
@@ -405,6 +494,7 @@ export default function ComputerPrinter() {
                             </Grid>
                         }
                         columns={[
+                            { title: "Property", field: "propertycode" },
                             { title: "Username", field: "username" },
                             {
                                 title: "Computer Code",
@@ -414,8 +504,7 @@ export default function ComputerPrinter() {
                             { title: "Device Code", field: "devicecode" },
                             { title: "Tray", field: "tray" },
                             { title: "Remark", field: "remark" },
-
-
+                            { title: "Special Strings", field: "specialstrings" }
                         ]}
                         data={rows}
                         // totalCount={rows.length}
@@ -433,14 +522,14 @@ export default function ComputerPrinter() {
                                 icon: EditRoundedIcon,
                                 tooltip: "Edit",
                                 onClick: (event, rowData) => {
-                                    handleDialogEdit();
+                                    handleDialogEdit(rowData);
                                 },
                             },
                             {
                                 icon: DeleteRoundedIcon,
                                 tooltip: "Delete",
                                 onClick: (event, rowData) => {
-                                    handleDialogDeleteOpen();
+                                    handleDialogDeleteOpen(rowData.id,rowData.computercode,rowData.devicecode);
                                 },
                             },
                         ]}
@@ -546,7 +635,7 @@ export default function ComputerPrinter() {
                                                 id="outlined-basic"
                                                 label="Action"
                                                 variant="outlined"
-                                                defaultValue={computers[0].label}
+                                                defaultValue={actions[0].label}
                                                 fullWidth
                                                 SelectProps={{
                                                     native: true,
@@ -572,7 +661,7 @@ export default function ComputerPrinter() {
                                                     native: true,
                                                 }}
                                                 defaultValue={listprinters[0].value}
-                                                onChange={(e) => setUpdateData({ ...updateData, listprinters: e.target.value })}
+                                                onChange={(e) => setUpdateData({ ...updateData, devicecode: e.target.value })}
                                             >
                                                 {listprinters.map((option) => (
                                                     <option key={option.value} value={option.value}>
@@ -587,7 +676,7 @@ export default function ComputerPrinter() {
                                                 id="outlined-basic"
                                                 label="Tray"
                                                 variant="outlined"
-                                                defaultValue={computers[0].label}
+                                                defaultValue={trays[0].label}
                                                 fullWidth
                                                 SelectProps={{
                                                     native: true,
@@ -607,7 +696,7 @@ export default function ComputerPrinter() {
                                                 id="outlined-basic"
                                                 label="Remark"
                                                 variant="outlined"
-                                                defaultValue={computers[0].label}
+                                                defaultValue={remarks[0].label}
                                                 fullWidth
                                                 SelectProps={{
                                                     native: true,
@@ -621,7 +710,15 @@ export default function ComputerPrinter() {
                                                 ))}
                                             </TextField>
                                         </Grid>
-
+                                        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                                            <TextField
+                                                id="outlined-basic"
+                                                label="Special String"
+                                                variant="outlined"
+                                                fullWidth
+                                                onChange={(e) => setUpdateData({ ...updateData, specialstrings: e.target.value })}
+                                            />
+                                        </Grid>
                                     </Grid>
                                 </Container>
                                 {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
@@ -648,6 +745,287 @@ export default function ComputerPrinter() {
                     </DialogActions>
                 </Dialog>
 
+ {/* ==================== Dialog Edit Device========================= */}
+ <Dialog
+                    fullWidth="true"
+                    maxWidth="md"
+                    open={dialogEdit}
+                    onClose={handleDialogEditClose}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <Grid container>
+
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            xl={12}
+                        >
+                            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                                <Container maxWidth="xl" disableGutters>
+                                    <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                                        <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+                                            Edit Device
+                                        </Grid>
+                                        <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                                            <TextField
+                                                select
+                                                id="outlined-basic"
+                                                label="Property"
+                                                variant="outlined"
+                                                defaultValue={updateData.propertycode}
+                                                fullWidth
+                                                SelectProps={{
+                                                    native: true,
+                                                }}
+                                                onChange={(e) => handleChangeProperty(e.target.value)}
+                                            >
+                                                {properties.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </TextField>
+                                        </Grid>
+                                    </Grid>
+                                </Container>
+                            </DialogTitle>
+
+                            <DialogContent>
+                                {/* username, computercode, action, devicecode, tray, remark */}
+                                <Container maxWidth="xl" disableGutters>
+                                    <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                select
+                                                id="outlined-basic"
+                                                label="Username"
+                                                variant="outlined"
+                                                defaultValue={updateData.username}
+                                                fullWidth
+                                                SelectProps={{
+                                                    native: true,
+                                                }}
+                                                onChange={(e) => setUpdateData({ ...updateData, username: e.target.value })}
+                                            >
+                                                {usernames.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </TextField>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                select
+                                                id="outlined-basic"
+                                                label="Computer Code"
+                                                variant="outlined"
+                                                defaultValue={updateData.computercode}
+                                                fullWidth
+                                                SelectProps={{
+                                                    native: true,
+                                                }}
+                                                onChange={(e) => setUpdateData({ ...updateData, computercode: e.target.value })}
+                                            >
+                                                {computers.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.value}
+                                                    </option>
+                                                ))}
+                                            </TextField>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                select
+                                                id="outlined-basic"
+                                                label="Action"
+                                                variant="outlined"
+                                                defaultValue={updateData.action}
+                                                fullWidth
+                                                SelectProps={{
+                                                    native: true,
+                                                }}
+                                                onChange={(e) => setUpdateData({ ...updateData, action: e.target.value })}
+                                            >
+                                                {actions.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </TextField>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                // autoFocus
+                                                select
+                                                id="outlined-basic"
+                                                label="Printer Code"
+                                                variant="outlined"
+                                                fullWidth
+                                                SelectProps={{
+                                                    native: true,
+                                                }}
+                                                defaultValue={updateData.devicecode}
+                                                onChange={(e) => setUpdateData({ ...updateData, devicecode: e.target.value })}
+                                            >
+                                                {listprinters.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.value}
+                                                    </option>
+                                                ))}
+                                            </TextField>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                select
+                                                id="outlined-basic"
+                                                label="Tray"
+                                                variant="outlined"
+                                                defaultValue={updateData.tray}
+                                                fullWidth
+                                                SelectProps={{
+                                                    native: true,
+                                                }}
+                                                onChange={(e) => setUpdateData({ ...updateData, tray: e.target.value })}
+                                            >
+                                                {trays.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </TextField>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                            <TextField
+                                                select
+                                                id="outlined-basic"
+                                                label="Remark"
+                                                variant="outlined"
+                                                defaultValue={updateData.remark}
+                                                fullWidth
+                                                SelectProps={{
+                                                    native: true,
+                                                }}
+                                                onChange={(e) => setUpdateData({ ...updateData, remark: e.target.value })}
+                                            >
+                                                {remarks.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </TextField>
+                                        </Grid>
+                                        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                                            <TextField
+                                                id="outlined-basic"
+                                                label="Special String"
+                                                variant="outlined"
+                                                defaultValue={updateData.specialstrings}
+                                                fullWidth
+                                                onChange={(e) => setUpdateData({ ...updateData, specialstrings: e.target.value })}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </Container>
+                                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                            </DialogContent>
+                        </Grid>
+                    </Grid>
+                    <DialogActions style={{ padding: 20 }}>
+                        <Button
+                            onClick={handleDialogEditClose}
+                            variant="text"
+                            color="primary"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() =>
+                                handleEdit(updateData.id)
+                            }
+                        >
+                            Save
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+
+                <Dialog
+                    maxWidth="sm"
+                    open={dialogDelete}
+                    onClose={handleDialogDeleteClose}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <Grid container>
+                        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                            <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                                Confirm Delete
+                            </DialogTitle>
+                            <DialogContent>
+                                <Typography>
+                                    <Typography
+                                        color="initial"
+                                        style={{ fontWeight: 600 }}
+                                        display="inline"
+                                    >
+                                        Computer Code:&nbsp;
+                                    </Typography>
+                                    <Typography color="initial" display="inline">
+                                        {updateData.computercode}
+                                    </Typography>
+                                </Typography>
+                                <Typography>
+                                    <Typography
+                                        color="initial"
+                                        style={{ fontWeight: 600 }}
+                                        display="inline"
+                                    >
+                                        Device Code:&nbsp;
+                                    </Typography>
+                                    <Typography color="initial" display="inline">
+                                        {updateData.devicecode}
+                                    </Typography>
+                                </Typography>
+                            </DialogContent>
+                            <DialogActions style={{ padding: 20 }}>
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="space-evenly"
+                                    alignItems="center"
+                                    spacing={4}
+                                >
+                                    <Grid item sm={6} md={6} lg={6} xl={6}>
+                                        <Button
+                                            fullWidth
+                                            onClick={handleDialogDeleteClose}
+                                            variant="contained"
+                                            color="default"
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </Grid>
+                                    <Grid item sm={6} md={6} lg={6} xl={6}>
+                                        <Button
+                                            fullWidth
+                                            onClick={() => handleDelete(updateData.id)}
+                                            variant="contained"
+                                            // color="primary"
+                                            style={{ backgroundColor: "red", color: "white" }}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </DialogActions>
+                        </Grid>
+                    </Grid>
+                </Dialog>
 
 
 
