@@ -1361,6 +1361,7 @@ const mapStateToProps = (state) => {
   return {
     lang: state.reducer.lang,
     color: state.reducer.color,
+    themeBackground: state.reducer.themeBackground,
   };
 };
 

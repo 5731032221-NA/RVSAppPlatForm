@@ -68,6 +68,7 @@ export class FrontDesk extends Component {
           });
         }
       }
+      console.log("this.props.themeBackground", this.props.themeBackground);
 
       if (this.state.themeBackground != this.props.themeBackground) {
         console.log(this.state.themeBackground, this.props.themeBackground);
