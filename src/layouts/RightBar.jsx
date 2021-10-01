@@ -143,7 +143,8 @@ export default function RighBar() {
   function handleDarkMode(e) {
     let _darkmode = !darkMode;
     setDarkmode(_darkmode);
-    console.log("darkmode", _darkmode);
+    console.log("_darkmode", _darkmode);
+    console.log("darkmode", darkMode);
     if (_darkmode) {
       store.dispatch({
         type: EDIT_COLOR,
@@ -153,13 +154,16 @@ export default function RighBar() {
         type: EDIT_DARKMODE,
         payload: "#1F1B24",
       });
+    } else {
+      store.dispatch({
+        type: EDIT_COLOR,
+        payload: "#FFFFFF",
+      });
+      store.dispatch({
+        type: EDIT_DARKMODE,
+        payload: "#FFFFFF",
+      });
     }
-    // else {
-    //   store.dispatch({
-    //     type: EDIT_COLOR,
-    //     payload: "#FFFFFF",
-    //   });
-    // }
   }
 
   return (
@@ -288,7 +292,11 @@ export default function RighBar() {
             </Typography>
           </Grid>
           <Grid item>
-            <Switch value={darkMode} onChange={handleDarkMode} />
+            <Switch
+              checked={darkMode}
+              value={darkMode}
+              onChange={handleDarkMode}
+            />
           </Grid>
         </Grid>
         <Grid container alignItems="center">

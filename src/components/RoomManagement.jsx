@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 // import Link from "@material-ui/core/Link";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -80,6 +80,34 @@ function createData(
   };
 }
 
+const CssTextField = withStyles({
+  root: {
+    "& label.MuiInputLabel-root": {
+      color: "#FFFFFF",
+    },
+    "& label.Mui-focused": {
+      color: blue[200],
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#FFFFFF",
+      color: "#FFFFFF",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#FFFFFF",
+        color: "#FFFFFF",
+      },
+      "&:hover fieldset": {
+        borderColor: blue["A200"],
+        color: "#FFFFFF",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: blue["A200"],
+        color: "#FFFFFF",
+      },
+    },
+  },
+})(TextField);
 // const roomType = [
 //   {
 //     value: "SUPERIOR",
@@ -245,7 +273,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RoomManagement() {
-  const classes = useStyles();
   const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false });
   const [dialogAddRoom, setDialogAddRoom] = React.useState(false);
   const [dialogEditRoom, setDialogEditRoom] = React.useState(false);
@@ -906,6 +933,7 @@ export default function RoomManagement() {
 
     setDialogDeleteRoom(false);
   };
+  const classes = useStyles();
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -913,7 +941,7 @@ export default function RoomManagement() {
     colorlevel: "900",
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
-
+  const [textFieldComponent, setTextFieldComponent] = React.useState(TextField);
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
       setThemeState({
@@ -931,8 +959,38 @@ export default function RoomManagement() {
         colorlevel: "A200",
         // matStyle: this.classes.darkmode
       });
+      setTextFieldComponent(CssTextField);
     }
   }, [themeBackground]);
+
+  // const CssTextField = withStyles({
+  //   root: {
+  //     "& label.MuiInputLabel-root": {
+  //       color: "#FFFFFF",
+  //     },
+  //     "& label.Mui-focused": {
+  //       color: blue[200],
+  //     },
+  //     "& .MuiInput-underline:after": {
+  //       borderBottomColor: "#FFFFFF",
+  //       color: "#FFFFFF",
+  //     },
+  //     "& .MuiOutlinedInput-root": {
+  //       "& fieldset": {
+  //         borderColor: "#FFFFFF",
+  //         color: "#FFFFFF",
+  //       },
+  //       "&:hover fieldset": {
+  //         borderColor: blue["A200"],
+  //         color: "#FFFFFF",
+  //       },
+  //       "&.Mui-focused fieldset": {
+  //         borderColor: blue["A200"],
+  //         color: "#FFFFFF",
+  //       },
+  //     },
+  //   },
+  // })(TextField);
 
   return (
     <Container maxWidth="xl" style={themeState}>
@@ -1055,10 +1113,10 @@ export default function RoomManagement() {
               >
                 <Container maxWidth="xl" disableGutters>
                   <Grid container>
-                    <TextField
+                    <CssTextField
                       autoFocus
                       select
-                      id="outlined-basic"
+                      // id="outlined-basic"
                       label="Property"
                       variant="outlined"
                       defaultValue={pageProperty}
@@ -1088,11 +1146,11 @@ export default function RoomManagement() {
                           {option.label}
                         </option>
                       ))}
-                    </TextField>
+                    </CssTextField>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         id="outlined-basic"
                         label="Room Number"
@@ -1111,7 +1169,7 @@ export default function RoomManagement() {
                       />
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1144,12 +1202,12 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 15 }}>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1182,10 +1240,10 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1218,10 +1276,10 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1254,12 +1312,12 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1292,10 +1350,10 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1328,12 +1386,12 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1366,10 +1424,10 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1402,7 +1460,7 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                   </Grid>
                   <Grid
@@ -1416,7 +1474,7 @@ export default function RoomManagement() {
                       color: themeState.color,
                     }}
                   >
-                    <TextField
+                    <CssTextField
                       fullWidth
                       variant="outlined"
                       selectSelectProps={{
@@ -1424,6 +1482,7 @@ export default function RoomManagement() {
                       }}
                       style={{
                         backgroundColor: themeState.paper,
+                        borderColor: "red",
                       }}
                       InputProps={{
                         style: {
@@ -1453,7 +1512,7 @@ export default function RoomManagement() {
                           {option.label}
                         </MenuItem>
                       ))}
-                    </TextField>
+                    </CssTextField>
                     {chipAttributeDialog.map((data, index) => {
                       return (
                         <Chip
@@ -1472,7 +1531,7 @@ export default function RoomManagement() {
                     alignItems="center"
                     style={{ paddingTop: 10 }}
                   >
-                    <TextField
+                    <CssTextField
                       InputProps={{
                         style: {
                           backgroundColor: themeState.paper,
@@ -1571,7 +1630,7 @@ export default function RoomManagement() {
               <DialogContent>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container>
-                    <TextField
+                    <CssTextField
                       // autoFocus
                       select
                       id="outlined-basic"
@@ -1589,11 +1648,11 @@ export default function RoomManagement() {
                           {option.label}
                         </option>
                       ))}
-                    </TextField>
+                    </CssTextField>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         id="outlined-basic"
                         label="Room Number"
@@ -1604,7 +1663,7 @@ export default function RoomManagement() {
                       />
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1622,12 +1681,12 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 15 }}>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1645,10 +1704,10 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1666,10 +1725,10 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1687,12 +1746,12 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1710,10 +1769,10 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1731,12 +1790,12 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1754,10 +1813,10 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
+                      <CssTextField
                         // autoFocus
                         select
                         id="outlined-basic"
@@ -1775,7 +1834,7 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </TextField>
+                      </CssTextField>
                     </Grid>
                   </Grid>
                   <Grid
@@ -1785,7 +1844,7 @@ export default function RoomManagement() {
                     alignItems="center"
                     style={{ paddingTop: 10 }}
                   >
-                    <TextField
+                    <CssTextField
                       fullWidth
                       // autoFocus
                       variant="outlined"
@@ -1809,7 +1868,7 @@ export default function RoomManagement() {
                           {option.label}
                         </MenuItem>
                       ))}
-                    </TextField>
+                    </CssTextField>
                     {chipAttributeDialog.map((data, index) => {
                       return (
                         <Chip
