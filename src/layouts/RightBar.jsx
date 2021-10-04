@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React, { useState,useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import { Container, Grid, Typography } from "@material-ui/core";
+import { Container, Grid, Typography, TextField} from "@material-ui/core";
 // import ImageIcon from "@material-ui/icons/Image";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -83,19 +83,41 @@ export default function RighBar() {
   const classes = useStyles();
   const { store } = useContext(ReactReduxContext);
   const [darkMode, setDarkmode] = React.useState(false);
-  function handlelanguageEN() {
-    // setOpenSystemsTools(!openSystemTools)
-    store.dispatch({
-      type: EDIT_LANG,
-      payload: "en",
-    });
-  }
-  function handlelanguageTH() {
-    store.dispatch({
-      type: EDIT_LANG,
-      payload: "th",
-    });
-  }
+  const [languages, setLanguages] = useState([
+    {
+        key: "1",
+        label: "en",
+    },
+    {
+        key: "2",
+        label: "th",
+    },
+    {
+        key: "2",
+        label: "cn",
+    }
+])
+function handlelanguage(language) {
+  // setOpenSystemsTools(!openSystemTools)
+  store.dispatch({
+    type: EDIT_LANG,
+    payload: language,
+  });
+}
+
+  // function handlelanguageEN() {
+  //   // setOpenSystemsTools(!openSystemTools)
+  //   store.dispatch({
+  //     type: EDIT_LANG,
+  //     payload: "en",
+  //   });
+  // }
+  // function handlelanguageTH() {
+  //   store.dispatch({
+  //     type: EDIT_LANG,
+  //     payload: "th",
+  //   });
+  // }
 
   function handleThemePurple() {
     store.dispatch({
@@ -169,7 +191,7 @@ export default function RighBar() {
   return (
     <Container
       className={classes.Container}
-      // style={{ backgroundColor: "#000000" }}
+    // style={{ backgroundColor: "#000000" }}
     >
       <Grid container>
         <Grid container spacing={2}>
@@ -225,8 +247,26 @@ export default function RighBar() {
             </Typography>
           </Grid>
         </Grid>
-
-        <List>
+        <TextField
+          // autoFocus
+          select
+          id="outlined-basic"
+          label="Language"
+          variant="outlined"
+          fullWidth
+          SelectProps={{
+            native: true,
+          }}
+          defaultValue={"en"}
+          onChange={(e) => handlelanguage( e.target.value)}
+        >
+          {languages.map((option) => (
+            <option key={option.key} value={option.label}>
+              {option.label}
+            </option>
+          ))}
+        </TextField>
+        {/* <List>
           <Divider variant="inset" />
           <Grid container spacing={1}>
             <ListItem button onClick={handlelanguageEN}>
@@ -242,7 +282,7 @@ export default function RighBar() {
               <ListItemText primary="ไทย" />
             </ListItem>
           </Grid>
-        </List>
+        </List> */}
       </Grid>
 
       <Grid container style={{ marginTop: 30 }}>
