@@ -88,7 +88,8 @@ function createData(
   roles,
   property,
   status,
-  name
+  name,
+  adaccount
 ) {
   return {
     id,
@@ -100,6 +101,7 @@ function createData(
     property,
     status,
     name,
+    adaccount
   };
 }
 // const rows = [
@@ -641,6 +643,7 @@ export default function UserManagement() {
   const [editUserID, setEditUserID] = React.useState(null);
   const [oldUserName, setoldUserName] = React.useState(null);
   const [newPosition, setNewPosition] = React.useState(null);
+  const [editAD, setEditAD] = useState("");
   // const [editFirstname, setEditFirstname] = React.useState(null);
   // const [editLastname, setEditLastname] = React.useState(null);
   const [properties, setProperties] = React.useState([]);
@@ -691,7 +694,8 @@ export default function UserManagement() {
           element.roles,
           element.property,
           element.status,
-          element.firstname + " " + element.lastname
+          element.firstname + " " + element.lastname,
+          element.adaccount
         )
       )
     );
@@ -731,6 +735,7 @@ export default function UserManagement() {
     setPermissionDialog(false);
     setChipRolesDialog([]);
     setChipPropertyDialog([]);
+    setEditAD("");
     setEditFirstName(null);
     setEditLastName(null);
     setEditStatus(true);
@@ -747,7 +752,8 @@ export default function UserManagement() {
     firstname,
     lastname,
     position,
-    status
+    status,
+    adaccount
   ) => {
     // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
     // setEditFirstName(databyid.content[databyid.content.length - 1].firstname);
@@ -851,6 +857,7 @@ export default function UserManagement() {
 
     setEditUserName(username);
     setoldUserName(username);
+    setEditAD(adaccount);
     setEditFirstName(firstname);
     setEditLastName(lastname);
     setSelectPosition(position);
@@ -1073,7 +1080,8 @@ export default function UserManagement() {
     lastName,
     status,
     position,
-    role
+    role,
+    ad
   ) => {
     // setEditFirstName(null);
     // setEditLastName(null);
@@ -1125,6 +1133,7 @@ export default function UserManagement() {
         userproperty: propertyTempArray,
         role: roleTempArray,
         permission: perm,
+        adaccount: ad
       });
       console.log(insert);
       if (insert.status == "2000") {
@@ -1141,7 +1150,8 @@ export default function UserManagement() {
               element.roles,
               element.property,
               element.status,
-              element.firstname + " " + element.lastname
+              element.firstname + " " + element.lastname,
+              element.adaccount
             )
           )
         );
@@ -1914,7 +1924,8 @@ export default function UserManagement() {
     lastName,
     status,
     position,
-    role
+    role,
+    ad
   ) => {
     console.log(
       "Handle save Edit : id, firstname, userName, status",
@@ -1923,7 +1934,8 @@ export default function UserManagement() {
       lastName,
       status,
       position,
-      role
+      role,
+      ad
     );
     if (code == null || code == "") {
       setErrorMessage(true);
@@ -1974,6 +1986,7 @@ export default function UserManagement() {
         userproperty: propertyTempArray,
         role: roleTempArray,
         permission: perm,
+        adaccount: ad
       });
       // const temp = new Set();
       // if (role.length) {
@@ -2012,7 +2025,8 @@ export default function UserManagement() {
               element.roles,
               element.property,
               element.status,
-              element.firstname + " " + element.lastname
+              element.firstname + " " + element.lastname,
+              element.adaccount
             )
           )
         );
@@ -2038,7 +2052,7 @@ export default function UserManagement() {
     setEditUserName(username);
     setEditFirstName(firstname);
     setEditLastName(lastname);
-
+    setEditAD(adaccount);
     setDialogDeleteUser(true);
   };
 
@@ -2066,7 +2080,8 @@ export default function UserManagement() {
           element.roles,
           element.property,
           element.status,
-          element.firstname + " " + element.lastname
+          element.firstname + " " + element.lastname,
+          element.adaccount
         )
       )
     );
@@ -2337,6 +2352,14 @@ export default function UserManagement() {
                   },
                 },
                 {
+                  title: "AD Account",
+                  field: "adaccount",
+                  headerStyle: {
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  },
+                },
+                {
                   render: (rowData) => {
                     return rowData.status == "Active" ? (
                       <Button
@@ -2409,7 +2432,8 @@ export default function UserManagement() {
                       rowData.firstname,
                       rowData.lastname,
                       rowData.position,
-                      rowData.status
+                      rowData.status,
+                      rowData.adaccount
                     );
                   },
                 },
@@ -2469,7 +2493,7 @@ export default function UserManagement() {
               >
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
                         className={classes.root}
                         id="outlined-basic"
@@ -2482,6 +2506,16 @@ export default function UserManagement() {
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
                         className={classes.root}
+                        id="outlined-basic"
+                        label="AD Account"
+                        variant="outlined"
+                        fullWidth
+                        onChange={(e) => setEditAD(e.target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        // autoFocus
                         id="outlined-basic"
                         label="Firstname"
                         variant="outlined"
@@ -2819,7 +2853,8 @@ export default function UserManagement() {
                   editLastName,
                   editStatus,
                   selectPosition,
-                  chipRolesDialog
+                  chipRolesDialog,
+                  editAD
                 )
               }
             >
@@ -2863,7 +2898,7 @@ export default function UserManagement() {
               >
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
                         className={classes.root}
                         id="outlined-basic"
@@ -2877,6 +2912,16 @@ export default function UserManagement() {
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
                         className={classes.root}
+                        id="outlined-basic"
+                        label="AD Account"
+                        variant="outlined"
+                        fullWidth
+                        onChange={(e) => setEditAD(e.target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        // autoFocus
                         id="outlined-basic"
                         label="Firstname"
                         variant="outlined"
@@ -3212,7 +3257,8 @@ export default function UserManagement() {
                           editLastName,
                           editStatus,
                           selectPosition,
-                          chipRolesDialog
+                          chipRolesDialog,
+                          editAD
                         )
                       }
                       variant="contained"
