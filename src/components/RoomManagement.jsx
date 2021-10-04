@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+
 // import Link from "@material-ui/core/Link";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
@@ -55,6 +56,7 @@ import {
 
 import TablePagination from "@material-ui/core/TablePagination";
 import { EDIT_CONFIGSTATE } from "../middleware/action";
+import { Check } from "@material-ui/icons";
 // Generate Order Data
 function createData(
   id,
@@ -80,177 +82,6 @@ function createData(
   };
 }
 
-const CssTextField = withStyles({
-  root: {
-    "& label.MuiInputLabel-root": {
-      color: "#FFFFFF",
-    },
-    "& label.Mui-focused": {
-      color: blue[200],
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#FFFFFF",
-      color: "#FFFFFF",
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "#FFFFFF",
-        color: "#FFFFFF",
-      },
-      "&:hover fieldset": {
-        borderColor: blue["A200"],
-        color: "#FFFFFF",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: blue["A200"],
-        color: "#FFFFFF",
-      },
-    },
-  },
-})(TextField);
-// const roomType = [
-//   {
-//     value: "SUPERIOR",
-//     label: "SUPERIOR",
-//   },
-//   {
-//     value: "DELUX",
-//     label: "DELUX",
-//   },
-// ];
-// const building = [
-//   {
-//     value: "A",
-//     label: "A",
-//   },
-//   {
-//     value: "TOWER1",
-//     label: "TOWER 1",
-//   },
-
-//   {
-//     value: "TOWER2",
-//     label: "TOWER 2",
-//   },
-//   {
-//     value: "TOWER3",
-//     label: "TOWER 3",
-//   },
-// ];
-// const wing = [
-//   {
-//     value: "East",
-//     label: "East",
-//   },
-//   {
-//     value: "North",
-//     label: "North",
-//   },
-//   {
-//     value: "South",
-//     label: "South",
-//   },
-//   {
-//     value: "West",
-//     label: "West",
-//   },
-// ];
-// const exposure = [
-//   {
-//     value: "{1}",
-//     label: "Mountain View",
-//   },
-//   {
-//     value: "{2}",
-//     label: "Sea View",
-//   },
-//   {
-//     value: "{3}",
-//     label: "Town View",
-//   },
-//   {
-//     value: "{4}",
-//     label: "Market View",
-//   },
-// ];
-// const roomSize = [
-//   {
-//     value: "SQ56",
-//     label: "56 sq.m",
-//   },
-//   {
-//     value: "SQ100",
-//     label: "100 sq.m",
-//   },
-// ];
-// const roomSeg = [
-//   {
-//     value: "1",
-//     label: "1",
-//   },
-//   {
-//     value: "2",
-//     label: "2",
-//   },
-//   {
-//     value: "3",
-//     label: "3",
-//   },
-//   {
-//     value: "90",
-//     label: "90",
-//   },
-//   {
-//     value: "100",
-//     label: "100",
-//   },
-//   {
-//     value: "110",
-//     label: "110",
-//   },
-//   {
-//     value: "120",
-//     label: "120",
-//   },
-//   {
-//     value: "130",
-//     label: "130",
-//   },
-//   {
-//     value: "140",
-//     label: "140",
-//   },
-// ];
-// const roomStatus = [
-//   {
-//     value: "IN",
-//     label: "In House",
-//   },
-//   {
-//     value: "VC",
-//     label: "Vacant Clean",
-//   },
-// ];
-// const attribute = [
-//   {
-//     key: "BC",
-//     label: "BC",
-//   },
-//   {
-//     key: "MINIBAR",
-//     label: "Minibar",
-//   },
-//   {
-//     key: "NTV",
-//     label: "NTV",
-//   },
-//   {
-//     key: "SM",
-//     label: "SM",
-//   }
-// ];
-const userValues = "";
-
 function preventDefault(event) {
   event.preventDefault();
 }
@@ -270,6 +101,38 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 20,
     marginRight: 20,
   },
+  root: (themeState) => ({
+    "& label.MuiInputLabel-root": {
+      color: themeState.color,
+    },
+    "& label.Mui-focused": {
+      color: blue[themeState.colorlevel],
+    },
+    "& .MuiInput-underline:after": {
+      borderColor: themeState.color,
+      color: themeState.color,
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: themeState.color,
+        color: themeState.color,
+      },
+      "&:hover fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+    },
+    "&.MuiPaper-root": {
+      backgroundColor: themeState.paper,
+    },
+    "&.MuiMenu-paper": {
+      backgroundColor: themeState.paper,
+    },
+  }),
 }));
 
 export default function RoomManagement() {
@@ -933,7 +796,7 @@ export default function RoomManagement() {
 
     setDialogDeleteRoom(false);
   };
-  const classes = useStyles();
+
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -941,7 +804,7 @@ export default function RoomManagement() {
     colorlevel: "900",
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
-  const [textFieldComponent, setTextFieldComponent] = React.useState(TextField);
+
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
       setThemeState({
@@ -959,38 +822,9 @@ export default function RoomManagement() {
         colorlevel: "A200",
         // matStyle: this.classes.darkmode
       });
-      setTextFieldComponent(CssTextField);
     }
   }, [themeBackground]);
-
-  // const CssTextField = withStyles({
-  //   root: {
-  //     "& label.MuiInputLabel-root": {
-  //       color: "#FFFFFF",
-  //     },
-  //     "& label.Mui-focused": {
-  //       color: blue[200],
-  //     },
-  //     "& .MuiInput-underline:after": {
-  //       borderBottomColor: "#FFFFFF",
-  //       color: "#FFFFFF",
-  //     },
-  //     "& .MuiOutlinedInput-root": {
-  //       "& fieldset": {
-  //         borderColor: "#FFFFFF",
-  //         color: "#FFFFFF",
-  //       },
-  //       "&:hover fieldset": {
-  //         borderColor: blue["A200"],
-  //         color: "#FFFFFF",
-  //       },
-  //       "&.Mui-focused fieldset": {
-  //         borderColor: blue["A200"],
-  //         color: "#FFFFFF",
-  //       },
-  //     },
-  //   },
-  // })(TextField);
+  const classes = useStyles(themeState);
 
   return (
     <Container maxWidth="xl" style={themeState}>
@@ -1094,6 +928,7 @@ export default function RoomManagement() {
               open={dialogAddRoom}
               onClose={handleDialogAddRoomClose}
               aria-labelledby="form-dialog-title"
+              className={classes.root}
             >
               <DialogTitle
                 id="form-dialog-title"
@@ -1113,9 +948,10 @@ export default function RoomManagement() {
               >
                 <Container maxWidth="xl" disableGutters>
                   <Grid container>
-                    <CssTextField
+                    <TextField
                       autoFocus
                       select
+                      className={classes.root}
                       // id="outlined-basic"
                       label="Property"
                       variant="outlined"
@@ -1128,10 +964,9 @@ export default function RoomManagement() {
                         style: {
                           backgroundColor: themeState.paper,
                           color: themeState.color,
-                          borderColor: themeState.color,
                         },
                       }}
-                      // value={propertyDialog}
+                      value={propertyDialog}
                       onChange={(event) => handlePropertyDialog(event)}
                     >
                       {properties.map((option) => (
@@ -1146,12 +981,12 @@ export default function RoomManagement() {
                           {option.label}
                         </option>
                       ))}
-                    </CssTextField>
+                    </TextField>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         id="outlined-basic"
                         label="Room Number"
                         variant="outlined"
@@ -1169,8 +1004,8 @@ export default function RoomManagement() {
                       />
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Type"
@@ -1202,13 +1037,13 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 15 }}>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Floor"
@@ -1240,11 +1075,11 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Building"
@@ -1276,11 +1111,11 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Wing"
@@ -1312,13 +1147,13 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Exposure"
@@ -1350,11 +1185,11 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Size"
@@ -1386,13 +1221,13 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Seg"
@@ -1424,11 +1259,11 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Status"
@@ -1460,7 +1295,7 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid
@@ -1468,27 +1303,23 @@ export default function RoomManagement() {
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="center"
-                    style={{
-                      paddingTop: 10,
-                      backgroundColor: themeState.paper,
-                      color: themeState.color,
-                    }}
                   >
-                    <CssTextField
+                    <TextField
+                      className={classes.root}
                       fullWidth
                       variant="outlined"
                       selectSelectProps={{
                         native: true,
                       }}
                       style={{
+                        marginTop: 10,
                         backgroundColor: themeState.paper,
-                        borderColor: "red",
+                        color: themeState.color,
                       }}
                       InputProps={{
                         style: {
                           backgroundColor: themeState.paper,
                           color: themeState.color,
-                          borderColor: themeState.color,
                         },
                       }}
                       label="Attribute"
@@ -1501,18 +1332,19 @@ export default function RoomManagement() {
                     >
                       {attribute.map((option) => (
                         <MenuItem
+                          className={classes.root}
+                          label={option.label}
+                          name={option.label}
+                          value={option.label}
                           style={{
                             backgroundColor: themeState.paper,
                             color: themeState.color,
                           }}
-                          label={option.label}
-                          name={option.label}
-                          value={option.label}
                         >
                           {option.label}
                         </MenuItem>
                       ))}
-                    </CssTextField>
+                    </TextField>
                     {chipAttributeDialog.map((data, index) => {
                       return (
                         <Chip
@@ -1531,7 +1363,8 @@ export default function RoomManagement() {
                     alignItems="center"
                     style={{ paddingTop: 10 }}
                   >
-                    <CssTextField
+                    <TextField
+                      className={classes.root}
                       InputProps={{
                         style: {
                           backgroundColor: themeState.paper,
@@ -1609,6 +1442,10 @@ export default function RoomManagement() {
                       roomFloorDialog
                     )
                   }
+                  style={{
+                    color: themeState.background,
+                    backgroundColor: blue[themeState.colorlevel],
+                  }}
                 >
                   Save
                 </Button>
@@ -1617,21 +1454,33 @@ export default function RoomManagement() {
             {/* ---------------------------------------- */}
             {/* ==================== Dialog Edit Room ========================= */}
             <Dialog
+              className={classes.root}
               fullWidth="true"
               maxWidth="sm"
               open={dialogEditRoom}
               onClose={handleDialogEditRoomClose}
               aria-labelledby="form-dialog-title"
             >
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: blue[themeState.colorlevel],
+                }}
+              >
                 Edit Room Master
               </DialogTitle>
 
-              <DialogContent>
+              <DialogContent
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Container maxWidth="xl" disableGutters>
                   <Grid container>
-                    <CssTextField
-                      // autoFocus
+                    <TextField
+                      className={classes.root}
                       select
                       id="outlined-basic"
                       label="Property"
@@ -1648,12 +1497,12 @@ export default function RoomManagement() {
                           {option.label}
                         </option>
                       ))}
-                    </CssTextField>
+                    </TextField>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         id="outlined-basic"
                         label="Room Number"
                         variant="outlined"
@@ -1663,8 +1512,8 @@ export default function RoomManagement() {
                       />
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Type"
@@ -1681,13 +1530,13 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 15 }}>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="roomFloor"
@@ -1704,11 +1553,11 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Building"
@@ -1725,11 +1574,11 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Wing"
@@ -1746,13 +1595,13 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Exposure"
@@ -1769,11 +1618,11 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Size"
@@ -1790,13 +1639,13 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Seg"
@@ -1813,11 +1662,11 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <CssTextField
-                        // autoFocus
+                      <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Status"
@@ -1834,7 +1683,7 @@ export default function RoomManagement() {
                             {option.label}
                           </option>
                         ))}
-                      </CssTextField>
+                      </TextField>
                     </Grid>
                   </Grid>
                   <Grid
@@ -1844,31 +1693,31 @@ export default function RoomManagement() {
                     alignItems="center"
                     style={{ paddingTop: 10 }}
                   >
-                    <CssTextField
+                    <TextField
                       fullWidth
-                      // autoFocus
+                      className={classes.root}
                       variant="outlined"
-                      selectSelectProps={{
+                      SelectProps={{
                         native: true,
                       }}
                       label="Attribute"
                       select
-                      // name={key}
                       value={chipAttributeDialog}
                       onChange={(event, key) =>
                         handleSelectAttribute(event, key)
                       }
                     >
                       {attribute.map((option) => (
-                        <MenuItem
+                        <option
+                          className={classes.root}
                           label={option.label}
                           name={option.label}
                           value={option.label}
                         >
                           {option.label}
-                        </MenuItem>
+                        </option>
                       ))}
-                    </CssTextField>
+                    </TextField>
                     {chipAttributeDialog.map((data, index) => {
                       return (
                         <Chip
@@ -1889,6 +1738,7 @@ export default function RoomManagement() {
                     style={{ paddingTop: 10 }}
                   >
                     <TextField
+                      className={classes.root}
                       fullWidth
                       label="Description"
                       multiline
@@ -1926,7 +1776,13 @@ export default function RoomManagement() {
                   </div>
                 ) : null}
               </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
+              <DialogActions
+                style={{
+                  padding: 20,
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Button
                   onClick={handleDialogEditRoomClose}
                   variant="text"
@@ -1935,6 +1791,7 @@ export default function RoomManagement() {
                   Cancel
                 </Button>
                 <Button
+                  color="primary"
                   onClick={() =>
                     handleDialogEditRoomSave(
                       roomNumber,
@@ -1952,7 +1809,10 @@ export default function RoomManagement() {
                     )
                   }
                   variant="contained"
-                  color="primary"
+                  style={{
+                    color: themeState.background,
+                    backgroundColor: blue[themeState.colorlevel],
+                  }}
                 >
                   Save
                 </Button>
@@ -1969,10 +1829,21 @@ export default function RoomManagement() {
             >
               <Grid container>
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                  <DialogTitle
+                    id="form-dialog-title"
+                    style={{
+                      backgroundColor: themeState.paper,
+                      color: blue[themeState.colorlevel],
+                    }}
+                  >
                     Confirm Delete Room Information
                   </DialogTitle>
-                  <DialogContent>
+                  <DialogContent
+                    style={{
+                      backgroundColor: themeState.paper,
+                      color: themeState.color,
+                    }}
+                  >
                     <Typography>
                       <Typography
                         color="initial"
@@ -1986,7 +1857,13 @@ export default function RoomManagement() {
                       </Typography>
                     </Typography>
                   </DialogContent>
-                  <DialogActions style={{ padding: 20 }}>
+                  <DialogActions
+                    style={{
+                      padding: 20,
+                      backgroundColor: themeState.paper,
+                      color: themeState.color,
+                    }}
+                  >
                     <Grid
                       container
                       direction="row"

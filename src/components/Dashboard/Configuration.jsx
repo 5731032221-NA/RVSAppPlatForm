@@ -45,16 +45,49 @@ import {
   getconfigurationbypropertycode,
 } from "../../services/user.service";
 const useStyles = makeStyles({
-  root: {
+  root: (themeState) => ({
     flexGrow: 1,
     justifyContent: "center",
     justifySelf: "center",
     justifyItems: "center",
-  },
+    "& label.MuiInputLabel-root": {
+      color: themeState.color,
+    },
+    "& label.Mui-focused": {
+      color: blue[themeState.colorlevel],
+    },
+    "& .MuiInput-underline:after": {
+      borderColor: themeState.color,
+      color: themeState.color,
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: themeState.color,
+        color: themeState.color,
+      },
+      "&:hover fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+    },
+  }),
   selectPage: {
     minWidth: 90,
     textAlign: "center",
   },
+  // root: {
+
+  //   // "&.MuiPaper-root": {
+  //   //   backgroundColor: themeState.paper,
+  //   // },
+  //   // "&.MuiMenu-paper": {
+  //   //   backgroundColor: themeState.paper,
+  //   // },
+  // }),
 });
 
 const language = [
@@ -69,7 +102,6 @@ const language = [
 ];
 
 export default function Configuration() {
-  const classes = useStyles();
   const { store } = useContext(ReactReduxContext);
   const [expanded, setExpanded] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
@@ -88,12 +120,7 @@ export default function Configuration() {
   const [page, setPage] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState(false);
   const [errorParameter, setErrorParameter] = React.useState(null);
-  const [themeState, setThemeState] = React.useState({
-    background: "#FFFFFF",
-    color: "#000000",
-    paper: "#FFFFFF",
-    colorlevel: "900",
-  });
+
   const [data, setData] = React.useState([
     {
       id: 1000000001,
@@ -327,6 +354,13 @@ export default function Configuration() {
   ]);
   const updateproperty = useSelector((state) => state.reducer.property);
   const [property, setProperty] = React.useState(updateproperty);
+
+  const [themeState, setThemeState] = React.useState({
+    background: "#FFFFFF",
+    color: "#000000",
+    paper: "#FFFFFF",
+    colorlevel: "900",
+  });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
 
   React.useEffect(() => {
@@ -348,6 +382,7 @@ export default function Configuration() {
       });
     }
   }, [themeBackground]);
+  const classes = useStyles(themeState);
 
   React.useEffect(async () => {
     console.log("useEffect");
@@ -804,6 +839,7 @@ export default function Configuration() {
             </Menu>
 
             <Dialog
+              className={classes.root}
               fullWidth="true"
               maxWidth="xs"
               open={dialogAdd}
@@ -814,11 +850,22 @@ export default function Configuration() {
                 opacity: 0.13,
               }}
             >
-              <DialogTitle id="form-dialog-title" style={{ color: "#2D62ED" }}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: blue[themeState.colorlevel],
+                }}
+              >
                 New Master Config
               </DialogTitle>
 
-              <DialogContent>
+              <DialogContent
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Container maxWidth="xl" disableGutters>
                   {/* <TextField
                         autoFocus
@@ -841,6 +888,7 @@ export default function Configuration() {
                   <h2>Parent Name: {addChildName}</h2>
                   <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
                     <TextField
+                      className={classes.root}
                       autoFocus
                       id="outlined-basic"
                       label="Code"
@@ -853,7 +901,10 @@ export default function Configuration() {
                           justifyContent="flex-end"
                           alignItems="center"
                         >
-                          <Typography variant="title1" color="initial">
+                          <Typography
+                            variant="title1"
+                            style={{ color: themeState.color }}
+                          >
                             {code.length}/50
                           </Typography>
                         </Grid>
@@ -874,7 +925,10 @@ export default function Configuration() {
                           justifyContent="flex-end"
                           alignItems="center"
                         >
-                          <Typography variant="title1" color="initial">
+                          <Typography
+                            variant="title1"
+                            style={{ color: themeState.color }}
+                          >
                             {addChildValue.length}/50
                           </Typography>
                         </Grid>
@@ -895,7 +949,10 @@ export default function Configuration() {
                           justifyContent="flex-end"
                           alignItems="center"
                         >
-                          <Typography variant="title1" color="initial">
+                          <Typography
+                            variant="title1"
+                            style={{ color: themeState.color }}
+                          >
                             {description.length}/50
                           </Typography>
                         </Grid>
@@ -918,7 +975,13 @@ export default function Configuration() {
                   </div>
                 ) : null}
               </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
+              <DialogActions
+                style={{
+                  padding: 20,
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Button
                   onClick={handleDialogAddClose}
                   variant="text"
@@ -932,6 +995,7 @@ export default function Configuration() {
               </DialogActions>
             </Dialog>
             <Dialog
+              className={classes.root}
               fullWidth="true"
               maxWidth="xs"
               open={dialogEdit}
@@ -942,11 +1006,22 @@ export default function Configuration() {
                 opacity: 0.13,
               }}
             >
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: blue[themeState.colorlevel],
+                }}
+              >
                 Edit Master Config
               </DialogTitle>
 
-              <DialogContent>
+              <DialogContent
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Container maxWidth="xl" disableGutters>
                   <h2>Code: {code}</h2>
                   <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
@@ -964,7 +1039,10 @@ export default function Configuration() {
                           justifyContent="flex-end"
                           alignItems="center"
                         >
-                          <Typography variant="title1" color="initial">
+                          <Typography
+                            variant="title1"
+                            style={{ color: themeState.color }}
+                          >
                             {addChildValue.length}/50
                           </Typography>
                         </Grid>
@@ -988,7 +1066,10 @@ export default function Configuration() {
                             justifyContent="flex-end"
                             alignItems="center"
                           >
-                            <Typography variant="title1" color="initial">
+                            <Typography
+                              variant="title1"
+                              style={{ color: themeState.color }}
+                            >
                               {addChildNameLang.length}/50
                             </Typography>
                           </Grid>
@@ -1013,7 +1094,10 @@ export default function Configuration() {
                           justifyContent="flex-end"
                           alignItems="center"
                         >
-                          <Typography variant="title1" color="initial">
+                          <Typography
+                            variant="title1"
+                            style={{ color: themeState.color }}
+                          >
                             {description.length}/50
                           </Typography>
                         </Grid>
@@ -1036,7 +1120,13 @@ export default function Configuration() {
                   </div>
                 ) : null}
               </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
+              <DialogActions
+                style={{
+                  padding: 20,
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Button
                   onClick={handleDialogEditClose}
                   variant="text"

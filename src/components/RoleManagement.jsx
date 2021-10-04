@@ -13,9 +13,6 @@ import {
   Grid,
   Paper,
   Typography,
-  //Divider,
-  //TextField,
-  //InputAdornment,
   Button,
   FormControl,
   InputLabel,
@@ -111,6 +108,38 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 20,
     marginRight: 20,
   },
+  root: (themeState) => ({
+    "& label.MuiInputLabel-root": {
+      color: themeState.color,
+    },
+    "& label.Mui-focused": {
+      color: blue[themeState.colorlevel],
+    },
+    "& .MuiInput-underline:after": {
+      borderColor: themeState.color,
+      color: themeState.color,
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: themeState.color,
+        color: themeState.color,
+      },
+      "&:hover fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+    },
+    "&.MuiPaper-root": {
+      backgroundColor: themeState.paper,
+    },
+    "&.MuiMenu-paper": {
+      backgroundColor: themeState.paper,
+    },
+  }),
 }));
 
 const defaultdata = [
@@ -535,7 +564,6 @@ const defaultdata = [
 ];
 
 export default function RoleManagement() {
-  const classes = useStyles();
   const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false });
   const { store } = useContext(ReactReduxContext);
   const [data, setData] = React.useState([]);
@@ -1401,7 +1429,7 @@ export default function RoleManagement() {
       });
     }
   }, [themeBackground]);
-
+  const classes = useStyles(themeState);
   const renderTree = (nodes) => (
     <div>
       <TreeItem
@@ -2182,19 +2210,31 @@ export default function RoleManagement() {
           open={dialogAddRole}
           onClose={handleDialogAddRoleClose}
           aria-labelledby="form-dialog-title"
+          className={classes.root}
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: blue[themeState.colorlevel],
+                }}
+              >
                 New Role
               </DialogTitle>
 
-              <DialogContent>
+              <DialogContent
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         id="outlined-basic"
                         label="Role Code"
                         variant="outlined"
@@ -2205,6 +2245,7 @@ export default function RoleManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
+                        className={classes.root}
                         id="outlined-basic"
                         label="Role Name"
                         variant="outlined"
@@ -2226,7 +2267,7 @@ export default function RoleManagement() {
                   >
                     <TextField
                       fullWidth
-                      // autoFocus
+                      className={classes.root}
                       variant="outlined"
                       selectSelectProps={{
                         native: true,
@@ -2237,7 +2278,15 @@ export default function RoleManagement() {
                       onChange={(event) => handleSelectProperty(event)}
                     >
                       {allProperty.map((option) => (
-                        <MenuItem key={option.key} value={option.label}>
+                        <MenuItem
+                          key={option.key}
+                          value={option.label}
+                          className={classes.root}
+                          style={{
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                          }}
+                        >
                           {option.label}
                         </MenuItem>
                       ))}
@@ -2321,15 +2370,17 @@ export default function RoleManagement() {
                       onClick={handleClearAllPermission}
                       variant="contained"
                       color="inherit"
-                      style={{ marginLeft: 20 }}
+                      style={{ marginLeft: 20, color: themeState.background }}
                     >
                       Clear All Permission
                     </Button>
                   </Grid>
-                  <Divider style={{ marginTop: 10 }} />
+                  <Divider
+                    style={{ marginTop: 10, backgroundColor: themeState.color }}
+                  />
                   <Container disableGutters>
                     <TreeView
-                      // className={classes.root}
+                      className={classes.root}
                       defaultCollapseIcon={
                         <RemoveRoundedIcon
                           style={{
@@ -2342,7 +2393,7 @@ export default function RoleManagement() {
                       defaultExpandIcon={
                         <AddRoundedIcon
                           style={{
-                            backgroundColor: "#2D62ED",
+                            backgroundColor: blue[themeState.colorlevel],
                             borderRadius: 2,
                             color: "white",
                           }}
@@ -2371,7 +2422,14 @@ export default function RoleManagement() {
                   </div>
                 ) : null}
               </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
+              <DialogActions
+                className={classes.root}
+                style={{
+                  padding: 20,
+                  backgroundColor: themeState.paper,
+                  color: blue[themeState.colorlevel],
+                }}
+              >
                 <Button
                   onClick={handleDialogAddRoleClose}
                   variant="text"
@@ -2405,19 +2463,31 @@ export default function RoleManagement() {
           open={dialogEditRole}
           onClose={handleDialogEditRoleClose}
           aria-labelledby="form-dialog-title"
+          className={classes.root}
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: blue[themeState.colorlevel],
+                }}
+              >
                 Edit Role
               </DialogTitle>
 
-              <DialogContent>
+              <DialogContent
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         id="outlined-basic"
                         label="Role Code"
                         variant="outlined"
@@ -2429,6 +2499,7 @@ export default function RoleManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
+                        className={classes.root}
                         id="outlined-basic"
                         label="Role Name"
                         variant="outlined"
@@ -2452,10 +2523,16 @@ export default function RoleManagement() {
                   >
                     <TextField
                       fullWidth
-                      // autoFocus
+                      className={classes.root}
                       variant="outlined"
                       selectSelectProps={{
                         native: true,
+                      }}
+                      InputProps={{
+                        style: {
+                          backgroundColor: themeState.paper,
+                          color: themeState.color,
+                        },
                       }}
                       label="Property"
                       select
@@ -2463,7 +2540,15 @@ export default function RoleManagement() {
                       onChange={(event) => handleSelectProperty(event)}
                     >
                       {allProperty.map((option) => (
-                        <MenuItem key={option.key} value={option.label}>
+                        <MenuItem
+                          key={option.key}
+                          value={option.label}
+                          className={classes.root}
+                          style={{
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                          }}
+                        >
                           {option.label}
                         </MenuItem>
                       ))}
@@ -2487,6 +2572,7 @@ export default function RoleManagement() {
                     style={{ paddingTop: 10 }}
                   >
                     <TextField
+                      className={classes.root}
                       fullWidth
                       label="Description"
                       // value={editDescription}
@@ -2540,7 +2626,9 @@ export default function RoleManagement() {
                       labelPlacement="start"
                     />
                   </Grid>
-                  <Divider style={{ marginTop: 15 }} />
+                  <Divider
+                    style={{ marginTop: 15, backgroundColor: themeState.color }}
+                  />
                   <Grid
                     container
                     alignItems="center"
@@ -2563,7 +2651,7 @@ export default function RoleManagement() {
                       onClick={handleClearAllPermission}
                       variant="contained"
                       color="inherit"
-                      style={{ marginLeft: 20 }}
+                      style={{ marginLeft: 20, color: themeState.background }}
                     >
                       Clear All Permission
                     </Button>
@@ -2571,7 +2659,7 @@ export default function RoleManagement() {
                   <Divider style={{ marginTop: 10 }} />
                   <Container disableGutters>
                     <TreeView
-                      // className={classes.root}
+                      className={classes.root}
                       defaultCollapseIcon={
                         <RemoveRoundedIcon
                           style={{
@@ -2584,7 +2672,7 @@ export default function RoleManagement() {
                       defaultExpandIcon={
                         <AddRoundedIcon
                           style={{
-                            backgroundColor: "#2D62ED",
+                            backgroundColor: blue[themeState.colorlevel],
                             borderRadius: 2,
                             color: "white",
                           }}
@@ -2613,7 +2701,14 @@ export default function RoleManagement() {
                   </div>
                 ) : null}
               </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
+              <DialogActions
+                className={classes.root}
+                style={{
+                  padding: 20,
+                  backgroundColor: themeState.paper,
+                  color: blue[themeState.colorlevel],
+                }}
+              >
                 <Button
                   onClick={handleDialogEditRoleClose}
                   variant="text"
@@ -2645,13 +2740,25 @@ export default function RoleManagement() {
           open={dialogDeleteRole}
           onClose={handleDialogDeleteRoleClose}
           aria-labelledby="form-dialog-title"
+          className={classes.root}
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{
+                  color: blue[themeState.colorlevel],
+                  backgroundColor: themeState.paper,
+                }}
+              >
                 Confirm Delete Role
               </DialogTitle>
-              <DialogContent>
+              <DialogContent
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Typography>
                   <Typography
                     color="initial"
@@ -2689,7 +2796,13 @@ export default function RoleManagement() {
                   </Typography>
                 </Typography>
               </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
+              <DialogActions
+                style={{
+                  padding: 20,
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Grid
                   container
                   direction="row"

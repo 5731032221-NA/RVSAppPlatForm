@@ -12,9 +12,7 @@ import {
   Grid,
   Paper,
   Typography,
-  //Divider,
-  //TextField,
-  //InputAdornment,
+  InputAdornment,
   Button,
   FormControl,
   InputLabel,
@@ -25,6 +23,7 @@ import {
   TextField,
   Chip,
   Divider,
+  FilledInput,
 } from "@material-ui/core";
 
 import UpdateIcon from "@material-ui/icons/Update";
@@ -163,6 +162,38 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 20,
     marginRight: 20,
   },
+  root: (themeState) => ({
+    "& label.MuiInputLabel-root": {
+      color: themeState.color,
+    },
+    "& label.Mui-focused": {
+      color: blue[themeState.colorlevel],
+    },
+    "& .MuiInput-underline:after": {
+      borderColor: themeState.color,
+      color: themeState.color,
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: themeState.color,
+        color: themeState.color,
+      },
+      "&:hover fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+    },
+    "&.MuiPaper-root": {
+      backgroundColor: themeState.paper,
+    },
+    "&.MuiMenu-paper": {
+      backgroundColor: themeState.paper,
+    },
+  }),
 }));
 
 var roles = [];
@@ -589,7 +620,6 @@ const defaultdata = [
 ];
 
 export default function UserManagement() {
-  const classes = useStyles();
   const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false });
   const [position, setPosition] = useState([
     { key: "Administrator", label: "Administrator" },
@@ -1374,6 +1404,7 @@ export default function UserManagement() {
       });
     }
   }, [themeBackground]);
+  const classes = useStyles(themeState);
 
   const renderTree = (nodes) => (
     <div>
@@ -2409,6 +2440,7 @@ export default function UserManagement() {
           open={dialogAddUser}
           onClose={handleDialogAddUserClose}
           aria-labelledby="form-dialog-title"
+          className={classes.root}
         >
           <Grid container>
             <Grid
@@ -2419,16 +2451,27 @@ export default function UserManagement() {
               lg={dialogRatio}
               xl={dialogRatio}
             >
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: blue[themeState.colorlevel],
+                }}
+              >
                 New User
               </DialogTitle>
 
-              <DialogContent>
+              <DialogContent
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         id="outlined-basic"
                         label="Username"
                         variant="outlined"
@@ -2438,7 +2481,7 @@ export default function UserManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         id="outlined-basic"
                         label="Firstname"
                         variant="outlined"
@@ -2448,6 +2491,7 @@ export default function UserManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
+                        className={classes.root}
                         id="outlined-basic"
                         label="Lastname"
                         variant="outlined"
@@ -2492,10 +2536,16 @@ export default function UserManagement() {
                   >
                     <TextField
                       fullWidth
-                      // autoFocus
+                      className={classes.root}
                       variant="outlined"
                       selectSelectProps={{
                         native: true,
+                      }}
+                      InputProps={{
+                        style: {
+                          backgroundColor: themeState.paper,
+                          color: themeState.color,
+                        },
                       }}
                       label="Roles"
                       select
@@ -2504,6 +2554,11 @@ export default function UserManagement() {
                     >
                       {roles.map((option) => (
                         <MenuItem
+                          className={classes.root}
+                          style={{
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                          }}
                           key={option.key}
                           name={option.key}
                           value={option.label}
@@ -2527,8 +2582,14 @@ export default function UserManagement() {
                     <Divider />
                   </Grid>
                   <TextField
+                    className={classes.root}
                     fullWidth
-                    // autoFocus
+                    InputProps={{
+                      style: {
+                        backgroundColor: themeState.paper,
+                        color: themeState.color,
+                      },
+                    }}
                     variant="outlined"
                     selectSelectProps={{
                       native: true,
@@ -2542,6 +2603,11 @@ export default function UserManagement() {
                   >
                     {properties.map((option) => (
                       <MenuItem
+                        className={classes.root}
+                        style={{
+                          backgroundColor: themeState.paper,
+                          color: themeState.color,
+                        }}
                         key={option.key}
                         name={option.key}
                         value={option.label}
@@ -2563,6 +2629,7 @@ export default function UserManagement() {
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Position"
@@ -2571,11 +2638,24 @@ export default function UserManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: {
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                          },
+                        }}
                         value={selectPosition}
                         onChange={handleSelectPosition}
                       >
                         {position.map((option) => (
-                          <option key={option.key} value={option.label}>
+                          <option
+                            style={{
+                              backgroundColor: themeState.paper,
+                              color: themeState.color,
+                            }}
+                            key={option.key}
+                            value={option.label}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -2624,7 +2704,7 @@ export default function UserManagement() {
                   {selectPosition == "Add new position" ? (
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         id="outlined-basic"
                         label="Position"
                         variant="outlined"
@@ -2646,7 +2726,12 @@ export default function UserManagement() {
                       xl={12}
                       style={{ paddingTop: 10 }}
                     ></Grid>
-                    <Divider style={{ marginTop: 10 }} />
+                    <Divider
+                      style={{
+                        marginTop: 10,
+                        backgroundColor: themeState.color,
+                      }}
+                    />
                     <Container disableGutters>
                       <Button
                         style={{ margin: 15 }}
@@ -2656,7 +2741,7 @@ export default function UserManagement() {
                         Reset to Default
                       </Button>
                       <TreeView
-                        // className={classes.root}
+                        className={classes.root}
                         defaultCollapseIcon={
                           <RemoveRoundedIcon
                             style={{
@@ -2669,7 +2754,7 @@ export default function UserManagement() {
                         defaultExpandIcon={
                           <AddRoundedIcon
                             style={{
-                              backgroundColor: "#2D62ED",
+                              backgroundColor: blue[themeState.colorlevel],
                               borderRadius: 2,
                               color: "white",
                             }}
@@ -2697,13 +2782,19 @@ export default function UserManagement() {
               </DialogContent>
             </Grid>
           </Grid>
-          <DialogActions style={{ padding: 20 }}>
+          <DialogActions
+            className={classes.root}
+            style={{
+              padding: 20,
+              backgroundColor: themeState.paper,
+              color: blue[themeState.colorlevel],
+            }}
+          >
             {!permissionDialog ? (
               <Grid item style={{ flexGrow: 1 }}>
                 <Button
                   onClick={handlePermission}
                   variant="contained"
-                  // color="#20C1BB"
                   style={{ backgroundColor: "#20C1BB", color: "white" }}
                 >
                   <VpnKeyOutlinedIcon style={{ marginRight: 15 }} />
@@ -2744,6 +2835,7 @@ export default function UserManagement() {
           open={dialogEditUser}
           onClose={handleDialogEditUserClose}
           aria-labelledby="form-dialog-title"
+          className={classes.root}
         >
           <Grid container>
             <Grid
@@ -2754,15 +2846,26 @@ export default function UserManagement() {
               lg={dialogRatio}
               xl={dialogRatio}
             >
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: blue[themeState.colorlevel],
+                }}
+              >
                 Edit User
               </DialogTitle>
-              <DialogContent>
+              <DialogContent
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         id="outlined-basic"
                         label="Username"
                         variant="outlined"
@@ -2773,7 +2876,7 @@ export default function UserManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         id="outlined-basic"
                         label="Firstname"
                         variant="outlined"
@@ -2784,6 +2887,7 @@ export default function UserManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
+                        className={classes.root}
                         id="outlined-basic"
                         label="Lastname"
                         variant="outlined"
@@ -2829,10 +2933,16 @@ export default function UserManagement() {
                   >
                     <TextField
                       fullWidth
-                      // autoFocus
+                      className={classes.root}
                       variant="outlined"
                       selectSelectProps={{
                         native: true,
+                      }}
+                      InputProps={{
+                        style: {
+                          backgroundColor: themeState.paper,
+                          color: themeState.color,
+                        },
                       }}
                       label="Roles"
                       select
@@ -2841,6 +2951,11 @@ export default function UserManagement() {
                     >
                       {roles.map((option) => (
                         <MenuItem
+                          className={classes.root}
+                          style={{
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                          }}
                           key={option.key}
                           name={option.key}
                           value={option.label}
@@ -2865,7 +2980,7 @@ export default function UserManagement() {
                   </Grid>
                   <TextField
                     fullWidth
-                    // autoFocus
+                    className={classes.root}
                     variant="outlined"
                     selectSelectProps={{
                       native: true,
@@ -2879,6 +2994,11 @@ export default function UserManagement() {
                   >
                     {properties.map((option) => (
                       <MenuItem
+                        className={classes.root}
+                        style={{
+                          backgroundColor: themeState.paper,
+                          color: themeState.color,
+                        }}
                         key={option.key}
                         name={option.key}
                         value={option.label}
@@ -2900,6 +3020,7 @@ export default function UserManagement() {
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Position"
@@ -2908,12 +3029,25 @@ export default function UserManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: {
+                            backgroundColor: themeState.paper,
+                            color: themeState.color,
+                          },
+                        }}
                         value={selectPosition}
                         // defaultValue={selectPosition}
                         onChange={handleSelectPosition}
                       >
                         {position.map((option) => (
-                          <option key={option.key} value={option.label}>
+                          <option
+                            style={{
+                              backgroundColor: themeState.paper,
+                              color: themeState.color,
+                            }}
+                            key={option.key}
+                            value={option.label}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -2961,7 +3095,7 @@ export default function UserManagement() {
                     {selectPosition == "Add new position" ? (
                       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                         <TextField
-                          // autoFocus
+                          className={classes.root}
                           id="outlined-basic"
                           label="Position"
                           variant="outlined"
@@ -2985,7 +3119,12 @@ export default function UserManagement() {
                       xl={12}
                       style={{ paddingTop: 10 }}
                     ></Grid>
-                    <Divider style={{ marginTop: 10 }} />
+                    <Divider
+                      style={{
+                        marginTop: 10,
+                        backgroundColor: themeState.color,
+                      }}
+                    />
                     <Container disableGutters>
                       <Button
                         style={{ margin: 15 }}
@@ -3008,7 +3147,7 @@ export default function UserManagement() {
                         defaultExpandIcon={
                           <AddRoundedIcon
                             style={{
-                              backgroundColor: "#2D62ED",
+                              backgroundColor: blue[themeState.colorlevel],
                               borderRadius: 2,
                               color: "white",
                             }}
@@ -3035,7 +3174,14 @@ export default function UserManagement() {
                 ) : null}
               </DialogContent>
 
-              <DialogActions style={{ padding: 20 }}>
+              <DialogActions
+                className={classes.root}
+                style={{
+                  padding: 20,
+                  backgroundColor: themeState.paper,
+                  color: blue[themeState.colorlevel],
+                }}
+              >
                 <Grid container>
                   <Grid item style={{ flexGrow: 1 }}>
                     {!permissionDialog ? (
@@ -3083,6 +3229,7 @@ export default function UserManagement() {
 
         {/* ==================== Dialog Delete User========================= */}
         <Dialog
+          className={classes.root}
           maxWidth="sm"
           open={dialogDeleteUser}
           onClose={handleDialogDeleteUserClose}
@@ -3090,10 +3237,21 @@ export default function UserManagement() {
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{
+                  color: blue[themeState.colorlevel],
+                  backgroundColor: themeState.paper,
+                }}
+              >
                 Confirm Delete User
               </DialogTitle>
-              <DialogContent>
+              <DialogContent
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Typography>
                   <Typography
                     color="initial"
@@ -3131,7 +3289,13 @@ export default function UserManagement() {
                   </Typography>
                 </Typography>
               </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
+              <DialogActions
+                style={{
+                  padding: 20,
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Grid
                   container
                   direction="row"

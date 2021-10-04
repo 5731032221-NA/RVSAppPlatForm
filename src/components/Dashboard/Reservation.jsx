@@ -68,33 +68,33 @@ export class Reservation extends Component {
           });
         }
       }
-      if (this.state.themeBackground != this.props.themeBackground) {
-        console.log(this.state.themeBackground, this.props.themeBackground);
-        if (this.props.themeBackground === "#FFFFFF") {
-          this.setState({
-            themeState: {
-              background: "#FFFFFF",
-              color: "#000000",
-              paper: "#FFFFFF",
-              colorlevel: "900",
-              // matStyle: this.classes.normalmode
-            },
-          });
-        } else {
-          this.setState({
-            themeState: {
-              background: "#212121",
-              color: "#FAFAFA",
-              paper: "#424242",
-              colorlevel: "800",
-              // matStyle: this.classes.darkmode
-            },
-          });
-        }
-        this.setState({ themeBackground: this.props.themeBackground });
-        console.log(this.props.themeBackground);
-      }
     }, 1000);
+    if (this.state.themeBackground != this.props.themeBackground) {
+      console.log(this.state.themeBackground, this.props.themeBackground);
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({
+          themeState: {
+            background: "#FFFFFF",
+            color: "#000000",
+            paper: "#FFFFFF",
+            colorlevel: "900",
+            // matStyle: this.classes.normalmode
+          },
+        });
+      } else {
+        this.setState({
+          themeState: {
+            background: "#212121",
+            color: "#FAFAFA",
+            paper: "#424242",
+            colorlevel: "800",
+            // matStyle: this.classes.darkmode
+          },
+        });
+      }
+      this.setState({ themeBackground: this.props.themeBackground });
+      console.log(this.props.themeBackground);
+    }
 
     const item = await getweather();
 
