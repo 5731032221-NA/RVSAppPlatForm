@@ -42,9 +42,9 @@ import TablePagination from "@material-ui/core/TablePagination";
 import { EDIT_CONFIGSTATE } from "../middleware/action";
 
 // Generate Order Data
-function createData(id,propertycode, code, type, name, macaddress, ip) {
+function createData(id, propertycode, code, type, name, macaddress, ip) {
     return {
-        id,propertycode, code, type, name, macaddress, ip
+        id, propertycode, code, type, name, macaddress, ip
     };
 }
 
@@ -109,7 +109,7 @@ export default function DeviceManager() {
         _data.content[_data.content.length - 1].forEach((element) =>
             devicedata.push(
                 createData(
-                    element.id,element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
+                    element.id, element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
                 )
             )
         );
@@ -162,7 +162,7 @@ export default function DeviceManager() {
     const handleDialogEdit = async (rowData) => {
         let _rowData = JSON.parse(JSON.stringify(rowData));
         _rowData.tableData = undefined;
-        console.log("handleDialogEdit",_rowData)
+        console.log("handleDialogEdit", _rowData)
         let propertydata = await listallproperty(sessionStorage.getItem("auth"));
         let tempproperty = [];
         propertydata.content[propertydata.content.length - 1]
@@ -187,21 +187,32 @@ export default function DeviceManager() {
 
     const handleInsert = async () => {
         console.log(updateData);
-        let _inserthardware = await inserthardware(sessionStorage.getItem("auth"), updateData);
-        if (_inserthardware.status == '2000') {
-            let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
-            let devicedata = [];
-            // let i = 0;
-            _data.content[_data.content.length - 1].forEach((element) =>
-                devicedata.push(
-                    createData(
-                        element.id,element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
+        if (updateData.code == null || updateData.code == "") {
+            setErrorMessage(true);
+            setErrorParameter("Device Code");
+        }
+        else if (updateData.name == null || updateData.name == "") {
+            setErrorMessage(true);
+            setErrorParameter("Device Name");
+        }
+        else {
+            setErrorMessage(false);
+            let _inserthardware = await inserthardware(sessionStorage.getItem("auth"), updateData);
+            if (_inserthardware.status == '2000') {
+                let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+                let devicedata = [];
+                // let i = 0;
+                _data.content[_data.content.length - 1].forEach((element) =>
+                    devicedata.push(
+                        createData(
+                            element.id, element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
+                        )
                     )
-                )
-            );
-            setRows(devicedata);
-            updatePageData(devicedata, page, rowsPerPage);
-            setDialogAdd(false);
+                );
+                setRows(devicedata);
+                updatePageData(devicedata, page, rowsPerPage);
+                setDialogAdd(false);
+            }
         }
     };
 
@@ -214,7 +225,7 @@ export default function DeviceManager() {
             _data.content[_data.content.length - 1].forEach((element) =>
                 devicedata.push(
                     createData(
-                        element.id,element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
+                        element.id, element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
                     )
                 )
             );
@@ -225,7 +236,6 @@ export default function DeviceManager() {
     };
 
     const handleEdit = async (id) => {
-        console.log("handleEdit",updateData)
         let _updatehardware = await updatehardware(sessionStorage.getItem("auth"), id, updateData);
         if (_updatehardware.status == '2000') {
             let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
@@ -234,7 +244,7 @@ export default function DeviceManager() {
             _data.content[_data.content.length - 1].forEach((element) =>
                 devicedata.push(
                     createData(
-                        element.id,element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
+                        element.id, element.propertycode, element.code, element.type, element.name, element.macaddress, element.ip
                     )
                 )
             );
@@ -501,7 +511,11 @@ export default function DeviceManager() {
 
                                     </Grid>
                                 </Container>
-                                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                                {errorMessage ?
+                                    <div style={{ marginTop: 15 }}>
+                                        <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div>
+                                    </div>
+                                    : null}
                             </DialogContent>
                         </Grid>
                     </Grid>
@@ -641,7 +655,9 @@ export default function DeviceManager() {
 
                                     </Grid>
                                 </Container>
-                                {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                                <div style={{ marginTop: 15 }}>
+                                    {errorMessage ? <div style={{ background: "#ff0033", textAlign: "center", color: "white", height: "30px", paddingTop: 5 }}>{errorParameter} is required</div> : null}
+                                </div>
                             </DialogContent>
                         </Grid>
                     </Grid>
