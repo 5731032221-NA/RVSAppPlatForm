@@ -78,6 +78,7 @@ export default function MainListItems() {
             setLang(settinglang)
             if (settinglang == 'th') setTranslate(translate_th)
             else if (settinglang == 'en') setTranslate(translate_en)
+            else setTranslate(translate_en)
         }
     }, 1000);
 

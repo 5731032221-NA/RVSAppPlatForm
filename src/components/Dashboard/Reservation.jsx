@@ -51,26 +51,25 @@ export class Reservation extends Component {
   }
 
   async componentDidMount() {
-    this.interval = setInterval(() => {
-      if (this.state.lang != this.props.lang) {
-        this.setState({ lang: "th" });
-        if (this.props.lang == "th") {
-          this.setState({
-            lang: "th",
-            Dashboard: th_lang.Dashboard,
-            color: this.props.color,
-          });
-        } else if (this.props.lang == "en") {
-          this.setState({
-            lang: "en",
-            Dashboard: en_lang.Dashboard,
-            color: this.props.color,
-          });
-        }
+    // this.interval = setInterval(() => {}, 1000);
+    if (this.state.lang != this.props.lang) {
+      this.setState({ lang: "th" });
+      if (this.props.lang == "th") {
+        this.setState({
+          lang: "th",
+          Dashboard: th_lang.Dashboard,
+          color: this.props.color,
+        });
+      } else if (this.props.lang == "en") {
+        this.setState({
+          lang: "en",
+          Dashboard: en_lang.Dashboard,
+          color: this.props.color,
+        });
       }
-    }, 1000);
+    }
     if (this.state.themeBackground != this.props.themeBackground) {
-      console.log(this.state.themeBackground, this.props.themeBackground);
+      // console.log(this.state.themeBackground, this.props.themeBackground);
       if (this.props.themeBackground === "#FFFFFF") {
         this.setState({
           themeState: {
@@ -93,11 +92,9 @@ export class Reservation extends Component {
         });
       }
       this.setState({ themeBackground: this.props.themeBackground });
-      console.log(this.props.themeBackground);
+      // console.log(this.props.themeBackground);
     }
-
     const item = await getweather();
-
     this.setState({
       weatherdata: {
         day: new Date(item.dt * 1000).toLocaleString("en-us", {
@@ -130,13 +127,58 @@ export class Reservation extends Component {
     this.setState({ forcast: forecasttemp });
   }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+  // componentWillUnmount() {
+  //   clearInterval(this.interval);
+  // }
   // Test = () => {
   //   console.log("weatherdata", this.state.weatherdata);
   //   console.log("forcast", this.state.forcast);
   // };
+
+  componentDidUpdate() {
+    if (this.state.lang != this.props.lang) {
+      this.setState({ lang: "th" });
+      if (this.props.lang == "th") {
+        this.setState({
+          lang: "th",
+          Dashboard: th_lang.Dashboard,
+          color: this.props.color,
+        });
+      } else if (this.props.lang == "en") {
+        this.setState({
+          lang: "en",
+          Dashboard: en_lang.Dashboard,
+          color: this.props.color,
+        });
+      }
+    }
+    if (this.state.themeBackground != this.props.themeBackground) {
+      // console.log(this.state.themeBackground, this.props.themeBackground);
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({
+          themeState: {
+            background: "#FFFFFF",
+            color: "#000000",
+            paper: "#FFFFFF",
+            colorlevel: "900",
+            // matStyle: this.classes.normalmode
+          },
+        });
+      } else {
+        this.setState({
+          themeState: {
+            background: "#212121",
+            color: "#FAFAFA",
+            paper: "#424242",
+            colorlevel: "800",
+            // matStyle: this.classes.darkmode
+          },
+        });
+      }
+      this.setState({ themeBackground: this.props.themeBackground });
+      // console.log(this.props.themeBackground);
+    }
+  }
 
   render() {
     return (

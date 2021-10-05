@@ -51,56 +51,103 @@ export class FrontDesk extends Component {
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => {
-      if (this.state.lang != this.props.lang) {
-        this.setState({ lang: "th" });
-        if (this.props.lang == "th") {
-          this.setState({
-            lang: "th",
-            Dashboard: th_lang.Dashboard,
-            color: this.props.color,
-          });
-        } else if (this.props.lang == "en") {
-          this.setState({
-            lang: "en",
-            Dashboard: en_lang.Dashboard,
-            color: this.props.color,
-          });
-        }
+    // this.interval = setInterval(() => {
+    // }, 1000);
+    if (this.state.lang != this.props.lang) {
+      this.setState({ lang: "th" });
+      if (this.props.lang == "th") {
+        this.setState({
+          lang: "th",
+          Dashboard: th_lang.Dashboard,
+          color: this.props.color,
+        });
+      } else if (this.props.lang == "en") {
+        this.setState({
+          lang: "en",
+          Dashboard: en_lang.Dashboard,
+          color: this.props.color,
+        });
       }
-      console.log("this.props.themeBackground", this.props.themeBackground);
+    }
+    console.log("this.props.themeBackground", this.props.themeBackground);
 
-      if (this.state.themeBackground != this.props.themeBackground) {
-        console.log(this.state.themeBackground, this.props.themeBackground);
-        if (this.props.themeBackground === "#FFFFFF") {
-          this.setState({
-            themeState: {
-              background: "#FFFFFF",
-              color: "#000000",
-              paper: "#FFFFFF",
-              colorlevel: "900",
-              // matStyle: this.classes.normalmode
-            },
-          });
-        } else {
-          this.setState({
-            themeState: {
-              background: "#212121",
-              color: "#FAFAFA",
-              paper: "#424242",
-              colorlevel: "A200",
-              // matStyle: this.classes.darkmode
-            },
-          });
-        }
-        this.setState({ themeBackground: this.props.themeBackground });
-        console.log(this.props.themeBackground);
+    if (this.state.themeBackground != this.props.themeBackground) {
+      console.log(this.state.themeBackground, this.props.themeBackground);
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({
+          themeState: {
+            background: "#FFFFFF",
+            color: "#000000",
+            paper: "#FFFFFF",
+            colorlevel: "900",
+            // matStyle: this.classes.normalmode
+          },
+        });
+      } else {
+        this.setState({
+          themeState: {
+            background: "#212121",
+            color: "#FAFAFA",
+            paper: "#424242",
+            colorlevel: "A200",
+            // matStyle: this.classes.darkmode
+          },
+        });
       }
-    }, 1000);
+      this.setState({ themeBackground: this.props.themeBackground });
+      console.log(this.props.themeBackground);
+    }
   }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
+  // componentWillUnmount() {
+  //   clearInterval(this.interval);
+  // }
+
+  componentDidUpdate() {
+    if (this.state.lang != this.props.lang) {
+      this.setState({ lang: "th" });
+      if (this.props.lang == "th") {
+        this.setState({
+          lang: "th",
+          Dashboard: th_lang.Dashboard,
+          color: this.props.color,
+        });
+      } else if (this.props.lang == "en") {
+        this.setState({
+          lang: "en",
+          Dashboard: en_lang.Dashboard,
+          color: this.props.color,
+        });
+      }
+    }
+    console.log("this.props.themeBackground", this.props.themeBackground);
+
+    if (this.state.themeBackground != this.props.themeBackground) {
+      console.log(this.state.themeBackground, this.props.themeBackground);
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({
+          themeState: {
+            background: "#FFFFFF",
+            color: "#000000",
+            paper: "#FFFFFF",
+            colorlevel: "900",
+            // matStyle: this.classes.normalmode
+          },
+        });
+      } else {
+        this.setState({
+          themeState: {
+            background: "#212121",
+            color: "#FAFAFA",
+            paper: "#424242",
+            colorlevel: "A200",
+            // matStyle: this.classes.darkmode
+          },
+        });
+      }
+      this.setState({ themeBackground: this.props.themeBackground });
+      console.log(this.props.themeBackground);
+    }
   }
 
   render() {
