@@ -30,7 +30,6 @@ export class Reservation extends Component {
     this.props.getUserList();
     this.state = {
       lang: "en",
-
       Dashboard: en_lang.Dashboard,
       color: this.props.color,
       themeBackground: "#FFFFFF",
@@ -68,8 +67,10 @@ export class Reservation extends Component {
         });
       }
     }
+
     if (this.state.themeBackground != this.props.themeBackground) {
       // console.log(this.state.themeBackground, this.props.themeBackground);
+
       if (this.props.themeBackground === "#FFFFFF") {
         this.setState({
           themeState: {
@@ -80,6 +81,7 @@ export class Reservation extends Component {
             // matStyle: this.classes.normalmode
           },
         });
+        // this.setState({ color: this.props.color });
       } else {
         this.setState({
           themeState: {
@@ -90,9 +92,15 @@ export class Reservation extends Component {
             // matStyle: this.classes.darkmode
           },
         });
+        // this.setState({ color: "#2D62ED" });
       }
-      this.setState({ themeBackground: this.props.themeBackground });
-      // console.log(this.props.themeBackground);
+    }
+    if (this.state.color != this.props.color) {
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({ color: this.props.color });
+      } else {
+        this.setState({ color: this.props.defaultColor });
+      }
     }
     const item = await getweather();
     this.setState({
@@ -164,6 +172,7 @@ export class Reservation extends Component {
             // matStyle: this.classes.normalmode
           },
         });
+        // this.setState({ color: this.props.color });
       } else {
         this.setState({
           themeState: {
@@ -174,9 +183,17 @@ export class Reservation extends Component {
             // matStyle: this.classes.darkmode
           },
         });
+        // this.setState({ color: "#2D62ED" });
       }
       this.setState({ themeBackground: this.props.themeBackground });
-      // console.log(this.props.themeBackground);
+    }
+
+    if (this.state.color != this.props.color) {
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({ color: this.props.color });
+      } else {
+        // this.setState({ color: this.props.defaultColor });
+      }
     }
   }
 
@@ -196,7 +213,7 @@ export class Reservation extends Component {
                 <Paper elevation={3} style={{ minHeight: 300 }}>
                   Gride layout 12 */}
 
-          <h3 style={{ color: this.state.themeState.color, marginBottom: 30 }}>
+          <h3 style={{ color: this.state.color, marginBottom: 30 }}>
             Reservation
           </h3>
 
@@ -562,7 +579,7 @@ export class Reservation extends Component {
                       size="large"
                       variant="contained"
                       style={{
-                        backgroundColor: "#164BD8",
+                        backgroundColor: this.state.color,
                         color: "white",
                         fontSize: 18,
                       }}
@@ -735,7 +752,7 @@ export class Reservation extends Component {
                       size="large"
                       variant="contained"
                       style={{
-                        backgroundColor: "#164BD8",
+                        backgroundColor: this.state.color,
                         color: "white",
                         fontSize: 18,
                       }}
@@ -1127,7 +1144,7 @@ export class Reservation extends Component {
                       size="large"
                       variant="contained"
                       style={{
-                        backgroundColor: "#164BD8",
+                        backgroundColor: this.state.color,
                         color: "white",
                         fontSize: 18,
                       }}
@@ -1265,7 +1282,7 @@ export class Reservation extends Component {
                       size="large"
                       variant="contained"
                       style={{
-                        backgroundColor: "#164BD8",
+                        backgroundColor: this.state.color,
                         color: "white",
                         fontSize: 18,
                       }}
@@ -1403,6 +1420,7 @@ const mapStateToProps = (state) => {
   return {
     lang: state.reducer.lang,
     color: state.reducer.color,
+    defaultColor: state.reducer.defaultColor,
     themeBackground: state.reducer.themeBackground,
   };
 };

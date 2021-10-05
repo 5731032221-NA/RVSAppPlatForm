@@ -140,6 +140,27 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: themeState.paper,
     },
   }),
+  roottable: {
+    backgroundColor: "blue",
+    color: "green",
+  },
+  toolbar: {
+    backgroundColor: "white",
+  },
+  caption: {
+    color: "red",
+    fontSize: "20px",
+  },
+  selectIcon: {
+    color: "green",
+  },
+  select: {
+    color: "green",
+    fontSize: "20px",
+  },
+  actions: {
+    color: "blue",
+  },
 }));
 
 const defaultdata = [
@@ -1429,6 +1450,17 @@ export default function RoleManagement() {
       });
     }
   }, [themeBackground]);
+  const [mainColor, setMainColor] = React.useState("#2D62ED");
+  const maincolor = useSelector((state) => state.reducer.color);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setMainColor(maincolor);
+    } else {
+      setMainColor("#2D62ED");
+    }
+  }, [maincolor]);
+
   const classes = useStyles(themeState);
   const renderTree = (nodes) => (
     <div>
@@ -1899,7 +1931,7 @@ export default function RoleManagement() {
                   style={{
                     marginBottom: 15,
                     fontSize: 20,
-                    color: blue[themeState.colorlevel],
+                    color: mainColor,
                   }}
                 >
                   Configuration
@@ -1936,7 +1968,7 @@ export default function RoleManagement() {
               <Button
                 variant="outlined"
                 style={{
-                  backgroundColor: blue[themeState.colorlevel],
+                  backgroundColor: mainColor,
                   color: "white",
                   alignItems: "center",
                 }}
@@ -1944,9 +1976,7 @@ export default function RoleManagement() {
                 onClick={handleDialogAddRole}
               >
                 <AddRoundedIcon />
-                <Typography variant="body1" style={{}}>
-                  New Role
-                </Typography>
+                <Typography variant="body1">New Role</Typography>
               </Button>
             </Grid>
           ) : null}
@@ -2108,7 +2138,7 @@ export default function RoleManagement() {
                         variant="contained"
                         style={{
                           borderRadius: 20,
-                          backgroundColor: "#2D62ED",
+                          backgroundColor: mainColor,
                           color: "white",
                         }}
                       >
@@ -2191,6 +2221,33 @@ export default function RoleManagement() {
                   },
                 },
               ]}
+              // components={{
+              //   Pagination: (page, rowsPerPage, rows) => (
+              //     console.log("Pagination data", page, rowsPerPage, rows),
+              //     (
+              //       <TablePagination
+              //         rowsPerPageOptions={[5, 10, 25]}
+              //         component="div"
+              //         // count={rows.length}
+              //         page={page}
+              //         //   colSpan={props.colSpan}
+              //         // count={rows.length}
+
+              //         rowsPerPage={rowsPerPage}
+              //         onChangePage={handleChangePage}
+              //         onChangeRowsPerPage={handleChangeRowsPerPage}
+              //         classes={{
+              //           root: classes.roottable,
+              //           toolbar: classes.toolbar,
+              //           caption: classes.caption,
+              //           selectIcon: classes.selectIcon,
+              //           select: classes.select,
+              //           actions: classes.actions,
+              //         }}
+              //       />
+              //     )
+              //   ),
+              // }}
               onChangePage={(page) => console.log("page")}
               // onChangePage={(event, page) => console.log(event, page)}
             />
@@ -2218,7 +2275,7 @@ export default function RoleManagement() {
                 id="form-dialog-title"
                 style={{
                   backgroundColor: themeState.paper,
-                  color: blue[themeState.colorlevel],
+                  color: mainColor,
                 }}
               >
                 New Role
@@ -2362,6 +2419,7 @@ export default function RoleManagement() {
                       onClick={handleSelectAllPermission}
                       variant="contained"
                       color="primary"
+                      style={{ backgroundColor: mainColor }}
                     >
                       Select All Permission
                     </Button>
@@ -2370,7 +2428,7 @@ export default function RoleManagement() {
                       onClick={handleClearAllPermission}
                       variant="contained"
                       color="inherit"
-                      style={{ marginLeft: 20, color: themeState.background }}
+                      style={{ marginLeft: 20, color: "#000000" }}
                     >
                       Clear All Permission
                     </Button>
@@ -2427,19 +2485,20 @@ export default function RoleManagement() {
                 style={{
                   padding: 20,
                   backgroundColor: themeState.paper,
-                  color: blue[themeState.colorlevel],
                 }}
               >
                 <Button
                   onClick={handleDialogAddRoleClose}
                   variant="text"
                   color="primary"
+                  style={{ color: mainColor }}
                 >
                   Cancel
                 </Button>
                 <Button
                   variant="contained"
                   color="primary"
+                  style={{ backgroundColor: mainColor }}
                   onClick={() =>
                     handleDialogAddRoleSave(
                       roleCode,
@@ -2471,7 +2530,7 @@ export default function RoleManagement() {
                 id="form-dialog-title"
                 style={{
                   backgroundColor: themeState.paper,
-                  color: blue[themeState.colorlevel],
+                  color: mainColor,
                 }}
               >
                 Edit Role
@@ -2643,6 +2702,7 @@ export default function RoleManagement() {
                       onClick={handleSelectAllPermission}
                       variant="contained"
                       color="primary"
+                      style={{ backgroundColor: mainColor }}
                     >
                       Select All Permission
                     </Button>
@@ -2651,7 +2711,7 @@ export default function RoleManagement() {
                       onClick={handleClearAllPermission}
                       variant="contained"
                       color="inherit"
-                      style={{ marginLeft: 20, color: themeState.background }}
+                      style={{ marginLeft: 20, color: "#000000" }}
                     >
                       Clear All Permission
                     </Button>
@@ -2713,10 +2773,12 @@ export default function RoleManagement() {
                   onClick={handleDialogEditRoleClose}
                   variant="text"
                   color="primary"
+                  style={{ color: mainColor }}
                 >
                   Cancel
                 </Button>
                 <Button
+                  style={{ backgroundColor: mainColor }}
                   onClick={() =>
                     handleDialogEditRoleSave(
                       roleCode,
@@ -2747,7 +2809,7 @@ export default function RoleManagement() {
               <DialogTitle
                 id="form-dialog-title"
                 style={{
-                  color: blue[themeState.colorlevel],
+                  color: mainColor,
                   backgroundColor: themeState.paper,
                 }}
               >

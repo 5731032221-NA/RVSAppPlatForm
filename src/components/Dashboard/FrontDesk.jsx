@@ -97,6 +97,14 @@ export class FrontDesk extends Component {
       this.setState({ themeBackground: this.props.themeBackground });
       console.log(this.props.themeBackground);
     }
+
+    if (this.state.color != this.props.color) {
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({ color: this.props.color });
+      } else {
+        this.setState({ color: this.props.defaultColor });
+      }
+    }
   }
 
   // componentWillUnmount() {
@@ -120,10 +128,8 @@ export class FrontDesk extends Component {
         });
       }
     }
-    console.log("this.props.themeBackground", this.props.themeBackground);
-
     if (this.state.themeBackground != this.props.themeBackground) {
-      console.log(this.state.themeBackground, this.props.themeBackground);
+      // console.log(this.state.themeBackground, this.props.themeBackground);
       if (this.props.themeBackground === "#FFFFFF") {
         this.setState({
           themeState: {
@@ -134,19 +140,29 @@ export class FrontDesk extends Component {
             // matStyle: this.classes.normalmode
           },
         });
+        // this.setState({ color: this.props.color });
       } else {
         this.setState({
           themeState: {
             background: "#212121",
             color: "#FAFAFA",
             paper: "#424242",
-            colorlevel: "A200",
+            colorlevel: "800",
             // matStyle: this.classes.darkmode
           },
         });
+        // this.setState({ color: "#2D62ED" });
       }
       this.setState({ themeBackground: this.props.themeBackground });
-      console.log(this.props.themeBackground);
+    }
+
+    if (this.state.color != this.props.color) {
+      if (this.props.themeBackground === "#FFFFFF") {
+        console.log("data color", this.props.color);
+        this.setState({ color: this.props.color });
+      } else {
+        // this.setState({ color: this.props.defaultColor });
+      }
     }
   }
 
@@ -162,7 +178,10 @@ export class FrontDesk extends Component {
               marginTop: -20,
             }}
           >
-            <Typography variant="h6" style={{ fontSize: 22 }}>
+            <Typography
+              variant="h6"
+              style={{ fontSize: 22, color: this.state.color }}
+            >
               &nbsp;Dashboard
             </Typography>
           </div>
@@ -795,6 +814,7 @@ const mapStateToProps = (state) => {
   return {
     lang: state.reducer.lang,
     color: state.reducer.color,
+    defaultColor: state.reducer.defaultColor,
     themeBackground: state.reducer.themeBackground,
     property: state.reducer.property,
   };

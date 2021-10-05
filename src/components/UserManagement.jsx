@@ -1414,6 +1414,18 @@ export default function UserManagement() {
       });
     }
   }, [themeBackground]);
+
+  const [mainColor, setMainColor] = React.useState("#2D62ED");
+  const maincolor = useSelector((state) => state.reducer.color);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setMainColor(maincolor);
+    } else {
+      setMainColor("#2D62ED");
+    }
+  }, [maincolor]);
+
   const classes = useStyles(themeState);
 
   const renderTree = (nodes) => (
@@ -2122,7 +2134,7 @@ export default function UserManagement() {
                   style={{
                     marginBottom: 15,
                     fontSize: 20,
-                    color: blue[themeState.colorlevel],
+                    color: mainColor,
                   }}
                 >
                   Configuration
@@ -2159,7 +2171,7 @@ export default function UserManagement() {
               <Button
                 variant="outlined"
                 style={{
-                  backgroundColor: blue[themeState.colorlevel],
+                  backgroundColor: mainColor,
                   color: "white",
                   alignItems: "center",
                 }}
@@ -2366,7 +2378,7 @@ export default function UserManagement() {
                         variant="contained"
                         style={{
                           borderRadius: 20,
-                          backgroundColor: "#2D62ED",
+                          backgroundColor: mainColor,
                           color: "white",
                         }}
                       >
@@ -2424,6 +2436,7 @@ export default function UserManagement() {
               actions={[
                 {
                   icon: EditRoundedIcon,
+                  // iconProps: { style: { fontSize: "14px", color: "yellow" } },
                   tooltip: "Edit",
                   disabled: !CRUD.U,
                   onClick: (event, rowData) => {
@@ -2439,6 +2452,7 @@ export default function UserManagement() {
                 },
                 {
                   icon: DeleteRoundedIcon,
+                  // iconProps: { style: { fontSize: "14px", color: "yellow" } },
                   tooltip: "Delete",
                   disabled: !CRUD.D,
                   onClick: (event, rowData) => {
@@ -2479,7 +2493,7 @@ export default function UserManagement() {
                 id="form-dialog-title"
                 style={{
                   backgroundColor: themeState.paper,
-                  color: blue[themeState.colorlevel],
+                  color: mainColor,
                 }}
               >
                 New User
@@ -2839,13 +2853,13 @@ export default function UserManagement() {
             <Button
               onClick={handleDialogAddUserClose}
               variant="text"
-              color="primary"
+              style={{ color: mainColor }}
             >
               Cancel
             </Button>
             <Button
               variant="contained"
-              color="primary"
+              style={{ backgroundColor: mainColor, color: "#FFFFFF" }}
               onClick={() =>
                 handleInsertUser(
                   editUserID,
@@ -2885,7 +2899,7 @@ export default function UserManagement() {
                 id="form-dialog-title"
                 style={{
                   backgroundColor: themeState.paper,
-                  color: blue[themeState.colorlevel],
+                  color: mainColor,
                 }}
               >
                 Edit User
@@ -3224,7 +3238,7 @@ export default function UserManagement() {
                 style={{
                   padding: 20,
                   backgroundColor: themeState.paper,
-                  color: blue[themeState.colorlevel],
+                  color: mainColor,
                 }}
               >
                 <Grid container>
@@ -3246,6 +3260,7 @@ export default function UserManagement() {
                       onClick={handleDialogEditUserClose}
                       variant="text"
                       color="primary"
+                      style={{ color: mainColor }}
                     >
                       Cancel
                     </Button>
@@ -3263,6 +3278,7 @@ export default function UserManagement() {
                       }
                       variant="contained"
                       color="primary"
+                      style={{ backgroundColor: mainColor }}
                     >
                       Save
                     </Button>
@@ -3286,7 +3302,7 @@ export default function UserManagement() {
               <DialogTitle
                 id="form-dialog-title"
                 style={{
-                  color: blue[themeState.colorlevel],
+                  color: mainColor,
                   backgroundColor: themeState.paper,
                 }}
               >

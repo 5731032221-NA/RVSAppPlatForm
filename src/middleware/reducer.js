@@ -23,7 +23,7 @@ const initialState = {
   auth: "",
   propertys: [{ propertycode: "Novotel Pattaya" }],
   color: "#2D62ED",
-  prevColor: "#2D62ED",
+  defaultColor: "#2D62ED",
   username: "",
   compwidth: 0,
   componentState: "FrontDesk",
@@ -78,7 +78,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         color: action.payload,
-        // prevColor: this.state.color,
       };
     case EDIT_PROPERTYS:
       return {

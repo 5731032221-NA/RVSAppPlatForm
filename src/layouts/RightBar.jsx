@@ -179,11 +179,19 @@ export default function RighBar() {
       type: EDIT_COLOR,
       payload: purple[600],
     });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
+    });
   }
   function handleThemeGreen() {
     store.dispatch({
       type: EDIT_COLOR,
       payload: green[600],
+    });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
     });
   }
   function handleThemeOrange() {
@@ -191,11 +199,19 @@ export default function RighBar() {
       type: EDIT_COLOR,
       payload: orange[600],
     });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
+    });
   }
   function handleThemeRed() {
     store.dispatch({
       type: EDIT_COLOR,
       payload: red[600],
+    });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
     });
   }
   function handleThemeYellow() {
@@ -203,11 +219,19 @@ export default function RighBar() {
       type: EDIT_COLOR,
       payload: "#ff5253",
     });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
+    });
   }
   function handleThemeDefault() {
     store.dispatch({
       type: EDIT_COLOR,
       payload: "#2D62ED",
+    });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
     });
   }
 
@@ -266,6 +290,17 @@ export default function RighBar() {
     }
   }, [themeBackground]);
 
+  const [mainColor, setMainColor] = React.useState("#2D62ED");
+  const maincolor = useSelector((state) => state.reducer.color);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setMainColor(maincolor);
+    } else {
+      setMainColor("#2D62ED");
+    }
+  }, [maincolor]);
+
   return (
     <Container className={classes.Container}>
       <Grid container>
@@ -287,12 +322,18 @@ export default function RighBar() {
               </ListItemAvatar>
               <ListItemText
                 primary={
-                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
                     New user registered
                   </Typography>
                 }
                 secondary={
-                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
                     Jan 9, 2014
                   </Typography>
                 }
@@ -306,12 +347,18 @@ export default function RighBar() {
               </ListItemAvatar>
               <ListItemText
                 primary={
-                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
                     New order recived
                   </Typography>
                 }
                 secondary={
-                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
                     2 min ago
                   </Typography>
                 }
@@ -326,12 +373,18 @@ export default function RighBar() {
               </ListItemAvatar>
               <ListItemText
                 primary={
-                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
                     New message from Mail
                   </Typography>
                 }
                 secondary={
-                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
                     1 hour ago
                   </Typography>
                 }
@@ -525,10 +578,7 @@ export default function RighBar() {
           style={{ marginTop: 20 }}
         >
           <Grid item style={{ flexGrow: 1 }}>
-            <Button
-              color="primary"
-              style={{ color: blue[themeState.colorlevel] }}
-            >
+            <Button color="primary" style={{ color: mainColor }}>
               {" "}
               &nbsp;&nbsp; TEXT &nbsp;&nbsp;{" "}
             </Button>
@@ -555,7 +605,7 @@ export default function RighBar() {
               color="primary"
               style={{
                 borderRadius: 25,
-                backgroundColor: blue[themeState.colorlevel],
+                backgroundColor: mainColor,
               }}
             >
               ROUNDED
@@ -581,7 +631,7 @@ export default function RighBar() {
             <Button
               variant="outlined"
               color="primary"
-              style={{ color: blue[themeState.colorlevel] }}
+              style={{ color: mainColor, borderColor: mainColor }}
             >
               OUTLINE
             </Button>

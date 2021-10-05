@@ -824,6 +824,18 @@ export default function RoomManagement() {
       });
     }
   }, [themeBackground]);
+
+  const [mainColor, setMainColor] = React.useState("#2D62ED");
+  const maincolor = useSelector((state) => state.reducer.color);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setMainColor(maincolor);
+    } else {
+      setMainColor("#2D62ED");
+    }
+  }, [maincolor]);
+
   const classes = useStyles(themeState);
 
   return (
@@ -856,7 +868,7 @@ export default function RoomManagement() {
                     style={{
                       marginBottom: 15,
                       fontSize: 20,
-                      color: blue[themeState.colorlevel],
+                      color: mainColor,
                     }}
                   >
                     Configuration
@@ -910,7 +922,7 @@ export default function RoomManagement() {
                 <Button
                   variant="contained"
                   style={{
-                    backgroundColor: "#2D62ED",
+                    backgroundColor: mainColor,
                     color: "white",
                     textAlign: "center",
                   }}
@@ -934,7 +946,7 @@ export default function RoomManagement() {
                 id="form-dialog-title"
                 style={{
                   backgroundColor: themeState.paper,
-                  color: blue[themeState.colorlevel],
+                  color: mainColor,
                 }}
               >
                 New Room Master
@@ -1419,7 +1431,7 @@ export default function RoomManagement() {
                 <Button
                   onClick={handleDialogAddRoomClose}
                   variant="text"
-                  color="primary"
+                  style={{ color: mainColor }}
                 >
                   Cancel
                 </Button>
@@ -1443,8 +1455,8 @@ export default function RoomManagement() {
                     )
                   }
                   style={{
-                    color: themeState.background,
-                    backgroundColor: blue[themeState.colorlevel],
+                    color: themeState.color,
+                    backgroundColor: mainColor,
                   }}
                 >
                   Save
@@ -1465,7 +1477,7 @@ export default function RoomManagement() {
                 id="form-dialog-title"
                 style={{
                   backgroundColor: themeState.paper,
-                  color: blue[themeState.colorlevel],
+                  color: mainColor,
                 }}
               >
                 Edit Room Master
@@ -1941,7 +1953,10 @@ export default function RoomManagement() {
           }}
           title={
             <Grid>
-              <Typography variant="h6" style={{ fontSize: 25 }}>
+              <Typography
+                variant="h6"
+                style={{ fontSize: 25, color: themeState.color }}
+              >
                 Room Master
               </Typography>
             </Grid>
