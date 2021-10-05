@@ -92,14 +92,10 @@ export default function HeaderTabs() {
 
   setInterval(() => {
     let settingColor = store.getState().reducer.color;
-    let prevColor = store.getState().reducer.prevColor;
     if (wordColor !== settingColor && wordColor !== null) {
       setWordColor(settingColor);
-    } 
-    // else {
-    //   setWordColor(prevColor);
-    // }
-    // let darkColor = store.getState().reducer.darkbackgroundColor;
+    }
+
     let themeBackground = store.getState().reducer.themeBackground;
     if (themeBackground !== "#FFFFFF") {
       setColorMode("#212121");

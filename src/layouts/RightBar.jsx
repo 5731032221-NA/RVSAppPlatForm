@@ -157,7 +157,7 @@ export default function RighBar() {
     } else {
       store.dispatch({
         type: EDIT_COLOR,
-        payload: "#FFFFFF",
+        payload: "#2D62ED",
       });
       store.dispatch({
         type: EDIT_DARKMODE,
@@ -167,10 +167,7 @@ export default function RighBar() {
   }
 
   return (
-    <Container
-      className={classes.Container}
-      // style={{ backgroundColor: "#000000" }}
-    >
+    <Container className={classes.Container}>
       <Grid container>
         <Grid container spacing={2}>
           <Grid container justifyContent="start" style={{ marginLeft: 90 }}>

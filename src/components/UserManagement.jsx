@@ -101,7 +101,7 @@ function createData(
     property,
     status,
     name,
-    adaccount
+    adaccount,
   };
 }
 // const rows = [
@@ -1133,7 +1133,7 @@ export default function UserManagement() {
         userproperty: propertyTempArray,
         role: roleTempArray,
         permission: perm,
-        adaccount: ad
+        adaccount: ad,
       });
       console.log(insert);
       if (insert.status == "2000") {
@@ -1986,7 +1986,7 @@ export default function UserManagement() {
         userproperty: propertyTempArray,
         role: roleTempArray,
         permission: perm,
-        adaccount: ad
+        adaccount: ad,
       });
       // const temp = new Set();
       // if (role.length) {
@@ -2052,7 +2052,7 @@ export default function UserManagement() {
     setEditUserName(username);
     setEditFirstName(firstname);
     setEditLastName(lastname);
-    setEditAD(adaccount);
+    // setEditAD(adaccount);
     setDialogDeleteUser(true);
   };
 
