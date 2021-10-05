@@ -81,7 +81,7 @@ export class Reservation extends Component {
             // matStyle: this.classes.normalmode
           },
         });
-        // this.setState({ color: this.props.color });
+        this.setState({ color: this.props.color });
       } else {
         this.setState({
           themeState: {
@@ -92,7 +92,7 @@ export class Reservation extends Component {
             // matStyle: this.classes.darkmode
           },
         });
-        // this.setState({ color: "#2D62ED" });
+        this.setState({ color: "#2D62ED" });
       }
     }
     if (this.state.color != this.props.color) {
@@ -172,7 +172,7 @@ export class Reservation extends Component {
             // matStyle: this.classes.normalmode
           },
         });
-        // this.setState({ color: this.props.color });
+        this.setState({ color: this.props.color });
       } else {
         this.setState({
           themeState: {
@@ -183,7 +183,7 @@ export class Reservation extends Component {
             // matStyle: this.classes.darkmode
           },
         });
-        // this.setState({ color: "#2D62ED" });
+        this.setState({ color: "#2D62ED" });
       }
       this.setState({ themeBackground: this.props.themeBackground });
     }
@@ -192,6 +192,7 @@ export class Reservation extends Component {
       if (this.props.themeBackground === "#FFFFFF") {
         this.setState({ color: this.props.color });
       } else {
+        console.log("TTTTTTTTTTTTT", this.props.defaultColor);
         // this.setState({ color: this.props.defaultColor });
       }
     }

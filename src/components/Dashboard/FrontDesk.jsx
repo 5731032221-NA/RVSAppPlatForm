@@ -83,6 +83,7 @@ export class FrontDesk extends Component {
             // matStyle: this.classes.normalmode
           },
         });
+        this.setState({ color: this.props.color });
       } else {
         this.setState({
           themeState: {
@@ -93,6 +94,7 @@ export class FrontDesk extends Component {
             // matStyle: this.classes.darkmode
           },
         });
+        this.setState({ color: "#2D62ED" });
       }
       this.setState({ themeBackground: this.props.themeBackground });
       console.log(this.props.themeBackground);
@@ -140,7 +142,7 @@ export class FrontDesk extends Component {
             // matStyle: this.classes.normalmode
           },
         });
-        // this.setState({ color: this.props.color });
+        this.setState({ color: this.props.color });
       } else {
         this.setState({
           themeState: {
@@ -151,7 +153,7 @@ export class FrontDesk extends Component {
             // matStyle: this.classes.darkmode
           },
         });
-        // this.setState({ color: "#2D62ED" });
+        this.setState({ color: "#2D62ED" });
       }
       this.setState({ themeBackground: this.props.themeBackground });
     }
