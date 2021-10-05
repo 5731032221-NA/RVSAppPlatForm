@@ -286,9 +286,16 @@ export default function RighBar() {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                style={{ color: themeBackground.color }}
-                primary="New user registered"
-                secondary="Jan 9, 2014"
+                primary={
+                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                    New user registered
+                  </Typography>
+                }
+                secondary={
+                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                    Jan 9, 2014
+                  </Typography>
+                }
               />
             </ListItem>
             <ListItem>
@@ -297,7 +304,18 @@ export default function RighBar() {
                   <ShoppingCartOutlinedIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="New order recived" secondary="2 min ago" />
+              <ListItemText
+                primary={
+                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                    New order recived
+                  </Typography>
+                }
+                secondary={
+                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                    2 min ago
+                  </Typography>
+                }
+              />
             </ListItem>
 
             <ListItem>
@@ -307,8 +325,16 @@ export default function RighBar() {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="New message from Mail"
-                secondary="1 hour ago"
+                primary={
+                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                    New message from Mail
+                  </Typography>
+                }
+                secondary={
+                  <Typography type="body2" style={{ color: "#FFFFFF" }}>
+                    1 hour ago
+                  </Typography>
+                }
               />
             </ListItem>
           </Grid>
