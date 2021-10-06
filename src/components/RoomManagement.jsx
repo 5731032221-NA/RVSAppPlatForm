@@ -837,6 +837,10 @@ export default function RoomManagement() {
   }, [maincolor]);
 
   const classes = useStyles(themeState);
+  const headerTableStyle = {
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  };
 
   return (
     <Container maxWidth="xl" style={themeState}>
@@ -1965,66 +1969,42 @@ export default function RoomManagement() {
             {
               title: "Property",
               field: "property",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "#Number",
               field: "number",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Room Type",
               field: "roomType",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Floor",
               field: "floor",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Building",
               field: "building",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Desc",
               field: "desc",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Status",
               field: "status",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Attribute",
               field: "attribute",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
           ]}
           data={rows}
@@ -2037,19 +2017,13 @@ export default function RoomManagement() {
             page: page,
             pageSize: rowsPerPage,
             pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
-            searchFieldStyle: {
-              backgroundColor: themeState.paper,
-              color: themeState.color,
-              // borderBottomColor: themeState.color,
-            },
-            headerStyle: {
-              backgroundColor: themeState.paper,
-              color: themeState.color,
-            },
+            searchFieldStyle: headerTableStyle,
+            headerStyle: headerTableStyle,
           }}
           actions={[
             {
-              icon: EditRoundedIcon,
+              icon: "edit",
+              iconProps: { style: { color: themeState.color } },
               tooltip: "Edit",
               disabled: !CRUD.U,
               onClick: (event, rowData) => {
@@ -2057,7 +2031,8 @@ export default function RoomManagement() {
               },
             },
             {
-              icon: DeleteRoundedIcon,
+              icon: "delete",
+              iconProps: { style: { color: themeState.color } },
               tooltip: "Delete",
               disabled: !CRUD.D,
               onClick: (event, rowData) => {

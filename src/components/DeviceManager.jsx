@@ -380,6 +380,10 @@ export default function DeviceManager() {
   }, [maincolor]);
 
   const classes = useStyles(themeState);
+  const headerTableStyle = {
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  };
 
   return (
     <Container maxWidth="xl" style={themeState}>
@@ -497,42 +501,27 @@ export default function DeviceManager() {
               {
                 title: "Device Code",
                 field: "code",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
               {
                 title: "Type",
                 field: "type",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
               {
                 title: "Device Name",
                 field: "name",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
               {
                 title: "MAC Address",
                 field: "macaddress",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
               {
                 title: "IP Address",
                 field: "ip",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
             ]}
             data={rows}
@@ -550,25 +539,21 @@ export default function DeviceManager() {
                 20,
                 { value: rows.length, label: "All" },
               ],
-              searchFieldStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              searchFieldStyle: headerTableStyle,
+              headerStyle: headerTableStyle,
             }}
             actions={[
               {
-                icon: EditRoundedIcon,
+                icon: "edit",
+                iconProps: { style: { color: themeState.color } },
                 tooltip: "Edit",
                 onClick: (event, rowData) => {
                   handleDialogEdit(rowData);
                 },
               },
               {
-                icon: DeleteRoundedIcon,
+                icon: "delete",
+                iconProps: { style: { color: themeState.color } },
                 tooltip: "Delete",
                 onClick: (event, rowData) => {
                   handleDialogDeleteOpen(

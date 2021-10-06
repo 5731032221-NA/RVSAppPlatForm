@@ -1,7 +1,11 @@
 import React, { useState, useContext } from "react";
 import { ReactReduxContext, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import MaterialTable, { MTablePagination } from "material-table";
+import MaterialTable, {
+  MTableToolbar,
+  MTableBody,
+  MTableHeader,
+} from "material-table";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -195,6 +199,25 @@ const useStyles = makeStyles((theme) => ({
     "&.MuiMenu-paper": {
       backgroundColor: themeState.paper,
     },
+    // "& .material-icons": {
+    //   borderBottomColor: themeState.color,
+    // },
+  }),
+  pagination: (themeState) => ({
+    "& .MTablePaginationInner-root": {
+      backgroundColor: themeState.color,
+    },
+    // "&.MuiButtonBase-root": {
+    //   backgroundColor: "red",
+    // },
+    // "&.MuiIconButton-root": {
+    //   backgroundColor: "red",
+    // },
+    // "&.Mui-disabled": {
+    //   backgroundColor: "red",
+    // },
+
+    color: themeState.color,
   }),
 }));
 
@@ -1427,6 +1450,10 @@ export default function UserManagement() {
   }, [maincolor]);
 
   const classes = useStyles(themeState);
+  const headerTableStyle = {
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  };
 
   const renderTree = (nodes) => (
     <div>
@@ -2296,25 +2323,6 @@ export default function UserManagement() {
                 color: themeState.color,
                 backgroundColor: themeState.paper,
               }}
-              // components={{
-              //   Pagination: (props) => (
-              //     <div>
-              //       <MTablePagination
-              //         {...props}
-              //         style={{
-              //           color: themeState.color,
-              //           backgroundColor: themeState.paper,
-              //         }}
-              //         rowsPerPageOptions={[5, 10, 25]}
-              //         count={rows.length}
-              //         page={page}
-              //         rowsPerPage={rowsPerPage}
-              //         onChangePage={handleChangePage}
-              //         onChangeRowsPerPage={handleChangeRowsPerPage}
-              //       />
-              //     </div>
-              //   ),
-              // }}
               title={
                 <Grid>
                   <Typography variant="h6" style={{ fontSize: 25 }}>
@@ -2326,50 +2334,32 @@ export default function UserManagement() {
                 {
                   title: "Username",
                   field: "userID",
-                  headerStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                  },
+                  headerStyle: headerTableStyle,
                 },
                 {
                   title: "Full Name",
                   field: "name",
-                  headerStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                  },
+                  headerStyle: headerTableStyle,
                 },
                 {
                   title: "Position",
                   field: "position",
-                  headerStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                  },
+                  headerStyle: headerTableStyle,
                 },
                 {
                   title: "Roles",
                   field: "roles",
-                  headerStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                  },
+                  headerStyle: headerTableStyle,
                 },
                 {
                   title: "Property",
                   field: "property",
-                  headerStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                  },
+                  headerStyle: headerTableStyle,
                 },
                 {
                   title: "AD Account",
                   field: "adaccount",
-                  headerStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                  },
+                  headerStyle: headerTableStyle,
                 },
                 {
                   render: (rowData) => {
@@ -2423,10 +2413,7 @@ export default function UserManagement() {
                   20,
                   { value: rows.length, label: "All" },
                 ],
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
                 searchFieldStyle: {
                   backgroundColor: themeState.paper,
                   color: themeState.color,
@@ -2435,8 +2422,8 @@ export default function UserManagement() {
               }}
               actions={[
                 {
-                  icon: EditRoundedIcon,
-                  // iconProps: { style: { fontSize: "14px", color: "yellow" } },
+                  icon: "edit",
+                  iconProps: { style: { color: themeState.color } },
                   tooltip: "Edit",
                   disabled: !CRUD.U,
                   onClick: (event, rowData) => {
@@ -2451,8 +2438,8 @@ export default function UserManagement() {
                   },
                 },
                 {
-                  icon: DeleteRoundedIcon,
-                  // iconProps: { style: { fontSize: "14px", color: "yellow" } },
+                  icon: "delete",
+                  iconProps: { style: { color: themeState.color } },
                   tooltip: "Delete",
                   disabled: !CRUD.D,
                   onClick: (event, rowData) => {
@@ -2464,7 +2451,11 @@ export default function UserManagement() {
                   },
                 },
               ]}
-              // pagination={{}}
+              components={{
+                Pagination: (props) => (
+                  <TablePagination {...props} className={classes.pagination} />
+                ),
+              }}
               onChangePage={(page) => console.log("page")}
               // onChangePage={(event, page) => console.log(event, page)}
             />

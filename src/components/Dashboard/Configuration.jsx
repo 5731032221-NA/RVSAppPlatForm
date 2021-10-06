@@ -79,15 +79,6 @@ const useStyles = makeStyles({
     minWidth: 90,
     textAlign: "center",
   },
-  // root: {
-
-  //   // "&.MuiPaper-root": {
-  //   //   backgroundColor: themeState.paper,
-  //   // },
-  //   // "&.MuiMenu-paper": {
-  //   //   backgroundColor: themeState.paper,
-  //   // },
-  // }),
 });
 
 const language = [
@@ -1272,7 +1263,10 @@ export default function Configuration() {
                         style={{ color: themeState.color }}
                       >
                         <InputLabel
-                          style={{ color: themeState.color }}
+                          className={classes.root}
+                          style={{
+                            color: themeState.color,
+                          }}
                           id="demo-simple-select-outlined-label"
                         >
                           Page

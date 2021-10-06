@@ -1462,6 +1462,10 @@ export default function RoleManagement() {
   }, [maincolor]);
 
   const classes = useStyles(themeState);
+  const headerTableStyle = {
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  };
   const renderTree = (nodes) => (
     <div>
       <TreeItem
@@ -2102,34 +2106,22 @@ export default function RoleManagement() {
                 {
                   title: "Role Code",
                   field: "rolecode",
-                  headerStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                  },
+                  headerStyle: headerTableStyle,
                 },
                 {
                   title: "Role Name",
                   field: "rolename",
-                  headerStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                  },
+                  headerStyle: headerTableStyle,
                 },
                 {
                   title: "Description",
                   field: "description",
-                  headerStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                  },
+                  headerStyle: headerTableStyle,
                 },
                 {
                   title: "#User",
                   field: "count",
-                  headerStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                  },
+                  headerStyle: headerTableStyle,
                 },
                 {
                   render: (rowData) => {
@@ -2183,19 +2175,13 @@ export default function RoleManagement() {
                   20,
                   { value: rows.length, label: "All" },
                 ],
-                searchFieldStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                  // borderBottomColor: themeState.color,
-                },
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                searchFieldStyle: headerTableStyle,
+                headerStyle: headerTableStyle,
               }}
               actions={[
                 {
-                  icon: EditRoundedIcon,
+                  icon: "edit",
+                  iconProps: { style: { color: themeState.color } },
                   tooltip: "Edit",
                   disabled: !CRUD.U,
                   onClick: (event, rowData) => {
@@ -2209,7 +2195,8 @@ export default function RoleManagement() {
                   },
                 },
                 {
-                  icon: DeleteRoundedIcon,
+                  icon: "delete",
+                  iconProps: { style: { color: themeState.color } },
                   tooltip: "Delete",
                   disabled: !CRUD.D,
                   onClick: (event, rowData) => {

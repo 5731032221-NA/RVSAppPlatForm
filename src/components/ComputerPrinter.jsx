@@ -577,6 +577,10 @@ export default function ComputerPrinter() {
   }, [maincolor]);
 
   const classes = useStyles(themeState);
+  const headerTableStyle = {
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  };
 
   return (
     <Container maxWidth="xl" style={themeState}>
@@ -694,66 +698,42 @@ export default function ComputerPrinter() {
               {
                 title: "Property",
                 field: "propertycode",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
               {
                 title: "Username",
                 field: "username",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
               {
                 title: "Computer Code",
                 field: "computercode",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
               {
                 title: "Action",
                 field: "action",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
               {
                 title: "Device Code",
                 field: "devicecode",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
               {
                 title: "Tray",
                 field: "tray",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
               {
                 title: "Remark",
                 field: "remark",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
               {
                 title: "Special Strings",
                 field: "specialstrings",
-                headerStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
+                headerStyle: headerTableStyle,
               },
             ]}
             data={rows}
@@ -771,25 +751,21 @@ export default function ComputerPrinter() {
                 20,
                 { value: rows.length, label: "All" },
               ],
-              searchFieldStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              searchFieldStyle: headerTableStyle,
+              headerStyle: headerTableStyle,
             }}
             actions={[
               {
-                icon: EditRoundedIcon,
+                icon: "edit",
+                iconProps: { style: { color: themeState.color } },
                 tooltip: "Edit",
                 onClick: (event, rowData) => {
                   handleDialogEdit(rowData);
                 },
               },
               {
-                icon: DeleteRoundedIcon,
+                icon: "delete",
+                iconProps: { style: { color: themeState.color } },
                 tooltip: "Delete",
                 onClick: (event, rowData) => {
                   handleDialogDeleteOpen(
