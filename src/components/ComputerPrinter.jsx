@@ -58,6 +58,13 @@ import {
   listallproperty,
 } from "../services/user.service";
 
+import {
+  insertconfigmaster,
+  listconfigmaster,
+  updateconfigmaster,
+  deleteconfigmaster,
+} from "../services/configmaster.service";
+
 import TablePagination from "@material-ui/core/TablePagination";
 import { EDIT_CONFIGSTATE } from "../middleware/action";
 
@@ -191,50 +198,22 @@ export default function ComputerPrinter() {
 
   const [actions, setActions] = useState([
     {
-      key: "1",
-      label: "Print Folio (bill)",
-    },
-    {
-      key: "2",
-      label: "Print Bill Info",
-    },
-    {
-      key: "3",
-      label: "Print Registration Card",
+      key: "",
+      label: "",
     },
   ]);
 
   const [trays, setTrays] = useState([
     {
-      key: "1",
-      label: "Default",
-    },
-    {
-      key: "2",
-      label: "Tray#1",
-    },
-    {
-      key: "3",
-      label: "Tray#2",
-    },
-    {
-      key: "4",
-      label: "Tray#3",
+      key: "",
+      label: "",
     },
   ]);
 
   const [remarks, setRemarks] = useState([
     {
-      key: "1",
-      label: "Preprinted",
-    },
-    {
-      key: "2",
-      label: "Blank Paper",
-    },
-    {
-      key: "3",
-      label: "RegisForm",
+      key: "",
+      label: "",
     },
   ]);
   const [properties, setProperties] = useState([
@@ -359,9 +338,56 @@ export default function ComputerPrinter() {
         }
       }
     });
+
+    let _dataconfigmaster = await listconfigmaster(
+      sessionStorage.getItem("auth")
+    );
+    let _actions = [];
+    let _trays = [];
+    let _remarks = [];
+
+    _dataconfigmaster.content[_dataconfigmaster.content.length - 1].forEach(
+      (element) => {
+        if (element.name == "actions") {
+          if (_actions.filter((x) => x.key === element.config).length == 0) {
+            let labeldata = element.config.split(",");
+            for (let i = 0; i < labeldata.length; i++) {
+              _actions.push({
+                key: i + 1,
+                label: labeldata[i],
+              });
+            }
+          }
+        } else if (element.name == "trays") {
+          if (_trays.filter((x) => x.key === element.config).length == 0) {
+            let labeldata = element.config.split(",");
+            for (let i = 0; i < labeldata.length; i++) {
+              _trays.push({
+                key: i + 1,
+                label: labeldata[i],
+              });
+            }
+          }
+        } else if (element.name == "remarks") {
+          if (_remarks.filter((x) => x.key === element.config).length == 0) {
+            let labeldata = element.config.split(",");
+            for (let i = 0; i < labeldata.length; i++) {
+              _remarks.push({
+                key: i + 1,
+                label: labeldata[i],
+              });
+            }
+          }
+        }
+      }
+    );
+
     setUsernames(_users);
     setComputers(_computers);
     setPrintersCode(_listprinters);
+    setActions(_actions);
+    setTrays(_trays);
+    setRemarks(_remarks);
     setUpdateData({
       propertycode: pageProperty,
       computercode: _computers[0].value,
@@ -413,9 +439,57 @@ export default function ComputerPrinter() {
         }
       }
     });
+
+    let _dataconfigmaster = await listconfigmaster(
+      sessionStorage.getItem("auth")
+    );
+
+    let _actions = [];
+    let _trays = [];
+    let _remarks = [];
+
+    _dataconfigmaster.content[_dataconfigmaster.content.length - 1].forEach(
+      (element) => {
+        if (element.name == "actions") {
+          if (_actions.filter((x) => x.key === element.config).length == 0) {
+            let labeldata = element.config.split(",");
+            for (let i = 0; i < labeldata.length; i++) {
+              _actions.push({
+                key: i + 1,
+                label: labeldata[i],
+              });
+            }
+          }
+        } else if (element.name == "trays") {
+          if (_trays.filter((x) => x.key === element.config).length == 0) {
+            let labeldata = element.config.split(",");
+            for (let i = 0; i < labeldata.length; i++) {
+              _trays.push({
+                key: i + 1,
+                label: labeldata[i],
+              });
+            }
+          }
+        } else if (element.name == "remarks") {
+          if (_remarks.filter((x) => x.key === element.config).length == 0) {
+            let labeldata = element.config.split(",");
+            for (let i = 0; i < labeldata.length; i++) {
+              _remarks.push({
+                key: i + 1,
+                label: labeldata[i],
+              });
+            }
+          }
+        }
+      }
+    );
+
     setUsernames(_users);
     setComputers(_computers);
     setPrintersCode(_listprinters);
+    setActions(_actions);
+    setTrays(_trays);
+    setRemarks(_remarks);
     setUpdateData(_rowData);
     setDialogEdit(true);
   };
