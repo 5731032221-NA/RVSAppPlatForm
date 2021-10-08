@@ -132,6 +132,19 @@ const useStyles = makeStyles((theme) => ({
     "&.MuiMenu-paper": {
       backgroundColor: themeState.paper,
     },
+    // "& .MuiTablePagination-root": {
+    //   backgroundColor: themeState.color,
+    // },
+    // "& .MuiIcon-root": {
+    //   backgroundColor: "red",
+    // },
+    // "& .MuiTablePagination-caption": {
+    //   backgroundColor: themeState.color,
+    // },
+    //.material-icons
+    // "&.material-icons": {
+    //   backgroundColor: "red",
+    // },
   }),
 }));
 
@@ -203,21 +216,23 @@ export default function RoomManagement() {
     console.log("data", data);
     let roomdata = [];
     let i = 0;
-    data.content[data.content.length - 1].forEach((element) =>
-      roomdata.push(
-        createData(
-          element.id,
-          element.propertycode,
-          element.no,
-          element.type,
-          element.floor,
-          element.building,
-          element.description,
-          element.status,
-          element.attribute
+    if (data.content.length != 0) {
+      data.content[data.content.length - 1].forEach((element) =>
+        roomdata.push(
+          createData(
+            element.id,
+            element.propertycode,
+            element.no,
+            element.type,
+            element.floor,
+            element.building,
+            element.description,
+            element.status,
+            element.attribute
+          )
         )
-      )
-    );
+      );
+    }
     console.log("a", roomdata);
     setRows(roomdata);
     updatePageData(roomdata, page, rowsPerPage);
@@ -956,12 +971,7 @@ export default function RoomManagement() {
                 New Room Master
               </DialogTitle>
 
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container>
                     <TextField
@@ -977,10 +987,7 @@ export default function RoomManagement() {
                         native: true,
                       }}
                       InputProps={{
-                        style: {
-                          backgroundColor: themeState.paper,
-                          color: themeState.color,
-                        },
+                        style: headerTableStyle,
                       }}
                       value={propertyDialog}
                       onChange={(event) => handlePropertyDialog(event)}
@@ -989,10 +996,7 @@ export default function RoomManagement() {
                         <option
                           key={option.value}
                           value={option.value}
-                          style={{
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          }}
+                          style={headerTableStyle}
                         >
                           {option.label}
                         </option>
@@ -1011,11 +1015,7 @@ export default function RoomManagement() {
                         onChange={(e) => handleRoomNumber(e)}
                         fullWidth
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                            borderColor: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                       />
                     </Grid>
@@ -1034,21 +1034,14 @@ export default function RoomManagement() {
                         defaultValue={""}
                         onChange={(e) => handleRoomTypeDialog(e)}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                            borderColor: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                       >
                         {roomType.map((option) => (
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1072,21 +1065,14 @@ export default function RoomManagement() {
                         defaultValue={""}
                         onChange={(e) => handleRoomFloorDialog(e)}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                            borderColor: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                       >
                         {roomFloor.map((option) => (
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1108,21 +1094,14 @@ export default function RoomManagement() {
                         defaultValue={""}
                         onChange={(e) => handleBuildingDialog(e)}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                            borderColor: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                       >
                         {building.map((option) => (
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1141,11 +1120,7 @@ export default function RoomManagement() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                            borderColor: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         // value={wingDialog}
                         defaultValue={""}
@@ -1155,10 +1130,7 @@ export default function RoomManagement() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1179,11 +1151,7 @@ export default function RoomManagement() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                            borderColor: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         // value={exposureDialog}
                         defaultValue={""}
@@ -1193,10 +1161,7 @@ export default function RoomManagement() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1215,11 +1180,7 @@ export default function RoomManagement() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                            borderColor: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         // value={roomSizeDialog}
                         defaultValue={""}
@@ -1229,10 +1190,7 @@ export default function RoomManagement() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1253,11 +1211,7 @@ export default function RoomManagement() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                            borderColor: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         // value={roomSegDialog}
                         defaultValue={""}
@@ -1267,10 +1221,7 @@ export default function RoomManagement() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1289,11 +1240,7 @@ export default function RoomManagement() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                            borderColor: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         // value={roomStatusDialog}
                         defaultValue={""}
@@ -1303,10 +1250,7 @@ export default function RoomManagement() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1333,10 +1277,7 @@ export default function RoomManagement() {
                         color: themeState.color,
                       }}
                       InputProps={{
-                        style: {
-                          backgroundColor: themeState.paper,
-                          color: themeState.color,
-                        },
+                        style: headerTableStyle,
                       }}
                       label="Attribute"
                       select
@@ -1352,10 +1293,7 @@ export default function RoomManagement() {
                           label={option.label}
                           name={option.label}
                           value={option.label}
-                          style={{
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          }}
+                          style={headerTableStyle}
                         >
                           {option.label}
                         </MenuItem>
@@ -1382,11 +1320,7 @@ export default function RoomManagement() {
                     <TextField
                       className={classes.root}
                       InputProps={{
-                        style: {
-                          backgroundColor: themeState.paper,
-                          color: themeState.color,
-                          borderColor: themeState.color,
-                        },
+                        style: headerTableStyle,
                       }}
                       fullWidth
                       label="Description"
@@ -1487,12 +1421,7 @@ export default function RoomManagement() {
                 Edit Room Master
               </DialogTitle>
 
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container>
                     <TextField
@@ -1505,11 +1434,18 @@ export default function RoomManagement() {
                       SelectProps={{
                         native: true,
                       }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                       defaultValue={propertyDialog}
                       onChange={(event) => handlePropertyDialog(event)}
                     >
                       {properties.map((option) => (
-                        <option key={option.value} value={option.value}>
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
                           {option.label}
                         </option>
                       ))}
@@ -1522,6 +1458,9 @@ export default function RoomManagement() {
                         id="outlined-basic"
                         label="Room Number"
                         variant="outlined"
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         fullWidth
                         value={roomNumber}
                         onChange={(e) => handleRoomNumber(e)}
@@ -1538,11 +1477,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={roomTypeDialog}
                         onChange={(e) => handleRoomTypeDialog(e)}
                       >
                         {roomType.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1561,11 +1507,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={roomFloorDialog}
                         onChange={(e) => handleRoomFloorDialog(e)}
                       >
                         {roomFloor.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1582,11 +1535,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={buildingDialog}
                         onChange={(e) => handleBuildingDialog(e)}
                       >
                         {building.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1603,11 +1563,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={wingDialog}
                         onChange={(e) => handleWingDialog(e)}
                       >
                         {wing.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1626,11 +1593,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={exposureDialog}
                         onChange={(e) => handleExposureDialog(e)}
                       >
                         {exposure.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1647,11 +1621,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={roomSizeDialog}
                         onChange={(e) => handleRoomSizeDialog(e)}
                       >
                         {roomSize.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1670,11 +1651,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={roomSegDialog}
                         onChange={(e) => handleRoomSegDialog(e)}
                       >
                         {roomSeg.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1691,11 +1679,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={roomStatusDialog}
                         onChange={(e) => handleRoomStatusDialog(e)}
                       >
                         {roomStatus.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1716,6 +1711,9 @@ export default function RoomManagement() {
                       SelectProps={{
                         native: true,
                       }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                       label="Attribute"
                       select
                       value={chipAttributeDialog}
@@ -1729,6 +1727,7 @@ export default function RoomManagement() {
                           label={option.label}
                           name={option.label}
                           value={option.label}
+                          style={headerTableStyle}
                         >
                           {option.label}
                         </option>
@@ -1854,12 +1853,7 @@ export default function RoomManagement() {
                   >
                     Confirm Delete Room Information
                   </DialogTitle>
-                  <DialogContent
-                    style={{
-                      backgroundColor: themeState.paper,
-                      color: themeState.color,
-                    }}
-                  >
+                  <DialogContent style={headerTableStyle}>
                     <Typography>
                       <Typography
                         color="initial"

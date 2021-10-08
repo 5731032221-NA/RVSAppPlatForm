@@ -5,6 +5,7 @@ import MaterialTable, {
   MTableToolbar,
   MTableBody,
   MTableHeader,
+  MTablePagination,
 } from "material-table";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -69,7 +70,6 @@ import {
   getusercomponentpermision,
 } from "../services/user.service";
 import { listrole } from "../services/roleManagement.service";
-import TablePagination from "@material-ui/core/TablePagination";
 
 import Checkbox from "@material-ui/core/Checkbox";
 import TreeItem from "@material-ui/lab/TreeItem";
@@ -2451,11 +2451,6 @@ export default function UserManagement() {
                   },
                 },
               ]}
-              components={{
-                Pagination: (props) => (
-                  <TablePagination {...props} className={classes.pagination} />
-                ),
-              }}
               onChangePage={(page) => console.log("page")}
               // onChangePage={(event, page) => console.log(event, page)}
             />
@@ -2490,12 +2485,7 @@ export default function UserManagement() {
                 New User
               </DialogTitle>
 
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -2520,7 +2510,6 @@ export default function UserManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
                         id="outlined-basic"
                         label="Firstname"
                         variant="outlined"
@@ -2581,10 +2570,7 @@ export default function UserManagement() {
                         native: true,
                       }}
                       InputProps={{
-                        style: {
-                          backgroundColor: themeState.paper,
-                          color: themeState.color,
-                        },
+                        style: headerTableStyle,
                       }}
                       label="Roles"
                       select
@@ -2594,10 +2580,7 @@ export default function UserManagement() {
                       {roles.map((option) => (
                         <MenuItem
                           className={classes.root}
-                          style={{
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          }}
+                          style={headerTableStyle}
                           key={option.key}
                           name={option.key}
                           value={option.label}
@@ -2624,10 +2607,7 @@ export default function UserManagement() {
                     className={classes.root}
                     fullWidth
                     InputProps={{
-                      style: {
-                        backgroundColor: themeState.paper,
-                        color: themeState.color,
-                      },
+                      style: headerTableStyle,
                     }}
                     variant="outlined"
                     selectSelectProps={{
@@ -2643,10 +2623,7 @@ export default function UserManagement() {
                     {properties.map((option) => (
                       <MenuItem
                         className={classes.root}
-                        style={{
-                          backgroundColor: themeState.paper,
-                          color: themeState.color,
-                        }}
+                        style={headerTableStyle}
                         key={option.key}
                         name={option.key}
                         value={option.label}
@@ -2678,20 +2655,14 @@ export default function UserManagement() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         value={selectPosition}
                         onChange={handleSelectPosition}
                       >
                         {position.map((option) => (
                           <option
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                             key={option.key}
                             value={option.label}
                           >
@@ -2895,12 +2866,7 @@ export default function UserManagement() {
               >
                 Edit User
               </DialogTitle>
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -2989,10 +2955,7 @@ export default function UserManagement() {
                         native: true,
                       }}
                       InputProps={{
-                        style: {
-                          backgroundColor: themeState.paper,
-                          color: themeState.color,
-                        },
+                        style: headerTableStyle,
                       }}
                       label="Roles"
                       select
@@ -3002,10 +2965,7 @@ export default function UserManagement() {
                       {roles.map((option) => (
                         <MenuItem
                           className={classes.root}
-                          style={{
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          }}
+                          style={headerTableStyle}
                           key={option.key}
                           name={option.key}
                           value={option.label}
@@ -3045,10 +3005,7 @@ export default function UserManagement() {
                     {properties.map((option) => (
                       <MenuItem
                         className={classes.root}
-                        style={{
-                          backgroundColor: themeState.paper,
-                          color: themeState.color,
-                        }}
+                        style={headerTableStyle}
                         key={option.key}
                         name={option.key}
                         value={option.label}
@@ -3080,10 +3037,7 @@ export default function UserManagement() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         value={selectPosition}
                         // defaultValue={selectPosition}
@@ -3091,10 +3045,7 @@ export default function UserManagement() {
                       >
                         {position.map((option) => (
                           <option
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                             key={option.key}
                             value={option.label}
                           >
@@ -3299,12 +3250,7 @@ export default function UserManagement() {
               >
                 Confirm Delete User
               </DialogTitle>
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 <Typography>
                   <Typography
                     color="initial"

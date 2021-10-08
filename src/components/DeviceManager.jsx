@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ReactReduxContext, useSelector } from "react-redux";
-import MaterialTable from "material-table";
+import MaterialTable, { MTablePagination } from "material-table";
 import {
   Container,
   Grid,
@@ -567,6 +567,14 @@ export default function DeviceManager() {
             ]}
             onChangePage={(page) => console.log("page")}
             // onChangePage={(event, page) => console.log(event, page)}
+
+            // components={{
+            //   Pagination: (props) => (
+            //     <div style={{ backgroundColor: "#FFF000", color: "red" }}>
+            //       <MTablePagination {...props} />
+            //     </div>
+            //   ),
+            // }}
           />
         </div>
 
@@ -588,12 +596,7 @@ export default function DeviceManager() {
                 New Device
               </DialogTitle>
 
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -610,10 +613,7 @@ export default function DeviceManager() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -626,10 +626,7 @@ export default function DeviceManager() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -648,10 +645,7 @@ export default function DeviceManager() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         defaultValue={deviceTypes[0].label}
                         onChange={(e) =>
@@ -662,10 +656,7 @@ export default function DeviceManager() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -815,10 +806,7 @@ export default function DeviceManager() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -831,10 +819,7 @@ export default function DeviceManager() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -853,10 +838,7 @@ export default function DeviceManager() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         defaultValue={updateData.type}
                         onChange={(e) =>
@@ -867,10 +849,7 @@ export default function DeviceManager() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -884,10 +863,7 @@ export default function DeviceManager() {
                         label="Device Code"
                         variant="outlined"
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         value={updateData.code}
                         fullWidth
@@ -904,10 +880,7 @@ export default function DeviceManager() {
                         label="Device Name"
                         variant="outlined"
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         value={updateData.name}
                         fullWidth
@@ -1012,12 +985,7 @@ export default function DeviceManager() {
               >
                 Confirm Delete
               </DialogTitle>
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 <Typography>
                   <Typography
                     color="initial"

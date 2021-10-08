@@ -659,13 +659,7 @@ export default function ComputerPrinter() {
   return (
     <Container maxWidth="xl" style={themeState}>
       <React.Fragment>
-        <Grid
-          container
-          //   direction="row"
-          //   justifyContent="flex-start"
-          //   alignItems="center"
-          style={{ padding: 20 }}
-        >
+        <Grid container style={{ padding: 20 }}>
           <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
@@ -914,10 +908,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) => handleChangeProperty(e.target.value)}
                       >
@@ -925,10 +916,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -939,12 +927,7 @@ export default function ComputerPrinter() {
                 </Container>
               </DialogTitle>
 
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 {/* username, computercode, action, devicecode, tray, remark */}
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
@@ -961,10 +944,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -977,10 +957,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1000,10 +977,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -1016,10 +990,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.value}
                           </option>
@@ -1039,10 +1010,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -1055,10 +1023,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1077,10 +1042,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         defaultValue={listprinters[0].value}
                         onChange={(e) =>
@@ -1094,10 +1056,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.value}
                           </option>
@@ -1117,10 +1076,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({ ...updateData, tray: e.target.value })
@@ -1130,10 +1086,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1153,10 +1106,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -1169,10 +1119,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1187,10 +1134,7 @@ export default function ComputerPrinter() {
                         variant="outlined"
                         fullWidth
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -1258,13 +1202,7 @@ export default function ComputerPrinter() {
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <DialogTitle
-                id="form-dialog-title"
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: mainColor,
-                }}
-              >
+              <DialogTitle id="form-dialog-title" style={headerTableStyle}>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
@@ -1282,10 +1220,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) => handleChangeProperty(e.target.value)}
                       >
@@ -1293,10 +1228,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1328,10 +1260,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -1344,10 +1273,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1366,10 +1292,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -1382,10 +1305,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.value}
                           </option>
@@ -1404,10 +1324,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -1420,10 +1337,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1442,10 +1356,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         defaultValue={updateData.devicecode}
                         onChange={(e) =>
@@ -1459,10 +1370,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.value}
                           </option>
@@ -1481,10 +1389,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({ ...updateData, tray: e.target.value })
@@ -1494,10 +1399,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1516,10 +1418,7 @@ export default function ComputerPrinter() {
                           native: true,
                         }}
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -1532,10 +1431,7 @@ export default function ComputerPrinter() {
                           <option
                             key={option.value}
                             value={option.value}
-                            style={{
-                              backgroundColor: themeState.paper,
-                              color: themeState.color,
-                            }}
+                            style={headerTableStyle}
                           >
                             {option.label}
                           </option>
@@ -1550,10 +1446,7 @@ export default function ComputerPrinter() {
                         defaultValue={updateData.specialstrings}
                         fullWidth
                         InputProps={{
-                          style: {
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          },
+                          style: headerTableStyle,
                         }}
                         onChange={(e) =>
                           setUpdateData({
@@ -1628,12 +1521,7 @@ export default function ComputerPrinter() {
               >
                 Confirm Delete
               </DialogTitle>
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 <Typography>
                   <Typography
                     color="initial"

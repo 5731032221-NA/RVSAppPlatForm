@@ -2268,12 +2268,7 @@ export default function RoleManagement() {
                 New Role
               </DialogTitle>
 
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -2326,10 +2321,7 @@ export default function RoleManagement() {
                           key={option.key}
                           value={option.label}
                           className={classes.root}
-                          style={{
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          }}
+                          style={headerTableStyle}
                         >
                           {option.label}
                         </MenuItem>
@@ -2523,12 +2515,7 @@ export default function RoleManagement() {
                 Edit Role
               </DialogTitle>
 
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -2575,10 +2562,7 @@ export default function RoleManagement() {
                         native: true,
                       }}
                       InputProps={{
-                        style: {
-                          backgroundColor: themeState.paper,
-                          color: themeState.color,
-                        },
+                        style: headerTableStyle,
                       }}
                       label="Property"
                       select
@@ -2590,10 +2574,7 @@ export default function RoleManagement() {
                           key={option.key}
                           value={option.label}
                           className={classes.root}
-                          style={{
-                            backgroundColor: themeState.paper,
-                            color: themeState.color,
-                          }}
+                          style={headerTableStyle}
                         >
                           {option.label}
                         </MenuItem>
@@ -2802,12 +2783,7 @@ export default function RoleManagement() {
               >
                 Confirm Delete Role
               </DialogTitle>
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
+              <DialogContent style={headerTableStyle}>
                 <Typography>
                   <Typography
                     color="initial"
