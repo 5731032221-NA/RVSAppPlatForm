@@ -30,8 +30,8 @@ import { EDIT_COMPONENT, EDIT_CONFIGSTATE } from "../action";
 import translate_th from '../../static/lang/th.json'
 import translate_en from '../../static/lang/en.json'
 
-import { ReactReduxContext, useSelector } from 'react-redux'
-
+import { ReactReduxContext, useSelector,useDispatch } from 'react-redux'
+import { indexTab } from "../action";
 export default function MainListItems() {
 
     const { store } = useContext(ReactReduxContext);
@@ -47,6 +47,40 @@ export default function MainListItems() {
     const [lang, setLang] = useState('en')
     const [translate, setTranslate] = useState(translate_en)
 
+
+    //indextab
+    const [selectedIndex, setSelectedIndex] = React.useState(1)
+    const indextTab = useSelector((state) => state.reducer.indextTab.indextTab)
+    const dispatch = useDispatch();
+
+  
+
+    
+    React.useEffect(() => {
+    
+        if(indextTab === 0){
+        setOpenFrontDesk(!openFrontDesk)
+        handleComponentState("FrontDesk")
+        setSelectedIndex(2)
+        }else if(indextTab === 1){
+          setSelectedIndex(1)
+        }else if(indextTab === 2){
+            store.dispatch({
+                type: EDIT_CONFIGSTATE,
+                payload: "Cashier"
+            })
+            handleComponentState("Cashier")
+            setSelectedIndex(3)
+        }else if(indextTab === 3){
+            setOpenNA(!openNA)
+            setSelectedIndex(5)
+        }else{
+            
+        }
+      
+       },[indextTab])
+   
+
     // const compString = sessionStorage.getItem('comp')
     // const comps = JSON.parse(compString);
     // const cashier = comps.some(item => item.slug === 'ReportRoomMaster')
@@ -58,8 +92,9 @@ export default function MainListItems() {
     const comps = useSelector(state => state.reducer.permission);
     console.log("comps", comps);
 
-    const [selectedIndex, setSelectedIndex] = React.useState(1)
+
     const handleListItemClick = (event, index) => {
+        console.log("in");
         setSelectedIndex(index);
     };
     const setFontSize = {
@@ -82,13 +117,31 @@ export default function MainListItems() {
         }
     }, 1000);
 
+    function handleOpenReservation() {
+        const ind = 1;
+        dispatch(indexTab(ind))
+        // setOpenFrontDesk(!openFrontDesk)
+        // handleComponentState("FrontDesk")
+        setSelectedIndex(1)
+    }
+
     function handleOpenFrontDesk() {
+        const ind = 0;
+        dispatch(indexTab(ind))
         setOpenFrontDesk(!openFrontDesk)
         handleComponentState("FrontDesk")
         setSelectedIndex(2)
     }
     function handleOpenCashier() {
-        setOpenCashier(!openCashier)
+        // setOpenCashier(!openCashier)
+        const ind = 2;
+        dispatch(indexTab(ind))
+      
+        store.dispatch({
+            type: EDIT_CONFIGSTATE,
+            payload: "Cashier"
+        })
+        handleComponentState("Cashier")
         setSelectedIndex(3)
     }
     function handleOpenProfile() {
@@ -96,6 +149,8 @@ export default function MainListItems() {
         setSelectedIndex(4)
     }
     function handleOpenNA() {
+        const ind = 3;
+        dispatch(indexTab(ind))
         setOpenNA(!openNA)
         setSelectedIndex(5)
     }
@@ -108,8 +163,11 @@ export default function MainListItems() {
         setSelectedIndex(8)
     }
     function handleOpenConfig() {
-        console.log("again")
+      
+        const ind = 9;
+        dispatch(indexTab(ind))
         // setOpenConfig(!openConfig)
+
         store.dispatch({
             type: EDIT_CONFIGSTATE,
             payload: "Configuration"
@@ -142,7 +200,9 @@ export default function MainListItems() {
                 </ListItem>
                 : null}
             {comps.includes("RV") || comps.includes("*ALL") ?
-                <ListItem button selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)} >
+                // <ListItem button selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)} >
+                <ListItem button selected={selectedIndex === 1} onClick={handleOpenReservation} >
+                    
                     <ListItemIcon style={{ color: "white" }} >
                         <KingBedIcon />
                     </ListItemIcon>
@@ -339,7 +399,7 @@ export default function MainListItems() {
             {comps.includes("CF") || comps.includes("*ALL") ?
                 <ListItem button selected={selectedIndex === 9} onClick={handleOpenConfig}>
                     <ListItemIcon style={{ color: "white" }} >
-                        <SettingsIcon />
+                        <SettingsIcon /> 
                     </ListItemIcon>
                     <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.Configuration} />
                     {/* {openConfig ? <IconExpandLess /> : <IconExpandMore />} */}

@@ -16,9 +16,10 @@ import { IconButton } from "@material-ui/core";
 // import FrontDesk from "../components/Dashboard/FrontDesk";
 import Reservation from "../components/Dashboard/Reservation";
 
-import { ReactReduxContext } from "react-redux";
+import { ReactReduxContext ,useDispatch,useSelector} from "react-redux";
 
 import { EDIT_COMPONENT } from "../middleware/action";
+import { indexTab } from "../middleware/action";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -69,10 +70,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HeaderTabs() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  
   const [wordColor, setWordColor] = React.useState("#2D62ED");
   const [colorMode, setColorMode] = React.useState("#FFFFFF");
   const { store } = useContext(ReactReduxContext);
+
+  const indextTab = useSelector((state) => state.reducer.indextTab.indextTab)
+  // const [value, setValue] = React.useState(indextTab);
+  const dispatch = useDispatch();
+
 
   const compString = sessionStorage.getItem("comp");
   const comps = JSON.parse(compString);
@@ -82,6 +88,9 @@ export default function HeaderTabs() {
   const cashier = true;
   const front = true;
   const setting = true;
+
+ 
+
 
   function handleComponentState(comp) {
     store.dispatch({
@@ -106,7 +115,9 @@ export default function HeaderTabs() {
 
   const handleChange = (event, newValue) => {
     console.log("newValue", newValue);
-    setValue(newValue);
+  
+
+    dispatch(indexTab(newValue))
     if (newValue === 0) handleComponentState("FrontDesk");
     console.log("st", store.getState().reducer.componentState);
   };
@@ -131,7 +142,7 @@ export default function HeaderTabs() {
           </Typography>
 
           <Tabs
-            value={value}
+            value={indextTab}
             onChange={handleChange}
             aria-label="simple tabs example"
             indicatorColor="primary"
@@ -139,6 +150,7 @@ export default function HeaderTabs() {
             variant="scrollable"
             scrollButtons="auto"
             TabIndicatorProps={{ style: { backgroundColor: wordColor } }}
+            
           >
             {front ? (
               <Tab
@@ -176,15 +188,16 @@ export default function HeaderTabs() {
       {front ? (
         <TabPanel
           style={{ backgroundColor: colorMode }}
-          value={value}
+          value={indextTab}
           index={0 - (front ? 0 : 1)}
         >
           {/* <FrontDesk /> */}
+          
         </TabPanel>
       ) : null}
       <TabPanel
         style={{ backgroundColor: colorMode }}
-        value={value}
+        value={indextTab}
         index={1 - (front ? 0 : 1)}
       >
         <Reservation />
@@ -192,7 +205,7 @@ export default function HeaderTabs() {
       {cashier ? (
         <TabPanel
           style={{ backgroundColor: colorMode }}
-          value={value}
+          value={indextTab}
           index={2 - (front ? 0 : 1) - (cashier ? 0 : 1)}
         >
           Cashier
@@ -201,7 +214,7 @@ export default function HeaderTabs() {
       {setting ? (
         <TabPanel
           style={{ backgroundColor: colorMode }}
-          value={value}
+          value={indextTab}
           index={3 - (front ? 0 : 1) - (cashier ? 0 : 1) - (setting ? 0 : 1)}
         >
           Night Auditor

@@ -98,17 +98,17 @@ export const ReservationPage = (props) => {
     let dateNoTiome = date.toISOString();
     let T = dateNoTiome.split("T");
     setSelectedDateStart(T[0]);
-    console.log("dateNoTiome", T);
+    // console.log("dateNoTiome", T);
   };
   const handleDateEnd = (date) => {
     let dateNoTiome = date.toISOString();
     let T = dateNoTiome.split("T");
     setSelectedDateEnd(T[0]);
-    console.log("dateNoTiome", T);
+    // console.log("dateNoTiome", T);
   };
   const handleRoomNum = (event) => {
     setRoomNum(event.target.value);
-    console.log(event.target.value);
+    // console.log(event.target.value);
   };
 
   const handleDialogReservationClose = () => {
@@ -121,7 +121,7 @@ export const ReservationPage = (props) => {
 
   const drag = () => {
     let dragable = document.getElementById("eventItem");
-    console.log(dragable);
+    // console.log(dragable);
     new Draggable(dragable, {});
   };
 
@@ -134,7 +134,7 @@ export const ReservationPage = (props) => {
     });
 
     const data = await getreservationroom(sessionStorage.getItem("auth"));
-    console.log("data", data);
+    // console.log("data", data);
     let datedata = [];
     data.content[data.content.length - 1].forEach((element) =>
       datedata.push({
@@ -146,7 +146,7 @@ export const ReservationPage = (props) => {
     );
     setDataDate(datedata);
 
-    console.log("postdate", postdate);
+    // console.log("postdate", postdate);
     setDialogReservation(false);
   };
 

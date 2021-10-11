@@ -17,6 +17,8 @@ import { EDIT_CONFIGSTATE } from "./action";
 
 import { EDIT_PERMISSION } from "./action";
 
+import { EDIT_INDEXTAB } from "./action"
+
 const initialState = {
   users: [{ id: "0", name: "n" }],
   lang: "en",
@@ -34,6 +36,7 @@ const initialState = {
   role: "Admin",
   configState: "Configuration",
   permission: [],
+  indextTab: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -126,6 +129,11 @@ const reducer = (state = initialState, action) => {
         users: allUsers,
       };
       return editedState;
+      case EDIT_INDEXTAB:
+        return {
+          ...state,
+          indextTab: action.payload,
+        };
     default:
       break;
   }

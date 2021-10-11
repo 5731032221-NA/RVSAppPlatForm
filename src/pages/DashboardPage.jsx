@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import "../assets/dashboard.css";
 import clsx from "clsx";
 import { ReactReduxContext, useSelector } from "react-redux";
 
@@ -754,7 +755,7 @@ export default function Dashboard() {
               >
                 <img
                   src="logo_white.png"
-                  class="rounded mx-auto d-block"
+                  className="rounded mx-auto d-block"
                   alt="..."
                   height={35}
                 />
@@ -811,7 +812,7 @@ export default function Dashboard() {
                   </Typography>
                 </Grid> */}
 
-                <Grid class={classes.propertyForm}>
+                <Grid className={classes.propertyForm}>
                   <BusinessIcon
                     style={{ paddingRight: 20, color: "#FFFFFF", fontSize: 45 }}
                   />

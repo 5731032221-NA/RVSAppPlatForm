@@ -160,6 +160,10 @@ export default function RighBar() {
     });
   }
 
+  //active lang
+  const langa = useSelector((state) => state.reducer.lang);
+
+
   // function handlelanguageEN() {
   //   // setOpenSystemsTools(!openSystemTools)
   //   store.dispatch({
@@ -418,7 +422,7 @@ export default function RighBar() {
               color: themeState.color,
             },
           }}
-          defaultValue={"en"}
+          defaultValue={langa}
           onChange={(e) => handlelanguage(e.target.value)}
         >
           {languages.map((option) => (

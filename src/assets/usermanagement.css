@@ -1,0 +1,12 @@
+@media only screen and (max-width: 600px) {
+    .MTableToolbar-root {
+        padding-right: 0px;
+        display: block!important;
+        text-align: center;
+        padding-top: 15px;
+    }
+    /* .MuiToolbar-root {
+        display: block!important;
+        text-align: center;
+    } */
+}
