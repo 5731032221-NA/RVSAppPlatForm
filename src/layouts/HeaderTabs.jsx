@@ -119,6 +119,7 @@ export default function HeaderTabs() {
 
     dispatch(indexTab(newValue))
     if (newValue === 0) handleComponentState("FrontDesk");
+    else if(newValue === 1) handleComponentState("Reservation");
     console.log("st", store.getState().reducer.componentState);
   };
 

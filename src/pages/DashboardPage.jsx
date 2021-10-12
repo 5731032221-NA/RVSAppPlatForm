@@ -893,6 +893,14 @@ export default function Dashboard() {
               }}
             >
               <FrontDesk />
+            </div>
+          ): store.getState().reducer.componentState == "Reservation" ? (
+            <div
+              style={{
+                backgroundColor: themeStatedata.background,
+                color: themeStatedata.color,
+              }}
+            >
               <ReservationPage />
             </div>
           ) : store.getState().reducer.componentState == "Configuration" ? (
