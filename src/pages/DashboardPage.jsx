@@ -85,7 +85,7 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
+    display: "flex"
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
@@ -255,7 +255,7 @@ const useStyles = makeStyles((theme) => ({
 
   rightBarStyle: {
     width: 280,
-    zIndex: 2001,
+    zIndex: 2001
   },
   seletprop: {
     fontSize: 15,
@@ -272,6 +272,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   const [open, setOpen] = React.useState(false);
   const [themeState, setThemeState] = React.useState(classes.themeDefault);
@@ -738,14 +739,19 @@ export default function Dashboard() {
       {renderMenu}
       {!open && smallwidth ? null : (
         <Drawer
-          variant="permanent"
+          variant="temporary"
           classes={{
             paper: clsx(
               themeState,
               classes.drawerPaper,
               !open && classes.drawerPaperClose
             ),
+            
           }}
+          // sx={{
+          //   display: { xs: 'block', sm: 'none' },
+          //   '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          // }}
           open={open}
         >
           <Grid container>
@@ -859,20 +865,8 @@ export default function Dashboard() {
             )}
           </Grid>
           <Divider />
-          {/* <List disablePadding dense>
-                    {items.map(({ label, name, ...rest }) => (
-                        <ListItem key={name} button {...rest}>
-                            <ListItemText>{label}</ListItemText>
-                        </ListItem>
-                    ))}
-            </List> */}
-          <List>
-            {store.getState().reducer.lang == "en" ? (
-              <MainListItems_en />
-            ) : (
-              <MainListItems_en />
-            )}
-          </List>
+          
+          <MainListItems_en />
           <Divider />
 
           {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
@@ -882,9 +876,7 @@ export default function Dashboard() {
       <main id="compwidth" className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="100" className={classes.container}>
-          {/* <FrontDesk /> */}
           <HeaderTabs />
-          {/* <DashboardDetail/> */}
           {store.getState().reducer.componentState == "FrontDesk" ? (
             <div
               style={{
@@ -894,7 +886,7 @@ export default function Dashboard() {
             >
               <FrontDesk />
             </div>
-          ): store.getState().reducer.componentState == "Reservation" ? (
+          ) : store.getState().reducer.componentState == "Reservation" ? (
             <div
               style={{
                 backgroundColor: themeStatedata.background,
@@ -908,9 +900,9 @@ export default function Dashboard() {
               <Configuration />
             </div>
           ) : null}
-          <div style={{ paddingTop: 50 }}>
+          {/* <div style={{ paddingTop: 50 }}>
             <ButtomBar />
-          </div>
+          </div> */}
         </Container>
       </main>
     </div>

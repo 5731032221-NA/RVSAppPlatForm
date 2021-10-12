@@ -306,7 +306,8 @@ export default function RighBar() {
   }, [maincolor]);
 
   return (
-    <Container className={classes.Container}>
+     <Container className={classes.Container}>
+    {/* <div> */}
       <Grid container>
         <Grid container spacing={2}>
           <Grid container justifyContent="start" style={{ marginLeft: 90 }}>
@@ -693,6 +694,7 @@ export default function RighBar() {
         </List>
       </Grid>
       <Divider />
-    </Container>
+      {/* </div> */}
+     </Container>
   );
 }
