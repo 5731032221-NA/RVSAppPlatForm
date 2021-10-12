@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
+
 // import Link from "@material-ui/core/Link";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -55,6 +56,7 @@ import {
 
 import TablePagination from "@material-ui/core/TablePagination";
 import { EDIT_CONFIGSTATE } from "../middleware/action";
+import { Check } from "@material-ui/icons";
 // Generate Order Data
 function createData(
   id,
@@ -80,149 +82,6 @@ function createData(
   };
 }
 
-// const roomType = [
-//   {
-//     value: "SUPERIOR",
-//     label: "SUPERIOR",
-//   },
-//   {
-//     value: "DELUX",
-//     label: "DELUX",
-//   },
-// ];
-// const building = [
-//   {
-//     value: "A",
-//     label: "A",
-//   },
-//   {
-//     value: "TOWER1",
-//     label: "TOWER 1",
-//   },
-
-//   {
-//     value: "TOWER2",
-//     label: "TOWER 2",
-//   },
-//   {
-//     value: "TOWER3",
-//     label: "TOWER 3",
-//   },
-// ];
-// const wing = [
-//   {
-//     value: "East",
-//     label: "East",
-//   },
-//   {
-//     value: "North",
-//     label: "North",
-//   },
-//   {
-//     value: "South",
-//     label: "South",
-//   },
-//   {
-//     value: "West",
-//     label: "West",
-//   },
-// ];
-// const exposure = [
-//   {
-//     value: "{1}",
-//     label: "Mountain View",
-//   },
-//   {
-//     value: "{2}",
-//     label: "Sea View",
-//   },
-//   {
-//     value: "{3}",
-//     label: "Town View",
-//   },
-//   {
-//     value: "{4}",
-//     label: "Market View",
-//   },
-// ];
-// const roomSize = [
-//   {
-//     value: "SQ56",
-//     label: "56 sq.m",
-//   },
-//   {
-//     value: "SQ100",
-//     label: "100 sq.m",
-//   },
-// ];
-// const roomSeg = [
-//   {
-//     value: "1",
-//     label: "1",
-//   },
-//   {
-//     value: "2",
-//     label: "2",
-//   },
-//   {
-//     value: "3",
-//     label: "3",
-//   },
-//   {
-//     value: "90",
-//     label: "90",
-//   },
-//   {
-//     value: "100",
-//     label: "100",
-//   },
-//   {
-//     value: "110",
-//     label: "110",
-//   },
-//   {
-//     value: "120",
-//     label: "120",
-//   },
-//   {
-//     value: "130",
-//     label: "130",
-//   },
-//   {
-//     value: "140",
-//     label: "140",
-//   },
-// ];
-// const roomStatus = [
-//   {
-//     value: "IN",
-//     label: "In House",
-//   },
-//   {
-//     value: "VC",
-//     label: "Vacant Clean",
-//   },
-// ];
-// const attribute = [
-//   {
-//     key: "BC",
-//     label: "BC",
-//   },
-//   {
-//     key: "MINIBAR",
-//     label: "Minibar",
-//   },
-//   {
-//     key: "NTV",
-//     label: "NTV",
-//   },
-//   {
-//     key: "SM",
-//     label: "SM",
-//   }
-// ];
-const userValues = "";
-
 function preventDefault(event) {
   event.preventDefault();
 }
@@ -242,10 +101,54 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 20,
     marginRight: 20,
   },
+  root: (themeState) => ({
+    "& label.MuiInputLabel-root": {
+      color: themeState.color,
+    },
+    "& label.Mui-focused": {
+      color: blue[themeState.colorlevel],
+    },
+    "& .MuiInput-underline:after": {
+      borderColor: themeState.color,
+      color: themeState.color,
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: themeState.color,
+        color: themeState.color,
+      },
+      "&:hover fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+    },
+    "&.MuiPaper-root": {
+      backgroundColor: themeState.paper,
+    },
+    "&.MuiMenu-paper": {
+      backgroundColor: themeState.paper,
+    },
+    // "& .MuiTablePagination-root": {
+    //   backgroundColor: themeState.color,
+    // },
+    // "& .MuiIcon-root": {
+    //   backgroundColor: "red",
+    // },
+    // "& .MuiTablePagination-caption": {
+    //   backgroundColor: themeState.color,
+    // },
+    //.material-icons
+    // "&.material-icons": {
+    //   backgroundColor: "red",
+    // },
+  }),
 }));
 
 export default function RoomManagement() {
-  const classes = useStyles();
   const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false });
   const [dialogAddRoom, setDialogAddRoom] = React.useState(false);
   const [dialogEditRoom, setDialogEditRoom] = React.useState(false);
@@ -313,21 +216,23 @@ export default function RoomManagement() {
     console.log("data", data);
     let roomdata = [];
     let i = 0;
-    data.content[data.content.length - 1].forEach((element) =>
-      roomdata.push(
-        createData(
-          element.id,
-          element.propertycode,
-          element.no,
-          element.type,
-          element.floor,
-          element.building,
-          element.description,
-          element.status,
-          element.attribute
+    if (data.content.length != 0) {
+      data.content[data.content.length - 1].forEach((element) =>
+        roomdata.push(
+          createData(
+            element.id,
+            element.propertycode,
+            element.no,
+            element.type,
+            element.floor,
+            element.building,
+            element.description,
+            element.status,
+            element.attribute
+          )
         )
-      )
-    );
+      );
+    }
     console.log("a", roomdata);
     setRows(roomdata);
     updatePageData(roomdata, page, rowsPerPage);
@@ -906,6 +811,7 @@ export default function RoomManagement() {
 
     setDialogDeleteRoom(false);
   };
+
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -933,6 +839,23 @@ export default function RoomManagement() {
       });
     }
   }, [themeBackground]);
+
+  const [mainColor, setMainColor] = React.useState("#2D62ED");
+  const maincolor = useSelector((state) => state.reducer.color);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setMainColor(maincolor);
+    } else {
+      setMainColor("#2D62ED");
+    }
+  }, [maincolor]);
+
+  const classes = useStyles(themeState);
+  const headerTableStyle = {
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  };
 
   return (
     <Container maxWidth="xl" style={themeState}>
@@ -964,7 +887,7 @@ export default function RoomManagement() {
                     style={{
                       marginBottom: 15,
                       fontSize: 20,
-                      color: blue[themeState.colorlevel],
+                      color: mainColor,
                     }}
                   >
                     Configuration
@@ -1018,7 +941,7 @@ export default function RoomManagement() {
                 <Button
                   variant="contained"
                   style={{
-                    backgroundColor: "#2D62ED",
+                    backgroundColor: mainColor,
                     color: "white",
                     textAlign: "center",
                   }}
@@ -1036,29 +959,26 @@ export default function RoomManagement() {
               open={dialogAddRoom}
               onClose={handleDialogAddRoomClose}
               aria-labelledby="form-dialog-title"
+              className={classes.root}
             >
               <DialogTitle
                 id="form-dialog-title"
                 style={{
                   backgroundColor: themeState.paper,
-                  color: blue[themeState.colorlevel],
+                  color: mainColor,
                 }}
               >
                 New Room Master
               </DialogTitle>
 
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
-                <Container maxWidth="xl" disableGutters >
+              <DialogContent style={headerTableStyle}>
+                <Container maxWidth="xl" disableGutters>
                   <Grid container>
                     <TextField
                       autoFocus
                       select
-                      id="outlined-basic"
+                      className={classes.root}
+                      // id="outlined-basic"
                       label="Property"
                       variant="outlined"
                       defaultValue={pageProperty}
@@ -1066,12 +986,18 @@ export default function RoomManagement() {
                       SelectProps={{
                         native: true,
                       }}
-                      // value={propertyDialog}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      value={propertyDialog}
                       onChange={(event) => handlePropertyDialog(event)}
-                      
                     >
                       {properties.map((option) => (
-                        <option key={option.value} value={option.value}>
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
                           {option.label}
                         </option>
                       ))}
@@ -1080,7 +1006,7 @@ export default function RoomManagement() {
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         id="outlined-basic"
                         label="Room Number"
                         variant="outlined"
@@ -1088,11 +1014,14 @@ export default function RoomManagement() {
                         defaultValue={""}
                         onChange={(e) => handleRoomNumber(e)}
                         fullWidth
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                       />
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Type"
@@ -1104,9 +1033,16 @@ export default function RoomManagement() {
                         // value={roomTypeDialog}
                         defaultValue={""}
                         onChange={(e) => handleRoomTypeDialog(e)}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                       >
                         {roomType.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1116,7 +1052,7 @@ export default function RoomManagement() {
                   <Grid container spacing={2} style={{ paddingTop: 15 }}>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Floor"
@@ -1128,9 +1064,16 @@ export default function RoomManagement() {
                         // value={buildingDialog}
                         defaultValue={""}
                         onChange={(e) => handleRoomFloorDialog(e)}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                       >
                         {roomFloor.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1138,7 +1081,7 @@ export default function RoomManagement() {
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Building"
@@ -1150,9 +1093,16 @@ export default function RoomManagement() {
                         // value={buildingDialog}
                         defaultValue={""}
                         onChange={(e) => handleBuildingDialog(e)}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                       >
                         {building.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1160,7 +1110,7 @@ export default function RoomManagement() {
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Wing"
@@ -1169,12 +1119,19 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         // value={wingDialog}
                         defaultValue={""}
                         onChange={(e) => handleWingDialog(e)}
                       >
                         {wing.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1184,7 +1141,7 @@ export default function RoomManagement() {
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Exposure"
@@ -1193,12 +1150,19 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         // value={exposureDialog}
                         defaultValue={""}
                         onChange={(e) => handleExposureDialog(e)}
                       >
                         {exposure.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1206,7 +1170,7 @@ export default function RoomManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Size"
@@ -1215,12 +1179,19 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         // value={roomSizeDialog}
                         defaultValue={""}
                         onChange={(e) => handleRoomSizeDialog(e)}
                       >
                         {roomSize.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1230,7 +1201,7 @@ export default function RoomManagement() {
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Seg"
@@ -1239,12 +1210,19 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         // value={roomSegDialog}
                         defaultValue={""}
                         onChange={(e) => handleRoomSegDialog(e)}
                       >
                         {roomSeg.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1252,7 +1230,7 @@ export default function RoomManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Status"
@@ -1261,12 +1239,19 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         // value={roomStatusDialog}
                         defaultValue={""}
                         onChange={(e) => handleRoomStatusDialog(e)}
                       >
                         {roomStatus.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1278,14 +1263,21 @@ export default function RoomManagement() {
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="center"
-                    style={{ paddingTop: 10 }}
                   >
                     <TextField
+                      className={classes.root}
                       fullWidth
-                      // autoFocus
                       variant="outlined"
                       selectSelectProps={{
                         native: true,
+                      }}
+                      style={{
+                        marginTop: 10,
+                        backgroundColor: themeState.paper,
+                        color: themeState.color,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
                       }}
                       label="Attribute"
                       select
@@ -1297,9 +1289,11 @@ export default function RoomManagement() {
                     >
                       {attribute.map((option) => (
                         <MenuItem
+                          className={classes.root}
                           label={option.label}
                           name={option.label}
                           value={option.label}
+                          style={headerTableStyle}
                         >
                           {option.label}
                         </MenuItem>
@@ -1324,8 +1318,11 @@ export default function RoomManagement() {
                     style={{ paddingTop: 10 }}
                   >
                     <TextField
+                      className={classes.root}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                       fullWidth
-                      // id="outlined-multiline-static"
                       label="Description"
                       multiline
                       rows={4}
@@ -1362,11 +1359,17 @@ export default function RoomManagement() {
                   </div>
                 ) : null}
               </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
+              <DialogActions
+                style={{
+                  padding: 20,
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Button
                   onClick={handleDialogAddRoomClose}
                   variant="text"
-                  color="primary"
+                  style={{ color: mainColor }}
                 >
                   Cancel
                 </Button>
@@ -1389,6 +1392,10 @@ export default function RoomManagement() {
                       roomFloorDialog
                     )
                   }
+                  style={{
+                    color: themeState.color,
+                    backgroundColor: mainColor,
+                  }}
                 >
                   Save
                 </Button>
@@ -1397,21 +1404,28 @@ export default function RoomManagement() {
             {/* ---------------------------------------- */}
             {/* ==================== Dialog Edit Room ========================= */}
             <Dialog
+              className={classes.root}
               fullWidth="true"
               maxWidth="sm"
               open={dialogEditRoom}
               onClose={handleDialogEditRoomClose}
               aria-labelledby="form-dialog-title"
             >
-              <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{
+                  backgroundColor: themeState.paper,
+                  color: mainColor,
+                }}
+              >
                 Edit Room Master
               </DialogTitle>
 
-              <DialogContent>
+              <DialogContent style={headerTableStyle}>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container>
                     <TextField
-                      // autoFocus
+                      className={classes.root}
                       select
                       id="outlined-basic"
                       label="Property"
@@ -1420,11 +1434,18 @@ export default function RoomManagement() {
                       SelectProps={{
                         native: true,
                       }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                       defaultValue={propertyDialog}
                       onChange={(event) => handlePropertyDialog(event)}
                     >
                       {properties.map((option) => (
-                        <option key={option.value} value={option.value}>
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
                           {option.label}
                         </option>
                       ))}
@@ -1433,10 +1454,13 @@ export default function RoomManagement() {
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         id="outlined-basic"
                         label="Room Number"
                         variant="outlined"
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         fullWidth
                         value={roomNumber}
                         onChange={(e) => handleRoomNumber(e)}
@@ -1444,7 +1468,7 @@ export default function RoomManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Type"
@@ -1453,11 +1477,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={roomTypeDialog}
                         onChange={(e) => handleRoomTypeDialog(e)}
                       >
                         {roomType.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1467,7 +1498,7 @@ export default function RoomManagement() {
                   <Grid container spacing={2} style={{ paddingTop: 15 }}>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="roomFloor"
@@ -1476,11 +1507,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={roomFloorDialog}
                         onChange={(e) => handleRoomFloorDialog(e)}
                       >
                         {roomFloor.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1488,7 +1526,7 @@ export default function RoomManagement() {
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Building"
@@ -1497,11 +1535,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={buildingDialog}
                         onChange={(e) => handleBuildingDialog(e)}
                       >
                         {building.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1509,7 +1554,7 @@ export default function RoomManagement() {
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Wing"
@@ -1518,11 +1563,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={wingDialog}
                         onChange={(e) => handleWingDialog(e)}
                       >
                         {wing.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1532,7 +1584,7 @@ export default function RoomManagement() {
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Exposure"
@@ -1541,11 +1593,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={exposureDialog}
                         onChange={(e) => handleExposureDialog(e)}
                       >
                         {exposure.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1553,7 +1612,7 @@ export default function RoomManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Size"
@@ -1562,11 +1621,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={roomSizeDialog}
                         onChange={(e) => handleRoomSizeDialog(e)}
                       >
                         {roomSize.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1576,7 +1642,7 @@ export default function RoomManagement() {
                   <Grid container spacing={2} style={{ paddingTop: 5 }}>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Seg"
@@ -1585,11 +1651,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={roomSegDialog}
                         onChange={(e) => handleRoomSegDialog(e)}
                       >
                         {roomSeg.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1597,7 +1670,7 @@ export default function RoomManagement() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
-                        // autoFocus
+                        className={classes.root}
                         select
                         id="outlined-basic"
                         label="Room Status"
@@ -1606,11 +1679,18 @@ export default function RoomManagement() {
                         SelectProps={{
                           native: true,
                         }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
                         value={roomStatusDialog}
                         onChange={(e) => handleRoomStatusDialog(e)}
                       >
                         {roomStatus.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
                             {option.label}
                           </option>
                         ))}
@@ -1626,27 +1706,31 @@ export default function RoomManagement() {
                   >
                     <TextField
                       fullWidth
-                      // autoFocus
+                      className={classes.root}
                       variant="outlined"
-                      selectSelectProps={{
+                      SelectProps={{
                         native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
                       }}
                       label="Attribute"
                       select
-                      // name={key}
                       value={chipAttributeDialog}
                       onChange={(event, key) =>
                         handleSelectAttribute(event, key)
                       }
                     >
                       {attribute.map((option) => (
-                        <MenuItem
+                        <option
+                          className={classes.root}
                           label={option.label}
                           name={option.label}
                           value={option.label}
+                          style={headerTableStyle}
                         >
                           {option.label}
-                        </MenuItem>
+                        </option>
                       ))}
                     </TextField>
                     {chipAttributeDialog.map((data, index) => {
@@ -1669,6 +1753,7 @@ export default function RoomManagement() {
                     style={{ paddingTop: 10 }}
                   >
                     <TextField
+                      className={classes.root}
                       fullWidth
                       label="Description"
                       multiline
@@ -1706,7 +1791,13 @@ export default function RoomManagement() {
                   </div>
                 ) : null}
               </DialogContent>
-              <DialogActions style={{ padding: 20 }}>
+              <DialogActions
+                style={{
+                  padding: 20,
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                }}
+              >
                 <Button
                   onClick={handleDialogEditRoomClose}
                   variant="text"
@@ -1715,6 +1806,7 @@ export default function RoomManagement() {
                   Cancel
                 </Button>
                 <Button
+                  color="primary"
                   onClick={() =>
                     handleDialogEditRoomSave(
                       roomNumber,
@@ -1732,7 +1824,10 @@ export default function RoomManagement() {
                     )
                   }
                   variant="contained"
-                  color="primary"
+                  style={{
+                    color: themeState.background,
+                    backgroundColor: blue[themeState.colorlevel],
+                  }}
                 >
                   Save
                 </Button>
@@ -1749,10 +1844,16 @@ export default function RoomManagement() {
             >
               <Grid container>
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+                  <DialogTitle
+                    id="form-dialog-title"
+                    style={{
+                      backgroundColor: themeState.paper,
+                      color: blue[themeState.colorlevel],
+                    }}
+                  >
                     Confirm Delete Room Information
                   </DialogTitle>
-                  <DialogContent>
+                  <DialogContent style={headerTableStyle}>
                     <Typography>
                       <Typography
                         color="initial"
@@ -1766,7 +1867,13 @@ export default function RoomManagement() {
                       </Typography>
                     </Typography>
                   </DialogContent>
-                  <DialogActions style={{ padding: 20 }}>
+                  <DialogActions
+                    style={{
+                      padding: 20,
+                      backgroundColor: themeState.paper,
+                      color: themeState.color,
+                    }}
+                  >
                     <Grid
                       container
                       direction="row"
@@ -1844,7 +1951,10 @@ export default function RoomManagement() {
           }}
           title={
             <Grid>
-              <Typography variant="h6" style={{ fontSize: 25 }}>
+              <Typography
+                variant="h6"
+                style={{ fontSize: 25, color: themeState.color }}
+              >
                 Room Master
               </Typography>
             </Grid>
@@ -1853,66 +1963,42 @@ export default function RoomManagement() {
             {
               title: "Property",
               field: "property",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "#Number",
               field: "number",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Room Type",
               field: "roomType",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Floor",
               field: "floor",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Building",
               field: "building",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Desc",
               field: "desc",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Status",
               field: "status",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
             {
               title: "Attribute",
               field: "attribute",
-              headerStyle: {
-                backgroundColor: themeState.paper,
-                color: themeState.color,
-              },
+              headerStyle: headerTableStyle,
             },
           ]}
           data={rows}
@@ -1925,19 +2011,13 @@ export default function RoomManagement() {
             page: page,
             pageSize: rowsPerPage,
             pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
-            searchFieldStyle: {
-              backgroundColor: themeState.paper,
-              color: themeState.color,
-              // borderBottomColor: themeState.color,
-            },
-            headerStyle: {
-              backgroundColor: themeState.paper,
-              color: themeState.color,
-            },
+            searchFieldStyle: headerTableStyle,
+            headerStyle: headerTableStyle,
           }}
           actions={[
             {
-              icon: EditRoundedIcon,
+              icon: "edit",
+              iconProps: { style: { color: themeState.color } },
               tooltip: "Edit",
               disabled: !CRUD.U,
               onClick: (event, rowData) => {
@@ -1945,7 +2025,8 @@ export default function RoomManagement() {
               },
             },
             {
-              icon: DeleteRoundedIcon,
+              icon: "delete",
+              iconProps: { style: { color: themeState.color } },
               tooltip: "Delete",
               disabled: !CRUD.D,
               onClick: (event, rowData) => {

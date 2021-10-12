@@ -10,6 +10,7 @@ export const EDIT_DARKMODE = "EDIT_DARKMODE";
 export const EDIT_PROPERTY = "EDIT_PROPERTY";
 export const EDIT_CONFIGSTATE = "EDIT_CONFIGSTATE";
 export const EDIT_PERMISSION = "EDIT_PERMISSION";
+export const EDIT_INDEXTAB = "EDIT_INDEXTAB";
 
 export const editAuth = (auth) => {
   return (dispatch) => {
@@ -76,6 +77,17 @@ export const getUser = (id) => {
       });
     });
   };
+};
+
+export const indexTab = (indexTab) => {
+
+  return {
+    type: EDIT_INDEXTAB,
+    payload: {
+      indextTab: indexTab,
+    },
+  }
+ 
 };
 
 export const getUserList = () => {

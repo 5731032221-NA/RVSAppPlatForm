@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import { Container, Grid, Typography } from "@material-ui/core";
+import { Container, Grid, Typography, TextField } from "@material-ui/core";
 // import ImageIcon from "@material-ui/icons/Image";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -16,8 +16,15 @@ import FlagIcon from "@material-ui/icons/Flag";
 import Switch from "@material-ui/core/Switch";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { purple, green, orange, red, yellow } from "@material-ui/core/colors";
-import { ReactReduxContext } from "react-redux";
+import {
+  purple,
+  green,
+  orange,
+  red,
+  yellow,
+  blue,
+} from "@material-ui/core/colors";
+import { ReactReduxContext, useSelector } from "react-redux";
 import { EDIT_LANG } from "../middleware/action";
 import { EDIT_COLOR } from "../middleware/action";
 import { EDIT_DARKMODE } from "../middleware/action";
@@ -27,11 +34,13 @@ const useStyles = makeStyles({
     width: 250,
     zIndex: 2000,
   },
-  Container: {
+  Container: (themeState) => ({
     zIndex: 2000,
     padding: 10,
-    marginTop: 30,
-  },
+    paddingTop: 35,
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  }),
   colorsize: {
     width: 20,
     height: 20,
@@ -77,30 +86,106 @@ const useStyles = makeStyles({
     width: 20,
     height: 20,
   },
+  root: (themeState) => ({
+    "& label.MuiInputLabel-root": {
+      color: themeState.color,
+    },
+    "& label.Mui-focused": {
+      color: blue[themeState.colorlevel],
+    },
+    "& .MuiInput-underline:after": {
+      borderColor: themeState.color,
+      color: themeState.color,
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: themeState.color,
+        color: themeState.color,
+      },
+      "&:hover fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+    },
+    "&.MuiPaper-root": {
+      backgroundColor: themeState.paper,
+    },
+    "&.MuiMenu-paper": {
+      backgroundColor: themeState.paper,
+    },
+  }),
+  switchBase: (themeState) => ({
+    "&.Mui-checked": {
+      color: blue[themeState.colorlevel],
+    },
+    "&.Mui-checked + .MuiSwitch-track": {
+      backgroundColor: blue[themeState.colorlevel],
+    },
+  }),
 });
 
 export default function RighBar() {
-  const classes = useStyles();
+  const [themeState, setThemeState] = React.useState({
+    background: "#FFFFFF",
+    color: "#000000",
+    paper: "#FFFFFF",
+    colorlevel: "900",
+  });
+  const classes = useStyles(themeState);
   const { store } = useContext(ReactReduxContext);
   const [darkMode, setDarkmode] = React.useState(false);
-  function handlelanguageEN() {
+  const [languages, setLanguages] = useState([
+    {
+      key: "1",
+      label: "en",
+    },
+    {
+      key: "2",
+      label: "th",
+    },
+    {
+      key: "2",
+      label: "cn",
+    },
+  ]);
+  function handlelanguage(language) {
     // setOpenSystemsTools(!openSystemTools)
     store.dispatch({
       type: EDIT_LANG,
-      payload: "en",
+      payload: language,
     });
   }
-  function handlelanguageTH() {
-    store.dispatch({
-      type: EDIT_LANG,
-      payload: "th",
-    });
-  }
+
+  //active lang
+  const langa = useSelector((state) => state.reducer.lang);
+
+
+  // function handlelanguageEN() {
+  //   // setOpenSystemsTools(!openSystemTools)
+  //   store.dispatch({
+  //     type: EDIT_LANG,
+  //     payload: "en",
+  //   });
+  // }
+  // function handlelanguageTH() {
+  //   store.dispatch({
+  //     type: EDIT_LANG,
+  //     payload: "th",
+  //   });
+  // }
 
   function handleThemePurple() {
     store.dispatch({
       type: EDIT_COLOR,
       payload: purple[600],
+    });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
     });
   }
   function handleThemeGreen() {
@@ -108,11 +193,19 @@ export default function RighBar() {
       type: EDIT_COLOR,
       payload: green[600],
     });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
+    });
   }
   function handleThemeOrange() {
     store.dispatch({
       type: EDIT_COLOR,
       payload: orange[600],
+    });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
     });
   }
   function handleThemeRed() {
@@ -120,17 +213,29 @@ export default function RighBar() {
       type: EDIT_COLOR,
       payload: red[600],
     });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
+    });
   }
   function handleThemeYellow() {
     store.dispatch({
       type: EDIT_COLOR,
       payload: "#ff5253",
     });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
+    });
   }
   function handleThemeDefault() {
     store.dispatch({
       type: EDIT_COLOR,
       payload: "#2D62ED",
+    });
+    store.dispatch({
+      type: EDIT_DARKMODE,
+      payload: "#FFFFFF",
     });
   }
 
@@ -143,7 +248,8 @@ export default function RighBar() {
   function handleDarkMode(e) {
     let _darkmode = !darkMode;
     setDarkmode(_darkmode);
-    console.log("darkmode", _darkmode);
+    console.log("_darkmode", _darkmode);
+    console.log("darkmode", darkMode);
     if (_darkmode) {
       store.dispatch({
         type: EDIT_COLOR,
@@ -153,20 +259,54 @@ export default function RighBar() {
         type: EDIT_DARKMODE,
         payload: "#1F1B24",
       });
+    } else {
+      store.dispatch({
+        type: EDIT_COLOR,
+        payload: "#2D62ED",
+      });
+      store.dispatch({
+        type: EDIT_DARKMODE,
+        payload: "#FFFFFF",
+      });
     }
-    // else {
-    //   store.dispatch({
-    //     type: EDIT_COLOR,
-    //     payload: "#FFFFFF",
-    //   });
-    // }
   }
 
+  const themeBackground = useSelector((state) => state.reducer.themeBackground);
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setThemeState({
+        background: "#FFFFFF",
+        color: "#000000",
+        paper: "#FFFFFF",
+        colorlevel: "900",
+        // matStyle: this.classes.normalmode
+      });
+      setDarkmode(false);
+    } else {
+      setThemeState({
+        background: "#212121",
+        color: "#FAFAFA",
+        paper: "#424242",
+        colorlevel: "A200",
+        // matStyle: this.classes.darkmode
+      });
+      setDarkmode(true);
+    }
+  }, [themeBackground]);
+
+  const [mainColor, setMainColor] = React.useState("#2D62ED");
+  const maincolor = useSelector((state) => state.reducer.color);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setMainColor(maincolor);
+    } else {
+      setMainColor("#2D62ED");
+    }
+  }, [maincolor]);
+
   return (
-    <Container
-      className={classes.Container}
-      // style={{ backgroundColor: "#000000" }}
-    >
+    <Container className={classes.Container}>
       <Grid container>
         <Grid container spacing={2}>
           <Grid container justifyContent="start" style={{ marginLeft: 90 }}>
@@ -185,8 +325,22 @@ export default function RighBar() {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="New user registered"
-                secondary="Jan 9, 2014"
+                primary={
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
+                    New user registered
+                  </Typography>
+                }
+                secondary={
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
+                    Jan 9, 2014
+                  </Typography>
+                }
               />
             </ListItem>
             <ListItem>
@@ -195,7 +349,24 @@ export default function RighBar() {
                   <ShoppingCartOutlinedIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="New order recived" secondary="2 min ago" />
+              <ListItemText
+                primary={
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
+                    New order recived
+                  </Typography>
+                }
+                secondary={
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
+                    2 min ago
+                  </Typography>
+                }
+              />
             </ListItem>
 
             <ListItem>
@@ -205,8 +376,22 @@ export default function RighBar() {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="New message from Mail"
-                secondary="1 hour ago"
+                primary={
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
+                    New message from Mail
+                  </Typography>
+                }
+                secondary={
+                  <Typography
+                    type="body2"
+                    style={{ color: themeBackground.color }}
+                  >
+                    1 hour ago
+                  </Typography>
+                }
               />
             </ListItem>
           </Grid>
@@ -216,13 +401,44 @@ export default function RighBar() {
       <Grid container style={{ marginTop: 30 }}>
         <Grid container spacing={2}>
           <Grid container justifyContent="start" style={{ marginLeft: 90 }}>
-            <Typography variant="h1" style={{ fontSize: 18, marginBottom: 10 }}>
+            <Typography variant="h1" style={{ fontSize: 18, marginBottom: 20 }}>
               Language
             </Typography>
           </Grid>
         </Grid>
-
-        <List>
+        <TextField
+          className={classes.root}
+          select
+          id="outlined-basic"
+          label="Language"
+          variant="outlined"
+          fullWidth
+          SelectProps={{
+            native: true,
+          }}
+          InputProps={{
+            style: {
+              backgroundColor: themeState.paper,
+              color: themeState.color,
+            },
+          }}
+          defaultValue={langa}
+          onChange={(e) => handlelanguage(e.target.value)}
+        >
+          {languages.map((option) => (
+            <option
+              key={option.key}
+              value={option.label}
+              style={{
+                backgroundColor: themeState.paper,
+                color: themeState.color,
+              }}
+            >
+              {option.label}
+            </option>
+          ))}
+        </TextField>
+        {/* <List>
           <Divider variant="inset" />
           <Grid container spacing={1}>
             <ListItem button onClick={handlelanguageEN}>
@@ -238,7 +454,7 @@ export default function RighBar() {
               <ListItemText primary="ไทย" />
             </ListItem>
           </Grid>
-        </List>
+        </List> */}
       </Grid>
 
       <Grid container style={{ marginTop: 30 }}>
@@ -288,7 +504,16 @@ export default function RighBar() {
             </Typography>
           </Grid>
           <Grid item>
-            <Switch value={darkMode} onChange={handleDarkMode} />
+            <Switch
+              color="default"
+              classes={{
+                track: classes.switchTrack,
+                switchBase: classes.switchBase,
+              }}
+              checked={darkMode}
+              value={darkMode}
+              onChange={handleDarkMode}
+            />
           </Grid>
         </Grid>
         <Grid container alignItems="center">
@@ -298,7 +523,13 @@ export default function RighBar() {
             </Typography>
           </Grid>
           <Grid item>
-            <Switch />
+            <Switch
+              color="default"
+              classes={{
+                track: classes.switchTrack,
+                switchBase: classes.switchBase,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid container alignItems="center">
@@ -308,7 +539,13 @@ export default function RighBar() {
             </Typography>
           </Grid>
           <Grid item>
-            <Switch />
+            <Switch
+              color="default"
+              classes={{
+                track: classes.switchTrack,
+                switchBase: classes.switchBase,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid container alignItems="center">
@@ -318,7 +555,13 @@ export default function RighBar() {
             </Typography>
           </Grid>
           <Grid item>
-            <Switch />
+            <Switch
+              color="default"
+              classes={{
+                track: classes.switchTrack,
+                switchBase: classes.switchBase,
+              }}
+            />
           </Grid>
         </Grid>
       </Grid>
@@ -339,10 +582,19 @@ export default function RighBar() {
           style={{ marginTop: 20 }}
         >
           <Grid item style={{ flexGrow: 1 }}>
-            <Button color="primary"> &nbsp;&nbsp; TEXT &nbsp;&nbsp; </Button>
+            <Button color="primary" style={{ color: mainColor }}>
+              {" "}
+              &nbsp;&nbsp; TEXT &nbsp;&nbsp;{" "}
+            </Button>
           </Grid>
           <Grid item>
-            <Switch />
+            <Switch
+              color="default"
+              classes={{
+                track: classes.switchTrack,
+                switchBase: classes.switchBase,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -355,13 +607,22 @@ export default function RighBar() {
             <Button
               variant="contained"
               color="primary"
-              style={{ borderRadius: 25 }}
+              style={{
+                borderRadius: 25,
+                backgroundColor: mainColor,
+              }}
             >
               ROUNDED
             </Button>
           </Grid>
           <Grid item>
-            <Switch />
+            <Switch
+              color="default"
+              classes={{
+                track: classes.switchTrack,
+                switchBase: classes.switchBase,
+              }}
+            />
           </Grid>
         </Grid>
         <Grid
@@ -371,12 +632,22 @@ export default function RighBar() {
           style={{ marginTop: 20 }}
         >
           <Grid item style={{ flexGrow: 1 }}>
-            <Button variant="outlined" color="primary">
+            <Button
+              variant="outlined"
+              color="primary"
+              style={{ color: mainColor, borderColor: mainColor }}
+            >
               OUTLINE
             </Button>
           </Grid>
           <Grid item>
-            <Switch />
+            <Switch
+              color="default"
+              classes={{
+                track: classes.switchTrack,
+                switchBase: classes.switchBase,
+              }}
+            />
           </Grid>
         </Grid>
       </Grid>

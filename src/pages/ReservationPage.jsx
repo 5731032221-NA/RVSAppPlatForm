@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import { connect } from "react-redux";
 import Calendar from "../components/Calendar";
 import Container from "@material-ui/core/Container";
@@ -15,6 +15,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import { TextField } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
+import { ReactReduxContext, useSelector } from "react-redux";
 import {
   getreservationroom,
   postreservationroom,
@@ -49,6 +50,33 @@ export const ReservationPage = (props) => {
   );
   const [roomNum, setRoomNum] = React.useState("0000");
   const [dataDate, setDataDate] = React.useState([]);
+  const [themeState, setThemeState] = React.useState({
+    background: "#FFFFFF",
+    color: "#000000",
+    paper: "#FFFFFF",
+    colorlevel: "900",
+  });
+  const themeBackground = useSelector((state) => state.reducer.themeBackground);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setThemeState({
+        background: "#FFFFFF",
+        color: "#000000",
+        paper: "#FFFFFF",
+        colorlevel: "900",
+        // matStyle: this.classes.normalmode
+      });
+    } else {
+      setThemeState({
+        background: "#212121",
+        color: "#FAFAFA",
+        paper: "#424242",
+        colorlevel: "A200",
+        // matStyle: this.classes.darkmode
+      });
+    }
+  }, [themeBackground]);
 
   React.useEffect(async () => {
     // const data = await getreservationroom(sessionStorage.getItem("auth"));
@@ -70,17 +98,17 @@ export const ReservationPage = (props) => {
     let dateNoTiome = date.toISOString();
     let T = dateNoTiome.split("T");
     setSelectedDateStart(T[0]);
-    console.log("dateNoTiome", T);
+    // console.log("dateNoTiome", T);
   };
   const handleDateEnd = (date) => {
     let dateNoTiome = date.toISOString();
     let T = dateNoTiome.split("T");
     setSelectedDateEnd(T[0]);
-    console.log("dateNoTiome", T);
+    // console.log("dateNoTiome", T);
   };
   const handleRoomNum = (event) => {
     setRoomNum(event.target.value);
-    console.log(event.target.value);
+    // console.log(event.target.value);
   };
 
   const handleDialogReservationClose = () => {
@@ -93,10 +121,8 @@ export const ReservationPage = (props) => {
 
   const drag = () => {
     let dragable = document.getElementById("eventItem");
-    console.log(dragable);
-    new Draggable(dragable,{
-      
-    });
+    // console.log(dragable);
+    new Draggable(dragable, {});
   };
 
   const handleDialogReservationSave = async (roomno, startdate, enddate) => {
@@ -108,7 +134,7 @@ export const ReservationPage = (props) => {
     });
 
     const data = await getreservationroom(sessionStorage.getItem("auth"));
-    console.log("data", data);
+    // console.log("data", data);
     let datedata = [];
     data.content[data.content.length - 1].forEach((element) =>
       datedata.push({
@@ -120,24 +146,37 @@ export const ReservationPage = (props) => {
     );
     setDataDate(datedata);
 
-    console.log("postdate", postdate);
+    // console.log("postdate", postdate);
     setDialogReservation(false);
   };
 
   return (
-    <Container maxWidth="xl" style={{ marginTop: 100 }}>
+    <Container
+      maxWidth="xl"
+      style={{
+        marginTop: 100,
+        backgroundColor: themeState.background,
+        color: themeState.color,
+      }}
+    >
       <Grid
         container
         direction="row"
         justifyContent="center"
         alignItems="stretch"
         spacing={2}
+        style={{
+          backgroundColor: themeState.background,
+          color: themeState.color,
+        }}
       >
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Box borderBottom={5} borderColor="#2D62ED" borderRadius={10}>
             <Paper
               style={{
                 minHeight: 50,
+                backgroundColor: themeState.paper,
+                color: themeState.color,
               }}
               elevation={3}
             >
@@ -162,7 +201,15 @@ export const ReservationPage = (props) => {
           </Box>
         </Grid>
         <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-          <Paper elevation={3} style={{ width: "100%", minHeight: "100%" }}>
+          <Paper
+            elevation={3}
+            style={{
+              width: "100%",
+              minHeight: "100%",
+              backgroundColor: themeState.paper,
+              color: themeState.color,
+            }}
+          >
             <Container
               style={{
                 backgroundColor: "#2D62ED",

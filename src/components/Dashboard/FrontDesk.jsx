@@ -51,56 +51,123 @@ export class FrontDesk extends Component {
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => {
-      if (this.state.lang != this.props.lang) {
-        this.setState({ lang: "th" });
-        if (this.props.lang == "th") {
-          this.setState({
-            lang: "th",
-            Dashboard: th_lang.Dashboard,
-            color: this.props.color,
-          });
-        } else if (this.props.lang == "en") {
-          this.setState({
-            lang: "en",
-            Dashboard: en_lang.Dashboard,
-            color: this.props.color,
-          });
-        }
+    // this.interval = setInterval(() => {
+    // }, 1000);
+    if (this.state.lang != this.props.lang) {
+      this.setState({ lang: "th" });
+      if (this.props.lang == "th") {
+        this.setState({
+          lang: "th",
+          Dashboard: th_lang.Dashboard,
+          color: this.props.color,
+        });
+      } else if (this.props.lang == "en") {
+        this.setState({
+          lang: "en",
+          Dashboard: en_lang.Dashboard,
+          color: this.props.color,
+        });
       }
+    }
+    console.log("this.props.themeBackground", this.props.themeBackground);
 
-      if (this.state.themeBackground != this.props.themeBackground) {
-        console.log(this.state.themeBackground, this.props.themeBackground);
-        if (this.props.themeBackground === "#FFFFFF") {
-          this.setState({
-            themeState: {
-              background: "#FFFFFF",
-              color: "#000000",
-              paper: "#FFFFFF",
-              colorlevel: "900",
-              // matStyle: this.classes.normalmode
-            },
-          });
-        } else {
-          this.setState({
-            themeState: {
-              background: "#212121",
-              color: "#FAFAFA",
-              paper: "#424242",
-              colorlevel: "A200",
-              // matStyle: this.classes.darkmode
-            },
-          });
-        }
-        this.setState({ themeBackground: this.props.themeBackground });
-        console.log(this.props.themeBackground);
+    if (this.state.themeBackground != this.props.themeBackground) {
+      console.log(this.state.themeBackground, this.props.themeBackground);
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({
+          themeState: {
+            background: "#FFFFFF",
+            color: "#000000",
+            paper: "#FFFFFF",
+            colorlevel: "900",
+            // matStyle: this.classes.normalmode
+          },
+        });
+        this.setState({ color: this.props.color });
+      } else {
+        this.setState({
+          themeState: {
+            background: "#212121",
+            color: "#FAFAFA",
+            paper: "#424242",
+            colorlevel: "A200",
+            // matStyle: this.classes.darkmode
+          },
+        });
+        this.setState({ color: "#2D62ED" });
       }
-    }, 1000);
+      this.setState({ themeBackground: this.props.themeBackground });
+      console.log(this.props.themeBackground);
+    }
+
+    if (this.state.color != this.props.color) {
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({ color: this.props.color });
+      } else {
+        this.setState({ color: this.props.defaultColor });
+      }
+    }
   }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
+  // componentWillUnmount() {
+  //   clearInterval(this.interval);
+  // }
+
+  componentDidUpdate() {
+    if (this.state.lang != this.props.lang) {
+      this.setState({ lang: "th" });
+      if (this.props.lang == "th") {
+        this.setState({
+          lang: "th",
+          Dashboard: th_lang.Dashboard,
+          color: this.props.color,
+        });
+      } else if (this.props.lang == "en") {
+        this.setState({
+          lang: "en",
+          Dashboard: en_lang.Dashboard,
+          color: this.props.color,
+        });
+      }
+    }
+    if (this.state.themeBackground != this.props.themeBackground) {
+      // console.log(this.state.themeBackground, this.props.themeBackground);
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({
+          themeState: {
+            background: "#FFFFFF",
+            color: "#000000",
+            paper: "#FFFFFF",
+            colorlevel: "900",
+            // matStyle: this.classes.normalmode
+          },
+        });
+        this.setState({ color: this.props.color });
+      } else {
+        this.setState({
+          themeState: {
+            background: "#212121",
+            color: "#FAFAFA",
+            paper: "#424242",
+            colorlevel: "800",
+            // matStyle: this.classes.darkmode
+          },
+        });
+        this.setState({ color: "#2D62ED" });
+      }
+      this.setState({ themeBackground: this.props.themeBackground });
+    }
+
+    if (this.state.color != this.props.color) {
+      if (this.props.themeBackground === "#FFFFFF") {
+        console.log("data color", this.props.color);
+        this.setState({ color: this.props.color });
+      } else {
+        // this.setState({ color: this.props.defaultColor });
+      }
+    }
   }
+  
 
   render() {
     return (
@@ -114,7 +181,10 @@ export class FrontDesk extends Component {
               marginTop: -20,
             }}
           >
-            <Typography variant="h6" style={{ fontSize: 22 }}>
+            <Typography
+              variant="h6"
+              style={{ fontSize: 22, color: this.state.color }}
+            >
               &nbsp;Dashboard
             </Typography>
           </div>
@@ -747,6 +817,7 @@ const mapStateToProps = (state) => {
   return {
     lang: state.reducer.lang,
     color: state.reducer.color,
+    defaultColor: state.reducer.defaultColor,
     themeBackground: state.reducer.themeBackground,
     property: state.reducer.property,
   };

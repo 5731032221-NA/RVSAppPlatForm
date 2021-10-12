@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { ReactReduxContext, useSelector } from "react-redux";
 import FullCalendar, { formatDate } from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -214,9 +215,43 @@ const Calendar = (props) => {
     console.log("printdataselect", data);
   };
 
+  const [themeState, setThemeState] = React.useState({
+    background: "#FFFFFF",
+    color: "#000000",
+    paper: "#FFFFFF",
+    colorlevel: "900",
+  });
+  const themeBackground = useSelector((state) => state.reducer.themeBackground);
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setThemeState({
+        background: "#FFFFFF",
+        color: "#000000",
+        paper: "#FFFFFF",
+        colorlevel: "900",
+        // matStyle: this.classes.normalmode
+      });
+    } else {
+      setThemeState({
+        background: "#212121",
+        color: "#FAFAFA",
+        paper: "#424242",
+        colorlevel: "A200",
+        // matStyle: this.classes.darkmode
+      });
+    }
+  }, [themeBackground]);
+
   return (
     <Container maxWidth="xl" disableGutters>
-      <Paper elevation={3} style={{ padding: 40 }}>
+      <Paper
+        elevation={3}
+        style={{
+          padding: 40,
+          backgroundColor: themeState.paper,
+          color: themeState.color,
+        }}
+      >
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{

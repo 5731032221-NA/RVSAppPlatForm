@@ -68,11 +68,7 @@ export default function Property({ setToken, setProperty }) {
     //const [list, setList] = useState([]);
 
     const handleChange = event => {
-        console.log("handleChange 1:", selectedProperty);
-        console.log(event.target.value)
         setSelectedProperty(event.target.value);
-        console.log("handleChange 2:", selectedProperty);
-        console.log(event.target.value)
     };
     // const handleCancle = () => {
     //     console.log("cancle")
@@ -82,6 +78,7 @@ export default function Property({ setToken, setProperty }) {
     const handleSelect = async () => {
         const permission = await propertypermission(sessionStorage.getItem("auth"), selectedProperty);
         console.log("permission", permission)
+
         store.dispatch({
             type: EDIT_PERMISSION,
             payload: permission.content[permission.content.length - 1],
@@ -103,16 +100,14 @@ export default function Property({ setToken, setProperty }) {
 
 
     };
-    console.log("store1", store.getState())
-    console.log("store2", store.getState().reducer)
-    console.log("store3", store.getState().reducer.propertys)
+
     return (
         <Grid className="Login-component" style={{ backgroundImage: `url(${background})` }} >
             <Container
                 component="main"
                 maxWidth="xs"
-                alignItems="center"
-                justifyContent="center"
+                alignitems="center"
+                justifycontent="center"
             >
                 <Paper className={classes.paper}>
                     <img className={classes.imglogo} src="loginlogo.png" alt="logo" />

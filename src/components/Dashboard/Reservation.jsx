@@ -30,7 +30,6 @@ export class Reservation extends Component {
     this.props.getUserList();
     this.state = {
       lang: "en",
-
       Dashboard: en_lang.Dashboard,
       color: this.props.color,
       themeBackground: "#FFFFFF",
@@ -51,53 +50,59 @@ export class Reservation extends Component {
   }
 
   async componentDidMount() {
-    this.interval = setInterval(() => {
-      if (this.state.lang != this.props.lang) {
-        this.setState({ lang: "th" });
-        if (this.props.lang == "th") {
-          this.setState({
-            lang: "th",
-            Dashboard: th_lang.Dashboard,
-            color: this.props.color,
-          });
-        } else if (this.props.lang == "en") {
-          this.setState({
-            lang: "en",
-            Dashboard: en_lang.Dashboard,
-            color: this.props.color,
-          });
-        }
+    // this.interval = setInterval(() => {}, 1000);
+    if (this.state.lang != this.props.lang) {
+      this.setState({ lang: "th" });
+      if (this.props.lang == "th") {
+        this.setState({
+          lang: "th",
+          Dashboard: th_lang.Dashboard,
+          color: this.props.color,
+        });
+      } else if (this.props.lang == "en") {
+        this.setState({
+          lang: "en",
+          Dashboard: en_lang.Dashboard,
+          color: this.props.color,
+        });
       }
-      if (this.state.themeBackground != this.props.themeBackground) {
-        console.log(this.state.themeBackground, this.props.themeBackground);
-        if (this.props.themeBackground === "#FFFFFF") {
-          this.setState({
-            themeState: {
-              background: "#FFFFFF",
-              color: "#000000",
-              paper: "#FFFFFF",
-              colorlevel: "900",
-              // matStyle: this.classes.normalmode
-            },
-          });
-        } else {
-          this.setState({
-            themeState: {
-              background: "#212121",
-              color: "#FAFAFA",
-              paper: "#424242",
-              colorlevel: "800",
-              // matStyle: this.classes.darkmode
-            },
-          });
-        }
-        this.setState({ themeBackground: this.props.themeBackground });
-        console.log(this.props.themeBackground);
-      }
-    }, 1000);
+    }
 
+    if (this.state.themeBackground != this.props.themeBackground) {
+      // console.log(this.state.themeBackground, this.props.themeBackground);
+
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({
+          themeState: {
+            background: "#FFFFFF",
+            color: "#000000",
+            paper: "#FFFFFF",
+            colorlevel: "900",
+            // matStyle: this.classes.normalmode
+          },
+        });
+        this.setState({ color: this.props.color });
+      } else {
+        this.setState({
+          themeState: {
+            background: "#212121",
+            color: "#FAFAFA",
+            paper: "#424242",
+            colorlevel: "800",
+            // matStyle: this.classes.darkmode
+          },
+        });
+        this.setState({ color: "#2D62ED" });
+      }
+    }
+    if (this.state.color != this.props.color) {
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({ color: this.props.color });
+      } else {
+        this.setState({ color: this.props.defaultColor });
+      }
+    }
     const item = await getweather();
-
     this.setState({
       weatherdata: {
         day: new Date(item.dt * 1000).toLocaleString("en-us", {
@@ -130,13 +135,68 @@ export class Reservation extends Component {
     this.setState({ forcast: forecasttemp });
   }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+  // componentWillUnmount() {
+  //   clearInterval(this.interval);
+  // }
   // Test = () => {
   //   console.log("weatherdata", this.state.weatherdata);
   //   console.log("forcast", this.state.forcast);
   // };
+
+  componentDidUpdate() {
+    if (this.state.lang != this.props.lang) {
+      this.setState({ lang: "th" });
+      if (this.props.lang == "th") {
+        this.setState({
+          lang: "th",
+          Dashboard: th_lang.Dashboard,
+          color: this.props.color,
+        });
+      } else if (this.props.lang == "en") {
+        this.setState({
+          lang: "en",
+          Dashboard: en_lang.Dashboard,
+          color: this.props.color,
+        });
+      }
+    }
+    if (this.state.themeBackground != this.props.themeBackground) {
+      // console.log(this.state.themeBackground, this.props.themeBackground);
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({
+          themeState: {
+            background: "#FFFFFF",
+            color: "#000000",
+            paper: "#FFFFFF",
+            colorlevel: "900",
+            // matStyle: this.classes.normalmode
+          },
+        });
+        this.setState({ color: this.props.color });
+      } else {
+        this.setState({
+          themeState: {
+            background: "#212121",
+            color: "#FAFAFA",
+            paper: "#424242",
+            colorlevel: "800",
+            // matStyle: this.classes.darkmode
+          },
+        });
+        this.setState({ color: "#2D62ED" });
+      }
+      this.setState({ themeBackground: this.props.themeBackground });
+    }
+
+    if (this.state.color != this.props.color) {
+      if (this.props.themeBackground === "#FFFFFF") {
+        this.setState({ color: this.props.color });
+      } else {
+        console.log("TTTTTTTTTTTTT", this.props.defaultColor);
+        // this.setState({ color: this.props.defaultColor });
+      }
+    }
+  }
 
   render() {
     return (
@@ -154,7 +214,7 @@ export class Reservation extends Component {
                 <Paper elevation={3} style={{ minHeight: 300 }}>
                   Gride layout 12 */}
 
-          <h3 style={{ color: this.state.themeState.color, marginBottom: 30 }}>
+          <h3 style={{ color: this.state.color, marginBottom: 30 }}>
             Reservation
           </h3>
 
@@ -520,7 +580,7 @@ export class Reservation extends Component {
                       size="large"
                       variant="contained"
                       style={{
-                        backgroundColor: "#164BD8",
+                        backgroundColor: this.state.color,
                         color: "white",
                         fontSize: 18,
                       }}
@@ -693,7 +753,7 @@ export class Reservation extends Component {
                       size="large"
                       variant="contained"
                       style={{
-                        backgroundColor: "#164BD8",
+                        backgroundColor: this.state.color,
                         color: "white",
                         fontSize: 18,
                       }}
@@ -1085,7 +1145,7 @@ export class Reservation extends Component {
                       size="large"
                       variant="contained"
                       style={{
-                        backgroundColor: "#164BD8",
+                        backgroundColor: this.state.color,
                         color: "white",
                         fontSize: 18,
                       }}
@@ -1223,7 +1283,7 @@ export class Reservation extends Component {
                       size="large"
                       variant="contained"
                       style={{
-                        backgroundColor: "#164BD8",
+                        backgroundColor: this.state.color,
                         color: "white",
                         fontSize: 18,
                       }}
@@ -1361,6 +1421,8 @@ const mapStateToProps = (state) => {
   return {
     lang: state.reducer.lang,
     color: state.reducer.color,
+    defaultColor: state.reducer.defaultColor,
+    themeBackground: state.reducer.themeBackground,
   };
 };
 

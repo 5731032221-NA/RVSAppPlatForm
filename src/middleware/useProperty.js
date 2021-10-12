@@ -1,34 +1,26 @@
-import { useState, useContext } from "react";
-import { ReactReduxContext } from 'react-redux';
-import propertypermission from "../services/propertypermission.service";
+import { useState } from 'react';
+
 export default function useProperty() {
     
 
-    const { store } = useContext(ReactReduxContext);
 
-    const [property, setProperty] = useState(getProperty());
 
-    const getProperty = async () => {
-        const sessionproperty = sessionStorage.getItem('property');
-        const permission = await propertypermission(sessionStorage.getItem("auth"), sessionproperty);
-        console.log("permission", permission)
-        store.dispatch({
-            type: EDIT_PERMISSION,
-            payload: permission.content[permission.content.length - 1],
-        });
+    const [property, setProperty] = useState(null);
 
-        const role = await propertyrole(sessionStorage.getItem("auth"), sessionproperty);
-        sessionStorage.setItem("role", role.content[role.content.length - 1]);
-        store.dispatch({
-            type: EDIT_PROPERTY,
-            payload: selectedProperty,
-        });
-        return sessionproperty;
-    };
+    // const getProperty = () => {
+    //     // const tokenString = sessionStorage.getItem('token');
+    //     // const userToken = JSON.parse(tokenString);
+    //     return property;
+    // };
 
     const saveProperty = propertyString => {
+
         console.log("propertyString", propertyString)
         setProperty(propertyString);
+
+
+
+
     };
 
     return {

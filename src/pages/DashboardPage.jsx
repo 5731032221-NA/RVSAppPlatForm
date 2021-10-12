@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
+import "../assets/dashboard.css";
 import clsx from "clsx";
-import { ReactReduxContext } from "react-redux";
+import { ReactReduxContext, useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -440,6 +441,33 @@ export default function Dashboard() {
     handleMobileMenuClose();
   };
 
+  const [themeStatedata, setThemeStatedata] = React.useState({
+    background: "#FFFFFF",
+    color: "#000000",
+    paper: "#FFFFFF",
+    colorlevel: "900",
+  });
+  const themeBackground = useSelector((state) => state.reducer.themeBackground);
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setThemeStatedata({
+        background: "#FFFFFF",
+        color: "#000000",
+        paper: "#FFFFFF",
+        colorlevel: "900",
+        // matStyle: this.classes.normalmode
+      });
+    } else {
+      setThemeStatedata({
+        background: "#212121",
+        color: "#FAFAFA",
+        paper: "#424242",
+        colorlevel: "A200",
+        // matStyle: this.classes.darkmode
+      });
+    }
+  }, [themeBackground]);
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -727,7 +755,7 @@ export default function Dashboard() {
               >
                 <img
                   src="logo_white.png"
-                  class="rounded mx-auto d-block"
+                  className="rounded mx-auto d-block"
                   alt="..."
                   height={35}
                 />
@@ -784,7 +812,7 @@ export default function Dashboard() {
                   </Typography>
                 </Grid> */}
 
-                <Grid class={classes.propertyForm}>
+                <Grid className={classes.propertyForm}>
                   <BusinessIcon
                     style={{ paddingRight: 20, color: "#FFFFFF", fontSize: 45 }}
                   />
@@ -858,7 +886,12 @@ export default function Dashboard() {
           <HeaderTabs />
           {/* <DashboardDetail/> */}
           {store.getState().reducer.componentState == "FrontDesk" ? (
-            <div>
+            <div
+              style={{
+                backgroundColor: themeStatedata.background,
+                color: themeStatedata.color,
+              }}
+            >
               <FrontDesk />
               <ReservationPage />
             </div>

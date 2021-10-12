@@ -75,9 +75,10 @@ export default function Login({ setToken }) {
       setErrorPassword(false);
     }
 
-    console.log("up", username, password)
-    console.log((username === null || username === ''), (password === null || password === ''),
-      !(username === null || username === '') && !(password === null || password === ''))
+ 
+    // console.log(
+    //   (username === null || username === ''), (password === null || password === ''),
+    //   !(username === null || username === '') && !(password === null || password === ''))
     if (!(username === null || username === '') && !(password === null || password === '')) {
       const token = await auth({
         user: {
@@ -85,7 +86,7 @@ export default function Login({ setToken }) {
           password,
         },
       });
-      console.log("token", token);
+   
 
       // try{
       // store.dispatch({
@@ -101,8 +102,8 @@ export default function Login({ setToken }) {
           type: EDIT_PROPERTYS,
           payload: apitest.content
         })
-        console.log("store authen", store.getState().reducer)
-        console.log("apitest", apitest)
+        // console.log("store authen", store.getState().reducer)
+     
 
         setToken(token);
       }
@@ -115,8 +116,8 @@ export default function Login({ setToken }) {
       <Container
         component="main"
         maxWidth="xs"
-        alignItems="center"
-        justifyContent="center"
+        alignitems="center"
+        justifycontent="center"
       >
         <Paper className={classes.paper}>
           <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
@@ -124,15 +125,16 @@ export default function Login({ setToken }) {
           <Divider variant="middle" />
 
           {errorUsername ? <div className={classes.errorMessage}>Username is required</div> : (errorPassword ? <div className={classes.errorMessage}>Password is required</div> : (errorLogin ? <div className={classes.errorMessage}>Invalid Username or Password</div> : null))}
-
+ 
           <Grid item className={classes.formlogin}>
-            <form Validate autoComplete="on" onSubmit={handleSubmit}>
-              <Grid item spacing={5}>
+          {/* Validate */}
+            <form  autoComplete="on" onSubmit={handleSubmit}>
+              <Grid item >
                 <TextField
                   id="username"
                   label=" Username "
                   htmlFor="Username"
-                  href
+                // href
                   type="text"
                   onChange={(e) => setUserName(e.target.value)}
                   fullWidth
@@ -147,7 +149,7 @@ export default function Login({ setToken }) {
                 </TextField>
               </Grid>
 
-              <Grid item spacing={5} style={{ marginTop: 0 }}>
+              <Grid item  style={{ marginTop: 0 }}>
                 <TextField
                   id="password"
                   label="Password"
