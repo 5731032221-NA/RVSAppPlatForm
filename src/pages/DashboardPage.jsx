@@ -738,7 +738,7 @@ export default function Dashboard() {
       {renderMobileMenu}
       {renderMenu}
       {!open && smallwidth ? null : 
-      smallwidth ? (
+      smallwidth ? 
         <Drawer
           variant="temporary"
           classes={{
@@ -872,8 +872,8 @@ export default function Dashboard() {
 
           {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
         </Drawer>
-      ) : 
-      (
+       : 
+      
         <Drawer
           variant="permanent"
           classes={{
@@ -1007,7 +1007,7 @@ export default function Dashboard() {
 
           {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
         </Drawer>
-      )}
+      }
 
       <main id="compwidth" className={classes.content}>
         <div className={classes.appBarSpacer} />

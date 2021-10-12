@@ -175,7 +175,8 @@ export default function MainListItems() {
 
 
     return (
-        <List disablePadding dense>
+        <List >
+            {/* disablePadding dense */}
             {comps.includes("DB") || comps.includes("*ALL") ?
                 <ListItem button selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)} >
                     <ListItemIcon style={{ color: "white" }} >
