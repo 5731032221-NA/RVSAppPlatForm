@@ -43,7 +43,6 @@ function App() {
       ) : !property ? (
         <Property setToken={setToken} setProperty={setProperty} />
       ) : (
-        <div style={{position:"absolute", height:"100%"}}>
         <BrowserRouter>
           {" "}
           {/* <Leftbar /> */}{" "}
@@ -61,7 +60,6 @@ function App() {
           </Switch>{" "}
           {/* <Header store={store} /> */}{" "}
         </BrowserRouter>
-        </div>
       )}
     </Provider>
   )
