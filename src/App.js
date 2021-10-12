@@ -32,42 +32,7 @@ function App() {
   const { property, setProperty } = useProperty();
   // const { authorization, setAuthorization } = useAuthorization();
   const [store, setStore] = useState(configureStore());
-  //const [pathn, setpathn] = useState("/" + store.getState().reducer.lang);
-  // const { theme, setTheme } = useTheme();
-  // const { lang, setLang } = useLang();
-  // const [locale, setLocale] = useState(en_lang);
-  // var prevlang = "en"
-  // if (lang == 'th') {
-  //     setLocale(th_lang);
-  // } else if (lang != prevlang && lang != undefined) {
-  //     console.log("prevlang", prevlang, lang)
-  //     prevlang = lang
-  //     setLocale(en_lang);
-  // }
-  // // const store = createStore(reducer, applyMiddleware(thunk));
-  // // const [token, setToken] = useState();
 
-  //console.log("store main", store.getState().reducer);
-  // console.log("lang", lang);
-  // console.log("theme", theme);
-  // // const token = getToken();
-  // console.log("token", token);
-  // if (!token) {
-  //   console.log("tokentoken", token)
-  //   return <Provider store={store}><SignIn setToken={setToken}
-  //   // store={store}
-  //   />
-  //   </Provider>
-  // }
-
-  // else if (!property) {
-  //   console.log("not property", property)
-  //   return <Provider store={store}><Property
-  //     store={store}
-  //   /></Provider>
-  // }
-
-  //console.log(pathn);
   return (
     <Provider store={store}>
       {!token ? (

@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Divider from "@material-ui/core/Divider";
-import { FormControl, FormLabel,Select, MenuItem } from '@material-ui/core';
+import { FormControl, FormLabel, Select, MenuItem } from '@material-ui/core';
 import menus from "../services/menus.service";
 import propertypermission from "../services/propertypermission.service";
 import propertyrole from "../services/propertyrole.service"
@@ -80,28 +80,28 @@ export default function Property({ setToken, setProperty }) {
 
     // };
     const handleSelect = async () => {
-        const permission = await propertypermission(sessionStorage.getItem("auth"),selectedProperty);
-        console.log("permission",permission)
+        const permission = await propertypermission(sessionStorage.getItem("auth"), selectedProperty);
+        console.log("permission", permission)
         store.dispatch({
             type: EDIT_PERMISSION,
-            payload: permission.content[permission.content.length-1],
-          });
+            payload: permission.content[permission.content.length - 1],
+        });
 
 
 
-          
-    const role = await propertyrole(sessionStorage.getItem("auth"), selectedProperty);
-    sessionStorage.setItem("role",role.content[role.content.length-1]);
+
+        const role = await propertyrole(sessionStorage.getItem("auth"), selectedProperty);
+        sessionStorage.setItem("role", role.content[role.content.length - 1]);
         // const menu = await menus(sessionStorage.getItem("auth"),selectedProperty);
         // sessionStorage.setItem('comp', JSON.stringify(menu.content.components));
         store.dispatch({
             type: EDIT_PROPERTY,
             payload: selectedProperty,
-          });
+        });
         sessionStorage.setItem('property', selectedProperty);
         setProperty(selectedProperty);
 
-        
+
     };
     console.log("store1", store.getState())
     console.log("store2", store.getState().reducer)

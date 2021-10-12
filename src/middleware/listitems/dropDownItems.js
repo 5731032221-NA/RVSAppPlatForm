@@ -47,14 +47,6 @@ export default function MainListItems() {
     const [lang, setLang] = useState('en')
     const [translate, setTranslate] = useState(translate_en)
 
-    // const compString = sessionStorage.getItem('comp')
-    // const comps = JSON.parse(compString);
-    // const cashier = comps.some(item => item.slug === 'ReportRoomMaster')
-    // const front = comps.some(item => item.slug === 'ConfigMaster')
-    // const setting = comps.some(item => item.slug === 'RoleManagement')
-    // const cashier = true;
-    // const front = true;
-    // const setting = true;
     const comps = useSelector(state => state.reducer.permission);
     console.log("comps", comps);
 
@@ -65,12 +57,6 @@ export default function MainListItems() {
     const setFontSize = {
         fontSize: 14
     };
-    // comps.forEach(element => {
-    //     if (element.slug == "ReportRoomMaster") setCashier(true)
-    //     if (element.slug == "ConfigMaster") setFront(true)
-    //     if (element.slug == "RoleManagement") setSetting(true)
-
-    // });
 
     setInterval(() => {
         let settinglang = store.getState().reducer.lang;
@@ -370,97 +356,3 @@ export default function MainListItems() {
         </List>
     );
 }
-// export const secondaryListItems_en = (
-//     <div>
-//         <ListSubheader inset style={{ color: "white" }} >Settings</ListSubheader>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <SettingsIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="Configuration" />
-//         </ListItem>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <AssignmentIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="System Tools" />
-//         </ListItem>
-//     </div>
-// );
-
-// export const mainListItems_th = (
-//     <div>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <DashboardIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="แดชบอร์ด" />
-//         </ListItem>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <KingBedIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="การจองห้องพัก" />
-//         </ListItem>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <ImageAspectRatioIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="Front Desk" />
-//         </ListItem>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <MonetizationOnIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="แคชเชียร์" />
-//         </ListItem>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <AccountBoxIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="Profiles" />
-//         </ListItem>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <NightsStayIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="Night Auditor" />
-//         </ListItem>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <DeleteSweepIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="House Keeping" />
-//         </ListItem>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <BuildIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="Engineering" />
-//         </ListItem>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <LayersIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="Reports" />
-//         </ListItem>
-//     </div>
-// );
-
-// export const secondaryListItems_th = (
-//     <div>
-//         <ListSubheader inset style={{ color: "white" }}>ตั้งค่า</ListSubheader>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <SettingsIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="Configuration" />
-//         </ListItem>
-//         <ListItem button>
-//             <ListItemIcon style={{ color: "white" }} >
-//                 <AssignmentIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="System Tools" />
-//         </ListItem>
-//     </div>
-// );
