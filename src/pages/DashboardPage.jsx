@@ -737,9 +737,145 @@ export default function Dashboard() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      {!open && smallwidth ? null : (
+      {!open && smallwidth ? null : 
+      smallwidth ? (
         <Drawer
           variant="temporary"
+          classes={{
+            paper: clsx(
+              themeState,
+              classes.drawerPaper,
+              !open && classes.drawerPaperClose
+            ),
+            
+          }}
+          // sx={{
+          //   display: { xs: 'block', sm: 'none' },
+          //   '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          // }}
+          open={open}
+        >
+          <Grid container>
+            <Grid item container direction="row">
+              <div
+                style={{ paddingLeft: 12, paddingRight: 10, paddingTop: 18 }}
+              >
+                <img
+                  src="logo_white.png"
+                  className="rounded mx-auto d-block"
+                  alt="..."
+                  height={35}
+                />
+              </div>
+              {open ? (
+                <IconButton
+                  edge="start"
+                  className={classes.menuButton}
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleDrawerClose}
+                >
+                  <MenuIcon />
+                </IconButton>
+              ) : null}
+            </Grid>
+          </Grid>
+          <Divider />
+          <Grid item container direction="row">
+            {/* <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-controls={menuId}
+            aria-haspopup="true"
+            // onClick={handlelanguageMenuOpen}
+            size="large"
+            style={{ color: "white", marginLeft: 5, marginTop: 5 }}
+          >
+            <AccountCircle style={{ fontSize: 28 }} />
+          </IconButton> */}
+            {open ? (
+              <Grid
+                item
+                spacing={1}
+                style={{ paddingLeft: 15, marginTop: 5, paddingBottom: 10 }}
+              >
+                <Grid item spacing={1}>
+                  <Typography
+                    variant="subtitle1"
+                    style={{ fontSize: 12, paddingLeft: 50, marginTop: -10 }}
+                  >
+                    {/*sessionStorage.getItem("name")*/}
+                    <SettingsIcon style={{ fontSize: 16, marginTop: 10 }} />
+                    {" Change Property"}
+                  </Typography>
+                </Grid>
+                {/* <Grid item container direction="row"> */}
+                {/* <Grid>
+                  <SettingsIcon />
+                </Grid> */}
+                {/* <Grid item spacing={1}>
+                  <Typography variant="body2" style={{ fontSize: 10, marginTop: 5, marginLeft: 5 }}>
+                    {store.getState().reducer.property}
+                  </Typography>
+                </Grid> */}
+
+                <Grid className={classes.propertyForm}>
+                  <BusinessIcon
+                    style={{ paddingRight: 20, color: "#FFFFFF", fontSize: 45 }}
+                  />
+                  <FormControl
+                    variant="filled"
+                    style={{ backgroundColor: "#FFFFFF", borderRadius: 5 }}
+                  >
+                    <Select
+                      name="selectprop"
+                      id="selectprop"
+                      value={selectedProperty}
+                      onChange={handleChangeProperty}
+                      defaultValue={sessionStorage.getItem("property")}
+                      style={{ width: 160, height: 40 }}
+                    >
+                      {JSON.parse(sessionStorage.getItem("grantproperty")).map(
+                        (item) => (
+                          <MenuItem
+                            key={item.propertycode}
+                            value={item.propertycode}
+                            label={item.propertycode}
+                          >
+                            <div style={{ marginTop: -7 }}>
+                              {" "}
+                              {item.propertycode}{" "}
+                            </div>
+                          </MenuItem>
+                        )
+                      )}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            ) : (
+              <BusinessIcon
+                style={{
+                  paddingRight: 20,
+                  paddingTop: 10,
+                  marginLeft: 15,
+                  color: "#FFFFFF",
+                  fontSize: 45,
+                }}
+              />
+            )}
+          </Grid>
+          <Divider />
+          
+          <MainListItems_en />
+          <Divider />
+
+          {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
+        </Drawer>
+      ) : 
+      (
+        <Drawer
+          variant="permanent"
           classes={{
             paper: clsx(
               themeState,
