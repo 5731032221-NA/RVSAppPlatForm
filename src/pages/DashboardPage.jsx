@@ -1036,9 +1036,9 @@ export default function Dashboard() {
               <Configuration />
             </div>
           ) : null}
-          {/* <div style={{ paddingTop: 50 }}>
+          <div style={{ paddingTop: 50 }}>
             <ButtomBar />
-          </div> */}
+          </div>
         </Container>
       </main>
     </div>
