@@ -58,7 +58,7 @@ export default function MainListItems() {
     React.useEffect(() => {
     
         if(indextTab === 0){
-        setOpenFrontDesk(!openFrontDesk)
+        // setOpenFrontDesk(!openFrontDesk)
         handleComponentState("FrontDesk")
         setSelectedIndex(2)
         }else if(indextTab === 1){
@@ -71,7 +71,7 @@ export default function MainListItems() {
             handleComponentState("Cashier")
             setSelectedIndex(3)
         }else if(indextTab === 3){
-            setOpenNA(!openNA)
+            // setOpenNA(!openNA)
             setSelectedIndex(5)
         }else{
             

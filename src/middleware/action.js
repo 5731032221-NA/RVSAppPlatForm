@@ -90,6 +90,30 @@ export const indexTab = (indexTab) => {
  
 };
 
+export const permission = (permission) => {
+
+  return {
+    type: EDIT_PERMISSION,
+    payload: {
+      permission: permission,
+    },
+  }
+ 
+};
+
+export const editproperty = (property) => {
+
+  return {
+    type: EDIT_PROPERTY,
+    payload: {
+      property: property,
+    },
+  }
+ 
+};
+
+
+
 export const getUserList = () => {
   // return (dispatch) => {
   //   console.log("getUserList");

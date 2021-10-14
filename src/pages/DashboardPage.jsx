@@ -211,7 +211,7 @@ const useStyles = makeStyles((theme) => ({
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
-    width: "100%",
+    width: "10%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
       width: "auto",
@@ -250,7 +250,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       display: "none",
     },
-    marginLeft: -50,
+    marginLeft: -250,
   },
 
   rightBarStyle: {
@@ -704,7 +704,7 @@ export default function Dashboard() {
                   variant="body2"
                   style={{ fontSize: 10, fontWeight: "bold" }}
                 >
-                  {sessionStorage.getItem("role")}
+                  {/* {sessionStorage.getItem("role")} */}
                 </Typography>
               </Grid>
             </Grid>

@@ -10,7 +10,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { Provider } from "react-redux"
 // import thunk from "redux-thunk";
 import configureStore from "./middleware/store"
-import React, { useState } from "react"
+import React, { useState ,useContext} from "react"
 import useToken from "./middleware/useToken"
 import useProperty from "./middleware/useProperty"
 // import useAuthorization from "./middleware/useAuthorization";
@@ -26,6 +26,12 @@ import useProperty from "./middleware/useProperty"
 // function setHeader(tokenParsed) {
 //   sessionStorage.setItem('Authorization', tokenParsed);
 // }
+
+// import configureStore from "./middleware/configureStore"
+// const { store } = configureStore();\
+
+
+
 
 function App() {
   const { token, setToken } = useToken()
