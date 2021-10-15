@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     color: theme.palette.text.secondary,
     width: theme.spacing(38),
-    height: theme.spacing(48),
+    height: theme.spacing(60),
     marginTop: 100,
   },
   imglogo: {
@@ -110,9 +110,12 @@ export default function Login({ setToken }) {
       setErrorLogin(true);
     }
   };
+  // no-repeat fix; background-size: 100%;
 
   return (
-    <Grid className="Login-component" style={{ backgroundImage: `url(${background})` }} >
+    <Grid className="Login-component" style={{ backgroundImage: `url(${background})` ,backgroundSize: 'cover', 
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat' }} >
       <Container
         component="main"
         maxWidth="xs"
@@ -176,7 +179,30 @@ export default function Login({ setToken }) {
                 >
                   LOGIN <ArrowForwardIcon style={{ paddingLeft: 10 }} />
                 </Button>
+
+                <Grid container  style={{ paddingTop: 25, paddingBottom: 10 }}>
+                  <Grid  xs={5} >
+                   <hr />
+                  </Grid>
+                  <Grid  xs={2}>
+                    <span>or</span>
+                  </Grid>
+                  <Grid   xs={5} >
+                  <hr />
+                  </Grid>
+                </Grid>
+
+                <Button
+                  fullWidth
+               
+                  variant="outlined"
+                  style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }}
+                >
+                  SIGN IN BY ADMINISTRATOR <ArrowForwardIcon style={{ paddingLeft: 10 }} />
+                </Button>
               </Grid>
+
+             
             </form>
           </Grid>
 
