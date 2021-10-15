@@ -84,7 +84,7 @@ export default function Property({ setToken, setProperty }) {
 
     // };
     const handleSelect = async () => {
-        const permission = await propertypermission(sessionStorage.getItem("auth"), selectedProperty);
+        const permission = await propertypermission(sessionStorage.getItem("auth"), selectedProperty,sessionStorage.getItem("username"));
         console.log("permission", permission)
         
         // sessionStorage.setItem("permissionref", permission.content[permission.content.length - 1]);

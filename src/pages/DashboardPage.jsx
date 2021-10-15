@@ -355,7 +355,8 @@ export default function Dashboard() {
   const handleChangeProperty = async (event) => {
     const permission = await propertypermission(
       sessionStorage.getItem("auth"),
-      event.target.value
+      event.target.value,
+      sessionStorage.getItem("username")
     );
     console.log("permission", permission);
     const role = await propertyrole(
