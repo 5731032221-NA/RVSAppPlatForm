@@ -1,9 +1,9 @@
 module.exports = {
   insertconfigmaster: async function (accessToken, req) {
-    return fetch(`http://localhost:8082/insertconfigmastercopm`, {
+    return fetch(`http://localhost:8000/apis/insertconfigmastercopm`, {
       method: "POST",
       headers: {
-        Authorization: accessToken,
+        Authorization:  accessToken,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
@@ -11,10 +11,10 @@ module.exports = {
   },
 
   listconfigmaster: async function (accessToken, req) {
-    return fetch("http://localhost:8082/listconfigmastercomp", {
+    return fetch("http://localhost:8000/apis/listconfigmastercomp", {
       method: "GET",
       headers: {
-        Authorization: accessToken,
+        Authorization:  accessToken,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
@@ -22,10 +22,10 @@ module.exports = {
   },
 
   updateconfigmaster: async function (accessToken, id, req) {
-    return fetch(`http://localhost:8082/updateconfigmasterbyidcomp/${id}`, {
+    return fetch(`http://localhost:8000/apis/updateconfigmasterbyidcomp/${id}`, {
       method: "PUT",
       headers: {
-        Authorization: accessToken,
+        Authorization:  accessToken,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
@@ -33,10 +33,10 @@ module.exports = {
   },
 
   deleteconfigmaster: async function (accessToken, id) {
-    return fetch(`http://localhost:8082/configmasterbyidcomp/${id}`, {
+    return fetch(`http://localhost:8000/apis/configmasterbyidcomp/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: accessToken,
+        Authorization:  accessToken,
         "Content-Type": "application/json",
       },
     }).then(async (res) => res.json());

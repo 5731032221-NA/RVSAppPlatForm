@@ -97,11 +97,11 @@ export default function Login({ setToken }) {
       //   console.log("de2",err.stack)
       // }
       if (token.status == 2000) {
-        const apitest = await propertys(token.contents[token.contents.length - 2].refreshToken);
-        store.dispatch({
-          type: EDIT_PROPERTYS,
-          payload: apitest.content
-        })
+        // const apitest = await propertys(token.contents[token.contents.length - 2].refreshToken);
+        // store.dispatch({
+        //   type: EDIT_PROPERTYS,
+        //   payload: apitest.content
+        // })
         // console.log("store authen", store.getState().reducer)
      
 
@@ -190,5 +190,5 @@ Login.propTypes = {
   setToken: PropTypes.func.isRequired,
   // store: PropTypes.func.isRequired
   // ,
-  // setAuthorization: PropTypes.func.isRequired
+  // setAuthorization:  PropTypes.func.isRequired
 };

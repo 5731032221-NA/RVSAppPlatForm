@@ -24,7 +24,7 @@ export default function useAuthorization() {
     };
 
     return {
-        setAuthorization: saveAuthorization,
+        setAuthorization:  saveAuthorization,
         authorization
     }
 }

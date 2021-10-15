@@ -360,7 +360,8 @@ export default function Dashboard() {
     console.log("permission", permission);
     const role = await propertyrole(
       sessionStorage.getItem("auth"),
-      event.target.value
+      event.target.value,
+      sessionStorage.getItem("username")
     );
     console.log("role", role.content[role.content.length - 1]);
     sessionStorage.setItem("role", role.content[role.content.length - 1]);

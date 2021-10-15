@@ -1,7 +1,7 @@
 
 
 module.exports = async function (accessToken) {
-    return fetch('http://localhost:8082/menuproperty', {
+    return fetch('http://localhost:8000/apis/menuproperty', {
         method: 'GET',
         headers: {
             'Authorization':accessToken,

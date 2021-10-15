@@ -1,10 +1,10 @@
 
 
-module.exports = async function (accessToken,id) {
-    return fetch(`http://localhost:8082/propertyrole/${id}`, {
+module.exports = async function (accessToken,id,username) {
+    return fetch(`http://localhost:8000/apis/propertyrole/${id}/${username}`, {
       method: "GET",
       headers: {
-        Authorization: accessToken,
+        Authorization:  accessToken,
         "Content-Type": "application/json",
       },
     }).then(async (res) => res.json());
