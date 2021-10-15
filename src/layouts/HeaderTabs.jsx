@@ -76,7 +76,7 @@ export default function HeaderTabs() {
   const { store } = useContext(ReactReduxContext);
 
   const indextTab = useSelector((state) => state.reducer.indextTab.indextTab)
-  // const [value, setValue] = React.useState(indextTab);
+  const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
 
 
@@ -89,6 +89,14 @@ export default function HeaderTabs() {
   const front = true;
   const setting = true;
 
+
+  React.useEffect(() => {
+    setValue(indextTab)
+  },[indextTab])
+
+  React.useEffect(() => {
+    handleChange(0,0)
+  },[])
  
 
 
@@ -116,7 +124,7 @@ export default function HeaderTabs() {
   const handleChange = (event, newValue) => {
     console.log("newValue", newValue);
   
-
+    setValue(newValue)
     dispatch(indexTab(newValue))
     if (newValue === 0) handleComponentState("FrontDesk");
     else if(newValue === 1) handleComponentState("Reservation");
@@ -143,7 +151,7 @@ export default function HeaderTabs() {
           </Typography>
 
           <Tabs
-            value={indextTab}
+            value={value}
             onChange={handleChange}
             aria-label="simple tabs example"
             indicatorColor="primary"
@@ -189,7 +197,7 @@ export default function HeaderTabs() {
       {front ? (
         <TabPanel
           style={{ backgroundColor: colorMode }}
-          value={indextTab}
+          value={value}
           index={0 - (front ? 0 : 1)}
         >
           {/* <FrontDesk /> */}
@@ -198,7 +206,7 @@ export default function HeaderTabs() {
       ) : null}
       <TabPanel
         style={{ backgroundColor: colorMode }}
-        value={indextTab}
+        value={value}
         index={1 - (front ? 0 : 1)}
       >
         <Reservation />
@@ -206,7 +214,7 @@ export default function HeaderTabs() {
       {cashier ? (
         <TabPanel
           style={{ backgroundColor: colorMode }}
-          value={indextTab}
+          value={value}
           index={2 - (front ? 0 : 1) - (cashier ? 0 : 1)}
         >
           Cashier
@@ -215,7 +223,7 @@ export default function HeaderTabs() {
       {setting ? (
         <TabPanel
           style={{ backgroundColor: colorMode }}
-          value={indextTab}
+          value={value}
           index={3 - (front ? 0 : 1) - (cashier ? 0 : 1) - (setting ? 0 : 1)}
         >
           Night Auditor

@@ -66,6 +66,14 @@ export default function Property({ setToken, setProperty }) {
     const [selectedProperty, setSelectedProperty] = useState(JSON.parse(sessionStorage.getItem("grantproperty"))[0].propertycode);
 
     //const [list, setList] = useState([]);
+    // const permissionref =  sessionStorage.getItem("permissionref")
+
+
+    // React.useEffect(() => {
+    //   if(permissionref){
+    //     handleSelect()
+    //   }
+    // },[])
 
     const handleChange = event => {
         setSelectedProperty(event.target.value);
@@ -78,7 +86,8 @@ export default function Property({ setToken, setProperty }) {
     const handleSelect = async () => {
         const permission = await propertypermission(sessionStorage.getItem("auth"), selectedProperty);
         console.log("permission", permission)
-
+        
+        // sessionStorage.setItem("permissionref", permission.content[permission.content.length - 1]);
         store.dispatch({
             type: EDIT_PERMISSION,
             payload: permission.content[permission.content.length - 1],
@@ -89,6 +98,7 @@ export default function Property({ setToken, setProperty }) {
 
         const role = await propertyrole(sessionStorage.getItem("auth"), selectedProperty,sessionStorage.getItem("username"));
         sessionStorage.setItem("role", role.content[role.content.length - 1]);
+        console.log("::::::::::::::::role::", role.content[role.content.length - 1]);
         // const menu = await menus(sessionStorage.getItem("auth"),selectedProperty);
         // sessionStorage.setItem('comp', JSON.stringify(menu.content.components));
         store.dispatch({
