@@ -54,6 +54,7 @@ import ReservationPage from "./ReservationPage";
 import RoleManagement from "../components/RoleManagement";
 import UserManagement from "../components/UserManagement";
 import DashboardDetail from "../components/Dashboard/DashboardDetail";
+import ProfilePage from "./ProfilePage";
 
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
@@ -85,7 +86,7 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
@@ -255,7 +256,7 @@ const useStyles = makeStyles((theme) => ({
 
   rightBarStyle: {
     width: 280,
-    zIndex: 2001
+    zIndex: 2001,
   },
   seletprop: {
     fontSize: 15,
@@ -272,7 +273,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   const [open, setOpen] = React.useState(false);
   const [themeState, setThemeState] = React.useState(classes.themeDefault);
@@ -739,8 +741,7 @@ export default function Dashboard() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      {!open && smallwidth ? null : 
-      smallwidth ? 
+      {!open && smallwidth ? null : smallwidth ? (
         <Drawer
           variant="temporary"
           classes={{
@@ -749,7 +750,6 @@ export default function Dashboard() {
               classes.drawerPaper,
               !open && classes.drawerPaperClose
             ),
-            
           }}
           // sx={{
           //   display: { xs: 'block', sm: 'none' },
@@ -868,14 +868,13 @@ export default function Dashboard() {
             )}
           </Grid>
           <Divider />
-          
+
           <MainListItems_en />
           <Divider />
 
           {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
         </Drawer>
-       : 
-      
+      ) : (
         <Drawer
           variant="permanent"
           classes={{
@@ -884,7 +883,6 @@ export default function Dashboard() {
               classes.drawerPaper,
               !open && classes.drawerPaperClose
             ),
-            
           }}
           // sx={{
           //   display: { xs: 'block', sm: 'none' },
@@ -1003,13 +1001,13 @@ export default function Dashboard() {
             )}
           </Grid>
           <Divider />
-          
+
           <MainListItems_en />
           <Divider />
 
           {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
         </Drawer>
-      }
+      )}
 
       <main id="compwidth" className={classes.content}>
         <div className={classes.appBarSpacer} />
@@ -1036,6 +1034,15 @@ export default function Dashboard() {
           ) : store.getState().reducer.componentState == "Configuration" ? (
             <div>
               <Configuration />
+            </div>
+          ) : store.getState().reducer.componentState == "ProfilePage" ? (
+            <div
+              style={{
+                backgroundColor: themeStatedata.background,
+                color: themeStatedata.color,
+              }}
+            >
+              <ProfilePage />
             </div>
           ) : null}
           <div style={{ paddingTop: 50 }}>

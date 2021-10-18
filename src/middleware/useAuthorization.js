@@ -19,8 +19,6 @@ export default function useAuthorization() {
                 setAuthorization(userToken);
             
         }
-
-
     };
 
     return {

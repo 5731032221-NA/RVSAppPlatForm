@@ -28,6 +28,7 @@ import { ReactReduxContext, useSelector } from "react-redux";
 import { EDIT_LANG } from "../middleware/action";
 import { EDIT_COLOR } from "../middleware/action";
 import { EDIT_DARKMODE } from "../middleware/action";
+import { EDIT_COMPONENT } from "../middleware/action";
 
 const useStyles = makeStyles({
   list: {
@@ -163,7 +164,6 @@ export default function RighBar() {
   //active lang
   const langa = useSelector((state) => state.reducer.lang);
 
-
   // function handlelanguageEN() {
   //   // setOpenSystemsTools(!openSystemTools)
   //   store.dispatch({
@@ -245,6 +245,14 @@ export default function RighBar() {
     window.location.reload(false);
   }
 
+  function handleProfilePage() {
+    console.log("profilepage click");
+    store.dispatch({
+      type: EDIT_COMPONENT,
+      payload: "ProfilePage",
+    });
+  }
+
   function handleDarkMode(e) {
     let _darkmode = !darkMode;
     setDarkmode(_darkmode);
@@ -306,8 +314,8 @@ export default function RighBar() {
   }, [maincolor]);
 
   return (
-     <Container className={classes.Container}>
-    {/* <div> */}
+    <Container className={classes.Container}>
+      {/* <div> */}
       <Grid container>
         <Grid container spacing={2}>
           <Grid container justifyContent="start" style={{ marginLeft: 90 }}>
@@ -665,7 +673,7 @@ export default function RighBar() {
         <List>
           <Divider variant="inset" />
           <Grid container spacing={1}>
-            <ListItem>
+            <ListItem onClick={handleProfilePage}>
               <ListItemAvatar>
                 <Avatar style={{ backgroundColor: "#1e99e9" }}>
                   <AccountCircleOutlinedIcon />
@@ -695,6 +703,6 @@ export default function RighBar() {
       </Grid>
       <Divider />
       {/* </div> */}
-     </Container>
+    </Container>
   );
 }
