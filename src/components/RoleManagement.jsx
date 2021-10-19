@@ -615,6 +615,9 @@ export default function RoleManagement() {
 
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
+  
+  const [errorMessageDu, setErrorMessageDu] = useState(false);
+  const [errorParameterDu, setErrorParameterDu] = useState(null);
 
   React.useEffect(async () => {
     let usercomponentpermission = await getusercomponentpermision(
@@ -684,6 +687,7 @@ export default function RoleManagement() {
     setDescriptionsRole(null);
     setStatus("Active");
     setErrorMessage(false);
+    setErrorMessageDu(false);
     setDialogAddRole(true);
   };
 
@@ -721,6 +725,7 @@ export default function RoleManagement() {
     description,
     status
   ) => {
+    setErrorMessageDu(false);
     if (rolecode == null || rolecode == "") {
       setErrorMessage(true);
       setErrorParameter("Role Code");
@@ -775,6 +780,10 @@ export default function RoleManagement() {
         updatePageData(userdata, page, rowsPerPage);
 
         setDialogAddRole(false);
+      }else if(insert.status == "1000"){
+        setErrorMessageDu(true);
+        const dupic = insert.msg +" Role Code: "+ rolecode;
+        setErrorParameterDu(dupic);
       }
     }
   };
@@ -871,6 +880,7 @@ export default function RoleManagement() {
     setStatus(status);
     setOldRoleCode(rolecode);
     setErrorMessage(false);
+    setErrorMessageDu(false);
     setDialogEditRole(true);
   };
   // const handleDialogEditRole = async (id) => {
@@ -901,6 +911,7 @@ export default function RoleManagement() {
       description,
       status
     );
+    setErrorMessageDu(false);
     if (rolecode == null || rolecode == "") {
       setErrorMessage(true);
       setErrorParameter("Role Code");
@@ -956,6 +967,10 @@ export default function RoleManagement() {
         updatePageData(userdata, page, rowsPerPage);
         setErrorMessage(false);
         setDialogEditRole(false);
+      }else if(roleupdate.status == "1000"){
+        setErrorMessageDu(true);
+        const dupic = roleupdate.msg +" Role Code: "+ rolecode;
+        setErrorParameterDu(dupic);
       }
     }
   };
@@ -2097,7 +2112,7 @@ export default function RoleManagement() {
               }}
               title={
                 <Grid>
-                  <Typography variant="h6" style={{ fontSize: 25 }}>
+                  <Typography variant="h6" noWrap style={{ fontSize: 25 }}>
                     Role Management
                   </Typography>
                 </Grid>
@@ -2458,6 +2473,19 @@ export default function RoleManagement() {
                     {errorParameter} is required
                   </div>
                 ) : null}
+                 {errorMessageDu ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameterDu} 
+                  </div>
+                ) : null}
               </DialogContent>
               <DialogActions
                 className={classes.root}
@@ -2726,6 +2754,19 @@ export default function RoleManagement() {
                     }}
                   >
                     {errorParameter} is required
+                  </div>
+                ) : null}
+                 {errorMessageDu ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameterDu} 
                   </div>
                 ) : null}
               </DialogContent>

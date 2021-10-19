@@ -678,6 +678,8 @@ export default function UserManagement() {
 
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
+  const [errorMessageDu, setErrorMessageDu] = useState(false);
+  const [errorParameterDu, setErrorParameterDu] = useState(null);
 
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
@@ -763,6 +765,7 @@ export default function UserManagement() {
     setEditLastName(null);
     setEditStatus(true);
     setErrorMessage(false);
+    setErrorMessageDu(false);
     setDialogAddUser(true);
   };
 
@@ -891,6 +894,7 @@ export default function UserManagement() {
     setSelectPosition(position_json[0].label);
     setNewPosition(null);
     setErrorMessage(false);
+    setErrorMessageDu(false);
     setDialogEditUser(true);
   };
 
@@ -1108,6 +1112,7 @@ export default function UserManagement() {
   ) => {
     // setEditFirstName(null);
     // setEditLastName(null);
+    setErrorMessageDu(false);
     if (code == null || code == "") {
       setErrorMessage(true);
       setErrorParameter("UserID");
@@ -1124,6 +1129,8 @@ export default function UserManagement() {
       setErrorMessage(true);
       setErrorParameter("Property");
     } else {
+    
+     
       setErrorMessage(false);
       if (position == "Add new position") {
         let addPosition = await postposition(sessionStorage.getItem("auth"), {
@@ -1181,6 +1188,10 @@ export default function UserManagement() {
         setRows(userdata);
         updatePageData(userdata, page, rowsPerPage);
         setDialogAddUser(false);
+      }else if(insert.status == "1000"){
+     
+        setErrorMessageDu(true);
+        setErrorParameterDu(insert.msg)
       }
     }
   };
@@ -1976,6 +1987,8 @@ export default function UserManagement() {
       role,
       ad
     );
+
+    setErrorMessageDu(false);
     if (code == null || code == "") {
       setErrorMessage(true);
       setErrorParameter("UserID");
@@ -2073,6 +2086,10 @@ export default function UserManagement() {
         setRows(userdata);
         updatePageData(userdata, page, rowsPerPage);
         setDialogEditUser(false);
+      }else if(update.status == "1000"){
+     
+        setErrorMessageDu(true);
+        setErrorParameterDu(update.msg)
       }
     }
   };
@@ -2180,12 +2197,13 @@ export default function UserManagement() {
                 </Typography>
               </Link>
               <Typography>
-                <Typography
+                <Typography 
                   variant="h6"
                   style={{
                     marginBottom: 15,
                     fontSize: 14,
                     color: themeState.color,
+                    
                   }}
                 >
                   User Management
@@ -2324,8 +2342,8 @@ export default function UserManagement() {
                 backgroundColor: themeState.paper,
               }}
               title={
-                <Grid>
-                  <Typography variant="h6" style={{ fontSize: 25 }}>
+                <Grid >
+                  <Typography variant="h6" noWrap style={{ fontSize: 25 }}>
                     User Management
                   </Typography>
                 </Grid>
@@ -2789,6 +2807,19 @@ export default function UserManagement() {
                     {errorParameter} is required
                   </div>
                 ) : null}
+                 {errorMessageDu ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameterDu} 
+                  </div>
+                ) : null}
               </DialogContent>
             </Grid>
           </Grid>
@@ -3171,6 +3202,19 @@ export default function UserManagement() {
                     }}
                   >
                     {errorParameter} is required
+                  </div>
+                ) : null}
+                {errorMessageDu ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameterDu} 
                   </div>
                 ) : null}
               </DialogContent>
