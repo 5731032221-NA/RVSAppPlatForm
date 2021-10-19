@@ -131,6 +131,9 @@ export default function DeviceManager() {
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
 
+  const [errorMessageDu, setErrorMessageDu] = useState(false);
+  const [errorParameterDu, setErrorParameterDu] = useState(null);
+
   React.useEffect(async () => {
     // macaddress.all().then(function (all) {
     //   console.log(JSON.stringify(all, null, 2));
@@ -193,6 +196,7 @@ export default function DeviceManager() {
     console.log("tempproperty", tempproperty);
     setProperty(tempproperty);
     setUpdateData({ type: deviceTypes[0].label });
+    setErrorMessageDu(false);
     setDialogAdd(true);
   };
 
@@ -219,6 +223,7 @@ export default function DeviceManager() {
     console.log("tempproperty", tempproperty);
     setProperty(tempproperty);
     setUpdateData(_rowData);
+    setErrorMessageDu(false);
     setDialogEdit(true);
   };
 
@@ -228,6 +233,7 @@ export default function DeviceManager() {
 
   const handleInsert = async () => {
     console.log(updateData);
+    setErrorMessageDu(false);
     if (updateData.code == null || updateData.code == "") {
       setErrorMessage(true);
       setErrorParameter("Device Code");
@@ -260,6 +266,10 @@ export default function DeviceManager() {
         setRows(devicedata);
         updatePageData(devicedata, page, rowsPerPage);
         setDialogAdd(false);
+      }else if(_inserthardware.status == "1000"){
+        setErrorMessageDu(true);
+        const dupic = _inserthardware.msg +" Device Code: "+ updateData.code;
+        setErrorParameterDu(dupic)
       }
     }
   };
@@ -293,6 +303,15 @@ export default function DeviceManager() {
   };
 
   const handleEdit = async (id) => {
+    setErrorMessageDu(false);
+    if (updateData.code == null || updateData.code == "") {
+      setErrorMessage(true);
+      setErrorParameter("Device Code");
+    } else if (updateData.name == null || updateData.name == "") {
+      setErrorMessage(true);
+      setErrorParameter("Device Name");
+    } else {
+      setErrorMessage(false);
     let _updatehardware = await updatehardware(
       sessionStorage.getItem("auth"),
       id,
@@ -318,7 +337,12 @@ export default function DeviceManager() {
       setRows(devicedata);
       updatePageData(devicedata, page, rowsPerPage);
       setDialogEdit(false);
+    }else if(_updatehardware.status == "1000"){
+      setErrorMessageDu(true);
+      const dupic = _updatehardware.msg +" Device Code: "+ updateData.code;
+      setErrorParameterDu(dupic)
     }
+  }
   };
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
@@ -490,7 +514,7 @@ export default function DeviceManager() {
             title={
               <Grid>
                 <Typography
-                  variant="h6"
+                  variant="h6" noWrap
                   style={{ fontSize: 25, color: themeState.color }}
                 >
                   Device Manager
@@ -732,6 +756,21 @@ export default function DeviceManager() {
                     </div>
                   </div>
                 ) : null}
+                {errorMessageDu ? (
+                  <div style={{ marginTop: 15 }}>
+                    <div
+                      style={{
+                        background: "#ff0033",
+                        textAlign: "center",
+                        color: "white",
+                        height: "30px",
+                        paddingTop: 5,
+                      }}
+                    >
+                      {errorParameterDu} 
+                    </div>
+                  </div>
+                ) : null}
               </DialogContent>
             </Grid>
           </Grid>
@@ -932,6 +971,19 @@ export default function DeviceManager() {
                       }}
                     >
                       {errorParameter} is required
+                    </div>
+                  ) : null}
+                   {errorMessageDu ? (
+                    <div
+                      style={{
+                        background: "#ff0033",
+                        textAlign: "center",
+                        color: "white",
+                        height: "30px",
+                        paddingTop: 5,
+                      }}
+                    >
+                      {errorParameterDu} 
                     </div>
                   ) : null}
                 </div>
