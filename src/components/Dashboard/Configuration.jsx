@@ -575,10 +575,17 @@ export default function Configuration() {
   };
 
   const adding = async (array, label, name, newid) => {
+    // console.log("array:",array);
+    // console.log(" label:", label);
+    // console.log(" name:", name);
+    // console.log("newid:", newid);
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
-      console.log(obj.RefNo, label);
+      // console.log("refNo:::",obj.RefNo, label,obj.children,obj.createdate);
+     
       if (obj.RefNo === label) {
+
+  
         let currentdate = new Date();
         let day = ("0" + currentdate.getDate()).slice(-2);
         let month = ("0" + (currentdate.getMonth() + 1)).slice(-2);
@@ -588,6 +595,17 @@ export default function Configuration() {
         let seconds = currentdate.getSeconds();
 
         if (obj.children) {
+
+          // for (let c = 0; c < obj.children.length; c++) {
+          
+          //    if( obj.children[c].code === name){
+          //        console.log("obj.children[c].code:",obj.children[c].code);
+          //        setErrorParameter(`Dupicate ${obj.children[c].code}` );
+          //    }
+            
+          // }
+
+
           obj.children = [
             ...obj.children,
             {
@@ -636,6 +654,7 @@ export default function Configuration() {
           ];
         }
       } else if (obj.children) {
+     
         adding(obj.children, label, name, newid);
       }
     }
@@ -652,19 +671,51 @@ export default function Configuration() {
       setErrorMessage(true);
       setErrorParameter("Description");
     } else {
-      setErrorMessage(false);
+
+      //   let id = addChildid;
+      //   console.log("addparentid", id);
+      //   let newid = await runningid(data, id);
+      //   console.log("newid", newid);
+      //   await adding(data, id, addChildValue, newid);
+      //   console.log("added", data);
+
+      // if(errorParameter !== null){
+      //   setErrorMessage(true);
+      
+      // }else{
+      //   setErrorMessage(false);
+      //   let updateconfig = await updateconfiguration(
+      //     sessionStorage.getItem("auth"),
+      //     { configuration: data, propertycode: property }
+      //   );
+      //   // setData(data)
+      //   setDialogAdd(false);
+      // }
+
+
+
       let id = addChildid;
       console.log("addparentid", id);
       let newid = await runningid(data, id);
       console.log("newid", newid);
       await adding(data, id, addChildValue, newid);
       console.log("added", data);
+
+      let checkdupli = {
+        RefNo: id,
+        name: addChildValue,
+        code: code
+      }
+
+
+      setErrorMessage(false);
       let updateconfig = await updateconfiguration(
         sessionStorage.getItem("auth"),
-        { configuration: data, propertycode: property }
+        { configuration: data, propertycode: property ,propertycheckduplicate:checkdupli }
       );
       // setData(data)
       setDialogAdd(false);
+     
     }
   };
 
