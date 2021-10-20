@@ -177,6 +177,9 @@ export default function ComputerPrinter() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const [errorMessageDu, setErrorMessageDu] = useState(false);
+  const [errorParameterDu, setErrorParameterDu] = useState(null);
+
   const [usernames, setUsernames] = useState([
     {
       value: "",
@@ -381,22 +384,27 @@ export default function ComputerPrinter() {
         }
       }
     );
-
+console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_computers,_listprinters,_actions,_trays,_remarks);
     setUsernames(_users);
     setComputers(_computers);
     setPrintersCode(_listprinters);
     setActions(_actions);
     setTrays(_trays);
     setRemarks(_remarks);
-    setUpdateData({
+      setUpdateData({
       propertycode: pageProperty,
       computercode: _computers[0].value,
       devicecode: _listprinters[0].value,
-      tray: trays[0].label,
-      username: usernames[0].label,
-      action: actions[0].label,
-      remark: remarks[0].label,
+      // tray: trays[0].label,
+      // username: usernames[0].label,
+      // action: actions[0].label,
+      // remark: remarks[0].label,
+      tray: _trays[0].label,
+      username: _users[0].label,
+      action: _actions[0].label,
+      remark: _remarks[0].label,
     });
+    setErrorMessageDu(false);
     setDialogAdd(true);
   };
 
@@ -491,6 +499,7 @@ export default function ComputerPrinter() {
     setTrays(_trays);
     setRemarks(_remarks);
     setUpdateData(_rowData);
+    setErrorMessageDu(false);
     setDialogEdit(true);
   };
 
@@ -504,6 +513,7 @@ export default function ComputerPrinter() {
 
   const handleInsert = async () => {
     console.log(updateData);
+    setErrorMessageDu(false);
     let _insertcomputerprinter = await insertcomputerprinter(
       sessionStorage.getItem("auth"),
       updateData
@@ -529,6 +539,10 @@ export default function ComputerPrinter() {
       setRows(userdata);
       updatePageData(userdata, page, rowsPerPage);
       setDialogAdd(false);
+    }else if(_insertcomputerprinter.status == "1000"){
+      setErrorMessageDu(true);
+      setErrorParameterDu(_insertcomputerprinter.msg);
+
     }
   };
 
@@ -539,6 +553,7 @@ export default function ComputerPrinter() {
       id,
       updateData
     );
+    setErrorMessageDu(false);
     if (_updatecomputerprinter.status == "2000") {
       let data = await listcomputerprinter(sessionStorage.getItem("auth"));
       let userdata = [];
@@ -560,6 +575,10 @@ export default function ComputerPrinter() {
       setRows(userdata);
       updatePageData(userdata, page, rowsPerPage);
       setDialogEdit(false);
+    }else if(_updatecomputerprinter.status == "1000"){
+      setErrorMessageDu(true);
+      setErrorParameterDu(_updatecomputerprinter.msg);
+
     }
   };
 
@@ -1159,6 +1178,21 @@ export default function ComputerPrinter() {
                     {errorParameter} is required
                   </div>
                 ) : null}
+                 {errorMessageDu ? (
+                  <div style={{ marginTop: 15 }}>
+                    <div
+                      style={{
+                        background: "#ff0033",
+                        textAlign: "center",
+                        color: "white",
+                        height: "30px",
+                        paddingTop: 5,
+                      }}
+                    >
+                      {errorParameterDu} 
+                    </div>
+                  </div>
+                ) : null}
               </DialogContent>
             </Grid>
           </Grid>
@@ -1469,6 +1503,20 @@ export default function ComputerPrinter() {
                     }}
                   >
                     {errorParameter} is required
+                  </div>
+                ) : null}
+
+                 {errorMessageDu ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameterDu} 
                   </div>
                 ) : null}
               </DialogContent>

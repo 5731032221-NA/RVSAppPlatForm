@@ -16,7 +16,7 @@ import { FormControl, FormLabel, Select, MenuItem } from '@material-ui/core';
 import menus from "../services/menus.service";
 import propertypermission from "../services/propertypermission.service";
 import propertyrole from "../services/propertyrole.service"
-
+import { useCookies } from 'react-cookie';
 // import {
 //     EDIT_AUTHORIZATION
 // } from "../middleware/action";
@@ -64,6 +64,7 @@ export default function Property({ setToken, setProperty }) {
     const { store } = useContext(ReactReduxContext);
     const classes = useStyles();
     const [selectedProperty, setSelectedProperty] = useState(JSON.parse(sessionStorage.getItem("grantproperty"))[0].propertycode);
+    const [cookies, setCookie] = useCookies(['name']);
 
     //const [list, setList] = useState([]);
     // const permissionref =  sessionStorage.getItem("permissionref")
@@ -77,6 +78,13 @@ export default function Property({ setToken, setProperty }) {
 
     const handleChange = event => {
         setSelectedProperty(event.target.value);
+     
+  
+        var d1 = new Date (),
+        d2 = new Date ( d1 );
+        d2.setDate(d2.getDate() + 100);
+        d2.setMinutes ( d1.getMinutes() + 5 );
+        setCookie('name', event.target.value, { path: '/', expires: d2 });
     };
     // const handleCancle = () => {
     //     console.log("cancle")

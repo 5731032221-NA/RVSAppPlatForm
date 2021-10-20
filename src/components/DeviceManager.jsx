@@ -197,6 +197,7 @@ export default function DeviceManager() {
     setProperty(tempproperty);
     setUpdateData({ type: deviceTypes[0].label });
     setErrorMessageDu(false);
+    setErrorMessage(false);
     setDialogAdd(true);
   };
 
@@ -224,6 +225,7 @@ export default function DeviceManager() {
     setProperty(tempproperty);
     setUpdateData(_rowData);
     setErrorMessageDu(false);
+    setErrorMessage(false);
     setDialogEdit(true);
   };
 
