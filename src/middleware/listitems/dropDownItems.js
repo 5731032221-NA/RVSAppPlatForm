@@ -131,6 +131,12 @@ export default function MainListItems() {
     }
     function handleOpenProfile() {
         setOpenProfile(!openProfile)
+        // handleComponentState("ProfilePage")
+        setSelectedIndex(4)
+    }
+    function handleOpenProfileIndividual() {
+        // setOpenProfile(!openProfile)
+        handleComponentState("ProfilePage")
         setSelectedIndex(4)
     }
     function handleOpenNA() {
@@ -270,7 +276,7 @@ export default function MainListItems() {
                         <Divider />
                         <List component="div" disablePadding>
                             {comps.includes("PF-ID") || comps.includes("*ALL") ?
-                                <ListItem button selected={selectedIndex === 41} onClick={(event) => handleListItemClick(event, 41)} >
+                                <ListItem button selected={selectedIndex === 41} onClick={(event) => {handleListItemClick(event, 41); handleOpenProfileIndividual();}} >
                                     <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Individual" />
                                 </ListItem>
                                 : null}

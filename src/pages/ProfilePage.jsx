@@ -111,7 +111,7 @@ export const ProfilePage = (props) => {
       setMainColor("#2D62ED");
     }
   }, [maincolor]);
-  const [switchPage, setSwitchPage] = React.useState("tableprofile");
+  const [switchPage, setSwitchPage] = React.useState("individual");
   const classes = useStyles(themeState);
 
   const handlePage = (page) => {
@@ -149,7 +149,7 @@ export const ProfilePage = (props) => {
                   color: mainColor,
                 }}
               >
-                Table Profile
+                Profiles
               </Typography>
             ) : (
               <Typography
@@ -160,7 +160,7 @@ export const ProfilePage = (props) => {
                   color: themeState.color,
                 }}
               >
-                Table Profile
+                Profiles
               </Typography>
             )}
           </Link>
