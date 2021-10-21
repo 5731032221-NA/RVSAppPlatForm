@@ -1,7 +1,7 @@
 
 
 module.exports = async function (accessToken, property) {
-    return fetch('http://localhost:8000/apis/menus', {
+    return fetch('http://localhost'+'{(process.env.host || "localhost")'+':8000/apis/menus', {
         method: 'POST',
         headers: {
             'Authorization': accessToken,
