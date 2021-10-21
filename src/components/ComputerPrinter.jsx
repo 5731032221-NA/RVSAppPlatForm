@@ -774,7 +774,7 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
             title={
               <Grid>
                 <Typography
-                  variant="h6"
+                  variant="h6" noWrap
                   style={{ fontSize: 25, color: themeState.color }}
                 >
                   Computer-printer
@@ -911,10 +911,10 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
               >
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                    <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+                    <Grid item xs={4} sm={4} md={2} lg={2} xl={2}>
                       New Device
                     </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                    <Grid item xs={6} sm={6} md={4} lg={4} xl={4}>
                       <TextField
                         select
                         className={classes.root}
@@ -1239,10 +1239,10 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
               <DialogTitle id="form-dialog-title" style={headerTableStyle}>
                 <Container maxWidth="xl" disableGutters>
                   <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                    <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+                    <Grid item xs={4} sm={4} md={2} lg={2} xl={2}>
                       Edit Device
                     </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                    <Grid item xs={6} sm={6} md={4} lg={4} xl={4}>
                       <TextField
                         select
                         id="outlined-basic"
@@ -1514,6 +1514,7 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
                       color: "white",
                       height: "30px",
                       paddingTop: 5,
+                      marginTop:5,
                     }}
                   >
                     {errorParameterDu} 

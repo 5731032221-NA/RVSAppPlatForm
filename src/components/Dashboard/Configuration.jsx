@@ -111,6 +111,8 @@ export default function Configuration() {
   const [page, setPage] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState(false);
   const [errorParameter, setErrorParameter] = React.useState(null);
+  const [errorMessageDu, setErrorMessageDu] = React.useState(false);
+  const [errorParameterDu, setErrorParameterDu] = React.useState(null);
 
   const [data, setData] = React.useState([
     {
@@ -429,7 +431,7 @@ export default function Configuration() {
     setAddChuldValue("");
     setDescription("");
     setCode("");
-
+    setErrorMessageDu(false);
     setErrorMessage(false);
     setAddchild(false);
     setDialogAdd(true);
@@ -449,6 +451,7 @@ export default function Configuration() {
     setCode(node.code);
     setDescription(node.description);
     setAddChuldNameLang(node["name_" + lang]);
+    setErrorMessageDu(false);
     // setRow(node)
     setDialogEdit(true);
   };
@@ -595,63 +598,137 @@ export default function Configuration() {
         let seconds = currentdate.getSeconds();
 
         if (obj.children) {
-
-          // for (let c = 0; c < obj.children.length; c++) {
+          console.log("11:");
+          let isreadydata = null;
+          for (let c = 0; c < obj.children.length; c++) {
+            console.log("22:");
+            console.log("obj.children[c].code:",obj.children[c].code, code);
+            console.log("obj.children[c].name_en:",obj.children[c].name_en, name);
           
-          //    if( obj.children[c].code === name){
-          //        console.log("obj.children[c].code:",obj.children[c].code);
-          //        setErrorParameter(`Dupicate ${obj.children[c].code}` );
-          //    }
-            
-          // }
+             if( obj.children[c].code === code){
+                 console.log("obj.children[c].code:",obj.children[c].code);
+                //  setErrorParameter(`Dupicate ${obj.children[c].code}` );
+                isreadydata = obj.children[c].code;
+             }
+             if(obj.children[c].name_en === name){
+              isreadydata = obj.children[c].name_en;
+             }
+          }
+
+          if(!isreadydata){
+            console.log("33:");
+            obj.children = [
+              ...obj.children,
+              {
+                RefNo: newid,
+                code: code,
+                name_en: name,
+                description: description,
+                createdate:
+                  year +
+                  "-" +
+                  month +
+                  "-" +
+                  day +
+                  " " +
+                  hours +
+                  ":" +
+                  minutes +
+                  ":" +
+                  seconds,
+                master: false,
+                addchild: false,
+              },
+            ];
+           }
 
 
-          obj.children = [
-            ...obj.children,
-            {
-              RefNo: newid,
-              code: code,
-              name_en: name,
-              description: description,
-              createdate:
-                year +
-                "-" +
-                month +
-                "-" +
-                day +
-                " " +
-                hours +
-                ":" +
-                minutes +
-                ":" +
-                seconds,
-              master: false,
-              addchild: false,
-            },
-          ];
+          // obj.children = [
+          //   ...obj.children,
+          //   {
+          //     RefNo: newid,
+          //     code: code,
+          //     name_en: name,
+          //     description: description,
+          //     createdate:
+          //       year +
+          //       "-" +
+          //       month +
+          //       "-" +
+          //       day +
+          //       " " +
+          //       hours +
+          //       ":" +
+          //       minutes +
+          //       ":" +
+          //       seconds,
+          //     master: false,
+          //     addchild: false,
+          //   },
+          // ];
         } else {
-          obj.children = [
-            {
-              RefNo: newid,
-              code: code,
-              name_en: name,
-              description: description,
-              createdate:
-                year +
-                "-" +
-                month +
-                "-" +
-                day +
-                " " +
-                hours +
-                ":" +
-                minutes +
-                ":" +
-                seconds,
-              master: false,
-              addchild: false,
-            },
-          ];
+          console.log("44:");
+        //   let isreadydata = null;
+        //   for (let c = 0; c < obj.children.length; c++) {
+          
+        //      if( obj.children[c].code === name){
+        //          console.log("obj.children[c].code:",obj.children[c].code);
+        //         //  setErrorParameter(`Dupicate ${obj.children[c].code}` );
+        //         isreadydata = obj.children[c].code;
+        //      }
+        //       if(obj.children[c].name_en === label){
+        //       isreadydata = obj.children[c].name_en;
+        //      }
+        //   }
+
+        //   if(!isreadydata){
+        //   obj.children = [
+        //     {
+        //       RefNo: newid,
+        //       code: code,
+        //       name_en: name,
+        //       description: description,
+        //       createdate:
+        //         year +
+        //         "-" +
+        //         month +
+        //         "-" +
+        //         day +
+        //         " " +
+        //         hours +
+        //         ":" +
+        //         minutes +
+        //         ":" +
+        //         seconds,
+        //       master: false,
+        //       addchild: false,
+        //     },
+        //   ];
+        //  }
+
+
+        obj.children = [
+          {
+            RefNo: newid,
+            code: code,
+            name_en: name,
+            description: description,
+            createdate:
+              year +
+              "-" +
+              month +
+              "-" +
+              day +
+              " " +
+              hours +
+              ":" +
+              minutes +
+              ":" +
+              seconds,
+            master: false,
+            addchild: false,
+          },
+        ];
         }
       } else if (obj.children) {
      
@@ -661,6 +738,8 @@ export default function Configuration() {
   };
 
   const handleAdd = async () => {
+
+    setErrorMessageDu(false);
     if (code == null || code == "") {
       setErrorMessage(true);
       setErrorParameter("Code");
@@ -714,26 +793,81 @@ export default function Configuration() {
         { configuration: data, propertycode: property ,propertycheckduplicate:checkdupli }
       );
       // setData(data)
-      setDialogAdd(false);
+     
+
+      if (updateconfig.status == "2000") {
+       
+        setDialogAdd(false);
+      }else if(updateconfig.status == "1000"){
+        setErrorMessageDu(true);
+        const dupic = updateconfig.msg;
+        setErrorParameterDu(dupic)
+      }
      
     }
   };
 
   const editing = async (array, label, name) => {
+    console.log("array, label, name:",array, label, name);
+    const s = label.split(".");
+    let ab = "";
+    let isc = 0;
+    for(const sm in s){
+      if(isc == 0){
+        ab += s[sm]
+      }else if(s.length - 1 > isc){
+        ab += "."+ s[sm]
+      }
+      isc += 1;
+    }
+
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       console.log(obj.RefNo, label);
-      if (obj.RefNo === label) {
-        obj.code = code;
-        obj.name_en = name;
-        obj.description = description;
-      } else if (obj.children) {
+      console.log("ab1:", ab,"obj.RefNo:",obj.RefNo);
+      if (obj.RefNo == ab) {
+        console.log("ab:", ab);
+        let checkdup = null;
+         for (let c = 0; c < obj.children.length; c++) {
+           console.log("obj.children[c]:",obj.children[c].name_en); 
+           if(obj.children[c].name_en == name && obj.children[c].code != code){
+            checkdup = name
+            setErrorParameterDu(name)
+           }          
+         }
+         if(!checkdup){
+           console.log("a::::",obj.RefNo,label);
+           for (let ic = 0; ic < obj.children.length; ic++) {
+           
+             if (obj.children[ic].RefNo === label) {
+              console.log("a:::2:");
+              obj.children[ic].code = code;
+              obj.children[ic].name_en = name;
+              obj.children[ic].description = description;
+            }
+             
+           }
+          // if (obj.RefNo === label) {
+          //   console.log("a:::2:");
+          //   obj.code = code;
+          //   obj.name_en = name;
+          //   obj.description = description;
+          // } else if (obj.children) {
+          //   editing(obj.children, label, name);
+          // }
+         }
+      }else if (obj.children) {
         editing(obj.children, label, name);
       }
+      
     }
+
   };
 
   const handleEdit = async () => {
+
+    setErrorMessageDu(false);
+    setErrorParameterDu(null);
     if (addChildValue == null || addChildValue == "") {
       setErrorMessage(true);
       setErrorParameter("Name (EN)");
@@ -748,12 +882,33 @@ export default function Configuration() {
       // console.log("newid", newid)
       await editing(data, id, addChildValue);
       console.log(data);
-      let updateconfig = await updateconfiguration(
-        sessionStorage.getItem("auth"),
-        { configuration: data, propertycode: property }
-      );
-      // setData(data)
-      setDialogEdit(false);
+      let checkdupli = {
+        RefNo: id,
+        name: addChildValue,
+        code: code,
+        type: "edit"
+      }
+
+      console.log("checkdupli:",checkdupli);
+
+   
+        let updateconfig = await updateconfiguration(
+          sessionStorage.getItem("auth"),
+          { configuration: data, propertycode: property, propertycheckduplicate: checkdupli }
+        );
+        // setData(data)
+       
+        if (updateconfig.status == "2000") {
+       
+          setDialogEdit(false);
+        }else if(updateconfig.status == "1000"){
+          setErrorMessageDu(true);
+          const dupic = updateconfig.msg;
+          setErrorParameterDu(dupic)
+        }
+      
+      
+    
     }
   };
 
@@ -807,9 +962,10 @@ export default function Configuration() {
                 <Typography
                   variant="body1"
                   color="initial"
+                  noWrap
                   style={{ paddind: 5 }}
                 >
-                  <div onClick={() => handleConfig(nodes.code)}>
+                  <div style={{ width: 100 }} onClick={() => handleConfig(nodes.code)}>
                     {nodes["name_" + lang] != null
                       ? nodes["name_" + lang]
                       : nodes["name_en"]}
@@ -1016,6 +1172,19 @@ export default function Configuration() {
                     {errorParameter} is required
                   </div>
                 ) : null}
+                   {errorMessageDu ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameterDu}
+                  </div>
+                ) : null}
               </DialogContent>
               <DialogActions
                 style={{
@@ -1161,6 +1330,19 @@ export default function Configuration() {
                     {errorParameter} is required
                   </div>
                 ) : null}
+                     {errorMessageDu ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameterDu}
+                  </div>
+                ) : null}
               </DialogContent>
               <DialogActions
                 style={{
@@ -1229,6 +1411,7 @@ export default function Configuration() {
                   separator={
                     <Typography
                       variant="h6"
+                      
                       style={{
                         marginBottom: 15,
                         fontSize: 20,
