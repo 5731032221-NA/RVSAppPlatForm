@@ -59,8 +59,8 @@ export default function MainListItems() {
     
         if(indextTab === 0){
         // setOpenFrontDesk(!openFrontDesk)
-        handleComponentState("FrontDesk")
-        setSelectedIndex(2)
+        handleComponentState("Dashboard")
+        setSelectedIndex(0)
         }else if(indextTab === 1){
           setSelectedIndex(1)
         }else if(indextTab === 2){
@@ -105,9 +105,13 @@ export default function MainListItems() {
     function handleOpenReservation() {
         const ind = 1;
         dispatch(indexTab(ind))
-        // setOpenFrontDesk(!openFrontDesk)
-        // handleComponentState("FrontDesk")
+        handleComponentState("Reservation")
         setSelectedIndex(1)
+    }
+    function handleOpenDashboard() {
+        dispatch(indexTab(''))
+        handleComponentState("Dashboard")
+        setSelectedIndex(0)
     }
 
     function handleOpenFrontDesk() {
@@ -184,7 +188,7 @@ export default function MainListItems() {
         <List >
             {/* disablePadding dense */}
             {comps.includes("DB") || comps.includes("*ALL") ?
-                <ListItem button selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)} >
+                <ListItem button selected={selectedIndex === 0} onClick={ handleOpenDashboard} >
                     <ListItemIcon style={{ color: "white" }} >
                         <DashboardIcon />
                     </ListItemIcon>

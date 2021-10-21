@@ -22,7 +22,6 @@ import {
 } from "@material-ui/core";
 import ProfileTable from "../components/ProfileTable";
 import ProfileIndividual from "../components/ProfileIndividual";
-
 const useStyles = makeStyles((theme) => ({
   seeMore: {
     marginTop: theme.spacing(3),

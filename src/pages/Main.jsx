@@ -47,6 +47,7 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import BusinessIcon from "@material-ui/icons/Business";
 import SettingsIcon from "@material-ui/icons/PlayForWork";
 
+import Dashboard from "../components/Dashboard/Dashboard";
 import FrontDesk from "../components/Dashboard/FrontDesk";
 import Configuration from "../components/Dashboard/Configuration";
 import ReservationPage from "./ReservationPage";
@@ -271,7 +272,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
+export default function Main() {
   const classes = useStyles();
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -1013,7 +1014,16 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="100" className={classes.container}>
           <HeaderTabs />
-          {store.getState().reducer.componentState == "FrontDesk" ? (
+          {store.getState().reducer.componentState == "Dashboard" ? (
+            <div
+              style={{
+                backgroundColor: themeStatedata.background,
+                color: themeStatedata.color,
+              }}
+            >
+              <Dashboard />
+            </div>
+          ) : store.getState().reducer.componentState == "FrontDesk" ? (
             <div
               style={{
                 backgroundColor: themeStatedata.background,

@@ -28,7 +28,7 @@ const initialState = {
   defaultColor: "#2D62ED",
   username: "",
   compwidth: 0,
-  componentState: "FrontDesk",
+  componentState: "Dashboard",
   themeBackground: "#FFFFFF",
   fontColor: "black",
   //   darkbackgroundColor: "#212121",

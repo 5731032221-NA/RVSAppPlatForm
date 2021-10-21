@@ -13,7 +13,10 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
-
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DateFnsUtils from "@date-io/date-fns";
 import {
   DatePicker,
@@ -26,235 +29,514 @@ import {
 } from "@material-ui/pickers";
 
 export const ProfileIndividual = (props) => {
+  const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
+  React.useEffect(() => {
+    setSmallwidth(window.innerWidth < 1000)
+  }, []);
+
   return (
     <Container maxWidth="xl">
-      <Paper elevation={3}>
-        <Container maxWidth="xl" style={{ paddingTop: 15 }}>
-          <Grid container>
-            <Typography variant="h6" color="primary" style={{ flexGrow: 1 }}>
-              Profile Detail
-            </Typography>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "red", color: "white" }}
-              startIcon={<DeleteIcon />}
+      {smallwidth ?
+        <Paper elevation={3}>
+          <Container maxWidth="xl" style={{ paddingTop: 15 }}>
+            <Grid container>
+              <Typography variant="h6" color="primary" style={{ flexGrow: 1 }}>
+                Profile Detail
+              </Typography>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: "red", color: "white" }}
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button>
+            </Grid>
+            <Divider style={{ marginTop: 10 }} />
+          </Container>
+          <Container maxWidth="xl" style={{ paddingTop: 15, paddingBottom: 15 }}>
+
+            {/* <Typography
+                variant="subtitle1"
+                color="initial"
+                style={{ paddingBottom: 10 }}
+              >
+                Personal
+              </Typography> */}
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+              >
+                <Typography>Personal</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid container spacing={2}>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField label="First Name" variant="outlined" fullWidth />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField label="Last Name" variant="outlined" fullWidth />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField label="Gender" variant="outlined" fullWidth select />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField
+                      label="Choose a Document Type*"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField
+                      label="ID Number*"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField
+                      label="Nationality*"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Grid item xl={4} md={6} xs={12}>
+                      <KeyboardDatePicker
+                        label="Issue Date"
+                        inputVariant="outlined"
+                        // format="dd/MM/yyyy"
+                        // value={selectedDateStartEdit}
+                        // onChange={handleDateStartEdit}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xl={4} md={6} xs={12}>
+                      <KeyboardDatePicker
+                        label="Expiry Date"
+                        inputVariant="outlined"
+                        // format="dd/MM/yyyy"
+                        // value={selectedDateStartEdit}
+                        // onChange={handleDateStartEdit}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xl={4} md={6} xs={12}>
+                      <KeyboardDatePicker
+                        label="Date of Birth"
+                        inputVariant="outlined"
+                        // format="dd/MM/yyyy"
+                        // value={selectedDateStartEdit}
+                        // onChange={handleDateStartEdit}
+                        fullWidth
+                      />
+                    </Grid>
+                  </MuiPickersUtilsProvider>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+
+            {/* <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
             >
-              Delete
-            </Button>
-          </Grid>
-          <Divider style={{ marginTop: 10 }} />
-        </Container>
-        <Container maxWidth="xl" style={{ paddingTop: 15, paddingBottom: 15 }}>
-          <Typography
-            variant="subtitle1"
-            color="initial"
-            style={{ paddingBottom: 10 }}
-          >
-            Personal
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField label="First Name" variant="outlined" fullWidth />
+              Communication
+            </Typography> */}
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+              >
+                <Typography>Communication</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid container spacing={2}>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField label="Email" variant="outlined" fullWidth />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField label="Phone Number" variant="outlined" fullWidth />
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+              >
+                <Typography>Address</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {/* <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              Address
+            </Typography> */}
+                <Grid container spacing={2}>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField label="OrganiZation" variant="outlined" fullWidth />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField label="Address Line 1" variant="outlined" fullWidth />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField label="Address Line 2" variant="outlined" fullWidth />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      label="Choose a country"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField label="City" variant="outlined" fullWidth />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField label="State" variant="outlined" fullWidth />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField label="Postal" variant="outlined" fullWidth />
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+              >
+                <Typography>Relationship</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {/* <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              Rerationship (Internal)
+            </Typography> */}
+                <Grid container spacing={2}>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField
+                      label={
+                        <Grid container alignItems="center">
+                          <PublicRoundedIcon style={{ marginRight: 10 }} />
+                          Web site
+                        </Grid>
+                      }
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={2} md={6} xs={12}>
+                    <TextField
+                      label={
+                        <Grid container alignItems="center">
+                          <AlternateEmailIcon style={{ marginRight: 10 }} />
+                          Line
+                        </Grid>
+                      }
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={2} md={6} xs={12}>
+                    <TextField
+                      label={
+                        <Grid container alignItems="center">
+                          <FacebookIcon style={{ marginRight: 10 }} />
+                          Facebook
+                        </Grid>
+                      }
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={2} md={6} xs={12}>
+                    <TextField
+                      label={
+                        <Grid container alignItems="center">
+                          <InstagramIcon style={{ marginRight: 10 }} />
+                          Instagram
+                        </Grid>
+                      }
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={2} md={6} xs={12}>
+                    <TextField
+                      label={
+                        <Grid container alignItems="center">
+                          <TwitterIcon style={{ marginRight: 10 }} />
+                          Twitter
+                        </Grid>
+                      }
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+              >
+                <Typography> Booking History</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {/* <Typography variant="h6" color="primary" style={{ paddingTop: 20 }}>
+              Booking History
+            </Typography> */}
+                <Divider style={{ marginTop: 10 }} />
+                <Typography
+                  variant="subtitle1"
+                  color="initial"
+                  style={{ paddingBottom: 10, paddingTop: 10 }}
+                >
+                  booking data list here !!!
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          </Container>
+        </Paper>
+        :
+        <Paper elevation={3}>
+          <Container maxWidth="xl" style={{ paddingTop: 15 }}>
+            <Grid container>
+              <Typography variant="h6" color="primary" style={{ flexGrow: 1 }}>
+                Profile Detail
+              </Typography>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: "red", color: "white" }}
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button>
             </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField label="Last Name" variant="outlined" fullWidth />
-            </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField label="Gender" variant="outlined" fullWidth select />
-            </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField
-                label="Choose a Document Type*"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField
-                label="ID Number*"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField
-                label="Nationality*"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Divider style={{ marginTop: 10 }} />
+          </Container>
+          <Container maxWidth="xl" style={{ paddingTop: 15, paddingBottom: 15 }}>
+            <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10 }}
+            >
+              Personal
+            </Typography>
+            <Grid container spacing={2}>
               <Grid item xl={4} md={6} xs={12}>
-                <KeyboardDatePicker
-                  label="Issue Date"
-                  inputVariant="outlined"
-                  // format="dd/MM/yyyy"
-                  // value={selectedDateStartEdit}
-                  // onChange={handleDateStartEdit}
+                <TextField label="First Name" variant="outlined" fullWidth />
+              </Grid>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField label="Last Name" variant="outlined" fullWidth />
+              </Grid>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField label="Gender" variant="outlined" fullWidth select />
+              </Grid>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField
+                  label="Choose a Document Type*"
+                  variant="outlined"
                   fullWidth
+                  select
                 />
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
-                <KeyboardDatePicker
-                  label="Expiry Date"
-                  inputVariant="outlined"
-                  // format="dd/MM/yyyy"
-                  // value={selectedDateStartEdit}
-                  // onChange={handleDateStartEdit}
+                <TextField
+                  label="ID Number*"
+                  variant="outlined"
                   fullWidth
+                  select
                 />
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
-                <KeyboardDatePicker
-                  label="Date of Birth"
-                  inputVariant="outlined"
-                  // format="dd/MM/yyyy"
-                  // value={selectedDateStartEdit}
-                  // onChange={handleDateStartEdit}
+                <TextField
+                  label="Nationality*"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid item xl={4} md={6} xs={12}>
+                  <KeyboardDatePicker
+                    label="Issue Date"
+                    inputVariant="outlined"
+                    // format="dd/MM/yyyy"
+                    // value={selectedDateStartEdit}
+                    // onChange={handleDateStartEdit}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xl={4} md={6} xs={12}>
+                  <KeyboardDatePicker
+                    label="Expiry Date"
+                    inputVariant="outlined"
+                    // format="dd/MM/yyyy"
+                    // value={selectedDateStartEdit}
+                    // onChange={handleDateStartEdit}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xl={4} md={6} xs={12}>
+                  <KeyboardDatePicker
+                    label="Date of Birth"
+                    inputVariant="outlined"
+                    // format="dd/MM/yyyy"
+                    // value={selectedDateStartEdit}
+                    // onChange={handleDateStartEdit}
+                    fullWidth
+                  />
+                </Grid>
+              </MuiPickersUtilsProvider>
+            </Grid>
+
+            <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              Communication
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField label="Email" variant="outlined" fullWidth />
+              </Grid>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField label="Phone Number" variant="outlined" fullWidth />
+              </Grid>
+            </Grid>
+
+            <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              Address
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField label="OrganiZation" variant="outlined" fullWidth />
+              </Grid>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField label="Address Line 1" variant="outlined" fullWidth />
+              </Grid>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField label="Address Line 2" variant="outlined" fullWidth />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  label="Choose a country"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField label="City" variant="outlined" fullWidth />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField label="State" variant="outlined" fullWidth />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField label="Postal" variant="outlined" fullWidth />
+              </Grid>
+            </Grid>
+
+            <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              Rerationship (Internal)
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField
+                  label={
+                    <Grid container alignItems="center">
+                      <PublicRoundedIcon style={{ marginRight: 10 }} />
+                      Web site
+                    </Grid>
+                  }
+                  variant="outlined"
                   fullWidth
                 />
               </Grid>
-            </MuiPickersUtilsProvider>
-          </Grid>
+              <Grid item xl={2} md={6} xs={12}>
+                <TextField
+                  label={
+                    <Grid container alignItems="center">
+                      <AlternateEmailIcon style={{ marginRight: 10 }} />
+                      Line
+                    </Grid>
+                  }
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={2} md={6} xs={12}>
+                <TextField
+                  label={
+                    <Grid container alignItems="center">
+                      <FacebookIcon style={{ marginRight: 10 }} />
+                      Facebook
+                    </Grid>
+                  }
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={2} md={6} xs={12}>
+                <TextField
+                  label={
+                    <Grid container alignItems="center">
+                      <InstagramIcon style={{ marginRight: 10 }} />
+                      Instagram
+                    </Grid>
+                  }
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={2} md={6} xs={12}>
+                <TextField
+                  label={
+                    <Grid container alignItems="center">
+                      <TwitterIcon style={{ marginRight: 10 }} />
+                      Twitter
+                    </Grid>
+                  }
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
 
-          <Typography
-            variant="subtitle1"
-            color="initial"
-            style={{ paddingBottom: 10, paddingTop: 10 }}
-          >
-            Communication
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField label="Email" variant="outlined" fullWidth />
-            </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField label="Phone Number" variant="outlined" fullWidth />
-            </Grid>
-          </Grid>
-
-          <Typography
-            variant="subtitle1"
-            color="initial"
-            style={{ paddingBottom: 10, paddingTop: 10 }}
-          >
-            Address
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField label="OrganiZation" variant="outlined" fullWidth />
-            </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField label="Address Line 1" variant="outlined" fullWidth />
-            </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField label="Address Line 2" variant="outlined" fullWidth />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                label="Choose a country"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField label="City" variant="outlined" fullWidth />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField label="State" variant="outlined" fullWidth />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField label="Postal" variant="outlined" fullWidth />
-            </Grid>
-          </Grid>
-
-          <Typography
-            variant="subtitle1"
-            color="initial"
-            style={{ paddingBottom: 10, paddingTop: 10 }}
-          >
-            Rerationship (Internal)
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField
-                label={
-                  <Grid container alignItems="center">
-                    <PublicRoundedIcon style={{ marginRight: 10 }} />
-                    Web site
-                  </Grid>
-                }
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xl={2} md={6} xs={12}>
-              <TextField
-                label={
-                  <Grid container alignItems="center">
-                    <AlternateEmailIcon style={{ marginRight: 10 }} />
-                    Line
-                  </Grid>
-                }
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xl={2} md={6} xs={12}>
-              <TextField
-                label={
-                  <Grid container alignItems="center">
-                    <FacebookIcon style={{ marginRight: 10 }} />
-                    Facebook
-                  </Grid>
-                }
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xl={2} md={6} xs={12}>
-              <TextField
-                label={
-                  <Grid container alignItems="center">
-                    <InstagramIcon style={{ marginRight: 10 }} />
-                    Instagram
-                  </Grid>
-                }
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xl={2} md={6} xs={12}>
-              <TextField
-                label={
-                  <Grid container alignItems="center">
-                    <TwitterIcon style={{ marginRight: 10 }} />
-                    Twitter
-                  </Grid>
-                }
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-
-          <Typography variant="h6" color="primary" style={{ paddingTop: 20 }}>
-            Booking History
-          </Typography>
-          <Divider style={{ marginTop: 10 }} />
-          <Typography
-            variant="subtitle1"
-            color="initial"
-            style={{ paddingBottom: 10, paddingTop: 10 }}
-          >
-            booking data list here !!!
-          </Typography>
-        </Container>
-      </Paper>
+            <Typography variant="h6" color="primary" style={{ paddingTop: 20 }}>
+              Booking History
+            </Typography>
+            <Divider style={{ marginTop: 10 }} />
+            <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              booking data list here !!!
+            </Typography>
+          </Container>
+        </Paper>
+      }
     </Container>
   );
 };
