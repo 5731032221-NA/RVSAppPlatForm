@@ -650,15 +650,20 @@ export const ProfileTravelAgent = (props) => {
             <Grid container alignItems="center">
               <Grid item style={{ flexGrow: 1 }}>
                 <Typography variant="h6" style={{ color: mainColor }}>
-                  Profile / Company
+                  Profile / Travel Agent
                 </Typography>
               </Grid>
-              <Grid item style={{ paddingRight: 20 }}>
-                <FormControlLabel
-                  value="start"
-                  control={<Radio color="primary" />}
-                  label="Central Protected"
-                  labelPlacement="start"
+              <Grid item xl={3} md={3} xs={3}>
+                <TextField
+                  style={{ paddingRight: 20 }}
+                  fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
               <Grid item xl={2} md={6} xs={12}>
@@ -691,25 +696,6 @@ export const ProfileTravelAgent = (props) => {
               Account
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xl={6} md={6} xs={12}>
-                <TextField
-                  label="Master Account"
-                  variant="outlined"
-                  fullWidth
-                  className={classes.root}
-                  select
-                />
-              </Grid>
-
-              <Grid item xl={6} md={6} xs={12}>
-                <TextField
-                  label="Parent Account "
-                  variant="outlined"
-                  fullWidth
-                  className={classes.root}
-                  select
-                />
-              </Grid>
               <Grid item xl={4} md={6} xs={12}>
                 <TextField
                   label="Name 1"
@@ -750,7 +736,6 @@ export const ProfileTravelAgent = (props) => {
                   label="Address 1"
                   variant="outlined"
                   fullWidth
-                  select
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -862,7 +847,6 @@ export const ProfileTravelAgent = (props) => {
                   label="Owner"
                   variant="outlined"
                   fullWidth
-                  select
                 />
               </Grid>
               <Grid item xl={2} md={6} xs={12}>
@@ -871,7 +855,6 @@ export const ProfileTravelAgent = (props) => {
                   label="Temitory"
                   variant="outlined"
                   fullWidth
-                  select
                 />
               </Grid>
               <Grid item xl={2} md={6} xs={12}>
@@ -880,7 +863,6 @@ export const ProfileTravelAgent = (props) => {
                   label="Trace Code"
                   variant="outlined"
                   fullWidth
-                  select
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -889,7 +871,6 @@ export const ProfileTravelAgent = (props) => {
                   label="Keyword"
                   variant="outlined"
                   fullWidth
-                  select
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -898,7 +879,6 @@ export const ProfileTravelAgent = (props) => {
                   label="Type"
                   variant="outlined"
                   fullWidth
-                  select
                 />
               </Grid>
             </Grid>
@@ -925,7 +905,6 @@ export const ProfileTravelAgent = (props) => {
                   label="Ref. Currency"
                   variant="outlined"
                   fullWidth
-                  select
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -934,7 +913,6 @@ export const ProfileTravelAgent = (props) => {
                   label="Credit Rating"
                   variant="outlined"
                   fullWidth
-                  select
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -957,12 +935,20 @@ export const ProfileTravelAgent = (props) => {
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
                   className={classes.root}
-                  label="Tax ID"
+                  label="Guest Type"
                   variant="outlined"
                   fullWidth
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Tax ID"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={2} md={6} xs={12}>
                 <TextField
                   className={classes.root}
                   label="Routing Instruction"
@@ -971,8 +957,24 @@ export const ProfileTravelAgent = (props) => {
                   select
                 />
               </Grid>
+              <Grid item xl={2} md={6} xs={12}>
+                <FormControlLabel
+                  value="start"
+                  control={<Checkbox color="primary" />}
+                  label="Auto Populate Yn"
+                  labelPlacement="start"
+                />
+              </Grid>
+              <Grid item xl={2} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Payment"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
             </Grid>
-
             <Typography variant="h6" style={{ paddingTop: 20, color: mainColor }}>
               Sales Information
             </Typography>
