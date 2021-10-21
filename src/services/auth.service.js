@@ -1,5 +1,5 @@
 module.exports = async function(credentials) {
-    return fetch('http://'+'(process.env.host || "localhost")'+':8000/auth', {
+    return fetch('http://'+(process.env.host || "localhost")+':8000/auth', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
