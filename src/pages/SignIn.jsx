@@ -20,7 +20,7 @@ import { EDIT_AUTHORIZATION } from "../middleware/action";
 import { EDIT_PROPERTYS } from "../middleware/action";
 
 // async function loginUser(credentials) {
-//   return fetch('http://localhost'+'{(process.env.host || "localhost")'+':8083/login', {
+//   return fetch('http://'+'(process.env.host || "localhost")'+':8083/login', {
 //     method: 'POST',
 //     headers: {
 //       'Content-Type': 'application/json'
