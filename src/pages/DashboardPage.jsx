@@ -55,7 +55,9 @@ import RoleManagement from "../components/RoleManagement";
 import UserManagement from "../components/UserManagement";
 import DashboardDetail from "../components/Dashboard/DashboardDetail";
 import ProfilePage from "./ProfilePage";
-
+import ProfilePageIndividual from "../components/ProfileIndividual";
+import ProfilePageTravelAgent from "../components/ProfileTravelAgent";
+import ProfilePageCompany from "../components/ProfileCompany";
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
 import RightBar from "../layouts/RightBar";
@@ -1043,6 +1045,34 @@ export default function Dashboard() {
               }}
             >
               <ProfilePage />
+            </div>
+          ) : store.getState().reducer.componentState == "ProfileIndivisual" ? (
+            <div
+              style={{
+                backgroundColor: themeStatedata.background,
+                color: themeStatedata.color,
+              }}
+            >
+              <ProfilePageIndividual />
+            </div>
+          ) : store.getState().reducer.componentState ==
+            "ProfileTravelAgent" ? (
+            <div
+              style={{
+                backgroundColor: themeStatedata.background,
+                color: themeStatedata.color,
+              }}
+            >
+              <ProfilePageTravelAgent />
+            </div>
+          ) : store.getState().reducer.componentState == "ProfileCompany" ? (
+            <div
+              style={{
+                backgroundColor: themeStatedata.background,
+                color: themeStatedata.color,
+              }}
+            >
+              <ProfilePageCompany />
             </div>
           ) : null}
           <div style={{ paddingTop: 50 }}>

@@ -191,6 +191,9 @@ export const ProfilePage = (props) => {
           </Link>
         </Breadcrumbs>
       </Grid>
+
+
+      
       {switchPage === "tableprofile" ? (
         <ProfileTable />
       ) : switchPage === "individual" ? (
