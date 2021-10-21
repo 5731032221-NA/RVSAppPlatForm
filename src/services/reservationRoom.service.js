@@ -1,7 +1,7 @@
 module.exports = {
   getreservationroom: async function (accessToken) {
     return (
-      fetch("http://"+(process.env.host || "localhost")+":8000/apis/reservation-room", {
+      fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/reservation-room", {
         method: "GET",
         headers: {
           Authorization:  accessToken,
@@ -13,7 +13,7 @@ module.exports = {
     );
   },
   postreservationroom: async function (accessToken, req) {
-    return fetch("http://"+(process.env.host || "localhost")+":8000/apis/reservation-room", {
+    return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/reservation-room", {
       method: "POST",
       headers: {
         Authorization:  accessToken,
@@ -23,7 +23,7 @@ module.exports = {
     }).then(async (res) => res.json());
   },
   getreservationroombyid: async function (accessToken, roomno) {
-    return fetch(`http://${(process.env.host || "localhost")}:8000/apis/reservation-room/${roomno}`, {
+    return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/reservation-room/${roomno}`, {
       method: "GET",
       headers: {
         Authorization:  accessToken,
@@ -33,7 +33,7 @@ module.exports = {
   },
 
   // getRoombykey: async function (accessToken, keySearch) {
-  //   return fetch(`http://${(process.env.host || "localhost")}:8000/apis/room-masters-keySearch/${keySearch}`, {
+  //   return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/room-masters-keySearch/${keySearch}`, {
   //     method: "GET",
   //     headers: {
   //       Authorization:  accessToken,
@@ -42,7 +42,7 @@ module.exports = {
   //   }).then(async (res) => res.json());
   // },
   updatereservationroom: async function (accessToken, roomno, req) {
-    return fetch(`http://${(process.env.host || "localhost")}:8000/apis/reservation-room/${roomno}`, {
+    return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/reservation-room/${roomno}`, {
       method: "PUT",
       headers: {
         Authorization:  accessToken,
@@ -53,7 +53,7 @@ module.exports = {
   },
   
   deletereservationroom: async function (accessToken, roomno) {
-    return fetch(`http://${(process.env.host || "localhost")}:8000/apis/reservation-room/${roomno}`, {
+    return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/reservation-room/${roomno}`, {
       method: "DELETE",
       headers: {
         Authorization:  accessToken,

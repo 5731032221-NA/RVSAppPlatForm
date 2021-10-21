@@ -1,7 +1,7 @@
 
 
 module.exports = async function (accessToken,id,username) {
-    return fetch(`http://${(process.env.host || "localhost")}:8000/apis/propertyrole/${id}/${username}`, {
+    return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/propertyrole/${id}/${username}`, {
       method: "GET",
       headers: {
         Authorization:  accessToken,

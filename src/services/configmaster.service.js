@@ -1,6 +1,6 @@
 module.exports = {
   insertconfigmaster: async function (accessToken, req) {
-    return fetch(`http://${(process.env.host || "localhost")}:8000/apis/insertconfigmastercopm`, {
+    return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/insertconfigmastercopm`, {
       method: "POST",
       headers: {
         Authorization:  accessToken,
@@ -11,7 +11,7 @@ module.exports = {
   },
 
   listconfigmaster: async function (accessToken, req) {
-    return fetch("http://"+(process.env.host || "localhost")+":8000/apis/listconfigmastercomp", {
+    return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/listconfigmastercomp", {
       method: "GET",
       headers: {
         Authorization:  accessToken,
@@ -22,7 +22,7 @@ module.exports = {
   },
 
   updateconfigmaster: async function (accessToken, id, req) {
-    return fetch(`http://${(process.env.host || "localhost")}:8000/apis/updateconfigmasterbyidcomp/${id}`, {
+    return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/updateconfigmasterbyidcomp/${id}`, {
       method: "PUT",
       headers: {
         Authorization:  accessToken,
@@ -33,7 +33,7 @@ module.exports = {
   },
 
   deleteconfigmaster: async function (accessToken, id) {
-    return fetch(`http://${(process.env.host || "localhost")}:8000/apis/configmasterbyidcomp/${id}`, {
+    return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/configmasterbyidcomp/${id}`, {
       method: "DELETE",
       headers: {
         Authorization:  accessToken,
