@@ -51,7 +51,7 @@ export default function MainListItems() {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-
+    console.log("indextTab",indextTab)
     if (indextTab === 0) {
       // setOpenFrontDesk(!openFrontDesk)
       handleComponentState("Dashboard")

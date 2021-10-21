@@ -46,16 +46,14 @@ export default function MainListItems() {
     const [translate, setTranslate] = useState(translate_en);
 
     //indextab
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
     const indextTab = useSelector((state) => state.reducer.indextTab.indextTab);
     const dispatch = useDispatch();
 
     React.useEffect(() => {
-
         if (indextTab === 0) {
-            // setOpenFrontDesk(!openFrontDesk)
-            handleComponentState("Dashboard")
-            setSelectedIndex(0)
+            handleComponentState("FrontDesk")
+            setSelectedIndex(2)
         } else if (indextTab === 1) {
             setSelectedIndex(1)
         } else if (indextTab === 2) {
@@ -69,7 +67,8 @@ export default function MainListItems() {
             // setOpenNA(!openNA)
             setSelectedIndex(5)
         } else {
-
+            handleComponentState("Dashboard")
+            setSelectedIndex("")
         }
 
     }, [indextTab])

@@ -21,6 +21,10 @@ import { connect, ReactReduxContext, useSelector } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
 import TestDnD from "../components/TestDnD";
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -128,6 +132,12 @@ export const ProfileCompany = (props) => {
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
+
+  const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
+  React.useEffect(() => {
+    setSmallwidth(window.innerWidth < 1000)
+  }, []);
+
   return (
     <Container
       maxWidth="xl"
@@ -137,437 +147,926 @@ export const ProfileCompany = (props) => {
         backgroundColor: themeState.background,
       }}
     >
-      <Paper
-        elevation={3}
-        style={{ color: themeState.color, backgroundColor: themeState.paper }}
-      >
-        <Container maxWidth="xl" style={{ paddingTop: 15 }}>
-          <Grid container alignItems="center">
-            <Grid item style={{ flexGrow: 1 }}>
-              <Typography variant="h6" style={{ color: mainColor }}>
-                Profile / Company
-              </Typography>
-            </Grid>
-            <Grid item style={{ paddingRight: 20 }}>
-              <FormControlLabel
-                value="start"
-                control={<Radio color="primary" />}
-                label="Central Protected"
-                labelPlacement="start"
-              />
-            </Grid>
-            <Grid item xl={2} md={6} xs={12}>
-              <TextField
-                label="Property"
-                variant="outlined"
-                fullWidth
-                className={classes.root}
-                select
-              />
-            </Grid>
-          </Grid>
-          <Divider
-            style={{ marginTop: 10, backgroundColor: themeState.color }}
-          />
-        </Container>
-        {/* ====================================== */}
-        <Container
-          maxWidth="xl"
-          style={{
-            paddingTop: 15,
-            paddingBottom: 15,
-          }}
+      {smallwidth ?
+        <Paper
+          elevation={3}
+          style={{ color: themeState.color, backgroundColor: themeState.paper }}
         >
-          <Typography
-            variant="subtitle1"
-            color="initial"
-            style={{ paddingBottom: 10 }}
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              Profile / Company
+            </AccordionSummary>
+            <AccordionDetails>
+              <Container maxWidth="xl" style={{ paddingTop: 15 }}>
+                <Grid container alignItems="center">
+
+                  {/* <Grid item style={{ flexGrow: 1 }}>
+                <Typography variant="h6" style={{ color: mainColor }}>
+                  Profile / Company
+                </Typography>
+              </Grid> */}
+                  <Grid item style={{ paddingRight: 20 }}>
+                    <FormControlLabel
+                      value="start"
+                      control={<Radio color="primary" />}
+                      label="Central Protected"
+                      labelPlacement="start"
+                    />
+                  </Grid>
+                  <Grid item xl={2} md={6} xs={12}>
+                    <TextField
+                      label="Property"
+                      variant="outlined"
+                      fullWidth
+                      className={classes.root}
+                      select
+                    />
+                  </Grid>
+                </Grid>
+                <Divider
+                  style={{ marginTop: 10, backgroundColor: themeState.color }}
+                />
+              </Container>
+              {/* ====================================== */}
+            </AccordionDetails>
+          </Accordion>
+
+          <Container
+            maxWidth="xl"
+            style={{
+              paddingTop: 15,
+              paddingBottom: 15,
+            }}
           >
-            Account
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xl={6} md={6} xs={12}>
-              <TextField
-                label="Master Account"
-                variant="outlined"
-                fullWidth
-                className={classes.root}
-                select
-              />
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                Account
+              </AccordionSummary>
+              <AccordionDetails>
+                {/* <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10 }}
+            >
+              Account
+            </Typography> */}
+                <Grid container spacing={2}>
+                  <Grid item xl={6} md={6} xs={12}>
+                    <TextField
+                      label="Master Account"
+                      variant="outlined"
+                      fullWidth
+                      className={classes.root}
+                      select
+                    />
+                  </Grid>
+
+                  <Grid item xl={6} md={6} xs={12}>
+                    <TextField
+                      label="Parent Account "
+                      variant="outlined"
+                      fullWidth
+                      className={classes.root}
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField
+                      label="Name 1"
+                      variant="outlined"
+                      fullWidth
+                      className={classes.root}
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Name 2"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Name 3"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                Address
+              </AccordionSummary>
+              <AccordionDetails>
+                {/* <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              Address
+            </Typography> */}
+                <Grid container spacing={2}>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Address 1"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Address 2"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Address 3"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Address 4"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Choose a country"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="City"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="State"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Postal"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                Communication
+              </AccordionSummary>
+              <AccordionDetails>
+                {/* <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              Communication
+            </Typography> */}
+                <Grid container spacing={2}>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Commu1_type"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Commu2_type"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={4} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Commu3_type"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                Rerationship (Internal)
+              </AccordionSummary>
+              <AccordionDetails>
+                {/* <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              Rerationship (Internal)
+            </Typography> */}
+                <Grid container spacing={2}>
+                  <Grid item xl={2} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Owner"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={2} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Temitory"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={2} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Trace Code"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Keyword"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Type"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                A/R Number
+              </AccordionSummary>
+              <AccordionDetails>
+                {/* <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              A/R Number
+            </Typography> */}
+                <Grid container spacing={2}>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="IATA"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Ref. Currency"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Credit Rating"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Active Reason"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                More Information
+              </AccordionSummary>
+              <AccordionDetails>
+                {/* <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              More Information
+            </Typography> */}
+                <Grid container spacing={2}>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Tax ID"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Routing Instruction"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                Sales Information
+              </AccordionSummary>
+              <AccordionDetails>
+                {/* <Typography variant="h6" style={{ paddingTop: 20, color: mainColor }}>
+              Sales Information
+            </Typography> */}
+                <Divider
+                  style={{ marginTop: 10, backgroundColor: themeState.color }}
+                />
+                <Grid container spacing={2} style={{ marginTop: 15 }}>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Priority"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Room Potential"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Scope"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Scope City"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Action Code"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Business Segment"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Account Type"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Source"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Industry Code"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                  <Grid item xl={3} md={6} xs={12}>
+                    <TextField
+                      className={classes.root}
+                      label="Compentition Code"
+                      variant="outlined"
+                      fullWidth
+                      select
+                    />
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+          </Container>
+        </Paper>
+        :
+        <Paper
+          elevation={3}
+          style={{ color: themeState.color, backgroundColor: themeState.paper }}
+        >
+          <Container maxWidth="xl" style={{ paddingTop: 15 }}>
+            <Grid container alignItems="center">
+              <Grid item style={{ flexGrow: 1 }}>
+                <Typography variant="h6" style={{ color: mainColor }}>
+                  Profile / Company
+                </Typography>
+              </Grid>
+              <Grid item style={{ paddingRight: 20 }}>
+                <FormControlLabel
+                  value="start"
+                  control={<Radio color="primary" />}
+                  label="Central Protected"
+                  labelPlacement="start"
+                />
+              </Grid>
+              <Grid item xl={2} md={6} xs={12}>
+                <TextField
+                  label="Property"
+                  variant="outlined"
+                  fullWidth
+                  className={classes.root}
+                  select
+                />
+              </Grid>
+            </Grid>
+            <Divider
+              style={{ marginTop: 10, backgroundColor: themeState.color }}
+            />
+          </Container>
+          {/* ====================================== */}
+          <Container
+            maxWidth="xl"
+            style={{
+              paddingTop: 15,
+              paddingBottom: 15,
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10 }}
+            >
+              Account
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xl={6} md={6} xs={12}>
+                <TextField
+                  label="Master Account"
+                  variant="outlined"
+                  fullWidth
+                  className={classes.root}
+                  select
+                />
+              </Grid>
+
+              <Grid item xl={6} md={6} xs={12}>
+                <TextField
+                  label="Parent Account "
+                  variant="outlined"
+                  fullWidth
+                  className={classes.root}
+                  select
+                />
+              </Grid>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField
+                  label="Name 1"
+                  variant="outlined"
+                  fullWidth
+                  className={classes.root}
+                  select
+                />
+              </Grid>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Name 2"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Name 3"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+            <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              Address
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Address 1"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Address 2"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Address 3"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Address 4"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Choose a country"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="City"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="State"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Postal"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+            <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              Communication
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Commu1_type"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Commu2_type"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={4} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Commu3_type"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
             </Grid>
 
-            <Grid item xl={6} md={6} xs={12}>
-              <TextField
-                label="Parent Account "
-                variant="outlined"
-                fullWidth
-                className={classes.root}
-                select
-              />
+            <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              Rerationship (Internal)
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xl={2} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Owner"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={2} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Temitory"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={2} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Trace Code"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Keyword"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Type"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
             </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField
-                label="Name 1"
-                variant="outlined"
-                fullWidth
-                className={classes.root}
-                select
-              />
-            </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Name 2"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Name 3"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-          <Typography
-            variant="subtitle1"
-            color="initial"
-            style={{ paddingBottom: 10, paddingTop: 10 }}
-          >
-            Address
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Address 1"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Address 2"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Address 3"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Address 4"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Choose a country"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="City"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="State"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Postal"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-          <Typography
-            variant="subtitle1"
-            color="initial"
-            style={{ paddingBottom: 10, paddingTop: 10 }}
-          >
-            Communication
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Commu1_type"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Commu2_type"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={4} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Commu3_type"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-          </Grid>
 
-          <Typography
-            variant="subtitle1"
-            color="initial"
-            style={{ paddingBottom: 10, paddingTop: 10 }}
-          >
-            Rerationship (Internal)
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xl={2} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Owner"
-                variant="outlined"
-                fullWidth
-                select
-              />
+            <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              A/R Number
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="IATA"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Ref. Currency"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Credit Rating"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Active Reason"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
             </Grid>
-            <Grid item xl={2} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Temitory"
-                variant="outlined"
-                fullWidth
-                select
-              />
+            <Typography
+              variant="subtitle1"
+              color="initial"
+              style={{ paddingBottom: 10, paddingTop: 10 }}
+            >
+              More Information
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Tax ID"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Routing Instruction"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
             </Grid>
-            <Grid item xl={2} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Trace Code"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Keyword"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Type"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-          </Grid>
 
-          <Typography
-            variant="subtitle1"
-            color="initial"
-            style={{ paddingBottom: 10, paddingTop: 10 }}
-          >
-            A/R Number
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="IATA"
-                variant="outlined"
-                fullWidth
-              />
+            <Typography variant="h6" style={{ paddingTop: 20, color: mainColor }}>
+              Sales Information
+            </Typography>
+            <Divider
+              style={{ marginTop: 10, backgroundColor: themeState.color }}
+            />
+            <Grid container spacing={2} style={{ marginTop: 15 }}>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Priority"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Room Potential"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Scope"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Scope City"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Action Code"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Business Segment"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Account Type"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Source"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Industry Code"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
+              <Grid item xl={3} md={6} xs={12}>
+                <TextField
+                  className={classes.root}
+                  label="Compentition Code"
+                  variant="outlined"
+                  fullWidth
+                  select
+                />
+              </Grid>
             </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Ref. Currency"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Credit Rating"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Active Reason"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-          <Typography
-            variant="subtitle1"
-            color="initial"
-            style={{ paddingBottom: 10, paddingTop: 10 }}
-          >
-            More Information
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Tax ID"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Routing Instruction"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-          </Grid>
-
-          <Typography variant="h6" style={{ paddingTop: 20, color: mainColor }}>
-            Sales Information
-          </Typography>
-          <Divider
-            style={{ marginTop: 10, backgroundColor: themeState.color }}
-          />
-          <Grid container spacing={2} style={{ marginTop: 15 }}>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Priority"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Room Potential"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Scope"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Scope City"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Action Code"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Business Segment"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Account Type"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Source"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Industry Code"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-            <Grid item xl={3} md={6} xs={12}>
-              <TextField
-                className={classes.root}
-                label="Compentition Code"
-                variant="outlined"
-                fullWidth
-                select
-              />
-            </Grid>
-          </Grid>
-        </Container>
-      </Paper>
+          </Container>
+        </Paper>
+      }
     </Container>
   );
 };

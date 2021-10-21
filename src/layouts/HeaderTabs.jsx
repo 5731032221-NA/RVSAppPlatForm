@@ -94,9 +94,9 @@ export default function HeaderTabs() {
     setValue(indextTab)
   },[indextTab])
 
-  React.useEffect(() => {
-    handleChange(0,0)
-  },[])
+  // React.useEffect(() => {
+  //   handleChange(0,0)
+  // },[])
  
 
 

@@ -36,7 +36,7 @@ const initialState = {
   role: "Admin",
   configState: "Configuration",
   permission: [],
-  indextTab: 0,
+  indextTab: "",
 };
 
 const reducer = (state = initialState, action) => {
