@@ -78,13 +78,13 @@ export default function Property({ setToken, setProperty }) {
 
     const handleChange = event => {
         setSelectedProperty(event.target.value);
-     
   
         var d1 = new Date (),
         d2 = new Date ( d1 );
-        d2.setDate(d2.getDate() + 100);
-        d2.setMinutes ( d1.getMinutes() + 5 );
-        setCookie('name', event.target.value, { path: '/', expires: d2 });
+        d2.setFullYear(d2.getFullYear() + 100)
+        // d2.setDate(d2.getDate() + 100);
+        // d2.setMinutes ( d1.getMinutes() + 5 );
+        setCookie(sessionStorage.getItem("username"), event.target.value, { path: '/', expires: d2 });
     };
     // const handleCancle = () => {
     //     console.log("cancle")

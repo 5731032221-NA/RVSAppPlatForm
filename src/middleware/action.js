@@ -34,7 +34,7 @@ export const editLang = (lang) => {
 
 export const delUser = (id) => {
   return (dispatch) => {
-    axios.delete(`http://localhost:80/users/${id}`).then((res) => {
+    axios.delete(`http://${(process.env.host || "localhost")}:80/users/${id}`).then((res) => {
       console.log(res);
       dispatch({
         type: "DEL_USER",
@@ -46,7 +46,7 @@ export const delUser = (id) => {
 
 export const addUser = (data) => {
   return (dispatch) => {
-    axios.post("http://localhost:80/users", data).then((res) => {
+    axios.post("http://"+(process.env.host || "localhost")+":80/users", data).then((res) => {
       console.log(res);
       dispatch({
         type: "ADD_USER",
@@ -58,7 +58,7 @@ export const addUser = (data) => {
 
 export const editUser = (data) => {
   return (dispatch) => {
-    axios.put(`http://localhost:80/users/${data.id}`, data).then((res) => {
+    axios.put(`http://${(process.env.host || "localhost")}:80/users/${data.id}`, data).then((res) => {
       console.log(res);
       dispatch({
         type: "EDIT_USER",
@@ -70,7 +70,7 @@ export const editUser = (data) => {
 
 export const getUser = (id) => {
   return (dispatch) => {
-    axios.get(`http://localhost:80/users/${id}`).then(() => {
+    axios.get(`http://${(process.env.host || "localhost")}:80/users/${id}`).then(() => {
       dispatch({
         type: "GET_USER",
         payload: id,
@@ -117,7 +117,7 @@ export const editproperty = (property) => {
 export const getUserList = () => {
   // return (dispatch) => {
   //   console.log("getUserList");
-  // axios.get("http://localhost:80/users").then((res) => {
+  // axios.get("http://"+(process.env.host || "localhost")+":80/users").then((res) => {
   //   console.log("getUserList",res.data);
   //   dispatch({
   //     type: "GET_USER_LIST",
