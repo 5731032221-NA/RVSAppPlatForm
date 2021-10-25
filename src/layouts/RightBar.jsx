@@ -240,13 +240,15 @@ export default function RighBar() {
   }
 
   function handleLogOut() {
-    console.log("log out");
+
+    sessionStorage.removeItem("curent_component")
+    sessionStorage.removeItem("property")
     sessionStorage.setItem("token", false);
     window.location.reload(false);
   }
 
   function handleProfilePage() {
-    console.log("profilepage click");
+    // console.log("profilepage click");
     store.dispatch({
       type: EDIT_COMPONENT,
       payload: "ProfilePage",
@@ -256,8 +258,8 @@ export default function RighBar() {
   function handleDarkMode(e) {
     let _darkmode = !darkMode;
     setDarkmode(_darkmode);
-    console.log("_darkmode", _darkmode);
-    console.log("darkmode", darkMode);
+    // console.log("_darkmode", _darkmode);
+    // console.log("darkmode", darkMode);
     if (_darkmode) {
       store.dispatch({
         type: EDIT_COLOR,

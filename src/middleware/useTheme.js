@@ -3,7 +3,7 @@ import { useState } from 'react';
 export default function useTheme() {
     const getTheme = () => {
         const Theme = localStorage.getItem('theme');
-        console.log("getlang", Theme)
+        // console.log("getlang", Theme)
         if (Theme != null) {
             return Theme;
         } else {
@@ -18,7 +18,7 @@ export default function useTheme() {
 
     const saveTheme = ThemeString => {
         localStorage.setItem('theme', ThemeString);
-        console.log("setTheme", ThemeString)
+        // console.log("setTheme", ThemeString)
         setTheme(ThemeString);
 
 

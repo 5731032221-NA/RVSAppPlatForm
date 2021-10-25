@@ -56,7 +56,7 @@ export default function useToken() {
 
   const saveToken = (tokenString) => {
     const userToken = tokenString;
-    console.log("userToken===", userToken);
+    // console.log("userToken===", userToken);
     if (userToken != null) {
       if (userToken.msg === "Success!") {
         sessionStorage.setItem(
@@ -75,7 +75,7 @@ export default function useToken() {
           .split(",")
           .forEach((element) => grantproperty.push({ propertycode: element }));
         sessionStorage.setItem("grantproperty", JSON.stringify(grantproperty));
-        console.log(sessionStorage.getItem("grantproperty"));
+        // console.log(sessionStorage.getItem("grantproperty"));
         sessionStorage.setItem("token", JSON.stringify(userToken));
         sessionStorage.setItem(
           "auth",

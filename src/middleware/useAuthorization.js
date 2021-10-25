@@ -14,7 +14,7 @@ export default function useAuthorization() {
     const saveAuthorization = tokenString => {
 
         const userToken = tokenString;
-        console.log("userToken", userToken)
+        // console.log("userToken", userToken)
         if (userToken != null) {
                 setAuthorization(userToken);
             

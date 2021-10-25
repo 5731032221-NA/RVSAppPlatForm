@@ -65,9 +65,10 @@ export default function MainListItems() {
             setSelectedIndex(3)
         } else if (indextTab === 3) {
             // setOpenNA(!openNA)
+            handleComponentState("Night Auditor")
             setSelectedIndex(5)
         } else {
-            handleComponentState("Dashboard")
+            // handleComponentState("Dashboard")
             setSelectedIndex("")
         }
 
@@ -75,11 +76,11 @@ export default function MainListItems() {
 
 
     const comps = useSelector((state) => state.reducer.permission);
-    console.log("comps", comps);
+    // console.log("comps", comps);
 
 
     const handleListItemClick = (event, index) => {
-        console.log("in", index);
+        // console.log("in", index);
         setSelectedIndex(index);
     };
     const setFontSize = {

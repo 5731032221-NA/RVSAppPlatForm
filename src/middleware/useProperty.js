@@ -15,7 +15,7 @@ export default function useProperty() {
 
     const saveProperty = propertyString => {
 
-        console.log("propertyString", propertyString)
+        // console.log("propertyString", propertyString)
         setProperty(propertyString);
 
     };

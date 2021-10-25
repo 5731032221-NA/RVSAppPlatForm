@@ -363,13 +363,13 @@ export default function Main() {
       event.target.value,
       sessionStorage.getItem("username")
     );
-    console.log("permission", permission);
+    // console.log("permission", permission);
     const role = await propertyrole(
       sessionStorage.getItem("auth"),
       event.target.value,
       sessionStorage.getItem("username")
     );
-    console.log("role", role.content[role.content.length - 1]);
+    // console.log("role", role.content[role.content.length - 1]);
     sessionStorage.setItem("role", role.content[role.content.length - 1]);
     store.dispatch({
       type: EDIT_PERMISSION,
@@ -419,7 +419,7 @@ export default function Main() {
   };
 
   const handleLanguage = (lang) => {
-    console.log("handle lang", lang);
+    // console.log("handle lang", lang);
     // setAnchorEl(null);
     // handleMobileMenuClose();
     if (lang == "th") {
@@ -437,14 +437,14 @@ export default function Main() {
         payload: green[600],
       });
     }
-    console.log("store", store);
-    console.log("store", store.store);
+    // console.log("store", store);
+    // console.log("store", store.store);
     store.dispatch({
       type: EDIT_LANG,
       payload: lang,
     });
 
-    console.log("store", store.getState().reducer.lang);
+    // console.log("store", store.getState().reducer.lang);
     setAnchorEl(null);
     handleMobileMenuClose();
   };
@@ -641,8 +641,8 @@ export default function Main() {
             >
               <AccountCircle style={{ fontSize: 36 }} />
             </IconButton>
-            <Grid item spacing={1} style={{ paddingLeft: 20 }}>
-              <Grid item spacing={0}>
+            <Grid item container spacing={1} style={{ paddingLeft: 20 }}>
+              <Grid item container spacing={0}>
                 <Typography
                   variant="subtitle1"
                   style={{ fontSize: 15, paddingTop: 10 }}
@@ -650,13 +650,13 @@ export default function Main() {
                   {sessionStorage.getItem("name")}
                 </Typography>
               </Grid>
-              <Grid item spacing={1}>
+              <Grid item container spacing={1}>
                 <Typography variant="body2" style={{ fontSize: 10 }}>
                   {sessionStorage.getItem("role")}
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item spacing={1} style={{ paddingLeft: 20, paddingTop: 5 }}>
+            <Grid item container spacing={1} style={{ paddingLeft: 20, paddingTop: 5 }}>
               <Grid item>
                 <IconButton
                   onClick={toggleRightBar(true)}
@@ -697,8 +697,8 @@ export default function Main() {
             >
               <AccountCircle style={{ fontSize: 30 }} />
             </IconButton>
-            <Grid item spacing={1} style={{ paddingLeft: 10 }}>
-              <Grid item spacing={0}>
+            <Grid item container spacing={1} style={{ paddingLeft: 10 }}>
+              <Grid item container spacing={0}>
                 <Typography
                   variant="subtitle1"
                   style={{ fontSize: 11, paddingTop: 10, width: 48 }}
@@ -706,7 +706,7 @@ export default function Main() {
                   {sessionStorage.getItem("name")}
                 </Typography>
               </Grid>
-              <Grid item spacing={1}>
+              <Grid item container spacing={1}>
                 <Typography
                   variant="body2"
                   style={{ fontSize: 10, fontWeight: "bold" }}
@@ -715,7 +715,7 @@ export default function Main() {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item spacing={1} style={{ paddingLeft: 20 }}>
+            <Grid item container spacing={1} style={{ paddingLeft: 20 }}>
               <Grid item>
                 <IconButton
                   onClick={toggleRightBar(true)}
@@ -799,12 +799,13 @@ export default function Main() {
             <AccountCircle style={{ fontSize: 28 }} />
           </IconButton> */}
             {open ? (
-              <Grid
+              <Grid 
                 item
+                container
                 spacing={1}
                 style={{ paddingLeft: 15, marginTop: 5, paddingBottom: 10 }}
               >
-                <Grid item spacing={1}>
+                <Grid  item container spacing={1}>
                   <Typography
                     variant="subtitle1"
                     style={{ fontSize: 12, paddingLeft: 50, marginTop: -10 }}
@@ -934,10 +935,11 @@ export default function Main() {
             {open ? (
               <Grid
                 item
+                container
                 spacing={1}
                 style={{ paddingLeft: 15, marginTop: 5, paddingBottom: 10 }}
               >
-                <Grid item spacing={1}>
+                <Grid item container spacing={1}>
                   <Typography
                     variant="subtitle1"
                     style={{ fontSize: 12, paddingLeft: 50, marginTop: -10 }}
@@ -1014,7 +1016,8 @@ export default function Main() {
 
       <main id="compwidth" className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="100" className={classes.container}>
+        {/* <Container maxWidth="100" className={classes.container}> */}
+        <Container  className={classes.container}>
           <HeaderTabs />
           {store.getState().reducer.componentState == "Dashboard" ? (
             <div

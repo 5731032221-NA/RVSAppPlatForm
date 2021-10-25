@@ -185,13 +185,13 @@ export default function Login({ setToken }) {
                 </Button>
 
                 <Grid container  style={{ paddingTop: 25, paddingBottom: 10 }}>
-                  <Grid  xs={5} >
+                  <Grid item xs={5} >
                    <hr />
                   </Grid>
-                  <Grid  xs={2}>
+                  <Grid item xs={2}>
                     <span>or</span>
                   </Grid>
-                  <Grid   xs={5} >
+                  <Grid item  xs={5} >
                   <hr />
                   </Grid>
                 </Grid>

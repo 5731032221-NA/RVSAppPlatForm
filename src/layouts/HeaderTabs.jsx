@@ -122,13 +122,14 @@ export default function HeaderTabs() {
   }, 1000);
 
   const handleChange = (event, newValue) => {
-    console.log("newValue", newValue);
+    // console.log("newValue", newValue);
   
     setValue(newValue)
     dispatch(indexTab(newValue))
     if (newValue === 0) handleComponentState("FrontDesk");
     else if(newValue === 1) handleComponentState("Reservation");
-    console.log("st", store.getState().reducer.componentState);
+    else if(newValue === 3) handleComponentState("Night Auditor");
+    // console.log("st", store.getState().reducer.componentState);
   };
 
   return (

@@ -69,10 +69,10 @@ export class DashboardPage extends Component {
         });
       }
     }
-    console.log("this.props.themeBackground", this.props.themeBackground);
+    // console.log("this.props.themeBackground", this.props.themeBackground);
 
     if (this.state.themeBackground != this.props.themeBackground) {
-      console.log(this.state.themeBackground, this.props.themeBackground);
+      // console.log(this.state.themeBackground, this.props.themeBackground);
       if (this.props.themeBackground === "#FFFFFF") {
         this.setState({
           themeState: {
@@ -97,7 +97,7 @@ export class DashboardPage extends Component {
         this.setState({ color: "#2D62ED" });
       }
       this.setState({ themeBackground: this.props.themeBackground });
-      console.log(this.props.themeBackground);
+      // console.log(this.props.themeBackground);
     }
 
     if (this.state.color != this.props.color) {
@@ -160,7 +160,7 @@ export class DashboardPage extends Component {
 
     if (this.state.color != this.props.color) {
       if (this.props.themeBackground === "#FFFFFF") {
-        console.log("data color", this.props.color);
+        // console.log("data color", this.props.color);
         this.setState({ color: this.props.color });
       } else {
         // this.setState({ color: this.props.defaultColor });
@@ -178,7 +178,7 @@ export class DashboardPage extends Component {
               color: this.state.themeState.color,
               backgroundColor: this.state.themeState.background,
               marginBottom: 20,
-              marginTop: -20,
+              marginTop: 20,
             }}
           >
             <Typography

@@ -21,7 +21,7 @@ import { useCookies } from 'react-cookie';
 //     EDIT_AUTHORIZATION
 // } from "../middleware/action";
 import {
-    EDIT_PROPERTY
+    EDIT_PROPERTY,EDIT_COMPONENT
 } from "../middleware/action";
 
 import {
@@ -114,6 +114,11 @@ export default function Property({ setToken, setProperty }) {
             payload: selectedProperty,
         });
         sessionStorage.setItem('property', selectedProperty);
+        console.log("Dashboard::::::")
+        store.dispatch({
+            type: EDIT_COMPONENT,
+            payload: "Dashboard"
+        })
         setProperty(selectedProperty);
 
 

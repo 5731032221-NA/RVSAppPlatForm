@@ -14,7 +14,7 @@ export const EDIT_INDEXTAB = "EDIT_INDEXTAB";
 
 export const editAuth = (auth) => {
   return (dispatch) => {
-    console.log("edit auth", auth);
+    // console.log("edit auth", auth);
     dispatch({
       type: EDIT_AUTHORIZATION,
       payload: auth,
@@ -24,7 +24,7 @@ export const editAuth = (auth) => {
 
 export const editLang = (lang) => {
   return (dispatch) => {
-    console.log("edit lang", lang);
+    // console.log("edit lang", lang);
     dispatch({
       type: EDIT_LANG,
       payload: lang,
@@ -35,7 +35,7 @@ export const editLang = (lang) => {
 export const delUser = (id) => {
   return (dispatch) => {
     axios.delete(`http://${(process.env.REACT_APP_host || "localhost")}:80/users/${id}`).then((res) => {
-      console.log(res);
+      // console.log(res);
       dispatch({
         type: "DEL_USER",
         payload: res.data.id,
@@ -47,7 +47,7 @@ export const delUser = (id) => {
 export const addUser = (data) => {
   return (dispatch) => {
     axios.post("http://"+(process.env.REACT_APP_host || "localhost")+":80/users", data).then((res) => {
-      console.log(res);
+      // console.log(res);
       dispatch({
         type: "ADD_USER",
         payload: res.data,
@@ -59,7 +59,7 @@ export const addUser = (data) => {
 export const editUser = (data) => {
   return (dispatch) => {
     axios.put(`http://${(process.env.REACT_APP_host || "localhost")}:80/users/${data.id}`, data).then((res) => {
-      console.log(res);
+      // console.log(res);
       dispatch({
         type: "EDIT_USER",
         payload: res.data,

@@ -28,7 +28,7 @@ const initialState = {
   defaultColor: "#2D62ED",
   username: "",
   compwidth: 0,
-  componentState: "Dashboard",
+  componentState: "",
   themeBackground: "#FFFFFF",
   fontColor: "black",
   //   darkbackgroundColor: "#212121",
@@ -43,7 +43,7 @@ const reducer = (state = initialState, action) => {
   //   console.log("themeBackground", state.themeBackground);
   //   console.log("color", state.color);
   if (action.type != EDIT_COMPWIDTH) {
-    console.log("action,payload", action.type, action.payload);
+    // console.log("action,payload", action.type, action.payload);
   }
   const allUsers = [...state.users];
   switch (action.type) {
@@ -68,6 +68,7 @@ const reducer = (state = initialState, action) => {
         themeBackground: action.payload,
       };
     case EDIT_COMPONENT:
+      sessionStorage.setItem("curent_component", action.payload);
       return {
         ...state,
         componentState: action.payload,
@@ -118,7 +119,7 @@ const reducer = (state = initialState, action) => {
       const indexForEdit = allUsers.findIndex((item) => {
         return item.id === action.payload.id;
       });
-      console.log("index for editing", indexForEdit);
+      // console.log("index for editing", indexForEdit);
       allUsers[indexForEdit] = {
         id: action.id,
         name: action.name,
@@ -130,6 +131,7 @@ const reducer = (state = initialState, action) => {
       };
       return editedState;
       case EDIT_INDEXTAB:
+        // console.log(" action.payload:", action.payload);
         return {
           ...state,
           indextTab: action.payload,

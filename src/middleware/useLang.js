@@ -3,7 +3,7 @@ import { useState } from 'react';
 export default function useLang() {
     const getLang = () => {
         const Lang = localStorage.getItem('lang');
-        console.log("getlang", Lang)
+        // console.log("getlang", Lang)
         if (Lang != null) {
             return Lang;
         } else {
@@ -17,7 +17,7 @@ export default function useLang() {
 
     const saveLang = LangString => {
         localStorage.setItem('lang', LangString);
-        console.log("setlang", LangString)
+        // console.log("setlang", LangString)
         setLang(LangString);
 
 

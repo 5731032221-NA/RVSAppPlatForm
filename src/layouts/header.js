@@ -306,6 +306,7 @@ export default function Navbar(store) {
               </Grid>
             </Grid>
           </div>
+          
 
           <div className={classes.sectionMobile}>
             <IconButton
