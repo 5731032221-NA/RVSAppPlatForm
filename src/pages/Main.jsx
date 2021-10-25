@@ -47,6 +47,7 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import BusinessIcon from "@material-ui/icons/Business";
 import SettingsIcon from "@material-ui/icons/PlayForWork";
 
+import Dashboard from "../components/Dashboard/Dashboard";
 import FrontDesk from "../components/Dashboard/FrontDesk";
 import Configuration from "../components/Dashboard/Configuration";
 import ReservationPage from "./ReservationPage";
@@ -55,7 +56,9 @@ import RoleManagement from "../components/RoleManagement";
 import UserManagement from "../components/UserManagement";
 import DashboardDetail from "../components/Dashboard/DashboardDetail";
 import ProfilePage from "./ProfilePage";
-
+import ProfilePageIndividual from "../components/ProfileIndividual";
+import ProfilePageTravelAgent from "../components/ProfileTravelAgent";
+import ProfilePageCompany from "../components/ProfileCompany";
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
 import RightBar from "../layouts/RightBar";
@@ -271,7 +274,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
+export default function Main() {
   const classes = useStyles();
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -1013,7 +1016,16 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="100" className={classes.container}>
           <HeaderTabs />
-          {store.getState().reducer.componentState == "FrontDesk" ? (
+          {store.getState().reducer.componentState == "Dashboard" ? (
+            <div
+              style={{
+                backgroundColor: themeStatedata.background,
+                color: themeStatedata.color,
+              }}
+            >
+              <Dashboard />
+            </div>
+          ) : store.getState().reducer.componentState == "FrontDesk" ? (
             <div
               style={{
                 backgroundColor: themeStatedata.background,
@@ -1043,6 +1055,34 @@ export default function Dashboard() {
               }}
             >
               <ProfilePage />
+            </div>
+          ) : store.getState().reducer.componentState == "ProfileIndivisual" ? (
+            <div
+              style={{
+                backgroundColor: themeStatedata.background,
+                color: themeStatedata.color,
+              }}
+            >
+              <ProfilePageIndividual />
+            </div>
+          ) : store.getState().reducer.componentState ==
+            "ProfileTravelAgent" ? (
+            <div
+              style={{
+                backgroundColor: themeStatedata.background,
+                color: themeStatedata.color,
+              }}
+            >
+              <ProfilePageTravelAgent />
+            </div>
+          ) : store.getState().reducer.componentState == "ProfileCompany" ? (
+            <div
+              style={{
+                backgroundColor: themeStatedata.background,
+                color: themeStatedata.color,
+              }}
+            >
+              <ProfilePageCompany />
             </div>
           ) : null}
           <div style={{ paddingTop: 50 }}>

@@ -7,7 +7,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => res.json());
+    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
   },
   postrole: async function (accessToken, req) {
     return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/listrole", {
@@ -17,7 +17,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => res.json());
+    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
   },
   getrolebyid: async function (accessToken, id) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/listrole/${id}`, {
@@ -26,7 +26,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => res.json());
+    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
   },
   updaterole: async function (accessToken, req, id) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/listrole/${id}`, {
@@ -36,7 +36,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => res.json());
+    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
   },
   deleterolebyid: async function (accessToken, id) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/listrole/${id}`, {
@@ -45,6 +45,6 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => res.json());
+    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
   },
 };

@@ -5,7 +5,7 @@ module.exports = {
       {
         method: "GET",
       }
-    ).then(async (res) => res.json());
+    ).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
   },
   forecastweather: async function () {
     return fetch(
@@ -13,6 +13,6 @@ module.exports = {
       {
         method: "GET",
       }
-    ).then(async (res) => res.json());
+    ).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
   },
 };

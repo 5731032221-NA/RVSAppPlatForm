@@ -28,7 +28,7 @@ const initialState = {
   defaultColor: "#2D62ED",
   username: "",
   compwidth: 0,
-  componentState: "FrontDesk",
+  componentState: "Dashboard",
   themeBackground: "#FFFFFF",
   fontColor: "black",
   //   darkbackgroundColor: "#212121",
@@ -36,7 +36,7 @@ const initialState = {
   role: "Admin",
   configState: "Configuration",
   permission: [],
-  indextTab: 0,
+  indextTab: "",
 };
 
 const reducer = (state = initialState, action) => {

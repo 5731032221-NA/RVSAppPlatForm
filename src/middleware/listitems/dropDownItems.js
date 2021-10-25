@@ -1,91 +1,85 @@
-import React, { useState, useContext } from 'react';
-import List from '@material-ui/core/List';
+import React, { useState, useContext } from "react";
+import List from "@material-ui/core/List";
 
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import LayersIcon from '@material-ui/icons/Layers';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import IconExpandLess from '@material-ui/icons/ExpandLess';
-import IconExpandMore from '@material-ui/icons/ExpandMore';
-import KingBedIcon from '@material-ui/icons/KingBed';
-import ImageAspectRatioIcon from '@material-ui/icons/ImageAspectRatio';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import NightsStayIcon from '@material-ui/icons/NightsStay';
-import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
-import BuildIcon from '@material-ui/icons/Build';
-import SettingsIcon from '@material-ui/icons/Settings';
-import Divider from '@material-ui/core/Divider';
-import Collapse from '@material-ui/core/Collapse';
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import PeopleIcon from "@material-ui/icons/People";
+import BarChartIcon from "@material-ui/icons/BarChart";
+import LayersIcon from "@material-ui/icons/Layers";
+import AssignmentIcon from "@material-ui/icons/Assignment";
+import IconExpandLess from "@material-ui/icons/ExpandLess";
+import IconExpandMore from "@material-ui/icons/ExpandMore";
+import KingBedIcon from "@material-ui/icons/KingBed";
+import ImageAspectRatioIcon from "@material-ui/icons/ImageAspectRatio";
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import NightsStayIcon from "@material-ui/icons/NightsStay";
+import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
+import BuildIcon from "@material-ui/icons/Build";
+import SettingsIcon from "@material-ui/icons/Settings";
+import Divider from "@material-ui/core/Divider";
+import Collapse from "@material-ui/core/Collapse";
 
 import { EDIT_COMPONENT, EDIT_CONFIGSTATE } from "../action";
 
+import translate_th from "../../static/lang/th.json";
+import translate_en from "../../static/lang/en.json";
 
-import translate_th from '../../static/lang/th.json'
-import translate_en from '../../static/lang/en.json'
-
-import { ReactReduxContext, useSelector,useDispatch } from 'react-redux'
+import { ReactReduxContext, useSelector, useDispatch } from "react-redux";
 import { indexTab } from "../action";
 export default function MainListItems() {
-
     const { store } = useContext(ReactReduxContext);
-    const [openFrontDesk, setOpenFrontDesk] = useState(false)
-    const [openCashier, setOpenCashier] = useState(false)
-    const [openProfile, setOpenProfile] = useState(false)
-    const [openNA, setOpenNA] = useState(false)
-    const [openHK, setOpenHK] = useState(false)
-    const [openEngineer, setOpenEngineer] = useState(false)
-    const [openRS, setOpenRS] = useState(false)
-    const [openConfig, setOpenConfig] = useState(false)
-    const [openSystemTools, setOpenSystemsTools] = useState(false)
-    const [lang, setLang] = useState('en')
-    const [translate, setTranslate] = useState(translate_en)
+    const [openFrontDesk, setOpenFrontDesk] = useState(false);
+    const [openCashier, setOpenCashier] = useState(false);
+    const [openProfile, setOpenProfile] = useState(false);
+    const [openNA, setOpenNA] = useState(false);
+    const [openHK, setOpenHK] = useState(false);
+    const [openEngineer, setOpenEngineer] = useState(false);
+    const [openRS, setOpenRS] = useState(false);
+    const [openConfig, setOpenConfig] = useState(false);
+    const [openSystemTools, setOpenSystemsTools] = useState(false);
+    const [lang, setLang] = useState("en");
+    const [translate, setTranslate] = useState(translate_en);
 
     //indextab
-    const [selectedIndex, setSelectedIndex] = React.useState(1)
-    const indextTab = useSelector((state) => state.reducer.indextTab.indextTab)
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
+    const indextTab = useSelector((state) => state.reducer.indextTab.indextTab);
     const dispatch = useDispatch();
 
-  
-
-    
     React.useEffect(() => {
-    
-        if(indextTab === 0){
-        // setOpenFrontDesk(!openFrontDesk)
-        handleComponentState("FrontDesk")
-        setSelectedIndex(2)
-        }else if(indextTab === 1){
-          setSelectedIndex(1)
-        }else if(indextTab === 2){
+        if (indextTab === 0) {
+            handleComponentState("FrontDesk")
+            setSelectedIndex(2)
+        } else if (indextTab === 1) {
+            setSelectedIndex(1)
+        } else if (indextTab === 2) {
             store.dispatch({
                 type: EDIT_CONFIGSTATE,
                 payload: "Cashier"
             })
             handleComponentState("Cashier")
             setSelectedIndex(3)
-        }else if(indextTab === 3){
+        } else if (indextTab === 3) {
             // setOpenNA(!openNA)
             setSelectedIndex(5)
-        }else{
-            
+        } else {
+            handleComponentState("Dashboard")
+            setSelectedIndex("")
         }
-      
-       },[indextTab])
-   
 
-    const comps = useSelector(state => state.reducer.permission);
+    }, [indextTab])
+
+
+    const comps = useSelector((state) => state.reducer.permission);
     console.log("comps", comps);
 
 
     const handleListItemClick = (event, index) => {
-        console.log("in");
+        console.log("in", index);
         setSelectedIndex(index);
     };
     const setFontSize = {
@@ -95,19 +89,23 @@ export default function MainListItems() {
     setInterval(() => {
         let settinglang = store.getState().reducer.lang;
         if (lang != settinglang && lang != null) {
-            setLang(settinglang)
-            if (settinglang == 'th') setTranslate(translate_th)
-            else if (settinglang == 'en') setTranslate(translate_en)
-            else setTranslate(translate_en)
+            setLang(settinglang);
+            if (settinglang == 'th') setTranslate(translate_th);
+            else if (settinglang == 'en') setTranslate(translate_en);
+            else setTranslate(translate_en);
         }
     }, 1000);
 
     function handleOpenReservation() {
         const ind = 1;
         dispatch(indexTab(ind))
-        // setOpenFrontDesk(!openFrontDesk)
-        // handleComponentState("FrontDesk")
+        handleComponentState("Reservation")
         setSelectedIndex(1)
+    }
+    function handleOpenDashboard() {
+        dispatch(indexTab(''))
+        handleComponentState("Dashboard")
+        setSelectedIndex(0)
     }
 
     function handleOpenFrontDesk() {
@@ -121,7 +119,7 @@ export default function MainListItems() {
         // setOpenCashier(!openCashier)
         const ind = 2;
         dispatch(indexTab(ind))
-      
+
         store.dispatch({
             type: EDIT_CONFIGSTATE,
             payload: "Cashier"
@@ -154,7 +152,7 @@ export default function MainListItems() {
         setSelectedIndex(8)
     }
     function handleOpenConfig() {
-      
+
         const ind = 9;
         dispatch(indexTab(ind))
         // setOpenConfig(!openConfig)
@@ -166,10 +164,61 @@ export default function MainListItems() {
         handleComponentState("Configuration")
         setSelectedIndex(9)
     }
+    function handleOpenProfileIndivisual() {
+        store.dispatch({
+            type: EDIT_CONFIGSTATE,
+            payload: "ProfileIndivisual",
+        });
+        handleComponentState("ProfileIndivisual");
+        setSelectedIndex(4);
+    }
+    function handleOpenProfileTravelAgent() {
+        store.dispatch({
+            type: EDIT_CONFIGSTATE,
+            payload: "ProfileTravelAgent",
+        });
+        handleComponentState("ProfileTravelAgent");
+        setSelectedIndex(4);
+    }
+
+    function handleOpenProfileCompany() {
+        store.dispatch({
+            type: EDIT_CONFIGSTATE,
+            payload: "ProfileCompany",
+        });
+        handleComponentState("ProfileCompany");
+        setSelectedIndex(4);
+    }
+    function handleOpenNA() {
+        const ind = 3;
+        dispatch(indexTab(ind));
+        setOpenNA(!openNA);
+        setSelectedIndex(5);
+    }
+    function handleOpenHK() {
+        setOpenHK(!openHK);
+        setSelectedIndex(6);
+    }
+    function handleOpenRS() {
+        setOpenRS(!openRS);
+        setSelectedIndex(8);
+    }
+    function handleOpenConfig() {
+        const ind = 9;
+        dispatch(indexTab(ind));
+        // setOpenConfig(!openConfig)
+
+        store.dispatch({
+            type: EDIT_CONFIGSTATE,
+            payload: "Configuration",
+        });
+        handleComponentState("Configuration");
+        setSelectedIndex(9);
+    }
 
     function handleOpenSystemsTools() {
-        setOpenSystemsTools(!openSystemTools)
-        setSelectedIndex(10)
+        setOpenSystemsTools(!openSystemTools);
+        setSelectedIndex(10);
     }
 
     function handleComponentState(comp) {
@@ -181,10 +230,10 @@ export default function MainListItems() {
 
 
     return (
-        <List >
+        <List>
             {/* disablePadding dense */}
             {comps.includes("DB") || comps.includes("*ALL") ?
-                <ListItem button selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)} >
+                <ListItem button selected={selectedIndex === 0} onClick={handleOpenDashboard} >
                     <ListItemIcon style={{ color: "white" }} >
                         <DashboardIcon />
                     </ListItemIcon>
@@ -194,7 +243,7 @@ export default function MainListItems() {
             {comps.includes("RV") || comps.includes("*ALL") ?
                 // <ListItem button selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)} >
                 <ListItem button selected={selectedIndex === 1} onClick={handleOpenReservation} >
-                    
+
                     <ListItemIcon style={{ color: "white" }} >
                         <KingBedIcon />
                     </ListItemIcon>
@@ -276,17 +325,17 @@ export default function MainListItems() {
                         <Divider />
                         <List component="div" disablePadding>
                             {comps.includes("PF-ID") || comps.includes("*ALL") ?
-                                <ListItem button selected={selectedIndex === 41} onClick={(event) => {handleListItemClick(event, 41); handleOpenProfileIndividual();}} >
+                                <ListItem button selected={selectedIndex === 41} onClick={(event) => handleOpenProfileIndivisual(event, 41)} >
                                     <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Individual" />
                                 </ListItem>
                                 : null}
                             {comps.includes("PF-TA") || comps.includes("*ALL") ?
-                                <ListItem button selected={selectedIndex === 42} onClick={(event) => handleListItemClick(event, 42)} >
+                                <ListItem button selected={selectedIndex === 42} onClick={(event) => handleOpenProfileTravelAgent(event, 42)} >
                                     <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Travel Agent" />
                                 </ListItem>
                                 : null}
                             {comps.includes("PF-CP") || comps.includes("*ALL") ?
-                                <ListItem button selected={selectedIndex === 43} onClick={(event) => handleListItemClick(event, 43)} >
+                                <ListItem button selected={selectedIndex === 43} onClick={(event) => handleOpenProfileCompany(event, 43)} >
                                     <ListItemText primaryTypographyProps={{ style: setFontSize }} inset primary="Company" />
                                 </ListItem>
                                 : null}
@@ -391,7 +440,7 @@ export default function MainListItems() {
             {comps.includes("CF") || comps.includes("*ALL") ?
                 <ListItem button selected={selectedIndex === 9} onClick={handleOpenConfig}>
                     <ListItemIcon style={{ color: "white" }} >
-                        <SettingsIcon /> 
+                        <SettingsIcon />
                     </ListItemIcon>
                     <ListItemText primaryTypographyProps={{ style: setFontSize }} primary={translate.Configuration} />
                     {/* {openConfig ? <IconExpandLess /> : <IconExpandMore />} */}

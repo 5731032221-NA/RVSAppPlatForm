@@ -1,7 +1,7 @@
 import "./assets/App.css"
 import SignIn from "./pages/SignIn"
 import Property from "./pages/Property"
-import Dashboard from "./pages/DashboardPage"
+import Main from "./pages/Main"
 import UserList from "./pages/TestUserListPage"
 import ForgotPass from "./components/Forgotpass"
 // import reducer from "./middleware/reducer";
@@ -59,7 +59,7 @@ function App() {
             <Route
               exact
               path="/"
-              component={Dashboard}
+              component={Main}
               style={{ backgroundColor: "black" }}
             />{" "}
             {/* <Route component={ErrorPage} /> */}{" "}
