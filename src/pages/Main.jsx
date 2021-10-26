@@ -275,9 +275,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Main() {
+  // console.log = console.warn = console.error = () => {};
+  // // Look ma, no error!
+  // console.error('Something bad happened.');
   const classes = useStyles();
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   const [open, setOpen] = React.useState(false);
   const [themeState, setThemeState] = React.useState(classes.themeDefault);

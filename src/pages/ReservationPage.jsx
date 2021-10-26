@@ -33,13 +33,14 @@ import {
   DateRangePicker,
 } from "@material-ui/pickers";
 
-const dataEvent = [
-  { id: 1, title: "ROOM8050", start: "2021-09-15", end: "2021-09-17" },
-  { id: 2, title: "ROOM8050", start: "2021-09-20", end: "2021-09-25" },
-];
+// const dataEvent = [
+//   { id: 1, title: "ROOM8050", start: "2021-09-15", end: "2021-09-17" },
+//   { id: 2, title: "ROOM8050", start: "2021-09-20", end: "2021-09-25" },
+// ];
 
 export const ReservationPage = (props) => {
   const [dialogReservation, setDialogReservation] = React.useState(false);
+  const [dataEvent, setDataEvent] = React.useState([]);
   const [selectedDateStart, setSelectedDateStart] = React.useState(
     // new Date("2021-09-13T21:11:54")
     new Date("2021-09-13")
@@ -48,7 +49,12 @@ export const ReservationPage = (props) => {
     // new Date("2021-09-13T21:11:54")
     new Date("2021-09-13")
   );
-  const [roomNum, setRoomNum] = React.useState("0000");
+  const [roomNum, setRoomNum] = React.useState("");
+  const [firstname, setFirstname] = React.useState("");
+  const [lastname, setLastname] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
+
   const [dataDate, setDataDate] = React.useState([]);
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
@@ -57,6 +63,11 @@ export const ReservationPage = (props) => {
     colorlevel: "900",
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [errorParameter, setErrorParameter] = useState(null);
+
+
+ 
 
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
@@ -78,9 +89,14 @@ export const ReservationPage = (props) => {
     }
   }, [themeBackground]);
 
+  const reservationRoom = async() => {
+    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    setDataEvent(data.content[0])
+  }
+
   React.useEffect(async () => {
-    // const data = await getreservationroom(sessionStorage.getItem("auth"));
-    // console.log("data", data);
+    reservationRoom();
+   
     // let datedata = [];
     // data.content[data.content.length - 1].forEach((element) =>
     //   datedata.push({
@@ -107,15 +123,25 @@ export const ReservationPage = (props) => {
     // console.log("dateNoTiome", T);
   };
   const handleRoomNum = (event) => {
-    setRoomNum(event.target.value);
-    // console.log(event.target.value);
+    const re = /^[0-9\b]+$/; //rules
+    if (event.target.value === "" || re.test(event.target.value)) {
+      setRoomNum(event.target.value);
+    }  
+   
   };
 
   const handleDialogReservationClose = () => {
+    setRoomNum("");
     setDialogReservation(false);
   };
 
   const handleDialogReservationOpen = () => {
+    setRoomNum("");
+    setFirstname("");
+    setLastname("");
+    setPhone("");
+    setEmail("");
+    setErrorMessage(false);
     setDialogReservation(true);
   };
 
@@ -126,28 +152,76 @@ export const ReservationPage = (props) => {
   };
 
   const handleDialogReservationSave = async (roomno, startdate, enddate) => {
+    try {
+
+      
+   
+      setErrorMessage(false);
+      if (lastname == null || lastname == "") {
+        setErrorMessage(true);
+        setErrorParameter("Last Name is required");
+      } else if (firstname == null || firstname == "") {
+        setErrorMessage(true);
+        setErrorParameter("First Name is required");
+      } else if (phone == null || phone == "") {
+        setErrorMessage(true);
+        setErrorParameter("Phone Number is required");
+      } else if (email == null || email == "") {
+        setErrorMessage(true);
+        setErrorParameter("email is required");
+      }else if (roomno == null || roomno == "") {
+        setErrorMessage(true);
+        setErrorParameter("Room Number is required");
+      } else {
     const postdate = await postreservationroom(sessionStorage.getItem("auth"), {
       roomno: roomno,
       startdate: startdate,
       enddate: enddate,
       description: "ROOM" + roomno,
+      firstname: firstname,
+      lastname: lastname,
+      phone: phone,
+      email: email
     });
 
-    const data = await getreservationroom(sessionStorage.getItem("auth"));
-    // console.log("data", data);
-    let datedata = [];
-    data.content[data.content.length - 1].forEach((element) =>
-      datedata.push({
-        id: element.roomno,
-        title: element.description,
-        start: element.startdate,
-        end: element.enddate,
-      })
-    );
-    setDataDate(datedata);
 
-    // console.log("postdate", postdate);
-    setDialogReservation(false);
+    if (postdate.status == "1000") {
+      setErrorMessage(true);
+      setErrorParameter(postdate.msg);
+    } else if (postdate.status == "2000") {
+      setRoomNum("");
+      setFirstname("");
+      setLastname("");
+      setPhone("");
+      setEmail("");
+      reservationRoom();
+      setDialogReservation(false);
+    }
+  }
+
+ 
+
+      // const data = await getreservationroom(sessionStorage.getItem("auth"));
+    // // console.log("data", data);
+    // let datedata = [];
+    // data.content[data.content.length - 1].forEach((element) =>
+    //   datedata.push({
+    //     id: element.roomno,
+    //     title: element.description,
+    //     start: element.startdate,
+    //     end: element.enddate,
+    //   })
+    // );
+    // setDataDate(datedata);
+
+    // // console.log("postdate", postdate);
+    // setDialogReservation(false);
+      
+    } catch (error) {
+       console.log(error);
+    }
+
+  
   };
 
   return (
@@ -241,7 +315,7 @@ export const ReservationPage = (props) => {
                       }}
                     >
                       <Typography variant="subtitle" color="initial">
-                        <li>{option.title}</li>
+                        <li>ROOM{option.roomno}</li>
                       </Typography>
                     </Paper>
                   ))}
@@ -291,7 +365,8 @@ export const ReservationPage = (props) => {
                   label="First Name"
                   variant="outlined"
                   fullWidth
-                  onChange={""}
+              
+                  onChange={(e) => setFirstname(e.target.value)}
                 />
               </Grid>
               <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -300,7 +375,7 @@ export const ReservationPage = (props) => {
                   label="Last Name"
                   variant="outlined"
                   fullWidth
-                  onChange={""}
+                  onChange={(e) => setLastname(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -309,7 +384,7 @@ export const ReservationPage = (props) => {
                   label="Phone Number"
                   variant="outlined"
                   fullWidth
-                  onChange={""}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -318,7 +393,7 @@ export const ReservationPage = (props) => {
                   label="Email"
                   variant="outlined"
                   fullWidth
-                  onChange={""}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
             </Grid>
@@ -367,10 +442,12 @@ export const ReservationPage = (props) => {
               <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                 <TextField
                   // autoFocus
+               
                   id="outlined-basic"
                   label="Room Number"
                   variant="outlined"
                   // value={roomNumber}
+                  type="number"
                   defaultValue={""}
                   onChange={(e) => handleRoomNum(e)}
                   fullWidth
@@ -384,7 +461,23 @@ export const ReservationPage = (props) => {
                   </Grid>
                 )}
               /> */}
+
+                 
             </Grid>
+            {errorMessage ? (
+                  <div
+                    style={{
+                      background: "#ff0033",
+                      textAlign: "center",
+                      color: "white",
+                      height: "30px",
+                      marginTop:5,
+                      paddingTop: 5,
+                    }}
+                  >
+                    {errorParameter} 
+                  </div>
+                ) : null}
           </Container>
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
