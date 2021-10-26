@@ -16,10 +16,10 @@ import { connect, ReactReduxContext, useSelector } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
 import TestDnD from "../components/TestDnD";
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -82,6 +82,21 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 
+const optiondata = [
+  {
+    value: "1",
+    label: "Option1",
+  },
+  {
+    value: "2",
+    label: "Option2",
+  },
+  {
+    value: "3",
+    label: "Option3",
+  },
+];
+
 export const ProfileIndividual = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
@@ -124,9 +139,8 @@ export const ProfileIndividual = (props) => {
 
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
   React.useEffect(() => {
-    setSmallwidth(window.innerWidth < 1000)
+    setSmallwidth(window.innerWidth < 1000);
   }, []);
-
 
   const classes = useStyles(themeState);
   const headerTableStyle = {
@@ -141,7 +155,7 @@ export const ProfileIndividual = (props) => {
         backgroundColor: themeState.background,
       }}
     >
-      {smallwidth ?
+      {smallwidth ? (
         <Paper
           elevation={3}
           style={{ color: themeState.color, backgroundColor: themeState.paper }}
@@ -171,7 +185,6 @@ export const ProfileIndividual = (props) => {
             }}
           >
             <Accordion>
-
               <AccordionSummary expandIcon={<ExpandMore />}>
                 Personal
               </AccordionSummary>
@@ -208,7 +221,24 @@ export const ProfileIndividual = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      defaultValue={" "}
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -217,7 +247,24 @@ export const ProfileIndividual = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      defaultValue={" "}
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -226,7 +273,24 @@ export const ProfileIndividual = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      defaultValue={" "}
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -235,7 +299,24 @@ export const ProfileIndividual = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      defaultValue={" "}
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid item xl={4} md={6} xs={12}>
@@ -303,6 +384,9 @@ export const ProfileIndividual = (props) => {
                       label="Email"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
@@ -311,6 +395,9 @@ export const ProfileIndividual = (props) => {
                       label="Phone Number"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -335,6 +422,9 @@ export const ProfileIndividual = (props) => {
                       label="OrganiZation"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
@@ -351,6 +441,9 @@ export const ProfileIndividual = (props) => {
                       label="Address Line 2"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -360,7 +453,24 @@ export const ProfileIndividual = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      defaultValue={" "}
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -368,6 +478,9 @@ export const ProfileIndividual = (props) => {
                       label="City"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -376,6 +489,9 @@ export const ProfileIndividual = (props) => {
                       label="State"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -413,6 +529,9 @@ export const ProfileIndividual = (props) => {
                       }
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={2} md={6} xs={12}>
@@ -426,6 +545,9 @@ export const ProfileIndividual = (props) => {
                       }
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={2} md={6} xs={12}>
@@ -439,6 +561,9 @@ export const ProfileIndividual = (props) => {
                       }
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={2} md={6} xs={12}>
@@ -452,6 +577,9 @@ export const ProfileIndividual = (props) => {
                       }
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={2} md={6} xs={12}>
@@ -465,6 +593,9 @@ export const ProfileIndividual = (props) => {
                       }
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -492,14 +623,17 @@ export const ProfileIndividual = (props) => {
             </Accordion>
           </Container>
         </Paper>
-        :
+      ) : (
         <Paper
           elevation={3}
           style={{ color: themeState.color, backgroundColor: themeState.paper }}
         >
           <Container maxWidth="xl" style={{ paddingTop: 15 }}>
             <Grid container>
-              <Typography variant="h6" style={{ flexGrow: 1, color: mainColor }}>
+              <Typography
+                variant="h6"
+                style={{ flexGrow: 1, color: mainColor }}
+              >
                 Profile / Individual
               </Typography>
               <Button
@@ -544,6 +678,9 @@ export const ProfileIndividual = (props) => {
                   label="Last Name"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
@@ -553,7 +690,24 @@ export const ProfileIndividual = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  defaultValue={" "}
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
                 <TextField
@@ -562,7 +716,24 @@ export const ProfileIndividual = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  defaultValue={" "}
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
                 <TextField
@@ -571,7 +742,23 @@ export const ProfileIndividual = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
                 <TextField
@@ -580,7 +767,24 @@ export const ProfileIndividual = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  defaultValue={" "}
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid item xl={4} md={6} xs={12}>
@@ -642,6 +846,9 @@ export const ProfileIndividual = (props) => {
                   label="Email"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
@@ -650,6 +857,9 @@ export const ProfileIndividual = (props) => {
                   label="Phone Number"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
             </Grid>
@@ -667,6 +877,9 @@ export const ProfileIndividual = (props) => {
                   label="OrganiZation"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
@@ -675,6 +888,9 @@ export const ProfileIndividual = (props) => {
                   label="Address Line 1"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
@@ -683,6 +899,9 @@ export const ProfileIndividual = (props) => {
                   label="Address Line 2"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -692,7 +911,24 @@ export const ProfileIndividual = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  defaultValue={" "}
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -700,6 +936,9 @@ export const ProfileIndividual = (props) => {
                   label="City"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -708,6 +947,9 @@ export const ProfileIndividual = (props) => {
                   label="State"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -716,6 +958,9 @@ export const ProfileIndividual = (props) => {
                   label="Postal"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
             </Grid>
@@ -738,6 +983,9 @@ export const ProfileIndividual = (props) => {
                   }
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={2} md={6} xs={12}>
@@ -751,6 +999,9 @@ export const ProfileIndividual = (props) => {
                   }
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={2} md={6} xs={12}>
@@ -764,6 +1015,9 @@ export const ProfileIndividual = (props) => {
                   }
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={2} md={6} xs={12}>
@@ -777,6 +1031,9 @@ export const ProfileIndividual = (props) => {
                   }
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={2} md={6} xs={12}>
@@ -790,10 +1047,16 @@ export const ProfileIndividual = (props) => {
                   }
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
             </Grid>
-            <Typography variant="h6" style={{ paddingTop: 20, color: mainColor }}>
+            <Typography
+              variant="h6"
+              style={{ paddingTop: 20, color: mainColor }}
+            >
               Booking History
             </Typography>
             <Divider
@@ -808,7 +1071,7 @@ export const ProfileIndividual = (props) => {
             </Typography>
           </Container>
         </Paper>
-      }
+      )}
       <TestDnD />
     </Container>
   );

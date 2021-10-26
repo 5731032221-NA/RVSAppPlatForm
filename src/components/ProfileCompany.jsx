@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
-import Radio from "@material-ui/core/Radio";
+import Checkbox from "@material-ui/core/Checkbox";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -21,10 +21,10 @@ import { connect, ReactReduxContext, useSelector } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
 import TestDnD from "../components/TestDnD";
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -87,6 +87,21 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 
+const optiondata = [
+  {
+    value: "1",
+    label: "Option1",
+  },
+  {
+    value: "2",
+    label: "Option2",
+  },
+  {
+    value: "3",
+    label: "Option3",
+  },
+];
+
 export const ProfileCompany = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
@@ -135,7 +150,7 @@ export const ProfileCompany = (props) => {
 
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
   React.useEffect(() => {
-    setSmallwidth(window.innerWidth < 1000)
+    setSmallwidth(window.innerWidth < 1000);
   }, []);
 
   return (
@@ -147,7 +162,7 @@ export const ProfileCompany = (props) => {
         backgroundColor: themeState.background,
       }}
     >
-      {smallwidth ?
+      {smallwidth ? (
         <Paper
           elevation={3}
           style={{ color: themeState.color, backgroundColor: themeState.paper }}
@@ -159,7 +174,6 @@ export const ProfileCompany = (props) => {
             <AccordionDetails>
               <Container maxWidth="xl" style={{ paddingTop: 15 }}>
                 <Grid container alignItems="center">
-
                   {/* <Grid item style={{ flexGrow: 1 }}>
                 <Typography variant="h6" style={{ color: mainColor }}>
                   Profile / Company
@@ -168,7 +182,7 @@ export const ProfileCompany = (props) => {
                   <Grid item style={{ paddingRight: 20 }}>
                     <FormControlLabel
                       value="start"
-                      control={<Radio color="primary" />}
+                      control={<Checkbox color="primary" />}
                       label="Central Protected"
                       labelPlacement="start"
                     />
@@ -180,7 +194,23 @@ export const ProfileCompany = (props) => {
                       fullWidth
                       className={classes.root}
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                 </Grid>
                 <Divider
@@ -218,7 +248,23 @@ export const ProfileCompany = (props) => {
                       fullWidth
                       className={classes.root}
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
 
                   <Grid item xl={6} md={6} xs={12}>
@@ -228,7 +274,23 @@ export const ProfileCompany = (props) => {
                       fullWidth
                       className={classes.root}
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -237,6 +299,9 @@ export const ProfileCompany = (props) => {
                       fullWidth
                       className={classes.root}
                       select
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
@@ -245,6 +310,9 @@ export const ProfileCompany = (props) => {
                       label="Name 2"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
@@ -253,6 +321,9 @@ export const ProfileCompany = (props) => {
                       label="Name 3"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -278,7 +349,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -286,6 +373,9 @@ export const ProfileCompany = (props) => {
                       label="Address 2"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -294,6 +384,9 @@ export const ProfileCompany = (props) => {
                       label="Address 3"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -302,6 +395,9 @@ export const ProfileCompany = (props) => {
                       label="Address 4"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -311,7 +407,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -319,6 +431,9 @@ export const ProfileCompany = (props) => {
                       label="City"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -327,6 +442,9 @@ export const ProfileCompany = (props) => {
                       label="State"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -335,6 +453,9 @@ export const ProfileCompany = (props) => {
                       label="Postal"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -360,7 +481,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -369,7 +506,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -378,7 +531,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                 </Grid>
               </AccordionDetails>
@@ -403,7 +572,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={2} md={6} xs={12}>
                     <TextField
@@ -412,7 +597,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={2} md={6} xs={12}>
                     <TextField
@@ -421,6 +622,9 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -430,7 +634,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -439,7 +659,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                 </Grid>
               </AccordionDetails>
@@ -463,6 +699,9 @@ export const ProfileCompany = (props) => {
                       label="IATA"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -472,7 +711,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -481,7 +736,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -489,6 +760,9 @@ export const ProfileCompany = (props) => {
                       label="Active Reason"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -513,6 +787,9 @@ export const ProfileCompany = (props) => {
                       label="Tax ID"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -522,7 +799,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                 </Grid>
               </AccordionDetails>
@@ -546,7 +839,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -555,7 +864,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -564,6 +889,9 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -573,7 +901,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -582,7 +926,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -591,7 +951,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -600,7 +976,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -609,7 +1001,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -618,7 +1026,23 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -627,14 +1051,30 @@ export const ProfileCompany = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                 </Grid>
               </AccordionDetails>
             </Accordion>
           </Container>
         </Paper>
-        :
+      ) : (
         <Paper
           elevation={3}
           style={{ color: themeState.color, backgroundColor: themeState.paper }}
@@ -649,7 +1089,7 @@ export const ProfileCompany = (props) => {
               <Grid item style={{ paddingRight: 20 }}>
                 <FormControlLabel
                   value="start"
-                  control={<Radio color="primary" />}
+                  control={<Checkbox color="primary" />}
                   label="Central Protected"
                   labelPlacement="start"
                 />
@@ -661,7 +1101,23 @@ export const ProfileCompany = (props) => {
                   fullWidth
                   className={classes.root}
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
             </Grid>
             <Divider
@@ -691,7 +1147,23 @@ export const ProfileCompany = (props) => {
                   fullWidth
                   className={classes.root}
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
 
               <Grid item xl={6} md={6} xs={12}>
@@ -701,7 +1173,23 @@ export const ProfileCompany = (props) => {
                   fullWidth
                   className={classes.root}
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
                 <TextField
@@ -710,7 +1198,23 @@ export const ProfileCompany = (props) => {
                   fullWidth
                   className={classes.root}
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
                 <TextField
@@ -718,6 +1222,9 @@ export const ProfileCompany = (props) => {
                   label="Name 2"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
@@ -726,6 +1233,9 @@ export const ProfileCompany = (props) => {
                   label="Name 3"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
             </Grid>
@@ -744,7 +1254,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -752,6 +1278,9 @@ export const ProfileCompany = (props) => {
                   label="Address 2"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -760,6 +1289,9 @@ export const ProfileCompany = (props) => {
                   label="Address 3"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -768,6 +1300,9 @@ export const ProfileCompany = (props) => {
                   label="Address 4"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -777,7 +1312,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -785,6 +1336,9 @@ export const ProfileCompany = (props) => {
                   label="City"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -793,6 +1347,9 @@ export const ProfileCompany = (props) => {
                   label="State"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -801,6 +1358,9 @@ export const ProfileCompany = (props) => {
                   label="Postal"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
             </Grid>
@@ -819,7 +1379,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
                 <TextField
@@ -828,7 +1404,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={4} md={6} xs={12}>
                 <TextField
@@ -837,7 +1429,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
             </Grid>
 
@@ -856,7 +1464,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={2} md={6} xs={12}>
                 <TextField
@@ -865,7 +1489,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={2} md={6} xs={12}>
                 <TextField
@@ -874,7 +1514,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -883,7 +1539,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -892,7 +1564,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
             </Grid>
 
@@ -910,6 +1598,9 @@ export const ProfileCompany = (props) => {
                   label="IATA"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -919,7 +1610,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -928,7 +1635,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -936,6 +1659,9 @@ export const ProfileCompany = (props) => {
                   label="Active Reason"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
             </Grid>
@@ -953,6 +1679,9 @@ export const ProfileCompany = (props) => {
                   label="Tax ID"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
@@ -962,11 +1691,30 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
             </Grid>
 
-            <Typography variant="h6" style={{ paddingTop: 20, color: mainColor }}>
+            <Typography
+              variant="h6"
+              style={{ paddingTop: 20, color: mainColor }}
+            >
               Sales Information
             </Typography>
             <Divider
@@ -980,7 +1728,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -989,7 +1753,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -998,7 +1778,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -1007,7 +1803,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -1016,7 +1828,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -1025,7 +1853,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -1034,7 +1878,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -1043,7 +1903,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -1052,7 +1928,23 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xl={3} md={6} xs={12}>
                 <TextField
@@ -1061,12 +1953,28 @@ export const ProfileCompany = (props) => {
                   variant="outlined"
                   fullWidth
                   select
-                />
+                  SelectProps={{
+                    native: true,
+                  }}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
+                >
+                  {optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
               </Grid>
             </Grid>
           </Container>
         </Paper>
-      }
+      )}
     </Container>
   );
 };
