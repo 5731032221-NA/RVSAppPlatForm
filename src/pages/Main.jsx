@@ -1017,7 +1017,7 @@ export default function Main() {
       <main id="compwidth" className={classes.content}>
         <div className={classes.appBarSpacer} />
         {/* <Container maxWidth="100" className={classes.container}> */}
-        <Container  className={classes.container}>
+        <Container maxWidth="100" className={classes.container}>
           <HeaderTabs />
           {store.getState().reducer.componentState == "Dashboard" ? (
             <div
