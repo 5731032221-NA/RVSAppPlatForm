@@ -22,6 +22,8 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { nextComponent } from "../middleware/action";
+import { Breadcrumbs,Link,} from "@material-ui/core";
 
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -147,14 +149,85 @@ export const ProfileIndividual = (props) => {
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
+
+
+
+  
+  const handleComponentState = async (comp) => {
+    console.log("setcomp", comp);
+    props.nextComponent(comp);
+  };
   return (
     <Container
       maxWidth="xl"
       style={{
-        color: themeState.color,
+        paddingTop: 30,
+        color: themeState.color,marginTop: 22,
         backgroundColor: themeState.background,
       }}
     >
+
+
+<Grid  item style={{ flexGrow: 1 }} >
+
+<Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 2, sm: 2, md: 2 }}>
+   <Grid item xs={6} sm={10} md={10} >
+           <Breadcrumbs
+              separator={
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: themeState.color,
+                  }}
+                >
+                  /
+                </Typography>
+              }
+            >
+              <Link
+                color="inherit"
+                href="#"
+                onClick={() => handleComponentState("ProfileIndivisual")}
+              >
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
+                >
+                  Profile 
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
+                >
+               individual
+                </Typography>
+              </Link>
+          
+            
+            </Breadcrumbs>
+          </Grid>
+
+          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right"}} >
+          <Button
+                variant="contained"
+                style={{ backgroundColor: "red", color: "white" }}
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button>
+          </Grid>
+          </Grid>
+           
+      
+          </Grid>
       {smallwidth ? (
         <Paper
           elevation={3}
@@ -165,13 +238,13 @@ export const ProfileIndividual = (props) => {
               {/* <Typography variant="h6" style={{ flexGrow: 1, color: mainColor }}>
                 Profile / Individual
               </Typography> */}
-              <Button
+              {/* <Button
                 variant="contained"
                 style={{ backgroundColor: "red", color: "white" }}
                 startIcon={<DeleteIcon />}
               >
                 Delete
-              </Button>
+              </Button> */}
             </Grid>
             <Divider
               style={{ marginTop: 10, backgroundColor: themeState.color }}
@@ -634,19 +707,19 @@ export const ProfileIndividual = (props) => {
                 variant="h6"
                 style={{ flexGrow: 1, color: mainColor }}
               >
-                Profile / Individual
+               
               </Typography>
-              <Button
+              {/* <Button
                 variant="contained"
                 style={{ backgroundColor: "red", color: "white" }}
                 startIcon={<DeleteIcon />}
               >
                 Delete
-              </Button>
+              </Button> */}
             </Grid>
-            <Divider
+            {/* <Divider
               style={{ marginTop: 10, backgroundColor: themeState.color }}
-            />
+            /> */}
           </Container>
           {/* ====================================== */}
           <Container
@@ -1079,6 +1152,10 @@ export const ProfileIndividual = (props) => {
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    nextComponent: (comp) => dispatch(nextComponent(comp)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileIndividual);
