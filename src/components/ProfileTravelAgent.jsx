@@ -29,6 +29,9 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 
+import { nextComponent } from "../middleware/action";
+import { Breadcrumbs,Link,} from "@material-ui/core";
+
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import DateFnsUtils from "@date-io/date-fns";
@@ -157,15 +160,83 @@ export const ProfileTravelAgent = (props) => {
     setSmallwidth(window.innerWidth < 1000);
   }, []);
 
+
+  const handleComponentState = async (comp) => {
+    console.log("setcomp", comp);
+    props.nextComponent(comp);
+  };
+
   return (
     <Container
       maxWidth="xl"
       style={{
         paddingTop: 30,
+        marginTop: 22,
         color: themeState.color,
         backgroundColor: themeState.background,
       }}
     >
+
+<Grid  item style={{ flexGrow: 1 }} >
+
+<Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 2, sm: 2, md: 2 }}>
+   <Grid item xs={6} sm={10} md={10} >
+           <Breadcrumbs
+              separator={
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: themeState.color,
+                  }}
+                >
+                  /
+                </Typography>
+              }
+            >
+              <Link
+                color="inherit"
+                href="#"
+                onClick={() => handleComponentState("ProfileIndivisual")}
+              >
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
+                >
+                  Profile individual
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
+                >
+               Travel Agent
+                </Typography>
+              </Link>
+          
+            
+            </Breadcrumbs>
+          </Grid>
+
+          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right"}} >
+          {/* <Button
+                variant="contained"
+                style={{ backgroundColor: "red", color: "white" }}
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button> */}
+          </Grid>
+          </Grid>
+           
+      
+          </Grid>
       {smallwidth ? (
         <Paper
           elevation={3}
@@ -180,7 +251,7 @@ export const ProfileTravelAgent = (props) => {
                 <Grid container alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
                     <Typography variant="h6" style={{ color: mainColor }}>
-                      Profile / Travel Agent
+                      {/* Profile / Travel Agent */}
                     </Typography>
                   </Grid>
                   <Grid item xl={3} md={3} xs={3}>
@@ -1012,7 +1083,7 @@ export const ProfileTravelAgent = (props) => {
             <Grid container alignItems="center">
               <Grid item style={{ flexGrow: 1 }}>
                 <Typography variant="h6" style={{ color: mainColor }}>
-                  Profile / Travel Agent
+                  {/* Profile / Travel Agent */}
                 </Typography>
               </Grid>
               <Grid item xl={3} md={3} xs={3}>
@@ -1796,6 +1867,11 @@ export const ProfileTravelAgent = (props) => {
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    nextComponent: (comp) => dispatch(nextComponent(comp)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileTravelAgent);

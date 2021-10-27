@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useState, useContext } from "react";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -27,7 +28,10 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Breadcrumbs,Link,} from "@material-ui/core";
 
+
+import { nextComponent } from "../middleware/action";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   DatePicker,
@@ -103,6 +107,8 @@ const optiondata = [
 ];
 
 export const ProfileCompany = (props) => {
+
+  const { store } = useContext(ReactReduxContext);
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -153,15 +159,78 @@ export const ProfileCompany = (props) => {
     setSmallwidth(window.innerWidth < 1000);
   }, []);
 
+
+  const handleComponentState = async (comp) => {
+    console.log("setcomp", comp);
+    props.nextComponent(comp);
+  };
+
   return (
     <Container
       maxWidth="xl"
       style={{
         paddingTop: 30,
+        marginTop: 22,
         color: themeState.color,
         backgroundColor: themeState.background,
       }}
     >
+
+                   
+         <Grid item style={{ flexGrow: 1 }}>
+            <Breadcrumbs
+              separator={
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: themeState.color,
+                  }}
+                >
+                  /
+                </Typography>
+              }
+            >
+              <Link
+                color="inherit"
+                href="#"
+                onClick={() => handleComponentState("ProfileIndivisual")}
+              >
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
+                >
+                  Profile individual
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
+                >
+               TA
+                </Typography>
+              </Link>
+              <Typography>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
+                >
+                 Company
+                </Typography>
+              </Typography>
+              
+            </Breadcrumbs>
+          </Grid>
       {smallwidth ? (
         <Paper
           elevation={3}
@@ -169,7 +238,8 @@ export const ProfileCompany = (props) => {
         >
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              Profile / Company
+              {/* Profile / Company */}
+
             </AccordionSummary>
             <AccordionDetails>
               <Container maxWidth="xl" style={{ paddingTop: 15 }}>
@@ -1083,7 +1153,9 @@ export const ProfileCompany = (props) => {
             <Grid container alignItems="center">
               <Grid item style={{ flexGrow: 1 }}>
                 <Typography variant="h6" style={{ color: mainColor }}>
-                  Profile / Company
+          
+
+     
                 </Typography>
               </Grid>
               <Grid item style={{ paddingRight: 20 }}>
@@ -1979,8 +2051,14 @@ export const ProfileCompany = (props) => {
   );
 };
 
+
+
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    nextComponent: (comp) => dispatch(nextComponent(comp)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileCompany);

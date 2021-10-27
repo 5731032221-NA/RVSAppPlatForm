@@ -24,6 +24,7 @@ import TodayPickupBarChart from "./TodayPickupBarChart";
 import { getweather, forecastweather } from "../../services/weather.service";
 import { blue } from "@material-ui/core/colors";
 
+
 export class Reservation extends Component {
   constructor(props) {
     super(props);
@@ -48,6 +49,10 @@ export class Reservation extends Component {
       forcast: [],
     };
   }
+
+ 
+
+  
 
   async componentDidMount() {
     // this.interval = setInterval(() => {}, 1000);

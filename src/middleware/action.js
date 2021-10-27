@@ -90,6 +90,15 @@ export const indexTab = (indexTab) => {
  
 };
 
+export const nextComponent = (comp) => {
+
+  return {
+    type: EDIT_COMPONENT,
+    payload: comp,
+  }
+ 
+};
+
 export const permission = (permission) => {
 
   return {
