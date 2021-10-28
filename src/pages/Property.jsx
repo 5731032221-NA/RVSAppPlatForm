@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
 import "../assets/login.css";
 import "../assets/variable.css";
-import background from "../assets/img/imgbackground.jpg";
+import background from "../assets/img/imgbackground.png";
+import backgroundLogo from "../assets/img/imgbackground-logo.png";
 import BusinessIcon from '@material-ui/icons/Business';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-
+import Box from '@material-ui/core/Box';
 import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -15,6 +16,7 @@ import Divider from "@material-ui/core/Divider";
 import { FormControl, FormLabel, Select, MenuItem } from '@material-ui/core';
 import menus from "../services/menus.service";
 import propertypermission from "../services/propertypermission.service";
+import {getasset} from "../services/assest.service";
 import propertyrole from "../services/propertyrole.service"
 import { useCookies } from 'react-cookie';
 // import {
@@ -76,6 +78,20 @@ export default function Property({ setToken, setProperty }) {
     //   }
     // },[])
 
+    const [file,  setFile] = useState("");
+
+  const getLogo  = async() => {
+    const resp = await getasset();
+    setFile(resp.content[0].asset);
+    // console.log(resp);
+    
+  }
+
+
+  React.useEffect(() => {
+    getLogo();
+  },[])
+
     const handleChange = event => {
         setSelectedProperty(event.target.value);
   
@@ -125,13 +141,27 @@ export default function Property({ setToken, setProperty }) {
     };
 
     return (
-        <Grid className="Login-component" style={{ backgroundImage: `url(${background})` }} >
+        <Grid className="Login-component" style={{ backgroundImage: `url(${background})`,backgroundSize: 'cover', 
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat' }} >
             <Container
                 component="main"
                 maxWidth="xs"
                 alignitems="center"
                 justifycontent="center"
             >
+                  <Box
+        p={2}
+        position="absolute"
+        top="88%"
+        left="89%"
+        zIndex="tooltip"
+        style={{backgroundRepeat: 'no-repeat'}}
+        sx={{ display: { xs: "none", md: "none" ,lg: "flex" } }}
+      >
+        {/* <img className={classes.imglogo} src={file} alt="logo" width="150" /> */}
+        { file ? <img src={file} className={classes.imglogo} alt="logo" width="150"  /> : <img src="loginlogo.png" className={classes.imglogo} alt="logo" width="150" />  }
+      </Box>
                 <Paper className={classes.paper}>
                     <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
                     <h5 className={classes.sysname} >Hotel Property Management System </h5>
