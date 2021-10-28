@@ -1,166 +1,256 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import ReactDOM from "react-dom";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  IconButton,
-  ListItemSecondaryAction,
-} from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-
-import RootRef from "@material-ui/core/RootRef";
+import React from "react";
+import { connect, ReactReduxContext, useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import InboxIcon from "@material-ui/icons/Inbox";
-import EditIcon from "@material-ui/icons/Edit";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { blue, green, yellow } from "@material-ui/core/colors";
+import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
+import TextField from "@material-ui/core/TextField";
 
-// fake data generator
-// const getItems = (count) =>
-//   Array.from({ length: count }, (v, k) => k).map((k) => ({
-//     id: `item-${k}`,
-//     primary: `item ${k}`,
-//     secondary: k % 2 === 0 ? `Whatever for ${k}` : undefined,
-//   }));
+const useStyles = makeStyles((theme) => ({
+  seeMore: {
+    marginTop: theme.spacing(3),
+  },
+  selectPage: {
+    minWidth: 90,
+    textAlign: "center",
+    flexGrow: 1,
+  },
+  searchLayout: {
+    flexGrow: 1,
 
-const elements = [
-  { id: "one", content: "one" },
-  { id: "two", content: "two" },
-  { id: "three", content: "three" },
-  { id: "four", content: "four" },
-];
-
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // styles we need to apply on draggables
-  ...draggableStyle,
-
-  ...(isDragging && {
-    background: "rgb(235,235,235)",
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  root: (themeState) => ({
+    "& label.MuiInputLabel-root": {
+      color: themeState.color,
+    },
+    "& label.Mui-focused": {
+      color: blue[themeState.colorlevel],
+    },
+    "& .MuiInput-underline:after": {
+      borderColor: themeState.color,
+      color: themeState.color,
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: themeState.color,
+        color: themeState.color,
+      },
+      "&:hover fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+    },
+    "&.MuiPaper-root": {
+      backgroundColor: themeState.paper,
+    },
+    "&.MuiMenu-paper": {
+      backgroundColor: themeState.paper,
+    },
   }),
-});
+}));
 
-const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? "lightblue" : "lightgrey",
-});
+export const TestDnD = (props) => {
+  const [themeState, setThemeState] = React.useState({
+    background: "#FFFFFF",
+    color: "#000000",
+    paper: "#FFFFFF",
+    colorlevel: "900",
+  });
+  const themeBackground = useSelector((state) => state.reducer.themeBackground);
 
-class TestDnD extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      elements: elements,
-    };
-    this.onDragEnd = this.onDragEnd.bind(this);
-  }
-
-  onDragEnd(result) {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setThemeState({
+        background: "#FFFFFF",
+        color: "#000000",
+        paper: "#FFFFFF",
+        colorlevel: "A400",
+        // matStyle: this.classes.normalmode
+      });
+    } else {
+      setThemeState({
+        background: "#212121",
+        color: "#FAFAFA",
+        paper: "#424242",
+        colorlevel: "600",
+        // matStyle: this.classes.darkmode
+      });
     }
+  }, [themeBackground]);
 
-    const elements = reorder(
-      this.state.elements,
-      result.source.index,
-      result.destination.index
-    );
+  const [mainColor, setMainColor] = React.useState("#2D62ED");
+  const maincolor = useSelector((state) => state.reducer.color);
 
-    this.setState({
-      elements,
-    });
-  }
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setMainColor(maincolor);
+    } else {
+      setMainColor("#2D62ED");
+    }
+  }, [maincolor]);
 
-  render() {
-    return (
-      <Paper style={{ marginTop: 50 }}>
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided, snapshot) => (
-              <RootRef rootRef={provided.innerRef}>
-                <Grid style={getListStyle(snapshot.isDraggingOver)}>
-                  {this.state.elements.map((item, index) => (
-                    <Draggable
-                      key={item.id}
-                      draggableId={item.id}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <ListItem
-                          ContainerComponent="li"
-                          ContainerProps={{ ref: provided.innerRef }}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
-                        >
-                          <ListItemIcon>
-                            <InboxIcon />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={item.content}
-                            secondary={item.id}
-                          />
-                          <ListItemSecondaryAction>
-                            <IconButton>
-                              <EditIcon />
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                        </ListItem>
+  const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
+  React.useEffect(() => {
+    setSmallwidth(window.innerWidth < 1000);
+  }, []);
+
+  const classes = useStyles(themeState);
+  const headerTableStyle = {
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  };
+
+  const demoData = [
+    {
+      id: "1",
+      title: "Personal",
+      content: [
+        { id: 1, label: "First Name", xl: 4, md: 6, xs: 12 },
+        { id: 2, label: "Last Name", xl: 4, md: 6, xs: 12 },
+        { id: 3, label: "Gender", xl: 4, md: 6, xs: 12 },
+        { id: 4, label: "Choose a Document Type*", xl: 4, md: 6, xs: 12 },
+        { id: 5, label: "ID Number*", xl: 4, md: 6, xs: 12 },
+        { id: 6, label: "Nationality*", xl: 4, md: 6, xs: 12 },
+        { id: 7, label: "Issue Date", xl: 4, md: 6, xs: 12 },
+        { id: 8, label: "Expiry Date", xl: 4, md: 6, xs: 12 },
+        { id: 9, label: "Date of Birth", xl: 4, md: 6, xs: 12 },
+      ],
+    },
+    {
+      id: "2",
+      title: "Comunication",
+      content: [
+        { id: 1, label: "Email", xl: 4, md: 6, xs: 12 },
+        { id: 2, label: "Phone Number", xl: 4, md: 6, xs: 12 },
+      ],
+    },
+    {
+      id: "3",
+      title: "Address",
+      content: [
+        { id: 1, label: "OrganiZation", xl: 4, md: 6, xs: 12 },
+        { id: 2, label: "Address Line 1", xl: 4, md: 6, xs: 12 },
+        { id: 3, label: "Address Line 2", xl: 4, md: 6, xs: 12 },
+        { id: 4, label: "Choose a country", xl: 3, md: 6, xs: 12 },
+        { id: 5, label: "City", xl: 3, md: 6, xs: 12 },
+        { id: 6, label: "State", xl: 3, md: 6, xs: 12 },
+        { id: 7, label: "Postal", xl: 3, md: 6, xs: 12 },
+      ],
+    },
+    {
+      id: "4",
+      title: "Rerationship (Internal)",
+      content: [
+        { id: 1, label: " Web site ", xl: 4, md: 6, xs: 12 },
+        { id: 2, label: "Line", xl: 2, md: 6, xs: 12 },
+        { id: 3, label: "Facebook", xl: 2, md: 6, xs: 12 },
+        { id: 4, label: "Instagram", xl: 2, md: 6, xs: 12 },
+        { id: 5, label: "Twitter", xl: 2, md: 6, xs: 12 },
+      ],
+    },
+  ];
+  const [list, setList] = React.useState(demoData);
+  const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+  const onEnd = (result) => {
+    setList(reorder(list, result.source.index, result.destination.index));
+    console.log(result);
+  };
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // styles we need to apply on draggables
+    ...draggableStyle,
+
+    ...(isDragging && {
+      background: "rgb(235,235,235)",
+    }),
+  });
+
+  return (
+    <DragDropContext onDragEnd={onEnd}>
+      <Droppable droppableId="01">
+        {(provided, snapshot) => (
+          <Paper elevation={3} style={{ marginTop: 50, backgroundColor: "lightblue" }}>
+            <Container maxWidth="xl" disableGutters ref={provided.innerRef}>
+              {list.map((item, index) => (
+                <Draggable draggableId={item.id} key={item.id} index={index}>
+                  {(provided, snapshot) => (
+                    <Grid
+                      container
+                      xl={12}
+                      md={12}
+                      xs={12}
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style
                       )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </Grid>
-              </RootRef>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </Paper>
-    );
-  }
-}
+                    >
+                      <Grid
+                        style={{
+                          minHeight: 100,
+                          padding: 20,
+                          minWidth: "100%",
+                        }}
+                      >
+                        <Typography
+                          variant="subtitle1"
+                          color="initial"
+                          style={{ paddingBottom: 10 }}
+                        >
+                          {item.title}
+                        </Typography>
+                        <Grid container spacing={2}>
+                          {item.content.map((detail, index) => (
+                            <Grid
+                              item
+                              key={detail.id}
+                              index={index}
+                              xl={detail.xl}
+                              md={detail.md}
+                              xs={detail.xs}
+                            >
+                              <TextField
+                                className={classes.root}
+                                label={detail.label}
+                                variant="outlined"
+                                fullWidth
+                              />
+                            </Grid>
+                          ))}
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </Container>
+          </Paper>
+        )}
+      </Droppable>
+    </DragDropContext>
+  );
+};
 
 const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestDnD);
-
-// {(provided, snapshot) => (
-//   <ListItem
-//     ContainerComponent="li"
-//     ContainerProps={{ ref: provided.innerRef }}
-//     {...provided.draggableProps}
-//     {...provided.dragHandleProps}
-//     style={getItemStyle(
-//       snapshot.isDragging,
-//       provided.draggableProps.style
-//     )}
-//   >
-//     <ListItemIcon>
-//       <InboxIcon />
-//     </ListItemIcon>
-//     <ListItemText
-//       primary={item.content}
-//       secondary={item.id}
-//     />
-//     <ListItemSecondaryAction>
-//       <IconButton>
-//         <EditIcon />
-//       </IconButton>
-//     </ListItemSecondaryAction>
-//   </ListItem>
-// )}
