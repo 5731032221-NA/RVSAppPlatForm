@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import "../assets/login.css";
 import "../assets/variable.css";
-import background from "../assets/img/imgbackground.jpg";
+import background from "../assets/img/imgbackground.png";
+import backgroundLogo from "../assets/img/imgbackground-logo.png";
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -9,8 +10,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { InputAdornment, TextField, Container, Button, Paper, Grid, Divider } from "@material-ui/core";
 
 
-
-
+import {getasset} from "../services/assest.service";
 import PropTypes from "prop-types";
 import auth from "../services/auth.service";
 import propertys from "../services/propertys.service";
@@ -18,6 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ReactReduxContext } from 'react-redux';
 import { EDIT_AUTHORIZATION } from "../middleware/action";
 import { EDIT_PROPERTYS } from "../middleware/action";
+import Box from '@material-ui/core/Box';
 
 // async function loginUser(credentials) {
 //   return fetch('http://'+(process.env.REACT_APP_host || "localhost")+':8083/login', {
@@ -68,6 +69,24 @@ export default function Login({ setToken }) {
   const { store } = useContext(ReactReduxContext);
   //console.log("log store",store);
   // const [login, setlogin] = useState(false);
+  const [file,  setFile] = useState("");
+
+  const getLogo  = async() => {
+    const resp = await getasset();
+    console.log(resp);
+    if(resp.status == "2000"){
+      console.log(" okdee");
+      setFile(resp.content[0].asset);
+    }
+   
+    
+  }
+
+
+  React.useEffect( async () => {
+    await getLogo();
+  },[])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (username === null || username === '') {
@@ -122,6 +141,19 @@ export default function Login({ setToken }) {
     <Grid className="Login-component" style={{ backgroundImage: `url(${background})` ,backgroundSize: 'cover', 
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat' }} >
+        <Box
+        p={2}
+        position="absolute"
+        top="88%"
+        left="89%"
+        zIndex="tooltip"
+        style={{backgroundRepeat: 'no-repeat'}}
+        sx={{ display: { xs: "none", md: "none" ,lg: "flex" } }}
+      >
+        {/* <img className={classes.imglogo} src={file} alt="logo" width="150" /> */}
+        { file ? <img src={file} className={classes.imglogo} alt="logo" width="150"  /> : <img src="loginlogo.png" className={classes.imglogo} alt="logo" width="150" />  }
+      </Box>
+       
       <Container
         component="main"
         maxWidth="xs"
@@ -129,7 +161,8 @@ export default function Login({ setToken }) {
         justifycontent="center"
       >
         <Paper className={classes.paper}>
-          <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
+          <img className={classes.imglogo} src="loginlogo.png" alt="logo" /> 
+           {/* { file ? <img src={file} className={classes.imglogo} alt="logo"  /> : <img src="loginlogo.png" className={classes.imglogo} alt="logo"  />  } */}
           <h5 className={classes.sysname} >Hotel Property Management System</h5>
           <Divider variant="middle" />
 
