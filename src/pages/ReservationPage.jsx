@@ -157,12 +157,12 @@ export const ReservationPage = (props) => {
       
    
       setErrorMessage(false);
-      if (lastname == null || lastname == "") {
-        setErrorMessage(true);
-        setErrorParameter("Last Name is required");
-      } else if (firstname == null || firstname == "") {
+      if (firstname == null || firstname == "") {
         setErrorMessage(true);
         setErrorParameter("First Name is required");
+      } else if (lastname == null || lastname == "") {
+        setErrorMessage(true);
+        setErrorParameter("Last Name is required");
       } else if (phone == null || phone == "") {
         setErrorMessage(true);
         setErrorParameter("Phone Number is required");
@@ -228,7 +228,7 @@ export const ReservationPage = (props) => {
     <Container
       maxWidth="xl"
       style={{
-        marginTop: 100,
+        marginTop: 10,
         backgroundColor: themeState.background,
         color: themeState.color,
       }}

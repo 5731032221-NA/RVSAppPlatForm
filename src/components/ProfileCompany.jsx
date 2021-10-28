@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useState, useContext } from "react";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -27,7 +28,10 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Breadcrumbs,Link,} from "@material-ui/core";
 
+
+import { nextComponent } from "../middleware/action";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   DatePicker,
@@ -103,6 +107,8 @@ const optiondata = [
 ];
 
 export const ProfileCompany = (props) => {
+
+  const { store } = useContext(ReactReduxContext);
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -153,32 +159,72 @@ export const ProfileCompany = (props) => {
     setSmallwidth(window.innerWidth < 1000);
   }, []);
 
+
+  const handleComponentState = async (comp) => {
+    console.log("setcomp", comp);
+    props.nextComponent(comp);
+  };
+
   return (
     <Container
       maxWidth="xl"
       style={{
         paddingTop: 30,
+        marginTop: 22,
         color: themeState.color,
         backgroundColor: themeState.background,
       }}
     >
-      {smallwidth ? (
+
+                   
+         <Grid item style={{ flexGrow: 1 }}>
+            <Breadcrumbs
+              separator={
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: themeState.color,
+                  }}
+                >
+                  /
+                </Typography>
+              }
+            >
+              <Link
+                color="inherit"
+                href="#"
+                onClick={() => handleComponentState("ProfileIndivisual")}
+              >
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
+                >
+                  Profile
+                </Typography>
+              </Link>
+              <Typography>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
+                >
+                 Company
+                </Typography>
+              </Typography>
+              
+            </Breadcrumbs>
+          </Grid>
         <Paper
           elevation={3}
           style={{ color: themeState.color, backgroundColor: themeState.paper }}
         >
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMore />}>
-              Profile / Company
-            </AccordionSummary>
-            <AccordionDetails>
               <Container maxWidth="xl" style={{ paddingTop: 15 }}>
                 <Grid container alignItems="center">
-                  {/* <Grid item style={{ flexGrow: 1 }}>
-                <Typography variant="h6" style={{ color: mainColor }}>
-                  Profile / Company
-                </Typography>
-              </Grid> */}
                   <Grid item style={{ paddingRight: 20 }}>
                     <FormControlLabel
                       value="start"
@@ -218,8 +264,7 @@ export const ProfileCompany = (props) => {
                 />
               </Container>
               {/* ====================================== */}
-            </AccordionDetails>
-          </Accordion>
+
 
           <Container
             maxWidth="xl"
@@ -1074,913 +1119,18 @@ export const ProfileCompany = (props) => {
             </Accordion>
           </Container>
         </Paper>
-      ) : (
-        <Paper
-          elevation={3}
-          style={{ color: themeState.color, backgroundColor: themeState.paper }}
-        >
-          <Container maxWidth="xl" style={{ paddingTop: 15 }}>
-            <Grid container alignItems="center">
-              <Grid item style={{ flexGrow: 1 }}>
-                <Typography variant="h6" style={{ color: mainColor }}>
-                  Profile / Company
-                </Typography>
-              </Grid>
-              <Grid item style={{ paddingRight: 20 }}>
-                <FormControlLabel
-                  value="start"
-                  control={<Checkbox color="primary" />}
-                  label="Central Protected"
-                  labelPlacement="start"
-                />
-              </Grid>
-              <Grid item xl={2} md={6} xs={12}>
-                <TextField
-                  label="Property"
-                  variant="outlined"
-                  fullWidth
-                  className={classes.root}
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-            </Grid>
-            <Divider
-              style={{ marginTop: 10, backgroundColor: themeState.color }}
-            />
-          </Container>
-          {/* ====================================== */}
-          <Container
-            maxWidth="xl"
-            style={{
-              paddingTop: 15,
-              paddingBottom: 15,
-            }}
-          >
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10 }}
-            >
-              Account
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={6} md={6} xs={12}>
-                <TextField
-                  label="Master Account"
-                  variant="outlined"
-                  fullWidth
-                  className={classes.root}
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-
-              <Grid item xl={6} md={6} xs={12}>
-                <TextField
-                  label="Parent Account "
-                  variant="outlined"
-                  fullWidth
-                  className={classes.root}
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  label="Name 1"
-                  variant="outlined"
-                  fullWidth
-                  className={classes.root}
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Name 2"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                />
-              </Grid>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Name 3"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10, paddingTop: 10 }}
-            >
-              Address
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Address 1"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Address 2"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Address 3"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Address 4"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Choose a country"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="City"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="State"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Postal"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10, paddingTop: 10 }}
-            >
-              Communication
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Commu1_type"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Commu2_type"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Commu3_type"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-            </Grid>
-
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10, paddingTop: 10 }}
-            >
-              Rerationship (Internal)
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={2} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Owner"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={2} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Temitory"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={2} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Trace Code"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Keyword"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Type"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-            </Grid>
-
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10, paddingTop: 10 }}
-            >
-              A/R Number
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="IATA"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Ref. Currency"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Credit Rating"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Active Reason"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10, paddingTop: 10 }}
-            >
-              More Information
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Tax ID"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Routing Instruction"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-            </Grid>
-
-            <Typography
-              variant="h6"
-              style={{ paddingTop: 20, color: mainColor }}
-            >
-              Sales Information
-            </Typography>
-            <Divider
-              style={{ marginTop: 10, backgroundColor: themeState.color }}
-            />
-            <Grid container spacing={2} style={{ marginTop: 15 }}>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Priority"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Room Potential"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Scope"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Scope City"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Action Code"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Business Segment"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Account Type"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Source"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Industry Code"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Compentition Code"
-                  variant="outlined"
-                  fullWidth
-                  select
-                  SelectProps={{
-                    native: true,
-                  }}
-                  InputProps={{
-                    style: headerTableStyle,
-                  }}
-                >
-                  {optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-            </Grid>
-          </Container>
-        </Paper>
-      )}
     </Container>
   );
 };
 
+
+
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    nextComponent: (comp) => dispatch(nextComponent(comp)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileCompany);

@@ -9,7 +9,6 @@ import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
 import Checkbox from "@material-ui/core/Checkbox";
-
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -25,10 +24,13 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
 import TestDnD from "../components/TestDnD";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+
+import { nextComponent } from "../middleware/action";
+import { Breadcrumbs,Link,} from "@material-ui/core";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -92,6 +94,21 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 
+const optiondata = [
+  {
+    value: "1",
+    label: "Option1",
+  },
+  {
+    value: "2",
+    label: "Option2",
+  },
+  {
+    value: "3",
+    label: "Option3",
+  },
+];
+
 export const ProfileTravelAgent = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
@@ -140,33 +157,97 @@ export const ProfileTravelAgent = (props) => {
 
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
   React.useEffect(() => {
-    setSmallwidth(window.innerWidth < 1000)
+    setSmallwidth(window.innerWidth < 1000);
   }, []);
+
+
+  const handleComponentState = async (comp) => {
+    console.log("setcomp", comp);
+    props.nextComponent(comp);
+  };
 
   return (
     <Container
       maxWidth="xl"
       style={{
         paddingTop: 30,
+        marginTop: 22,
         color: themeState.color,
         backgroundColor: themeState.background,
       }}
     >
-      {smallwidth ?
+
+<Grid  item style={{ flexGrow: 1 }} >
+
+<Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 2, sm: 2, md: 2 }}>
+   <Grid item xs={6} sm={10} md={10} >
+           <Breadcrumbs
+              separator={
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: themeState.color,
+                  }}
+                >
+                  /
+                </Typography>
+              }
+            >
+              <Link
+                color="inherit"
+                href="#"
+                onClick={() => handleComponentState("ProfileIndivisual")}
+              >
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
+                >
+                  Profile
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
+                >
+               Travel Agent
+                </Typography>
+              </Link>
+          
+            
+            </Breadcrumbs>
+          </Grid>
+
+          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right"}} >
+          {/* <Button
+                variant="contained"
+                style={{ backgroundColor: "red", color: "white" }}
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button> */}
+          </Grid>
+          </Grid>
+           
+      
+          </Grid>
+
         <Paper
           elevation={3}
           style={{ color: themeState.color, backgroundColor: themeState.paper }}
         >
           <Container maxWidth="xl" style={{ paddingTop: 15 }}>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                Sales Information
-              </AccordionSummary>
-              <AccordionDetails>
+             
                 <Grid container alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
                     <Typography variant="h6" style={{ color: mainColor }}>
-                      Profile / Travel Agent
+                     Sales Information
                     </Typography>
                   </Grid>
                   <Grid item xl={3} md={3} xs={3}>
@@ -189,11 +270,26 @@ export const ProfileTravelAgent = (props) => {
                       fullWidth
                       className={classes.root}
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                 </Grid>
-              </AccordionDetails>
-            </Accordion>
+              
 
             <Divider
               style={{ marginTop: 10, backgroundColor: themeState.color }}
@@ -227,7 +323,23 @@ export const ProfileTravelAgent = (props) => {
                       fullWidth
                       className={classes.root}
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -235,6 +347,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Name 2"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
@@ -243,6 +358,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Name 3"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -267,6 +385,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Address 1"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -275,6 +396,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Address 2"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -283,6 +407,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Address 3"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -291,6 +418,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Address 4"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -300,7 +430,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -308,6 +454,9 @@ export const ProfileTravelAgent = (props) => {
                       label="City"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -316,6 +465,9 @@ export const ProfileTravelAgent = (props) => {
                       label="State"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -324,6 +476,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Postal"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -349,7 +504,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -358,7 +529,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -367,7 +554,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                 </Grid>
               </AccordionDetails>
@@ -391,6 +594,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Owner"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={2} md={6} xs={12}>
@@ -399,6 +605,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Temitory"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={2} md={6} xs={12}>
@@ -407,6 +616,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Trace Code"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -415,6 +627,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Keyword"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -423,6 +638,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Type"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -447,6 +665,9 @@ export const ProfileTravelAgent = (props) => {
                       label="IATA"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -455,6 +676,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Ref. Currency"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -463,6 +687,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Credit Rating"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -471,6 +698,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Active Reason"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -495,6 +725,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Guest Type"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
@@ -503,6 +736,9 @@ export const ProfileTravelAgent = (props) => {
                       label="Tax ID"
                       variant="outlined"
                       fullWidth
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
                     />
                   </Grid>
                   <Grid item xl={2} md={6} xs={12}>
@@ -512,7 +748,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={2} md={6} xs={12}>
                     <FormControlLabel
@@ -529,7 +781,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                 </Grid>
               </AccordionDetails>
@@ -553,7 +821,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -562,7 +846,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -571,7 +871,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -580,7 +896,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -589,7 +921,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -598,7 +946,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -607,7 +971,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -616,7 +996,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -625,7 +1021,23 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                   <Grid item xl={3} md={6} xs={12}>
                     <TextField
@@ -634,454 +1046,40 @@ export const ProfileTravelAgent = (props) => {
                       variant="outlined"
                       fullWidth
                       select
-                    />
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {optiondata.map((option) => (
+                        <option
+                          style={headerTableStyle}
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
                 </Grid>
               </AccordionDetails>
             </Accordion>
           </Container>
         </Paper>
-        :
-        <Paper
-          elevation={3}
-          style={{ color: themeState.color, backgroundColor: themeState.paper }}
-        >
-          <Container maxWidth="xl" style={{ paddingTop: 15 }}>
-            <Grid container alignItems="center">
-              <Grid item style={{ flexGrow: 1 }}>
-                <Typography variant="h6" style={{ color: mainColor }}>
-                  Profile / Travel Agent
-                </Typography>
-              </Grid>
-              <Grid item xl={3} md={3} xs={3}>
-                <TextField
-                  style={{ paddingRight: 20 }}
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xl={2} md={6} xs={12}>
-                <TextField
-                  label="Property"
-                  variant="outlined"
-                  fullWidth
-                  className={classes.root}
-                  select
-                />
-              </Grid>
-            </Grid>
-            <Divider
-              style={{ marginTop: 10, backgroundColor: themeState.color }}
-            />
-          </Container>
-          {/* ====================================== */}
-          <Container
-            maxWidth="xl"
-            style={{
-              paddingTop: 15,
-              paddingBottom: 15,
-            }}
-          >
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10 }}
-            >
-              Account
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  label="Name 1"
-                  variant="outlined"
-                  fullWidth
-                  className={classes.root}
-                  select
-                />
-              </Grid>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Name 2"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Name 3"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10, paddingTop: 10 }}
-            >
-              Address
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Address 1"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Address 2"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Address 3"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Address 4"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Choose a country"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="City"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="State"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Postal"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10, paddingTop: 10 }}
-            >
-              Communication
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Commu1_type"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Commu2_type"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={4} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Commu3_type"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-            </Grid>
-
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10, paddingTop: 10 }}
-            >
-              Rerationship (Internal)
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={2} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Owner"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={2} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Temitory"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={2} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Trace Code"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Keyword"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Type"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
-
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10, paddingTop: 10 }}
-            >
-              A/R Number
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="IATA"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Ref. Currency"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Credit Rating"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Active Reason"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
-            <Typography
-              variant="subtitle1"
-              color="initial"
-              style={{ paddingBottom: 10, paddingTop: 10 }}
-            >
-              More Information
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Guest Type"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Tax ID"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xl={2} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Routing Instruction"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={2} md={6} xs={12}>
-                <FormControlLabel
-                  value="start"
-                  control={<Checkbox color="primary" />}
-                  label="Auto Populate Yn"
-                  labelPlacement="start"
-                />
-              </Grid>
-              <Grid item xl={2} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Payment"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-            </Grid>
-            <Typography variant="h6" style={{ paddingTop: 20, color: mainColor }}>
-              Sales Information
-            </Typography>
-            <Divider
-              style={{ marginTop: 10, backgroundColor: themeState.color }}
-            />
-            <Grid container spacing={2} style={{ marginTop: 15 }}>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Priority"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Room Potential"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Scope"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Scope City"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Action Code"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Business Segment"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Account Type"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Source"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Industry Code"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-              <Grid item xl={3} md={6} xs={12}>
-                <TextField
-                  className={classes.root}
-                  label="Compentition Code"
-                  variant="outlined"
-                  fullWidth
-                  select
-                />
-              </Grid>
-            </Grid>
-          </Container>
-        </Paper>
-      }
     </Container>
   );
 };
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    nextComponent: (comp) => dispatch(nextComponent(comp)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileTravelAgent);
