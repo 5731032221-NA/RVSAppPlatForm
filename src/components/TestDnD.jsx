@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -14,7 +14,12 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import DateFnsUtils from "@date-io/date-fns";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import {
   DatePicker,
   TimePicker,
@@ -74,6 +79,35 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 
+const optionTitle = [
+  {
+    value: "1",
+    label: "Mr.",
+  },
+  {
+    value: "2",
+    label: "Mrs.",
+  },
+  {
+    value: "3",
+    label: "Ms.",
+  },
+];
+const optionDocumentType = [
+  {
+    value: "1",
+    label: "Option1",
+  },
+  {
+    value: "2",
+    label: "Option2",
+  },
+  {
+    value: "3",
+    label: "Option3",
+  },
+];
+
 const optiondata = [
   {
     value: "1",
@@ -90,21 +124,13 @@ const optiondata = [
 ];
 const optiondata2 = [
   {
-    value: "10",
-    label: "Option10",
+    value: "Male",
+    label: "Male",
   },
   {
-    value: "20",
-    label: "Option20",
-  },
-  {
-    value: "30",
-    label: "Option30",
-  },
-  {
-    value: "40",
-    label: "Option40",
-  },
+    value: "Female",
+    label: "Female",
+  }
 ];
 
 export const TestDnD = (props) => {
@@ -116,13 +142,27 @@ export const TestDnD = (props) => {
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
 
+  const [optionCity,setOptionCity] = React.useState([
+    {
+      value: "1",
+      label: "Option1",
+    },
+    {
+      value: "2",
+      label: "Option2",
+    },
+    {
+      value: "3",
+      label: "Option3",
+    },
+  ]) 
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
       setThemeState({
         background: "#FFFFFF",
-        color: "#000000",
+        color: "#666666",
         paper: "#FFFFFF",
-        colorlevel: "A400",
+        colorlevel: "A400"
         // matStyle: this.classes.normalmode
       });
     } else {
@@ -131,6 +171,7 @@ export const TestDnD = (props) => {
         color: "#FAFAFA",
         paper: "#424242",
         colorlevel: "600",
+        holderColor: "A9A9AC"
         // matStyle: this.classes.darkmode
       });
     }
@@ -158,17 +199,38 @@ export const TestDnD = (props) => {
     color: themeState.color,
   };
 
-  const demoData = [
+  const [demoData, setDemoData] = useState([
     {
       id: "1",
       title: "Personal",
+      expend: true,
       content: [
+        {
+          id: 0,
+          label: "Title",
+          xl: 1,
+          md: 2,
+          xs: 2,
+          select: {
+            status: "option",
+            data: optionTitle.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
         {
           id: 1,
           label: "First Name",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          xl: 5,
+          md: 10,
+          xs: 10,
           select: {
             status: "fill",
             data: "",
@@ -178,9 +240,9 @@ export const TestDnD = (props) => {
         {
           id: 2,
           label: "Last Name",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          xl: 5,
+          md: 10,
+          xs: 10,
           select: {
             status: "fill",
             data: "",
@@ -190,9 +252,9 @@ export const TestDnD = (props) => {
         {
           id: 3,
           label: "Gender",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          xl: 1,
+          md: 2,
+          xs: 2,
           select: {
             status: "option",
             data: optiondata2.map((option) => (
@@ -210,9 +272,9 @@ export const TestDnD = (props) => {
         {
           id: 4,
           label: "Choose a Document Type*",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
             status: "option",
             data: optiondata.map((option) => (
@@ -230,9 +292,9 @@ export const TestDnD = (props) => {
         {
           id: 5,
           label: "ID Number*",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
             status: "option",
             data: optiondata.map((option) => (
@@ -250,9 +312,9 @@ export const TestDnD = (props) => {
         {
           id: 6,
           label: "Nationality*",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
             status: "option",
             data: optiondata.map((option) => (
@@ -270,9 +332,9 @@ export const TestDnD = (props) => {
         {
           id: 7,
           label: "Issue Date",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
             status: "datetime",
             data: "",
@@ -282,9 +344,9 @@ export const TestDnD = (props) => {
         {
           id: 8,
           label: "Expiry Date",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
             status: "datetime",
             data: "",
@@ -294,9 +356,9 @@ export const TestDnD = (props) => {
         {
           id: 9,
           label: "Date of Birth",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
             status: "datetime",
             data: "",
@@ -308,12 +370,13 @@ export const TestDnD = (props) => {
     {
       id: "2",
       title: "Comunication",
+      expend: true,
       content: [
         {
           id: 1,
           label: "Email",
           xl: 4,
-          md: 6,
+          md: 12,
           xs: 12,
           select: {
             status: "fill",
@@ -323,52 +386,61 @@ export const TestDnD = (props) => {
         },
         {
           id: 2,
-          label: "Phone Number",
+          label: "Mobile Number",
           xl: 4,
-          md: 6,
+          md: 12,
           xs: 12,
           select: {
             status: "fill",
             data: "",
           },
           handle: (e) => handleData(e),
-        },
+        },,
+        {
+          id: 3,
+          label: "Phone Number",
+          xl: 4,
+          md: 12,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        }
       ],
     },
     {
       id: "3",
       title: "Address",
+      expend: true,
       content: [
         {
           id: 1,
-          label: "OrganiZation",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          label: "Choose a Document Type",
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
-            status: "fill",
-            data: "",
+            status: "option",
+            data: optionDocumentType.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
           },
           handle: (e) => handleData(e),
         },
         {
           id: 2,
-          label: "Address Line 1",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Address Line 2",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          label: "Address",
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
             status: "fill",
             data: "",
@@ -378,12 +450,12 @@ export const TestDnD = (props) => {
         {
           id: 4,
           label: "Choose a country",
-          xl: 3,
-          md: 6,
-          xs: 12,
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
             status: "option",
-            data: optiondata2.map((option) => (
+            data: optiondata.map((option) => (
               <option
                 style={headerTableStyle}
                 key={option.value}
@@ -398,20 +470,29 @@ export const TestDnD = (props) => {
         {
           id: 5,
           label: "City",
-          xl: 3,
-          md: 6,
-          xs: 12,
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
-            status: "fill",
-            data: "",
+            status: "option",
+            data: optionCity.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
           },
+          handle: (e) => handleData(e),
         },
         {
           id: 6,
           label: "State",
-          xl: 3,
-          md: 6,
-          xs: 12,
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
             status: "fill",
             data: "",
@@ -421,9 +502,9 @@ export const TestDnD = (props) => {
         {
           id: 7,
           label: "Postal",
-          xl: 3,
-          md: 6,
-          xs: 12,
+          xl: 2,
+          md: 4,
+          xs: 4,
           select: {
             status: "fill",
             data: "",
@@ -434,18 +515,36 @@ export const TestDnD = (props) => {
     },
     {
       id: "4",
-      title: "Rerationship (Internal)",
+      title: "Social",
+      expend: true,
       content: [
+        // {
+        //   id: 1,
+        //   label: (
+        //     <Grid container alignItems="center">
+        //       <PublicRoundedIcon style={{ marginRight: 10 }} />
+        //       Web site
+        //     </Grid>
+        //   ),
+        //   xl: 4,
+        //   md: 6,
+        //   xs: 12,
+        //   select: {
+        //     status: "fill",
+        //     data: "",
+        //   },
+        //   handle: (e) => handleData(e),
+        // },
         {
           id: 1,
           label: (
             <Grid container alignItems="center">
-              <PublicRoundedIcon style={{ marginRight: 10 }} />
-              Web site
+              <AlternateEmailIcon style={{ marginRight: 10 ,color: 'green'}} />
+              Line
             </Grid>
           ),
-          xl: 4,
-          md: 6,
+          xl: 2,
+          md: 12,
           xs: 12,
           select: {
             status: "fill",
@@ -457,12 +556,12 @@ export const TestDnD = (props) => {
           id: 2,
           label: (
             <Grid container alignItems="center">
-              <AlternateEmailIcon style={{ marginRight: 10 }} />
-              Line
+              <WhatsAppIcon style={{ marginRight: 10 ,color: 'green'}} />
+              WhatsApp
             </Grid>
           ),
           xl: 2,
-          md: 6,
+          md: 12,
           xs: 12,
           select: {
             status: "fill",
@@ -474,12 +573,12 @@ export const TestDnD = (props) => {
           id: 3,
           label: (
             <Grid container alignItems="center">
-              <FacebookIcon style={{ marginRight: 10 }} />
+              <FacebookIcon style={{ marginRight: 10 ,color: 'blue'}} />
               Facebook
             </Grid>
           ),
           xl: 2,
-          md: 6,
+          md: 12,
           xs: 12,
           select: {
             status: "fill",
@@ -491,12 +590,12 @@ export const TestDnD = (props) => {
           id: 4,
           label: (
             <Grid container alignItems="center">
-              <InstagramIcon style={{ marginRight: 10 }} />
+              <InstagramIcon style={{ marginRight: 10 ,color: 'orange'}} />
               Instagram
             </Grid>
           ),
           xl: 2,
-          md: 6,
+          md: 12,
           xs: 12,
           select: {
             status: "fill",
@@ -508,12 +607,12 @@ export const TestDnD = (props) => {
           id: 5,
           label: (
             <Grid container alignItems="center">
-              <TwitterIcon style={{ marginRight: 10 }} />
+              <TwitterIcon style={{ marginRight: 10 ,color: '#1DA1F2'}} />
               Twitter
             </Grid>
           ),
           xl: 2,
-          md: 6,
+          md: 12,
           xs: 12,
           select: {
             status: "fill",
@@ -523,7 +622,8 @@ export const TestDnD = (props) => {
         },
       ],
     },
-  ];
+  ]
+  );
   const [list, setList] = React.useState(demoData);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -550,6 +650,20 @@ export const TestDnD = (props) => {
 
   const handleData = (e) => {
     console.log("Value from handleData : ", e.target.value);
+  };
+  const handleExpend = (id,expend) => {
+    let index = demoData.findIndex(x=> x.id === id);
+    console.log(Object.assign({}, demoData[index], {expend: !expend}))
+    if (index === -1) return;
+    else{
+     let new_data = demoData[index];
+     new_data.expend = !expend;
+      setDemoData([
+        ...demoData.slice(0,index),
+        new_data,
+        ...demoData.slice(index+1)
+      ]);
+    }
   };
 
   return (
@@ -588,73 +702,81 @@ export const TestDnD = (props) => {
                           minWidth: "100%",
                         }}
                       >
-                        <Typography
+                        <Accordion expanded={item.expend} onClick={()=>handleExpend(item.id,item.expend)}>
+                          <AccordionSummary expandIcon={<ArrowDropDownIcon style={{color:'blue'}}/>}>
+                            <div style={{color:'blue'}}>{item.title}</div>
+                          </AccordionSummary>
+                          {/* <Typography
                           variant="subtitle1"
                           color="initial"
                           style={{ paddingBottom: 10 }}
                         >
                           {item.title}
-                        </Typography>
-                        <Grid container spacing={2}>
-                          {item.content.map((detail, index) => (
-                            <Grid
-                              item
-                              key={detail.id}
-                              index={index}
-                              xl={detail.xl}
-                              md={detail.md}
-                              xs={detail.xs}
-                            >
-                              {detail.select.status === "fill" ? (
-                                <TextField
-                                  className={classes.root}
-                                  label={detail.label}
-                                  variant="outlined"
-                                  InputProps={{
-                                    style: headerTableStyle,
-                                  }}
-                                  fullWidth
-                                  onChange={detail.handle}
-                                />
-                              ) : detail.select.status === "option" ? (
-                                <TextField
-                                  className={classes.root}
-                                  label={detail.label}
-                                  variant="outlined"
-                                  fullWidth
-                                  select
-                                  defaultValue={" "}
-                                  SelectProps={{
-                                    native: true,
-                                  }}
-                                  InputProps={{
-                                    style: headerTableStyle,
-                                  }}
-                                  onChange={detail.handle}
+                        </Typography> */}
+                          <AccordionDetails>
+                            <Grid container spacing={2}>
+                              {item.content.map((detail, index) => (
+                                <Grid
+                                  item
+                                  key={detail.id}
+                                  index={index}
+                                  xl={detail.xl}
+                                  md={detail.md}
+                                  xs={detail.xs}
                                 >
-                                  {detail.select.data}
-                                </TextField>
-                              ) : (
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                  <KeyboardDatePicker
-                                    className={classes.root}
-                                    label={detail.label}
-                                    inputVariant="outlined"
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    // format="dd/MM/yyyy"
-                                    // value={selectedDateStartEdit}
-                                    // onChange={handleDateStartEdit}
-                                    onChange={detail.handle}
-                                    fullWidth
-                                  />
-                                </MuiPickersUtilsProvider>
-                              )}
+                                  {detail.select.status === "fill" ? (
+                                    <TextField
+                                      className={classes.root}
+                                      label={detail.label}
+                                      variant="outlined"
+                                      InputProps={{
+                                        style: headerTableStyle,
+                                      }}
+                                      fullWidth
+                                      onChange={detail.handle}
+                                    />
+                                  ) : detail.select.status === "option" ? (
+                                    <TextField
+                                      className={classes.root}
+                                      label={detail.label}
+                                      variant="outlined"
+                                      fullWidth
+                                      select
+                                      defaultValue={" "}
+                                      SelectProps={{
+                                        native: true,
+                                      }}
+                                      InputProps={{
+                                        style: headerTableStyle,
+                                      }}
+                                      onChange={detail.handle}
+                                    >
+                                      {detail.select.data}
+                                    </TextField>
+                                  ) : (
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                      <KeyboardDatePicker
+                                        className={classes.root}
+                                        label={detail.label}
+                                        inputVariant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        // format="dd/MM/yyyy"
+                                        // value={selectedDateStartEdit}
+                                        // onChange={handleDateStartEdit}
+                                        onChange={detail.handle}
+                                        fullWidth
+                                      />
+                                    </MuiPickersUtilsProvider>
+                                  )}
+                                </Grid>
+                              ))}
                             </Grid>
-                          ))}
-                        </Grid>
+                          </AccordionDetails>
+                        </Accordion>
                       </Grid>
+
                     </Grid>
                   )}
                 </Draggable>

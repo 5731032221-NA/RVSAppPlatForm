@@ -4,7 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
@@ -23,7 +23,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { nextComponent } from "../middleware/action";
-import { Breadcrumbs,Link,} from "@material-ui/core";
+import { Breadcrumbs, Link, } from "@material-ui/core";
 
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -107,7 +107,6 @@ export const ProfileIndividual = (props) => {
     colorlevel: "900",
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
-
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
       setThemeState({
@@ -152,7 +151,7 @@ export const ProfileIndividual = (props) => {
 
 
 
-  
+
   const handleComponentState = async (comp) => {
     console.log("setcomp", comp);
     props.nextComponent(comp);
@@ -162,12 +161,74 @@ export const ProfileIndividual = (props) => {
       maxWidth="xl"
       style={{
         paddingTop: 30,
-        color: themeState.color,marginTop: 22,
+        color: themeState.color, marginTop: 22,
         backgroundColor: themeState.background,
       }}
     >
+      <Grid item style={{ flexGrow: 1 }} >
+
+        <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 2, sm: 2, md: 2 }}>
+          <Grid item xs={6} sm={10} md={10} >
+            <Breadcrumbs
+              separator={
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: themeState.color,
+                  }}
+                >
+                  /
+                </Typography>
+              }
+            >
+              <Link
+                color="inherit"
+                href="#"
+                onClick={() => handleComponentState("ProfileIndivisual")}
+              >
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
+                >
+                  Profile
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
+                >
+                  individual Profile
+                </Typography>
+              </Link>
 
 
+            </Breadcrumbs>
+          </Grid>
+
+          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }} >
+            <Button
+                variant="contained"
+                uppercase={false}
+                textt
+                style={{ backgroundColor: "red", color: "white" ,textTransform: 'none'}}
+                startIcon={<DeleteIcon />}
+              >
+                Delete Profile
+              </Button>
+          </Grid>
+        </Grid>
+
+
+      </Grid>
+
+      {/* 
 <Grid  item style={{ flexGrow: 1 }} >
 
 <Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 2, sm: 2, md: 2 }}>
@@ -234,16 +295,6 @@ export const ProfileIndividual = (props) => {
         >
           <Container maxWidth="xl" style={{ paddingTop: 15 }}>
             <Grid container>
-              {/* <Typography variant="h6" style={{ flexGrow: 1, color: mainColor }}>
-                Profile / Individual
-              </Typography> */}
-              {/* <Button
-                variant="contained"
-                style={{ backgroundColor: "red", color: "white" }}
-                startIcon={<DeleteIcon />}
-              >
-                Delete
-              </Button> */}
             </Grid>
             <Divider
               style={{ marginTop: 10, backgroundColor: themeState.color }}
@@ -256,19 +307,12 @@ export const ProfileIndividual = (props) => {
               paddingBottom: 15,
             }}
           >
-            <Accordion>
+            <Accordion >
               <AccordionSummary expandIcon={<ExpandMore />}>
                 Personal
               </AccordionSummary>
 
               <AccordionDetails>
-                {/* <Typography
-                  variant="subtitle1"
-                  color="initial"
-                  style={{ paddingBottom: 10 }}
-                >
-                  Personal
-                </Typography> */}
                 <Grid container spacing={2}>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -442,13 +486,6 @@ export const ProfileIndividual = (props) => {
                 Communication
               </AccordionSummary>
               <AccordionDetails>
-                {/* <Typography
-                  variant="subtitle1"
-                  color="initial"
-                  style={{ paddingBottom: 10, paddingTop: 10 }}
-                >
-                  Communication
-                </Typography> */}
                 <Grid container spacing={2}>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -480,13 +517,6 @@ export const ProfileIndividual = (props) => {
                 Address
               </AccordionSummary>
               <AccordionDetails>
-                {/* <Typography
-                  variant="subtitle1"
-                  color="initial"
-                  style={{ paddingBottom: 10, paddingTop: 10 }}
-                >
-                  Address
-                </Typography> */}
                 <Grid container spacing={2}>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -582,13 +612,6 @@ export const ProfileIndividual = (props) => {
                 Rerationship (Internal)
               </AccordionSummary>
               <AccordionDetails>
-                {/* <Typography
-                  variant="subtitle1"
-                  color="initial"
-                  style={{ paddingBottom: 10, paddingTop: 10 }}
-                >
-                  Rerationship (Internal)
-                </Typography> */}
                 <Grid container spacing={2}>
                   <Grid item xl={4} md={6} xs={12}>
                     <TextField
@@ -678,9 +701,7 @@ export const ProfileIndividual = (props) => {
                 Booking History
               </AccordionSummary>
               <AccordionDetails>
-                {/* <Typography variant="h6" style={{ paddingTop: 20, color: mainColor }}>
-                  Booking History
-                </Typography> */}
+
                 <Divider
                   style={{ marginTop: 10, backgroundColor: themeState.color }}
                 />
@@ -694,7 +715,7 @@ export const ProfileIndividual = (props) => {
               </AccordionDetails>
             </Accordion>
           </Container>
-        </Paper>
+        </Paper> */}
       <TestDnD />
     </Container>
   );
