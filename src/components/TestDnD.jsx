@@ -20,6 +20,7 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import {
   DatePicker,
   TimePicker,
@@ -703,8 +704,10 @@ export const TestDnD = (props) => {
                         }}
                       >
                         <Accordion expanded={item.expend} onClick={()=>handleExpend(item.id,item.expend)}>
-                          <AccordionSummary expandIcon={<ArrowDropDownIcon style={{color:'blue'}}/>}>
-                            <div style={{color:'blue'}}>{item.title}</div>
+                          <AccordionSummary 
+                          // expandIcon={<ArrowDropDownIcon style={{color:'blue'}} />}
+                          >
+                            <div style={{color:'blue'}}>{item.title}&nbsp;</div> {item.expend ? <ArrowDropDownIcon style={{color:'blue'}} /> : <ArrowDropUpIcon style={{color:'blue'}} />}
                           </AccordionSummary>
                           {/* <Typography
                           variant="subtitle1"
