@@ -238,7 +238,8 @@ export default function Login({ setToken }) {
         setErrorUsername(false);
         setErrorPassword(false);
         if(cookies["UUID"]==null) {
-          if(username == "ADMIN"  || username == 'root') setDialogAdd(true);
+          if(username == "ADMIN"  || username == 'root') {setDialogAdd(true);
+            setUpdateData({ type: deviceTypes[0].label });}
           else setErrorCookie(true);
         }
         else setToken(token);
