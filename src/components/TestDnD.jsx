@@ -209,7 +209,7 @@ export const TestDnD = (props) => {
           id: 0,
           label: "Title",
           xl: 1,
-          md: 2,
+          md: 1,
           xs: 2,
           select: {
             status: "option",
@@ -229,7 +229,7 @@ export const TestDnD = (props) => {
           id: 1,
           label: "First Name",
           xl: 5,
-          md: 10,
+          md: 5,
           xs: 10,
           select: {
             status: "fill",
@@ -241,7 +241,7 @@ export const TestDnD = (props) => {
           id: 2,
           label: "Last Name",
           xl: 5,
-          md: 10,
+          md: 5,
           xs: 10,
           select: {
             status: "fill",
@@ -253,7 +253,7 @@ export const TestDnD = (props) => {
           id: 3,
           label: "Gender",
           xl: 1,
-          md: 2,
+          md: 1,
           xs: 2,
           select: {
             status: "option",
@@ -273,7 +273,7 @@ export const TestDnD = (props) => {
           id: 4,
           label: "Choose a Document Type*",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "option",
@@ -293,7 +293,7 @@ export const TestDnD = (props) => {
           id: 5,
           label: "ID Number*",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "option",
@@ -313,7 +313,7 @@ export const TestDnD = (props) => {
           id: 6,
           label: "Nationality*",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "option",
@@ -333,7 +333,7 @@ export const TestDnD = (props) => {
           id: 7,
           label: "Issue Date",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "datetime",
@@ -345,7 +345,7 @@ export const TestDnD = (props) => {
           id: 8,
           label: "Expiry Date",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "datetime",
@@ -357,7 +357,7 @@ export const TestDnD = (props) => {
           id: 9,
           label: "Date of Birth",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "datetime",
@@ -376,7 +376,7 @@ export const TestDnD = (props) => {
           id: 1,
           label: "Email",
           xl: 4,
-          md: 12,
+          md: 4,
           xs: 12,
           select: {
             status: "fill",
@@ -388,7 +388,7 @@ export const TestDnD = (props) => {
           id: 2,
           label: "Mobile Number",
           xl: 4,
-          md: 12,
+          md: 4,
           xs: 12,
           select: {
             status: "fill",
@@ -400,7 +400,7 @@ export const TestDnD = (props) => {
           id: 3,
           label: "Phone Number",
           xl: 4,
-          md: 12,
+          md: 4,
           xs: 12,
           select: {
             status: "fill",
@@ -419,7 +419,7 @@ export const TestDnD = (props) => {
           id: 1,
           label: "Choose a Document Type",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "option",
@@ -439,7 +439,7 @@ export const TestDnD = (props) => {
           id: 2,
           label: "Address",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "fill",
@@ -451,7 +451,7 @@ export const TestDnD = (props) => {
           id: 4,
           label: "Choose a country",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "option",
@@ -471,7 +471,7 @@ export const TestDnD = (props) => {
           id: 5,
           label: "City",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "option",
@@ -491,7 +491,7 @@ export const TestDnD = (props) => {
           id: 6,
           label: "State",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "fill",
@@ -503,7 +503,7 @@ export const TestDnD = (props) => {
           id: 7,
           label: "Postal",
           xl: 2,
-          md: 4,
+          md: 2,
           xs: 4,
           select: {
             status: "fill",
@@ -544,7 +544,7 @@ export const TestDnD = (props) => {
             </Grid>
           ),
           xl: 2,
-          md: 12,
+          md: 2,
           xs: 12,
           select: {
             status: "fill",
@@ -561,7 +561,7 @@ export const TestDnD = (props) => {
             </Grid>
           ),
           xl: 2,
-          md: 12,
+          md: 2,
           xs: 12,
           select: {
             status: "fill",
@@ -578,7 +578,7 @@ export const TestDnD = (props) => {
             </Grid>
           ),
           xl: 2,
-          md: 12,
+          md: 2,
           xs: 12,
           select: {
             status: "fill",
@@ -595,7 +595,7 @@ export const TestDnD = (props) => {
             </Grid>
           ),
           xl: 2,
-          md: 12,
+          md: 2,
           xs: 12,
           select: {
             status: "fill",
@@ -612,7 +612,7 @@ export const TestDnD = (props) => {
             </Grid>
           ),
           xl: 2,
-          md: 12,
+          md: 2,
           xs: 12,
           select: {
             status: "fill",
