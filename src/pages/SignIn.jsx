@@ -8,8 +8,13 @@ import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 import { InputAdornment, TextField, Container, Button, Paper, Grid, Divider } from "@material-ui/core";
-
-
+import uuid from 'react-native-uuid';
+import Dialog from "@material-ui/core/Dialog";
+import { useCookies } from 'react-cookie';
+import { blue } from "@material-ui/core/colors";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import {getasset} from "../services/assest.service";
 import PropTypes from "prop-types";
 import auth from "../services/auth.service";
@@ -19,7 +24,9 @@ import { ReactReduxContext } from 'react-redux';
 import { EDIT_AUTHORIZATION } from "../middleware/action";
 import { EDIT_PROPERTYS } from "../middleware/action";
 import Box from '@material-ui/core/Box';
-
+import {
+  inserthardware
+} from "../services/device.service";
 // async function loginUser(credentials) {
 //   return fetch('http://'+(process.env.REACT_APP_host || "localhost")+':8083/login', {
 //     method: 'POST',
@@ -52,11 +59,42 @@ const useStyles = makeStyles((theme) => ({
   },
   errorMessage: {
     color: "#ff0033", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 12, paddingTop: 10,
-  }
+  },
+  root: (themeState) => ({
+    "& label.MuiInputLabel-root": {
+      color: themeState.color,
+    },
+    "& label.Mui-focused": {
+      color: blue[themeState.colorlevel],
+    },
+    "& .MuiInput-underline:after": {
+      borderColor: themeState.color,
+      color: themeState.color,
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: themeState.color,
+        color: themeState.color,
+      },
+      "&:hover fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+    },
+    "&.MuiPaper-root": {
+      backgroundColor: themeState.paper,
+    },
+    "&.MuiMenu-paper": {
+      backgroundColor: themeState.paper,
+    },
+  }),
 }));
 
 export default function Login({ setToken }) {
-  const classes = useStyles();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -67,9 +105,82 @@ export default function Login({ setToken }) {
   const [errorPassword, setErrorPassword] = useState(false);
   const [errorLogin, setErrorLogin] = useState(false);
   const { store } = useContext(ReactReduxContext);
+  const [cookies, setCookie] = useCookies(['name']);
+  const [mainColor, setMainColor] = React.useState("#2D62ED");
+  const pageProperty = '';
   //console.log("log store",store);
   // const [login, setlogin] = useState(false);
   const [file,  setFile] = useState("");
+
+
+  //Dialog cookie
+  const [dialogAdd, setDialogAdd] = React.useState(false);
+  const handleDialogAddClose = async () => {
+    setDialogAdd(false);
+  };
+
+  const [updateData, setUpdateData] = useState({});
+  const [themeState, setThemeState] = React.useState({
+    background: "#FFFFFF",
+    color: "#000000",
+    paper: "#FFFFFF",
+    colorlevel: "900",
+  });
+
+  const classes = useStyles(themeState);
+  const headerTableStyle = {
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  };
+  const [properties, setProperty] = React.useState([]);
+  const [deviceTypes, setDeviceType] = useState([
+    {
+      key: "1",
+      label: "COMP",
+    },
+    {
+      key: "2",
+      label: "PRINT",
+    },
+  ]);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [errorParameter, setErrorParameter] = useState(null);
+
+  const [errorMessageDu, setErrorMessageDu] = useState(false);
+  const [errorParameterDu, setErrorParameterDu] = useState(null);
+
+  const handleInsert = async () => {
+    console.log(updateData);
+    let gen_uuid = uuid.v4();
+    setErrorMessageDu(false);
+    updateData.macaddress = gen_uuid;
+    if (updateData.code == null || updateData.code == "") {
+      setErrorMessage(true);
+      setErrorParameter("Device Code");
+    } else if (updateData.name == null || updateData.name == "") {
+      setErrorMessage(true);
+      setErrorParameter("Device Name");
+    } else {
+      setErrorMessage(false);
+      let _inserthardware = await inserthardware(
+        resTooken.contents[resTooken.contents.length - 2].refreshToken,
+        updateData
+      );
+      if (_inserthardware.status == "2000") {
+        var d1 = new Date(),
+        d2 = new Date(d1);
+      d2.setFullYear(d2.getFullYear() + 100)
+      setCookie("UUID" ,  gen_uuid, { path: '/', expires: d2 });
+      setDialogAdd(false);
+      window.location.reload(false);
+      // setToken(resTooken);
+      }else if(_inserthardware.status == "1000"){
+        setErrorMessageDu(true);
+        const dupic = _inserthardware.msg +" Device Code: "+ updateData.code;
+        setErrorParameterDu(dupic)
+      }
+    }
+  };
 
   const getLogo  = async() => {
     const resp = await getasset();
@@ -87,7 +198,11 @@ export default function Login({ setToken }) {
     await getLogo();
   },[])
 
+  const [resTooken,setResToken] = useState(null);
+  const [errorCookie, setErrorCookie] = useState(false);
+
   const handleSubmit = async (e) => {
+    setErrorCookie(false);
     e.preventDefault();
     if (username === null || username === '') {
       setErrorUsername(true);
@@ -113,26 +228,23 @@ export default function Login({ setToken }) {
       });
    
 
-      // try{
-      // store.dispatch({
-      //   type: EDIT_AUTHORIZATION,
-      //   payload: token.contents[token.contents.length-2].refreshToken
-      //   })
-      // }catch(err){
-      //   console.log("de2",err.stack)
-      // }
       if (token.status == 2000) {
-        // const apitest = await propertys(token.contents[token.contents.length - 2].refreshToken);
-        // store.dispatch({
-        //   type: EDIT_PROPERTYS,
-        //   payload: apitest.content
-        // })
-        // console.log("store authen", store.getState().reducer)
-     
-
-        setToken(token);
+        setResToken(token)
+        // setToken(token);
+        var d1 = new Date(),
+      d2 = new Date(d1);
+    d2.setFullYear(d2.getFullYear() + 100)
+    // setCookie("UUID" ,  uuid.v4(), { path: '/', expires: d2 });
+        setErrorUsername(false);
+        setErrorPassword(false);
+        if(cookies["UUID"]==null) {
+          if(username == "ADMIN"  || username == 'root') {setDialogAdd(true);
+            setUpdateData({ type: deviceTypes[0].label });}
+          else setErrorCookie(true);
+        }
+        else setToken(token);
       }
-      setErrorLogin(true);
+      // setErrorLogin(true);
     }
   };
   // no-repeat fix; background-size: 100%;
@@ -167,6 +279,7 @@ export default function Login({ setToken }) {
           <Divider variant="middle" />
 
           {errorUsername ? <div className={classes.errorMessage}>Username is required</div> : (errorPassword ? <div className={classes.errorMessage}>Password is required</div> : (errorLogin ? <div className={classes.errorMessage}>Invalid Username or Password</div> : null))}
+          {errorCookie? <div className={classes.errorMessage}>Device not register. Please contact administrator.</div> : null}
  
           <Grid item className={classes.formlogin}>
           {/* Validate */}
@@ -247,6 +360,181 @@ export default function Login({ setToken }) {
 
         </Paper>
       </Container>
+       {/* ==================== Dialog New Device========================= */}
+       <Dialog
+          // fullWidth="true"
+          // maxWidth="md"
+          open={dialogAdd}
+          onClose={handleDialogAddClose}
+          aria-labelledby="form-dialog-title"
+          className={classes.root}
+        >
+          <Grid container>
+            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+              <DialogTitle
+                id="form-dialog-title"
+                style={{ backgroundColor: themeState.paper, color: mainColor }}
+              >
+                Register New Device
+              </DialogTitle>
+
+              <DialogContent style={headerTableStyle}>
+                <Container maxWidth="xl" disableGutters>
+                  <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                    {/* <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        className={classes.root}
+                        autoFocus
+                        select
+                        id="outlined-basic"
+                        label="Property"
+                        variant="outlined"
+                        defaultValue={pageProperty}
+                        fullWidth
+                        SelectProps={{
+                          native: true,
+                        }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
+                        onChange={(e) =>
+                          setUpdateData({
+                            ...updateData,
+                            propertycode: e.target.value,
+                          })
+                        }
+                      >
+                        {properties.map((option) => (
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
+                    </Grid> */}
+                    {/* <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                      <TextField
+                      onFocus
+                        className={classes.root}
+                        select
+                        id="outlined-basic"
+                        label="Device Type"
+                        variant="outlined"
+                        fullWidth
+                        SelectProps={{
+                          native: true,
+                        }}
+                        InputProps={{
+                          style: headerTableStyle,
+                        }}
+                        defaultValue={deviceTypes[0].label}
+                        onChange={(e) =>
+                          setUpdateData({ ...updateData, type: e.target.value })
+                        }
+                      >
+                        {deviceTypes.map((option) => (
+                          <option
+                            key={option.value}
+                            value={option.value}
+                            style={headerTableStyle}
+                          >
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
+                    </Grid> */}
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        // autoFocus
+                        id="outlined-basic"
+                        label="Device Code"
+                        variant="outlined"
+                        fullWidth
+                        onChange={(e) =>
+                          setUpdateData({ ...updateData, code: e.target.value })
+                        }
+                      />
+                    </Grid>
+
+                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <TextField
+                        // autoFocus
+                        id="outlined-basic"
+                        label="Device Name"
+                        variant="outlined"
+                        fullWidth
+                        onChange={(e) =>
+                          setUpdateData({ ...updateData, name: e.target.value })
+                        }
+                      />
+                    </Grid>
+                  </Grid>
+                </Container>
+                {errorMessage ? (
+                  <div style={{ marginTop: 15 }}>
+                    <div
+                      style={{
+                        background: "#ff0033",
+                        textAlign: "center",
+                        color: "white",
+                        height: "30px",
+                        paddingTop: 5,
+                      }}
+                    >
+                      {errorParameter} is required
+                    </div>
+                  </div>
+                ) : null}
+                {errorMessageDu ? (
+                  <div style={{ marginTop: 15 }}>
+                    <div
+                      style={{
+                        background: "#ff0033",
+                        textAlign: "center",
+                        color: "white",
+                        height: "30px",
+                        paddingTop: 5,
+                      }}
+                    >
+                      {errorParameterDu} 
+                    </div>
+                  </div>
+                ) : null}
+              </DialogContent>
+            </Grid>
+          </Grid>
+          <DialogActions
+            style={{
+              padding: 20,
+              backgroundColor: themeState.paper,
+              color: themeState.color,
+            }}
+          >
+            <Button
+              onClick={handleDialogAddClose}
+              variant="text"
+              color="primary"
+              style={{ color: mainColor }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{
+                color: themeState.color,
+                backgroundColor: mainColor,
+              }}
+              onClick={() => handleInsert()}
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+
     </Grid>
   );
 }

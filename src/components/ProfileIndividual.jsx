@@ -4,7 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
@@ -129,7 +129,6 @@ export const ProfileIndividual = (props) => {
     colorlevel: "900",
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
-
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
       setThemeState({
@@ -172,7 +171,7 @@ export const ProfileIndividual = (props) => {
     color: themeState.color,
   };
 
-  const demoData = [
+  const [demoData, setDemoData] = React.useState([
     {
       id: "1",
       title: "Personal",
@@ -555,7 +554,7 @@ export const ProfileIndividual = (props) => {
         },
       ],
     },
-  ];
+  ]);
 
   const [list, setList] = React.useState(demoData);
   const reorder = (list, startIndex, endIndex) => {

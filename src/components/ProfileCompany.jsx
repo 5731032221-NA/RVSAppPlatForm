@@ -184,7 +184,7 @@ export const ProfileCompany = (props) => {
     props.nextComponent(comp);
   };
 
-  const demoData = [
+  const [demoData, setDemoData] = React.useState([
     {
       id: "1",
       title: "Account",
@@ -870,7 +870,7 @@ export const ProfileCompany = (props) => {
         },
       ],
     },
-  ];
+  ]);
   const [list, setList] = React.useState(demoData);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
