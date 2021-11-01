@@ -19,6 +19,8 @@ import { ReactReduxContext } from 'react-redux';
 import { EDIT_AUTHORIZATION } from "../middleware/action";
 import { EDIT_PROPERTYS } from "../middleware/action";
 import Box from '@material-ui/core/Box';
+// import config  from '../Config'
+// import { PublicClientApplication } from '@azure/msal-browser'
 
 // async function loginUser(credentials) {
 //   return fetch('http://'+(process.env.REACT_APP_host || "localhost")+':8083/login', {
@@ -71,11 +73,26 @@ export default function Login({ setToken }) {
   // const [login, setlogin] = useState(false);
   const [file,  setFile] = useState("");
 
+
+  // const signinAdmin = async () => {
+  //    try {
+  //      console.log("ok:",config.scopes);
+  //     const a =  await this.PublicClientApplication.loginPopup({
+  //         scopes: config.scopes,
+  //         prompt: "select_accout"
+  //       })
+  //       console.log("ok:",a);
+       
+  //    } catch (error) {
+  //      console.log(error);
+  //    }
+  // }
+
   const getLogo  = async() => {
     const resp = await getasset();
-    console.log(resp);
+   
     if(resp.status == "2000"){
-      console.log(" okdee");
+      
       setFile(resp.content[0].asset);
     }
    
@@ -233,7 +250,7 @@ export default function Login({ setToken }) {
 
                 <Button
                   fullWidth
-               
+           
                   variant="outlined"
                   style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }}
                 >
