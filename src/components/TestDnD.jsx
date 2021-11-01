@@ -25,6 +25,11 @@ import {
   DateRangePicker,
 } from "@material-ui/pickers";
 
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+
 const useStyles = makeStyles((theme) => ({
   seeMore: {
     marginTop: theme.spacing(3),
@@ -71,6 +76,10 @@ const useStyles = makeStyles((theme) => ({
     "&.MuiMenu-paper": {
       backgroundColor: themeState.paper,
     },
+  }),
+  defaultTheme: (themeState) => ({
+    backgroundColor: themeState.paper,
+    color: themeState.color,
   }),
 }));
 
@@ -523,6 +532,1336 @@ export const TestDnD = (props) => {
         },
       ],
     },
+    {
+      id: "5",
+      title: "Booking History",
+      content: [
+        {
+          id: 1,
+          label: "booking data list here !!!",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "list",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+  ];
+
+  const demoData2 = [
+    {
+      id: "1",
+      title: "Account",
+      content: [
+        {
+          id: 1,
+          label: "Name 1",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Name 2",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: " ",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Name 3",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "2",
+      title: "Address",
+      content: [
+        {
+          id: 1,
+          label: "Address 1",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Address 2",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Address 3",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Address 4",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "Choose a country",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 6,
+          label: "City",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+        },
+        {
+          id: 7,
+          label: "State",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "Postal",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "3",
+      title: "Communication",
+      content: [
+        {
+          id: 1,
+          label: "Commu1_type",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Commu2_type",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Commu3_type",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "4",
+      title: "Rerationship (Internal)",
+      content: [
+        {
+          id: 1,
+          label: "Owner",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Temitory",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Trace Code",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Keyword",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "Type",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "5",
+      title: "A/R Number",
+      content: [
+        {
+          id: 1,
+          label: "IATA",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Ref. Currency",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Credit Rating",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Active Reason",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "6",
+      title: "More Information",
+      content: [
+        {
+          id: 1,
+          label: "Guest Type",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Tax ID",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Routing Instruction",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Auto Populate Yn",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "checkbox",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "Payment",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "7",
+      title: "Sales Information",
+      content: [
+        {
+          id: 1,
+          label: "Priority",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Room Potential",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Scope",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Scope City",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "Action Code",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 6,
+          label: "Business Segment",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 7,
+          label: "Account Type",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "Source",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 9,
+          label: "Industry Code",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 10,
+          label: "Compentition Code",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+  ];
+
+  const demoData3 = [
+    {
+      id: "1",
+      title: "Account",
+      content: [
+        {
+          id: 1,
+          label: "Master Account",
+          xl: 6,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Parent Account",
+          xl: 6,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option2",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Name 1",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Name 2",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: " ",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "Name 3",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "2",
+      title: "Address",
+      content: [
+        {
+          id: 1,
+          label: "Address 1",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Address 2",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Address 3",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Address 4",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "Choose a country",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 6,
+          label: "City",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+        },
+        {
+          id: 7,
+          label: "State",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "Postal",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "3",
+      title: "Communication",
+      content: [
+        {
+          id: 1,
+          label: "Commu1_type",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Commu2_type",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Commu3_type",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "4",
+      title: "Rerationship (Internal)",
+      content: [
+        {
+          id: 1,
+          label: "Owner",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Temitory",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Trace Code",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Keyword",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "Type",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "5",
+      title: "A/R Number",
+      content: [
+        {
+          id: 1,
+          label: "IATA",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Ref. Currency",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Credit Rating",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Active Reason",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "6",
+      title: "More Information",
+      content: [
+        {
+          id: 1,
+          label: "Tax ID",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "7",
+      title: "Sales Information",
+      content: [
+        {
+          id: 1,
+          label: "Priority",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Room Potential",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Scope",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Scope City",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "Action Code",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 6,
+          label: "Business Segment",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 7,
+          label: "Account Type",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "Source",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 9,
+          label: "Industry Code",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 10,
+          label: "Compentition Code",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
   ];
   const [list, setList] = React.useState(demoData);
   const reorder = (list, startIndex, endIndex) => {
@@ -559,20 +1898,25 @@ export const TestDnD = (props) => {
           <Paper
             elevation={3}
             style={{
+              padding: 20,
               marginTop: 50,
               color: themeState.color,
               backgroundColor: themeState.paper,
             }}
           >
-            <Container maxWidth="xl" disableGutters ref={provided.innerRef}>
+            <Divider
+              style={{ marginTop: 10, backgroundColor: themeState.color }}
+            />
+            <Container
+              maxWidth="xl"
+              disableGutters
+              style={{ marginTop: 10, backgroundColor: themeState.paper }}
+              ref={provided.innerRef}
+            >
               {list.map((item, index) => (
                 <Draggable draggableId={item.id} key={item.id} index={index}>
                   {(provided, snapshot) => (
-                    <Grid
-                      container
-                      xl={12}
-                      md={12}
-                      xs={12}
+                    <Accordion
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
@@ -580,21 +1924,12 @@ export const TestDnD = (props) => {
                         snapshot.isDragging,
                         provided.draggableProps.style
                       )}
+                      className={classes.defaultTheme}
                     >
-                      <Grid
-                        style={{
-                          minHeight: 100,
-                          padding: 20,
-                          minWidth: "100%",
-                        }}
-                      >
-                        <Typography
-                          variant="subtitle1"
-                          color="initial"
-                          style={{ paddingBottom: 10 }}
-                        >
-                          {item.title}
-                        </Typography>
+                      <AccordionSummary expandIcon={<ExpandMore />}>
+                        {item.title}
+                      </AccordionSummary>
+                      <AccordionDetails>
                         <Grid container spacing={2}>
                           {item.content.map((detail, index) => (
                             <Grid
@@ -634,7 +1969,7 @@ export const TestDnD = (props) => {
                                 >
                                   {detail.select.data}
                                 </TextField>
-                              ) : (
+                              ) : detail.select.status === "datetime" ? (
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                   <KeyboardDatePicker
                                     className={classes.root}
@@ -650,12 +1985,24 @@ export const TestDnD = (props) => {
                                     fullWidth
                                   />
                                 </MuiPickersUtilsProvider>
+                              ) : (
+                                <Typography
+                                  variant="subtitle1"
+                                  color="initial"
+                                  style={{
+                                    paddingBottom: 10,
+                                    paddingTop: 10,
+                                    color: "blue",
+                                  }}
+                                >
+                                  {detail.label}
+                                </Typography>
                               )}
                             </Grid>
                           ))}
                         </Grid>
-                      </Grid>
-                    </Grid>
+                      </AccordionDetails>
+                    </Accordion>
                   )}
                 </Draggable>
               ))}

@@ -23,7 +23,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { nextComponent } from "../middleware/action";
-import { Breadcrumbs,Link,} from "@material-ui/core";
+import { Breadcrumbs, Link } from "@material-ui/core";
 
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -82,6 +82,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: themeState.paper,
     },
   }),
+  defaultTheme: (themeState) => ({
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  }),
 }));
 
 const optiondata = [
@@ -96,6 +100,24 @@ const optiondata = [
   {
     value: "3",
     label: "Option3",
+  },
+];
+const optiondata2 = [
+  {
+    value: "10",
+    label: "Option10",
+  },
+  {
+    value: "20",
+    label: "Option20",
+  },
+  {
+    value: "30",
+    label: "Option30",
+  },
+  {
+    value: "40",
+    label: "Option40",
   },
 ];
 
@@ -150,9 +172,419 @@ export const ProfileIndividual = (props) => {
     color: themeState.color,
   };
 
+  const demoData = [
+    {
+      id: "1",
+      title: "Personal",
+      content: [
+        {
+          id: 1,
+          label: "First Name",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Last Name",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Gender",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Choose a Document Type*",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "ID Number*",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 6,
+          label: "Nationality*",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 7,
+          label: "Issue Date",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "datetime",
+            data: "",
+          },
+          handle: " ",
+        },
+        {
+          id: 8,
+          label: "Expiry Date",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "datetime",
+            data: "",
+          },
+          handle: " ",
+        },
+        {
+          id: 9,
+          label: "Date of Birth",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "datetime",
+            data: "",
+          },
+          handle: " ",
+        },
+      ],
+    },
+    {
+      id: "2",
+      title: "Comunication",
+      content: [
+        {
+          id: 1,
+          label: "Email",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Phone Number",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "3",
+      title: "Address",
+      content: [
+        {
+          id: 1,
+          label: "OrganiZation",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: "Address Line 1",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Address Line 2",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Choose a country",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "City",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+        },
+        {
+          id: 6,
+          label: "State",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 7,
+          label: "Postal",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "4",
+      title: "Rerationship (Internal)",
+      content: [
+        {
+          id: 1,
+          label: (
+            <Grid container alignItems="center">
+              <PublicRoundedIcon style={{ marginRight: 10 }} />
+              Web site
+            </Grid>
+          ),
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
+          label: (
+            <Grid container alignItems="center">
+              <AlternateEmailIcon style={{ marginRight: 10 }} />
+              Line
+            </Grid>
+          ),
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: (
+            <Grid container alignItems="center">
+              <FacebookIcon style={{ marginRight: 10 }} />
+              Facebook
+            </Grid>
+          ),
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: (
+            <Grid container alignItems="center">
+              <InstagramIcon style={{ marginRight: 10 }} />
+              Instagram
+            </Grid>
+          ),
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: (
+            <Grid container alignItems="center">
+              <TwitterIcon style={{ marginRight: 10 }} />
+              Twitter
+            </Grid>
+          ),
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "5",
+      title: "Booking History",
+      content: [
+        {
+          id: 1,
+          label: "booking data list here !!!",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "list",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+  ];
 
+  const [list, setList] = React.useState(demoData);
+  const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
 
-  
+    return result;
+  };
+  const onEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+    setList(reorder(list, result.source.index, result.destination.index));
+    console.log(result);
+  };
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // styles we need to apply on draggables
+    ...draggableStyle,
+
+    ...(isDragging && {
+      background: "lightblue",
+    }),
+  });
+
+  const handleData = (e) => {
+    console.log("Value from handleData : ", e.target.value);
+  };
+
   const handleComponentState = async (comp) => {
     console.log("setcomp", comp);
     props.nextComponent(comp);
@@ -162,17 +594,19 @@ export const ProfileIndividual = (props) => {
       maxWidth="xl"
       style={{
         paddingTop: 30,
-        color: themeState.color,marginTop: 22,
+        color: themeState.color,
+        marginTop: 22,
         backgroundColor: themeState.background,
       }}
     >
-
-
-<Grid  item style={{ flexGrow: 1 }} >
-
-<Grid container spacing={{ xs: 3, md: 3 }} columns={{ xs: 2, sm: 2, md: 2 }}>
-   <Grid item xs={6} sm={10} md={10} >
-           <Breadcrumbs
+      <Grid item style={{ flexGrow: 1 }}>
+        <Grid
+          container
+          spacing={{ xs: 3, md: 3 }}
+          columns={{ xs: 2, sm: 2, md: 2 }}
+        >
+          <Grid item xs={6} sm={10} md={10}>
+            <Breadcrumbs
               separator={
                 <Typography
                   variant="h6"
@@ -195,7 +629,7 @@ export const ProfileIndividual = (props) => {
                   variant="h6"
                   style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
                 >
-                  Profile 
+                  Profile
                 </Typography>
               </Link>
               <Link color="inherit" href="#" onClick={" "}>
@@ -207,495 +641,143 @@ export const ProfileIndividual = (props) => {
                     color: themeState.color,
                   }}
                 >
-               individual
+                  individual
                 </Typography>
               </Link>
-          
-            
             </Breadcrumbs>
           </Grid>
 
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right"}} >
-          <Button
-                variant="contained"
-                style={{ backgroundColor: "red", color: "white" }}
-                startIcon={<DeleteIcon />}
+          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "red", color: "white" }}
+              startIcon={<DeleteIcon />}
+            >
+              Delete
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+      <DragDropContext onDragEnd={onEnd}>
+        <Droppable droppableId="01">
+          {(provided, snapshot) => (
+            <Paper
+              elevation={3}
+              style={{
+                padding: 20,
+                color: themeState.color,
+                backgroundColor: themeState.paper,
+              }}
+            >
+              <Divider
+                style={{ marginTop: 10, backgroundColor: themeState.color }}
+              />
+              <Container
+                maxWidth="xl"
+                disableGutters
+                style={{ marginTop: 10, backgroundColor: themeState.paper }}
+                ref={provided.innerRef}
               >
-                Delete
-              </Button>
-          </Grid>
-          </Grid>
-           
-      
-          </Grid>
-        <Paper
-          elevation={3}
-          style={{ color: themeState.color, backgroundColor: themeState.paper }}
-        >
-          <Container maxWidth="xl" style={{ paddingTop: 15 }}>
-            <Grid container>
-              {/* <Typography variant="h6" style={{ flexGrow: 1, color: mainColor }}>
-                Profile / Individual
-              </Typography> */}
-              {/* <Button
-                variant="contained"
-                style={{ backgroundColor: "red", color: "white" }}
-                startIcon={<DeleteIcon />}
-              >
-                Delete
-              </Button> */}
-            </Grid>
-            <Divider
-              style={{ marginTop: 10, backgroundColor: themeState.color }}
-            />
-          </Container>
-          <Container
-            maxWidth="xl"
-            style={{
-              paddingTop: 15,
-              paddingBottom: 15,
-            }}
-          >
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                Personal
-              </AccordionSummary>
-
-              <AccordionDetails>
-                {/* <Typography
-                  variant="subtitle1"
-                  color="initial"
-                  style={{ paddingBottom: 10 }}
-                >
-                  Personal
-                </Typography> */}
-                <Grid container spacing={2}>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      label="First Name"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.root}
-                    />
-                  </Grid>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="Last Name"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="Gender"
-                      variant="outlined"
-                      fullWidth
-                      select
-                      defaultValue={" "}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    >
-                      {optiondata.map((option) => (
-                        <option
-                          style={headerTableStyle}
-                          key={option.value}
-                          value={option.value}
-                        >
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="Choose a Document Type*"
-                      variant="outlined"
-                      fullWidth
-                      select
-                      defaultValue={" "}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    >
-                      {optiondata.map((option) => (
-                        <option
-                          style={headerTableStyle}
-                          key={option.value}
-                          value={option.value}
-                        >
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="ID Number*"
-                      variant="outlined"
-                      fullWidth
-                      select
-                      defaultValue={" "}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    >
-                      {optiondata.map((option) => (
-                        <option
-                          style={headerTableStyle}
-                          key={option.value}
-                          value={option.value}
-                        >
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="Nationality*"
-                      variant="outlined"
-                      fullWidth
-                      select
-                      defaultValue={" "}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    >
-                      {optiondata.map((option) => (
-                        <option
-                          style={headerTableStyle}
-                          key={option.value}
-                          value={option.value}
-                        >
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid item xl={4} md={6} xs={12}>
-                      <KeyboardDatePicker
-                        className={classes.root}
-                        label="Issue Date"
-                        inputVariant="outlined"
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        // format="dd/MM/yyyy"
-                        // value={selectedDateStartEdit}
-                        // onChange={handleDateStartEdit}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xl={4} md={6} xs={12}>
-                      <KeyboardDatePicker
-                        className={classes.root}
-                        label="Expiry Date"
-                        inputVariant="outlined"
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        // format="dd/MM/yyyy"
-                        // value={selectedDateStartEdit}
-                        // onChange={handleDateStartEdit}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xl={4} md={6} xs={12}>
-                      <KeyboardDatePicker
-                        className={classes.root}
-                        label="Date of Birth"
-                        inputVariant="outlined"
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        // format="dd/MM/yyyy"
-                        // value={selectedDateStartEdit}
-                        // onChange={handleDateStartEdit}
-                        fullWidth
-                      />
-                    </Grid>
-                  </MuiPickersUtilsProvider>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                Communication
-              </AccordionSummary>
-              <AccordionDetails>
-                {/* <Typography
-                  variant="subtitle1"
-                  color="initial"
-                  style={{ paddingBottom: 10, paddingTop: 10 }}
-                >
-                  Communication
-                </Typography> */}
-                <Grid container spacing={2}>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="Email"
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="Phone Number"
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                Address
-              </AccordionSummary>
-              <AccordionDetails>
-                {/* <Typography
-                  variant="subtitle1"
-                  color="initial"
-                  style={{ paddingBottom: 10, paddingTop: 10 }}
-                >
-                  Address
-                </Typography> */}
-                <Grid container spacing={2}>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="OrganiZation"
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="Address Line 1"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="Address Line 2"
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xl={3} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="Choose a country"
-                      variant="outlined"
-                      fullWidth
-                      select
-                      defaultValue={" "}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    >
-                      {optiondata.map((option) => (
-                        <option
-                          style={headerTableStyle}
-                          key={option.value}
-                          value={option.value}
-                        >
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item xl={3} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="City"
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xl={3} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="State"
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xl={3} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label="Postal"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                Rerationship (Internal)
-              </AccordionSummary>
-              <AccordionDetails>
-                {/* <Typography
-                  variant="subtitle1"
-                  color="initial"
-                  style={{ paddingBottom: 10, paddingTop: 10 }}
-                >
-                  Rerationship (Internal)
-                </Typography> */}
-                <Grid container spacing={2}>
-                  <Grid item xl={4} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label={
-                        <Grid container alignItems="center">
-                          <PublicRoundedIcon style={{ marginRight: 10 }} />
-                          Web site
-                        </Grid>
-                      }
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xl={2} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label={
-                        <Grid container alignItems="center">
-                          <AlternateEmailIcon style={{ marginRight: 10 }} />
-                          Line
-                        </Grid>
-                      }
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xl={2} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label={
-                        <Grid container alignItems="center">
-                          <FacebookIcon style={{ marginRight: 10 }} />
-                          Facebook
-                        </Grid>
-                      }
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xl={2} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label={
-                        <Grid container alignItems="center">
-                          <InstagramIcon style={{ marginRight: 10 }} />
-                          Instagram
-                        </Grid>
-                      }
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xl={2} md={6} xs={12}>
-                    <TextField
-                      className={classes.root}
-                      label={
-                        <Grid container alignItems="center">
-                          <TwitterIcon style={{ marginRight: 10 }} />
-                          Twitter
-                        </Grid>
-                      }
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                Booking History
-              </AccordionSummary>
-              <AccordionDetails>
-                {/* <Typography variant="h6" style={{ paddingTop: 20, color: mainColor }}>
-                  Booking History
-                </Typography> */}
-                <Divider
-                  style={{ marginTop: 10, backgroundColor: themeState.color }}
-                />
-                <Typography
-                  variant="subtitle1"
-                  color="initial"
-                  style={{ paddingBottom: 10, paddingTop: 10 }}
-                >
-                  booking data list here !!!
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          </Container>
-        </Paper>
-      <TestDnD />
+                {list.map((item, index) => (
+                  <Draggable draggableId={item.id} key={item.id} index={index}>
+                    {(provided, snapshot) => (
+                      <Accordion
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                        className={classes.defaultTheme}
+                      >
+                        <AccordionSummary expandIcon={<ExpandMore />}>
+                          {item.title}
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Grid container spacing={2}>
+                            {item.content.map((detail, index) => (
+                              <Grid
+                                item
+                                key={detail.id}
+                                index={index}
+                                xl={detail.xl}
+                                md={detail.md}
+                                xs={detail.xs}
+                              >
+                                {detail.select.status === "fill" ? (
+                                  <TextField
+                                    className={classes.root}
+                                    label={detail.label}
+                                    variant="outlined"
+                                    InputProps={{
+                                      style: headerTableStyle,
+                                    }}
+                                    fullWidth
+                                    onChange={detail.handle}
+                                  />
+                                ) : detail.select.status === "option" ? (
+                                  <TextField
+                                    className={classes.root}
+                                    label={detail.label}
+                                    variant="outlined"
+                                    fullWidth
+                                    select
+                                    defaultValue={" "}
+                                    SelectProps={{
+                                      native: true,
+                                    }}
+                                    InputProps={{
+                                      style: headerTableStyle,
+                                    }}
+                                    onChange={detail.handle}
+                                  >
+                                    {detail.select.data}
+                                  </TextField>
+                                ) : detail.select.status === "datetime" ? (
+                                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardDatePicker
+                                      className={classes.root}
+                                      label={detail.label}
+                                      inputVariant="outlined"
+                                      InputProps={{
+                                        style: headerTableStyle,
+                                      }}
+                                      // format="dd/MM/yyyy"
+                                      // value={selectedDateStartEdit}
+                                      // onChange={handleDateStartEdit}
+                                      onChange={detail.handle}
+                                      fullWidth
+                                    />
+                                  </MuiPickersUtilsProvider>
+                                ) : (
+                                  <Typography
+                                    variant="subtitle1"
+                                    color="initial"
+                                    style={{
+                                      paddingBottom: 10,
+                                      paddingTop: 10,
+                                      color: "blue",
+                                    }}
+                                  >
+                                    {detail.label}
+                                  </Typography>
+                                )}
+                              </Grid>
+                            ))}
+                          </Grid>
+                        </AccordionDetails>
+                      </Accordion>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </Container>
+            </Paper>
+          )}
+        </Droppable>
+      </DragDropContext>
+      {/* <TestDnD /> */}
     </Container>
   );
 };
@@ -709,3 +791,21 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileIndividual);
+
+// {
+//   <Accordion>
+//     <AccordionSummary expandIcon={<ExpandMore />}>
+//       Booking History
+//     </AccordionSummary>
+//     <AccordionDetails>
+//       <Divider style={{ marginTop: 10, backgroundColor: themeState.color }} />
+//       <Typography
+//         variant="subtitle1"
+//         color="initial"
+//         style={{ paddingBottom: 10, paddingTop: 10 }}
+//       >
+//         booking data list here !!!
+//       </Typography>
+//     </AccordionDetails>
+//   </Accordion>;
+// }
