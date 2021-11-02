@@ -16,10 +16,12 @@ import { connect, ReactReduxContext, useSelector } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
 import TestDnD from "../components/TestDnD";
+import ProfileTable from "../components/ProfileTable";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { nextComponent } from "../middleware/action";
@@ -649,7 +651,15 @@ export const ProfileIndividual = (props) => {
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
-              style={{ backgroundColor: "red", color: "white" }}
+              style={{ backgroundColor: "blue", color: "white" }}
+              startIcon={<SaveOutlinedIcon />}
+              onClick={() => handleComponentState("ProfileIndivisual")}
+            >
+              Save
+            </Button>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "red", color: "white", marginLeft: 15 }}
               startIcon={<DeleteIcon />}
             >
               Delete

@@ -56,6 +56,7 @@ import RoleManagement from "../components/RoleManagement";
 import UserManagement from "../components/UserManagement";
 import DashboardDetail from "../components/Dashboard/DashboardDetail";
 import ProfilePage from "./ProfilePage";
+import ProfileTable from "../components/ProfileTable";
 import ProfilePageIndividual from "../components/ProfileIndividual";
 import ProfilePageTravelAgent from "../components/ProfileTravelAgent";
 import ProfilePageCompany from "../components/ProfileCompany";
@@ -279,7 +280,8 @@ export default function Main() {
   // // Look ma, no error!
   // console.error('Something bad happened.');
   const classes = useStyles();
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   const [open, setOpen] = React.useState(false);
   const [themeState, setThemeState] = React.useState(classes.themeDefault);
@@ -658,7 +660,12 @@ export default function Main() {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item container spacing={1} style={{ paddingLeft: 20, paddingTop: 5 }}>
+            <Grid
+              item
+              container
+              spacing={1}
+              style={{ paddingLeft: 20, paddingTop: 5 }}
+            >
               <Grid item>
                 <IconButton
                   onClick={toggleRightBar(true)}
@@ -801,13 +808,13 @@ export default function Main() {
             <AccountCircle style={{ fontSize: 28 }} />
           </IconButton> */}
             {open ? (
-              <Grid 
+              <Grid
                 item
                 container
                 spacing={1}
                 style={{ paddingLeft: 15, marginTop: 5, paddingBottom: 10 }}
               >
-                <Grid  item container spacing={1}>
+                <Grid item container spacing={1}>
                   <Typography
                     variant="subtitle1"
                     style={{ fontSize: 12, paddingLeft: 50, marginTop: -10 }}
@@ -1052,23 +1059,25 @@ export default function Main() {
             <div>
               <Configuration />
             </div>
-          ) : store.getState().reducer.componentState == "ProfilePage" ? (
+          ) : // : store.getState().reducer.componentState == "ProfileTable" ? (
+          //   <div
+          //     style={{
+          //       backgroundColor: themeStatedata.background,
+          //       color: themeStatedata.color,
+          //     }}
+          //   >
+          //     <ProfileTable />
+          //   </div>
+          // )
+          store.getState().reducer.componentState == "ProfileIndivisual" ? (
             <div
               style={{
                 backgroundColor: themeStatedata.background,
                 color: themeStatedata.color,
               }}
             >
-              <ProfilePage />
-            </div>
-          ) : store.getState().reducer.componentState == "ProfileIndivisual" ? (
-            <div
-              style={{
-                backgroundColor: themeStatedata.background,
-                color: themeStatedata.color,
-              }}
-            >
-              <ProfilePageIndividual />
+              <ProfileTable />
+              {/* <ProfilePageIndividual /> */}
             </div>
           ) : store.getState().reducer.componentState ==
             "ProfileTravelAgent" ? (
