@@ -262,8 +262,10 @@ export default function Login({ setToken }) {
           else setErrorCookie(true);
         }
         else setToken(token);
+      }else{
+         setErrorLogin(true);
       }
-      // setErrorLogin(true);
+     
     }
   };
   // no-repeat fix; background-size: 100%;
@@ -378,8 +380,7 @@ export default function Login({ setToken }) {
              </UnauthenticatedTemplate>
                
               </Grid>
-
-             
+            
             </form>
           </Grid>
 

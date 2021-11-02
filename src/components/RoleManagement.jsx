@@ -61,6 +61,7 @@ import {
 // from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
 import { EDIT_CONFIGSTATE } from "../middleware/action";
+import { useHistory } from "react-router-dom";
 
 // Generate Order Data
 function createData(
@@ -585,6 +586,7 @@ const defaultdata = [
 ];
 
 export default function RoleManagement() {
+  const history = useHistory();
   const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false });
   const { store } = useContext(ReactReduxContext);
   const [data, setData] = React.useState([]);
@@ -1068,7 +1070,8 @@ export default function RoleManagement() {
   };
 
   const handleComponentState = async (comp) => {
-    console.log("setcomp", comp);
+    const comlower = comp.toLowerCase();
+    history.replace(`/${comlower}`);
     store.dispatch({
       type: EDIT_CONFIGSTATE,
       payload: comp,

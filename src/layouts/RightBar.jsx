@@ -41,6 +41,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import { useHistory } from "react-router-dom";
 
 import Paper from '@material-ui/core/Paper';
 import {getasset,updateasset} from "../services/assest.service";
@@ -151,6 +152,7 @@ const useStyles = makeStyles({
 });
 
 export default function RighBar() {
+  const history = useHistory();
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -338,7 +340,10 @@ export default function RighBar() {
     sessionStorage.removeItem("curent_component")
     sessionStorage.removeItem("property")
     sessionStorage.setItem("token", false);
-    window.location.reload(false);
+   
+    history.replace(`/`);
+    history.go(0)
+    // window.location.reload("/");
   }
 
   function handleProfilePage() {

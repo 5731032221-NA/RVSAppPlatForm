@@ -274,7 +274,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Main() {
+export default function Main({ children }) {
   // console.log = console.warn = console.error = () => {};
   // // Look ma, no error!
   // console.error('Something bad happened.');
@@ -1021,7 +1021,8 @@ export default function Main() {
         {/* <Container maxWidth="100" className={classes.container}> */}
         <Container maxWidth="100" className={classes.container}>
           <HeaderTabs />
-          {store.getState().reducer.componentState == "Dashboard" ? (
+         {children}
+          {/* {store.getState().reducer.componentState == "Dashboard" ? (
             <div
               style={{
                 backgroundColor: themeStatedata.background,
@@ -1089,7 +1090,7 @@ export default function Main() {
             >
               <ProfilePageCompany />
             </div>
-          ) : null}
+          ) : null} */}
           <div style={{ paddingTop: 50 }}>
             <ButtomBar />
           </div>

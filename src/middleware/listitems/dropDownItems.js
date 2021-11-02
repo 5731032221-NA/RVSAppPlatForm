@@ -25,6 +25,7 @@ import Divider from "@material-ui/core/Divider";
 import Collapse from "@material-ui/core/Collapse";
 
 import { EDIT_COMPONENT, EDIT_CONFIGSTATE } from "../action";
+import { useHistory } from "react-router-dom";
 
 import translate_th from "../../static/lang/th.json";
 import translate_en from "../../static/lang/en.json";
@@ -32,6 +33,7 @@ import translate_en from "../../static/lang/en.json";
 import { ReactReduxContext, useSelector, useDispatch } from "react-redux";
 import { indexTab } from "../action";
 export default function MainListItems() {
+    const history = useHistory();
     const { store } = useContext(ReactReduxContext);
     const [openFrontDesk, setOpenFrontDesk] = useState(false);
     const [openCashier, setOpenCashier] = useState(false);
@@ -105,7 +107,8 @@ export default function MainListItems() {
     }
     function handleOpenDashboard() {
         dispatch(indexTab(''))
-        handleComponentState("Dashboard")
+        // handleComponentState("Dashboard")
+        handleComponentState("")
         setSelectedIndex(0)
     }
 
@@ -129,8 +132,9 @@ export default function MainListItems() {
         setSelectedIndex(3)
     }
     function handleOpenProfile() {
+
         setOpenProfile(!openProfile)
-        // handleComponentState("ProfilePage")
+        handleComponentState("Profile")
         setSelectedIndex(4)
     }
     function handleOpenProfileIndividual() {
@@ -168,26 +172,26 @@ export default function MainListItems() {
     function handleOpenProfileIndivisual() {
         store.dispatch({
             type: EDIT_CONFIGSTATE,
-            payload: "ProfileIndivisual",
+            payload: "ProfilePageIndividual",
         });
-        handleComponentState("ProfileIndivisual");
+        handleComponentState("profileindividual");
         setSelectedIndex(4);
     }
     function handleOpenProfileTravelAgent() {
         store.dispatch({
             type: EDIT_CONFIGSTATE,
-            payload: "ProfileTravelAgent",
+            payload: "profiletravelagent",
         });
-        handleComponentState("ProfileTravelAgent");
+        handleComponentState("profiletravelagent");
         setSelectedIndex(4);
     }
 
     function handleOpenProfileCompany() {
         store.dispatch({
             type: EDIT_CONFIGSTATE,
-            payload: "ProfileCompany",
+            payload: "profilepagecompany",
         });
-        handleComponentState("ProfileCompany");
+        handleComponentState("profilepagecompany");
         setSelectedIndex(4);
     }
     function handleOpenNA() {
@@ -223,6 +227,9 @@ export default function MainListItems() {
     }
 
     function handleComponentState(comp) {
+       
+        const comlower = comp.toLowerCase();
+        history.replace(`/${comlower}`);
         store.dispatch({
             type: EDIT_COMPONENT,
             payload: comp
