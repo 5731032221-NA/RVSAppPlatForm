@@ -27,6 +27,25 @@ import Box from '@material-ui/core/Box';
 import {
   inserthardware
 } from "../services/device.service";
+
+//Azure AD
+
+import { loginRequest } from "../authConfig";
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
+import { callMsGraph } from "../graph";
+
+function handleLogin(instance) {
+  instance.loginRedirect(loginRequest).catch(e => {
+      console.error(e);
+  });
+}
+function handleLogout(instance) {
+  instance.logoutRedirect().catch(e => {
+      console.error(e);
+  });
+}
+
+
 // async function loginUser(credentials) {
 //   return fetch('http://'+(process.env.REACT_APP_host || "localhost")+':8083/login', {
 //     method: 'POST',
@@ -97,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Login({ setToken }) {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-
+  const { instance } = useMsal();
   
 
 
@@ -344,14 +363,20 @@ export default function Login({ setToken }) {
                   </Grid>
                 </Grid>
 
+                <AuthenticatedTemplate>
+                  <ProfileContent />
+              </AuthenticatedTemplate>
+                <UnauthenticatedTemplate>
                 <Button
                   fullWidth
-           
+                  onClick={() => handleLogin(instance)}
                   variant="outlined"
                   style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }}
                 >
                   SIGN IN BY ADMINISTRATOR <ArrowForwardIcon style={{ paddingLeft: 10 }} />
                 </Button>
+             </UnauthenticatedTemplate>
+               
               </Grid>
 
              
@@ -544,4 +569,45 @@ Login.propTypes = {
   // store: PropTypes.func.isRequired
   // ,
   // setAuthorization:  PropTypes.func.isRequired
+};
+
+
+function ProfileContent() {
+  const { instance, accounts } = useMsal();
+  const [graphData, setGraphData] = useState(null);
+
+  const name = accounts[0] && accounts[0].name;
+
+  function RequestProfileData() {
+      const request = {
+          ...loginRequest,
+          account: accounts[0]
+      };
+
+      console.log("request:",request);
+
+      // Silently acquires an access token which is then attached to a request for Microsoft Graph data
+      instance.acquireTokenSilent(request).then((response) => {
+          callMsGraph(response.accessToken).then(response => setGraphData(response));
+      }).catch((e) => {
+          instance.acquireTokenPopup(request).then((response) => {
+              callMsGraph(response.accessToken).then(response => setGraphData(response));
+          });
+      });
+  }
+
+  return (
+      <>
+          <Button   variant="outlined"
+                  style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }} onClick={() => handleLogout(instance)}>Sign out using Redirect</Button>
+          {/* <h5 className="card-title">Welcome {name}</h5> */}
+          {graphData ? 
+             <Button vvariant="outlined"
+             style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }} >Show Is Console </Button>
+              :
+              <Button vvariant="outlined"
+              style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }} onClick={RequestProfileData}>Request Profile Information</Button>
+          }
+      </>
+  );
 };

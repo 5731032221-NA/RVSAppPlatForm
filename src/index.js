@@ -6,12 +6,19 @@ import { createStore } from "redux";
 import reportWebVitals from './reportWebVitals';
 import { CookiesProvider } from 'react-cookie';
 
+import { PublicClientApplication } from "@azure/msal-browser";
+import { MsalProvider } from "@azure/msal-react";
+import { msalConfig } from "./authConfig";
+
+const msalInstance = new PublicClientApplication(msalConfig);
 console.warn =  () => {};
 ReactDOM.render(
   <React.StrictMode>
+    <MsalProvider instance={msalInstance}>
     <CookiesProvider>
       <App />
     </CookiesProvider>
+    </MsalProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
