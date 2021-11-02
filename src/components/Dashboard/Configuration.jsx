@@ -40,6 +40,7 @@ import { ReactReduxContext, useSelector } from "react-redux";
 import LockIcon from "@material-ui/icons/Https";
 import { blue } from "@material-ui/core/colors";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
+import { useHistory } from "react-router-dom";
 import {
   updateconfiguration,
   getconfigurationbypropertycode,
@@ -93,6 +94,7 @@ const language = [
 ];
 
 export default function Configuration() {
+  const history = useHistory();
   const { store } = useContext(ReactReduxContext);
   const [expanded, setExpanded] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
@@ -493,26 +495,33 @@ export default function Configuration() {
 
   const handleConfig = async (name) => {
     if (name == "ROLE") {
+      history.replace(`/Role-Management`);
       store.dispatch({
         type: EDIT_CONFIGSTATE,
         payload: "RoleManagement",
       });
     } else if (name == "USER") {
+      history.replace(`/User-Management`);
       store.dispatch({
         type: EDIT_CONFIGSTATE,
         payload: "UserManagement",
       });
     } else if (name == "ROOM") {
+      history.replace(`/Room-Management`);
       store.dispatch({
         type: EDIT_CONFIGSTATE,
         payload: "RoomManagement",
       });
     } else if (name == "DEVICE") {
+     
+      history.replace(`/Device-Manager`);
       store.dispatch({
         type: EDIT_CONFIGSTATE,
         payload: "DeviceManager",
       });
     } else if (name == "COMPRT") {
+      history.replace(`/Computer-printer`);
+    
       store.dispatch({
         type: EDIT_CONFIGSTATE,
         payload: "ComputerPrinter",

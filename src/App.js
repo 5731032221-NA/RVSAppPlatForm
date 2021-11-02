@@ -20,7 +20,23 @@ import {
   EDIT_PROPERTY,EDIT_COMPONENT,EDIT_INDEXTAB,EDIT_PERMISSION
 } from "./middleware/action";
 
+import FrontDesk from "./components/Dashboard/FrontDesk";
+import Dashboard from "./components/Dashboard/Dashboard";
 
+import Configuration from "./components/Dashboard/Configuration";
+import ReservationPage from "./pages/ReservationPage";
+
+import RoleManagement from "./components/RoleManagement";
+import UserManagement from "./components/UserManagement";
+import DeviceManager from "./components/DeviceManager";
+import ComputerPrinter from "./components/ComputerPrinter";
+import RoomManagement from "./components/RoomManagement";
+import GenericNotFound from "./pages/GenericNotFound";
+import DashboardDetail from "./components/Dashboard/DashboardDetail";
+import ProfilePage from "./pages/ProfilePage";
+import ProfilePageIndividual from "./components/ProfileIndividual";
+import ProfilePageTravelAgent from "./components/ProfileTravelAgent";
+import ProfilePageCompany from "./components/ProfileCompany";
 // import useAuthorization from "./middleware/useAuthorization";
 // import useLang from "./middleware/useLang";
 // import useTheme from "./middleware/useTheme";
@@ -91,10 +107,10 @@ function App() {
       type: EDIT_INDEXTAB,
       payload: ind
     })
-    store.dispatch({
-        type: EDIT_COMPONENT,
-        payload: comp
-    })
+    // store.dispatch({
+    //     type: EDIT_COMPONENT,
+    //     payload: comp
+    // })
 }
 
   return (
@@ -114,12 +130,30 @@ function App() {
             <Route exact path="/signin" component={SignIn} />{" "}
             <Route exact path="/forgotpassword" component={ForgotPass} />{" "}
             <Route exact path="/userlist" component={UserList} />{" "}
-            <Route
-              exact
+            {/* <Route
               path="/"
               component={Main}
               style={{ backgroundColor: "black" }}
-            />{" "}
+            />{" "} */}
+            <Main>
+              <Route exact path={`/`} component={Dashboard} />{" "}
+              <Route  path={`/frontdesk`} component={FrontDesk} />{" "}
+              <Route  path={`/reservation`} component={ReservationPage} />{" "}
+              <Route  path={`/configuration`} component={Configuration} />{" "}
+              <Route  path={`/User-Management`} component={UserManagement} />{" "}
+              <Route  path={`/Role-Management`} component={RoleManagement} />{" "}
+              <Route  path={`/Device-Manager`} component={DeviceManager} />{" "}
+              <Route  path={`/Computer-printer`} component={ComputerPrinter} />{" "}
+              <Route  path={`/Room-Management`} component={RoomManagement} />{" "}
+            
+              <Route  path={`/profile`} component={ProfilePage} />{" "}
+              <Route  path={`/profileindividual`} component={ProfilePageIndividual} />{" "}
+              <Route  path={`/profiletravelagent`} component={ProfilePageTravelAgent} />{" "}
+              <Route  path={`/profilepagecompany`} component={ProfilePageCompany} />{" "}
+              {/* <Route  component={GenericNotFound} /> */}
+             
+            </Main>
+            
             {/* <Route component={ErrorPage} /> */}{" "}
           </Switch>{" "}
           {/* <Header store={store} /> */}{" "}

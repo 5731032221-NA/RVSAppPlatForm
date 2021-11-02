@@ -50,6 +50,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
+import { useHistory } from "react-router-dom";
+
 import {
   listuser,
   getuser,
@@ -645,6 +647,7 @@ const defaultdata = [
 ];
 
 export default function UserManagement() {
+  const history = useHistory();
   const [CRUD, setCRUD] = useState({ C: true, R: true, U: true, D: false });
   const [position, setPosition] = useState([
     { key: "Administrator", label: "Administrator" },
@@ -732,7 +735,9 @@ export default function UserManagement() {
   }, []);
 
   const handleComponentState = async (comp) => {
-    console.log("setcomp", comp);
+   
+    const comlower = comp.toLowerCase();
+    history.replace(`/${comlower}`);
     store.dispatch({
       type: EDIT_CONFIGSTATE,
       payload: comp,

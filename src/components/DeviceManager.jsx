@@ -38,7 +38,7 @@ import { listallproperty } from "../services/user.service";
 // from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
 import { EDIT_CONFIGSTATE } from "../middleware/action";
-
+import { useHistory } from "react-router-dom";
 // Generate Order Data
 function createData(id, propertycode, code, type, name, macaddress, ip) {
   return {
@@ -101,6 +101,7 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 export default function DeviceManager() {
+  const history = useHistory();
   const { store } = useContext(ReactReduxContext);
   const pageProperty = useSelector((state) => state.reducer.property);
   const [data, setData] = React.useState([]);
@@ -159,7 +160,8 @@ export default function DeviceManager() {
   }, []);
 
   const handleComponentState = async (comp) => {
-    console.log("setcomp", comp);
+    const comlower = comp.toLowerCase();
+    history.replace(`/${comlower}`);
     store.dispatch({
       type: EDIT_CONFIGSTATE,
       payload: comp,

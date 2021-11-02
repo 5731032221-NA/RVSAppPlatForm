@@ -20,6 +20,7 @@ import { ReactReduxContext ,useDispatch,useSelector} from "react-redux";
 
 import { EDIT_COMPONENT } from "../middleware/action";
 import { indexTab } from "../middleware/action";
+import { useHistory } from "react-router-dom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -70,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HeaderTabs() {
   const classes = useStyles();
-  
+  const history = useHistory();
   const [wordColor, setWordColor] = React.useState("#2D62ED");
   const [colorMode, setColorMode] = React.useState("#FFFFFF");
   const { store } = useContext(ReactReduxContext);
@@ -101,6 +102,8 @@ export default function HeaderTabs() {
 
 
   function handleComponentState(comp) {
+    const comlower = comp.toLowerCase();
+    history.replace(`/${comlower}`);
     store.dispatch({
       type: EDIT_COMPONENT,
       payload: comp,
