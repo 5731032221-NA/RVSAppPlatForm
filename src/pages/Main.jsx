@@ -310,15 +310,16 @@ export default function Main({ children }) {
 
   setInterval(() => {
     // console.log(parseInt(store.getState().reducer.compwidth) !== parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(document.getElementById("compwidth").offsetWidth+19.8),parseInt(store.getState().reducer.compwidth))
-    if (compWidthState != document.getElementById("compwidth").offsetWidth) {
-      setSmallwidth(window.innerWidth < 1000);
-      store.dispatch({
-        type: EDIT_COMPWIDTH,
-        payload: document.getElementById("compwidth").offsetWidth * ratio,
-      });
-      setCompWidth(document.getElementById("compwidth").offsetWidth);
+    if (document.getElementById("compwidth")) {
+      if (compWidthState != document.getElementById("compwidth").offsetWidth) {
+        setSmallwidth(window.innerWidth < 1000);
+        store.dispatch({
+          type: EDIT_COMPWIDTH,
+          payload: document.getElementById("compwidth").offsetWidth * ratio,
+        });
+        setCompWidth(document.getElementById("compwidth").offsetWidth);
+      }
     }
-
     if (compState != store.getState().reducer.componentState) {
       setComp(store.getState().reducer.componentState);
     }
@@ -801,13 +802,13 @@ export default function Main({ children }) {
             <AccountCircle style={{ fontSize: 28 }} />
           </IconButton> */}
             {open ? (
-              <Grid 
+              <Grid
                 item
                 container
                 spacing={1}
                 style={{ paddingLeft: 15, marginTop: 5, paddingBottom: 10 }}
               >
-                <Grid  item container spacing={1}>
+                <Grid item container spacing={1}>
                   <Typography
                     variant="subtitle1"
                     style={{ fontSize: 12, paddingLeft: 50, marginTop: -10 }}
@@ -1021,7 +1022,7 @@ export default function Main({ children }) {
         {/* <Container maxWidth="100" className={classes.container}> */}
         <Container maxWidth="100" className={classes.container}>
           <HeaderTabs />
-         {children}
+          {children}
           {/* {store.getState().reducer.componentState == "Dashboard" ? (
             <div
               style={{
