@@ -686,7 +686,7 @@ export const ProfileIndividual = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <DragDropContext onDragEnd={onEnd}>
+      {/* <DragDropContext onDragEnd={onEnd}>
         <Droppable droppableId="01">
           {(provided, snapshot) => (
             <Paper
@@ -903,8 +903,8 @@ export const ProfileIndividual = (props) => {
             </Paper>
           )}
         </Droppable>
-      </DragDropContext>
-      {/* <TestDnD /> */}
+      </DragDropContext> */}
+      <TestDnD />
     </Container>
   );
 };

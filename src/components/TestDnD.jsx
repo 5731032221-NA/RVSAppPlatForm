@@ -19,9 +19,8 @@ import DateFnsUtils from "@date-io/date-fns";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import {
   DatePicker,
   TimePicker,
@@ -79,10 +78,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: themeState.paper,
     },
   }),
-  defaultTheme: (themeState) => ({
-    backgroundColor: themeState.paper,
-    color: themeState.color,
-  }),
 }));
 
 const optionTitle = [
@@ -136,7 +131,7 @@ const optiondata2 = [
   {
     value: "Female",
     label: "Female",
-  },
+  }
 ];
 
 export const TestDnD = (props) => {
@@ -148,7 +143,7 @@ export const TestDnD = (props) => {
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
 
-  const [optionCity, setOptionCity] = React.useState([
+  const [optionCity,setOptionCity] = React.useState([
     {
       value: "1",
       label: "Option1",
@@ -161,14 +156,14 @@ export const TestDnD = (props) => {
       value: "3",
       label: "Option3",
     },
-  ]);
+  ]) 
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
       setThemeState({
         background: "#FFFFFF",
         color: "#666666",
         paper: "#FFFFFF",
-        colorlevel: "A400",
+        colorlevel: "A400"
         // matStyle: this.classes.normalmode
       });
     } else {
@@ -177,7 +172,7 @@ export const TestDnD = (props) => {
         color: "#FAFAFA",
         paper: "#424242",
         colorlevel: "600",
-        holderColor: "A9A9AC",
+        holderColor: "A9A9AC"
         // matStyle: this.classes.darkmode
       });
     }
@@ -401,8 +396,7 @@ export const TestDnD = (props) => {
             data: "",
           },
           handle: (e) => handleData(e),
-        },
-        ,
+        },,
         {
           id: 3,
           label: "Phone Number",
@@ -414,7 +408,7 @@ export const TestDnD = (props) => {
             data: "",
           },
           handle: (e) => handleData(e),
-        },
+        }
       ],
     },
     {
@@ -546,7 +540,7 @@ export const TestDnD = (props) => {
           id: 1,
           label: (
             <Grid container alignItems="center">
-              <AlternateEmailIcon style={{ marginRight: 10, color: "green" }} />
+              <AlternateEmailIcon style={{ marginRight: 10 ,color: 'green'}} />
               Line
             </Grid>
           ),
@@ -563,7 +557,7 @@ export const TestDnD = (props) => {
           id: 2,
           label: (
             <Grid container alignItems="center">
-              <WhatsAppIcon style={{ marginRight: 10, color: "green" }} />
+              <WhatsAppIcon style={{ marginRight: 10 ,color: 'green'}} />
               WhatsApp
             </Grid>
           ),
@@ -580,7 +574,7 @@ export const TestDnD = (props) => {
           id: 3,
           label: (
             <Grid container alignItems="center">
-              <FacebookIcon style={{ marginRight: 10, color: "blue" }} />
+              <FacebookIcon style={{ marginRight: 10 ,color: 'blue'}} />
               Facebook
             </Grid>
           ),
@@ -597,7 +591,7 @@ export const TestDnD = (props) => {
           id: 4,
           label: (
             <Grid container alignItems="center">
-              <InstagramIcon style={{ marginRight: 10, color: "orange" }} />
+              <InstagramIcon style={{ marginRight: 10 ,color: 'orange'}} />
               Instagram
             </Grid>
           ),
@@ -614,7 +608,7 @@ export const TestDnD = (props) => {
           id: 5,
           label: (
             <Grid container alignItems="center">
-              <TwitterIcon style={{ marginRight: 10, color: "#1DA1F2" }} />
+              <TwitterIcon style={{ marginRight: 10 ,color: '#1DA1F2'}} />
               Twitter
             </Grid>
           ),
@@ -629,1337 +623,8 @@ export const TestDnD = (props) => {
         },
       ],
     },
-    {
-      id: "5",
-      title: "Booking History",
-      content: [
-        {
-          id: 1,
-          label: "booking data list here !!!",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "list",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-  ]);
-
-  const demoData2 = [
-    {
-      id: "1",
-      title: "Account",
-      content: [
-        {
-          id: 1,
-          label: "Name 1",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Name 2",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: " ",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Name 3",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "2",
-      title: "Address",
-      content: [
-        {
-          id: 1,
-          label: "Address 1",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Address 2",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Address 3",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Address 4",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: "Choose a country",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 6,
-          label: "City",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-        },
-        {
-          id: 7,
-          label: "State",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 8,
-          label: "Postal",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "3",
-      title: "Communication",
-      content: [
-        {
-          id: 1,
-          label: "Commu1_type",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Commu2_type",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Commu3_type",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "4",
-      title: "Rerationship (Internal)",
-      content: [
-        {
-          id: 1,
-          label: "Owner",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Temitory",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Trace Code",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Keyword",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: "Type",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "5",
-      title: "A/R Number",
-      content: [
-        {
-          id: 1,
-          label: "IATA",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Ref. Currency",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Credit Rating",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Active Reason",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "6",
-      title: "More Information",
-      content: [
-        {
-          id: 1,
-          label: "Guest Type",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Tax ID",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Routing Instruction",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Auto Populate Yn",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "checkbox",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: "Payment",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "7",
-      title: "Sales Information",
-      content: [
-        {
-          id: 1,
-          label: "Priority",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Room Potential",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Scope",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Scope City",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: "Action Code",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 6,
-          label: "Business Segment",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 7,
-          label: "Account Type",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 8,
-          label: "Source",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 9,
-          label: "Industry Code",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 10,
-          label: "Compentition Code",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-  ];
-
-  const demoData3 = [
-    {
-      id: "1",
-      title: "Account",
-      content: [
-        {
-          id: 1,
-          label: "Master Account",
-          xl: 6,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Parent Account",
-          xl: 6,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option2",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Name 1",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Name 2",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: " ",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: "Name 3",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "2",
-      title: "Address",
-      content: [
-        {
-          id: 1,
-          label: "Address 1",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Address 2",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Address 3",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Address 4",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: "Choose a country",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 6,
-          label: "City",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-        },
-        {
-          id: 7,
-          label: "State",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 8,
-          label: "Postal",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "3",
-      title: "Communication",
-      content: [
-        {
-          id: 1,
-          label: "Commu1_type",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Commu2_type",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Commu3_type",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "4",
-      title: "Rerationship (Internal)",
-      content: [
-        {
-          id: 1,
-          label: "Owner",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Temitory",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Trace Code",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Keyword",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: "Type",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "5",
-      title: "A/R Number",
-      content: [
-        {
-          id: 1,
-          label: "IATA",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Ref. Currency",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Credit Rating",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Active Reason",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "6",
-      title: "More Information",
-      content: [
-        {
-          id: 1,
-          label: "Tax ID",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "7",
-      title: "Sales Information",
-      content: [
-        {
-          id: 1,
-          label: "Priority",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Room Potential",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Scope",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Scope City",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: "Action Code",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 6,
-          label: "Business Segment",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 7,
-          label: "Account Type",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 8,
-          label: "Source",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 9,
-          label: "Industry Code",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 10,
-          label: "Compentition Code",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-  ];
+  ]
+  );
   const [list, setList] = React.useState(demoData);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -1987,6 +652,20 @@ export const TestDnD = (props) => {
   const handleData = (e) => {
     console.log("Value from handleData : ", e.target.value);
   };
+  const handleExpend = (id,expend) => {
+    let index = demoData.findIndex(x=> x.id === id);
+    console.log(Object.assign({}, demoData[index], {expend: !expend}))
+    if (index === -1) return;
+    else{
+     let new_data = demoData[index];
+     new_data.expend = !expend;
+      setDemoData([
+        ...demoData.slice(0,index),
+        new_data,
+        ...demoData.slice(index+1)
+      ]);
+    }
+  };
 
   return (
     <DragDropContext onDragEnd={onEnd}>
@@ -1995,25 +674,20 @@ export const TestDnD = (props) => {
           <Paper
             elevation={3}
             style={{
-              padding: 20,
               marginTop: 50,
               color: themeState.color,
               backgroundColor: themeState.paper,
             }}
           >
-            <Divider
-              style={{ marginTop: 10, backgroundColor: themeState.color }}
-            />
-            <Container
-              maxWidth="xl"
-              disableGutters
-              style={{ marginTop: 10, backgroundColor: themeState.paper }}
-              ref={provided.innerRef}
-            >
+            <Container maxWidth="xl" disableGutters ref={provided.innerRef}>
               {list.map((item, index) => (
                 <Draggable draggableId={item.id} key={item.id} index={index}>
                   {(provided, snapshot) => (
-                    <Accordion
+                    <Grid
+                      container
+                      xl={12}
+                      md={12}
+                      xs={12}
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
@@ -2021,85 +695,92 @@ export const TestDnD = (props) => {
                         snapshot.isDragging,
                         provided.draggableProps.style
                       )}
-                      className={classes.defaultTheme}
                     >
-                      <AccordionSummary expandIcon={<ExpandMore />}>
-                        {item.title}
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <Grid container spacing={2}>
-                          {item.content.map((detail, index) => (
-                            <Grid
-                              item
-                              key={detail.id}
-                              index={index}
-                              xl={detail.xl}
-                              md={detail.md}
-                              xs={detail.xs}
-                            >
-                              {detail.select.status === "fill" ? (
-                                <TextField
-                                  className={classes.root}
-                                  label={detail.label}
-                                  variant="outlined"
-                                  InputProps={{
-                                    style: headerTableStyle,
-                                  }}
-                                  fullWidth
-                                  onChange={detail.handle}
-                                />
-                              ) : detail.select.status === "option" ? (
-                                <TextField
-                                  className={classes.root}
-                                  label={detail.label}
-                                  variant="outlined"
-                                  fullWidth
-                                  select
-                                  defaultValue={" "}
-                                  SelectProps={{
-                                    native: true,
-                                  }}
-                                  InputProps={{
-                                    style: headerTableStyle,
-                                  }}
-                                  onChange={detail.handle}
+                      <Grid
+                        style={{
+                          minHeight: 100,
+                          padding: 20,
+                          minWidth: "100%",
+                        }}
+                      >
+                        <Accordion expanded={item.expend} onClick={()=>handleExpend(item.id,item.expend)}>
+                          <AccordionSummary 
+                          // expandIcon={<ArrowDropDownIcon style={{color:'blue'}} />}
+                          >
+                            <div style={{color:'blue'}}>{item.title}&nbsp;</div> {item.expend ? <ArrowDropDownIcon style={{color:'blue'}} /> : <ArrowDropUpIcon style={{color:'blue'}} />}
+                          </AccordionSummary>
+                          {/* <Typography
+                          variant="subtitle1"
+                          color="initial"
+                          style={{ paddingBottom: 10 }}
+                        >
+                          {item.title}
+                        </Typography> */}
+                          <AccordionDetails>
+                            <Grid container spacing={2}>
+                              {item.content.map((detail, index) => (
+                                <Grid
+                                  item
+                                  key={detail.id}
+                                  index={index}
+                                  xl={detail.xl}
+                                  md={detail.md}
+                                  xs={detail.xs}
                                 >
-                                  {detail.select.data}
-                                </TextField>
-                              ) : detail.select.status === "datetime" ? (
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                  <KeyboardDatePicker
-                                    className={classes.root}
-                                    label={detail.label}
-                                    inputVariant="outlined"
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    // format="dd/MM/yyyy"
-                                    // value={selectedDateStartEdit}
-                                    // onChange={handleDateStartEdit}
-                                    onChange={detail.handle}
-                                    fullWidth
-                                  />
-                                </MuiPickersUtilsProvider>
-                              ) : (
-                                <Typography
-                                  variant="subtitle1"
-                                  color="initial"
-                                  style={{
-                                    paddingBottom: 10,
-                                    paddingTop: 10,
-                                    color: "blue",
-                                  }}
-                                >
-                                  {detail.label}
-                                </Typography>
-                              )}
+                                  {detail.select.status === "fill" ? (
+                                    <TextField
+                                      className={classes.root}
+                                      label={detail.label}
+                                      variant="outlined"
+                                      InputProps={{
+                                        style: headerTableStyle,
+                                      }}
+                                      fullWidth
+                                      onChange={detail.handle}
+                                    />
+                                  ) : detail.select.status === "option" ? (
+                                    <TextField
+                                      className={classes.root}
+                                      label={detail.label}
+                                      variant="outlined"
+                                      fullWidth
+                                      select
+                                      defaultValue={" "}
+                                      SelectProps={{
+                                        native: true,
+                                      }}
+                                      InputProps={{
+                                        style: headerTableStyle,
+                                      }}
+                                      onChange={detail.handle}
+                                    >
+                                      {detail.select.data}
+                                    </TextField>
+                                  ) : (
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                      <KeyboardDatePicker
+                                        className={classes.root}
+                                        label={detail.label}
+                                        inputVariant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        // format="dd/MM/yyyy"
+                                        // value={selectedDateStartEdit}
+                                        // onChange={handleDateStartEdit}
+                                        onChange={detail.handle}
+                                        fullWidth
+                                      />
+                                    </MuiPickersUtilsProvider>
+                                  )}
+                                </Grid>
+                              ))}
                             </Grid>
-                          ))}
-                        </Grid>
-                      </AccordionDetails>
-                    </Accordion>
+                          </AccordionDetails>
+                        </Accordion>
+                      </Grid>
+
+                    </Grid>
                   )}
                 </Draggable>
               ))}
