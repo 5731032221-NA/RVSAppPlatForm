@@ -23,8 +23,7 @@ import {
 } from "@material-ui/core";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import ProfileIndividual from "../components/ProfileIndividual";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ProfileCompany from "./ProfileCompany";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -139,7 +138,7 @@ const family = [
   },
 ];
 
-export const ProfileTable = (props) => {
+export const ProfileTableCompany = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -186,8 +185,8 @@ export const ProfileTable = (props) => {
     color: themeState.color,
   };
 
-  const [individualData, setIndividualData] = React.useState(rows);
-  //const [individualData, setIndividualData] = React.useState(null);
+  //  const [individualData, setIndividualData] = React.useState(rows);
+  const [individualData, setIndividualData] = React.useState(null);
   const [statusprofile, setStatusprofile] = React.useState(null);
 
   const handleComponentState = async (comp) => {
@@ -214,7 +213,7 @@ export const ProfileTable = (props) => {
             variant="h6"
             style={{ marginBottom: 15, fontSize: 26, color: mainColor }}
           >
-            Profile Individual
+            Profile Company
           </Typography>
         </Grid>
       </Grid>
@@ -377,7 +376,7 @@ export const ProfileTable = (props) => {
           />
         </Container>
       )}
-      <ProfileIndividual />
+      <ProfileCompany />
     </Container>
   );
 };
@@ -390,4 +389,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileTable);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProfileTableCompany);

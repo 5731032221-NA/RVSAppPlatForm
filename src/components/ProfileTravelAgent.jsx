@@ -28,6 +28,7 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 import { nextComponent } from "../middleware/action";
 import { Breadcrumbs, Link } from "@material-ui/core";
@@ -855,59 +856,20 @@ export const ProfileTravelAgent = (props) => {
     <Container
       maxWidth="xl"
       style={{
-        paddingTop: 30,
-        marginTop: 22,
+        paddingTop: 20,
         color: themeState.color,
+        marginTop: 15,
         backgroundColor: themeState.background,
       }}
     >
       <Grid item style={{ flexGrow: 1 }}>
-        <Grid
-          container
-          spacing={{ xs: 3, md: 3 }}
-          columns={{ xs: 2, sm: 2, md: 2 }}
-        >
-          <Grid item xs={6} sm={10} md={10}>
-            <Breadcrumbs
-              separator={
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 20,
-                    color: themeState.color,
-                  }}
-                >
-                  /
-                </Typography>
-              }
-            >
-              <Link
-                color="inherit"
-                href="#"
-                onClick={() => handleComponentState("ProfileIndivisual")}
-              >
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
-                >
-                  Profile
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={" "}>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  Travel Agent
-                </Typography>
-              </Link>
-            </Breadcrumbs>
-          </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <Typography
+            variant="h6"
+            style={{ marginBottom: 15, fontSize: 26, color: mainColor }}
+          >
+            Profile Travel Agent
+          </Typography>
         </Grid>
       </Grid>
 
@@ -991,7 +953,14 @@ export const ProfileTravelAgent = (props) => {
                         )}
                         className={classes.defaultTheme}
                       >
-                        <AccordionSummary expandIcon={<ExpandMore />}>
+                        <AccordionSummary
+                          style={{ color: mainColor, fontSize: 18 }}
+                          expandIcon={
+                            <ArrowDropDownIcon
+                              style={{ color: mainColor, fontSize: 30 }}
+                            />
+                          }
+                        >
                           {item.title}
                         </AccordionSummary>
                         <AccordionDetails>

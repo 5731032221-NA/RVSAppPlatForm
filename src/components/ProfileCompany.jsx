@@ -25,6 +25,7 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Breadcrumbs, Link } from "@material-ui/core";
@@ -903,52 +904,21 @@ export const ProfileCompany = (props) => {
     <Container
       maxWidth="xl"
       style={{
-        paddingTop: 30,
-        marginTop: 22,
+        paddingTop: 20,
         color: themeState.color,
+        marginTop: 15,
         backgroundColor: themeState.background,
       }}
     >
       <Grid item style={{ flexGrow: 1 }}>
-        <Breadcrumbs
-          separator={
-            <Typography
-              variant="h6"
-              style={{
-                marginBottom: 15,
-                fontSize: 20,
-                color: themeState.color,
-              }}
-            >
-              /
-            </Typography>
-          }
-        >
-          <Link
-            color="inherit"
-            href="#"
-            onClick={() => handleComponentState("ProfileIndivisual")}
+        <Grid item xs={12} sm={12} md={12}>
+          <Typography
+            variant="h6"
+            style={{ marginBottom: 15, fontSize: 26, color: mainColor }}
           >
-            <Typography
-              variant="h6"
-              style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
-            >
-              Profile
-            </Typography>
-          </Link>
-          <Typography>
-            <Typography
-              variant="h6"
-              style={{
-                marginBottom: 15,
-                fontSize: 14,
-                color: themeState.color,
-              }}
-            >
-              Company
-            </Typography>
+            Profile Company
           </Typography>
-        </Breadcrumbs>
+        </Grid>
       </Grid>
 
       <DragDropContext onDragEnd={onEnd}>
@@ -1025,7 +995,14 @@ export const ProfileCompany = (props) => {
                         )}
                         className={classes.defaultTheme}
                       >
-                        <AccordionSummary expandIcon={<ExpandMore />}>
+                        <AccordionSummary
+                          style={{ color: mainColor, fontSize: 18 }}
+                          expandIcon={
+                            <ArrowDropDownIcon
+                              style={{ color: mainColor, fontSize: 30 }}
+                            />
+                          }
+                        >
                           {item.title}
                         </AccordionSummary>
                         <AccordionDetails>

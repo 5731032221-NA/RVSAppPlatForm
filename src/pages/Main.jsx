@@ -1028,7 +1028,7 @@ export default function Main({ children }) {
         {/* <Container maxWidth="100" className={classes.container}> */}
         <Container maxWidth="100" className={classes.container}>
           <HeaderTabs />
-         {children}
+          {children}
           {/* {store.getState().reducer.componentState == "Dashboard" ? (
             <div
               style={{
@@ -1060,7 +1060,8 @@ export default function Main({ children }) {
             <div>
               <Configuration />
             </div>
-          ) : // : store.getState().reducer.componentState == "ProfileTable" ? (
+          ) : 
+          // : store.getState().reducer.componentState == "ProfileTable" ? (
           //   <div
           //     style={{
           //       backgroundColor: themeStatedata.background,
@@ -1078,7 +1079,7 @@ export default function Main({ children }) {
               }}
             >
               <ProfileTable />
-              {/* <ProfilePageIndividual /> */}
+               // <ProfilePageIndividual /> 
             </div>
           ) : store.getState().reducer.componentState ==
             "ProfileTravelAgent" ? (
