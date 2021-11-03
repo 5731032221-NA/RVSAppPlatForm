@@ -1403,6 +1403,7 @@ export default function Configuration() {
       style={{
         backgroundColor: themeState.background,
         color: themeState.color,
+        marginTop:22
       }}
     >
       {configState == "Configuration" ? (

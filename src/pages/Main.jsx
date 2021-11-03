@@ -246,6 +246,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionDesktop: {
     display: "none",
+    // borderLeft:" 1px solid #ffffff",
     [theme.breakpoints.up("md")]: {
       display: "flex",
     },
@@ -611,6 +612,7 @@ export default function Main({ children }) {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <span style={{color: "white", borderLeft:" 1px solid rgb(255 255 255 / 44%)", marginTop: 20,marginBottom: 20}}></span>
             {/* <Fab
               size="small"
               aria-label="add"
@@ -649,22 +651,23 @@ export default function Main({ children }) {
               <Grid item container spacing={0}>
                 <Typography
                   variant="subtitle1"
-                  style={{ fontSize: 15, paddingTop: 10 }}
+                  style={{ fontSize: 15, paddingTop: 18 }}
+                  noWrap
                 >
                   {sessionStorage.getItem("name")}
                 </Typography>
               </Grid>
               <Grid item container spacing={1}>
                 <Typography variant="body2" style={{ fontSize: 10 }}>
-                  {sessionStorage.getItem("role")}
+                  {/* {sessionStorage.getItem("role")} */}
                 </Typography>
               </Grid>
             </Grid>
             <Grid
               item
               container
-              spacing={1}
-              style={{ paddingLeft: 20, paddingTop: 5 }}
+              // spacing={1}
+              style={{ paddingLeft: 20, paddingTop: 7,paddingRight:0 }}
             >
               <Grid item>
                 <IconButton
@@ -724,7 +727,7 @@ export default function Main({ children }) {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item container spacing={1} style={{ paddingLeft: 20 }}>
+            <Grid item container spacing={1} style={{ paddingLeft: 10 }}>
               <Grid item>
                 <IconButton
                   onClick={toggleRightBar(true)}
@@ -739,7 +742,9 @@ export default function Main({ children }) {
                   onClose={toggleRightBar(false)}
                 >
                   <div style={{ zIndex: 4000 }}>{rightBarMenu()}</div>
+              
                 </SwipeableDrawer>
+              
               </Grid>
             </Grid>
           </div>
@@ -1079,7 +1084,7 @@ export default function Main({ children }) {
             >
               <ProfileTable />
               {/* <ProfilePageIndividual /> */}
-            </div>
+            {/* </div>
           ) : store.getState().reducer.componentState ==
             "ProfileTravelAgent" ? (
             <div
@@ -1099,7 +1104,7 @@ export default function Main({ children }) {
             >
               <ProfilePageCompany />
             </div>
-          ) : null} */}
+          ) : null} */} 
           <div style={{ paddingTop: 50 }}>
             <ButtomBar />
           </div>

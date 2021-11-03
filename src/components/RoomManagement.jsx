@@ -863,8 +863,8 @@ export default function RoomManagement() {
   return (
     <Container maxWidth="xl" style={themeState}>
       <React.Fragment>
-        <Paper style={{ backgroundColor: themeState.paper }}>
-          <Grid container style={{ padding: 20 }}>
+     
+          <Grid container style={{ padding: 20,marginTop:22 }}>
             <Grid item style={{ flexGrow: 1 }}>
               <Breadcrumbs
                 separator={
@@ -934,11 +934,11 @@ export default function RoomManagement() {
                 </Typography>
               </Breadcrumbs>
             </Grid>
-            <Divider
+            {/* <Divider
               orientation="vertical"
               flexItem
               style={{ backgroundColor: themeState.color }}
-            />
+            /> */}
             {CRUD.C ? (
               <Grid item style={{ marginLeft: 20, marginRight: 20 }}>
                 <Button
@@ -1942,7 +1942,7 @@ export default function RoomManagement() {
               </Grid>
             </Grid> */}
           </Grid>
-        </Paper>
+      
       </React.Fragment>
       {CRUD.R ? (
         <MaterialTable
