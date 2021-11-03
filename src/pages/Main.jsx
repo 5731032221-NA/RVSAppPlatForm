@@ -56,6 +56,7 @@ import RoleManagement from "../components/RoleManagement";
 import UserManagement from "../components/UserManagement";
 import DashboardDetail from "../components/Dashboard/DashboardDetail";
 import ProfilePage from "./ProfilePage";
+import ProfileTable from "../components/ProfileTable";
 import ProfilePageIndividual from "../components/ProfileIndividual";
 import ProfilePageTravelAgent from "../components/ProfileTravelAgent";
 import ProfilePageCompany from "../components/ProfileCompany";
@@ -245,6 +246,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionDesktop: {
     display: "none",
+    // borderLeft:" 1px solid #ffffff",
     [theme.breakpoints.up("md")]: {
       display: "flex",
     },
@@ -279,7 +281,8 @@ export default function Main({ children }) {
   // // Look ma, no error!
   // console.error('Something bad happened.');
   const classes = useStyles();
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   const [open, setOpen] = React.useState(false);
   const [themeState, setThemeState] = React.useState(classes.themeDefault);
@@ -610,6 +613,7 @@ export default function Main({ children }) {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <span style={{color: "white", borderLeft:" 1px solid rgb(255 255 255 / 44%)", marginTop: 20,marginBottom: 20}}></span>
             {/* <Fab
               size="small"
               aria-label="add"
@@ -648,18 +652,24 @@ export default function Main({ children }) {
               <Grid item container spacing={0}>
                 <Typography
                   variant="subtitle1"
-                  style={{ fontSize: 15, paddingTop: 10 }}
+                  style={{ fontSize: 15, paddingTop: 18 }}
+                  noWrap
                 >
                   {sessionStorage.getItem("name")}
                 </Typography>
               </Grid>
               <Grid item container spacing={1}>
                 <Typography variant="body2" style={{ fontSize: 10 }}>
-                  {sessionStorage.getItem("role")}
+                  {/* {sessionStorage.getItem("role")} */}
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item container spacing={1} style={{ paddingLeft: 20, paddingTop: 5 }}>
+            <Grid
+              item
+              container
+              // spacing={1}
+              style={{ paddingLeft: 20, paddingTop: 7,paddingRight:0 }}
+            >
               <Grid item>
                 <IconButton
                   onClick={toggleRightBar(true)}
@@ -718,7 +728,7 @@ export default function Main({ children }) {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item container spacing={1} style={{ paddingLeft: 20 }}>
+            <Grid item container spacing={1} style={{ paddingLeft: 10 }}>
               <Grid item>
                 <IconButton
                   onClick={toggleRightBar(true)}
@@ -733,7 +743,9 @@ export default function Main({ children }) {
                   onClose={toggleRightBar(false)}
                 >
                   <div style={{ zIndex: 4000 }}>{rightBarMenu()}</div>
+              
                 </SwipeableDrawer>
+              
               </Grid>
             </Grid>
           </div>
@@ -1054,24 +1066,32 @@ export default function Main({ children }) {
             <div>
               <Configuration />
             </div>
-          ) : store.getState().reducer.componentState == "ProfilePage" ? (
+          ) : 
+          // : store.getState().reducer.componentState == "ProfileTable" ? (
+          //   <div
+          //     style={{
+          //       backgroundColor: themeStatedata.background,
+          //       color: themeStatedata.color,
+          //     }}
+          //   >
+          //     <ProfileTable />
+          //   </div>
+          // )
+          store.getState().reducer.componentState == "ProfileIndivisual" ? (
             <div
               style={{
                 backgroundColor: themeStatedata.background,
                 color: themeStatedata.color,
               }}
             >
-              <ProfilePage />
+              <ProfileTable />
+<<<<<<< HEAD
+               // <ProfilePageIndividual /> 
             </div>
-          ) : store.getState().reducer.componentState == "ProfileIndivisual" ? (
-            <div
-              style={{
-                backgroundColor: themeStatedata.background,
-                color: themeStatedata.color,
-              }}
-            >
-              <ProfilePageIndividual />
-            </div>
+=======
+              {/* <ProfilePageIndividual /> */}
+            {/* </div>
+>>>>>>> 182d7b721df7613e23eaf1774fbddaaa734ef061
           ) : store.getState().reducer.componentState ==
             "ProfileTravelAgent" ? (
             <div
@@ -1091,7 +1111,7 @@ export default function Main({ children }) {
             >
               <ProfilePageCompany />
             </div>
-          ) : null} */}
+          ) : null} */} 
           <div style={{ paddingTop: 50 }}>
             <ButtomBar />
           </div>

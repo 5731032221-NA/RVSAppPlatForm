@@ -79,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
       width: "20ch",
     },
   },
+  
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {

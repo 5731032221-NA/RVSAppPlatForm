@@ -110,7 +110,7 @@ export const ProfilePage = (props) => {
       setMainColor("#2D62ED");
     }
   }, [maincolor]);
-  const [switchPage, setSwitchPage] = React.useState("individual");
+  const [switchPage, setSwitchPage] = React.useState("tableprofile");
   const classes = useStyles(themeState);
 
   const handlePage = (page) => {
@@ -118,8 +118,16 @@ export const ProfilePage = (props) => {
   };
 
   return (
-    <Container maxWidth="xl">
-      <Grid item style={{ flexGrow: 1, marginLeft: 30 }}>
+    <Container
+      maxWidth="xl"
+      disableGutters
+      style={{
+        color: themeState.color,
+        backgroundColor: themeState.background,
+        marginTop: 10,
+      }}
+    >
+      {/* <Grid item style={{ flexGrow: 1, marginLeft: 30 }}>
         <Breadcrumbs
           separator={
             <Typography
@@ -189,10 +197,8 @@ export const ProfilePage = (props) => {
             )}
           </Link>
         </Breadcrumbs>
-      </Grid>
+      </Grid> */}
 
-
-      
       {switchPage === "tableprofile" ? (
         <ProfileTable />
       ) : switchPage === "individual" ? (

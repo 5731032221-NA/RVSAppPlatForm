@@ -12,14 +12,19 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
 import TestDnD from "../components/TestDnD";
+import ProfileTable from "../components/ProfileTable";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { nextComponent } from "../middleware/action";
@@ -35,6 +40,7 @@ import {
   KeyboardDatePicker,
   DateRangePicker,
 } from "@material-ui/pickers";
+import MaterialTable from "material-table";
 const useStyles = makeStyles((theme) => ({
   seeMore: {
     marginTop: theme.spacing(3),
@@ -87,6 +93,22 @@ const useStyles = makeStyles((theme) => ({
     color: themeState.color,
   }),
 }));
+
+function createData(room, arrival, departure, night, rate, status) {
+  return {
+    room,
+    arrival,
+    departure,
+    night,
+    rate,
+    status,
+  };
+}
+
+const rows = [
+  createData("B1014", "12/05/2021", "15/05/2021", "3", "1,500.00", "Check-Out"),
+  createData("B1016", "12/08/2021", "15/08/2021", "3", "1,500.00", "Check-In"),
+];
 
 const optiondata = [
   {
@@ -174,10 +196,30 @@ export const ProfileIndividual = (props) => {
   const [demoData, setDemoData] = React.useState([
     {
       id: "1",
-      title: "Personal",
+      title: "Personal Information",
       content: [
         {
           id: 1,
+          label: "Title",
+          xl: 2,
+          md: 2,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 2,
           label: "First Name",
           xl: 4,
           md: 6,
@@ -189,7 +231,7 @@ export const ProfileIndividual = (props) => {
           handle: (e) => handleData(e),
         },
         {
-          id: 2,
+          id: 3,
           label: "Last Name",
           xl: 4,
           md: 6,
@@ -201,9 +243,9 @@ export const ProfileIndividual = (props) => {
           handle: (e) => handleData(e),
         },
         {
-          id: 3,
+          id: 4,
           label: "Gender",
-          xl: 4,
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
@@ -221,29 +263,9 @@ export const ProfileIndividual = (props) => {
           handle: (e) => handleData(e),
         },
         {
-          id: 4,
-          label: "Choose a Document Type*",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
           id: 5,
-          label: "ID Number*",
-          xl: 4,
+          label: "Choose a Document Type*",
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
@@ -262,40 +284,32 @@ export const ProfileIndividual = (props) => {
         },
         {
           id: 6,
-          label: "Nationality*",
-          xl: 4,
+          label: "ID Number*",
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            status: "fill",
+            data: "",
           },
           handle: (e) => handleData(e),
         },
         {
           id: 7,
-          label: "Issue Date",
-          xl: 4,
+          label: "Nationality*",
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
-            status: "datetime",
+            status: "fill",
             data: "",
           },
-          handle: " ",
+          handle: (e) => handleData(e),
         },
         {
           id: 8,
-          label: "Expiry Date",
-          xl: 4,
+          label: "Issue Date",
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
@@ -306,8 +320,20 @@ export const ProfileIndividual = (props) => {
         },
         {
           id: 9,
+          label: "Expiry Date",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "datetime",
+            data: "",
+          },
+          handle: " ",
+        },
+        {
+          id: 10,
           label: "Date of Birth",
-          xl: 4,
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
@@ -336,6 +362,18 @@ export const ProfileIndividual = (props) => {
         },
         {
           id: 2,
+          label: "Mobile Number",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
           label: "Phone Number",
           xl: 4,
           md: 6,
@@ -354,20 +392,28 @@ export const ProfileIndividual = (props) => {
       content: [
         {
           id: 1,
-          label: "OrganiZation",
-          xl: 4,
+          label: "Choose a Document Type*",
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
-            status: "fill",
-            data: "",
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
           },
           handle: (e) => handleData(e),
         },
         {
           id: 2,
-          label: "Address Line 1",
-          xl: 4,
+          label: "Address",
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
@@ -376,22 +422,11 @@ export const ProfileIndividual = (props) => {
           },
           handle: (e) => handleData(e),
         },
+
         {
           id: 3,
-          label: "Address Line 2",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Choose a country",
-          xl: 3,
+          label: "Country",
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
@@ -409,9 +444,9 @@ export const ProfileIndividual = (props) => {
           handle: (e) => handleData(e),
         },
         {
-          id: 5,
+          id: 4,
           label: "City",
-          xl: 3,
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
@@ -420,9 +455,9 @@ export const ProfileIndividual = (props) => {
           },
         },
         {
-          id: 6,
+          id: 5,
           label: "State",
-          xl: 3,
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
@@ -432,9 +467,9 @@ export const ProfileIndividual = (props) => {
           handle: (e) => handleData(e),
         },
         {
-          id: 7,
+          id: 6,
           label: "Postal",
-          xl: 3,
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
@@ -447,18 +482,18 @@ export const ProfileIndividual = (props) => {
     },
     {
       id: "4",
-      title: "Rerationship (Internal)",
+      title: "Social",
       content: [
         {
           id: 1,
           label: (
             <Grid container alignItems="center">
-              <PublicRoundedIcon style={{ marginRight: 10 }} />
-              Web site
+              <AlternateEmailIcon style={{ marginRight: 10, color: "green" }} />
+              Line
             </Grid>
           ),
-          xl: 4,
-          md: 6,
+          xl: 2,
+          md: 2,
           xs: 12,
           select: {
             status: "fill",
@@ -470,12 +505,12 @@ export const ProfileIndividual = (props) => {
           id: 2,
           label: (
             <Grid container alignItems="center">
-              <AlternateEmailIcon style={{ marginRight: 10 }} />
-              Line
+              <WhatsAppIcon style={{ marginRight: 10, color: "green" }} />
+              WhatsApp
             </Grid>
           ),
           xl: 2,
-          md: 6,
+          md: 2,
           xs: 12,
           select: {
             status: "fill",
@@ -487,12 +522,12 @@ export const ProfileIndividual = (props) => {
           id: 3,
           label: (
             <Grid container alignItems="center">
-              <FacebookIcon style={{ marginRight: 10 }} />
+              <FacebookIcon style={{ marginRight: 10, color: "blue" }} />
               Facebook
             </Grid>
           ),
           xl: 2,
-          md: 6,
+          md: 2,
           xs: 12,
           select: {
             status: "fill",
@@ -504,12 +539,12 @@ export const ProfileIndividual = (props) => {
           id: 4,
           label: (
             <Grid container alignItems="center">
-              <InstagramIcon style={{ marginRight: 10 }} />
+              <InstagramIcon style={{ marginRight: 10, color: "orange" }} />
               Instagram
             </Grid>
           ),
           xl: 2,
-          md: 6,
+          md: 2,
           xs: 12,
           select: {
             status: "fill",
@@ -521,12 +556,12 @@ export const ProfileIndividual = (props) => {
           id: 5,
           label: (
             <Grid container alignItems="center">
-              <TwitterIcon style={{ marginRight: 10 }} />
+              <TwitterIcon style={{ marginRight: 10, color: "#1DA1F2" }} />
               Twitter
             </Grid>
           ),
           xl: 2,
-          md: 6,
+          md: 2,
           xs: 12,
           select: {
             status: "fill",
@@ -538,13 +573,31 @@ export const ProfileIndividual = (props) => {
     },
     {
       id: "5",
+      title: "Note",
+      content: [
+        {
+          id: 1,
+          label: "Note",
+          xl: 4,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "note",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "6",
       title: "Booking History",
       content: [
         {
           id: 1,
           label: "booking data list here !!!",
-          xl: 4,
-          md: 6,
+          xl: 12,
+          md: 12,
           xs: 12,
           select: {
             status: "list",
@@ -588,13 +641,14 @@ export const ProfileIndividual = (props) => {
     console.log("setcomp", comp);
     props.nextComponent(comp);
   };
+
   return (
     <Container
       maxWidth="xl"
       style={{
-        paddingTop: 30,
+        paddingTop: 20,
         color: themeState.color,
-        marginTop: 22,
+        marginTop: 15,
         backgroundColor: themeState.background,
       }}
     >
@@ -605,51 +659,26 @@ export const ProfileIndividual = (props) => {
           columns={{ xs: 2, sm: 2, md: 2 }}
         >
           <Grid item xs={6} sm={10} md={10}>
-            <Breadcrumbs
-              separator={
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 20,
-                    color: themeState.color,
-                  }}
-                >
-                  /
-                </Typography>
-              }
+            <Typography
+              variant="h6"
+              style={{ marginBottom: 15, fontSize: 26, color: mainColor }}
             >
-              <Link
-                color="inherit"
-                href="#"
-                onClick={() => handleComponentState("ProfileIndivisual")}
-              >
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
-                >
-                  Profile
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={" "}>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  individual
-                </Typography>
-              </Link>
-            </Breadcrumbs>
+              Profile Individual
+            </Typography>
           </Grid>
 
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
-              style={{ backgroundColor: "red", color: "white" }}
+              style={{ backgroundColor: "blue", color: "white" }}
+              startIcon={<SaveOutlinedIcon />}
+              onClick={() => handleComponentState("ProfileIndivisual")}
+            >
+              Save
+            </Button>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "red", color: "white", marginLeft: 15 }}
               startIcon={<DeleteIcon />}
             >
               Delete
@@ -690,7 +719,14 @@ export const ProfileIndividual = (props) => {
                         )}
                         className={classes.defaultTheme}
                       >
-                        <AccordionSummary expandIcon={<ExpandMore />}>
+                        <AccordionSummary
+                          style={{ color: mainColor, fontSize: 18 }}
+                          expandIcon={
+                            <ArrowDropDownIcon
+                              style={{ color: mainColor, fontSize: 30 }}
+                            />
+                          }
+                        >
                           {item.title}
                         </AccordionSummary>
                         <AccordionDetails>
@@ -749,18 +785,110 @@ export const ProfileIndividual = (props) => {
                                       fullWidth
                                     />
                                   </MuiPickersUtilsProvider>
-                                ) : (
-                                  <Typography
-                                    variant="subtitle1"
-                                    color="initial"
-                                    style={{
-                                      paddingBottom: 10,
-                                      paddingTop: 10,
-                                      color: "blue",
+                                ) : detail.select.status === "note" ? (
+                                  <TextField
+                                    className={classes.root}
+                                    // label={detail.label}
+                                    variant="outlined"
+                                    InputProps={{
+                                      style: headerTableStyle,
                                     }}
-                                  >
-                                    {detail.label}
-                                  </Typography>
+                                    fullWidth
+                                    multiline
+                                    rows={4}
+                                    onChange={detail.handle}
+                                  />
+                                ) : (
+                                  <MaterialTable
+                                    elevation={0}
+                                    style={{
+                                      paddingLeft: 30,
+                                      paddingRight: 30,
+                                      color: themeState.color,
+                                      backgroundColor: themeState.paper,
+                                    }}
+                                    columns={[
+                                      {
+                                        title: "Room",
+                                        field: "room",
+                                        headerStyle: headerTableStyle,
+                                      },
+                                      {
+                                        title: "Arrival",
+                                        field: "arrival",
+                                        headerStyle: headerTableStyle,
+                                      },
+                                      {
+                                        title: "Departure",
+                                        field: "departure",
+                                        headerStyle: headerTableStyle,
+                                      },
+
+                                      {
+                                        title: "Night",
+                                        field: "night",
+                                        headerStyle: headerTableStyle,
+                                      },
+
+                                      {
+                                        title: "Rate",
+                                        field: "rate",
+                                        headerStyle: headerTableStyle,
+                                      },
+
+                                      {
+                                        render: (rowData) => {
+                                          return rowData.status ===
+                                            "Check-Out" ? (
+                                            <Button
+                                              variant="contained"
+                                              style={{
+                                                borderRadius: 20,
+                                                backgroundColor: "red",
+                                                color: "white",
+                                              }}
+                                            >
+                                              {rowData.status}
+                                            </Button>
+                                          ) : (
+                                            <Button
+                                              variant="contained"
+                                              style={{
+                                                borderRadius: 20,
+                                                backgroundColor: mainColor,
+                                                color: "white",
+                                              }}
+                                            >
+                                              {rowData.status}
+                                            </Button>
+                                          );
+                                        },
+                                        cellStyle: { textAlign: "center" },
+                                        headerStyle: {
+                                          textAlign: "center",
+                                          paddingLeft: 37,
+                                          backgroundColor: themeState.paper,
+                                          color: themeState.color,
+                                        },
+                                        title: "Status",
+                                        field: "status",
+                                      },
+                                    ]}
+                                    data={rows}
+                                    options={{
+                                      // searchFieldAlignment: "left",
+                                      showTitle: false,
+                                      search: false,
+                                      actionsColumnIndex: -1,
+                                      pageSizeOptions: [
+                                        5,
+                                        10,
+                                        20,
+                                        { value: rows.length, label: "All" },
+                                      ],
+                                      headerStyle: headerTableStyle,
+                                    }}
+                                  />
                                 )}
                               </Grid>
                             ))}
