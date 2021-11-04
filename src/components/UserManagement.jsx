@@ -49,7 +49,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-
+import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import { useHistory } from "react-router-dom";
 
 import {
@@ -2340,7 +2340,27 @@ export default function UserManagement() {
         <div style={{ maxWidth: "100%" }}>
           {CRUD.R ? (
             <MaterialTable
-            localization={{ body:{ emptyDataSourceMessage:<h3 >No Data Available</h3> }}}
+            localization={{ body:{ emptyDataSourceMessage: <>   <Typography
+              variant="h1"
+              align="center"
+              style={{ fontSize: 25, color: themeState.color }}
+            >
+              <ErrorOutlineOutlinedIcon
+                style={{ fontSize: 170, color: "lightgray" }}
+              />
+            </Typography>
+            <Typography
+              align="center"
+              variant="h2"
+              style={{
+                fontWeight: 400,
+                fontSize: 30,
+                color: themeState.color,
+                marginBottom: 20,
+              }}
+            >
+              No Data Available
+            </Typography> </> }}}
               style={{
                 paddingLeft: 30,
                 paddingRight: 30,

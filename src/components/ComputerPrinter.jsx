@@ -7,6 +7,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import MaterialTable from "material-table";
+import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import {
   Container,
   Grid,
@@ -768,7 +769,27 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
 
         <div style={{ maxWidth: "100%" }}>
           <MaterialTable
-          localization={{ body:{ emptyDataSourceMessage:<h3 >No Data Available</h3> }}}
+           localization={{ body:{ emptyDataSourceMessage: <>   <Typography
+            variant="h1"
+            align="center"
+            style={{ fontSize: 25, color: themeState.color }}
+          >
+            <ErrorOutlineOutlinedIcon
+              style={{ fontSize: 170, color: "lightgray" }}
+            />
+          </Typography>
+          <Typography
+            align="center"
+            variant="h2"
+            style={{
+              fontWeight: 400,
+              fontSize: 30,
+              color: themeState.color,
+              marginBottom: 20,
+            }}
+          >
+            No Data Available
+          </Typography> </> }}}
             style={{
               paddingLeft: 30,
               paddingRight: 30,
