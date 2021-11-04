@@ -676,11 +676,12 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
+  
 
   return (
     <Container maxWidth="xl" style={themeState}>
       <React.Fragment>
-        <Grid container style={{ padding: 20 }}>
+        <Grid container style={{ padding: 20,marginTop: 22 }}>
           <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
@@ -767,6 +768,7 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
 
         <div style={{ maxWidth: "100%" }}>
           <MaterialTable
+          localization={{ body:{ emptyDataSourceMessage:<h3 >No Data Available</h3> }}}
             style={{
               paddingLeft: 30,
               paddingRight: 30,
@@ -828,9 +830,12 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
             data={rows}
             // totalCount={rows.length}
             // page={page}
+
+            
             options={{
               actionsColumnIndex: -1,
               // filtering: true,
+              search: true,
               searchFieldAlignment: "left",
               page: page,
               pageSize: rowsPerPage,

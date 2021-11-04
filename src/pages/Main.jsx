@@ -652,15 +652,15 @@ export default function Main({ children }) {
               <Grid item container spacing={0}>
                 <Typography
                   variant="subtitle1"
-                  style={{ fontSize: 15, paddingTop: 18 }}
+                  style={{ fontSize: 15, paddingTop: 10 }}
                   noWrap
                 >
                   {sessionStorage.getItem("name")}
                 </Typography>
               </Grid>
-              <Grid item container spacing={1}>
-                <Typography variant="body2" style={{ fontSize: 10 }}>
-                  {/* {sessionStorage.getItem("role")} */}
+              <Grid item container spacing={1} style={{ paddingLeft: 10 }}>
+                <Typography variant="body2" style={{ fontSize: 10,marginTop: -15 }}>
+                  {sessionStorage.getItem("role")}
                 </Typography>
               </Grid>
             </Grid>
@@ -1085,13 +1085,8 @@ export default function Main({ children }) {
               }}
             >
               <ProfileTable />
-<<<<<<< HEAD
-               // <ProfilePageIndividual /> 
-            </div>
-=======
               {/* <ProfilePageIndividual /> */}
             {/* </div>
->>>>>>> 182d7b721df7613e23eaf1774fbddaaa734ef061
           ) : store.getState().reducer.componentState ==
             "ProfileTravelAgent" ? (
             <div

@@ -1396,7 +1396,8 @@ export default function RoomManagement() {
                     )
                   }
                   style={{
-                    color: themeState.color,
+                    // color: themeState.color,
+                    color: "white",
                     backgroundColor: mainColor,
                   }}
                 >
@@ -1946,6 +1947,7 @@ export default function RoomManagement() {
       </React.Fragment>
       {CRUD.R ? (
         <MaterialTable
+        localization={{ body:{ emptyDataSourceMessage:<h3 >No Data Available</h3> }}}
           style={{
             paddingLeft: 30,
             paddingRight: 30,

@@ -2107,6 +2107,7 @@ export default function RoleManagement() {
         <div style={{ maxWidth: "100%" }}>
           {CRUD.R ? (
             <MaterialTable
+            localization={{ body:{ emptyDataSourceMessage:<h3 >No Data Available</h3> }}}
               style={{
                 paddingLeft: 30,
                 paddingRight: 30,
