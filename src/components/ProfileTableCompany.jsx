@@ -244,14 +244,48 @@ export const ProfileTableCompany = (props) => {
       }}
     >
       <Grid container style={{ paddingLeft: 30, paddingRight: 30 }}>
-        <Grid item xs={6} sm={10} md={10} style={{ flexGrow: 1 }}>
-          <Typography
-            variant="h6"
-            style={{ marginBottom: 15, fontSize: 26, color: mainColor }}
-          >
-            Profile Company
-          </Typography>
-        </Grid>
+      <Grid item style={{ flexGrow: 1 }}>
+            <Breadcrumbs
+              separator={
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: themeState.color,
+                  }}
+                >
+                  /
+                </Typography>
+              }
+            >
+              <Link
+                color="inherit"
+                href="#"
+                onClick={() => handleComponentState("Configuration")}
+              >
+                <Typography
+                  variant="h6"
+                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
+                >
+                  Profiles
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
+                >
+                  Company
+                </Typography>
+              </Link>
+              
+            </Breadcrumbs>
+          </Grid>
         {statusprofile === "add" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button

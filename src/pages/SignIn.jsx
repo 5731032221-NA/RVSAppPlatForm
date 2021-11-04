@@ -15,7 +15,7 @@ import { blue } from "@material-ui/core/colors";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import {getasset} from "../services/assest.service";
+import { getasset } from "../services/assest.service";
 import PropTypes from "prop-types";
 import auth from "../services/auth.service";
 import propertys from "../services/propertys.service";
@@ -33,15 +33,11 @@ import {
 import { loginRequest } from "../authConfig";
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 import { callMsGraph } from "../graph";
+import ADSignin  from "./ADSignin"
 
-function handleLogin(instance) {
-  instance.loginRedirect(loginRequest).catch(e => {
-      console.error(e);
-  });
-}
 function handleLogout(instance) {
   instance.logoutRedirect().catch(e => {
-      console.error(e);
+    console.error(e);
   });
 }
 
@@ -117,7 +113,7 @@ export default function Login({ setToken }) {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const { instance } = useMsal();
-  
+
 
 
   const [errorUsername, setErrorUsername] = useState(false);
@@ -129,7 +125,7 @@ export default function Login({ setToken }) {
   const pageProperty = '';
   //console.log("log store",store);
   // const [login, setlogin] = useState(false);
-  const [file,  setFile] = useState("");
+  const [file, setFile] = useState("");
 
 
   //Dialog cookie
@@ -168,6 +164,17 @@ export default function Login({ setToken }) {
   const [errorMessageDu, setErrorMessageDu] = useState(false);
   const [errorParameterDu, setErrorParameterDu] = useState(null);
 
+  const handleLogin = () => {
+
+    // instance.loginRedirect(loginRequest).catch(e => {
+    //     console.error(e);
+    // });
+    if (cookies["UUID"] == null) setErrorCookie(true);
+      else setAdSignin(true);
+    
+  }
+
+
   const handleInsert = async () => {
     console.log(updateData);
     let gen_uuid = uuid.v4();
@@ -187,38 +194,39 @@ export default function Login({ setToken }) {
       );
       if (_inserthardware.status == "2000") {
         var d1 = new Date(),
-        d2 = new Date(d1);
-      d2.setFullYear(d2.getFullYear() + 100)
-      setCookie("UUID" ,  gen_uuid, { path: '/', expires: d2 });
-      setDialogAdd(false);
-      window.location.reload(false);
-      // setToken(resTooken);
-      }else if(_inserthardware.status == "1000"){
+          d2 = new Date(d1);
+        d2.setFullYear(d2.getFullYear() + 100)
+        setCookie("UUID", gen_uuid, { path: '/', expires: d2 });
+        setDialogAdd(false);
+        window.location.reload(false);
+        // setToken(resTooken);
+      } else if (_inserthardware.status == "1000") {
         setErrorMessageDu(true);
-        const dupic = _inserthardware.msg +" Device Code: "+ updateData.code;
+        const dupic = _inserthardware.msg + " Device Code: " + updateData.code;
         setErrorParameterDu(dupic)
       }
     }
   };
 
-  const getLogo  = async() => {
+  const getLogo = async () => {
     const resp = await getasset();
-   
-    if(resp.status == "2000"){
-      
+
+    if (resp.status == "2000") {
+
       setFile(resp.content[0].asset);
     }
-   
-    
+
+
   }
 
 
-  React.useEffect( async () => {
+  React.useEffect(async () => {
     await getLogo();
-  },[])
+  }, [])
 
-  const [resTooken,setResToken] = useState(null);
+  const [resTooken, setResToken] = useState(null);
   const [errorCookie, setErrorCookie] = useState(false);
+  const [adSignin, setAdSignin] = useState(false);
 
   const handleSubmit = async (e) => {
     setErrorCookie(false);
@@ -234,7 +242,7 @@ export default function Login({ setToken }) {
       setErrorPassword(false);
     }
 
- 
+
     // console.log(
     //   (username === null || username === ''), (password === null || password === ''),
     //   !(username === null || username === '') && !(password === null || password === ''))
@@ -245,169 +253,175 @@ export default function Login({ setToken }) {
           password,
         },
       });
-   
+
 
       if (token.status == 2000) {
         setResToken(token)
         // setToken(token);
         var d1 = new Date(),
-      d2 = new Date(d1);
-    d2.setFullYear(d2.getFullYear() + 100)
-    // setCookie("UUID" ,  uuid.v4(), { path: '/', expires: d2 });
+          d2 = new Date(d1);
+        d2.setFullYear(d2.getFullYear() + 100)
+        // setCookie("UUID" ,  uuid.v4(), { path: '/', expires: d2 });
         setErrorUsername(false);
         setErrorPassword(false);
-        if(cookies["UUID"]==null) {
-          if(username == "ADMIN"  || username == 'root') {setDialogAdd(true);
-            setUpdateData({ type: deviceTypes[0].label });}
+        if (cookies["UUID"] == null) {
+          if (username == "ADMIN" || username == 'root') {
+            setDialogAdd(true);
+            setUpdateData({ type: deviceTypes[0].label });
+          }
           else setErrorCookie(true);
         }
         else setToken(token);
-      }else{
-         setErrorLogin(true);
+      } else {
+        setErrorLogin(true);
       }
-     
+
     }
   };
   // no-repeat fix; background-size: 100%;
 
   return (
-    <Grid className="Login-component" style={{ backgroundImage: `url(${background})` ,backgroundSize: 'cover', 
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat' }} >
-        <Box
-        p={2}
-        position="absolute"
-        top="88%"
-        left="89%"
-        zIndex="tooltip"
-        style={{backgroundRepeat: 'no-repeat'}}
-        sx={{ display: { xs: "none", md: "none" ,lg: "flex" } }}
-      >
-        {/* <img className={classes.imglogo} src={file} alt="logo" width="150" /> */}
-        { file ? <img src={file} className={classes.imglogo} alt="logo" width="150"  /> : <img src="loginlogo.png" className={classes.imglogo} alt="logo" width="150" />  }
-      </Box>
-       
-      <Container
-        component="main"
-        maxWidth="xs"
-        alignitems="center"
-        justifycontent="center"
-      >
-        <Paper className={classes.paper}>
-          <img className={classes.imglogo} src="loginlogo.png" alt="logo" /> 
-           {/* { file ? <img src={file} className={classes.imglogo} alt="logo"  /> : <img src="loginlogo.png" className={classes.imglogo} alt="logo"  />  } */}
-          <h5 className={classes.sysname} >Hotel Property Management System</h5>
-          <Divider variant="middle" />
+    <div>
+      {adSignin ? <ADSignin setToken={setToken} store={store} /> :
+        <Grid className="Login-component" style={{
+          backgroundImage: `url(${background})`, backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }} >
+          <Box
+            p={2}
+            position="absolute"
+            top="88%"
+            left="89%"
+            zIndex="tooltip"
+            style={{ backgroundRepeat: 'no-repeat' }}
+            sx={{ display: { xs: "none", md: "none", lg: "flex" } }}
+          >
+            {/* <img className={classes.imglogo} src={file} alt="logo" width="150" /> */}
+            {file ? <img src={file} className={classes.imglogo} alt="logo" width="150" /> : <img src="loginlogo.png" className={classes.imglogo} alt="logo" width="150" />}
+          </Box>
 
-          {errorUsername ? <div className={classes.errorMessage}>Username is required</div> : (errorPassword ? <div className={classes.errorMessage}>Password is required</div> : (errorLogin ? <div className={classes.errorMessage}>Invalid Username or Password</div> : null))}
-          {errorCookie? <div className={classes.errorMessage}>Device not register. Please contact administrator.</div> : null}
- 
-          <Grid item className={classes.formlogin}>
-          {/* Validate */}
-            <form  autoComplete="on" onSubmit={handleSubmit}>
-              <Grid item >
-                <TextField
-                  id="username"
-                  label=" Username "
-                  htmlFor="Username"
-                // href
-                  type="text"
-                  onChange={(e) => setUserName(e.target.value)}
-                  fullWidth
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <GroupOutlinedIcon style={{ color: "#2D62ED" }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                >
-                </TextField>
+          <Container
+            component="main"
+            maxWidth="xs"
+            alignitems="center"
+            justifycontent="center"
+          >
+            <Paper className={classes.paper}>
+              <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
+              {/* { file ? <img src={file} className={classes.imglogo} alt="logo"  /> : <img src="loginlogo.png" className={classes.imglogo} alt="logo"  />  } */}
+              <h5 className={classes.sysname} >Hotel Property Management System</h5>
+              <Divider variant="middle" />
+
+              {errorUsername ? <div className={classes.errorMessage}>Username is required</div> : (errorPassword ? <div className={classes.errorMessage}>Password is required</div> : (errorLogin ? <div className={classes.errorMessage}>Invalid Username or Password</div> : null))}
+              {errorCookie ? <div className={classes.errorMessage}>Device not register. Please contact administrator.</div> : null}
+
+              <Grid item className={classes.formlogin}>
+                {/* Validate */}
+                <form autoComplete="on" onSubmit={handleSubmit}>
+                  <Grid item >
+                    <TextField
+                      id="username"
+                      label=" Username "
+                      htmlFor="Username"
+                      // href
+                      type="text"
+                      onChange={(e) => setUserName(e.target.value)}
+                      fullWidth
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <GroupOutlinedIcon style={{ color: "#2D62ED" }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    >
+                    </TextField>
+                  </Grid>
+
+                  <Grid item style={{ marginTop: 0 }}>
+                    <TextField
+                      id="password"
+                      label="Password"
+                      htmlFor="password"
+                      type="password"
+                      onChange={(e) => setPassword(e.target.value)}
+                      fullWidth
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <LockOutlinedIcon style={{ color: "#2D62ED" }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    >
+                    </TextField>
+                  </Grid>
+                  <Grid item style={{ paddingTop: 25, paddingBottom: 20 }} >
+                    <Button
+                      fullWidth
+                      type="submit"
+                      variant="contained"
+                      style={{ backgroundColor: "#2D62ED", color: "white" }}
+                    >
+                      LOGIN <ArrowForwardIcon style={{ paddingLeft: 10 }} />
+                    </Button>
+
+                    <Grid container style={{ paddingTop: 25, paddingBottom: 10 }}>
+                      <Grid item xs={5} >
+                        <hr />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <span>or</span>
+                      </Grid>
+                      <Grid item xs={5} >
+                        <hr />
+                      </Grid>
+                    </Grid>
+
+                    <AuthenticatedTemplate>
+                      <ProfileContent />
+                    </AuthenticatedTemplate>
+                    <UnauthenticatedTemplate>
+                      <Button
+                        fullWidth
+                        onClick={() => handleLogin()}
+                        variant="outlined"
+                        style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }}
+                      >
+                        SIGN IN WITH A DOMAIN <ArrowForwardIcon style={{ paddingLeft: 10 }} />
+                      </Button>
+                    </UnauthenticatedTemplate>
+
+                  </Grid>
+
+                </form>
               </Grid>
 
-              <Grid item  style={{ marginTop: 0 }}>
-                <TextField
-                  id="password"
-                  label="Password"
-                  htmlFor="password"
-                  type="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  fullWidth
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <LockOutlinedIcon style={{ color: "#2D62ED" }} />
-                      </InputAdornment>
-                    ),
-                  }}
+            </Paper>
+          </Container>
+          {/* ==================== Dialog New Device========================= */}
+          <Dialog
+            // fullWidth="true"
+            // maxWidth="md"
+            open={dialogAdd}
+            onClose={handleDialogAddClose}
+            aria-labelledby="form-dialog-title"
+            className={classes.root}
+          >
+            <Grid container>
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                <DialogTitle
+                  id="form-dialog-title"
+                  style={{ backgroundColor: themeState.paper, color: mainColor }}
                 >
-                </TextField>
-              </Grid>
-              <Grid item style={{ paddingTop: 25, paddingBottom: 20 }} >
-                <Button
-                  fullWidth
-                  type="submit"
-                  variant="contained"
-                  style={{ backgroundColor: "#2D62ED", color: "white" }}
-                >
-                  LOGIN <ArrowForwardIcon style={{ paddingLeft: 10 }} />
-                </Button>
+                  Register New Device
+                </DialogTitle>
 
-                <Grid container  style={{ paddingTop: 25, paddingBottom: 10 }}>
-                  <Grid item xs={5} >
-                   <hr />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <span>or</span>
-                  </Grid>
-                  <Grid item  xs={5} >
-                  <hr />
-                  </Grid>
-                </Grid>
-
-                <AuthenticatedTemplate>
-                  <ProfileContent />
-              </AuthenticatedTemplate>
-                <UnauthenticatedTemplate>
-                <Button
-                  fullWidth
-                  onClick={() => handleLogin(instance)}
-                  variant="outlined"
-                  style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }}
-                >
-                  SIGN IN BY DOMAIN <ArrowForwardIcon style={{ paddingLeft: 10 }} />
-                </Button>
-             </UnauthenticatedTemplate>
-               
-              </Grid>
-            
-            </form>
-          </Grid>
-
-        </Paper>
-      </Container>
-       {/* ==================== Dialog New Device========================= */}
-       <Dialog
-          // fullWidth="true"
-          // maxWidth="md"
-          open={dialogAdd}
-          onClose={handleDialogAddClose}
-          aria-labelledby="form-dialog-title"
-          className={classes.root}
-        >
-          <Grid container>
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <DialogTitle
-                id="form-dialog-title"
-                style={{ backgroundColor: themeState.paper, color: mainColor }}
-              >
-                Register New Device
-              </DialogTitle>
-
-              <DialogContent style={headerTableStyle}>
-                <Container maxWidth="xl" disableGutters>
-                  <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                    {/* <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                <DialogContent style={headerTableStyle}>
+                  <Container maxWidth="xl" disableGutters>
+                    <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                      {/* <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                       <TextField
                         className={classes.root}
                         autoFocus
@@ -441,7 +455,7 @@ export default function Login({ setToken }) {
                         ))}
                       </TextField>
                     </Grid> */}
-                    {/* <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                      {/* <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                       <TextField
                       onFocus
                         className={classes.root}
@@ -472,96 +486,99 @@ export default function Login({ setToken }) {
                         ))}
                       </TextField>
                     </Grid> */}
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        // autoFocus
-                        id="outlined-basic"
-                        label="Device Code"
-                        variant="outlined"
-                        fullWidth
-                        onChange={(e) =>
-                          setUpdateData({ ...updateData, code: e.target.value })
-                        }
-                      />
-                    </Grid>
+                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <TextField
+                          // autoFocus
+                          id="outlined-basic"
+                          label="Device Code"
+                          variant="outlined"
+                          fullWidth
+                          onChange={(e) =>
+                            setUpdateData({ ...updateData, code: e.target.value })
+                          }
+                        />
+                      </Grid>
 
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        // autoFocus
-                        id="outlined-basic"
-                        label="Device Name"
-                        variant="outlined"
-                        fullWidth
-                        onChange={(e) =>
-                          setUpdateData({ ...updateData, name: e.target.value })
-                        }
-                      />
+                      <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <TextField
+                          // autoFocus
+                          id="outlined-basic"
+                          label="Device Name"
+                          variant="outlined"
+                          fullWidth
+                          onChange={(e) =>
+                            setUpdateData({ ...updateData, name: e.target.value })
+                          }
+                        />
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Container>
-                {errorMessage ? (
-                  <div style={{ marginTop: 15 }}>
-                    <div
-                      style={{
-                        background: "#ff0033",
-                        textAlign: "center",
-                        color: "white",
-                        height: "30px",
-                        paddingTop: 5,
-                      }}
-                    >
-                      {errorParameter} is required
+                  </Container>
+                  {errorMessage ? (
+                    <div style={{ marginTop: 15 }}>
+                      <div
+                        style={{
+                          background: "#ff0033",
+                          textAlign: "center",
+                          color: "white",
+                          height: "30px",
+                          paddingTop: 5,
+                        }}
+                      >
+                        {errorParameter} is required
+                      </div>
                     </div>
-                  </div>
-                ) : null}
-                {errorMessageDu ? (
-                  <div style={{ marginTop: 15 }}>
-                    <div
-                      style={{
-                        background: "#ff0033",
-                        textAlign: "center",
-                        color: "white",
-                        height: "30px",
-                        paddingTop: 5,
-                      }}
-                    >
-                      {errorParameterDu} 
+                  ) : null}
+                  {errorMessageDu ? (
+                    <div style={{ marginTop: 15 }}>
+                      <div
+                        style={{
+                          background: "#ff0033",
+                          textAlign: "center",
+                          color: "white",
+                          height: "30px",
+                          paddingTop: 5,
+                        }}
+                      >
+                        {errorParameterDu}
+                      </div>
                     </div>
-                  </div>
-                ) : null}
-              </DialogContent>
+                  ) : null}
+                </DialogContent>
+              </Grid>
             </Grid>
-          </Grid>
-          <DialogActions
-            style={{
-              padding: 20,
-              backgroundColor: themeState.paper,
-              color: themeState.color,
-            }}
-          >
-            <Button
-              onClick={handleDialogAddClose}
-              variant="text"
-              color="primary"
-              style={{ color: mainColor }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
+            <DialogActions
               style={{
+                padding: 20,
+                backgroundColor: themeState.paper,
                 color: themeState.color,
-                backgroundColor: mainColor,
               }}
-              onClick={() => handleInsert()}
             >
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
+              <Button
+                onClick={handleDialogAddClose}
+                variant="text"
+                color="primary"
+                style={{ color: mainColor }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{
+                  color: themeState.color,
+                  backgroundColor: mainColor,
+                }}
+                onClick={() => handleInsert()}
+              >
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
 
-    </Grid>
+        </Grid>
+      }
+    </div>
+
   );
 }
 
