@@ -339,7 +339,7 @@ export default function RighBar() {
 
     sessionStorage.removeItem("curent_component")
     sessionStorage.removeItem("property")
-    sessionStorage.setItem("token", false);
+    sessionStorage.removeItem('token');
    
     history.replace(`/`);
     history.go(0)

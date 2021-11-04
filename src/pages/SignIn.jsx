@@ -375,7 +375,7 @@ export default function Login({ setToken }) {
                   variant="outlined"
                   style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }}
                 >
-                  SIGN IN BY MICROSOFT <ArrowForwardIcon style={{ paddingLeft: 10 }} />
+                  SIGN IN BY DOMAIN <ArrowForwardIcon style={{ paddingLeft: 10 }} />
                 </Button>
              </UnauthenticatedTemplate>
                

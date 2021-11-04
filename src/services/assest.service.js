@@ -29,7 +29,7 @@ module.exports = {
               },
               body: JSON.stringify(data),
             }
-        ).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+        ).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   
       },
       

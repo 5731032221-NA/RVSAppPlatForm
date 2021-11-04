@@ -6,7 +6,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   getusernamebyproperty: async function (accessToken,propertycode) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/usernamebyproperty/${propertycode}`, {
@@ -15,7 +15,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   getconfigurationbypropertycode: async function (accessToken,propertycode) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/configurationbypropertycode/${propertycode}`, {
@@ -24,7 +24,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   updateconfiguration: async function (accessToken,req) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/configuration`, {
@@ -34,7 +34,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   getuserpermission: async function (accessToken,username) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/userpermissionbyusername/${username}`, {
@@ -43,7 +43,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   getposition: async function (accessToken) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/position`, {
@@ -52,7 +52,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   postposition: async function (accessToken, req) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/position`, {
@@ -62,7 +62,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   userpropertybyusername: async function (accessToken,username) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/userpropertybyusername/${username}`, {
@@ -71,7 +71,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   userrolebyusername: async function (accessToken,username) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/userrolebyusername/${username}`, {
@@ -80,7 +80,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   rolepermissionbyrole: async function (accessToken, req) {
     return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/rolepermissionbyrole", {
@@ -90,7 +90,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   listrole: async function (accessToken, req) {
     return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/listrole", {
@@ -100,7 +100,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   listuser: async function (accessToken, req) {
     return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/listuser", {
@@ -110,7 +110,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   listpropertybyroles: async function (accessToken, req) {
     return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/listpropertybyroles", {
@@ -120,7 +120,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   listallproperty: async function (accessToken) {
     return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/listallproperty", {
@@ -129,7 +129,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
 
   postuser: async function (accessToken, req) {
@@ -140,7 +140,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   updateuser: async function (accessToken, req) {
     return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/user", {
@@ -150,7 +150,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   postrole: async function (accessToken, req) {
     return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/rolegroup", {
@@ -160,7 +160,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   updaterole: async function (accessToken, req) {
     return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/rolegroup", {
@@ -170,7 +170,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
 
   deleteuserbyusername: async function (accessToken, username) {
@@ -180,7 +180,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
   deleterolebycode: async function (accessToken, code) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/rolegroup/${code}`, {
@@ -189,7 +189,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
 
   getuser: async function (accessToken) {
@@ -209,7 +209,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
 
   // updateuser: async function (accessToken, req, id) {
@@ -220,7 +220,7 @@ module.exports = {
   //       "Content-Type": "application/json",
   //     },
   //     body: JSON.stringify(req),
-  //   }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+  //   }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   // },
 
   deleteuserbyid: async function (accessToken, req, id) {
@@ -231,6 +231,6 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.setItem("token", false);window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
   },
 };
