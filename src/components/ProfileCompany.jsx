@@ -904,23 +904,11 @@ export const ProfileCompany = (props) => {
     <Container
       maxWidth="xl"
       style={{
-        paddingTop: 20,
+        paddingTop: 5,
         color: themeState.color,
-        marginTop: 15,
         backgroundColor: themeState.background,
       }}
     >
-      <Grid item style={{ flexGrow: 1 }}>
-        <Grid item xs={12} sm={12} md={12}>
-          <Typography
-            variant="h6"
-            style={{ marginBottom: 15, fontSize: 26, color: mainColor }}
-          >
-            Profile Company
-          </Typography>
-        </Grid>
-      </Grid>
-
       <DragDropContext onDragEnd={onEnd}>
         <Droppable droppableId="01">
           {(provided, snapshot) => (

@@ -193,6 +193,8 @@ export const ProfileIndividual = (props) => {
     color: themeState.color,
   };
 
+  const [editDataProps, setEditDataProps] = React.useState(props.editdata);
+
   const [demoData, setDemoData] = React.useState([
     {
       id: "1",
@@ -201,7 +203,7 @@ export const ProfileIndividual = (props) => {
         {
           id: 1,
           label: "Title",
-          xl: 2,
+          xl: 1,
           md: 2,
           xs: 12,
           select: {
@@ -221,31 +223,31 @@ export const ProfileIndividual = (props) => {
         {
           id: 2,
           label: "First Name",
-          xl: 4,
+          xl: 5,
           md: 6,
           xs: 12,
           select: {
             status: "fill",
-            data: "",
+            data: editDataProps.firstname,
           },
           handle: (e) => handleData(e),
         },
         {
           id: 3,
           label: "Last Name",
-          xl: 4,
+          xl: 5,
           md: 6,
           xs: 12,
           select: {
             status: "fill",
-            data: "",
+            data: editDataProps.lastname,
           },
           handle: (e) => handleData(e),
         },
         {
           id: 4,
           label: "Gender",
-          xl: 2,
+          xl: 1,
           md: 6,
           xs: 12,
           select: {
@@ -290,7 +292,7 @@ export const ProfileIndividual = (props) => {
           xs: 12,
           select: {
             status: "fill",
-            data: "",
+            data: editDataProps.idcardandpass,
           },
           handle: (e) => handleData(e),
         },
@@ -302,7 +304,7 @@ export const ProfileIndividual = (props) => {
           xs: 12,
           select: {
             status: "fill",
-            data: "",
+            data: editDataProps.nationality,
           },
           handle: (e) => handleData(e),
         },
@@ -646,46 +648,11 @@ export const ProfileIndividual = (props) => {
     <Container
       maxWidth="xl"
       style={{
-        paddingTop: 20,
+        paddingTop: 5,
         color: themeState.color,
-        marginTop: 15,
         backgroundColor: themeState.background,
       }}
     >
-      <Grid item style={{ flexGrow: 1 }}>
-        <Grid
-          container
-          spacing={{ xs: 3, md: 3 }}
-          columns={{ xs: 2, sm: 2, md: 2 }}
-        >
-          <Grid item xs={6} sm={10} md={10}>
-            <Typography
-              variant="h6"
-              style={{ marginBottom: 15, fontSize: 26, color: mainColor }}
-            >
-              Profile Individual
-            </Typography>
-          </Grid>
-
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "blue", color: "white" }}
-              startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleComponentState("ProfileIndivisual")}
-            >
-              Save
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "red", color: "white", marginLeft: 15 }}
-              startIcon={<DeleteIcon />}
-            >
-              Delete
-            </Button>
-          </Grid>
-        </Grid>
-      </Grid>
       {/* <DragDropContext onDragEnd={onEnd}>
         <Droppable droppableId="01">
           {(provided, snapshot) => (
@@ -710,6 +677,7 @@ export const ProfileIndividual = (props) => {
                   <Draggable draggableId={item.id} key={item.id} index={index}>
                     {(provided, snapshot) => (
                       <Accordion
+                        // expanded={true}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -749,6 +717,7 @@ export const ProfileIndividual = (props) => {
                                       style: headerTableStyle,
                                     }}
                                     fullWidth
+                                    defaultValue={detail.select.data}
                                     onChange={detail.handle}
                                   />
                                 ) : detail.select.status === "option" ? (
@@ -796,6 +765,7 @@ export const ProfileIndividual = (props) => {
                                     fullWidth
                                     multiline
                                     rows={4}
+                                    // value={detail.select.data.firstname}
                                     onChange={detail.handle}
                                   />
                                 ) : (
