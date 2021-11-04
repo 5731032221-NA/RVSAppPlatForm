@@ -7,6 +7,7 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
@@ -97,16 +98,12 @@ const optionTitle = [
 const optionDocumentType = [
   {
     value: "1",
-    label: "Option1",
+    label: "ID Card",
   },
   {
     value: "2",
-    label: "Option2",
-  },
-  {
-    value: "3",
-    label: "Option3",
-  },
+    label: "Passport",
+  }
 ];
 
 const optiondata = [
@@ -132,6 +129,48 @@ const optiondata2 = [
     value: "Female",
     label: "Female",
   },
+];
+
+const optioncommunication = [
+  {
+    value: "Telephone",
+    label: "Telephone Number",
+  },
+  {
+    value: "Mobile",
+    label: "Mobile Number",
+  },
+  {
+    value: "Email",
+    label: "Email Address",
+  },
+  {
+    value: "Twitter",
+    label: "Twitter",
+  },
+  {
+    value: "Instagram",
+    label: "Instagram",
+  },
+  {
+    value: "Facebook",
+    label: "Facebook",
+  }
+];
+
+const optionrelation = [
+  {
+    value: "Family",
+    label: "Family",
+  },
+  {
+    value: "Sprouse",
+    label: "Sprouse",
+  },
+  {
+    value: "Colleague",
+    label: "Colleague",
+  }
 ];
 
 export const TestDnD = (props) => {
@@ -278,7 +317,7 @@ export const TestDnD = (props) => {
           xs: 4,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: optionDocumentType.map((option) => (
               <option
                 style={headerTableStyle}
                 key={option.value}
@@ -292,21 +331,13 @@ export const TestDnD = (props) => {
         },
         {
           id: 5,
-          label: "ID Number*",
+          label: "ID Number",
           xl: 2,
           md: 2,
           xs: 4,
           select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            status: "fill",
+            data: ""
           },
           handle: (e) => handleData(e),
         },
@@ -376,40 +407,61 @@ export const TestDnD = (props) => {
         {
           id: 1,
           label: "Email",
-          xl: 4,
-          md: 4,
-          xs: 12,
+          xl: 6,
+          md: 6,
+          xs: 6,
           select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
+            status: "fix",
+            data: "Email Address",
+          }
         },
         {
           id: 2,
-          label: "Mobile Number",
-          xl: 4,
-          md: 4,
-          xs: 12,
+          label: "Email",
+          xl: 6,
+          md: 6,
+          xs: 6,
           select: {
-            status: "fill",
-            data: "",
+            status: "fillnolabel",
+            data: "Email",
           },
           handle: (e) => handleData(e),
         },
-        ,
         {
           id: 3,
-          label: "Phone Number",
-          xl: 4,
-          md: 4,
-          xs: 12,
+          label: "Mobile Number",
+          xl: 6,
+          md: 6,
+          xs: 6,
           select: {
-            status: "fill",
-            data: "",
+            status: "fix",
+            data: "Mobile Number",
+          }
+        },
+        {
+          id: 4,
+          label: "Mobile Number",
+          xl: 6,
+          md: 6,
+          xs: 6,
+          select: {
+            status: "fillnolabel",
+            data: "Mobile Number",
           },
           handle: (e) => handleData(e),
         },
+        {
+          id: 99,
+          label: "Phone Number",
+          xl: 2,
+          md: 2,
+          xs: 2,
+          select: {
+            status: "AddComunication",
+            data: "+ Add",
+          },
+          // handle: (e) => handleAddComunication(e),
+        }
       ],
     },
     {
@@ -419,23 +471,14 @@ export const TestDnD = (props) => {
       content: [
         {
           id: 1,
-          label: "Choose a Document Type",
+          label: "Home Address",
           xl: 2,
           md: 2,
           xs: 4,
           select: {
-            status: "option",
-            data: optionDocumentType.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            status: "fix",
+            data: "Home Address"
           },
-          handle: (e) => handleData(e),
         },
         {
           id: 2,
@@ -513,118 +556,227 @@ export const TestDnD = (props) => {
           },
           handle: (e) => handleData(e),
         },
+        {
+          id: 8,
+          label: "Resident Address",
+          xl: 2,
+          md: 2,
+          xs: 4,
+          select: {
+            status: "fix",
+            data: "Resident Address"
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 9,
+          label: "Address",
+          xl: 2,
+          md: 2,
+          xs: 4,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 10,
+          label: "Choose a country",
+          xl: 2,
+          md: 2,
+          xs: 4,
+          select: {
+            status: "option",
+            data: optiondata.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 11,
+          label: "City",
+          xl: 2,
+          md: 2,
+          xs: 4,
+          select: {
+            status: "option",
+            data: optionCity.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 12,
+          label: "State",
+          xl: 2,
+          md: 2,
+          xs: 4,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 13,
+          label: "Postal",
+          xl: 2,
+          md: 2,
+          xs: 4,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
       ],
     },
     {
       id: "4",
-      title: "Social",
+      title: "Relation",
       expend: true,
       content: [
-        // {
-        //   id: 1,
-        //   label: (
-        //     <Grid container alignItems="center">
-        //       <PublicRoundedIcon style={{ marginRight: 10 }} />
-        //       Web site
-        //     </Grid>
-        //   ),
-        //   xl: 4,
-        //   md: 6,
-        //   xs: 12,
-        //   select: {
-        //     status: "fill",
-        //     data: "",
-        //   },
-        //   handle: (e) => handleData(e),
-        // },
         {
-          id: 1,
-          label: (
-            <Grid container alignItems="center">
-              <AlternateEmailIcon style={{ marginRight: 10, color: "green" }} />
-              Line
-            </Grid>
-          ),
+          id: 99,
+          label: "Relation",
           xl: 2,
           md: 2,
-          xs: 12,
+          xs: 2,
           select: {
-            status: "fill",
-            data: "",
+            status: "AddRelation",
+            data: "+ Add",
           },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: (
-            <Grid container alignItems="center">
-              <WhatsAppIcon style={{ marginRight: 10, color: "green" }} />
-              WhatsApp
-            </Grid>
-          ),
-          xl: 2,
-          md: 2,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: (
-            <Grid container alignItems="center">
-              <FacebookIcon style={{ marginRight: 10, color: "blue" }} />
-              Facebook
-            </Grid>
-          ),
-          xl: 2,
-          md: 2,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: (
-            <Grid container alignItems="center">
-              <InstagramIcon style={{ marginRight: 10, color: "orange" }} />
-              Instagram
-            </Grid>
-          ),
-          xl: 2,
-          md: 2,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: (
-            <Grid container alignItems="center">
-              <TwitterIcon style={{ marginRight: 10, color: "#1DA1F2" }} />
-              Twitter
-            </Grid>
-          ),
-          xl: 2,
-          md: 2,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
+          // handle: (e) => handleAddComunication(e),
+        }
       ],
-    },
-  ]);
+    }
+    // ,
+    // {
+    //   id: "4",
+    //   title: "Social",
+    //   expend: true,
+    //   content: [
+    //     // {
+    //     //   id: 1,
+    //     //   label: (
+    //     //     <Grid container alignItems="center">
+    //     //       <PublicRoundedIcon style={{ marginRight: 10 }} />
+    //     //       Web site
+    //     //     </Grid>
+    //     //   ),
+    //     //   xl: 4,
+    //     //   md: 6,
+    //     //   xs: 12,
+    //     //   select: {
+    //     //     status: "fill",
+    //     //     data: "",
+    //     //   },
+    //     //   handle: (e) => handleData(e),
+    //     // },
+    //     {
+    //       id: 1,
+    //       label: (
+    //         <Grid container alignItems="center">
+    //           <AlternateEmailIcon style={{ marginRight: 10 ,color: 'green'}} />
+    //           Line
+    //         </Grid>
+    //       ),
+    //       xl: 2,
+    //       md: 2,
+    //       xs: 12,
+    //       select: {
+    //         status: "fill",
+    //         data: "",
+    //       },
+    //       handle: (e) => handleData(e),
+    //     },
+    //     {
+    //       id: 2,
+    //       label: (
+    //         <Grid container alignItems="center">
+    //           <WhatsAppIcon style={{ marginRight: 10 ,color: 'green'}} />
+    //           WhatsApp
+    //         </Grid>
+    //       ),
+    //       xl: 2,
+    //       md: 2,
+    //       xs: 12,
+    //       select: {
+    //         status: "fill",
+    //         data: "",
+    //       },
+    //       handle: (e) => handleData(e),
+    //     },
+    //     {
+    //       id: 3,
+    //       label: (
+    //         <Grid container alignItems="center">
+    //           <FacebookIcon style={{ marginRight: 10 ,color: 'blue'}} />
+    //           Facebook
+    //         </Grid>
+    //       ),
+    //       xl: 2,
+    //       md: 2,
+    //       xs: 12,
+    //       select: {
+    //         status: "fill",
+    //         data: "",
+    //       },
+    //       handle: (e) => handleData(e),
+    //     },
+    //     {
+    //       id: 4,
+    //       label: (
+    //         <Grid container alignItems="center">
+    //           <InstagramIcon style={{ marginRight: 10 ,color: 'orange'}} />
+    //           Instagram
+    //         </Grid>
+    //       ),
+    //       xl: 2,
+    //       md: 2,
+    //       xs: 12,
+    //       select: {
+    //         status: "fill",
+    //         data: "",
+    //       },
+    //       handle: (e) => handleData(e),
+    //     },
+    //     {
+    //       id: 5,
+    //       label: (
+    //         <Grid container alignItems="center">
+    //           <TwitterIcon style={{ marginRight: 10 ,color: '#1DA1F2'}} />
+    //           Twitter
+    //         </Grid>
+    //       ),
+    //       xl: 2,
+    //       md: 2,
+    //       xs: 12,
+    //       select: {
+    //         status: "fill",
+    //         data: "",
+    //       },
+    //       handle: (e) => handleData(e),
+    //     },
+      // ],
+    // },
+  ]
+  );
   const [list, setList] = React.useState(demoData);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -667,6 +819,143 @@ export const TestDnD = (props) => {
     }
   };
 
+  const handleAddComunication = async (id) => {
+
+    let index = demoData.findIndex(x=> x.id === id);
+    if (index === -1) return;
+    else{
+     let comunication = demoData[index];
+     delete comunication.content[comunication.content.length-1];
+     let newid = await comunication.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
+     comunication.content.push(
+     {
+        id: newid+1,
+        label: "Choose a communication",
+        xl: 6,
+        md: 6,
+        xs: 6,
+        select: {
+          status: "option",
+          data: optioncommunication.map((option) => (
+            <option
+              style={headerTableStyle}
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          )),
+        },
+        handle: (e) => handleData(e),
+      })
+      comunication.content.push(
+      {
+        id: newid+2,
+        label: "communication",
+        xl: 6,
+        md: 6,
+        xs: 6,
+        select: {
+          status: "fillnolabel",
+          data: "",
+        },
+        handle: (e) => handleData(e),
+      })
+      comunication.content.push(
+        {
+          id: 99,
+          label: "AddComunication",
+          xl: 2,
+          md: 2,
+          xs: 2,
+          select: {
+            status: "AddComunication",
+            data: "+ Add",
+          }
+        })
+      setDemoData([
+        ...demoData.slice(0,index),
+        comunication,
+        ...demoData.slice(index+1)
+      ]);
+    }
+  };
+
+  const handleAddRelation = async (id) => {
+
+    let index = demoData.findIndex(x=> x.id === id);
+    if (index === -1) return;
+    else{
+     let relation = demoData[index];
+     delete relation.content[relation.content.length-1];
+     let newid = await relation.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
+      relation.content.push(
+      {
+        id: newid+1,
+        label: "Name",
+        xl: 4,
+        md: 4,
+        xs: 6,
+        select: {
+          status: "fill",
+          data: "",
+        },
+        handle: (e) => handleData(e),
+      })
+      relation.content.push(
+        {
+           id: newid+2,
+           label: "Name Type",
+           xl: 2,
+           md: 2,
+           xs: 6,
+           select: {
+             status: "option",
+             data: optionrelation.map((option) => (
+               <option
+                 style={headerTableStyle}
+                 key={option.value}
+                 value={option.value}
+               >
+                 {option.label}
+               </option>
+             )),
+           },
+           handle: (e) => handleData(e),
+         })
+      relation.content.push(
+        {
+          id: newid+3,
+          label: "Notes",
+          xl: 6,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        })
+      relation.content.push(
+        {
+          id: 99,
+          label: "AddRelation",
+          xl: 2,
+          md: 2,
+          xs: 2,
+          select: {
+            status: "AddRelation",
+            data: "+ Add",
+          }
+        })
+      setDemoData([
+        ...demoData.slice(0,index),
+        relation,
+        ...demoData.slice(index+1)
+      ]);
+    }
+  };
+
   return (
     <DragDropContext onDragEnd={onEnd}>
       <Droppable droppableId="01">
@@ -703,12 +992,10 @@ export const TestDnD = (props) => {
                           minWidth: "100%",
                         }}
                       >
-                        <Accordion
-                          expanded={item.expend}
-                          onClick={() => handleExpend(item.id, item.expend)}
-                        >
-                          <AccordionSummary
+                        <Accordion expanded={item.expend}>
+                          <AccordionSummary 
                           // expandIcon={<ArrowDropDownIcon style={{color:'blue'}} />}
+                          onClick={()=>handleExpend(item.id,item.expend)}
                           >
                             <div style={{ color: "blue" }}>
                               {item.title}&nbsp;
@@ -737,13 +1024,59 @@ export const TestDnD = (props) => {
                                   md={detail.md}
                                   xs={detail.xs}
                                 >
-                                  {detail.select.status === "fill" ? (
+                                  { detail.select.status === "AddRelation" ? (
+                                    <Button
+                                    className={classes.root}
+                                      variant="outlined"
+                                      fullWidth
+                                      style={{backgroundColor:"blue",color:"white"}}
+                                      value={detail.select.data}
+                                      onClick={() => handleAddRelation(item.id)}
+                                      >+ Add</Button>
+                                  ) :detail.select.status === "AddComunication" ? (
+                                    <Button
+                                    className={classes.root}
+                                      variant="outlined"
+                                      fullWidth
+                                      style={{backgroundColor:"blue",color:"white"}}
+                                      value={detail.select.data}
+                                      onClick={() => handleAddComunication(item.id)}
+                                      >+ Add</Button>
+                                  ) :
+                                  detail.select.status === "fix" ? (
+                                    <TextField
+                                    className={classes.root}
+                                      variant="outlined"
+                                      fullWidth
+                                      style={{backgroundColor:"#EEEEEE"}}
+                                      // disabled={true}
+                                      value={detail.select.data}
+                                      onFocus={false}
+                                      />
+                                  ) :detail.select.status === "fillnolabel" ? (
+                                    <TextField
+                                      className={classes.root}
+                                      // label={detail.label}
+                                      variant="outlined"
+                                      InputProps={{
+                                        style: headerTableStyle,
+                                      }}
+                                      InputLabelProps={{
+                                        style: {color:"#AAAAAA"}
+                                      }}
+                                      fullWidth
+                                      onChange={detail.handle}
+                                    />
+                                  ) :detail.select.status === "fill" ? (
                                     <TextField
                                       className={classes.root}
                                       label={detail.label}
                                       variant="outlined"
                                       InputProps={{
                                         style: headerTableStyle,
+                                      }}
+                                      InputLabelProps={{
+                                        style: {color:"#AAAAAA"}
                                       }}
                                       fullWidth
                                       onChange={detail.handle}

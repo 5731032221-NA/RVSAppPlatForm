@@ -24,6 +24,7 @@ import {
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import ProfileIndividual from "../components/ProfileIndividual";
+import TestDnD from "../components/TestDnD";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
@@ -305,7 +306,7 @@ export const ProfileTable = (props) => {
         ) : null}
       </Grid>
       {statusprofile === "edit" || statusprofile === "add" ? (
-        <ProfileIndividual editdata={editData} />
+        <TestDnD editdata={editData} />
       ) : (
         [
           individualData == null ? (
