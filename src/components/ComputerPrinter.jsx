@@ -7,6 +7,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import MaterialTable from "material-table";
+import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import {
   Container,
   Grid,
@@ -676,11 +678,12 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
+  
 
   return (
     <Container maxWidth="xl" style={themeState}>
       <React.Fragment>
-        <Grid container style={{ padding: 20 }}>
+        <Grid container style={{ padding: 20,marginTop: 22 }}>
           <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
@@ -767,6 +770,42 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
 
         <div style={{ maxWidth: "100%" }}>
           <MaterialTable
+         localization={{ body:{ emptyDataSourceMessage: <>   <Typography
+          variant="h1"
+          align="center"
+          style={{ fontSize: 25, color: themeState.color }}
+        >
+          <ErrorOutlineOutlinedIcon
+            style={{ fontSize: 170, color: "lightgray" }}
+          />
+        </Typography>
+        <Typography
+          align="center"
+          variant="h2"
+          style={{
+            fontWeight: 400,
+            fontSize: 30,
+            color: "rgb(0 0 0 / 47%)",
+            marginBottom: 20,
+          }}
+        >
+          No Data Available
+        </Typography>
+        <Grid item>
+              <Button
+                startIcon={<AddOutlinedIcon />}
+                size="large"
+                variant="contained"
+                color="primary"
+                // style={{ padding: 13 }}
+                // fullWidth
+                // onClick={() => setCreateindividual(true)}
+                onClick={handleDialogAdd}
+              >
+                New Setting
+              </Button>
+           </Grid>
+         </> }}}
             style={{
               paddingLeft: 30,
               paddingRight: 30,
@@ -828,9 +867,12 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
             data={rows}
             // totalCount={rows.length}
             // page={page}
+
+            
             options={{
               actionsColumnIndex: -1,
               // filtering: true,
+              search: true,
               searchFieldAlignment: "left",
               page: page,
               pageSize: rowsPerPage,
@@ -1217,7 +1259,7 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
               variant="contained"
               color="primary"
               style={{
-                color: themeState.color,
+                color: "white",
                 backgroundColor: mainColor,
               }}
               onClick={() => handleInsert()}

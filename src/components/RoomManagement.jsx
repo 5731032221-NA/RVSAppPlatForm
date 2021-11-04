@@ -9,6 +9,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { ReactReduxContext, useSelector } from "react-redux";
+import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import {
   Container,
   Grid,
@@ -1396,7 +1398,8 @@ export default function RoomManagement() {
                     )
                   }
                   style={{
-                    color: themeState.color,
+                    // color: themeState.color,
+                    color: "white",
                     backgroundColor: mainColor,
                   }}
                 >
@@ -1946,6 +1949,42 @@ export default function RoomManagement() {
       </React.Fragment>
       {CRUD.R ? (
         <MaterialTable
+        localization={{ body:{ emptyDataSourceMessage: <>   <Typography
+          variant="h1"
+          align="center"
+          style={{ fontSize: 25, color: themeState.color }}
+        >
+          <ErrorOutlineOutlinedIcon
+            style={{ fontSize: 170, color: "lightgray" }}
+          />
+        </Typography>
+        <Typography
+          align="center"
+          variant="h2"
+          style={{
+            fontWeight: 400,
+            fontSize: 30,
+            color: "rgb(0 0 0 / 47%)",
+            marginBottom: 20,
+          }}
+        >
+          No Data Available
+        </Typography>
+        <Grid item>
+              <Button
+                startIcon={<AddOutlinedIcon />}
+                size="large"
+                variant="contained"
+                color="primary"
+                // style={{ padding: 13 }}
+                // fullWidth
+                // onClick={() => setCreateindividual(true)}
+                onClick={handleDialogAddRoom}
+              >
+                New Room Master
+              </Button>
+           </Grid>
+         </> }}}
           style={{
             paddingLeft: 30,
             paddingRight: 30,

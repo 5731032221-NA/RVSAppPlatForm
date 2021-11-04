@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ReactReduxContext, useSelector } from "react-redux";
 import MaterialTable, { MTablePagination } from "material-table";
+import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import {
   Container,
   Grid,
@@ -509,6 +511,42 @@ export default function DeviceManager() {
 
         <div style={{ maxWidth: "100%" }}>
           <MaterialTable
+           localization={{ body:{ emptyDataSourceMessage: <>   <Typography
+            variant="h1"
+            align="center"
+            style={{ fontSize: 25, color: themeState.color }}
+          >
+            <ErrorOutlineOutlinedIcon
+              style={{ fontSize: 170, color: "lightgray" }}
+            />
+          </Typography>
+          <Typography
+            align="center"
+            variant="h2"
+            style={{
+              fontWeight: 400,
+              fontSize: 30,
+              color: "rgb(0 0 0 / 47%)",
+              marginBottom: 20,
+            }}
+          >
+            No Data Available
+          </Typography>
+          <Grid item>
+                <Button
+                  startIcon={<AddOutlinedIcon />}
+                  size="large"
+                  variant="contained"
+                  color="primary"
+                  // style={{ padding: 13 }}
+                  // fullWidth
+                  // onClick={() => setCreateindividual(true)}
+                  onClick={handleDialogAdd}
+                >
+                  New Device
+                </Button>
+             </Grid>
+           </> }}}
             style={{
               paddingLeft: 30,
               paddingRight: 30,

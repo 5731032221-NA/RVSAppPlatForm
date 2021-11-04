@@ -7,6 +7,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import MaterialTable from "material-table";
+import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import { blue } from "@material-ui/core/colors";
 import {
   Container,
@@ -1926,7 +1928,7 @@ export default function RoleManagement() {
       <React.Fragment>
         <Grid
           container
-          style={{ padding: 20, backgroundColor: themeState.paper }}
+          style={{ padding: 20,marginTop:22, backgroundColor: themeState.paper }}
         >
           <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
@@ -2107,6 +2109,42 @@ export default function RoleManagement() {
         <div style={{ maxWidth: "100%" }}>
           {CRUD.R ? (
             <MaterialTable
+            localization={{ body:{ emptyDataSourceMessage: <>   <Typography
+              variant="h1"
+              align="center"
+              style={{ fontSize: 25, color: themeState.color }}
+            >
+              <ErrorOutlineOutlinedIcon
+                style={{ fontSize: 170, color: "lightgray" }}
+              />
+            </Typography>
+            <Typography
+              align="center"
+              variant="h2"
+              style={{
+                fontWeight: 400,
+                fontSize: 30,
+                color: "rgb(0 0 0 / 47%)",
+                marginBottom: 20,
+              }}
+            >
+              No Data Available
+            </Typography>
+            <Grid item>
+                  <Button
+                    startIcon={<AddOutlinedIcon />}
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    // style={{ padding: 13 }}
+                    // fullWidth
+                    // onClick={() => setCreateindividual(true)}
+                    onClick={handleDialogAddRole}
+                  >
+                    New Role
+                  </Button>
+               </Grid>
+             </> }}}
               style={{
                 paddingLeft: 30,
                 paddingRight: 30,
