@@ -50,6 +50,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import { useHistory } from "react-router-dom";
 
 import {
@@ -2355,12 +2356,27 @@ export default function UserManagement() {
               style={{
                 fontWeight: 400,
                 fontSize: 30,
-                color: themeState.color,
+                color: "rgb(0 0 0 / 47%)",
                 marginBottom: 20,
               }}
             >
               No Data Available
-            </Typography> </> }}}
+            </Typography>
+            <Grid item>
+                  <Button
+                    startIcon={<AddOutlinedIcon />}
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    // style={{ padding: 13 }}
+                    // fullWidth
+                    // onClick={() => setCreateindividual(true)}
+                    onClick={handleDialogAddUser}
+                  >
+                    New User
+                  </Button>
+               </Grid>
+             </> }}}
               style={{
                 paddingLeft: 30,
                 paddingRight: 30,

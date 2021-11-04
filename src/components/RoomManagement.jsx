@@ -10,6 +10,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { ReactReduxContext, useSelector } from "react-redux";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import {
   Container,
   Grid,
@@ -1963,12 +1964,27 @@ export default function RoomManagement() {
           style={{
             fontWeight: 400,
             fontSize: 30,
-            color: themeState.color,
+            color: "rgb(0 0 0 / 47%)",
             marginBottom: 20,
           }}
         >
           No Data Available
-        </Typography> </> }}}
+        </Typography>
+        <Grid item>
+              <Button
+                startIcon={<AddOutlinedIcon />}
+                size="large"
+                variant="contained"
+                color="primary"
+                // style={{ padding: 13 }}
+                // fullWidth
+                // onClick={() => setCreateindividual(true)}
+                onClick={handleDialogAddRoom}
+              >
+                New Room Master
+              </Button>
+           </Grid>
+         </> }}}
           style={{
             paddingLeft: 30,
             paddingRight: 30,
