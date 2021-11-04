@@ -128,6 +128,38 @@ const optiondata2 = [
   },
 ];
 
+const optioncurrency = [
+  {
+    value: "1",
+    label: "Dollar $",
+  },
+  {
+    value: "2",
+    label: "Baht ฿",
+  }
+]
+
+const optioncreditrating = [
+  {
+    value: "1",
+    label: "5",
+  },
+  {
+    value: "2",
+    label: "4",
+  },{
+    value: "3",
+    label: "3",
+  },
+  {
+    value: "4",
+    label: "2",
+  },{
+    value: "5",
+    label: "1",
+  }
+]
+
 export const ProfileCompany = (props) => {
   const { store } = useContext(ReactReduxContext);
   const [themeState, setThemeState] = React.useState({
@@ -189,6 +221,7 @@ export const ProfileCompany = (props) => {
     {
       id: "1",
       title: "Account",
+      expend: true,
       content: [
         {
           id: 1,
@@ -279,6 +312,7 @@ export const ProfileCompany = (props) => {
     {
       id: "2",
       title: "Address",
+      expend: true,
       content: [
         {
           id: 1,
@@ -388,6 +422,7 @@ export const ProfileCompany = (props) => {
     {
       id: "3",
       title: "Communication",
+      expend: true,
       content: [
         {
           id: 1,
@@ -454,6 +489,7 @@ export const ProfileCompany = (props) => {
     {
       id: "4",
       title: "Rerationship (Internal)",
+      expend: true,
       content: [
         {
           id: 1,
@@ -560,6 +596,7 @@ export const ProfileCompany = (props) => {
     {
       id: "5",
       title: "A/R Number",
+      expend: true,
       content: [
         {
           id: 1,
@@ -581,7 +618,7 @@ export const ProfileCompany = (props) => {
           xs: 12,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: optioncurrency.map((option) => (
               <option
                 style={headerTableStyle}
                 key={option.value}
@@ -601,7 +638,7 @@ export const ProfileCompany = (props) => {
           xs: 12,
           select: {
             status: "option",
-            data: optiondata2.map((option) => (
+            data: optioncreditrating.map((option) => (
               <option
                 style={headerTableStyle}
                 key={option.value}
@@ -630,6 +667,7 @@ export const ProfileCompany = (props) => {
     {
       id: "6",
       title: "More Information",
+      expend: true,
       content: [
         {
           id: 1,
@@ -645,7 +683,7 @@ export const ProfileCompany = (props) => {
         },
         {
           id: 2,
-          label: "Routing Instruction",
+          label: "Billing Instruction",
           xl: 3,
           md: 6,
           xs: 12,
@@ -668,6 +706,7 @@ export const ProfileCompany = (props) => {
     {
       id: "7",
       title: "Sales Information",
+      expend: false,
       content: [
         {
           id: 1,
