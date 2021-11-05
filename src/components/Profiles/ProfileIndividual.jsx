@@ -183,8 +183,10 @@ export const ProfileIndividual = (props) => {
   }, [maincolor]);
 
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
+ 
   React.useEffect(() => {
     setSmallwidth(window.innerWidth < 1000);
+
   }, []);
 
   const classes = useStyles(themeState);

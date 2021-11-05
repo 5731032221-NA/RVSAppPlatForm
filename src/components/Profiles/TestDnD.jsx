@@ -23,6 +23,9 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import {
+  getconfigurationbypropertycode
+} from "../../services/user.service";
+import {
   DatePicker,
   TimePicker,
   DateTimePicker,
@@ -82,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 
-const optionTitle = [
+var optionTitle = [
   {
     value: "Mr.",
     label: "Mr.",
@@ -132,32 +135,32 @@ const optiondata2 = [
   },
 ];
 
-const optioncommunication = [
-  {
-    value: "Telephone",
-    label: "Telephone Number",
-  },
-  {
-    value: "Mobile",
-    label: "Mobile Number",
-  },
-  {
-    value: "Email",
-    label: "Email Address",
-  },
-  {
-    value: "Twitter",
-    label: "Twitter",
-  },
-  {
-    value: "Instagram",
-    label: "Instagram",
-  },
-  {
-    value: "Facebook",
-    label: "Facebook",
-  },
-];
+// const optioncommunication = [
+//   {
+//     value: "Telephone",
+//     label: "Telephone Number",
+//   },
+//   {
+//     value: "Mobile",
+//     label: "Mobile Number",
+//   },
+//   {
+//     value: "Email",
+//     label: "Email Address",
+//   },
+//   {
+//     value: "Twitter",
+//     label: "Twitter",
+//   },
+//   {
+//     value: "Instagram",
+//     label: "Instagram",
+//   },
+//   {
+//     value: "Facebook",
+//     label: "Facebook",
+//   },
+// ];
 
 const optionnationality = [
   {
@@ -2053,24 +2056,24 @@ const optioncountry = [
   },
 ];
 
-const optionrelation = [
-  {
-    value: "Family",
-    label: "Family",
-  },
-  {
-    value: "Sprouse",
-    label: "Sprouse",
-  },
-  {
-    value: "Colleague",
-    label: "Colleague",
-  },
-  {
-    value: "ReportTo",
-    label: "Report To",
-  },
-];
+// const optionrelation = [
+//   {
+//     value: "Family",
+//     label: "Family",
+//   },
+//   {
+//     value: "Sprouse",
+//     label: "Sprouse",
+//   },
+//   {
+//     value: "Colleague",
+//     label: "Colleague",
+//   },
+//   {
+//     value: "ReportTo",
+//     label: "Report To",
+//   },
+// ];
 
 export const TestDnD = (props) => {
   const [themeState, setThemeState] = React.useState({
@@ -2079,6 +2082,8 @@ export const TestDnD = (props) => {
     paper: "#FFFFFF",
     colorlevel: "900",
   });
+  const [optionrelation, setOptionrelation] = React.useState([])
+  const [optioncommunication, setOptioncommunication] = React.useState([])
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
 
   const [optionCity, setOptionCity] = React.useState([
@@ -2138,549 +2143,7 @@ export const TestDnD = (props) => {
     color: themeState.color,
   };
 
-  const [demoData, setDemoData] = useState([
-    {
-      id: "1",
-      title: "Personal",
-      expend: true,
-      content: [
-        {
-          id: 0,
-          label: "Title",
-          xl: 1,
-          md: 1,
-          xs: 2,
-          select: {
-            status: "option",
-            data: optionTitle.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue: props.editdata != null ? props.editdata.title : "",
-          },
-          handle: (e) => setTitle(e.target.value),
-        },
-        {
-          id: 1,
-          label: "First Name",
-          xl: 5,
-          md: 5,
-          xs: 10,
-          select: {
-            status: "fill",
-            // data: props.editdata.firstname,
-            data: props.editdata != null ? props.editdata.firstname : "",
-          },
-          handle: (e) => setFirstname(e.target.value),
-        },
-        {
-          id: 2,
-          label: "Last Name",
-          xl: 5,
-          md: 5,
-          xs: 10,
-          select: {
-            status: "fill",
-            data: props.editdata != null ? props.editdata.lastname : "",
-          },
-          // handle: (e) => setPersonalData({ ...personalData,lastname: e.target.value }),
-          handle: (e) => setLastname(e.target.value),
-        },
-        {
-          id: 3,
-          label: "Gender",
-          xl: 1,
-          md: 1,
-          xs: 2,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                // defaultValue={props.editdata != null ? props.editdata.sex : ""}
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue: props.editdata != null ? props.editdata.sex : "",
-          },
-          handle: (e) => setSex(e.target.value),
-        },
-        {
-          id: 4,
-          label: "Choose a Document Type*",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "option",
-            data: optionDocumentType.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: "ID Number",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "fill",
-            data: props.editdata != null ? props.editdata.idcardandpass : "",
-          },
-          handle: (e) => handleData(e.target.value),
-        },
-        {
-          id: 6,
-          label: "Nationality*",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "option",
-            data: optionnationality.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 7,
-          label: "Issue Date",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "datetime",
-            data: "",
-          },
-          handle: " ",
-        },
-        {
-          id: 8,
-          label: "Expiry Date",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "datetime",
-            data: "",
-          },
-          handle: " ",
-        },
-        {
-          id: 9,
-          label: "Date of Birth",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "datetime",
-            data: "",
-          },
-          handle: " ",
-        },
-      ],
-    },
-    {
-      id: "2",
-      title: "Comunication",
-      expend: true,
-      content: [
-        {
-          id: 1,
-          label: "Email",
-          xl: 3,
-          md: 3,
-          xs: 6,
-          select: {
-            status: "fix",
-            data: "Email Address",
-          },
-        },
-        {
-          id: 2,
-          label: "Email",
-          xl: 9,
-          md: 9,
-          xs: 6,
-          select: {
-            status: "fillnolabel",
-            data: "Email",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Mobile Number",
-          xl: 3,
-          md: 3,
-          xs: 6,
-          select: {
-            status: "fix",
-            data: "Mobile Number",
-          },
-        },
-        {
-          id: 4,
-          label: "Mobile Number",
-          xl: 9,
-          md: 9,
-          xs: 6,
-          select: {
-            status: "fillnolabel",
-            data: "Mobile Number",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 99,
-          label: "Phone Number",
-          xl: 2,
-          md: 2,
-          xs: 2,
-          select: {
-            status: "AddComunication",
-            data: "+ Add",
-          },
-          // handle: (e) => handleAddComunication(e),
-        },
-      ],
-    },
-    {
-      id: "3",
-      title: "Address",
-      expend: true,
-      content: [
-        {
-          id: 1,
-          label: "Home Address",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "fix",
-            data: "Home Address",
-          },
-        },
-        {
-          id: 2,
-          label: "Address",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Choose a country",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "option",
-            data: optioncountry.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: "City",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "fill",
-            data: "",
-            // optionCity.map((option) => (
-            //   <option
-            //     style={headerTableStyle}
-            //     key={option.value}
-            //     value={option.value}
-            //   >
-            //     {option.label}
-            //   </option>
-            //  )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 6,
-          label: "State",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 7,
-          label: "Postal",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 8,
-          label: "Resident Address",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "fix",
-            data: "Resident Address",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 9,
-          label: "Address",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 10,
-          label: "Choose a country",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "option",
-            data: optioncountry.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 11,
-          label: "City",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "option",
-            data: optionCity.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 12,
-          label: "State",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 13,
-          label: "Postal",
-          xl: 2,
-          md: 2,
-          xs: 4,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "4",
-      title: "Relation",
-      expend: true,
-      content: [
-        {
-          id: 99,
-          label: "Relation",
-          xl: 2,
-          md: 2,
-          xs: 2,
-          select: {
-            status: "AddRelation",
-            data: "+ Add",
-          },
-          // handle: (e) => handleAddComunication(e),
-        },
-      ],
-    },
-    // ,
-    // {
-    //   id: "4",
-    //   title: "Social",
-    //   expend: true,
-    //   content: [
-    //     // {
-    //     //   id: 1,
-    //     //   label: (
-    //     //     <Grid container alignItems="center">
-    //     //       <PublicRoundedIcon style={{ marginRight: 10 }} />
-    //     //       Web site
-    //     //     </Grid>
-    //     //   ),
-    //     //   xl: 4,
-    //     //   md: 6,
-    //     //   xs: 12,
-    //     //   select: {
-    //     //     status: "fill",
-    //     //     data: "",
-    //     //   },
-    //     //   handle: (e) => handleData(e),
-    //     // },
-    //     {
-    //       id: 1,
-    //       label: (
-    //         <Grid container alignItems="center">
-    //           <AlternateEmailIcon style={{ marginRight: 10 ,color: 'green'}} />
-    //           Line
-    //         </Grid>
-    //       ),
-    //       xl: 2,
-    //       md: 2,
-    //       xs: 12,
-    //       select: {
-    //         status: "fill",
-    //         data: "",
-    //       },
-    //       handle: (e) => handleData(e),
-    //     },
-    //     {
-    //       id: 2,
-    //       label: (
-    //         <Grid container alignItems="center">
-    //           <WhatsAppIcon style={{ marginRight: 10 ,color: 'green'}} />
-    //           WhatsApp
-    //         </Grid>
-    //       ),
-    //       xl: 2,
-    //       md: 2,
-    //       xs: 12,
-    //       select: {
-    //         status: "fill",
-    //         data: "",
-    //       },
-    //       handle: (e) => handleData(e),
-    //     },
-    //     {
-    //       id: 3,
-    //       label: (
-    //         <Grid container alignItems="center">
-    //           <FacebookIcon style={{ marginRight: 10 ,color: 'blue'}} />
-    //           Facebook
-    //         </Grid>
-    //       ),
-    //       xl: 2,
-    //       md: 2,
-    //       xs: 12,
-    //       select: {
-    //         status: "fill",
-    //         data: "",
-    //       },
-    //       handle: (e) => handleData(e),
-    //     },
-    //     {
-    //       id: 4,
-    //       label: (
-    //         <Grid container alignItems="center">
-    //           <InstagramIcon style={{ marginRight: 10 ,color: 'orange'}} />
-    //           Instagram
-    //         </Grid>
-    //       ),
-    //       xl: 2,
-    //       md: 2,
-    //       xs: 12,
-    //       select: {
-    //         status: "fill",
-    //         data: "",
-    //       },
-    //       handle: (e) => handleData(e),
-    //     },
-    //     {
-    //       id: 5,
-    //       label: (
-    //         <Grid container alignItems="center">
-    //           <TwitterIcon style={{ marginRight: 10 ,color: '#1DA1F2'}} />
-    //           Twitter
-    //         </Grid>
-    //       ),
-    //       xl: 2,
-    //       md: 2,
-    //       xs: 12,
-    //       select: {
-    //         status: "fill",
-    //         data: "",
-    //       },
-    //       handle: (e) => handleData(e),
-    //     },
-    // ],
-    // },
-  ]);
+  const [demoData, setDemoData] = useState([]);
   const [list, setList] = React.useState(demoData);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -2709,6 +2172,481 @@ export const TestDnD = (props) => {
   const [lastname, setLastname] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [sex, setSex] = React.useState("");
+
+  const pageProperty = useSelector((state) => state.reducer.property);
+
+  async function getlist(config, field) {
+    for (var i = 0; i < config.length; i++) {
+      var obj = config[i];
+      if (obj.code === field) {
+        let list = [];
+        obj.children.forEach((element) =>
+          list.push({
+            value: element.name_en,
+            label: element.name_en,
+          })
+        );
+        return list;
+      } else if (obj.children) {
+        let _getlist = await getlist(obj.children, field);
+        if (_getlist) return _getlist;
+      }
+    }
+  }
+  
+  React.useEffect(() => {
+    async function getconfig(){
+     console.log("demostate")
+    let getconfigdata = await getconfigurationbypropertycode(
+      sessionStorage.getItem("auth"),
+      pageProperty
+    );
+    console.log(getconfigdata)
+    let configdata = getconfigdata.content[getconfigdata.content.length - 1];
+    let optionTitle = await getlist(configdata,"PCINDTT");
+    // let optionDocumentType = await getlist(configdata,"");
+    let optiongender = await getlist(configdata,"PCINDGD");
+    let relation = await getlist(configdata,"PCINDRL");
+    let communication = await getlist(configdata,"PCINDGD");
+    // let optionDocumentType = await getlist(configdata,"");
+    setOptionrelation(relation)
+    setOptioncommunication(communication)
+    setList([
+      {
+        id: "1",
+        title: "Personal",
+        expend: true,
+        content: [
+          {
+            id: 0,
+            label: "Title",
+            xl: 1,
+            md: 1,
+            xs: 2,
+            select: {
+              status: "option",
+              data: optionTitle.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue: props.editdata != null ? props.editdata.title : "",
+            },
+            handle: (e) => setTitle(e.target.value),
+          },
+          {
+            id: 1,
+            label: "First Name",
+            xl: 5,
+            md: 5,
+            xs: 10,
+            select: {
+              status: "fill",
+              // data: props.editdata.firstname,
+              data: props.editdata != null ? props.editdata.firstname : "",
+            },
+            handle: (e) => setFirstname(e.target.value),
+          },
+          {
+            id: 2,
+            label: "Last Name",
+            xl: 5,
+            md: 5,
+            xs: 10,
+            select: {
+              status: "fill",
+              data: props.editdata != null ? props.editdata.lastname : "",
+            },
+            // handle: (e) => setPersonalData({ ...personalData,lastname: e.target.value }),
+            handle: (e) => setLastname(e.target.value),
+          },
+          {
+            id: 3,
+            label: "Gender",
+            xl: 1,
+            md: 1,
+            xs: 2,
+            select: {
+              status: "option",
+              data: optiongender.map((option) => (
+                <option
+                  // defaultValue={props.editdata != null ? props.editdata.sex : ""}
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue: props.editdata != null ? props.editdata.sex : "",
+            },
+            handle: (e) => setSex(e.target.value),
+          },
+          {
+            id: 4,
+            label: "Choose a Document Type*",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "option",
+              data: optionDocumentType.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 5,
+            label: "ID Number",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "fill",
+              data: props.editdata != null ? props.editdata.idcardandpass : "",
+            },
+            handle: (e) => handleData(e.target.value),
+          },
+          {
+            id: 6,
+            label: "Nationality*",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "option",
+              data: optionnationality.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 7,
+            label: "Issue Date",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "datetime",
+              data: "",
+            },
+            handle: " ",
+          },
+          {
+            id: 8,
+            label: "Expiry Date",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "datetime",
+              data: "",
+            },
+            handle: " ",
+          },
+          {
+            id: 9,
+            label: "Date of Birth",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "datetime",
+              data: "",
+            },
+            handle: " ",
+          },
+        ],
+      },
+      {
+        id: "2",
+        title: "Comunication",
+        expend: true,
+        content: [
+          {
+            id: 1,
+            label: "Email",
+            xl: 3,
+            md: 3,
+            xs: 6,
+            select: {
+              status: "fix",
+              data: "Email Address",
+            },
+          },
+          {
+            id: 2,
+            label: "Email",
+            xl: 9,
+            md: 9,
+            xs: 6,
+            select: {
+              status: "fillnolabel",
+              data: "Email",
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 3,
+            label: "Mobile Number",
+            xl: 3,
+            md: 3,
+            xs: 6,
+            select: {
+              status: "fix",
+              data: "Mobile Number",
+            },
+          },
+          {
+            id: 4,
+            label: "Mobile Number",
+            xl: 9,
+            md: 9,
+            xs: 6,
+            select: {
+              status: "fillnolabel",
+              data: "Mobile Number",
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 99,
+            label: "Phone Number",
+            xl: 2,
+            md: 2,
+            xs: 2,
+            select: {
+              status: "AddComunication",
+              data: "+ Add",
+            },
+            // handle: (e) => handleAddComunication(e),
+          },
+        ],
+      },
+      {
+        id: "3",
+        title: "Address",
+        expend: true,
+        content: [
+          {
+            id: 1,
+            label: "Home Address",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "fix",
+              data: "Home Address",
+            },
+          },
+          {
+            id: 2,
+            label: "Address",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "fill",
+              data: "",
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 4,
+            label: "Choose a country",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "option",
+              data: optioncountry.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 5,
+            label: "City",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "fill",
+              data: "",
+              // optionCity.map((option) => (
+              //   <option
+              //     style={headerTableStyle}
+              //     key={option.value}
+              //     value={option.value}
+              //   >
+              //     {option.label}
+              //   </option>
+              //  )),
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 6,
+            label: "State",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "fill",
+              data: "",
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 7,
+            label: "Postal",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "fill",
+              data: "",
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 8,
+            label: "Resident Address",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "fix",
+              data: "Resident Address",
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 9,
+            label: "Address",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "fill",
+              data: "",
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 10,
+            label: "Choose a country",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "option",
+              data: optioncountry.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 11,
+            label: "City",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "option",
+              data: optionCity.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 12,
+            label: "State",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "fill",
+              data: "",
+            },
+            handle: (e) => handleData(e),
+          },
+          {
+            id: 13,
+            label: "Postal",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "fill",
+              data: "",
+            },
+            handle: (e) => handleData(e),
+          },
+        ],
+      },
+      {
+        id: "4",
+        title: "Relation",
+        expend: true,
+        content: [
+          {
+            id: 99,
+            label: "Relation",
+            xl: 2,
+            md: 2,
+            xs: 2,
+            select: {
+              status: "AddRelation",
+              data: "+ Add",
+            },
+            // handle: (e) => handleAddComunication(e),
+          },
+        ],
+      }
+    ])
+    }
+    getconfig()
+  }, []);
 
   const handleData = (e) => {
     // console.log("Value from handleData : ", e.target.value);
