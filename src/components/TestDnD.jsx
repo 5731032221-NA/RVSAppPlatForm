@@ -2066,6 +2066,10 @@ const optionrelation = [
   {
     value: "Colleague",
     label: "Colleague",
+  },
+  {
+    value: "ReportTo",
+    label: "Report To",
   }
 ];
 
@@ -2303,8 +2307,8 @@ export const TestDnD = (props) => {
         {
           id: 1,
           label: "Email",
-          xl: 6,
-          md: 6,
+          xl: 3,
+          md: 3,
           xs: 6,
           select: {
             status: "fix",
@@ -2314,8 +2318,8 @@ export const TestDnD = (props) => {
         {
           id: 2,
           label: "Email",
-          xl: 6,
-          md: 6,
+          xl: 9,
+          md: 9,
           xs: 6,
           select: {
             status: "fillnolabel",
@@ -2326,8 +2330,8 @@ export const TestDnD = (props) => {
         {
           id: 3,
           label: "Mobile Number",
-          xl: 6,
-          md: 6,
+          xl: 3,
+          md: 3,
           xs: 6,
           select: {
             status: "fix",
@@ -2337,8 +2341,8 @@ export const TestDnD = (props) => {
         {
           id: 4,
           label: "Mobile Number",
-          xl: 6,
-          md: 6,
+          xl: 9,
+          md: 9,
           xs: 6,
           select: {
             status: "fillnolabel",
@@ -2415,16 +2419,17 @@ export const TestDnD = (props) => {
           md: 2,
           xs: 4,
           select: {
-            status: "option",
-            data: optionCity.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            status: "fill",
+            data: ""
+            // optionCity.map((option) => (
+            //   <option
+            //     style={headerTableStyle}
+            //     key={option.value}
+            //     value={option.value}
+            //   >
+            //     {option.label}
+            //   </option>
+            //  )),
           },
           handle: (e) => handleData(e),
         },
@@ -2727,8 +2732,8 @@ export const TestDnD = (props) => {
      {
         id: newid+1,
         label: "Choose a communication",
-        xl: 6,
-        md: 6,
+        xl: 3,
+        md: 3,
         xs: 6,
         select: {
           status: "option",
@@ -2748,8 +2753,8 @@ export const TestDnD = (props) => {
       {
         id: newid+2,
         label: "communication",
-        xl: 6,
-        md: 6,
+        xl: 9,
+        md: 9,
         xs: 6,
         select: {
           status: "fillnolabel",
@@ -2853,13 +2858,21 @@ export const TestDnD = (props) => {
   };
 
   return (
+    <Container
+    maxWidth="xl"
+    style={{
+      paddingTop: 5,
+      color: themeState.color,
+      backgroundColor: themeState.background,
+    }}
+  >
     <DragDropContext onDragEnd={onEnd}>
       <Droppable droppableId="01">
         {(provided, snapshot) => (
           <Paper
             elevation={3}
             style={{
-              marginTop: 5,
+              padding: 20,
               color: themeState.color,
               backgroundColor: themeState.paper,
             }}
@@ -2873,26 +2886,6 @@ export const TestDnD = (props) => {
               {list.map((item, index) => (
                 <Draggable draggableId={item.id} key={item.id} index={index}>
                   {(provided, snapshot) => (
-                    <Grid
-                      container
-                      xl={12}
-                      md={12}
-                      xs={12}
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
-                    >
-                      <Grid
-                        style={{
-                          minHeight: 100,
-                          // padding: 20,
-                          minWidth: "100%",
-                        }}
-                      >
                         <Accordion 
                         ref={provided.innerRef}
                         {...provided.draggableProps}
@@ -2951,7 +2944,7 @@ export const TestDnD = (props) => {
                                     className={classes.root}
                                       variant="outlined"
                                       fullWidth
-                                      style={{backgroundColor:"#EEEEEE"}}
+                                      style={{backgroundColor:"#EFEFEF", borderColor:"white"}}
                                       // disabled={true}
                                       value={detail.select.data}
                                       onFocus={false}
@@ -3026,8 +3019,6 @@ export const TestDnD = (props) => {
                             </Grid>
                           </AccordionDetails>
                         </Accordion>
-                      </Grid>
-                    </Grid>
                   )}
                 </Draggable>
               ))}
@@ -3037,6 +3028,7 @@ export const TestDnD = (props) => {
         )}
       </Droppable>
     </DragDropContext>
+    </Container>
   );
 };
 

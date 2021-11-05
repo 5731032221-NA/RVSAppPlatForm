@@ -1081,6 +1081,34 @@ const optioncountry = [
   }
 ]
 
+
+const optioncommunication = [
+  {
+    value: "Telephone",
+    label: "Telephone Number",
+  },
+  {
+    value: "Mobile",
+    label: "Mobile Number",
+  },
+  {
+    value: "Email",
+    label: "Email Address",
+  },
+  {
+    value: "Twitter",
+    label: "Twitter",
+  },
+  {
+    value: "Instagram",
+    label: "Instagram",
+  },
+  {
+    value: "Facebook",
+    label: "Facebook",
+  }
+];
+
 const optioncurrency = [
   {
     value: "1",
@@ -1115,28 +1143,16 @@ const optioncreditrating = [
 
 const optionrelation = [
   {
-    value: "Family",
-    label: "Family",
+    value: "employer",
+    label: "employer",
   },
   {
-    value: "Sprouse",
-    label: "Sprouse",
+    value: "parentcompany",
+    label: "Parent Company",
   },
   {
-    value: "Colleague",
-    label: "Colleague",
-  },
-  {
-    value: "Employee",
-    label: "Employee",
-  },
-  {
-    value: "ReportTo",
-    label: "Report To",
-  },
-  {
-    value: "Secretary",
-    label: "Secretary",
+    value: "childcompany",
+    label: "Child Company",
   }
 ];
 
@@ -1206,10 +1222,10 @@ export const ProfileTravelAgent = (props) => {
           id: 1,
           label: "Name 1",
           xl: 4,
-          md: 6,
+          md: 4,
           xs: 12,
           select: {
-            status: "option",
+            status: "fill",
             data: ""
           }
         },
@@ -1217,7 +1233,7 @@ export const ProfileTravelAgent = (props) => {
           id: 2,
           label: "Name 2",
           xl: 4,
-          md: 6,
+          md: 4,
           xs: 12,
           select: {
             status: "fill",
@@ -1229,7 +1245,7 @@ export const ProfileTravelAgent = (props) => {
           id: 3,
           label: "Name 3",
           xl: 4,
-          md: 6,
+          md: 4,
           xs: 12,
           select: {
             status: "fill",
@@ -1355,65 +1371,16 @@ export const ProfileTravelAgent = (props) => {
       expend: true,
       content: [
         {
-          id: 1,
-          label: "Commu1_type",
-          xl: 4,
-          md: 6,
-          xs: 12,
+          id: 99,
+          label: "Phone Number",
+          xl: 2,
+          md: 2,
+          xs: 2,
           select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Commu2_type",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Commu3_type",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
+            status: "AddComunication",
+            data: "+ Add",
+          }
+        }
       ],
     },
     {
@@ -1901,6 +1868,70 @@ export const ProfileTravelAgent = (props) => {
     }
   };
 
+  
+  const handleAddComunication = async (id) => {
+
+    let index = demoData.findIndex(x=> x.id === id);
+    if (index === -1) return;
+    else{
+     let comunication = demoData[index];
+     delete comunication.content[comunication.content.length-1];
+     let newid = await comunication.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
+     comunication.content.push(
+     {
+        id: newid+1,
+        label: "Choose a communication",
+        xl: 3,
+        md: 3,
+        xs: 6,
+        select: {
+          status: "option",
+          data: optioncommunication.map((option) => (
+            <option
+              style={headerTableStyle}
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          )),
+        },
+        handle: (e) => handleData(e),
+      })
+      comunication.content.push(
+      {
+        id: newid+2,
+        label: "communication",
+        xl: 9,
+        md: 9,
+        xs: 6,
+        select: {
+          status: "fillnolabel",
+          data: "",
+        },
+        handle: (e) => handleData(e),
+      })
+      comunication.content.push(
+        {
+          id: 99,
+          label: "AddComunication",
+          xl: 2,
+          md: 2,
+          xs: 2,
+          select: {
+            status: "AddComunication",
+            data: "+ Add",
+          }
+        })
+      setDemoData([
+        ...demoData.slice(0,index),
+        comunication,
+        ...demoData.slice(index+1)
+      ]);
+    }
+  };
+
+
   const handleAddRelation = async (id) => {
 
     let index = demoData.findIndex(x=> x.id === id);
@@ -1999,21 +2030,14 @@ export const ProfileTravelAgent = (props) => {
               <Container maxWidth="xl">
                 <Grid container alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
-                    <Typography variant="h6" style={{ color: mainColor }}>
-                      Sales Information
-                    </Typography>
+                    {" "}
                   </Grid>
-                  <Grid item xl={3} md={3} xs={3}>
-                    <TextField
-                      style={{ paddingRight: 20 }}
-                      fullWidth
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon />
-                          </InputAdornment>
-                        ),
-                      }}
+                  <Grid item style={{ paddingRight: 20 }}>
+                    <FormControlLabel
+                      value="start"
+                      control={<Checkbox color="primary" />}
+                      label="Central Protected"
+                      labelPlacement="start"
                     />
                   </Grid>
                 </Grid>
@@ -2065,7 +2089,30 @@ export const ProfileTravelAgent = (props) => {
                                 md={detail.md}
                                 xs={detail.xs}
                               >
-                                { detail.select.status === "AddRelation" ? (
+                                { detail.select.status === "AddComunication" ? (
+                                    <Button
+                                    className={classes.root}
+                                      variant="outlined"
+                                      fullWidth
+                                      style={{backgroundColor:"blue",color:"white"}}
+                                      value={detail.select.data}
+                                      onClick={() => handleAddComunication(item.id)}
+                                      >+ Add</Button>
+                                  ) :detail.select.status === "fillnolabel" ? (
+                                    <TextField
+                                      className={classes.root}
+                                      // label={detail.label}
+                                      variant="outlined"
+                                      InputProps={{
+                                        style: headerTableStyle,
+                                      }}
+                                      InputLabelProps={{
+                                        style: {color:"#AAAAAA"}
+                                      }}
+                                      fullWidth
+                                      onChange={detail.handle}
+                                    />
+                                  ):detail.select.status === "AddRelation" ? (
                                     <Button
                                     className={classes.root}
                                       variant="outlined"
