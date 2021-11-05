@@ -7,7 +7,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
 
   listconfigmaster: async function (accessToken, req) {
@@ -18,7 +18,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
 
   updateconfigmaster: async function (accessToken, id, req) {
@@ -29,7 +29,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
 
   deleteconfigmaster: async function (accessToken, id) {
@@ -39,6 +39,6 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
 };

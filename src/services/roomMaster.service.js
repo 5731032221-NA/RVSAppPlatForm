@@ -20,7 +20,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
   getRoombyid: async function (accessToken, id) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/room-masters/${id}`, {
@@ -29,7 +29,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
 
   getRoombykey: async function (accessToken, keySearch) {
@@ -39,7 +39,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
   updateRoom: async function (accessToken, id, req) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/room-masters/${id}`, {
@@ -49,7 +49,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
   deletebyroomnum: async function (accessToken, roomnum) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/room-masters/${roomnum}`, {
@@ -58,6 +58,6 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
 };

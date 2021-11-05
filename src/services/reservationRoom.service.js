@@ -6,7 +6,7 @@ module.exports = {
           Authorization:  accessToken,
           "Content-Type": "application/json",
         },
-      }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+      }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
    },
   postreservationroom: async function (accessToken, req) {
     return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/reservation-room", {
@@ -16,7 +16,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
   getreservationroombyid: async function (accessToken, roomno) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/reservation-room/${roomno}`, {
@@ -25,7 +25,7 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
 
   // getRoombykey: async function (accessToken, keySearch) {
@@ -35,7 +35,7 @@ module.exports = {
   //       Authorization:  accessToken,
   //       "Content-Type": "application/json",
   //     },
-  //   }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+  //   }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   // },
   updatereservationroom: async function (accessToken, roomno, req) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/reservation-room/${roomno}`, {
@@ -45,7 +45,7 @@ module.exports = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(req),
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
   
   deletereservationroom: async function (accessToken, roomno) {
@@ -55,6 +55,6 @@ module.exports = {
         Authorization:  accessToken,
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
 };

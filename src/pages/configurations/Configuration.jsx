@@ -646,7 +646,7 @@ export default function Configuration() {
                   ":" +
                   seconds,
                 master: false,
-                addchild: false,
+                addchild: true,
               },
             ];
            }
@@ -735,7 +735,7 @@ export default function Configuration() {
               ":" +
               seconds,
             master: false,
-            addchild: false,
+            addchild: true,
           },
         ];
         }

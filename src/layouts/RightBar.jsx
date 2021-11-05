@@ -337,12 +337,12 @@ export default function RighBar() {
 
   function handleLogOut() {
 
-    sessionStorage.removeItem("curent_component")
-    sessionStorage.removeItem("property")
+    sessionStorage.removeItem("curent_component");
+    sessionStorage.removeItem("property");
     sessionStorage.removeItem('token');
    
     history.replace(`/`);
-    history.go(0)
+    history.go(0);
     // window.location.reload("/");
   }
 
