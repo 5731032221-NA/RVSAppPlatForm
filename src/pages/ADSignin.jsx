@@ -219,9 +219,11 @@ export default function Login({ setToken }) {
 
   const [resTooken,setResToken] = useState(null);
   const [errorCookie, setErrorCookie] = useState(false);
+  const [errorPermission, setErrorPermission] = useState(false);
 
   const handleSubmit = async (e) => {
     setErrorCookie(false);
+    setErrorPermission(false);
     e.preventDefault();
     if (username === null || username === '') {
       setErrorUsername(true);
@@ -246,15 +248,17 @@ export default function Login({ setToken }) {
    
 
       if (token.status == 2000) {
-        token.contents[token.contents.length - 1].username = username
-        token.contents[token.contents.length - 1].firstname = username
-        token.contents[token.contents.length - 1].lastname = ""
-        token.contents[token.contents.length - 1].property = "Test LDAP"
+        // token.contents[token.contents.length - 1].username = username
+        // token.contents[token.contents.length - 1].firstname = username
+        // token.contents[token.contents.length - 1].lastname = ""
+        // token.contents[token.contents.length - 1].property = "Test LDAP"
 
         setErrorUsername(false);
         setErrorPassword(false);
          setToken(token);
-      }else{
+      }else if(token.status == 2001){
+        setErrorPermission(true);
+      }{
          setErrorLogin(true);
       }
      
@@ -290,8 +294,7 @@ export default function Login({ setToken }) {
           <h5 className={classes.sysname} >AD Sign in</h5>
           <Divider variant="middle" />
 
-          {errorUsername ? <div className={classes.errorMessage}>Username is required</div> : (errorPassword ? <div className={classes.errorMessage}>Password is required</div> : (errorLogin ? <div className={classes.errorMessage}>Invalid Username or Password</div> : null))}
-         
+          {errorPermission ? <div className={classes.errorMessage}>Don't have permission</div> : (errorUsername ? <div className={classes.errorMessage}>Username is required</div> : (errorPassword ? <div className={classes.errorMessage}>Password is required</div> : (errorLogin ? <div className={classes.errorMessage}>Invalid Username or Password</div> : null)))}
           <Grid item className={classes.formlogin}>
           {/* Validate */}
             <form  autoComplete="on" onSubmit={handleSubmit}>

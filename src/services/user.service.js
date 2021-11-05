@@ -1,4 +1,13 @@
 module.exports = {
+  changestatus: async function (accessToken,username,status) {
+    return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/changestatus/${username}/${status}`, {
+      method: "GET",
+      headers: {
+        Authorization:  accessToken,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+  },
   getusercomponentpermision: async function (accessToken,username,component) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/usercomponentpermision/${username}/${component}`, {
       method: "GET",

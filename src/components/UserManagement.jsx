@@ -54,6 +54,7 @@ import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import { useHistory } from "react-router-dom";
 
 import {
+  changestatus,
   listuser,
   getuser,
   postuser,
@@ -736,7 +737,7 @@ export default function UserManagement() {
   }, []);
 
   const handleComponentState = async (comp) => {
-   
+
     const comlower = comp.toLowerCase();
     history.replace(`/${comlower}`);
     store.dispatch({
@@ -1135,8 +1136,8 @@ export default function UserManagement() {
       setErrorMessage(true);
       setErrorParameter("Property");
     } else {
-    
-     
+
+
       setErrorMessage(false);
       if (position == "Add new position") {
         let addPosition = await postposition(sessionStorage.getItem("auth"), {
@@ -1194,8 +1195,8 @@ export default function UserManagement() {
         setRows(userdata);
         updatePageData(userdata, page, rowsPerPage);
         setDialogAddUser(false);
-      }else if(insert.status == "1000"){
-     
+      } else if (insert.status == "1000") {
+
         setErrorMessageDu(true);
         setErrorParameterDu(insert.msg)
       }
@@ -1485,9 +1486,9 @@ export default function UserManagement() {
                   <Grid item style={{ flexGrow: 1 }}>
                     <Typography>
                       {nodes.create ||
-                      nodes.read ||
-                      nodes.update ||
-                      nodes.delete ? (
+                        nodes.read ||
+                        nodes.update ||
+                        nodes.delete ? (
                         <Typography
                           display="inline"
                           variant="h6"
@@ -1516,9 +1517,9 @@ export default function UserManagement() {
                         </Typography>
                       )}
                       {nodes.edited_create ||
-                      nodes.edited_read ||
-                      nodes.edited_update ||
-                      nodes.edited_delete ? (
+                        nodes.edited_read ||
+                        nodes.edited_update ||
+                        nodes.edited_delete ? (
                         <Typography
                           display="inline"
                           variant="h6"
@@ -1878,27 +1879,27 @@ export default function UserManagement() {
                           );
                         else return item.create === true;
                       }) ||
-                      nodes.children.some((item) => {
-                        if (item.permision == false)
-                          return item.children.some(
-                            (childitem) => childitem.read === true
-                          );
-                        else return item.read === true;
-                      }) ||
-                      nodes.children.some((item) => {
-                        if (item.permision == false)
-                          return item.children.some(
-                            (childitem) => childitem.update === true
-                          );
-                        else return item.update === true;
-                      }) ||
-                      nodes.children.some((item) => {
-                        if (item.permision == false)
-                          return item.children.some(
-                            (childitem) => childitem.delete === true
-                          );
-                        else return item.delete === true;
-                      }) ? (
+                        nodes.children.some((item) => {
+                          if (item.permision == false)
+                            return item.children.some(
+                              (childitem) => childitem.read === true
+                            );
+                          else return item.read === true;
+                        }) ||
+                        nodes.children.some((item) => {
+                          if (item.permision == false)
+                            return item.children.some(
+                              (childitem) => childitem.update === true
+                            );
+                          else return item.update === true;
+                        }) ||
+                        nodes.children.some((item) => {
+                          if (item.permision == false)
+                            return item.children.some(
+                              (childitem) => childitem.delete === true
+                            );
+                          else return item.delete === true;
+                        }) ? (
                         <Typography
                           display="inline"
                           variant="h6"
@@ -1924,27 +1925,27 @@ export default function UserManagement() {
                           );
                         else return item.edited_create === true;
                       }) ||
-                      nodes.children.some((item) => {
-                        if (item.permision == false)
-                          return item.children.some(
-                            (childitem) => childitem.edited_read === true
-                          );
-                        else return item.edited_read === true;
-                      }) ||
-                      nodes.children.some((item) => {
-                        if (item.permision == false)
-                          return item.children.some(
-                            (childitem) => childitem.edited_update === true
-                          );
-                        else return item.edited_update === true;
-                      }) ||
-                      nodes.children.some((item) => {
-                        if (item.permision == false)
-                          return item.children.some(
-                            (childitem) => childitem.edited_delete === true
-                          );
-                        else return item.edited_delete === true;
-                      }) ? (
+                        nodes.children.some((item) => {
+                          if (item.permision == false)
+                            return item.children.some(
+                              (childitem) => childitem.edited_read === true
+                            );
+                          else return item.edited_read === true;
+                        }) ||
+                        nodes.children.some((item) => {
+                          if (item.permision == false)
+                            return item.children.some(
+                              (childitem) => childitem.edited_update === true
+                            );
+                          else return item.edited_update === true;
+                        }) ||
+                        nodes.children.some((item) => {
+                          if (item.permision == false)
+                            return item.children.some(
+                              (childitem) => childitem.edited_delete === true
+                            );
+                          else return item.edited_delete === true;
+                        }) ? (
                         <Typography
                           display="inline"
                           variant="h6"
@@ -2092,8 +2093,8 @@ export default function UserManagement() {
         setRows(userdata);
         updatePageData(userdata, page, rowsPerPage);
         setDialogEditUser(false);
-      }else if(update.status == "1000"){
-     
+      } else if (update.status == "1000") {
+
         setErrorMessageDu(true);
         setErrorParameterDu(update.msg)
       }
@@ -2117,6 +2118,34 @@ export default function UserManagement() {
     // setEditAD(adaccount);
     setDialogDeleteUser(true);
   };
+
+  const handleactive = async (username, status) => {
+    let changedstatus = await changestatus(sessionStorage.getItem("auth"), username, status);
+    if (changedstatus.status == '2000') {
+      let data = await listuser(sessionStorage.getItem("auth"));
+      let userdata = [];
+      data.content[data.content.length - 1].forEach((element) =>
+        userdata.push(
+          createData(
+            element.code,
+            element.username,
+            element.firstname,
+            element.lastname,
+            element.position,
+            element.roles,
+            element.property,
+            element.status,
+            element.firstname + " " + element.lastname,
+            element.adaccount
+          )
+        )
+      );
+      console.log(sessionStorage.getItem("auth"));
+      console.log(userdata);
+      setRows(userdata);
+      updatePageData(userdata, page, rowsPerPage);
+    }
+  }
 
   const handleDialogDelete = async (username, fname, lname) => {
     // console.log("DeleteID:", id);
@@ -2203,13 +2232,13 @@ export default function UserManagement() {
                 </Typography>
               </Link>
               <Typography>
-                <Typography 
+                <Typography
                   variant="h6"
                   style={{
                     marginBottom: 15,
                     fontSize: 14,
                     color: themeState.color,
-                    
+
                   }}
                 >
                   User Management
@@ -2341,42 +2370,46 @@ export default function UserManagement() {
         <div style={{ maxWidth: "100%" }}>
           {CRUD.R ? (
             <MaterialTable
-            localization={{ body:{ emptyDataSourceMessage: <>   <Typography
-              variant="h1"
-              align="center"
-              style={{ fontSize: 25, color: themeState.color }}
-            >
-              <ErrorOutlineOutlinedIcon
-                style={{ fontSize: 170, color: "lightgray" }}
-              />
-            </Typography>
-            <Typography
-              align="center"
-              variant="h2"
-              style={{
-                fontWeight: 400,
-                fontSize: 30,
-                color: "rgb(0 0 0 / 47%)",
-                marginBottom: 20,
-              }}
-            >
-              No Data Available
-            </Typography>
-            <Grid item>
-                  <Button
-                    startIcon={<AddOutlinedIcon />}
-                    size="large"
-                    variant="contained"
-                    color="primary"
-                    // style={{ padding: 13 }}
-                    // fullWidth
-                    // onClick={() => setCreateindividual(true)}
-                    onClick={handleDialogAddUser}
+              localization={{
+                body: {
+                  emptyDataSourceMessage: <>   <Typography
+                    variant="h1"
+                    align="center"
+                    style={{ fontSize: 25, color: themeState.color }}
                   >
-                    New User
-                  </Button>
-               </Grid>
-             </> }}}
+                    <ErrorOutlineOutlinedIcon
+                      style={{ fontSize: 170, color: "lightgray" }}
+                    />
+                  </Typography>
+                    <Typography
+                      align="center"
+                      variant="h2"
+                      style={{
+                        fontWeight: 400,
+                        fontSize: 30,
+                        color: "rgb(0 0 0 / 47%)",
+                        marginBottom: 20,
+                      }}
+                    >
+                      No Data Available
+                    </Typography>
+                    <Grid item>
+                      <Button
+                        startIcon={<AddOutlinedIcon />}
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        // style={{ padding: 13 }}
+                        // fullWidth
+                        // onClick={() => setCreateindividual(true)}
+                        onClick={handleDialogAddUser}
+                      >
+                        New User
+                      </Button>
+                    </Grid>
+                  </>
+                }
+              }}
               style={{
                 paddingLeft: 30,
                 paddingRight: 30,
@@ -2431,6 +2464,7 @@ export default function UserManagement() {
                           backgroundColor: mainColor,
                           color: "white",
                         }}
+                        onClick={() => handleactive(rowData.userID, rowData.status)}
                       >
                         {rowData.status}
                       </Button>
@@ -2442,6 +2476,7 @@ export default function UserManagement() {
                           backgroundColor: "#DEDFE0",
                           color: "black",
                         }}
+                        onClick={() => handleactive(rowData.userID, rowData.status)}
                       >
                         {rowData.status}
                       </Button>
@@ -2512,7 +2547,7 @@ export default function UserManagement() {
                 },
               ]}
               onChangePage={(page) => console.log("page")}
-              // onChangePage={(event, page) => console.log(event, page)}
+            // onChangePage={(event, page) => console.log(event, page)}
             />
           ) : null}
         </div>
@@ -2849,7 +2884,7 @@ export default function UserManagement() {
                     {errorParameter} is required
                   </div>
                 ) : null}
-                 {errorMessageDu ? (
+                {errorMessageDu ? (
                   <div
                     style={{
                       background: "#ff0033",
@@ -2859,7 +2894,7 @@ export default function UserManagement() {
                       paddingTop: 5,
                     }}
                   >
-                    {errorParameterDu} 
+                    {errorParameterDu}
                   </div>
                 ) : null}
               </DialogContent>
@@ -3256,7 +3291,7 @@ export default function UserManagement() {
                       paddingTop: 5,
                     }}
                   >
-                    {errorParameterDu} 
+                    {errorParameterDu}
                   </div>
                 ) : null}
               </DialogContent>

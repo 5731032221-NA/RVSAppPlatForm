@@ -1,17 +1,13 @@
 module.exports = {
   getreservationroom: async function (accessToken) {
-    return (
-      fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/reservation-room", {
+    return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/reservation-room", {
         method: "GET",
         headers: {
           Authorization:  accessToken,
           "Content-Type": "application/json",
         },
-      })
-        // .then(data => data.json())
-        .then((data) => data.json())
-    );
-  },
+      }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');window.location.reload(false);}else return res.json();});
+   },
   postreservationroom: async function (accessToken, req) {
     return fetch("http://"+(process.env.REACT_APP_host || "localhost")+":8000/apis/reservation-room", {
       method: "POST",
