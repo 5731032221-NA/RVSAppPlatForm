@@ -31,6 +31,81 @@ import Piechart from "./Piechart";
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 
+const userdata = [
+  {
+    id: 1,
+    firstname: "Ray",
+    lastname: "Douglas",
+    userid: "162543",
+    img: "https://images.unsplash.com/photo-1612896488082-7271dc0ed30c?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8ZmFjZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    time: "3",
+  },
+  {
+    id: 2,
+    firstname: "Gussie",
+    lastname: "Shelton",
+    userid: "162544",
+    img: "https://images.unsplash.com/photo-1573600073955-f15b3b6caab7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGZhY2VzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    time: "4",
+  },
+  {
+    id: 3,
+    firstname: "Ora",
+    lastname: "Hill",
+    userid: "162545",
+    img: "https://images.unsplash.com/photo-1548142542-c53707f8b05b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGZhY2VzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    time: "2",
+  },
+  {
+    id: 4,
+    firstname: "Brain",
+    lastname: "Dean",
+    userid: "162546",
+    img: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGZhY2VzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    time: "2",
+  },
+  {
+    id: 5,
+    firstname: "Olive",
+    lastname: "Bridges",
+    userid: "162547",
+    img: "https://images.unsplash.com/photo-1545167622-3a6ac756afa4?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGZhY2VzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    time: "7",
+  },
+  {
+    id: 6,
+    firstname: "Ryan",
+    lastname: "Taylor",
+    userid: "162548",
+    img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGZhY2VzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    time: "1",
+  },
+  {
+    id: 7,
+    firstname: "Christ",
+    lastname: "Wango",
+    userid: "111245",
+    img: "https://images.unsplash.com/photo-1604426633861-11b2faead63c?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjN8fGZhY2VzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    time: "4",
+  },
+  {
+    id: 8,
+    firstname: "Emma",
+    lastname: "Walton",
+    userid: "1211245",
+    img: "https://images.unsplash.com/photo-1608549036505-ead5b1de5417?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjZ8fGZhY2VzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    time: "1",
+  },
+  {
+    id: 9,
+    firstname: "ChrKobie",
+    lastname: "Griffithist",
+    userid: "34714",
+    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZmFjZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    time: "8",
+  },
+  //ref: https://unsplash.com/s/photos/faces
+];
 export class DashboardPage extends Component {
   constructor(props) {
     super(props);
@@ -167,7 +242,6 @@ export class DashboardPage extends Component {
       }
     }
   }
-  
 
   render() {
     return (
@@ -768,39 +842,46 @@ export class DashboardPage extends Component {
                         Top Performance
                       </Typography>
                     </Grid>
-                    <Grid container alignItems="center">
-                      <Grid item>
-                        <Avatar
-                          style={{
-                            width: 50,
-                            height: 50,
-                          }}
-                          alt="Remy Sharp"
-                          src="https://images.generated.photos/Vju0wVYI8Qk7k-sFT6qguoAvnNa2pzgUFOTG8jx9UWU/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzAyOTg4MTAuanBn.jpg"
-                        />
-                      </Grid>
-                      <Grid item style={{ marginLeft: 10, flexGrow: 1 }}>
+                    {userdata.map((itemdata) => (
+                      <Grid
+                        style={{ paddingBottom: 20 }}
+                        key={itemdata.id}
+                        container
+                        alignItems="center"
+                      >
                         <Grid item>
-                          <Typography variant="h6" component="h6">
-                            Remy Sharp
-                          </Typography>
+                          <Avatar
+                            style={{
+                              width: 50,
+                              height: 50,
+                            }}
+                            alt={itemdata.firstname}
+                            src={itemdata.img}
+                          />
+                        </Grid>
+                        <Grid item style={{ marginLeft: 10, flexGrow: 1 }}>
+                          <Grid item>
+                            <Typography variant="h6" component="h6">
+                              {itemdata.firstname} &nbsp; {itemdata.lastname}
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <Typography variant="body2" component="body1">
+                              {itemdata.userid}
+                            </Typography>
+                          </Grid>
                         </Grid>
                         <Grid item>
-                          <Typography variant="body2" component="body1">
-                            162543
+                          <Typography
+                            variant="p1"
+                            component="h6"
+                            style={{ color: "lightgrey" }}
+                          >
+                            {itemdata.time} Hours ago
                           </Typography>
                         </Grid>
                       </Grid>
-                      <Grid item>
-                        <Typography
-                          variant="p1"
-                          component="h6"
-                          style={{ color: "lightgrey" }}
-                        >
-                          3 Hours ago
-                        </Typography>
-                      </Grid>
-                    </Grid>
+                    ))}
                   </Grid>
                 </Paper>
               </Grid>

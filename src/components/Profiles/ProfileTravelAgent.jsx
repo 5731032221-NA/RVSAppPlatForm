@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
+import Radio from "@material-ui/core/Radio";
 import Checkbox from "@material-ui/core/Checkbox";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -17,10 +18,12 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
+import SearchIcon from "@material-ui/icons/Search";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
-import TestDnD from "../components/TestDnD";
+import TestDnD from "./TestDnD";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -28,10 +31,11 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { nextComponent } from "../../middleware/action";
 import { Breadcrumbs, Link } from "@material-ui/core";
 
-import { nextComponent } from "../middleware/action";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 import DateFnsUtils from "@date-io/date-fns";
 import {
   DatePicker,
@@ -71,7 +75,8 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: themeState.color,
+        // borderColor: themeState.color,
+        borderColor: "grey.500",
         color: themeState.color,
       },
       "&:hover fieldset": {
@@ -128,6 +133,7 @@ const optiondata2 = [
     label: "Option40",
   },
 ];
+
 
 const optioncountry = [
   {
@@ -1076,6 +1082,34 @@ const optioncountry = [
   }
 ]
 
+
+const optioncommunication = [
+  {
+    value: "Telephone",
+    label: "Telephone Number",
+  },
+  {
+    value: "Mobile",
+    label: "Mobile Number",
+  },
+  {
+    value: "Email",
+    label: "Email Address",
+  },
+  {
+    value: "Twitter",
+    label: "Twitter",
+  },
+  {
+    value: "Instagram",
+    label: "Instagram",
+  },
+  {
+    value: "Facebook",
+    label: "Facebook",
+  }
+];
+
 const optioncurrency = [
   {
     value: "1",
@@ -1123,36 +1157,7 @@ const optionrelation = [
   }
 ];
 
-
-const optioncommunication = [
-  {
-    value: "Telephone",
-    label: "Telephone Number",
-  },
-  {
-    value: "Mobile",
-    label: "Mobile Number",
-  },
-  {
-    value: "Email",
-    label: "Email Address",
-  },
-  {
-    value: "Twitter",
-    label: "Twitter",
-  },
-  {
-    value: "Instagram",
-    label: "Instagram",
-  },
-  {
-    value: "Facebook",
-    label: "Facebook",
-  }
-];
-
-export const ProfileCompany = (props) => {
-  const { store } = useContext(ReactReduxContext);
+export const ProfileTravelAgent = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -1215,7 +1220,7 @@ export const ProfileCompany = (props) => {
       expend: true,
       content: [
         {
-          id: 3,
+          id: 1,
           label: "Name 1",
           xl: 4,
           md: 4,
@@ -1226,7 +1231,7 @@ export const ProfileCompany = (props) => {
           }
         },
         {
-          id: 4,
+          id: 2,
           label: "Name 2",
           xl: 4,
           md: 4,
@@ -1238,7 +1243,7 @@ export const ProfileCompany = (props) => {
           handle: (e) => handleData(e),
         },
         {
-          id: 5,
+          id: 3,
           label: "Name 3",
           xl: 4,
           md: 4,
@@ -1396,6 +1401,66 @@ export const ProfileCompany = (props) => {
           },
           // handle: (e) => handleAddComunication(e),
         }
+        // {
+        //   id: 1,
+        //   label: "Owner",
+        //   xl: 2,
+        //   md: 6,
+        //   xs: 12,
+        //   select: {
+        //     status: "fill",
+        //     data: "",
+        //   },
+        //   handle: (e) => handleData(e),
+        // },
+        // {
+        //   id: 2,
+        //   label: "Temitory",
+        //   xl: 2,
+        //   md: 6,
+        //   xs: 12,
+        //   select: {
+        //     status: "fill",
+        //     data: "",
+        //   },
+        //   handle: (e) => handleData(e),
+        // },
+        // {
+        //   id: 3,
+        //   label: "Trace Code",
+        //   xl: 2,
+        //   md: 6,
+        //   xs: 12,
+        //   select: {
+        //     status: "fill",
+        //     data: "",
+        //   },
+        //   handle: (e) => handleData(e),
+        // },
+        // {
+        //   id: 4,
+        //   label: "Keyword",
+        //   xl: 3,
+        //   md: 6,
+        //   xs: 12,
+        //   select: {
+        //     status: "fill",
+        //     data: "",
+        //   },
+        //   handle: (e) => handleData(e),
+        // },
+        // {
+        //   id: 5,
+        //   label: "Type",
+        //   xl: 3,
+        //   md: 6,
+        //   xs: 12,
+        //   select: {
+        //     status: "fill",
+        //     data: "",
+        //   },
+        //   handle: (e) => handleData(e),
+        // },
       ],
     },
     {
@@ -1476,7 +1541,7 @@ export const ProfileCompany = (props) => {
       content: [
         {
           id: 1,
-          label: "Tax ID",
+          label: "Guest Type",
           xl: 3,
           md: 6,
           xs: 12,
@@ -1488,8 +1553,52 @@ export const ProfileCompany = (props) => {
         },
         {
           id: 2,
-          label: "Billing Instruction",
+          label: "Tax ID",
           xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 3,
+          label: "Billing Instruction",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optiondata2.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 4,
+          label: "Auto Populate Yn",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "checkbox",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "Payment",
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
@@ -1716,6 +1825,7 @@ export const ProfileCompany = (props) => {
       ],
     },
   ]);
+
   const [list, setList] = React.useState(demoData);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -1914,7 +2024,6 @@ export const ProfileCompany = (props) => {
               elevation={3}
               style={{
                 padding: 20,
-
                 color: themeState.color,
                 backgroundColor: themeState.paper,
               }}
@@ -1946,30 +2055,30 @@ export const ProfileCompany = (props) => {
                 {list.map((item, index) => (
                   <Draggable draggableId={item.id} key={item.id} index={index}>
                     {(provided, snapshot) => (
-                      <Accordion
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={getItemStyle(
-                          snapshot.isDragging,
-                          provided.draggableProps.style
-                        )}
-                        className={classes.defaultTheme}
-                        expanded={item.expend}
-                      >
-                        <AccordionSummary
-                          style={{ color: mainColor, fontSize: 18 }}
-                          onClick={()=>handleExpend(item.id,item.expend)}
-                        >
-                         <div style={{ color: "blue" }}>
-                              {item.title}&nbsp;
-                            </div>{" "}
-                            {item.expend ? (
-                              <ArrowDropDownIcon style={{ color: "blue" }} />
-                            ) : (
-                              <ArrowDropUpIcon style={{ color: "blue" }} />
-                            )}
-                        </AccordionSummary>
+                       <Accordion
+                       ref={provided.innerRef}
+                       {...provided.draggableProps}
+                       {...provided.dragHandleProps}
+                       style={getItemStyle(
+                         snapshot.isDragging,
+                         provided.draggableProps.style
+                       )}
+                       className={classes.defaultTheme}
+                       expanded={item.expend}
+                     >
+                       <AccordionSummary
+                         style={{ color: mainColor, fontSize: 18 }}
+                         onClick={()=>handleExpend(item.id,item.expend)}
+                       >
+                        <div style={{ color: "blue" }}>
+                             {item.title}&nbsp;
+                           </div>{" "}
+                           {item.expend ? (
+                             <ArrowDropDownIcon style={{ color: "blue" }} />
+                           ) : (
+                             <ArrowDropUpIcon style={{ color: "blue" }} />
+                           )}
+                       </AccordionSummary>
                         <AccordionDetails>
                           <Grid container spacing={2}>
                             {item.content.map((detail, index) => (
@@ -1981,7 +2090,7 @@ export const ProfileCompany = (props) => {
                                 md={detail.md}
                                 xs={detail.xs}
                               >
-                                 { detail.select.status === "AddComunication" ? (
+                                { detail.select.status === "AddComunication" ? (
                                     <Button
                                     className={classes.root}
                                       variant="outlined"
@@ -2004,7 +2113,7 @@ export const ProfileCompany = (props) => {
                                       fullWidth
                                       onChange={detail.handle}
                                     />
-                                  ): detail.select.status === "AddRelation" ? (
+                                  ):detail.select.status === "AddRelation" ? (
                                     <Button
                                     className={classes.root}
                                       variant="outlined"
@@ -2055,34 +2164,13 @@ export const ProfileCompany = (props) => {
                                   >
                                     {detail.select.data}
                                   </TextField>
-                                ) : detail.select.status === "datetime" ? (
-                                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardDatePicker
-                                      className={classes.root}
-                                      label={detail.label}
-                                      inputVariant="outlined"
-                                      InputProps={{
-                                        style: headerTableStyle,
-                                      }}
-                                      // format="dd/MM/yyyy"
-                                      // value={selectedDateStartEdit}
-                                      // onChange={handleDateStartEdit}
-                                      onChange={detail.handle}
-                                      fullWidth
-                                    />
-                                  </MuiPickersUtilsProvider>
                                 ) : (
-                                  <Typography
-                                    variant="subtitle1"
-                                    color="initial"
-                                    style={{
-                                      paddingBottom: 10,
-                                      paddingTop: 10,
-                                      color: "blue",
-                                    }}
-                                  >
-                                    {detail.label}
-                                  </Typography>
+                                  <FormControlLabel
+                                    value="start"
+                                    control={<Checkbox color="primary" />}
+                                    label={detail.label}
+                                    labelPlacement="start"
+                                  />
                                 )}
                               </Grid>
                             ))}
@@ -2110,4 +2198,15 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileCompany);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileTravelAgent);
+
+// {
+//   <Grid item xl={2} md={6} xs={12}>
+//     <FormControlLabel
+//       value="start"
+//       control={<Checkbox color="primary" />}
+//       label="Auto Populate Yn"
+//       labelPlacement="start"
+//     />
+//   </Grid>;
+// }

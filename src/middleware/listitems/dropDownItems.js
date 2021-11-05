@@ -164,30 +164,30 @@ export default function MainListItems() {
     handleComponentState("Configuration");
     setSelectedIndex(9);
   }
-  function handleOpenProfileIndivisual() {
+  function handleOpenProfileIndivisual(event,inx) {
     // store.dispatch({
     //   type: EDIT_CONFIGSTATE,
     //   payload: "ProfilePageIndividual",
     // });
     handleComponentState("profileindividual");
-    setSelectedIndex(4);
+    setSelectedIndex(inx);
   }
-  function handleOpenProfileTravelAgent() {
+  function handleOpenProfileTravelAgent(event,inx) {
     // store.dispatch({
     //   type: EDIT_CONFIGSTATE,
     //   payload: "profiletravelagent",
     // });
     handleComponentState("profiletravelagent");
-    setSelectedIndex(4);
+    setSelectedIndex(inx);
   }
 
-  function handleOpenProfileCompany() {
+  function handleOpenProfileCompany(event,inx) {
     // store.dispatch({
     //   type: EDIT_CONFIGSTATE,
     //   payload: "profilepagecompany",
     // });
     handleComponentState("profilepagecompany");
-    setSelectedIndex(4);
+    setSelectedIndex(inx);
   }
   function handleOpenNA() {
     const ind = 3;
@@ -423,6 +423,7 @@ export default function MainListItems() {
               {comps.includes("PF-ID") || comps.includes("*ALL") ? (
                 <ListItem
                   button
+                  
                   selected={selectedIndex === 41}
                   onClick={(event) => handleOpenProfileIndivisual(event, 41)}
                 >

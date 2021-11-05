@@ -54,21 +54,21 @@ import {
   listregisterdhardware,
   insertcomputerprinter,
   deletecomputerprinter,
-} from "../services/device.service";
+} from "../../services/device.service";
 import {
   getusernamebyproperty,
   listallproperty,
-} from "../services/user.service";
+} from "../../services/user.service";
 
 import {
   insertconfigmaster,
   listconfigmaster,
   updateconfigmaster,
   deleteconfigmaster,
-} from "../services/configmaster.service";
+} from "../../services/configmaster.service";
 
 import TablePagination from "@material-ui/core/TablePagination";
-import { EDIT_CONFIGSTATE } from "../middleware/action";
+import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import { useHistory } from "react-router-dom";
 // Generate Order Data
 function createData(

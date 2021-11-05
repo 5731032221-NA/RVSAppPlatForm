@@ -16,6 +16,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { blue } from "@material-ui/core/colors";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   DatePicker,
   TimePicker,
@@ -33,6 +35,55 @@ import {
   updatereservationroom,
   deletereservationroom,
 } from "../services/reservationRoom.service";
+
+const useStyles = makeStyles((theme) => ({
+  seeMore: {
+    marginTop: theme.spacing(3),
+  },
+  selectPage: {
+    minWidth: 90,
+    textAlign: "center",
+    flexGrow: 1,
+  },
+  searchLayout: {
+    flexGrow: 1,
+
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  root: (themeState) => ({
+    "& label.MuiInputLabel-root": {
+      color: themeState.color,
+    },
+    "& label.Mui-focused": {
+      color: blue[themeState.colorlevel],
+    },
+    "& .MuiInput-underline:after": {
+      borderColor: themeState.color,
+      color: themeState.color,
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: themeState.color,
+        color: themeState.color,
+      },
+      "&:hover fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+    },
+    "&.MuiPaper-root": {
+      backgroundColor: themeState.paper,
+    },
+    "&.MuiMenu-paper": {
+      backgroundColor: themeState.paper,
+    },
+  }),
+}));
 
 const Calendar = (props) => {
   const [dialogReservationEdit, setDialogReservationEdit] =
@@ -222,6 +273,7 @@ const Calendar = (props) => {
     colorlevel: "900",
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
+
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
       setThemeState({
@@ -241,6 +293,23 @@ const Calendar = (props) => {
       });
     }
   }, [themeBackground]);
+
+  const [mainColor, setMainColor] = React.useState("#2D62ED");
+  const maincolor = useSelector((state) => state.reducer.color);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setMainColor(maincolor);
+    } else {
+      setMainColor("#2D62ED");
+    }
+  }, [maincolor]);
+
+  const classes = useStyles(themeState);
+  const headerTableStyle = {
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  };
 
   return (
     <Container maxWidth="xl" disableGutters>
@@ -282,12 +351,23 @@ const Calendar = (props) => {
         open={dialogReservationEdit}
         onClose={handleDialogReservationClose}
         aria-labelledby="form-dialog-title"
+        className={classes.root}
+        style={{
+          backgroundColor: themeState.paper,
+          color: mainColor,
+        }}
       >
-        <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+        <DialogTitle
+          id="form-dialog-title"
+          style={{
+            backgroundColor: themeState.paper,
+            color: mainColor,
+          }}
+        >
           EDIT RESERVATION INFORMATION
         </DialogTitle>
 
-        <DialogContent>
+        <DialogContent style={headerTableStyle}>
           <Container maxWidth="xl" disableGutters>
             {/* <Grid
               container
@@ -358,6 +438,9 @@ const Calendar = (props) => {
                     value={selectedDateStartEdit}
                     onChange={handleDateStartEdit}
                     fullWidth
+                    InputProps={{
+                      style: headerTableStyle,
+                    }}
                   />
                 </MuiPickersUtilsProvider>
               </Grid>
@@ -372,6 +455,9 @@ const Calendar = (props) => {
                     value={selectedDateEndEdit}
                     onChange={handleDateEndEdit}
                     fullWidth
+                    InputProps={{
+                      style: headerTableStyle,
+                    }}
                   />
                 </MuiPickersUtilsProvider>
               </Grid>
@@ -393,12 +479,21 @@ const Calendar = (props) => {
                   defaultValue={""}
                   onChange={(e) => handleRoomNum(e)}
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
             </Grid>
           </Container>
         </DialogContent>
-        <DialogActions style={{ padding: 20 }}>
+        <DialogActions
+          style={{
+            backgroundColor: themeState.paper,
+            color: themeState.color,
+            padding: 20,
+          }}
+        >
           <Grid container style={{ flexGrow: 1 }}>
             <Button
               onClick={() => handleDialogReservationDelete(roomNum)}
@@ -428,17 +523,24 @@ const Calendar = (props) => {
 
       {/* ----------------------Handle drang and drop change------------------ */}
       <Dialog
+        className={classes.root}
         fullWidth="true"
         maxWidth="sm"
         open={dialogReservationChange}
         onClose={handleDialogReservationChangeClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+        <DialogTitle
+          id="form-dialog-title"
+          style={{
+            backgroundColor: themeState.paper,
+            color: mainColor,
+          }}
+        >
           CONFIRM CHANGE RESERVATION INFORMATION
         </DialogTitle>
 
-        <DialogContent>
+        <DialogContent style={headerTableStyle}>
           <Container maxWidth="xl" disableGutters>
             <Grid container spacing={2} style={{ paddingTop: 20 }}>
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -454,6 +556,9 @@ const Calendar = (props) => {
                   variant="outlined"
                   value={oldDate.start}
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -463,6 +568,9 @@ const Calendar = (props) => {
                   variant="outlined"
                   value={oldDate.end}
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
             </Grid>
@@ -480,6 +588,9 @@ const Calendar = (props) => {
                   variant="outlined"
                   value={newDate.start}
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
               <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -489,12 +600,21 @@ const Calendar = (props) => {
                   variant="outlined"
                   value={newDate.end}
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                 />
               </Grid>
             </Grid>
           </Container>
         </DialogContent>
-        <DialogActions style={{ padding: 20 }}>
+        <DialogActions
+          style={{
+            backgroundColor: themeState.paper,
+            color: themeState.color,
+            padding: 20,
+          }}
+        >
           <Button
             onClick={handleDialogReservationChangeClose}
             variant="text"
