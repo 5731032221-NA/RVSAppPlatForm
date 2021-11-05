@@ -71,7 +71,8 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: themeState.color,
+        // borderColor: themeState.color,
+        borderColor: "grey.500",
         color: themeState.color,
       },
       "&:hover fieldset": {

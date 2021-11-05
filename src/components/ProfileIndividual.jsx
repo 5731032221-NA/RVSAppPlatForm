@@ -147,7 +147,7 @@ export const ProfileIndividual = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
-    paper: "#FFFFFF",
+    paper: "#000",
     colorlevel: "900",
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
