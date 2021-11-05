@@ -20,8 +20,8 @@ import {
   Breadcrumbs,
   Link,
 } from "@material-ui/core";
-import ProfileTable from "../components/ProfileTable";
-import ProfileIndividual from "../components/ProfileIndividual";
+import ProfileTable from "../components/Profiles/ProfileTable";
+import ProfileIndividual from "../components/Profiles/ProfileIndividual";
 const useStyles = makeStyles((theme) => ({
   seeMore: {
     marginTop: theme.spacing(3),

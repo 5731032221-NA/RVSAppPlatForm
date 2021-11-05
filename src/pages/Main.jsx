@@ -47,19 +47,19 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import BusinessIcon from "@material-ui/icons/Business";
 import SettingsIcon from "@material-ui/icons/PlayForWork";
 
-import Dashboard from "../components/Dashboard/Dashboard";
-import FrontDesk from "../components/Dashboard/FrontDesk";
-import Configuration from "../components/Dashboard/Configuration";
-import ReservationPage from "./ReservationPage";
+// import Dashboard from "../components/Dashboard/Dashboard";
+// import FrontDesk from "../components/Dashboard/FrontDesk";
+// import Configuration from "./configurations/Configuration";
+// import ReservationPage from "./ReservationPage";
 
-import RoleManagement from "../components/RoleManagement";
-import UserManagement from "../components/UserManagement";
-import DashboardDetail from "../components/Dashboard/DashboardDetail";
-import ProfilePage from "./ProfilePage";
-import ProfileTable from "../components/ProfileTable";
-import ProfilePageIndividual from "../components/ProfileIndividual";
-import ProfilePageTravelAgent from "../components/ProfileTravelAgent";
-import ProfilePageCompany from "../components/ProfileCompany";
+// import RoleManagement from "./configurations/RoleManagement";
+// import UserManagement from "../components/UserManagement";
+// import DashboardDetail from "../components/Dashboard/DashboardDetail";
+// import ProfilePage from "./ProfilePage";
+// import ProfileTable from "../components/ProfileTable";
+// import ProfilePageIndividual from "../components/ProfileIndividual";
+// import ProfilePageTravelAgent from "../components/ProfileTravelAgent";
+// import ProfilePageCompany from "../components/ProfileCompany";
 import ButtomBar from "../layouts/ButtomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
 import RightBar from "../layouts/RightBar";
@@ -71,9 +71,9 @@ import {
   EDIT_PROPERTY,
 } from "../middleware/action";
 import MainListItems_en from "../middleware/listitems/dropDownItems";
-import secondaryListItems_en from "../middleware/listitems/dropDownItems";
-import mainListItems_th from "../middleware/listitems/dropDownItems";
-import secondaryListItems_th from "../middleware/listitems/dropDownItems";
+// import secondaryListItems_en from "../middleware/listitems/dropDownItems";
+// import mainListItems_th from "../middleware/listitems/dropDownItems";
+// import secondaryListItems_th from "../middleware/listitems/dropDownItems";
 // import { mainListItems_en, secondaryListItems_en } from '../middleware/listitems/dropDownItems';
 // import { mainListItems_th, secondaryListItems_th } from '../middleware/listitems/dropDownItems';
 import propertypermission from "../services/propertypermission.service";

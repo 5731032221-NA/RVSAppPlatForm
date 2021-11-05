@@ -1,6 +1,6 @@
 import React from "react";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
-import { nextComponent } from "../middleware/action";
+import { nextComponent } from "../../middleware/action";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import { blue, green, yellow } from "@material-ui/core/colors";
@@ -23,9 +23,7 @@ import {
 } from "@material-ui/core";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import ProfileIndividual from "../components/ProfileIndividual";
-import TestDnD from "../components/TestDnD";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ProfileCompany from "./ProfileCompany";
 import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
@@ -125,8 +123,8 @@ const rows = [
   createData(
     "Sommul",
     "Liu",
-    "Ms.",
-    "Female",
+    "Mr.",
+    "Male",
     "C00102188",
     "China",
     "22/11/2021",
@@ -147,7 +145,7 @@ const family = [
   },
 ];
 
-export const ProfileTable = (props) => {
+export const ProfileTableCompany = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -203,7 +201,6 @@ export const ProfileTable = (props) => {
     firstname: "firstname",
     lastname: "lastname",
   });
-  const [editData, setEditData] = React.useState(" ");
 
   const handleComponentState = async (comp) => {
     console.log("setcomp", comp);
@@ -213,31 +210,22 @@ export const ProfileTable = (props) => {
     setStatusprofile();
   };
   const handleNewData = () => {
-    setEditData(null);
     setStatusprofile("add");
   };
   const handleAddData = (rows) => {
-    setEditData(null);
     setStatusprofile("moredata");
     setIndividualData(rows);
   };
-  const handleEditData = async (rowData) => {
-    console.log("rowData", rowData);
-    setEditData(rowData);
-    handleDeleteData(rowData.title, rowData.firstname, rowData.lastname);
+  const handleEditData = () => {
     setStatusprofile("edit");
   };
-  const handleDeleteData = async (title, firstname, lastname) => {
-    console.log("data : ", title, firstname, lastname);
-    setDeleteData({ title: title, firstname: firstname, lastname: lastname });
-  };
-
-  const handleConfirmDeleteData = async (title, firstname, lastname) => {
+  const handleDeleteData = () => {
     setStatusprofile("moredata");
     setDialogDelete(false);
   };
 
   const handleDialogDeleteOpen = async (title, firstname, lastname) => {
+    console.log("data : ", title, firstname, lastname);
     setDeleteData({ title: title, firstname: firstname, lastname: lastname });
     setDialogDelete(true);
   };
@@ -256,8 +244,7 @@ export const ProfileTable = (props) => {
       }}
     >
       <Grid container style={{ paddingLeft: 30, paddingRight: 30 }}>
-        <Grid item xs={6} sm={10} md={10} style={{ flexGrow: 1 }}>
-          <Grid item style={{ flexGrow: 1 }}>
+      <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
                 <Typography
@@ -293,12 +280,12 @@ export const ProfileTable = (props) => {
                     color: themeState.color,
                   }}
                 >
-                  Individual
+                  Company
                 </Typography>
               </Link>
+              
             </Breadcrumbs>
           </Grid>
-        </Grid>
         {statusprofile === "add" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
@@ -324,7 +311,7 @@ export const ProfileTable = (props) => {
               variant="contained"
               style={{ backgroundColor: "red", color: "white", marginLeft: 15 }}
               startIcon={<DeleteIcon />}
-              onClick={() => setDialogDelete(true)}
+              onClick={() => handleDialogDeleteOpen()}
             >
               Delete
             </Button>
@@ -343,7 +330,7 @@ export const ProfileTable = (props) => {
         ) : null}
       </Grid>
       {statusprofile === "edit" || statusprofile === "add" ? (
-        <TestDnD editdata={editData} />
+        <ProfileCompany />
       ) : (
         [
           individualData == null ? (
@@ -612,7 +599,7 @@ export const ProfileTable = (props) => {
                   <Button
                     fullWidth
                     // onClick={() => handleDelete(updateData.id)}
-                    onClick={() => handleConfirmDeleteData()}
+                    onClick={() => handleDeleteData()}
                     variant="contained"
                     // color="primary"
                     style={{ backgroundColor: "red", color: "white" }}
@@ -637,4 +624,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileTable);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProfileTableCompany);

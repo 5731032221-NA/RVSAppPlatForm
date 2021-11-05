@@ -49,15 +49,15 @@ import {
   updateRoom,
   getRoombykey,
   deletebyroomnum,
-} from "../services/roomMaster.service";
+} from "../../services/roomMaster.service";
 import {
   listallproperty,
   getconfigurationbypropertycode,
   getusercomponentpermision,
-} from "../services/user.service";
+} from "../../services/user.service";
 
 import TablePagination from "@material-ui/core/TablePagination";
-import { EDIT_CONFIGSTATE } from "../middleware/action";
+import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import { Check } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 // Generate Order Data

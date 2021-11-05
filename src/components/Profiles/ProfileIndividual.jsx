@@ -16,8 +16,8 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
-import TestDnD from "../components/TestDnD";
-import ProfileTable from "../components/ProfileTable";
+import TestDnD from "./TestDnD";
+import ProfileTable from "./ProfileTable";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -27,7 +27,7 @@ import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { nextComponent } from "../middleware/action";
+import { nextComponent } from "../../middleware/action";
 import { Breadcrumbs, Link } from "@material-ui/core";
 
 import DateFnsUtils from "@date-io/date-fns";
@@ -147,7 +147,7 @@ export const ProfileIndividual = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
-    paper: "#FFFFFF",
+    paper: "#000",
     colorlevel: "900",
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);

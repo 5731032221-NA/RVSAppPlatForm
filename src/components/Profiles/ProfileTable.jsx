@@ -1,6 +1,6 @@
 import React from "react";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
-import { nextComponent } from "../middleware/action";
+import { nextComponent } from "../../middleware/action";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import { blue, green, yellow } from "@material-ui/core/colors";
@@ -23,7 +23,9 @@ import {
 } from "@material-ui/core";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import ProfileTravelAgent from "./ProfileTravelAgent";
+import ProfileIndividual from "./ProfileIndividual";
+import TestDnD from "./TestDnD";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
@@ -123,8 +125,8 @@ const rows = [
   createData(
     "Sommul",
     "Liu",
-    "Mr.",
-    "Male",
+    "Ms.",
+    "Female",
     "C00102188",
     "China",
     "22/11/2021",
@@ -145,7 +147,7 @@ const family = [
   },
 ];
 
-export const ProfileTableTravelAgent = (props) => {
+export const ProfileTable = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -201,6 +203,7 @@ export const ProfileTableTravelAgent = (props) => {
     firstname: "firstname",
     lastname: "lastname",
   });
+  const [editData, setEditData] = React.useState(" ");
 
   const handleComponentState = async (comp) => {
     console.log("setcomp", comp);
@@ -210,22 +213,31 @@ export const ProfileTableTravelAgent = (props) => {
     setStatusprofile();
   };
   const handleNewData = () => {
+    setEditData(null);
     setStatusprofile("add");
   };
   const handleAddData = (rows) => {
+    setEditData(null);
     setStatusprofile("moredata");
     setIndividualData(rows);
   };
-  const handleEditData = () => {
+  const handleEditData = async (rowData) => {
+    console.log("rowData", rowData);
+    setEditData(rowData);
+    handleDeleteData(rowData.title, rowData.firstname, rowData.lastname);
     setStatusprofile("edit");
   };
-  const handleDeleteData = () => {
+  const handleDeleteData = async (title, firstname, lastname) => {
+    console.log("data : ", title, firstname, lastname);
+    setDeleteData({ title: title, firstname: firstname, lastname: lastname });
+  };
+
+  const handleConfirmDeleteData = async (title, firstname, lastname) => {
     setStatusprofile("moredata");
     setDialogDelete(false);
   };
 
   const handleDialogDeleteOpen = async (title, firstname, lastname) => {
-    console.log("data : ", title, firstname, lastname);
     setDeleteData({ title: title, firstname: firstname, lastname: lastname });
     setDialogDelete(true);
   };
@@ -244,7 +256,8 @@ export const ProfileTableTravelAgent = (props) => {
       }}
     >
       <Grid container style={{ paddingLeft: 30, paddingRight: 30 }}>
-      <Grid item style={{ flexGrow: 1 }}>
+        <Grid item xs={6} sm={10} md={10} style={{ flexGrow: 1 }}>
+          <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
                 <Typography
@@ -280,11 +293,12 @@ export const ProfileTableTravelAgent = (props) => {
                     color: themeState.color,
                   }}
                 >
-                  Travel Agent
+                  Individual
                 </Typography>
               </Link>
-              </Breadcrumbs>
+            </Breadcrumbs>
           </Grid>
+        </Grid>
         {statusprofile === "add" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
@@ -310,7 +324,7 @@ export const ProfileTableTravelAgent = (props) => {
               variant="contained"
               style={{ backgroundColor: "red", color: "white", marginLeft: 15 }}
               startIcon={<DeleteIcon />}
-              onClick={() => handleDialogDeleteOpen()}
+              onClick={() => setDialogDelete(true)}
             >
               Delete
             </Button>
@@ -329,7 +343,7 @@ export const ProfileTableTravelAgent = (props) => {
         ) : null}
       </Grid>
       {statusprofile === "edit" || statusprofile === "add" ? (
-        <ProfileTravelAgent />
+        <TestDnD editdata={editData} />
       ) : (
         [
           individualData == null ? (
@@ -598,7 +612,7 @@ export const ProfileTableTravelAgent = (props) => {
                   <Button
                     fullWidth
                     // onClick={() => handleDelete(updateData.id)}
-                    onClick={() => handleDeleteData()}
+                    onClick={() => handleConfirmDeleteData()}
                     variant="contained"
                     // color="primary"
                     style={{ backgroundColor: "red", color: "white" }}
@@ -623,7 +637,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProfileTableTravelAgent);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileTable);

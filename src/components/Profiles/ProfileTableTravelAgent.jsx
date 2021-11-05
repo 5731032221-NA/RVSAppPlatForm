@@ -1,6 +1,6 @@
 import React from "react";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
-import { nextComponent } from "../middleware/action";
+import { nextComponent } from "../../middleware/action";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import { blue, green, yellow } from "@material-ui/core/colors";
@@ -23,7 +23,7 @@ import {
 } from "@material-ui/core";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import ProfileCompany from "./ProfileCompany";
+import ProfileTravelAgent from "./ProfileTravelAgent";
 import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
@@ -60,7 +60,8 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: themeState.color,
+        // borderColor: themeState.color,
+        borderColor: "grey.500",
         color: themeState.color,
       },
       "&:hover fieldset": {
@@ -145,7 +146,7 @@ const family = [
   },
 ];
 
-export const ProfileTableCompany = (props) => {
+export const ProfileTableTravelAgent = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -280,11 +281,10 @@ export const ProfileTableCompany = (props) => {
                     color: themeState.color,
                   }}
                 >
-                  Company
+                  Travel Agent
                 </Typography>
               </Link>
-              
-            </Breadcrumbs>
+              </Breadcrumbs>
           </Grid>
         {statusprofile === "add" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
@@ -330,7 +330,7 @@ export const ProfileTableCompany = (props) => {
         ) : null}
       </Grid>
       {statusprofile === "edit" || statusprofile === "add" ? (
-        <ProfileCompany />
+        <ProfileTravelAgent />
       ) : (
         [
           individualData == null ? (
@@ -627,4 +627,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProfileTableCompany);
+)(ProfileTableTravelAgent);

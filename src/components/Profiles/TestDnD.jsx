@@ -60,7 +60,8 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: themeState.color,
+        // borderColor: themeState.color,
+        borderColor: "grey.500",
         color: themeState.color,
       },
       "&:hover fieldset": {
@@ -2065,6 +2066,10 @@ const optionrelation = [
     value: "Colleague",
     label: "Colleague",
   },
+  {
+    value: "ReportTo",
+    label: "Report To",
+  },
 ];
 
 export const TestDnD = (props) => {
@@ -2306,8 +2311,8 @@ export const TestDnD = (props) => {
         {
           id: 1,
           label: "Email",
-          xl: 6,
-          md: 6,
+          xl: 3,
+          md: 3,
           xs: 6,
           select: {
             status: "fix",
@@ -2317,8 +2322,8 @@ export const TestDnD = (props) => {
         {
           id: 2,
           label: "Email",
-          xl: 6,
-          md: 6,
+          xl: 9,
+          md: 9,
           xs: 6,
           select: {
             status: "fillnolabel",
@@ -2329,8 +2334,8 @@ export const TestDnD = (props) => {
         {
           id: 3,
           label: "Mobile Number",
-          xl: 6,
-          md: 6,
+          xl: 3,
+          md: 3,
           xs: 6,
           select: {
             status: "fix",
@@ -2340,8 +2345,8 @@ export const TestDnD = (props) => {
         {
           id: 4,
           label: "Mobile Number",
-          xl: 6,
-          md: 6,
+          xl: 9,
+          md: 9,
           xs: 6,
           select: {
             status: "fillnolabel",
@@ -2418,16 +2423,17 @@ export const TestDnD = (props) => {
           md: 2,
           xs: 4,
           select: {
-            status: "option",
-            data: optionCity.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            status: "fill",
+            data: "",
+            // optionCity.map((option) => (
+            //   <option
+            //     style={headerTableStyle}
+            //     key={option.value}
+            //     value={option.value}
+            //   >
+            //     {option.label}
+            //   </option>
+            //  )),
           },
           handle: (e) => handleData(e),
         },
@@ -2737,8 +2743,8 @@ export const TestDnD = (props) => {
       comunication.content.push({
         id: newid + 1,
         label: "Choose a communication",
-        xl: 6,
-        md: 6,
+        xl: 3,
+        md: 3,
         xs: 6,
         select: {
           status: "option",
@@ -2757,8 +2763,8 @@ export const TestDnD = (props) => {
       comunication.content.push({
         id: newid + 2,
         label: "communication",
-        xl: 6,
-        md: 6,
+        xl: 9,
+        md: 9,
         xs: 6,
         select: {
           status: "fillnolabel",
@@ -2859,214 +2865,202 @@ export const TestDnD = (props) => {
   };
 
   return (
-    <DragDropContext onDragEnd={onEnd}>
-      <Droppable droppableId="01">
-        {(provided, snapshot) => (
-          <Paper
-            elevation={3}
-            style={{
-              marginTop: 5,
-              color: themeState.color,
-              backgroundColor: themeState.paper,
-            }}
-          >
-            <Container
-              maxWidth="xl"
-              disableGutters
-              style={{ marginTop: 10, backgroundColor: themeState.paper }}
-              ref={provided.innerRef}
+    <Container
+      maxWidth="xl"
+      style={{
+        paddingTop: 5,
+        color: themeState.color,
+        backgroundColor: themeState.background,
+      }}
+    >
+      <DragDropContext onDragEnd={onEnd}>
+        <Droppable droppableId="01">
+          {(provided, snapshot) => (
+            <Paper
+              elevation={3}
+              style={{
+                padding: 20,
+                color: themeState.color,
+                backgroundColor: themeState.paper,
+              }}
             >
-              <Button
+              <Container
+                maxWidth="xl"
+                disableGutters
+                style={{ marginTop: 10, backgroundColor: themeState.paper }}
+                ref={provided.innerRef}
+              >
+                {/* <Button
                 variant="contained"
                 color="default"
                 onClick={() => handleData()}
               >
                 TestData
-              </Button>
-              {list.map((item, index) => (
-                <Draggable draggableId={item.id} key={item.id} index={index}>
-                  {(provided, snapshot) => (
-                    <Grid
-                      container
-                      xl={12}
-                      md={12}
-                      xs={12}
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
-                    >
-                      <Grid
-                        style={{
-                          minHeight: 100,
-                          // padding: 20,
-                          minWidth: "100%",
-                        }}
+              </Button> */}
+                {list.map((item, index) => (
+                  <Draggable draggableId={item.id} key={item.id} index={index}>
+                    {(provided, snapshot) => (
+                      <Accordion
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                        className={classes.defaultTheme}
+                        expanded={item.expend}
                       >
-                        <Accordion
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
-                          className={classes.defaultTheme}
-                          expanded={item.expend}
+                        <AccordionSummary
+                          style={{ color: mainColor, fontSize: 18 }}
+                          onClick={() => handleExpend(item.id, item.expend)}
                         >
-                          <AccordionSummary
-                            style={{ color: mainColor, fontSize: 18 }}
-                            onClick={() => handleExpend(item.id, item.expend)}
-                          >
-                            <div style={{ color: "blue" }}>
-                              {item.title}&nbsp;
-                            </div>{" "}
-                            {item.expend ? (
-                              <ArrowDropDownIcon style={{ color: "blue" }} />
-                            ) : (
-                              <ArrowDropUpIcon style={{ color: "blue" }} />
-                            )}
-                          </AccordionSummary>
-                          <AccordionDetails>
-                            <Grid container spacing={2}>
-                              {item.content.map((detail, index) => (
-                                <Grid
-                                  item
-                                  key={detail.id}
-                                  index={index}
-                                  xl={detail.xl}
-                                  md={detail.md}
-                                  xs={detail.xs}
-                                >
-                                  {detail.select.status === "AddRelation" ? (
-                                    <Button
-                                      className={classes.root}
-                                      variant="outlined"
-                                      fullWidth
-                                      style={{
-                                        backgroundColor: "blue",
-                                        color: "white",
-                                      }}
-                                      value={detail.select.data}
-                                      onClick={() => handleAddRelation(item.id)}
-                                    >
-                                      + Add
-                                    </Button>
-                                  ) : detail.select.status ===
-                                    "AddComunication" ? (
-                                    <Button
-                                      className={classes.root}
-                                      variant="outlined"
-                                      fullWidth
-                                      style={{
-                                        backgroundColor: "blue",
-                                        color: "white",
-                                      }}
-                                      value={detail.select.data}
-                                      onClick={() =>
-                                        handleAddComunication(item.id)
-                                      }
-                                    >
-                                      + Add
-                                    </Button>
-                                  ) : detail.select.status === "fix" ? (
-                                    <TextField
-                                      className={classes.root}
-                                      variant="outlined"
-                                      fullWidth
-                                      style={{ backgroundColor: "#EEEEEE" }}
-                                      // disabled={true}
-                                      defaultValue={detail.select.data}
-                                      onFocus={false}
-                                    />
-                                  ) : detail.select.status === "fillnolabel" ? (
-                                    <TextField
-                                      className={classes.root}
-                                      // label={detail.label}
-                                      variant="outlined"
-                                      InputProps={{
-                                        style: headerTableStyle,
-                                      }}
-                                      InputLabelProps={{
-                                        style: { color: "#AAAAAA" },
-                                      }}
-                                      fullWidth
-                                      defaultValue={detail.select.data}
-                                      onChange={detail.handle}
-                                    />
-                                  ) : detail.select.status === "fill" ? (
-                                    <TextField
+                          <div style={{ color: "blue" }}>
+                            {item.title}&nbsp;
+                          </div>{" "}
+                          {item.expend ? (
+                            <ArrowDropDownIcon style={{ color: "blue" }} />
+                          ) : (
+                            <ArrowDropUpIcon style={{ color: "blue" }} />
+                          )}
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Grid container spacing={2}>
+                            {item.content.map((detail, index) => (
+                              <Grid
+                                item
+                                key={detail.id}
+                                index={index}
+                                xl={detail.xl}
+                                md={detail.md}
+                                xs={detail.xs}
+                              >
+                                {detail.select.status === "AddRelation" ? (
+                                  <Button
+                                    className={classes.root}
+                                    variant="outlined"
+                                    fullWidth
+                                    style={{
+                                      backgroundColor: "blue",
+                                      color: "white",
+                                    }}
+                                    value={detail.select.data}
+                                    onClick={() => handleAddRelation(item.id)}
+                                  >
+                                    + Add
+                                  </Button>
+                                ) : detail.select.status ===
+                                  "AddComunication" ? (
+                                  <Button
+                                    className={classes.root}
+                                    variant="outlined"
+                                    fullWidth
+                                    style={{
+                                      backgroundColor: "blue",
+                                      color: "white",
+                                    }}
+                                    value={detail.select.data}
+                                    onClick={() =>
+                                      handleAddComunication(item.id)
+                                    }
+                                  >
+                                    + Add
+                                  </Button>
+                                ) : detail.select.status === "fix" ? (
+                                  <TextField
+                                    className={classes.root}
+                                    variant="outlined"
+                                    fullWidth
+                                    style={{
+                                      backgroundColor: "#EFEFEF",
+                                      borderColor: "white",
+                                    }}
+                                    // disabled={true}
+                                    defaultValue={detail.select.data}
+                                    onFocus={false}
+                                  />
+                                ) : detail.select.status === "fillnolabel" ? (
+                                  <TextField
+                                    className={classes.root}
+                                    // label={detail.label}
+                                    variant="outlined"
+                                    InputProps={{
+                                      style: headerTableStyle,
+                                    }}
+                                    InputLabelProps={{
+                                      style: { color: "#AAAAAA" },
+                                    }}
+                                    fullWidth
+                                    defaultValue={detail.select.data}
+                                    onChange={detail.handle}
+                                  />
+                                ) : detail.select.status === "fill" ? (
+                                  <TextField
+                                    className={classes.root}
+                                    label={detail.label}
+                                    variant="outlined"
+                                    InputProps={{
+                                      style: headerTableStyle,
+                                    }}
+                                    InputLabelProps={{
+                                      style: { color: "#AAAAAA" },
+                                    }}
+                                    fullWidth
+                                    defaultValue={detail.select.data}
+                                    onChange={detail.handle}
+                                  />
+                                ) : detail.select.status === "option" ? (
+                                  <TextField
+                                    className={classes.root}
+                                    label={detail.label}
+                                    variant="outlined"
+                                    fullWidth
+                                    select
+                                    defaultValue={detail.select.defaultvalue}
+                                    SelectProps={{
+                                      native: true,
+                                    }}
+                                    InputProps={{
+                                      style: headerTableStyle,
+                                    }}
+                                    // value={detail.select.defaultvalue}
+                                    onChange={detail.handle}
+                                  >
+                                    {detail.select.data}
+                                  </TextField>
+                                ) : (
+                                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardDatePicker
                                       className={classes.root}
                                       label={detail.label}
-                                      variant="outlined"
+                                      inputVariant="outlined"
                                       InputProps={{
                                         style: headerTableStyle,
                                       }}
-                                      InputLabelProps={{
-                                        style: { color: "#AAAAAA" },
-                                      }}
-                                      fullWidth
-                                      defaultValue={detail.select.data}
-                                      onChange={detail.handle}
-                                    />
-                                  ) : detail.select.status === "option" ? (
-                                    <TextField
-                                      className={classes.root}
-                                      label={detail.label}
-                                      variant="outlined"
-                                      fullWidth
-                                      select
-                                      defaultValue={detail.select.defaultvalue}
-                                      SelectProps={{
-                                        native: true,
-                                      }}
-                                      InputProps={{
-                                        style: headerTableStyle,
-                                      }}
-                                      // value={detail.select.defaultvalue}
-                                      onChange={detail.handle}
-                                    >
-                                      {detail.select.data}
-                                    </TextField>
-                                  ) : (
-                                    <MuiPickersUtilsProvider
-                                      utils={DateFnsUtils}
-                                    >
-                                      <KeyboardDatePicker
-                                        className={classes.root}
-                                        label={detail.label}
-                                        inputVariant="outlined"
-                                        InputProps={{
-                                          style: headerTableStyle,
-                                        }}
-                                        // format="dd/MM/yyyy"
-                                        // value={selectedDateStartEdit}
-                                        // onChange={handleDateStartEdit}
+                                      // format="dd/MM/yyyy"
+                                      // value={selectedDateStartEdit}
+                                      // onChange={handleDateStartEdit}
 
-                                        onChange={detail.handle}
-                                        fullWidth
-                                      />
-                                    </MuiPickersUtilsProvider>
-                                  )}
-                                </Grid>
-                              ))}
-                            </Grid>
-                          </AccordionDetails>
-                        </Accordion>
-                      </Grid>
-                    </Grid>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </Container>
-          </Paper>
-        )}
-      </Droppable>
-    </DragDropContext>
+                                      onChange={detail.handle}
+                                      fullWidth
+                                    />
+                                  </MuiPickersUtilsProvider>
+                                )}
+                              </Grid>
+                            ))}
+                          </Grid>
+                        </AccordionDetails>
+                      </Accordion>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </Container>
+            </Paper>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </Container>
   );
 };
 
