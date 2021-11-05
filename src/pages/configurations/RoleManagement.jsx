@@ -59,10 +59,10 @@ import {
   deleterolebycode,
   rolepermissionbyrole,
   getusercomponentpermision,
-} from "../services/user.service";
+} from "../../services/user.service";
 // from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
-import { EDIT_CONFIGSTATE } from "../middleware/action";
+import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import { useHistory } from "react-router-dom";
 
 // Generate Order Data

@@ -71,8 +71,8 @@ import {
   postposition,
   getuserpermission,
   getusercomponentpermision,
-} from "../services/user.service";
-import { listrole } from "../services/roleManagement.service";
+} from "../../services/user.service";
+import { listrole } from "../../services/roleManagement.service";
 
 import Checkbox from "@material-ui/core/Checkbox";
 import TreeItem from "@material-ui/lab/TreeItem";
@@ -80,7 +80,7 @@ import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import { EDIT_CONFIGSTATE } from "../middleware/action";
+import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import { VpnKey } from "@material-ui/icons";
 import { blue, red } from "@material-ui/core/colors";
 // import user from "../services/user.service";

@@ -25,24 +25,24 @@ import {
 import FrontDesk from "./components/Dashboard/FrontDesk";
 import Dashboard from "./components/Dashboard/Dashboard";
 
-import Configuration from "./components/Dashboard/Configuration";
+import Configuration from "./pages/configurations/Configuration";
 import ReservationPage from "./pages/ReservationPage";
 
-import RoleManagement from "./components/RoleManagement";
-import UserManagement from "./components/UserManagement";
-import DeviceManager from "./components/DeviceManager";
-import ComputerPrinter from "./components/ComputerPrinter";
-import RoomManagement from "./components/RoomManagement";
+import RoleManagement from "./pages/configurations/RoleManagement";
+import UserManagement from "./pages/configurations/UserManagement";
+import DeviceManager from "./pages/configurations/DeviceManager";
+import ComputerPrinter from "./pages/configurations/ComputerPrinter";
+import RoomManagement from "./pages/configurations/RoomManagement";
 import GenericNotFound from "./pages/GenericNotFound";
 import DashboardDetail from "./components/Dashboard/DashboardDetail";
 import ProfilePage from "./pages/ProfilePage";
-import ProfileTableCompany from "./components/ProfileTableCompany";
-import ProfileTableTravelAgent from "./components/ProfileTableTravelAgent";
-import ProfilePageTable from "./components/ProfileTable";
+import ProfileTableCompany from "./components/Profiles/ProfileTableCompany";
+import ProfileTableTravelAgent from "./components/Profiles/ProfileTableTravelAgent";
+import ProfilePageTable from "./components/Profiles/ProfileTable";
 
-import ProfilePageIndividual from "./components/ProfileIndividual";
-import ProfilePageTravelAgent from "./components/ProfileTravelAgent";
-import ProfilePageCompany from "./components/ProfileCompany";
+// import ProfilePageIndividual from "./components/ProfileIndividual";
+// import ProfilePageTravelAgent from "./components/ProfileTravelAgent";
+// import ProfilePageCompany from "./components/ProfileCompany";
 // import useAuthorization from "./middleware/useAuthorization";
 // import useLang from "./middleware/useLang";
 // import useTheme from "./middleware/useTheme";
