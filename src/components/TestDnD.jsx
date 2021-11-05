@@ -83,15 +83,15 @@ const useStyles = makeStyles((theme) => ({
 
 const optionTitle = [
   {
-    value: "1",
+    value: "Mr.",
     label: "Mr.",
   },
   {
-    value: "2",
+    value: "Mrs.",
     label: "Mrs.",
   },
   {
-    value: "3",
+    value: "Ms.",
     label: "Ms.",
   },
 ];
@@ -103,7 +103,7 @@ const optionDocumentType = [
   {
     value: "2",
     label: "Passport",
-  }
+  },
 ];
 
 const optiondata = [
@@ -155,1904 +155,1902 @@ const optioncommunication = [
   {
     value: "Facebook",
     label: "Facebook",
-  }
+  },
 ];
 
 const optionnationality = [
   {
-    "country": "Thailand",
-    "label": "Thai"
+    country: "Thailand",
+    label: "Thai",
   },
   {
-    "country": "China",
-    "label": "Chinese"
+    country: "China",
+    label: "Chinese",
   },
   {
-    "country": "Peru",
-    "label": "Peruvian"
+    country: "Peru",
+    label: "Peruvian",
   },
   {
-    "country": "Brazil",
-    "label": "Brazilian"
+    country: "Brazil",
+    label: "Brazilian",
   },
   {
-    "country": "Libya",
-    "label": "Libyan"
+    country: "Libya",
+    label: "Libyan",
   },
   {
-    "country": "San Marino",
-    "label": "Sammarinese"
+    country: "San Marino",
+    label: "Sammarinese",
   },
   {
-    "country": "Malaysia",
-    "label": "Malaysian"
+    country: "Malaysia",
+    label: "Malaysian",
   },
   {
-    "country": "Paraguay",
-    "label": "Paraguayan"
+    country: "Paraguay",
+    label: "Paraguayan",
   },
   {
-    "country": "Namibia",
-    "label": "Namibian"
+    country: "Namibia",
+    label: "Namibian",
   },
   {
-    "country": "Slovakia",
-    "label": "Slovak"
+    country: "Slovakia",
+    label: "Slovak",
   },
   {
-    "country": "Honduras",
-    "label": "Honduran"
+    country: "Honduras",
+    label: "Honduran",
   },
   {
-    "country": "Uganda",
-    "label": "Ugandan"
+    country: "Uganda",
+    label: "Ugandan",
   },
   {
-    "country": "Indonesia",
-    "label": "Indonesian"
+    country: "Indonesia",
+    label: "Indonesian",
   },
   {
-    "country": "South Georgia and the South Sandwich Islands",
-    "label": "South Georgia and the South Sandwich Islander"
+    country: "South Georgia and the South Sandwich Islands",
+    label: "South Georgia and the South Sandwich Islander",
   },
   {
-    "country": "Yemen",
-    "label": "Yemeni"
+    country: "Yemen",
+    label: "Yemeni",
   },
   {
-    "country": "Azerbaijan",
-    "label": "Azerbaijani"
+    country: "Azerbaijan",
+    label: "Azerbaijani",
   },
   {
-    "country": "Israel",
-    "label": "Israeli"
+    country: "Israel",
+    label: "Israeli",
   },
   {
-    "country": "Singapore",
-    "label": "Singaporean"
+    country: "Singapore",
+    label: "Singaporean",
   },
   {
-    "country": "United Arab Emirates",
-    "label": "Emirati"
+    country: "United Arab Emirates",
+    label: "Emirati",
   },
   {
-    "country": "Bolivia (Plurinational State of)",
-    "label": "Bolivian"
+    country: "Bolivia (Plurinational State of)",
+    label: "Bolivian",
   },
   {
-    "country": "Ireland",
-    "label": "Irish"
+    country: "Ireland",
+    label: "Irish",
   },
   {
-    "country": "Central African Republic",
-    "label": "Central African"
+    country: "Central African Republic",
+    label: "Central African",
   },
   {
-    "country": "French Polynesia",
-    "label": "French Polynesian"
+    country: "French Polynesia",
+    label: "French Polynesian",
   },
   {
-    "country": "Grenada",
-    "label": "Grenadian"
+    country: "Grenada",
+    label: "Grenadian",
   },
   {
-    "country": "Guinea-Bissau",
-    "label": "Guinea-Bissauan"
+    country: "Guinea-Bissau",
+    label: "Guinea-Bissauan",
   },
   {
-    "country": "Nepal",
-    "label": "Nepalese"
+    country: "Nepal",
+    label: "Nepalese",
   },
   {
-    "country": "Panama",
-    "label": "Panamanian"
+    country: "Panama",
+    label: "Panamanian",
   },
   {
-    "country": "Burkina Faso",
-    "label": "Burkinabe"
+    country: "Burkina Faso",
+    label: "Burkinabe",
   },
   {
-    "country": "Cambodia",
-    "label": "Cambodian"
+    country: "Cambodia",
+    label: "Cambodian",
   },
   {
-    "country": "Uzbekistan",
-    "label": "Uzbekistani"
+    country: "Uzbekistan",
+    label: "Uzbekistani",
   },
   {
-    "country": "Anguilla",
-    "label": "Anguillian"
+    country: "Anguilla",
+    label: "Anguillian",
   },
   {
-    "country": "Korea (Republic of)",
-    "label": "South Korean"
+    country: "Korea (Republic of)",
+    label: "South Korean",
   },
   {
-    "country": "Curaçao",
-    "label": "Curaçaoan"
+    country: "Curaçao",
+    label: "Curaçaoan",
   },
   {
-    "country": "Wallis and Futuna",
-    "label": "Wallis and Futuna Islander"
+    country: "Wallis and Futuna",
+    label: "Wallis and Futuna Islander",
   },
   {
-    "country": "Myanmar",
-    "label": "Burmese"
+    country: "Myanmar",
+    label: "Burmese",
   },
   {
-    "country": "Egypt",
-    "label": "Egyptian"
+    country: "Egypt",
+    label: "Egyptian",
   },
   {
-    "country": "Gambia",
-    "label": "Gambian"
+    country: "Gambia",
+    label: "Gambian",
   },
   {
-    "country": "Saudi Arabia",
-    "label": "Saudi Arabian"
+    country: "Saudi Arabia",
+    label: "Saudi Arabian",
   },
   {
-    "country": "Argentina",
-    "label": "Argentinean"
+    country: "Argentina",
+    label: "Argentinean",
   },
   {
-    "country": "Canada",
-    "label": "Canadian"
+    country: "Canada",
+    label: "Canadian",
   },
   {
-    "country": "Montenegro",
-    "label": "Montenegrin"
+    country: "Montenegro",
+    label: "Montenegrin",
   },
   {
-    "country": "United States of America",
-    "label": "American"
+    country: "United States of America",
+    label: "American",
   },
   {
-    "country": "Cook Islands",
-    "label": "Cook Islander"
+    country: "Cook Islands",
+    label: "Cook Islander",
   },
   {
-    "country": "Macao",
-    "label": "Macanese"
+    country: "Macao",
+    label: "Macanese",
   },
   {
-    "country": "Cocos (Keeling) Islands",
-    "label": "Cocos Islander"
+    country: "Cocos (Keeling) Islands",
+    label: "Cocos Islander",
   },
   {
-    "country": "Saint Lucia",
-    "label": "Saint Lucian"
+    country: "Saint Lucia",
+    label: "Saint Lucian",
   },
   {
-    "country": "Cyprus",
-    "label": "Cypriot"
+    country: "Cyprus",
+    label: "Cypriot",
   },
   {
-    "country": "Iceland",
-    "label": "Icelander"
+    country: "Iceland",
+    label: "Icelander",
   },
   {
-    "country": "Côte d'Ivoire",
-    "label": "Ivorian"
+    country: "Côte d'Ivoire",
+    label: "Ivorian",
   },
   {
-    "country": "Bangladesh",
-    "label": "Bangladeshi"
+    country: "Bangladesh",
+    label: "Bangladeshi",
   },
   {
-    "country": "Bhutan",
-    "label": "Bhutanese"
+    country: "Bhutan",
+    label: "Bhutanese",
   },
   {
-    "country": "Saint Kitts and Nevis",
-    "label": "Kittian and Nevisian"
+    country: "Saint Kitts and Nevis",
+    label: "Kittian and Nevisian",
   },
   {
-    "country": "Finland",
-    "label": "Finnish"
+    country: "Finland",
+    label: "Finnish",
   },
   {
-    "country": "Macedonia (the former Yugoslav Republic of)",
-    "label": "Macedonian"
+    country: "Macedonia (the former Yugoslav Republic of)",
+    label: "Macedonian",
   },
   {
-    "country": "Qatar",
-    "label": "Qatari"
+    country: "Qatar",
+    label: "Qatari",
   },
   {
-    "country": "Sudan",
-    "label": "Sudanese"
+    country: "Sudan",
+    label: "Sudanese",
   },
   {
-    "country": "Isle of Man",
-    "label": "Manx"
+    country: "Isle of Man",
+    label: "Manx",
   },
   {
-    "country": "Latvia",
-    "label": "Latvian"
+    country: "Latvia",
+    label: "Latvian",
   },
   {
-    "country": "Timor-Leste",
-    "label": "East Timorese"
+    country: "Timor-Leste",
+    label: "East Timorese",
   },
   {
-    "country": "Sao Tome and Principe",
-    "label": "Sao Tomean"
+    country: "Sao Tome and Principe",
+    label: "Sao Tomean",
   },
   {
-    "country": "Sweden",
-    "label": "Swedish"
+    country: "Sweden",
+    label: "Swedish",
   },
   {
-    "country": "Martinique",
-    "label": "Martinican"
+    country: "Martinique",
+    label: "Martinican",
   },
   {
-    "country": "Sierra Leone",
-    "label": "Sierra Leonean"
+    country: "Sierra Leone",
+    label: "Sierra Leonean",
   },
   {
-    "country": "South Africa",
-    "label": "South African"
+    country: "South Africa",
+    label: "South African",
   },
   {
-    "country": "Tanzania, United Republic of",
-    "label": "Tanzanian"
+    country: "Tanzania, United Republic of",
+    label: "Tanzanian",
   },
   {
-    "country": "Costa Rica",
-    "label": "Costa Rican"
+    country: "Costa Rica",
+    label: "Costa Rican",
   },
   {
-    "country": "Iran (Islamic Republic of)",
-    "label": "Iranian"
+    country: "Iran (Islamic Republic of)",
+    label: "Iranian",
   },
   {
-    "country": "Dominican Republic",
-    "label": "Dominican"
+    country: "Dominican Republic",
+    label: "Dominican",
   },
   {
-    "country": "Nigeria",
-    "label": "Nigerian"
+    country: "Nigeria",
+    label: "Nigerian",
   },
   {
-    "country": "Palestine, State of",
-    "label": "Palestinian"
+    country: "Palestine, State of",
+    label: "Palestinian",
   },
   {
-    "country": "Bosnia and Herzegovina",
-    "label": "Bosnian, Herzegovinian"
+    country: "Bosnia and Herzegovina",
+    label: "Bosnian, Herzegovinian",
   },
   {
-    "country": "Cayman Islands",
-    "label": "Caymanian"
+    country: "Cayman Islands",
+    label: "Caymanian",
   },
   {
-    "country": "Maldives",
-    "label": "Maldivan"
+    country: "Maldives",
+    label: "Maldivan",
   },
   {
-    "country": "Japan",
-    "label": "Japanese"
+    country: "Japan",
+    label: "Japanese",
   },
   {
-    "country": "Chad",
-    "label": "Chadian"
+    country: "Chad",
+    label: "Chadian",
   },
   {
-    "country": "Guinea",
-    "label": "Guinean"
+    country: "Guinea",
+    label: "Guinean",
   },
   {
-    "country": "Madagascar",
-    "label": "Malagasy"
+    country: "Madagascar",
+    label: "Malagasy",
   },
   {
-    "country": "Italy",
-    "label": "Italian"
+    country: "Italy",
+    label: "Italian",
   },
   {
-    "country": "Jordan",
-    "label": "Jordanian"
+    country: "Jordan",
+    label: "Jordanian",
   },
   {
-    "country": "Liechtenstein",
-    "label": "Liechtensteiner"
+    country: "Liechtenstein",
+    label: "Liechtensteiner",
   },
   {
-    "country": "Mongolia",
-    "label": "Mongolian"
+    country: "Mongolia",
+    label: "Mongolian",
   },
   {
-    "country": "Tonga",
-    "label": "Tongan"
+    country: "Tonga",
+    label: "Tongan",
   },
   {
-    "country": "Ecuador",
-    "label": "Ecuadorean"
+    country: "Ecuador",
+    label: "Ecuadorean",
   },
   {
-    "country": "Guam",
-    "label": "Guamanian"
+    country: "Guam",
+    label: "Guamanian",
   },
   {
-    "country": "Kuwait",
-    "label": "Kuwaiti"
+    country: "Kuwait",
+    label: "Kuwaiti",
   },
   {
-    "country": "Kyrgyzstan",
-    "label": "Kirghiz"
+    country: "Kyrgyzstan",
+    label: "Kirghiz",
   },
   {
-    "country": "Mauritius",
-    "label": "Mauritian"
+    country: "Mauritius",
+    label: "Mauritian",
   },
   {
-    "country": "Åland Islands",
-    "label": "Ålandish"
+    country: "Åland Islands",
+    label: "Ålandish",
   },
   {
-    "country": "Bahrain",
-    "label": "Bahraini"
+    country: "Bahrain",
+    label: "Bahraini",
   },
   {
-    "country": "Mexico",
-    "label": "Mexican"
+    country: "Mexico",
+    label: "Mexican",
   },
   {
-    "country": "Poland",
-    "label": "Polish"
+    country: "Poland",
+    label: "Polish",
   },
   {
-    "country": "Chile",
-    "label": "Chilean"
+    country: "Chile",
+    label: "Chilean",
   },
   {
-    "country": "Djibouti",
-    "label": "Djibouti"
+    country: "Djibouti",
+    label: "Djibouti",
   },
   {
-    "country": "Ethiopia",
-    "label": "Ethiopian"
+    country: "Ethiopia",
+    label: "Ethiopian",
   },
   {
-    "country": "Mauritania",
-    "label": "Mauritanian"
+    country: "Mauritania",
+    label: "Mauritanian",
   },
   {
-    "country": "Korea (Democratic People's Republic of)",
-    "label": "North Korean"
+    country: "Korea (Democratic People's Republic of)",
+    label: "North Korean",
   },
   {
-    "country": "Swaziland",
-    "label": "Swazi"
+    country: "Swaziland",
+    label: "Swazi",
   },
   {
-    "country": "Aruba",
-    "label": "Aruban"
+    country: "Aruba",
+    label: "Aruban",
   },
   {
-    "country": "Austria",
-    "label": "Austrian"
+    country: "Austria",
+    label: "Austrian",
   },
   {
-    "country": "Haiti",
-    "label": "Haitian"
+    country: "Haiti",
+    label: "Haitian",
   },
   {
-    "country": "Portugal",
-    "label": "Portuguese"
+    country: "Portugal",
+    label: "Portuguese",
   },
   {
-    "country": "Vanuatu",
-    "label": "Ni-Vanuatu"
+    country: "Vanuatu",
+    label: "Ni-Vanuatu",
   },
   {
-    "country": "Christmas Island",
-    "label": "Christmas Island"
+    country: "Christmas Island",
+    label: "Christmas Island",
   },
   {
-    "country": "Colombia",
-    "label": "Colombian"
+    country: "Colombia",
+    label: "Colombian",
   },
   {
-    "country": "Cuba",
-    "label": "Cuban"
+    country: "Cuba",
+    label: "Cuban",
   },
   {
-    "country": "French Guiana",
-    "label": "French Guianese"
+    country: "French Guiana",
+    label: "French Guianese",
   },
   {
-    "country": "Afghanistan",
-    "label": "Afghan"
+    country: "Afghanistan",
+    label: "Afghan",
   },
   {
-    "country": "Brunei Darussalam",
-    "label": "Bruneian"
+    country: "Brunei Darussalam",
+    label: "Bruneian",
   },
   {
-    "country": "Jamaica",
-    "label": "Jamaican"
+    country: "Jamaica",
+    label: "Jamaican",
   },
   {
-    "country": "Moldova (Republic of)",
-    "label": "Moldovan"
+    country: "Moldova (Republic of)",
+    label: "Moldovan",
   },
   {
-    "country": "France",
-    "label": "French"
+    country: "France",
+    label: "French",
   },
   {
-    "country": "Kenya",
-    "label": "Kenyan"
+    country: "Kenya",
+    label: "Kenyan",
   },
   {
-    "country": "Oman",
-    "label": "Omani"
+    country: "Oman",
+    label: "Omani",
   },
   {
-    "country": "Albania",
-    "label": "Albanian"
+    country: "Albania",
+    label: "Albanian",
   },
   {
-    "country": "Cabo Verde",
-    "label": "Cape Verdian"
+    country: "Cabo Verde",
+    label: "Cape Verdian",
   },
   {
-    "country": "Turkey",
-    "label": "Turkish"
+    country: "Turkey",
+    label: "Turkish",
   },
   {
-    "country": "Zimbabwe",
-    "label": "Zimbabwean"
+    country: "Zimbabwe",
+    label: "Zimbabwean",
   },
   {
-    "country": "Algeria",
-    "label": "Algerian"
+    country: "Algeria",
+    label: "Algerian",
   },
   {
-    "country": "Niger",
-    "label": "Nigerien"
+    country: "Niger",
+    label: "Nigerien",
   },
   {
-    "country": "Hungary",
-    "label": "Hungarian"
+    country: "Hungary",
+    label: "Hungarian",
   },
   {
-    "country": "Spain",
-    "label": "Spanish"
+    country: "Spain",
+    label: "Spanish",
   },
   {
-    "country": "Germany",
-    "label": "German"
+    country: "Germany",
+    label: "German",
   },
   {
-    "country": "Guatemala",
-    "label": "Guatemalan"
+    country: "Guatemala",
+    label: "Guatemalan",
   },
   {
-    "country": "Mozambique",
-    "label": "Mozambican"
+    country: "Mozambique",
+    label: "Mozambican",
   },
   {
-    "country": "Palau",
-    "label": "Palauan"
+    country: "Palau",
+    label: "Palauan",
   },
   {
-    "country": "Lesotho",
-    "label": "Mosotho"
+    country: "Lesotho",
+    label: "Mosotho",
   },
   {
-    "country": "Marshall Islands",
-    "label": "Marshallese"
+    country: "Marshall Islands",
+    label: "Marshallese",
   },
   {
-    "country": "Suriname",
-    "label": "Surinamer"
+    country: "Suriname",
+    label: "Surinamer",
   },
   {
-    "country": "Guyana",
-    "label": "Guyanese"
+    country: "Guyana",
+    label: "Guyanese",
   },
   {
-    "country": "Sri Lanka",
-    "label": "Sri Lankan"
+    country: "Sri Lanka",
+    label: "Sri Lankan",
   },
   {
-    "country": "Lebanon",
-    "label": "Lebanese"
+    country: "Lebanon",
+    label: "Lebanese",
   },
   {
-    "country": "Mayotte",
-    "label": "Mahoran"
+    country: "Mayotte",
+    label: "Mahoran",
   },
   {
-    "country": "Samoa",
-    "label": "Samoan"
+    country: "Samoa",
+    label: "Samoan",
   },
   {
-    "country": "Solomon Islands",
-    "label": "Solomon Islander"
+    country: "Solomon Islands",
+    label: "Solomon Islander",
   },
   {
-    "country": "Denmark",
-    "label": "Danish"
+    country: "Denmark",
+    label: "Danish",
   },
   {
-    "country": "Kiribati",
-    "label": "I-Kiribati"
+    country: "Kiribati",
+    label: "I-Kiribati",
   },
   {
-    "country": "Switzerland",
-    "label": "Swiss"
+    country: "Switzerland",
+    label: "Swiss",
   },
   {
-    "country": "Lithuania",
-    "label": "Lithuanian"
+    country: "Lithuania",
+    label: "Lithuanian",
   },
   {
-    "country": "Somalia",
-    "label": "Somali"
+    country: "Somalia",
+    label: "Somali",
   },
   {
-    "country": "Norfolk Island",
-    "label": "Norfolk Islander"
+    country: "Norfolk Island",
+    label: "Norfolk Islander",
   },
   {
-    "country": "Taiwan",
-    "label": "Taiwanese"
+    country: "Taiwan",
+    label: "Taiwanese",
   },
   {
-    "country": "Ghana",
-    "label": "Ghanaian"
+    country: "Ghana",
+    label: "Ghanaian",
   },
   {
-    "country": "New Zealand",
-    "label": "New Zealander"
+    country: "New Zealand",
+    label: "New Zealander",
   },
   {
-    "country": "Senegal",
-    "label": "Senegalese"
+    country: "Senegal",
+    label: "Senegalese",
   },
   {
-    "country": "Togo",
-    "label": "Togolese"
+    country: "Togo",
+    label: "Togolese",
   },
   {
-    "country": "Zambia",
-    "label": "Zambian"
+    country: "Zambia",
+    label: "Zambian",
   },
   {
-    "country": "Belarus",
-    "label": "Belarusian"
+    country: "Belarus",
+    label: "Belarusian",
   },
   {
-    "country": "Saint Vincent and the Grenadines",
-    "label": "Saint Vincentian"
+    country: "Saint Vincent and the Grenadines",
+    label: "Saint Vincentian",
   },
   {
-    "country": "El Salvador",
-    "label": "Salvadoran"
+    country: "El Salvador",
+    label: "Salvadoran",
   },
   {
-    "country": "Norway",
-    "label": "Norwegian"
+    country: "Norway",
+    label: "Norwegian",
   },
   {
-    "country": "Malta",
-    "label": "Maltese"
+    country: "Malta",
+    label: "Maltese",
   },
   {
-    "country": "Nicaragua",
-    "label": "Nicaraguan"
+    country: "Nicaragua",
+    label: "Nicaraguan",
   },
   {
-    "country": "Australia",
-    "label": "Australian"
+    country: "Australia",
+    label: "Australian",
   },
   {
-    "country": "Luxembourg",
-    "label": "Luxembourger"
+    country: "Luxembourg",
+    label: "Luxembourger",
   },
   {
-    "country": "Pakistan",
-    "label": "Pakistani"
+    country: "Pakistan",
+    label: "Pakistani",
   },
   {
-    "country": "Saint Helena, Ascension and Tristan da Cunha",
-    "label": "Saint Helenian"
+    country: "Saint Helena, Ascension and Tristan da Cunha",
+    label: "Saint Helenian",
   },
   {
-    "country": "Turks and Caicos Islands",
-    "label": "Turks and Caicos Islander"
+    country: "Turks and Caicos Islands",
+    label: "Turks and Caicos Islander",
   },
   {
-    "country": "Western Sahara",
-    "label": "Sahrawi"
+    country: "Western Sahara",
+    label: "Sahrawi",
   },
   {
-    "country": "Belgium",
-    "label": "Belgian"
+    country: "Belgium",
+    label: "Belgian",
   },
   {
-    "country": "Eritrea",
-    "label": "Eritrean"
+    country: "Eritrea",
+    label: "Eritrean",
   },
   {
-    "country": "Seychelles",
-    "label": "Seychellois"
+    country: "Seychelles",
+    label: "Seychellois",
   },
   {
-    "country": "Antigua and Barbuda",
-    "label": "Antiguan, Barbudan"
+    country: "Antigua and Barbuda",
+    label: "Antiguan, Barbudan",
   },
   {
-    "country": "Liberia",
-    "label": "Liberian"
+    country: "Liberia",
+    label: "Liberian",
   },
   {
-    "country": "Tuvalu",
-    "label": "Tuvaluan"
+    country: "Tuvalu",
+    label: "Tuvaluan",
   },
   {
-    "country": "Bermuda",
-    "label": "Bermudian"
+    country: "Bermuda",
+    label: "Bermudian",
   },
   {
-    "country": "Cameroon",
-    "label": "Cameroonian"
+    country: "Cameroon",
+    label: "Cameroonian",
   },
   {
-    "country": "Saint Pierre and Miquelon",
-    "label": "Saint-Pierrais"
+    country: "Saint Pierre and Miquelon",
+    label: "Saint-Pierrais",
   },
   {
-    "country": "Ukraine",
-    "label": "Ukrainian"
+    country: "Ukraine",
+    label: "Ukrainian",
   },
   {
-    "country": "Georgia",
-    "label": "Georgian"
+    country: "Georgia",
+    label: "Georgian",
   },
   {
-    "country": "Netherlands",
-    "label": "Dutch"
+    country: "Netherlands",
+    label: "Dutch",
   },
   {
-    "country": "Mali",
-    "label": "Malian"
+    country: "Mali",
+    label: "Malian",
   },
   {
-    "country": "Niue",
-    "label": "Niuean"
+    country: "Niue",
+    label: "Niuean",
   },
   {
-    "country": "Puerto Rico",
-    "label": "Puerto Rican"
+    country: "Puerto Rico",
+    label: "Puerto Rican",
   },
   {
-    "country": "United Kingdom of Great Britain and Northern Ireland",
-    "label": "British"
+    country: "United Kingdom of Great Britain and Northern Ireland",
+    label: "British",
   },
   {
-    "country": "Armenia",
-    "label": "Armenian"
+    country: "Armenia",
+    label: "Armenian",
   },
   {
-    "country": "Greenland",
-    "label": "Greenlandic"
+    country: "Greenland",
+    label: "Greenlandic",
   },
   {
-    "country": "Kazakhstan",
-    "label": "Kazakhstani"
+    country: "Kazakhstan",
+    label: "Kazakhstani",
   },
   {
-    "country": "Réunion",
-    "label": "Réunionese"
+    country: "Réunion",
+    label: "Réunionese",
   },
   {
-    "country": "Saint Martin (French part)",
-    "label": "Saint Martin Islander"
+    country: "Saint Martin (French part)",
+    label: "Saint Martin Islander",
   },
   {
-    "country": "Belize",
-    "label": "Belizean"
+    country: "Belize",
+    label: "Belizean",
   },
   {
-    "country": "Greece",
-    "label": "Greek"
+    country: "Greece",
+    label: "Greek",
   },
   {
-    "country": "Trinidad and Tobago",
-    "label": "Trinidadian"
+    country: "Trinidad and Tobago",
+    label: "Trinidadian",
   },
   {
-    "country": "Benin",
-    "label": "Beninese"
+    country: "Benin",
+    label: "Beninese",
   },
   {
-    "country": "Tajikistan",
-    "label": "Tadzhik"
+    country: "Tajikistan",
+    label: "Tadzhik",
   },
   {
-    "country": "Czech Republic",
-    "label": "Czech"
+    country: "Czech Republic",
+    label: "Czech",
   },
   {
-    "country": "India",
-    "label": "Indian"
+    country: "India",
+    label: "Indian",
   },
   {
-    "country": "Lao People's Democratic Republic",
-    "label": "Laotian"
+    country: "Lao People's Democratic Republic",
+    label: "Laotian",
   },
   {
-    "country": "Syrian Arab Republic",
-    "label": "Syrian"
+    country: "Syrian Arab Republic",
+    label: "Syrian",
   },
   {
-    "country": "Turkmenistan",
-    "label": "Turkmen"
+    country: "Turkmenistan",
+    label: "Turkmen",
   },
   {
-    "country": "Botswana",
-    "label": "Motswana"
+    country: "Botswana",
+    label: "Motswana",
   },
   {
-    "country": "Virgin Islands (British)",
-    "label": "Virgin Islander (British)"
+    country: "Virgin Islands (British)",
+    label: "Virgin Islander (British)",
   },
   {
-    "country": "American Samoa",
-    "label": "American Samoan"
+    country: "American Samoa",
+    label: "American Samoan",
   },
   {
-    "country": "Guadeloupe",
-    "label": "Guadeloupian"
+    country: "Guadeloupe",
+    label: "Guadeloupian",
   },
   {
-    "country": "New Caledonia",
-    "label": "New Caledonian"
+    country: "New Caledonia",
+    label: "New Caledonian",
   },
   {
-    "country": "Viet Nam",
-    "label": "Vietnamese"
+    country: "Viet Nam",
+    label: "Vietnamese",
   },
   {
-    "country": "Comoros",
-    "label": "Comoran"
+    country: "Comoros",
+    label: "Comoran",
   },
   {
-    "country": "Micronesia (Federated States of)",
-    "label": "Micronesian"
+    country: "Micronesia (Federated States of)",
+    label: "Micronesian",
   },
   {
-    "country": "Burundi",
-    "label": "Burundian"
+    country: "Burundi",
+    label: "Burundian",
   },
   {
-    "country": "Morocco",
-    "label": "Moroccan"
+    country: "Morocco",
+    label: "Moroccan",
   },
   {
-    "country": "Saint Barthélemy",
-    "label": "Saint Barthélemy Islander"
+    country: "Saint Barthélemy",
+    label: "Saint Barthélemy Islander",
   },
   {
-    "country": "Barbados",
-    "label": "Barbadian"
+    country: "Barbados",
+    label: "Barbadian",
   },
   {
-    "country": "Virgin Islands (U.S.)",
-    "label": "Virgin Islander (U.S.)"
+    country: "Virgin Islands (U.S.)",
+    label: "Virgin Islander (U.S.)",
   },
   {
-    "country": "Iraq",
-    "label": "Iraqi"
+    country: "Iraq",
+    label: "Iraqi",
   },
   {
-    "country": "Papua New Guinea",
-    "label": "Papua New Guinean"
+    country: "Papua New Guinea",
+    label: "Papua New Guinean",
   },
   {
-    "country": "Equatorial Guinea",
-    "label": "Equatorial Guinean"
+    country: "Equatorial Guinea",
+    label: "Equatorial Guinean",
   },
   {
-    "country": "Gabon",
-    "label": "Gabonese"
+    country: "Gabon",
+    label: "Gabonese",
   },
   {
-    "country": "Uruguay",
-    "label": "Uruguayan"
+    country: "Uruguay",
+    label: "Uruguayan",
   },
   {
-    "country": "Monaco",
-    "label": "Monegasque"
+    country: "Monaco",
+    label: "Monegasque",
   },
   {
-    "country": "Tunisia",
-    "label": "Tunisian"
+    country: "Tunisia",
+    label: "Tunisian",
   },
   {
-    "country": "Fiji",
-    "label": "Fijian"
+    country: "Fiji",
+    label: "Fijian",
   },
   {
-    "country": "Rwanda",
-    "label": "Rwandan"
+    country: "Rwanda",
+    label: "Rwandan",
   },
   {
-    "country": "Angola",
-    "label": "Angolan"
+    country: "Angola",
+    label: "Angolan",
   },
   {
-    "country": "Falkland Islands (Malvinas)",
-    "label": "Falkland Islander"
+    country: "Falkland Islands (Malvinas)",
+    label: "Falkland Islander",
   },
   {
-    "country": "Serbia",
-    "label": "Serbian"
+    country: "Serbia",
+    label: "Serbian",
   },
   {
-    "country": "Slovenia",
-    "label": "Slovenian"
+    country: "Slovenia",
+    label: "Slovenian",
   },
   {
-    "country": "Congo (Democratic Republic of the)",
-    "label": "Congolese (Democratic Republic)"
+    country: "Congo (Democratic Republic of the)",
+    label: "Congolese (Democratic Republic)",
   },
   {
-    "country": "Malawi",
-    "label": "Malawian"
+    country: "Malawi",
+    label: "Malawian",
   },
   {
-    "country": "Venezuela (Bolivarian Republic of)",
-    "label": "Venezuelan"
+    country: "Venezuela (Bolivarian Republic of)",
+    label: "Venezuelan",
   },
   {
-    "country": "Bulgaria",
-    "label": "Bulgarian"
+    country: "Bulgaria",
+    label: "Bulgarian",
   },
   {
-    "country": "Hong Kong",
-    "label": "Hong Kongese"
+    country: "Hong Kong",
+    label: "Hong Kongese",
   },
   {
-    "country": "Gibraltar",
-    "label": "Gibraltar"
+    country: "Gibraltar",
+    label: "Gibraltar",
   },
   {
-    "country": "South Sudan",
-    "label": "South Sudanese"
+    country: "South Sudan",
+    label: "South Sudanese",
   },
   {
-    "country": "Nauru",
-    "label": "Nauruan"
+    country: "Nauru",
+    label: "Nauruan",
   },
   {
-    "country": "Pitcairn",
-    "label": "Pitcairn Islander"
+    country: "Pitcairn",
+    label: "Pitcairn Islander",
   },
   {
-    "country": "Russian Federation",
-    "label": "Russian"
+    country: "Russian Federation",
+    label: "Russian",
   },
   {
-    "country": "Andorra",
-    "label": "Andorran"
+    country: "Andorra",
+    label: "Andorran",
   },
   {
-    "country": "Faroe Islands",
-    "label": "Faroese"
+    country: "Faroe Islands",
+    label: "Faroese",
   },
   {
-    "country": "Congo",
-    "label": "Congolese"
+    country: "Congo",
+    label: "Congolese",
   },
   {
-    "country": "Croatia",
-    "label": "Croatian"
+    country: "Croatia",
+    label: "Croatian",
   },
   {
-    "country": "Montserrat",
-    "label": "Montserratian"
+    country: "Montserrat",
+    label: "Montserratian",
   },
   {
-    "country": "Philippines",
-    "label": "Filipino"
+    country: "Philippines",
+    label: "Filipino",
   },
   {
-    "country": "Republic of Kosovo",
-    "label": "Kosovar"
+    country: "Republic of Kosovo",
+    label: "Kosovar",
   },
   {
-    "country": "Romania",
-    "label": "Romanian"
+    country: "Romania",
+    label: "Romanian",
   },
   {
-    "country": "Tokelau",
-    "label": "Tokelauan"
+    country: "Tokelau",
+    label: "Tokelauan",
   },
   {
-    "country": "Bahamas",
-    "label": "Bahamian"
+    country: "Bahamas",
+    label: "Bahamian",
   },
   {
-    "country": "Estonia",
-    "label": "Estonian"
-  }
-]
+    country: "Estonia",
+    label: "Estonian",
+  },
+];
 
 const optioncountry = [
   {
-    "label": "Thailand",
-    "nationality": "Thai"
+    label: "Thailand",
+    nationality: "Thai",
   },
   {
-    "label": "China",
-    "nationality": "Chinese"
+    label: "China",
+    nationality: "Chinese",
   },
   {
-    "label": "Peru",
-    "nationality": "Peruvian"
+    label: "Peru",
+    nationality: "Peruvian",
   },
   {
-    "label": "Brazil",
-    "nationality": "Brazilian"
+    label: "Brazil",
+    nationality: "Brazilian",
   },
   {
-    "label": "Libya",
-    "nationality": "Libyan"
+    label: "Libya",
+    nationality: "Libyan",
   },
   {
-    "label": "San Marino",
-    "nationality": "Sammarinese"
+    label: "San Marino",
+    nationality: "Sammarinese",
   },
   {
-    "label": "Malaysia",
-    "nationality": "Malaysian"
+    label: "Malaysia",
+    nationality: "Malaysian",
   },
   {
-    "label": "Paraguay",
-    "nationality": "Paraguayan"
+    label: "Paraguay",
+    nationality: "Paraguayan",
   },
   {
-    "label": "Namibia",
-    "nationality": "Namibian"
+    label: "Namibia",
+    nationality: "Namibian",
   },
   {
-    "label": "Slovakia",
-    "nationality": "Slovak"
+    label: "Slovakia",
+    nationality: "Slovak",
   },
   {
-    "label": "Honduras",
-    "nationality": "Honduran"
+    label: "Honduras",
+    nationality: "Honduran",
   },
   {
-    "label": "Uganda",
-    "nationality": "Ugandan"
+    label: "Uganda",
+    nationality: "Ugandan",
   },
   {
-    "label": "Indonesia",
-    "nationality": "Indonesian"
+    label: "Indonesia",
+    nationality: "Indonesian",
   },
   {
-    "label": "South Georgia and the South Sandwich Islands",
-    "nationality": "South Georgia and the South Sandwich Islander"
+    label: "South Georgia and the South Sandwich Islands",
+    nationality: "South Georgia and the South Sandwich Islander",
   },
   {
-    "label": "Yemen",
-    "nationality": "Yemeni"
+    label: "Yemen",
+    nationality: "Yemeni",
   },
   {
-    "label": "Azerbaijan",
-    "nationality": "Azerbaijani"
+    label: "Azerbaijan",
+    nationality: "Azerbaijani",
   },
   {
-    "label": "Israel",
-    "nationality": "Israeli"
+    label: "Israel",
+    nationality: "Israeli",
   },
   {
-    "label": "Singapore",
-    "nationality": "Singaporean"
+    label: "Singapore",
+    nationality: "Singaporean",
   },
   {
-    "label": "United Arab Emirates",
-    "nationality": "Emirati"
+    label: "United Arab Emirates",
+    nationality: "Emirati",
   },
   {
-    "label": "Bolivia (Plurinational State of)",
-    "nationality": "Bolivian"
+    label: "Bolivia (Plurinational State of)",
+    nationality: "Bolivian",
   },
   {
-    "label": "Ireland",
-    "nationality": "Irish"
+    label: "Ireland",
+    nationality: "Irish",
   },
   {
-    "label": "Central African Republic",
-    "nationality": "Central African"
+    label: "Central African Republic",
+    nationality: "Central African",
   },
   {
-    "label": "French Polynesia",
-    "nationality": "French Polynesian"
+    label: "French Polynesia",
+    nationality: "French Polynesian",
   },
   {
-    "label": "Grenada",
-    "nationality": "Grenadian"
+    label: "Grenada",
+    nationality: "Grenadian",
   },
   {
-    "label": "Guinea-Bissau",
-    "nationality": "Guinea-Bissauan"
+    label: "Guinea-Bissau",
+    nationality: "Guinea-Bissauan",
   },
   {
-    "label": "Nepal",
-    "nationality": "Nepalese"
+    label: "Nepal",
+    nationality: "Nepalese",
   },
   {
-    "label": "Panama",
-    "nationality": "Panamanian"
+    label: "Panama",
+    nationality: "Panamanian",
   },
   {
-    "label": "Burkina Faso",
-    "nationality": "Burkinabe"
+    label: "Burkina Faso",
+    nationality: "Burkinabe",
   },
   {
-    "label": "Cambodia",
-    "nationality": "Cambodian"
+    label: "Cambodia",
+    nationality: "Cambodian",
   },
   {
-    "label": "Uzbekistan",
-    "nationality": "Uzbekistani"
+    label: "Uzbekistan",
+    nationality: "Uzbekistani",
   },
   {
-    "label": "Anguilla",
-    "nationality": "Anguillian"
+    label: "Anguilla",
+    nationality: "Anguillian",
   },
   {
-    "label": "Korea (Republic of)",
-    "nationality": "South Korean"
+    label: "Korea (Republic of)",
+    nationality: "South Korean",
   },
   {
-    "label": "Curaçao",
-    "nationality": "Curaçaoan"
+    label: "Curaçao",
+    nationality: "Curaçaoan",
   },
   {
-    "label": "Wallis and Futuna",
-    "nationality": "Wallis and Futuna Islander"
+    label: "Wallis and Futuna",
+    nationality: "Wallis and Futuna Islander",
   },
   {
-    "label": "Myanmar",
-    "nationality": "Burmese"
+    label: "Myanmar",
+    nationality: "Burmese",
   },
   {
-    "label": "Egypt",
-    "nationality": "Egyptian"
+    label: "Egypt",
+    nationality: "Egyptian",
   },
   {
-    "label": "Gambia",
-    "nationality": "Gambian"
+    label: "Gambia",
+    nationality: "Gambian",
   },
   {
-    "label": "Saudi Arabia",
-    "nationality": "Saudi Arabian"
+    label: "Saudi Arabia",
+    nationality: "Saudi Arabian",
   },
   {
-    "label": "Argentina",
-    "nationality": "Argentinean"
+    label: "Argentina",
+    nationality: "Argentinean",
   },
   {
-    "label": "Canada",
-    "nationality": "Canadian"
+    label: "Canada",
+    nationality: "Canadian",
   },
   {
-    "label": "Montenegro",
-    "nationality": "Montenegrin"
+    label: "Montenegro",
+    nationality: "Montenegrin",
   },
   {
-    "label": "United States of America",
-    "nationality": "American"
+    label: "United States of America",
+    nationality: "American",
   },
   {
-    "label": "Cook Islands",
-    "nationality": "Cook Islander"
+    label: "Cook Islands",
+    nationality: "Cook Islander",
   },
   {
-    "label": "Macao",
-    "nationality": "Macanese"
+    label: "Macao",
+    nationality: "Macanese",
   },
   {
-    "label": "Cocos (Keeling) Islands",
-    "nationality": "Cocos Islander"
+    label: "Cocos (Keeling) Islands",
+    nationality: "Cocos Islander",
   },
   {
-    "label": "Saint Lucia",
-    "nationality": "Saint Lucian"
+    label: "Saint Lucia",
+    nationality: "Saint Lucian",
   },
   {
-    "label": "Cyprus",
-    "nationality": "Cypriot"
+    label: "Cyprus",
+    nationality: "Cypriot",
   },
   {
-    "label": "Iceland",
-    "nationality": "Icelander"
+    label: "Iceland",
+    nationality: "Icelander",
   },
   {
-    "label": "Côte d'Ivoire",
-    "nationality": "Ivorian"
+    label: "Côte d'Ivoire",
+    nationality: "Ivorian",
   },
   {
-    "label": "Bangladesh",
-    "nationality": "Bangladeshi"
+    label: "Bangladesh",
+    nationality: "Bangladeshi",
   },
   {
-    "label": "Bhutan",
-    "nationality": "Bhutanese"
+    label: "Bhutan",
+    nationality: "Bhutanese",
   },
   {
-    "label": "Saint Kitts and Nevis",
-    "nationality": "Kittian and Nevisian"
+    label: "Saint Kitts and Nevis",
+    nationality: "Kittian and Nevisian",
   },
   {
-    "label": "Finland",
-    "nationality": "Finnish"
+    label: "Finland",
+    nationality: "Finnish",
   },
   {
-    "label": "Macedonia (the former Yugoslav Republic of)",
-    "nationality": "Macedonian"
+    label: "Macedonia (the former Yugoslav Republic of)",
+    nationality: "Macedonian",
   },
   {
-    "label": "Qatar",
-    "nationality": "Qatari"
+    label: "Qatar",
+    nationality: "Qatari",
   },
   {
-    "label": "Sudan",
-    "nationality": "Sudanese"
+    label: "Sudan",
+    nationality: "Sudanese",
   },
   {
-    "label": "Isle of Man",
-    "nationality": "Manx"
+    label: "Isle of Man",
+    nationality: "Manx",
   },
   {
-    "label": "Latvia",
-    "nationality": "Latvian"
+    label: "Latvia",
+    nationality: "Latvian",
   },
   {
-    "label": "Timor-Leste",
-    "nationality": "East Timorese"
+    label: "Timor-Leste",
+    nationality: "East Timorese",
   },
   {
-    "label": "Sao Tome and Principe",
-    "nationality": "Sao Tomean"
+    label: "Sao Tome and Principe",
+    nationality: "Sao Tomean",
   },
   {
-    "label": "Sweden",
-    "nationality": "Swedish"
+    label: "Sweden",
+    nationality: "Swedish",
   },
   {
-    "label": "Martinique",
-    "nationality": "Martinican"
+    label: "Martinique",
+    nationality: "Martinican",
   },
   {
-    "label": "Sierra Leone",
-    "nationality": "Sierra Leonean"
+    label: "Sierra Leone",
+    nationality: "Sierra Leonean",
   },
   {
-    "label": "South Africa",
-    "nationality": "South African"
+    label: "South Africa",
+    nationality: "South African",
   },
   {
-    "label": "Tanzania, United Republic of",
-    "nationality": "Tanzanian"
+    label: "Tanzania, United Republic of",
+    nationality: "Tanzanian",
   },
   {
-    "label": "Costa Rica",
-    "nationality": "Costa Rican"
+    label: "Costa Rica",
+    nationality: "Costa Rican",
   },
   {
-    "label": "Iran (Islamic Republic of)",
-    "nationality": "Iranian"
+    label: "Iran (Islamic Republic of)",
+    nationality: "Iranian",
   },
   {
-    "label": "Dominican Republic",
-    "nationality": "Dominican"
+    label: "Dominican Republic",
+    nationality: "Dominican",
   },
   {
-    "label": "Nigeria",
-    "nationality": "Nigerian"
+    label: "Nigeria",
+    nationality: "Nigerian",
   },
   {
-    "label": "Palestine, State of",
-    "nationality": "Palestinian"
+    label: "Palestine, State of",
+    nationality: "Palestinian",
   },
   {
-    "label": "Bosnia and Herzegovina",
-    "nationality": "Bosnian, Herzegovinian"
+    label: "Bosnia and Herzegovina",
+    nationality: "Bosnian, Herzegovinian",
   },
   {
-    "label": "Cayman Islands",
-    "nationality": "Caymanian"
+    label: "Cayman Islands",
+    nationality: "Caymanian",
   },
   {
-    "label": "Maldives",
-    "nationality": "Maldivan"
+    label: "Maldives",
+    nationality: "Maldivan",
   },
   {
-    "label": "Japan",
-    "nationality": "Japanese"
+    label: "Japan",
+    nationality: "Japanese",
   },
   {
-    "label": "Chad",
-    "nationality": "Chadian"
+    label: "Chad",
+    nationality: "Chadian",
   },
   {
-    "label": "Guinea",
-    "nationality": "Guinean"
+    label: "Guinea",
+    nationality: "Guinean",
   },
   {
-    "label": "Madagascar",
-    "nationality": "Malagasy"
+    label: "Madagascar",
+    nationality: "Malagasy",
   },
   {
-    "label": "Italy",
-    "nationality": "Italian"
+    label: "Italy",
+    nationality: "Italian",
   },
   {
-    "label": "Jordan",
-    "nationality": "Jordanian"
+    label: "Jordan",
+    nationality: "Jordanian",
   },
   {
-    "label": "Liechtenstein",
-    "nationality": "Liechtensteiner"
+    label: "Liechtenstein",
+    nationality: "Liechtensteiner",
   },
   {
-    "label": "Mongolia",
-    "nationality": "Mongolian"
+    label: "Mongolia",
+    nationality: "Mongolian",
   },
   {
-    "label": "Tonga",
-    "nationality": "Tongan"
+    label: "Tonga",
+    nationality: "Tongan",
   },
   {
-    "label": "Ecuador",
-    "nationality": "Ecuadorean"
+    label: "Ecuador",
+    nationality: "Ecuadorean",
   },
   {
-    "label": "Guam",
-    "nationality": "Guamanian"
+    label: "Guam",
+    nationality: "Guamanian",
   },
   {
-    "label": "Kuwait",
-    "nationality": "Kuwaiti"
+    label: "Kuwait",
+    nationality: "Kuwaiti",
   },
   {
-    "label": "Kyrgyzstan",
-    "nationality": "Kirghiz"
+    label: "Kyrgyzstan",
+    nationality: "Kirghiz",
   },
   {
-    "label": "Mauritius",
-    "nationality": "Mauritian"
+    label: "Mauritius",
+    nationality: "Mauritian",
   },
   {
-    "label": "Åland Islands",
-    "nationality": "Ålandish"
+    label: "Åland Islands",
+    nationality: "Ålandish",
   },
   {
-    "label": "Bahrain",
-    "nationality": "Bahraini"
+    label: "Bahrain",
+    nationality: "Bahraini",
   },
   {
-    "label": "Mexico",
-    "nationality": "Mexican"
+    label: "Mexico",
+    nationality: "Mexican",
   },
   {
-    "label": "Poland",
-    "nationality": "Polish"
+    label: "Poland",
+    nationality: "Polish",
   },
   {
-    "label": "Chile",
-    "nationality": "Chilean"
+    label: "Chile",
+    nationality: "Chilean",
   },
   {
-    "label": "Djibouti",
-    "nationality": "Djibouti"
+    label: "Djibouti",
+    nationality: "Djibouti",
   },
   {
-    "label": "Ethiopia",
-    "nationality": "Ethiopian"
+    label: "Ethiopia",
+    nationality: "Ethiopian",
   },
   {
-    "label": "Mauritania",
-    "nationality": "Mauritanian"
+    label: "Mauritania",
+    nationality: "Mauritanian",
   },
   {
-    "label": "Korea (Democratic People's Republic of)",
-    "nationality": "North Korean"
+    label: "Korea (Democratic People's Republic of)",
+    nationality: "North Korean",
   },
   {
-    "label": "Swaziland",
-    "nationality": "Swazi"
+    label: "Swaziland",
+    nationality: "Swazi",
   },
   {
-    "label": "Aruba",
-    "nationality": "Aruban"
+    label: "Aruba",
+    nationality: "Aruban",
   },
   {
-    "label": "Austria",
-    "nationality": "Austrian"
+    label: "Austria",
+    nationality: "Austrian",
   },
   {
-    "label": "Haiti",
-    "nationality": "Haitian"
+    label: "Haiti",
+    nationality: "Haitian",
   },
   {
-    "label": "Portugal",
-    "nationality": "Portuguese"
+    label: "Portugal",
+    nationality: "Portuguese",
   },
   {
-    "label": "Vanuatu",
-    "nationality": "Ni-Vanuatu"
+    label: "Vanuatu",
+    nationality: "Ni-Vanuatu",
   },
   {
-    "label": "Christmas Island",
-    "nationality": "Christmas Island"
+    label: "Christmas Island",
+    nationality: "Christmas Island",
   },
   {
-    "label": "Colombia",
-    "nationality": "Colombian"
+    label: "Colombia",
+    nationality: "Colombian",
   },
   {
-    "label": "Cuba",
-    "nationality": "Cuban"
+    label: "Cuba",
+    nationality: "Cuban",
   },
   {
-    "label": "French Guiana",
-    "nationality": "French Guianese"
+    label: "French Guiana",
+    nationality: "French Guianese",
   },
   {
-    "label": "Afghanistan",
-    "nationality": "Afghan"
+    label: "Afghanistan",
+    nationality: "Afghan",
   },
   {
-    "label": "Brunei Darussalam",
-    "nationality": "Bruneian"
+    label: "Brunei Darussalam",
+    nationality: "Bruneian",
   },
   {
-    "label": "Jamaica",
-    "nationality": "Jamaican"
+    label: "Jamaica",
+    nationality: "Jamaican",
   },
   {
-    "label": "Moldova (Republic of)",
-    "nationality": "Moldovan"
+    label: "Moldova (Republic of)",
+    nationality: "Moldovan",
   },
   {
-    "label": "France",
-    "nationality": "French"
+    label: "France",
+    nationality: "French",
   },
   {
-    "label": "Kenya",
-    "nationality": "Kenyan"
+    label: "Kenya",
+    nationality: "Kenyan",
   },
   {
-    "label": "Oman",
-    "nationality": "Omani"
+    label: "Oman",
+    nationality: "Omani",
   },
   {
-    "label": "Albania",
-    "nationality": "Albanian"
+    label: "Albania",
+    nationality: "Albanian",
   },
   {
-    "label": "Cabo Verde",
-    "nationality": "Cape Verdian"
+    label: "Cabo Verde",
+    nationality: "Cape Verdian",
   },
   {
-    "label": "Turkey",
-    "nationality": "Turkish"
+    label: "Turkey",
+    nationality: "Turkish",
   },
   {
-    "label": "Zimbabwe",
-    "nationality": "Zimbabwean"
+    label: "Zimbabwe",
+    nationality: "Zimbabwean",
   },
   {
-    "label": "Algeria",
-    "nationality": "Algerian"
+    label: "Algeria",
+    nationality: "Algerian",
   },
   {
-    "label": "Niger",
-    "nationality": "Nigerien"
+    label: "Niger",
+    nationality: "Nigerien",
   },
   {
-    "label": "Hungary",
-    "nationality": "Hungarian"
+    label: "Hungary",
+    nationality: "Hungarian",
   },
   {
-    "label": "Spain",
-    "nationality": "Spanish"
+    label: "Spain",
+    nationality: "Spanish",
   },
   {
-    "label": "Germany",
-    "nationality": "German"
+    label: "Germany",
+    nationality: "German",
   },
   {
-    "label": "Guatemala",
-    "nationality": "Guatemalan"
+    label: "Guatemala",
+    nationality: "Guatemalan",
   },
   {
-    "label": "Mozambique",
-    "nationality": "Mozambican"
+    label: "Mozambique",
+    nationality: "Mozambican",
   },
   {
-    "label": "Palau",
-    "nationality": "Palauan"
+    label: "Palau",
+    nationality: "Palauan",
   },
   {
-    "label": "Lesotho",
-    "nationality": "Mosotho"
+    label: "Lesotho",
+    nationality: "Mosotho",
   },
   {
-    "label": "Marshall Islands",
-    "nationality": "Marshallese"
+    label: "Marshall Islands",
+    nationality: "Marshallese",
   },
   {
-    "label": "Suriname",
-    "nationality": "Surinamer"
+    label: "Suriname",
+    nationality: "Surinamer",
   },
   {
-    "label": "Guyana",
-    "nationality": "Guyanese"
+    label: "Guyana",
+    nationality: "Guyanese",
   },
   {
-    "label": "Sri Lanka",
-    "nationality": "Sri Lankan"
+    label: "Sri Lanka",
+    nationality: "Sri Lankan",
   },
   {
-    "label": "Lebanon",
-    "nationality": "Lebanese"
+    label: "Lebanon",
+    nationality: "Lebanese",
   },
   {
-    "label": "Mayotte",
-    "nationality": "Mahoran"
+    label: "Mayotte",
+    nationality: "Mahoran",
   },
   {
-    "label": "Samoa",
-    "nationality": "Samoan"
+    label: "Samoa",
+    nationality: "Samoan",
   },
   {
-    "label": "Solomon Islands",
-    "nationality": "Solomon Islander"
+    label: "Solomon Islands",
+    nationality: "Solomon Islander",
   },
   {
-    "label": "Denmark",
-    "nationality": "Danish"
+    label: "Denmark",
+    nationality: "Danish",
   },
   {
-    "label": "Kiribati",
-    "nationality": "I-Kiribati"
+    label: "Kiribati",
+    nationality: "I-Kiribati",
   },
   {
-    "label": "Switzerland",
-    "nationality": "Swiss"
+    label: "Switzerland",
+    nationality: "Swiss",
   },
   {
-    "label": "Lithuania",
-    "nationality": "Lithuanian"
+    label: "Lithuania",
+    nationality: "Lithuanian",
   },
   {
-    "label": "Somalia",
-    "nationality": "Somali"
+    label: "Somalia",
+    nationality: "Somali",
   },
   {
-    "label": "Norfolk Island",
-    "nationality": "Norfolk Islander"
+    label: "Norfolk Island",
+    nationality: "Norfolk Islander",
   },
   {
-    "label": "Taiwan",
-    "nationality": "Taiwanese"
+    label: "Taiwan",
+    nationality: "Taiwanese",
   },
   {
-    "label": "Ghana",
-    "nationality": "Ghanaian"
+    label: "Ghana",
+    nationality: "Ghanaian",
   },
   {
-    "label": "New Zealand",
-    "nationality": "New Zealander"
+    label: "New Zealand",
+    nationality: "New Zealander",
   },
   {
-    "label": "Senegal",
-    "nationality": "Senegalese"
+    label: "Senegal",
+    nationality: "Senegalese",
   },
   {
-    "label": "Togo",
-    "nationality": "Togolese"
+    label: "Togo",
+    nationality: "Togolese",
   },
   {
-    "label": "Zambia",
-    "nationality": "Zambian"
+    label: "Zambia",
+    nationality: "Zambian",
   },
   {
-    "label": "Belarus",
-    "nationality": "Belarusian"
+    label: "Belarus",
+    nationality: "Belarusian",
   },
   {
-    "label": "Saint Vincent and the Grenadines",
-    "nationality": "Saint Vincentian"
+    label: "Saint Vincent and the Grenadines",
+    nationality: "Saint Vincentian",
   },
   {
-    "label": "El Salvador",
-    "nationality": "Salvadoran"
+    label: "El Salvador",
+    nationality: "Salvadoran",
   },
   {
-    "label": "Norway",
-    "nationality": "Norwegian"
+    label: "Norway",
+    nationality: "Norwegian",
   },
   {
-    "label": "Malta",
-    "nationality": "Maltese"
+    label: "Malta",
+    nationality: "Maltese",
   },
   {
-    "label": "Nicaragua",
-    "nationality": "Nicaraguan"
+    label: "Nicaragua",
+    nationality: "Nicaraguan",
   },
   {
-    "label": "Australia",
-    "nationality": "Australian"
+    label: "Australia",
+    nationality: "Australian",
   },
   {
-    "label": "Luxembourg",
-    "nationality": "Luxembourger"
+    label: "Luxembourg",
+    nationality: "Luxembourger",
   },
   {
-    "label": "Pakistan",
-    "nationality": "Pakistani"
+    label: "Pakistan",
+    nationality: "Pakistani",
   },
   {
-    "label": "Saint Helena, Ascension and Tristan da Cunha",
-    "nationality": "Saint Helenian"
+    label: "Saint Helena, Ascension and Tristan da Cunha",
+    nationality: "Saint Helenian",
   },
   {
-    "label": "Turks and Caicos Islands",
-    "nationality": "Turks and Caicos Islander"
+    label: "Turks and Caicos Islands",
+    nationality: "Turks and Caicos Islander",
   },
   {
-    "label": "Western Sahara",
-    "nationality": "Sahrawi"
+    label: "Western Sahara",
+    nationality: "Sahrawi",
   },
   {
-    "label": "Belgium",
-    "nationality": "Belgian"
+    label: "Belgium",
+    nationality: "Belgian",
   },
   {
-    "label": "Eritrea",
-    "nationality": "Eritrean"
+    label: "Eritrea",
+    nationality: "Eritrean",
   },
   {
-    "label": "Seychelles",
-    "nationality": "Seychellois"
+    label: "Seychelles",
+    nationality: "Seychellois",
   },
   {
-    "label": "Antigua and Barbuda",
-    "nationality": "Antiguan, Barbudan"
+    label: "Antigua and Barbuda",
+    nationality: "Antiguan, Barbudan",
   },
   {
-    "label": "Liberia",
-    "nationality": "Liberian"
+    label: "Liberia",
+    nationality: "Liberian",
   },
   {
-    "label": "Tuvalu",
-    "nationality": "Tuvaluan"
+    label: "Tuvalu",
+    nationality: "Tuvaluan",
   },
   {
-    "label": "Bermuda",
-    "nationality": "Bermudian"
+    label: "Bermuda",
+    nationality: "Bermudian",
   },
   {
-    "label": "Cameroon",
-    "nationality": "Cameroonian"
+    label: "Cameroon",
+    nationality: "Cameroonian",
   },
   {
-    "label": "Saint Pierre and Miquelon",
-    "nationality": "Saint-Pierrais"
+    label: "Saint Pierre and Miquelon",
+    nationality: "Saint-Pierrais",
   },
   {
-    "label": "Ukraine",
-    "nationality": "Ukrainian"
+    label: "Ukraine",
+    nationality: "Ukrainian",
   },
   {
-    "label": "Georgia",
-    "nationality": "Georgian"
+    label: "Georgia",
+    nationality: "Georgian",
   },
   {
-    "label": "Netherlands",
-    "nationality": "Dutch"
+    label: "Netherlands",
+    nationality: "Dutch",
   },
   {
-    "label": "Mali",
-    "nationality": "Malian"
+    label: "Mali",
+    nationality: "Malian",
   },
   {
-    "label": "Niue",
-    "nationality": "Niuean"
+    label: "Niue",
+    nationality: "Niuean",
   },
   {
-    "label": "Puerto Rico",
-    "nationality": "Puerto Rican"
+    label: "Puerto Rico",
+    nationality: "Puerto Rican",
   },
   {
-    "label": "United Kingdom of Great Britain and Northern Ireland",
-    "nationality": "British"
+    label: "United Kingdom of Great Britain and Northern Ireland",
+    nationality: "British",
   },
   {
-    "label": "Armenia",
-    "nationality": "Armenian"
+    label: "Armenia",
+    nationality: "Armenian",
   },
   {
-    "label": "Greenland",
-    "nationality": "Greenlandic"
+    label: "Greenland",
+    nationality: "Greenlandic",
   },
   {
-    "label": "Kazakhstan",
-    "nationality": "Kazakhstani"
+    label: "Kazakhstan",
+    nationality: "Kazakhstani",
   },
   {
-    "label": "Réunion",
-    "nationality": "Réunionese"
+    label: "Réunion",
+    nationality: "Réunionese",
   },
   {
-    "label": "Saint Martin (French part)",
-    "nationality": "Saint Martin Islander"
+    label: "Saint Martin (French part)",
+    nationality: "Saint Martin Islander",
   },
   {
-    "label": "Belize",
-    "nationality": "Belizean"
+    label: "Belize",
+    nationality: "Belizean",
   },
   {
-    "label": "Greece",
-    "nationality": "Greek"
+    label: "Greece",
+    nationality: "Greek",
   },
   {
-    "label": "Trinidad and Tobago",
-    "nationality": "Trinidadian"
+    label: "Trinidad and Tobago",
+    nationality: "Trinidadian",
   },
   {
-    "label": "Benin",
-    "nationality": "Beninese"
+    label: "Benin",
+    nationality: "Beninese",
   },
   {
-    "label": "Tajikistan",
-    "nationality": "Tadzhik"
+    label: "Tajikistan",
+    nationality: "Tadzhik",
   },
   {
-    "label": "Czech Republic",
-    "nationality": "Czech"
+    label: "Czech Republic",
+    nationality: "Czech",
   },
   {
-    "label": "India",
-    "nationality": "Indian"
+    label: "India",
+    nationality: "Indian",
   },
   {
-    "label": "Lao People's Democratic Republic",
-    "nationality": "Laotian"
+    label: "Lao People's Democratic Republic",
+    nationality: "Laotian",
   },
   {
-    "label": "Syrian Arab Republic",
-    "nationality": "Syrian"
+    label: "Syrian Arab Republic",
+    nationality: "Syrian",
   },
   {
-    "label": "Turkmenistan",
-    "nationality": "Turkmen"
+    label: "Turkmenistan",
+    nationality: "Turkmen",
   },
   {
-    "label": "Botswana",
-    "nationality": "Motswana"
+    label: "Botswana",
+    nationality: "Motswana",
   },
   {
-    "label": "Virgin Islands (British)",
-    "nationality": "Virgin Islander (British)"
+    label: "Virgin Islands (British)",
+    nationality: "Virgin Islander (British)",
   },
   {
-    "label": "American Samoa",
-    "nationality": "American Samoan"
+    label: "American Samoa",
+    nationality: "American Samoan",
   },
   {
-    "label": "Guadeloupe",
-    "nationality": "Guadeloupian"
+    label: "Guadeloupe",
+    nationality: "Guadeloupian",
   },
   {
-    "label": "New Caledonia",
-    "nationality": "New Caledonian"
+    label: "New Caledonia",
+    nationality: "New Caledonian",
   },
   {
-    "label": "Viet Nam",
-    "nationality": "Vietnamese"
+    label: "Viet Nam",
+    nationality: "Vietnamese",
   },
   {
-    "label": "Comoros",
-    "nationality": "Comoran"
+    label: "Comoros",
+    nationality: "Comoran",
   },
   {
-    "label": "Micronesia (Federated States of)",
-    "nationality": "Micronesian"
+    label: "Micronesia (Federated States of)",
+    nationality: "Micronesian",
   },
   {
-    "label": "Burundi",
-    "nationality": "Burundian"
+    label: "Burundi",
+    nationality: "Burundian",
   },
   {
-    "label": "Morocco",
-    "nationality": "Moroccan"
+    label: "Morocco",
+    nationality: "Moroccan",
   },
   {
-    "label": "Saint Barthélemy",
-    "nationality": "Saint Barthélemy Islander"
+    label: "Saint Barthélemy",
+    nationality: "Saint Barthélemy Islander",
   },
   {
-    "label": "Barbados",
-    "nationality": "Barbadian"
+    label: "Barbados",
+    nationality: "Barbadian",
   },
   {
-    "label": "Virgin Islands (U.S.)",
-    "nationality": "Virgin Islander (U.S.)"
+    label: "Virgin Islands (U.S.)",
+    nationality: "Virgin Islander (U.S.)",
   },
   {
-    "label": "Iraq",
-    "nationality": "Iraqi"
+    label: "Iraq",
+    nationality: "Iraqi",
   },
   {
-    "label": "Papua New Guinea",
-    "nationality": "Papua New Guinean"
+    label: "Papua New Guinea",
+    nationality: "Papua New Guinean",
   },
   {
-    "label": "Equatorial Guinea",
-    "nationality": "Equatorial Guinean"
+    label: "Equatorial Guinea",
+    nationality: "Equatorial Guinean",
   },
   {
-    "label": "Gabon",
-    "nationality": "Gabonese"
+    label: "Gabon",
+    nationality: "Gabonese",
   },
   {
-    "label": "Uruguay",
-    "nationality": "Uruguayan"
+    label: "Uruguay",
+    nationality: "Uruguayan",
   },
   {
-    "label": "Monaco",
-    "nationality": "Monegasque"
+    label: "Monaco",
+    nationality: "Monegasque",
   },
   {
-    "label": "Tunisia",
-    "nationality": "Tunisian"
+    label: "Tunisia",
+    nationality: "Tunisian",
   },
   {
-    "label": "Fiji",
-    "nationality": "Fijian"
+    label: "Fiji",
+    nationality: "Fijian",
   },
   {
-    "label": "Rwanda",
-    "nationality": "Rwandan"
+    label: "Rwanda",
+    nationality: "Rwandan",
   },
   {
-    "label": "Angola",
-    "nationality": "Angolan"
+    label: "Angola",
+    nationality: "Angolan",
   },
   {
-    "label": "Falkland Islands (Malvinas)",
-    "nationality": "Falkland Islander"
+    label: "Falkland Islands (Malvinas)",
+    nationality: "Falkland Islander",
   },
   {
-    "label": "Serbia",
-    "nationality": "Serbian"
+    label: "Serbia",
+    nationality: "Serbian",
   },
   {
-    "label": "Slovenia",
-    "nationality": "Slovenian"
+    label: "Slovenia",
+    nationality: "Slovenian",
   },
   {
-    "label": "Congo (Democratic Republic of the)",
-    "nationality": "Congolese (Democratic Republic)"
+    label: "Congo (Democratic Republic of the)",
+    nationality: "Congolese (Democratic Republic)",
   },
   {
-    "label": "Malawi",
-    "nationality": "Malawian"
+    label: "Malawi",
+    nationality: "Malawian",
   },
   {
-    "label": "Venezuela (Bolivarian Republic of)",
-    "nationality": "Venezuelan"
+    label: "Venezuela (Bolivarian Republic of)",
+    nationality: "Venezuelan",
   },
   {
-    "label": "Bulgaria",
-    "nationality": "Bulgarian"
+    label: "Bulgaria",
+    nationality: "Bulgarian",
   },
   {
-    "label": "Hong Kong",
-    "nationality": "Hong Kongese"
+    label: "Hong Kong",
+    nationality: "Hong Kongese",
   },
   {
-    "label": "Gibraltar",
-    "nationality": "Gibraltar"
+    label: "Gibraltar",
+    nationality: "Gibraltar",
   },
   {
-    "label": "South Sudan",
-    "nationality": "South Sudanese"
+    label: "South Sudan",
+    nationality: "South Sudanese",
   },
   {
-    "label": "Nauru",
-    "nationality": "Nauruan"
+    label: "Nauru",
+    nationality: "Nauruan",
   },
   {
-    "label": "Pitcairn",
-    "nationality": "Pitcairn Islander"
+    label: "Pitcairn",
+    nationality: "Pitcairn Islander",
   },
   {
-    "label": "Russian Federation",
-    "nationality": "Russian"
+    label: "Russian Federation",
+    nationality: "Russian",
   },
   {
-    "label": "Andorra",
-    "nationality": "Andorran"
+    label: "Andorra",
+    nationality: "Andorran",
   },
   {
-    "label": "Faroe Islands",
-    "nationality": "Faroese"
+    label: "Faroe Islands",
+    nationality: "Faroese",
   },
   {
-    "label": "Congo",
-    "nationality": "Congolese"
+    label: "Congo",
+    nationality: "Congolese",
   },
   {
-    "label": "Croatia",
-    "nationality": "Croatian"
+    label: "Croatia",
+    nationality: "Croatian",
   },
   {
-    "label": "Montserrat",
-    "nationality": "Montserratian"
+    label: "Montserrat",
+    nationality: "Montserratian",
   },
   {
-    "label": "Philippines",
-    "nationality": "Filipino"
+    label: "Philippines",
+    nationality: "Filipino",
   },
   {
-    "label": "Republic of Kosovo",
-    "nationality": "Kosovar"
+    label: "Republic of Kosovo",
+    nationality: "Kosovar",
   },
   {
-    "label": "Romania",
-    "nationality": "Romanian"
+    label: "Romania",
+    nationality: "Romanian",
   },
   {
-    "label": "Tokelau",
-    "nationality": "Tokelauan"
+    label: "Tokelau",
+    nationality: "Tokelauan",
   },
   {
-    "label": "Bahamas",
-    "nationality": "Bahamian"
+    label: "Bahamas",
+    nationality: "Bahamian",
   },
   {
-    "label": "Estonia",
-    "nationality": "Estonian"
-  }
-]
-
-
+    label: "Estonia",
+    nationality: "Estonian",
+  },
+];
 
 const optionrelation = [
   {
@@ -2066,7 +2064,7 @@ const optionrelation = [
   {
     value: "Colleague",
     label: "Colleague",
-  }
+  },
 ];
 
 export const TestDnD = (props) => {
@@ -2158,8 +2156,9 @@ export const TestDnD = (props) => {
                 {option.label}
               </option>
             )),
+            defaultvalue: props.editdata != null ? props.editdata.title : "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setTitle(e.target.value),
         },
         {
           id: 1,
@@ -2169,9 +2168,10 @@ export const TestDnD = (props) => {
           xs: 10,
           select: {
             status: "fill",
-            data: "",
+            // data: props.editdata.firstname,
+            data: props.editdata != null ? props.editdata.firstname : "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setFirstname(e.target.value),
         },
         {
           id: 2,
@@ -2181,9 +2181,10 @@ export const TestDnD = (props) => {
           xs: 10,
           select: {
             status: "fill",
-            data: "",
+            data: props.editdata != null ? props.editdata.lastname : "",
           },
-          handle: (e) => handleData(e),
+          // handle: (e) => setPersonalData({ ...personalData,lastname: e.target.value }),
+          handle: (e) => setLastname(e.target.value),
         },
         {
           id: 3,
@@ -2195,6 +2196,7 @@ export const TestDnD = (props) => {
             status: "option",
             data: optiondata2.map((option) => (
               <option
+                // defaultValue={props.editdata != null ? props.editdata.sex : ""}
                 style={headerTableStyle}
                 key={option.value}
                 value={option.value}
@@ -2202,8 +2204,9 @@ export const TestDnD = (props) => {
                 {option.label}
               </option>
             )),
+            defaultvalue: props.editdata != null ? props.editdata.sex : "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setSex(e.target.value),
         },
         {
           id: 4,
@@ -2233,9 +2236,9 @@ export const TestDnD = (props) => {
           xs: 4,
           select: {
             status: "fill",
-            data: ""
+            data: props.editdata != null ? props.editdata.idcardandpass : "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => handleData(e.target.value),
         },
         {
           id: 6,
@@ -2309,7 +2312,7 @@ export const TestDnD = (props) => {
           select: {
             status: "fix",
             data: "Email Address",
-          }
+          },
         },
         {
           id: 2,
@@ -2332,7 +2335,7 @@ export const TestDnD = (props) => {
           select: {
             status: "fix",
             data: "Mobile Number",
-          }
+          },
         },
         {
           id: 4,
@@ -2357,7 +2360,7 @@ export const TestDnD = (props) => {
             data: "+ Add",
           },
           // handle: (e) => handleAddComunication(e),
-        }
+        },
       ],
     },
     {
@@ -2373,7 +2376,7 @@ export const TestDnD = (props) => {
           xs: 4,
           select: {
             status: "fix",
-            data: "Home Address"
+            data: "Home Address",
           },
         },
         {
@@ -2460,7 +2463,7 @@ export const TestDnD = (props) => {
           xs: 4,
           select: {
             status: "fix",
-            data: "Resident Address"
+            data: "Resident Address",
           },
           handle: (e) => handleData(e),
         },
@@ -2558,9 +2561,9 @@ export const TestDnD = (props) => {
             data: "+ Add",
           },
           // handle: (e) => handleAddComunication(e),
-        }
+        },
       ],
-    }
+    },
     // ,
     // {
     //   id: "4",
@@ -2669,10 +2672,9 @@ export const TestDnD = (props) => {
     //       },
     //       handle: (e) => handleData(e),
     //     },
-      // ],
+    // ],
     // },
-  ]
-  );
+  ]);
   const [list, setList] = React.useState(demoData);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -2697,9 +2699,16 @@ export const TestDnD = (props) => {
     }),
   });
 
+  const [firstname, setFirstname] = React.useState("");
+  const [lastname, setLastname] = React.useState("");
+  const [title, setTitle] = React.useState("");
+  const [sex, setSex] = React.useState("");
+
   const handleData = (e) => {
-    console.log("Value from handleData : ", e.target.value);
+    // console.log("Value from handleData : ", e.target.value);
+    console.log("handleData : ", title, firstname, lastname, sex);
   };
+
   const handleExpend = (id, expend) => {
     let index = demoData.findIndex((x) => x.id === id);
     console.log(Object.assign({}, demoData[index], { expend: !expend }));
@@ -2716,16 +2725,17 @@ export const TestDnD = (props) => {
   };
 
   const handleAddComunication = async (id) => {
-
-    let index = demoData.findIndex(x=> x.id === id);
+    let index = demoData.findIndex((x) => x.id === id);
     if (index === -1) return;
-    else{
-     let comunication = demoData[index];
-     delete comunication.content[comunication.content.length-1];
-     let newid = await comunication.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
-     comunication.content.push(
-     {
-        id: newid+1,
+    else {
+      let comunication = demoData[index];
+      delete comunication.content[comunication.content.length - 1];
+      let newid = await comunication.content.reduce(
+        (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
+        0
+      );
+      comunication.content.push({
+        id: newid + 1,
         label: "Choose a communication",
         xl: 6,
         md: 6,
@@ -2743,10 +2753,9 @@ export const TestDnD = (props) => {
           )),
         },
         handle: (e) => handleData(e),
-      })
-      comunication.content.push(
-      {
-        id: newid+2,
+      });
+      comunication.content.push({
+        id: newid + 2,
         label: "communication",
         xl: 6,
         md: 6,
@@ -2756,38 +2765,38 @@ export const TestDnD = (props) => {
           data: "",
         },
         handle: (e) => handleData(e),
-      })
-      comunication.content.push(
-        {
-          id: 99,
-          label: "AddComunication",
-          xl: 2,
-          md: 2,
-          xs: 2,
-          select: {
-            status: "AddComunication",
-            data: "+ Add",
-          }
-        })
+      });
+      comunication.content.push({
+        id: 99,
+        label: "AddComunication",
+        xl: 2,
+        md: 2,
+        xs: 2,
+        select: {
+          status: "AddComunication",
+          data: "+ Add",
+        },
+      });
       setDemoData([
-        ...demoData.slice(0,index),
+        ...demoData.slice(0, index),
         comunication,
-        ...demoData.slice(index+1)
+        ...demoData.slice(index + 1),
       ]);
     }
   };
 
   const handleAddRelation = async (id) => {
-
-    let index = demoData.findIndex(x=> x.id === id);
+    let index = demoData.findIndex((x) => x.id === id);
     if (index === -1) return;
-    else{
-     let relation = demoData[index];
-     delete relation.content[relation.content.length-1];
-     let newid = await relation.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
-      relation.content.push(
-      {
-        id: newid+1,
+    else {
+      let relation = demoData[index];
+      delete relation.content[relation.content.length - 1];
+      let newid = await relation.content.reduce(
+        (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
+        0
+      );
+      relation.content.push({
+        id: newid + 1,
         label: "Name",
         xl: 4,
         md: 4,
@@ -2797,57 +2806,54 @@ export const TestDnD = (props) => {
           data: "",
         },
         handle: (e) => handleData(e),
-      })
-      relation.content.push(
-        {
-           id: newid+2,
-           label: "Name Type",
-           xl: 2,
-           md: 2,
-           xs: 6,
-           select: {
-             status: "option",
-             data: optionrelation.map((option) => (
-               <option
-                 style={headerTableStyle}
-                 key={option.value}
-                 value={option.value}
-               >
-                 {option.label}
-               </option>
-             )),
-           },
-           handle: (e) => handleData(e),
-         })
-      relation.content.push(
-        {
-          id: newid+3,
-          label: "Notes",
-          xl: 6,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        })
-      relation.content.push(
-        {
-          id: 99,
-          label: "AddRelation",
-          xl: 2,
-          md: 2,
-          xs: 2,
-          select: {
-            status: "AddRelation",
-            data: "+ Add",
-          }
-        })
+      });
+      relation.content.push({
+        id: newid + 2,
+        label: "Name Type",
+        xl: 2,
+        md: 2,
+        xs: 6,
+        select: {
+          status: "option",
+          data: optionrelation.map((option) => (
+            <option
+              style={headerTableStyle}
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          )),
+        },
+        handle: (e) => handleData(e),
+      });
+      relation.content.push({
+        id: newid + 3,
+        label: "Notes",
+        xl: 6,
+        md: 6,
+        xs: 12,
+        select: {
+          status: "fill",
+          data: "",
+        },
+        handle: (e) => handleData(e),
+      });
+      relation.content.push({
+        id: 99,
+        label: "AddRelation",
+        xl: 2,
+        md: 2,
+        xs: 2,
+        select: {
+          status: "AddRelation",
+          data: "+ Add",
+        },
+      });
       setDemoData([
-        ...demoData.slice(0,index),
+        ...demoData.slice(0, index),
         relation,
-        ...demoData.slice(index+1)
+        ...demoData.slice(index + 1),
       ]);
     }
   };
@@ -2865,11 +2871,18 @@ export const TestDnD = (props) => {
             }}
           >
             <Container
-                maxWidth="xl"
-                disableGutters
-                style={{ marginTop: 10, backgroundColor: themeState.paper }}
-                ref={provided.innerRef}
+              maxWidth="xl"
+              disableGutters
+              style={{ marginTop: 10, backgroundColor: themeState.paper }}
+              ref={provided.innerRef}
+            >
+              <Button
+                variant="contained"
+                color="default"
+                onClick={() => handleData()}
               >
+                TestData
+              </Button>
               {list.map((item, index) => (
                 <Draggable draggableId={item.id} key={item.id} index={index}>
                   {(provided, snapshot) => (
@@ -2893,19 +2906,20 @@ export const TestDnD = (props) => {
                           minWidth: "100%",
                         }}
                       >
-                        <Accordion 
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={getItemStyle(
-                          snapshot.isDragging,
-                          provided.draggableProps.style
-                        )}
-                        className={classes.defaultTheme}
-                        expanded={item.expend}>
-                          <AccordionSummary 
-                          style={{ color: mainColor, fontSize: 18 }}
-                          onClick={()=>handleExpend(item.id,item.expend)}
+                        <Accordion
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style
+                          )}
+                          className={classes.defaultTheme}
+                          expanded={item.expend}
+                        >
+                          <AccordionSummary
+                            style={{ color: mainColor, fontSize: 18 }}
+                            onClick={() => handleExpend(item.id, item.expend)}
                           >
                             <div style={{ color: "blue" }}>
                               {item.title}&nbsp;
@@ -2927,36 +2941,48 @@ export const TestDnD = (props) => {
                                   md={detail.md}
                                   xs={detail.xs}
                                 >
-                                  { detail.select.status === "AddRelation" ? (
+                                  {detail.select.status === "AddRelation" ? (
                                     <Button
-                                    className={classes.root}
+                                      className={classes.root}
                                       variant="outlined"
                                       fullWidth
-                                      style={{backgroundColor:"blue",color:"white"}}
+                                      style={{
+                                        backgroundColor: "blue",
+                                        color: "white",
+                                      }}
                                       value={detail.select.data}
                                       onClick={() => handleAddRelation(item.id)}
-                                      >+ Add</Button>
-                                  ) :detail.select.status === "AddComunication" ? (
+                                    >
+                                      + Add
+                                    </Button>
+                                  ) : detail.select.status ===
+                                    "AddComunication" ? (
                                     <Button
-                                    className={classes.root}
+                                      className={classes.root}
                                       variant="outlined"
                                       fullWidth
-                                      style={{backgroundColor:"blue",color:"white"}}
+                                      style={{
+                                        backgroundColor: "blue",
+                                        color: "white",
+                                      }}
                                       value={detail.select.data}
-                                      onClick={() => handleAddComunication(item.id)}
-                                      >+ Add</Button>
-                                  ) :
-                                  detail.select.status === "fix" ? (
+                                      onClick={() =>
+                                        handleAddComunication(item.id)
+                                      }
+                                    >
+                                      + Add
+                                    </Button>
+                                  ) : detail.select.status === "fix" ? (
                                     <TextField
-                                    className={classes.root}
+                                      className={classes.root}
                                       variant="outlined"
                                       fullWidth
-                                      style={{backgroundColor:"#EEEEEE"}}
+                                      style={{ backgroundColor: "#EEEEEE" }}
                                       // disabled={true}
-                                      value={detail.select.data}
+                                      defaultValue={detail.select.data}
                                       onFocus={false}
-                                      />
-                                  ) :detail.select.status === "fillnolabel" ? (
+                                    />
+                                  ) : detail.select.status === "fillnolabel" ? (
                                     <TextField
                                       className={classes.root}
                                       // label={detail.label}
@@ -2965,12 +2991,13 @@ export const TestDnD = (props) => {
                                         style: headerTableStyle,
                                       }}
                                       InputLabelProps={{
-                                        style: {color:"#AAAAAA"}
+                                        style: { color: "#AAAAAA" },
                                       }}
                                       fullWidth
+                                      defaultValue={detail.select.data}
                                       onChange={detail.handle}
                                     />
-                                  ) :detail.select.status === "fill" ? (
+                                  ) : detail.select.status === "fill" ? (
                                     <TextField
                                       className={classes.root}
                                       label={detail.label}
@@ -2979,9 +3006,10 @@ export const TestDnD = (props) => {
                                         style: headerTableStyle,
                                       }}
                                       InputLabelProps={{
-                                        style: {color:"#AAAAAA"}
+                                        style: { color: "#AAAAAA" },
                                       }}
                                       fullWidth
+                                      defaultValue={detail.select.data}
                                       onChange={detail.handle}
                                     />
                                   ) : detail.select.status === "option" ? (
@@ -2991,13 +3019,14 @@ export const TestDnD = (props) => {
                                       variant="outlined"
                                       fullWidth
                                       select
-                                      defaultValue={" "}
+                                      defaultValue={detail.select.defaultvalue}
                                       SelectProps={{
                                         native: true,
                                       }}
                                       InputProps={{
                                         style: headerTableStyle,
                                       }}
+                                      // value={detail.select.defaultvalue}
                                       onChange={detail.handle}
                                     >
                                       {detail.select.data}
@@ -3016,6 +3045,7 @@ export const TestDnD = (props) => {
                                         // format="dd/MM/yyyy"
                                         // value={selectedDateStartEdit}
                                         // onChange={handleDateStartEdit}
+
                                         onChange={detail.handle}
                                         fullWidth
                                       />

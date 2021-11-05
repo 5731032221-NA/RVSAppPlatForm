@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useContext } from "react";
 import { connect } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
 import Calendar from "../components/Calendar";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -15,6 +16,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import { TextField } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
+import { blue } from "@material-ui/core/colors";
+
 import { ReactReduxContext, useSelector } from "react-redux";
 import {
   getreservationroom,
@@ -38,6 +41,55 @@ import {
 //   { id: 2, title: "ROOM8050", start: "2021-09-20", end: "2021-09-25" },
 // ];
 
+const useStyles = makeStyles((theme) => ({
+  seeMore: {
+    marginTop: theme.spacing(3),
+  },
+  selectPage: {
+    minWidth: 90,
+    textAlign: "center",
+    flexGrow: 1,
+  },
+  searchLayout: {
+    flexGrow: 1,
+
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  root: (themeState) => ({
+    "& label.MuiInputLabel-root": {
+      color: themeState.color,
+    },
+    "& label.Mui-focused": {
+      color: blue[themeState.colorlevel],
+    },
+    "& .MuiInput-underline:after": {
+      borderColor: themeState.color,
+      color: themeState.color,
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: themeState.color,
+        color: themeState.color,
+      },
+      "&:hover fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: blue[themeState.colorlevel],
+        color: themeState.color,
+      },
+    },
+    "&.MuiPaper-root": {
+      backgroundColor: themeState.paper,
+    },
+    "&.MuiMenu-paper": {
+      backgroundColor: themeState.paper,
+    },
+  }),
+}));
+
 export const ReservationPage = (props) => {
   const [dialogReservation, setDialogReservation] = React.useState(false);
   const [dataEvent, setDataEvent] = React.useState([]);
@@ -56,6 +108,9 @@ export const ReservationPage = (props) => {
   const [email, setEmail] = React.useState("");
 
   const [dataDate, setDataDate] = React.useState([]);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [errorParameter, setErrorParameter] = useState(null);
+
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -63,11 +118,6 @@ export const ReservationPage = (props) => {
     colorlevel: "900",
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
-  const [errorMessage, setErrorMessage] = useState(false);
-  const [errorParameter, setErrorParameter] = useState(null);
-
-
- 
 
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
@@ -89,14 +139,31 @@ export const ReservationPage = (props) => {
     }
   }, [themeBackground]);
 
-  const reservationRoom = async() => {
+  const [mainColor, setMainColor] = React.useState("#2D62ED");
+  const maincolor = useSelector((state) => state.reducer.color);
+
+  React.useEffect(() => {
+    if (themeBackground === "#FFFFFF") {
+      setMainColor(maincolor);
+    } else {
+      setMainColor("#2D62ED");
+    }
+  }, [maincolor]);
+
+  const classes = useStyles(themeState);
+  const headerTableStyle = {
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  };
+
+  const reservationRoom = async () => {
     const data = await getreservationroom(sessionStorage.getItem("auth"));
-    setDataEvent(data.content[0])
-  }
+    setDataEvent(data.content[0]);
+  };
 
   React.useEffect(async () => {
     reservationRoom();
-   
+
     // let datedata = [];
     // data.content[data.content.length - 1].forEach((element) =>
     //   datedata.push({
@@ -126,8 +193,7 @@ export const ReservationPage = (props) => {
     const re = /^[0-9\b]+$/; //rules
     if (event.target.value === "" || re.test(event.target.value)) {
       setRoomNum(event.target.value);
-    }  
-   
+    }
   };
 
   const handleDialogReservationClose = () => {
@@ -153,9 +219,6 @@ export const ReservationPage = (props) => {
 
   const handleDialogReservationSave = async (roomno, startdate, enddate) => {
     try {
-
-      
-   
       setErrorMessage(false);
       if (firstname == null || firstname == "") {
         setErrorMessage(true);
@@ -169,59 +232,56 @@ export const ReservationPage = (props) => {
       } else if (email == null || email == "") {
         setErrorMessage(true);
         setErrorParameter("email is required");
-      }else if (roomno == null || roomno == "") {
+      } else if (roomno == null || roomno == "") {
         setErrorMessage(true);
         setErrorParameter("Room Number is required");
       } else {
-    const postdate = await postreservationroom(sessionStorage.getItem("auth"), {
-      roomno: roomno,
-      startdate: startdate,
-      enddate: enddate,
-      description: "ROOM" + roomno,
-      firstname: firstname,
-      lastname: lastname,
-      phone: phone,
-      email: email
-    });
+        const postdate = await postreservationroom(
+          sessionStorage.getItem("auth"),
+          {
+            roomno: roomno,
+            startdate: startdate,
+            enddate: enddate,
+            description: "ROOM" + roomno,
+            firstname: firstname,
+            lastname: lastname,
+            phone: phone,
+            email: email,
+          }
+        );
 
+        if (postdate.status == "1000") {
+          setErrorMessage(true);
+          setErrorParameter(postdate.msg);
+        } else if (postdate.status == "2000") {
+          setRoomNum("");
+          setFirstname("");
+          setLastname("");
+          setPhone("");
+          setEmail("");
+          reservationRoom();
+          setDialogReservation(false);
+        }
+      }
 
-    if (postdate.status == "1000") {
-      setErrorMessage(true);
-      setErrorParameter(postdate.msg);
-    } else if (postdate.status == "2000") {
-      setRoomNum("");
-      setFirstname("");
-      setLastname("");
-      setPhone("");
-      setEmail("");
-      reservationRoom();
+      const data = await getreservationroom(sessionStorage.getItem("auth"));
+      // console.log("data", data);
+      let datedata = [];
+      data.content[data.content.length - 1].forEach((element) =>
+        datedata.push({
+          id: element.roomno,
+          title: element.description,
+          start: element.startdate,
+          end: element.enddate,
+        })
+      );
+      setDataDate(datedata);
+
+      // console.log("postdate", postdate);
       setDialogReservation(false);
-    }
-  }
-
- 
-
-      // const data = await getreservationroom(sessionStorage.getItem("auth"));
-    // // console.log("data", data);
-    // let datedata = [];
-    // data.content[data.content.length - 1].forEach((element) =>
-    //   datedata.push({
-    //     id: element.roomno,
-    //     title: element.description,
-    //     start: element.startdate,
-    //     end: element.enddate,
-    //   })
-    // );
-    // setDataDate(datedata);
-
-    // // console.log("postdate", postdate);
-    // setDialogReservation(false);
-      
     } catch (error) {
-       console.log(error);
+      console.log(error);
     }
-
-  
   };
 
   return (
@@ -333,17 +393,24 @@ export const ReservationPage = (props) => {
 
       {/* ----------------------NEW RESERVATION------------------ */}
       <Dialog
+        className={classes.root}
         fullWidth="true"
         maxWidth="sm"
         open={dialogReservation}
         onClose={handleDialogReservationClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title" style={{ color: "blue" }}>
+        <DialogTitle
+          id="form-dialog-title"
+          style={{
+            backgroundColor: themeState.paper,
+            color: mainColor,
+          }}
+        >
           NEW RESERVATION
         </DialogTitle>
 
-        <DialogContent>
+        <DialogContent style={headerTableStyle}>
           <Container maxWidth="xl" disableGutters>
             <Grid
               container
@@ -364,8 +431,10 @@ export const ReservationPage = (props) => {
                   // autoFocus
                   label="First Name"
                   variant="outlined"
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                   fullWidth
-              
                   onChange={(e) => setFirstname(e.target.value)}
                 />
               </Grid>
@@ -374,6 +443,9 @@ export const ReservationPage = (props) => {
                   // autoFocus
                   label="Last Name"
                   variant="outlined"
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                   fullWidth
                   onChange={(e) => setLastname(e.target.value)}
                 />
@@ -383,6 +455,9 @@ export const ReservationPage = (props) => {
                   // autoFocus
                   label="Phone Number"
                   variant="outlined"
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                   fullWidth
                   onChange={(e) => setPhone(e.target.value)}
                 />
@@ -393,6 +468,9 @@ export const ReservationPage = (props) => {
                   label="Email"
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
@@ -412,6 +490,9 @@ export const ReservationPage = (props) => {
                     label="Arrival - Date/Time"
                     inputVariant="outlined"
                     // format="dd/MM/yyyy"
+                    InputProps={{
+                      style: headerTableStyle,
+                    }}
                     defaultValue={selectedDateStart}
                     onChange={handleDateStart}
                     fullWidth
@@ -426,6 +507,9 @@ export const ReservationPage = (props) => {
                     label="Departure - Date/Time"
                     inputVariant="outlined"
                     // format="dd/MM/yyyy"
+                    InputProps={{
+                      style: headerTableStyle,
+                    }}
                     defaultValue={selectedDateEnd}
                     onChange={handleDateEnd}
                     fullWidth
@@ -442,13 +526,16 @@ export const ReservationPage = (props) => {
               <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                 <TextField
                   // autoFocus
-               
+
                   id="outlined-basic"
                   label="Room Number"
                   variant="outlined"
                   // value={roomNumber}
                   type="number"
                   defaultValue={""}
+                  InputProps={{
+                    style: headerTableStyle,
+                  }}
                   onChange={(e) => handleRoomNum(e)}
                   fullWidth
                 />
@@ -461,26 +548,30 @@ export const ReservationPage = (props) => {
                   </Grid>
                 )}
               /> */}
-
-                 
             </Grid>
             {errorMessage ? (
-                  <div
-                    style={{
-                      background: "#ff0033",
-                      textAlign: "center",
-                      color: "white",
-                      height: "30px",
-                      marginTop:5,
-                      paddingTop: 5,
-                    }}
-                  >
-                    {errorParameter} 
-                  </div>
-                ) : null}
+              <div
+                style={{
+                  background: "#ff0033",
+                  textAlign: "center",
+                  color: "white",
+                  height: "30px",
+                  marginTop: 5,
+                  paddingTop: 5,
+                }}
+              >
+                {errorParameter}
+              </div>
+            ) : null}
           </Container>
         </DialogContent>
-        <DialogActions style={{ padding: 20 }}>
+        <DialogActions
+          style={{
+            backgroundColor: themeState.paper,
+            color: themeState.color,
+            padding: 20,
+          }}
+        >
           <Button
             onClick={handleDialogReservationClose}
             variant="text"

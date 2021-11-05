@@ -125,8 +125,8 @@ const rows = [
   createData(
     "Sommul",
     "Liu",
-    "Mr.",
-    "Male",
+    "Ms.",
+    "Female",
     "C00102188",
     "China",
     "22/11/2021",
@@ -213,9 +213,11 @@ export const ProfileTable = (props) => {
     setStatusprofile();
   };
   const handleNewData = () => {
+    setEditData(null);
     setStatusprofile("add");
   };
   const handleAddData = (rows) => {
+    setEditData(null);
     setStatusprofile("moredata");
     setIndividualData(rows);
   };
@@ -255,7 +257,7 @@ export const ProfileTable = (props) => {
     >
       <Grid container style={{ paddingLeft: 30, paddingRight: 30 }}>
         <Grid item xs={6} sm={10} md={10} style={{ flexGrow: 1 }}>
-        <Grid item style={{ flexGrow: 1 }}>
+          <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
                 <Typography
