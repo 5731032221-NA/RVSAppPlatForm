@@ -373,6 +373,7 @@ export const ProfileTable = (props) => {
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
+              
               style={{ backgroundColor: mainColor, color: "white" }}
               startIcon={<AddRoundedIcon />}
               onClick={() => handleNewData()}
@@ -394,7 +395,7 @@ export const ProfileTable = (props) => {
               justifyContent="center"
               style={{ minHeight: "80vh" }}
             >
-              <Grid item xs={3}>
+              <Grid item xs={6}>
                 <Typography
                   variant="h1"
                   align="center"
@@ -537,7 +538,7 @@ export const ProfileTable = (props) => {
                     backgroundColor: themeState.paper,
                     color: themeState.color,
                     borderBottomColor: themeState.color,
-                    width: 600,
+                    width: 230,
                   },
                 }}
                 actions={[
