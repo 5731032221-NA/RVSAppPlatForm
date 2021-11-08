@@ -34,6 +34,14 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+import {
+  getIndividualProfile,
+  getIndividualProfileById,
+  postIndividualProfile,
+  updateIndividualProfile,
+  deleteIndividualProfileById,
+} from "../../services/individualprofile.service";
+
 const useStyles = makeStyles((theme) => ({
   seeMore: {
     marginTop: theme.spacing(3),
@@ -244,6 +252,38 @@ export const ProfileTable = (props) => {
   const handleDialogDeleteClose = () => {
     setDialogDelete(false);
   };
+
+  React.useEffect(async () => {
+    const data = await getIndividualProfile(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let _individualData = [];
+    let i = 0;
+    if (data.content.length != 0) {
+      data.content[data.content.length - 1].forEach((element) =>
+        _individualData.push(
+          createData(
+            element.firstname,
+            element.lastname,
+            element.nameprefix,
+            element.gender,
+            element.idnumber,
+            element.nationality,
+            // element.nextstay,
+            "22/11/2021",
+            // element.laststay,
+            "10/12/2020",
+            // element.score,
+            "5",
+            // element.status
+            "Check-In"
+          )
+        )
+      );
+    }
+    console.log("individualData", _individualData);
+    setIndividualData(_individualData);
+    // updatePageData(roomdata, page, rowsPerPage);
+  }, []);
 
   return (
     <Container
