@@ -245,7 +245,7 @@ export const ProfileTableTravelAgent = (props) => {
       }}
     >
       <Grid container style={{ paddingLeft: 30, paddingRight: 30 }}>
-      <Grid item style={{ flexGrow: 1 }}>
+      <Grid item xs={6} sm={10} md={10} lg={10} style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
                 <Typography
@@ -341,7 +341,7 @@ export const ProfileTableTravelAgent = (props) => {
               justifyContent="center"
               style={{ minHeight: "80vh" }}
             >
-              <Grid item xs={3}>
+              <Grid item xs={6}>
                 <Typography
                   variant="h1"
                   align="center"

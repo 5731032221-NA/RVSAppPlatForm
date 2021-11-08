@@ -1372,7 +1372,7 @@ export const ProfileCompany = (props) => {
           label: "Phone Number",
           xl: 2,
           md: 2,
-          xs: 2,
+          xs: 6,
           select: {
             status: "AddComunication",
             data: "+ Add",
@@ -1390,7 +1390,7 @@ export const ProfileCompany = (props) => {
           label: "Relation",
           xl: 2,
           md: 2,
-          xs: 2,
+          xs: 6,
           select: {
             status: "AddRelation",
             data: "+ Add",
@@ -1809,7 +1809,7 @@ export const ProfileCompany = (props) => {
           label: "AddComunication",
           xl: 2,
           md: 2,
-          xs: 2,
+          xs: 6,
           select: {
             status: "AddComunication",
             data: "+ Add",
@@ -1885,7 +1885,7 @@ export const ProfileCompany = (props) => {
           label: "AddRelation",
           xl: 2,
           md: 2,
-          xs: 2,
+          xs: 6,
           select: {
             status: "AddRelation",
             data: "+ Add",

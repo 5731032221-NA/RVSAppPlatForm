@@ -2222,7 +2222,7 @@ export const TestDnD = (props) => {
             label: "Title",
             xl: 1,
             md: 1,
-            xs: 2,
+            xs: 4,
             select: {
               status: "option",
               data: optionTitle.map((option) => (
@@ -2230,6 +2230,7 @@ export const TestDnD = (props) => {
                   style={headerTableStyle}
                   key={option.value}
                   value={option.value}
+                  noWrap
                 >
                   {option.label}
                 </option>
@@ -2243,7 +2244,7 @@ export const TestDnD = (props) => {
             label: "First Name",
             xl: 5,
             md: 5,
-            xs: 10,
+            xs: 8,
             select: {
               status: "fill",
               // data: props.editdata.firstname,
@@ -2256,7 +2257,7 @@ export const TestDnD = (props) => {
             label: "Last Name",
             xl: 5,
             md: 5,
-            xs: 10,
+            xs: 8,
             select: {
               status: "fill",
               data: props.editdata != null ? props.editdata.lastname : "",
@@ -2269,7 +2270,7 @@ export const TestDnD = (props) => {
             label: "Gender",
             xl: 1,
             md: 1,
-            xs: 2,
+            xs: 4,
             select: {
               status: "option",
               data: optiongender.map((option) => (
@@ -2291,7 +2292,7 @@ export const TestDnD = (props) => {
             label: "Choose a Document Type*",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 12,
             select: {
               status: "option",
               data: optionDocumentType.map((option) => (
@@ -2299,6 +2300,7 @@ export const TestDnD = (props) => {
                   style={headerTableStyle}
                   key={option.value}
                   value={option.value}
+                  noWrap
                 >
                   {option.label}
                 </option>
@@ -2311,7 +2313,7 @@ export const TestDnD = (props) => {
             label: "ID Number",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 12,
             select: {
               status: "fill",
               data: props.editdata != null ? props.editdata.idcardandpass : "",
@@ -2323,7 +2325,7 @@ export const TestDnD = (props) => {
             label: "Nationality*",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 12,
             select: {
               status: "option",
               data: optionnationality.map((option) => (
@@ -2343,7 +2345,7 @@ export const TestDnD = (props) => {
             label: "Issue Date",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 12,
             select: {
               status: "datetime",
               data: "",
@@ -2355,7 +2357,7 @@ export const TestDnD = (props) => {
             label: "Expiry Date",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 12,
             select: {
               status: "datetime",
               data: "",
@@ -2367,7 +2369,7 @@ export const TestDnD = (props) => {
             label: "Date of Birth",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 12,
             select: {
               status: "datetime",
               data: "",
@@ -2432,7 +2434,7 @@ export const TestDnD = (props) => {
             label: "Phone Number",
             xl: 2,
             md: 2,
-            xs: 2,
+            xs: 6,
             select: {
               status: "AddComunication",
               data: "+ Add",
@@ -2451,7 +2453,7 @@ export const TestDnD = (props) => {
             label: "Home Address",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fix",
               data: "Home Address",
@@ -2462,7 +2464,7 @@ export const TestDnD = (props) => {
             label: "Address",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fill",
               data: "",
@@ -2474,7 +2476,7 @@ export const TestDnD = (props) => {
             label: "Choose a country",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "option",
               data: optioncountry.map((option) => (
@@ -2494,7 +2496,7 @@ export const TestDnD = (props) => {
             label: "City",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fill",
               data: "",
@@ -2515,7 +2517,7 @@ export const TestDnD = (props) => {
             label: "State",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fill",
               data: "",
@@ -2527,7 +2529,7 @@ export const TestDnD = (props) => {
             label: "Postal",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fill",
               data: "",
@@ -2539,7 +2541,7 @@ export const TestDnD = (props) => {
             label: "Resident Address",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fix",
               data: "Resident Address",
@@ -2551,7 +2553,7 @@ export const TestDnD = (props) => {
             label: "Address",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fill",
               data: "",
@@ -2563,7 +2565,7 @@ export const TestDnD = (props) => {
             label: "Choose a country",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "option",
               data: optioncountry.map((option) => (
@@ -2583,7 +2585,7 @@ export const TestDnD = (props) => {
             label: "City",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "option",
               data: optionCity.map((option) => (
@@ -2603,7 +2605,7 @@ export const TestDnD = (props) => {
             label: "State",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fill",
               data: "",
@@ -2615,7 +2617,7 @@ export const TestDnD = (props) => {
             label: "Postal",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fill",
               data: "",
@@ -2634,7 +2636,7 @@ export const TestDnD = (props) => {
             label: "Relation",
             xl: 2,
             md: 2,
-            xs: 2,
+            xs: 6,
             select: {
               status: "AddRelation",
               data: "+ Add",
@@ -2863,6 +2865,7 @@ export const TestDnD = (props) => {
                           )}
                         </AccordionSummary>
                         <AccordionDetails>
+                         
                           <Grid container spacing={2}>
                             {item.content.map((detail, index) => (
                               <Grid
@@ -2878,6 +2881,7 @@ export const TestDnD = (props) => {
                                     className={classes.root}
                                     variant="outlined"
                                     fullWidth
+                                    noWrap
                                     style={{
                                       backgroundColor: "blue",
                                       color: "white",
@@ -2925,6 +2929,7 @@ export const TestDnD = (props) => {
                                     InputProps={{
                                       style: headerTableStyle,
                                     }}
+                                    noWrap
                                     InputLabelProps={{
                                       style: { color: "#AAAAAA" },
                                     }}
@@ -2940,6 +2945,7 @@ export const TestDnD = (props) => {
                                     InputProps={{
                                       style: headerTableStyle,
                                     }}
+                                    noWrap
                                     InputLabelProps={{
                                       style: { color: "#AAAAAA" },
                                     }}
@@ -2949,10 +2955,12 @@ export const TestDnD = (props) => {
                                   />
                                 ) : detail.select.status === "option" ? (
                                   <TextField
+                                 
                                     className={classes.root}
                                     label={detail.label}
                                     variant="outlined"
                                     fullWidth
+                                    
                                     select
                                     defaultValue={detail.select.defaultvalue}
                                     SelectProps={{
@@ -2963,6 +2971,9 @@ export const TestDnD = (props) => {
                                     }}
                                     // value={detail.select.defaultvalue}
                                     onChange={detail.handle}
+                                    textOverflow="ellipsis"
+                                 
+                                   // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
                                   >
                                     {detail.select.data}
                                   </TextField>
