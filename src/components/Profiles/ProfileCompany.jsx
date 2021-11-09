@@ -17,6 +17,7 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
+import Switch from "@material-ui/core/Switch";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
@@ -1096,14 +1097,14 @@ const optioncreditrating = [
   {
     value: "2",
     label: "4",
-  },{
+  }, {
     value: "3",
     label: "3",
   },
   {
     value: "4",
     label: "2",
-  },{
+  }, {
     value: "5",
     label: "1",
   }
@@ -1121,19 +1122,23 @@ const optionrelation = [
   {
     value: "childcompany",
     label: "Child Company",
+  },
+  {
+    value: "ManagerProfile",
+    label: "Manager",
   }
 ];
 
 
 const optioncommunication = [
-  {
-    value: "Telephone",
-    label: "Telephone Number",
-  },
-  {
-    value: "Mobile",
-    label: "Mobile Number",
-  },
+  // {
+  //   value: "Telephone",
+  //   label: "Telephone Number",
+  // },
+  // {
+  //   value: "Mobile",
+  //   label: "Mobile Number",
+  // },
   {
     value: "Email",
     label: "Email Address",
@@ -1149,6 +1154,14 @@ const optioncommunication = [
   {
     value: "Facebook",
     label: "Facebook",
+  },
+  {
+    value: "TripAdvisor",
+    label: "Trip Advisor",
+  },
+  {
+    value: "BookingDotCom",
+    label: "Booking Website",
   }
 ];
 
@@ -1218,8 +1231,8 @@ export const ProfileCompany = (props) => {
         {
           id: 3,
           label: "Name 1",
-          xl: 4,
-          md: 4,
+          xl: 5,
+          md: 5,
           xs: 12,
           select: {
             status: "fill",
@@ -1229,8 +1242,8 @@ export const ProfileCompany = (props) => {
         {
           id: 4,
           label: "Name 2",
-          xl: 4,
-          md: 4,
+          xl: 5,
+          md: 5,
           xs: 12,
           select: {
             status: "fill",
@@ -1239,13 +1252,129 @@ export const ProfileCompany = (props) => {
           handle: (e) => handleData(e),
         },
         {
+          id: 7,
+          label: "CompanyTypeCode",
+          xl: 2,
+          md: 2,
+          xs: 12,
+          select: {
+            status: "option",
+            data: [{ label: "Government" }, { label: "Association" }].map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.label}
+                value={option.label}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
           id: 5,
-          label: "Name 3",
+          label: "Abbreviation",
           xl: 4,
           md: 4,
           xs: 12,
           select: {
             status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 6,
+          label: "Guarantee Method Code",
+          xl: 4,
+          md: 4,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 7,
+          label: "Property",
+          xl: 4,
+          md: 4,
+          xs: 12,
+          select: {
+            status: "option",
+            data: [{ label: "SPJ1" }, { label: "SPJ2" }].map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.label}
+                value={option.label}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 7,
+          label: "Currency",
+          xl: 3,
+          md: 3,
+          xs: 12,
+          select: {
+            status: "option",
+            data: [{ label: "THB" }, { label: "USD" }].map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.label}
+                value={option.label}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "Credit Rating",
+          xl: 3,
+          md: 3,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optioncreditrating.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.label}
+                value={option.label}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 9,
+          label: "IATA",
+          xl: 3,
+          md: 3,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 10,
+          label: "Status",
+          xl: 3,
+          md: 3,
+          xs: 12,
+          select: {
+            status: "status",
             data: "",
           },
           handle: (e) => handleData(e),
@@ -1259,45 +1388,9 @@ export const ProfileCompany = (props) => {
       content: [
         {
           id: 1,
-          label: "Address 1",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Address 2",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Address 3",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Address 4",
-          xl: 3,
-          md: 6,
+          label: "Street Address",
+          xl: 12,
+          md: 12,
           xs: 12,
           select: {
             status: "fill",
@@ -1364,6 +1457,104 @@ export const ProfileCompany = (props) => {
     },
     {
       id: "3",
+      title: "Billing Address",
+      expend: true,
+      content: [
+        {
+          id: 1,
+          label: "Street Address",
+          xl: 12,
+          md: 12,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "Choose a country",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optioncountry.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 6,
+          label: "City",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+        },
+        {
+          id: 7,
+          label: "State",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "Postal",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "TaxID",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "TaxID2",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "4",
       title: "Communication",
       expend: true,
       content: [
@@ -1381,7 +1572,7 @@ export const ProfileCompany = (props) => {
       ],
     },
     {
-      id: "4",
+      id: "5",
       title: "Relationship (Internal)",
       expend: true,
       content: [
@@ -1400,67 +1591,63 @@ export const ProfileCompany = (props) => {
       ],
     },
     {
-      id: "5",
+      id: "6",
       title: "A/R Number",
       expend: true,
       content: [
+        // {
+        //   id: 1,
+        //   label: "IATA",
+        //   xl: 3,
+        //   md: 3,
+        //   xs: 12,
+        //   select: {
+        //     status: "fill",
+        //     data: "",
+        //   },
+        //   handle: (e) => handleData(e),
+        // },
         {
-          id: 1,
-          label: "IATA",
+          id: 2,
+          label: "Credit Card Number",
           xl: 3,
-          md: 6,
+          md: 3,
           xs: 12,
           select: {
             status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Ref. Currency",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optioncurrency.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            data: ""
           },
           handle: (e) => handleData(e),
         },
         {
           id: 3,
-          label: "Credit Rating",
+          label: "Outstanding Amount",
           xl: 3,
-          md: 6,
+          md: 3,
           xs: 12,
           select: {
-            status: "option",
-            data: optioncreditrating.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            status: "fill",
+            data: ""
           },
           handle: (e) => handleData(e),
         },
         {
           id: 4,
-          label: "Active Reason",
+          label: "Floating Deposition Amount",
           xl: 3,
-          md: 6,
+          md: 3,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "AR Number",
+          xl: 3,
+          md: 3,
           xs: 12,
           select: {
             status: "fill",
@@ -1470,45 +1657,45 @@ export const ProfileCompany = (props) => {
         },
       ],
     },
-    {
-      id: "6",
-      title: "More Information",
-      expend: true,
-      content: [
-        {
-          id: 1,
-          label: "Tax ID",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Billing Instruction",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
+    // {
+    //   id: "6",
+    //   title: "More Information",
+    //   expend: true,
+    //   content: [
+    //     {
+    //       id: 1,
+    //       label: "Tax ID",
+    //       xl: 3,
+    //       md: 6,
+    //       xs: 12,
+    //       select: {
+    //         status: "fill",
+    //         data: "",
+    //       },
+    //       handle: (e) => handleData(e),
+    //     },
+    //     {
+    //       id: 2,
+    //       label: "Billing Instruction",
+    //       xl: 3,
+    //       md: 6,
+    //       xs: 12,
+    //       select: {
+    //         status: "option",
+    //         data: optiondata.map((option) => (
+    //           <option
+    //             style={headerTableStyle}
+    //             key={option.value}
+    //             value={option.value}
+    //           >
+    //             {option.label}
+    //           </option>
+    //         )),
+    //       },
+    //       handle: (e) => handleData(e),
+    //     },
+    //   ],
+    // },
     {
       id: "7",
       title: "Sales Information",
@@ -1516,37 +1703,28 @@ export const ProfileCompany = (props) => {
       content: [
         {
           id: 1,
-          label: "Priority",
-          xl: 3,
+          label: "Sales User Name",
+          xl: 6,
           md: 6,
           xs: 12,
           select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
+            status: "fill",
+            data: "",
+          }
         },
         {
           id: 2,
-          label: "Room Potential",
-          xl: 3,
+          label: "Industry",
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: [{ label: "Insurrance" }, { label: "Government" }, { label: "Educcation" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
@@ -1554,39 +1732,31 @@ export const ProfileCompany = (props) => {
           },
           handle: (e) => handleData(e),
         },
-        {
-          id: 3,
-          label: "Scope",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
+        // {
+        //   id: 3,
+        //   label: "IATA",
+        //   xl: 3,
+        //   md: 6,
+        //   xs: 12,
+        //   select: {
+        //     status: "fill",
+        //     data: ""
+        //   },
+        //   handle: (e) => handleData(e),
+        // },
         {
           id: 4,
-          label: "Scope City",
-          xl: 3,
+          label: "Market Segment",
+          xl: 4,
           md: 6,
           xs: 12,
           select: {
-            status: "option",
-            data: optiondata.map((option) => (
+            status:  "option",
+            data:[{ label: "Code1" }, { label: "Code2" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
@@ -1596,17 +1766,17 @@ export const ProfileCompany = (props) => {
         },
         {
           id: 5,
-          label: "Action Code",
+          label: "Source Of Business",
           xl: 3,
           md: 6,
           xs: 12,
           select: {
-            status: "option",
-            data: optiondata.map((option) => (
+            status:  "option",
+            data:[{ label: "Code1" }, { label: "Code2" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
@@ -1616,17 +1786,17 @@ export const ProfileCompany = (props) => {
         },
         {
           id: 6,
-          label: "Business Segment",
+          label: "Track Code",
           xl: 3,
           md: 6,
           xs: 12,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
@@ -1636,17 +1806,17 @@ export const ProfileCompany = (props) => {
         },
         {
           id: 7,
-          label: "Account Type",
+          label: "Reason For Stay",
           xl: 3,
           md: 6,
           xs: 12,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
@@ -1656,65 +1826,70 @@ export const ProfileCompany = (props) => {
         },
         {
           id: 8,
-          label: "Source",
+          label: "Geographic",
           xl: 3,
           md: 6,
           xs: 12,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: [{ label: "SEA" }, { label: "EUROPE" }, { label: "CHINA" }, { label: "AFRICA" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
             )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 9,
-          label: "Industry Code",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 10,
-          label: "Compentition Code",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
+          }
+        }
+        // ,
+        // {
+        //   id: "1",
+        //   title: "Commission",
+        //   expend: true,
+        //   content: [
+        //     {
+        //       id: 1,
+        //       label: "Commission Flag",
+        //       xl: 3,
+        //       md: 3,
+        //       xs: 12,
+        //       select: {
+        //         status: "option",
+        //         data: [{ label: "Pay" }, { label: "Not Pay" }].map((option) => (
+        //           <option
+        //             style={headerTableStyle}
+        //             key={option.label}
+        //             value={option.label}
+        //           >
+        //             {option.label}
+        //           </option>
+        //         )),
+        //       }
+        //     },
+        //     {
+        //       id: 2,
+        //       label: "Commission Type",
+        //       xl: 3,
+        //       md: 3,
+        //       xs: 12,
+        //       select: {
+        //         status: "option",
+        //         data: [{ label: "Percent" }, { label: "Amount" }].map((option) => (
+        //           <option
+        //             style={headerTableStyle}
+        //             key={option.label}
+        //             value={option.label}
+        //           >
+        //             {option.label}
+        //           </option>
+        //         )),
+        //       },
+        //     },
+        //   ]
+        // }
+      ]
     },
   ]);
   const [list, setList] = React.useState(demoData);
@@ -1760,49 +1935,49 @@ export const ProfileCompany = (props) => {
     }
   };
 
-  
+
   const handleAddComunication = async (id) => {
 
-    let index = demoData.findIndex(x=> x.id === id);
+    let index = demoData.findIndex(x => x.id === id);
     if (index === -1) return;
-    else{
-     let comunication = demoData[index];
-     delete comunication.content[comunication.content.length-1];
-     let newid = await comunication.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
-     comunication.content.push(
-     {
-        id: newid+1,
-        label: "Choose a communication",
-        xl: 3,
-        md: 3,
-        xs: 6,
-        select: {
-          status: "option",
-          data: optioncommunication.map((option) => (
-            <option
-              style={headerTableStyle}
-              key={option.value}
-              value={option.value}
-            >
-              {option.label}
-            </option>
-          )),
-        },
-        handle: (e) => handleData(e),
-      })
+    else {
+      let comunication = demoData[index];
+      delete comunication.content[comunication.content.length - 1];
+      let newid = await comunication.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
       comunication.content.push(
-      {
-        id: newid+2,
-        label: "communication",
-        xl: 9,
-        md: 9,
-        xs: 6,
-        select: {
-          status: "fillnolabel",
-          data: "",
-        },
-        handle: (e) => handleData(e),
-      })
+        {
+          id: newid + 1,
+          label: "Choose a communication",
+          xl: 3,
+          md: 3,
+          xs: 6,
+          select: {
+            status: "option",
+            data: optioncommunication.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        })
+      comunication.content.push(
+        {
+          id: newid + 2,
+          label: "communication",
+          xl: 9,
+          md: 9,
+          xs: 6,
+          select: {
+            status: "fillnolabel",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        })
       comunication.content.push(
         {
           id: 99,
@@ -1816,9 +1991,9 @@ export const ProfileCompany = (props) => {
           }
         })
       setDemoData([
-        ...demoData.slice(0,index),
+        ...demoData.slice(0, index),
         comunication,
-        ...demoData.slice(index+1)
+        ...demoData.slice(index + 1)
       ]);
     }
   };
@@ -1826,49 +2001,49 @@ export const ProfileCompany = (props) => {
 
   const handleAddRelation = async (id) => {
 
-    let index = demoData.findIndex(x=> x.id === id);
+    let index = demoData.findIndex(x => x.id === id);
     if (index === -1) return;
-    else{
-     let relation = demoData[index];
-     delete relation.content[relation.content.length-1];
-     let newid = await relation.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
-      relation.content.push(
-      {
-        id: newid+1,
-        label: "Name",
-        xl: 4,
-        md: 4,
-        xs: 6,
-        select: {
-          status: "fill",
-          data: "",
-        },
-        handle: (e) => handleData(e),
-      })
+    else {
+      let relation = demoData[index];
+      delete relation.content[relation.content.length - 1];
+      let newid = await relation.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
       relation.content.push(
         {
-           id: newid+2,
-           label: "Name Type",
-           xl: 2,
-           md: 2,
-           xs: 6,
-           select: {
-             status: "option",
-             data: optionrelation.map((option) => (
-               <option
-                 style={headerTableStyle}
-                 key={option.value}
-                 value={option.value}
-               >
-                 {option.label}
-               </option>
-             )),
-           },
-           handle: (e) => handleData(e),
-         })
+          id: newid + 1,
+          label: "Name",
+          xl: 4,
+          md: 4,
+          xs: 6,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        })
       relation.content.push(
         {
-          id: newid+3,
+          id: newid + 2,
+          label: "Name Type",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "option",
+            data: optionrelation.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        })
+      relation.content.push(
+        {
+          id: newid + 3,
           label: "Notes",
           xl: 6,
           md: 6,
@@ -1892,9 +2067,9 @@ export const ProfileCompany = (props) => {
           }
         })
       setDemoData([
-        ...demoData.slice(0,index),
+        ...demoData.slice(0, index),
         relation,
-        ...demoData.slice(index+1)
+        ...demoData.slice(index + 1)
       ]);
     }
   };
@@ -1929,7 +2104,7 @@ export const ProfileCompany = (props) => {
                     <FormControlLabel
                       value="start"
                       control={<Checkbox color="primary" />}
-                      label="Central Protected"
+                      label="Negotiated Rates Only"
                       labelPlacement="start"
                     />
                   </Grid>
@@ -1960,16 +2135,16 @@ export const ProfileCompany = (props) => {
                       >
                         <AccordionSummary
                           style={{ color: mainColor, fontSize: 18 }}
-                          onClick={()=>handleExpend(item.id,item.expend)}
+                          onClick={() => handleExpend(item.id, item.expend)}
                         >
-                         <div style={{ color: "blue" }}>
-                              {item.title}&nbsp;
-                            </div>{" "}
-                            {item.expend ? (
-                              <ArrowDropDownIcon style={{ color: "blue" }} />
-                            ) : (
-                              <ArrowDropUpIcon style={{ color: "blue" }} />
-                            )}
+                          <div style={{ color: "blue" }}>
+                            {item.title}&nbsp;
+                          </div>{" "}
+                          {item.expend ? (
+                            <ArrowDropDownIcon style={{ color: "blue" }} />
+                          ) : (
+                            <ArrowDropUpIcon style={{ color: "blue" }} />
+                          )}
                         </AccordionSummary>
                         <AccordionDetails>
                           <Grid container spacing={2}>
@@ -1982,16 +2157,26 @@ export const ProfileCompany = (props) => {
                                 md={detail.md}
                                 xs={detail.xs}
                               >
-                                 { detail.select.status === "AddComunication" ? (
+                                {
+                                  detail.select.status === "status" ? (
+                                    <div style={{ paddingTop: 10 }}>
+                                      <a>Status</a>
+                                      <Switch
+                                        defaultChecked={true}
+                                        color="primary"
+                                        onChange={(e) => { }}
+                                      />
+                                    </div>
+                                  ) : detail.select.status === "AddComunication" ? (
                                     <Button
-                                    className={classes.root}
+                                      className={classes.root}
                                       variant="outlined"
                                       fullWidth
-                                      style={{backgroundColor:"blue",color:"white"}}
+                                      style={{ backgroundColor: "blue", color: "white" }}
                                       value={detail.select.data}
                                       onClick={() => handleAddComunication(item.id)}
-                                      >+ Add</Button>
-                                  ) :detail.select.status === "fillnolabel" ? (
+                                    >+ Add</Button>
+                                  ) : detail.select.status === "fillnolabel" ? (
                                     <TextField
                                       className={classes.root}
                                       // label={detail.label}
@@ -2000,91 +2185,91 @@ export const ProfileCompany = (props) => {
                                         style: headerTableStyle,
                                       }}
                                       InputLabelProps={{
-                                        style: {color:"#AAAAAA"}
+                                        style: { color: "#AAAAAA" }
                                       }}
                                       fullWidth
                                       onChange={detail.handle}
                                     />
-                                  ): detail.select.status === "AddRelation" ? (
+                                  ) : detail.select.status === "AddRelation" ? (
                                     <Button
-                                    className={classes.root}
+                                      className={classes.root}
                                       variant="outlined"
                                       fullWidth
-                                      style={{backgroundColor:"blue",color:"white"}}
+                                      style={{ backgroundColor: "blue", color: "white" }}
                                       value={detail.select.data}
                                       onClick={() => handleAddRelation(item.id)}
-                                      >+ Add</Button>
-                                  ) :detail.select.status === "fix" ? (
+                                    >+ Add</Button>
+                                  ) : detail.select.status === "fix" ? (
                                     <TextField
-                                    className={classes.root}
+                                      className={classes.root}
                                       variant="outlined"
                                       fullWidth
-                                      style={{backgroundColor:"#EEEEEE"}}
+                                      style={{ backgroundColor: "#EEEEEE" }}
                                       // disabled={true}
                                       value={detail.select.data}
                                       onFocus={false}
-                                      />
-                                  ) :detail.select.status === "fill" ? (
-                                  <TextField
-                                    className={classes.root}
-                                    label={detail.label}
-                                    variant="outlined"
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    InputLabelProps={{
-                                      style: {color:"#AAAAAA"}
-                                    }}
-                                    fullWidth
-                                    onChange={detail.handle}
-                                  />
-                                ) : detail.select.status === "option" ? (
-                                  <TextField
-                                    className={classes.root}
-                                    label={detail.label}
-                                    variant="outlined"
-                                    fullWidth
-                                    select
-                                    defaultValue={" "}
-                                    SelectProps={{
-                                      native: true,
-                                    }}
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    onChange={detail.handle}
-                                  >
-                                    {detail.select.data}
-                                  </TextField>
-                                ) : detail.select.status === "datetime" ? (
-                                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardDatePicker
+                                    />
+                                  ) : detail.select.status === "fill" ? (
+                                    <TextField
                                       className={classes.root}
                                       label={detail.label}
-                                      inputVariant="outlined"
+                                      variant="outlined"
                                       InputProps={{
                                         style: headerTableStyle,
                                       }}
-                                      // format="dd/MM/yyyy"
-                                      // value={selectedDateStartEdit}
-                                      // onChange={handleDateStartEdit}
-                                      onChange={detail.handle}
+                                      InputLabelProps={{
+                                        style: { color: "#AAAAAA" }
+                                      }}
                                       fullWidth
+                                      onChange={detail.handle}
                                     />
-                                  </MuiPickersUtilsProvider>
-                                ) : (
-                                  <Typography
-                                    variant="subtitle1"
-                                    color="initial"
-                                    style={{
-                                      paddingBottom: 10,
-                                      paddingTop: 10,
-                                      color: "blue",
-                                    }}
-                                  >
-                                    {detail.label}
-                                  </Typography>
-                                )}
+                                  ) : detail.select.status === "option" ? (
+                                    <TextField
+                                      className={classes.root}
+                                      label={detail.label}
+                                      variant="outlined"
+                                      fullWidth
+                                      select
+                                      defaultValue={" "}
+                                      SelectProps={{
+                                        native: true,
+                                      }}
+                                      InputProps={{
+                                        style: headerTableStyle,
+                                      }}
+                                      onChange={detail.handle}
+                                    >
+                                      {detail.select.data}
+                                    </TextField>
+                                  ) : detail.select.status === "datetime" ? (
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                      <KeyboardDatePicker
+                                        className={classes.root}
+                                        label={detail.label}
+                                        inputVariant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        // format="dd/MM/yyyy"
+                                        // value={selectedDateStartEdit}
+                                        // onChange={handleDateStartEdit}
+                                        onChange={detail.handle}
+                                        fullWidth
+                                      />
+                                    </MuiPickersUtilsProvider>
+                                  ) : (
+                                    <Typography
+                                      variant="subtitle1"
+                                      color="initial"
+                                      style={{
+                                        paddingBottom: 10,
+                                        paddingTop: 10,
+                                        color: "blue",
+                                      }}
+                                    >
+                                      {detail.label}
+                                    </Typography>
+                                  )}
                               </Grid>
                             ))}
                           </Grid>
