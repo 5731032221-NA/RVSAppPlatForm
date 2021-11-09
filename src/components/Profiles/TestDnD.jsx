@@ -2143,8 +2143,8 @@ export const TestDnD = (props) => {
     color: themeState.color,
   };
 
-  const [demoData, setDemoData] = useState([]);
-  const [list, setList] = React.useState(demoData);
+  // const [demoData, setDemoData] = useState([]);
+  const [list, setList] = React.useState([]);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -2207,10 +2207,11 @@ export const TestDnD = (props) => {
     // let optionDocumentType = await getlist(configdata,"");
     let optiongender = await getlist(configdata,"PCINDGD");
     let relation = await getlist(configdata,"PCINDRL");
-    let communication = await getlist(configdata,"PCINDGD");
+    let communication = await getlist(configdata,"PCINDCM");
     // let optionDocumentType = await getlist(configdata,"");
-    setOptionrelation(relation)
-    setOptioncommunication(communication)
+    setOptionrelation(relation);
+    setOptioncommunication(communication);
+    console.log("optioncommunication",optioncommunication)
     setList([
       {
         id: "1",
@@ -2656,30 +2657,32 @@ export const TestDnD = (props) => {
   };
 
   const handleExpend = (id, expend) => {
-    let index = demoData.findIndex((x) => x.id === id);
-    console.log(Object.assign({}, demoData[index], { expend: !expend }));
+    let index = list.findIndex((x) => x.id === id);
+    console.log(Object.assign({}, list[index], { expend: !expend }));
     if (index === -1) return;
     else {
-      let new_data = demoData[index];
+      let new_data = list[index];
       new_data.expend = !expend;
-      setDemoData([
-        ...demoData.slice(0, index),
+      setList([
+        ...list.slice(0, index),
         new_data,
-        ...demoData.slice(index + 1),
+        ...list.slice(index + 1),
       ]);
     }
   };
 
   const handleAddComunication = async (id) => {
-    let index = demoData.findIndex((x) => x.id === id);
+    console.log("handleAddComunication",id);
+    let index = list.findIndex((x) => x.id === id);
     if (index === -1) return;
     else {
-      let comunication = demoData[index];
+      let comunication = list[index];
       delete comunication.content[comunication.content.length - 1];
       let newid = await comunication.content.reduce(
         (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
         0
       );
+      console.log("optioncommunication2",optioncommunication)
       comunication.content.push({
         id: newid + 1,
         label: "Choose a communication",
@@ -2723,19 +2726,19 @@ export const TestDnD = (props) => {
           data: "+ Add",
         },
       });
-      setDemoData([
-        ...demoData.slice(0, index),
+      setList([
+        ...list.slice(0, index),
         comunication,
-        ...demoData.slice(index + 1),
+        ...list.slice(index + 1),
       ]);
     }
   };
 
   const handleAddRelation = async (id) => {
-    let index = demoData.findIndex((x) => x.id === id);
+    let index = list.findIndex((x) => x.id === id);
     if (index === -1) return;
     else {
-      let relation = demoData[index];
+      let relation = list[index];
       delete relation.content[relation.content.length - 1];
       let newid = await relation.content.reduce(
         (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
@@ -2796,10 +2799,10 @@ export const TestDnD = (props) => {
           data: "+ Add",
         },
       });
-      setDemoData([
-        ...demoData.slice(0, index),
+      setList([
+        ...list.slice(0, index),
         relation,
-        ...demoData.slice(index + 1),
+        ...list.slice(index + 1),
       ]);
     }
   };
