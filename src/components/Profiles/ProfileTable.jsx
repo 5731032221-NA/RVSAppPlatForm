@@ -92,9 +92,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function createData(
+  guestnameinfoid,
   firstname,
   lastname,
-  title,
+  nameprefix,
   sex,
   idcardandpass,
   nationality,
@@ -104,9 +105,10 @@ function createData(
   status
 ) {
   return {
+    guestnameinfoid,
     firstname,
     lastname,
-    title,
+    nameprefix,
     sex,
     idcardandpass,
     nationality,
@@ -203,10 +205,12 @@ export const ProfileTable = (props) => {
   };
 
   // const [individualData, setIndividualData] = React.useState(rows);
+  const [action, setAction] = React.useState("");
   const [individualData, setIndividualData] = React.useState(null);
   const [statusprofile, setStatusprofile] = React.useState("none");
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [deleteData, setDeleteData] = React.useState({
+    guestnameinfoid: "guestnameinfoid",
     title: "title",
     firstname: "firstname",
     lastname: "lastname",
@@ -220,33 +224,102 @@ export const ProfileTable = (props) => {
   const handleStatusProfile = () => {
     setStatusprofile();
   };
-  const handleNewData = () => {
+  const handleNewData = async () => {
     setEditData(null);
     setStatusprofile("add");
+    setAction("none");
   };
-  const handleAddData = (rows) => {
+
+  const handleAddData = async () => {
+    setAction("add");
     setEditData(null);
     setStatusprofile("moredata");
-    setIndividualData(rows);
+  };
+
+  const handleSaveEditData = async () => {
+    setAction("edit");
+    setEditData(null);
+    setStatusprofile("moredata");
   };
   const handleEditData = async (rowData) => {
     console.log("rowData", rowData);
     setEditData(rowData);
-    handleDeleteData(rowData.title, rowData.firstname, rowData.lastname);
+    handleDeleteData(
+      rowData.guestnameinfoid,
+      rowData.nameprefix,
+      rowData.firstname,
+      rowData.lastname
+    );
     setStatusprofile("edit");
   };
-  const handleDeleteData = async (title, firstname, lastname) => {
-    console.log("data : ", title, firstname, lastname);
-    setDeleteData({ title: title, firstname: firstname, lastname: lastname });
+  const handleDeleteData = async (
+    guestnameinfoid,
+    nameprefix,
+    firstname,
+    lastname
+  ) => {
+    console.log("data : ", guestnameinfoid, nameprefix, firstname, lastname);
+    setDeleteData({
+      guestnameinfoid: guestnameinfoid,
+      title: nameprefix,
+      firstname: firstname,
+      lastname: lastname,
+    });
   };
 
-  const handleConfirmDeleteData = async (title, firstname, lastname) => {
+  const handleConfirmDeleteData = async () => {
+    console.log(deleteData.guestnameinfoid);
+    let id = deleteData.guestnameinfoid;
+    let datafordelete = await deleteIndividualProfileById(
+      sessionStorage.getItem("auth"),
+      id
+    );
+    console.log("deleteData return", datafordelete);
+    const data = await getIndividualProfile(sessionStorage.getItem("auth"));
+    console.log("data", data);
+    let _individualData = [];
+    let i = 0;
+    if (data.content.length != 0) {
+      data.content[data.content.length - 1].forEach((element) =>
+        _individualData.push(
+          createData(
+            element.guestnameinfoid,
+            element.firstname,
+            element.lastname,
+            element.nameprefix,
+            element.gender,
+            element.idnumber,
+            element.nationality,
+            // element.nextstay,
+            "22/11/2021",
+            // element.laststay,
+            "10/12/2020",
+            // element.score,
+            "5",
+            // element.status
+            "Check-In"
+          )
+        )
+      );
+    }
+    setIndividualData(_individualData);
     setStatusprofile("moredata");
     setDialogDelete(false);
   };
 
-  const handleDialogDeleteOpen = async (title, firstname, lastname) => {
-    setDeleteData({ title: title, firstname: firstname, lastname: lastname });
+  const handleDialogDeleteOpen = async (
+    guestnameinfoid,
+    firstname,
+    lastname,
+    nameprefix
+  ) => {
+    setDeleteData({
+      guestnameinfoid: guestnameinfoid,
+      title: nameprefix,
+      firstname: firstname,
+      lastname: lastname,
+    });
+    console.log(guestnameinfoid, firstname, lastname, nameprefix);
     setDialogDelete(true);
   };
   const handleDialogDeleteClose = () => {
@@ -262,6 +335,7 @@ export const ProfileTable = (props) => {
       data.content[data.content.length - 1].forEach((element) =>
         _individualData.push(
           createData(
+            element.guestnameinfoid,
             element.firstname,
             element.lastname,
             element.nameprefix,
@@ -282,7 +356,7 @@ export const ProfileTable = (props) => {
     }
     console.log("individualData", _individualData);
     setIndividualData(_individualData);
-    // updatePageData(roomdata, page, rowsPerPage);
+    setStatusprofile("moredata");
   }, []);
 
   return (
@@ -345,7 +419,7 @@ export const ProfileTable = (props) => {
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
               startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleAddData(rows)}
+              onClick={() => handleAddData()}
             >
               Save
             </Button>
@@ -356,7 +430,7 @@ export const ProfileTable = (props) => {
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
               startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleAddData(rows)}
+              onClick={() => handleSaveEditData()}
             >
               Save
             </Button>
@@ -373,7 +447,6 @@ export const ProfileTable = (props) => {
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
-              
               style={{ backgroundColor: mainColor, color: "white" }}
               startIcon={<AddRoundedIcon />}
               onClick={() => handleNewData()}
@@ -384,7 +457,7 @@ export const ProfileTable = (props) => {
         ) : null}
       </Grid>
       {statusprofile === "edit" || statusprofile === "add" ? (
-        <TestDnD editdata={editData} />
+        <TestDnD editdata={editData} action={action} />
       ) : (
         [
           individualData == null ? (
@@ -442,6 +515,11 @@ export const ProfileTable = (props) => {
                 }}
                 columns={[
                   {
+                    title: "Guest ID",
+                    field: "guestnameinfoid",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
                     title: "First Name",
                     field: "firstname",
                     headerStyle: headerTableStyle,
@@ -452,8 +530,8 @@ export const ProfileTable = (props) => {
                     headerStyle: headerTableStyle,
                   },
                   {
-                    title: "Title",
-                    field: "title",
+                    title: "Name Prefix",
+                    field: "nameprefix",
                     headerStyle: headerTableStyle,
                   },
                   {
@@ -556,9 +634,10 @@ export const ProfileTable = (props) => {
                     tooltip: "Delete",
                     onClick: (event, rowData) => {
                       handleDialogDeleteOpen(
-                        rowData.title,
+                        rowData.guestnameinfoid,
                         rowData.firstname,
-                        rowData.lastname
+                        rowData.lastname,
+                        rowData.nameprefix
                       );
                     },
                   },
@@ -653,6 +732,7 @@ export const ProfileTable = (props) => {
                   <Button
                     fullWidth
                     // onClick={() => handleDelete(updateData.id)}
+
                     onClick={() => handleConfirmDeleteData()}
                     variant="contained"
                     // color="primary"

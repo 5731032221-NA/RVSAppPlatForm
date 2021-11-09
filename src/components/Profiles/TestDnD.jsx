@@ -22,9 +22,14 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import { getconfigurationbypropertycode } from "../../services/user.service";
 import {
-  getconfigurationbypropertycode
-} from "../../services/user.service";
+  getIndividualProfile,
+  getIndividualProfileById,
+  postIndividualProfile,
+  updateIndividualProfile,
+  deleteIndividualProfileById,
+} from "../../services/individualprofile.service";
 import {
   DatePicker,
   TimePicker,
@@ -2082,8 +2087,10 @@ export const TestDnD = (props) => {
     paper: "#FFFFFF",
     colorlevel: "900",
   });
-  const [optionrelation, setOptionrelation] = React.useState([])
-  const [optioncommunication, setOptioncommunication] = React.useState([])
+
+  const { action } = props;
+  const [optionrelation, setOptionrelation] = React.useState([]);
+  const [optioncommunication, setOptioncommunication] = React.useState([]);
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
 
   const [optionCity, setOptionCity] = React.useState([
@@ -2168,10 +2175,13 @@ export const TestDnD = (props) => {
     }),
   });
 
+  const [guestNameInfoID, setGuestNameInfoID] = React.useState("");
   const [firstname, setFirstname] = React.useState("");
   const [lastname, setLastname] = React.useState("");
-  const [title, setTitle] = React.useState("");
-  const [sex, setSex] = React.useState("");
+  const [namePrefix, setNamePrefix] = React.useState("");
+  const [gender, setGender] = React.useState("");
+  const [idnumber, setIDNumber] = React.useState("");
+  const [nationality, setNationality] = React.useState("");
 
   const pageProperty = useSelector((state) => state.reducer.property);
 
@@ -2193,467 +2203,465 @@ export const TestDnD = (props) => {
       }
     }
   }
-  
-  React.useEffect(() => {
-    async function getconfig(){
-     console.log("demostate")
-    let getconfigdata = await getconfigurationbypropertycode(
-      sessionStorage.getItem("auth"),
-      pageProperty
-    );
-    console.log(getconfigdata)
-    let configdata = getconfigdata.content[getconfigdata.content.length - 1];
-    let optionTitle = await getlist(configdata,"PCINDTT");
-    // let optionDocumentType = await getlist(configdata,"");
-    let optiongender = await getlist(configdata,"PCINDGD");
-    let relation = await getlist(configdata,"PCINDRL");
-    let communication = await getlist(configdata,"PCINDGD");
-    // let optionDocumentType = await getlist(configdata,"");
-    setOptionrelation(relation)
-    setOptioncommunication(communication)
-    setList([
-      {
-        id: "1",
-        title: "Personal",
-        expend: true,
-        content: [
-          {
-            id: 0,
-            label: "Title",
-            xl: 1,
-            md: 1,
-            xs: 4,
-            select: {
-              status: "option",
-              data: optionTitle.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                  noWrap
-                >
-                  {option.label}
-                </option>
-              )),
-              defaultvalue: props.editdata != null ? props.editdata.title : "",
-            },
-            handle: (e) => setTitle(e.target.value),
-          },
-          {
-            id: 1,
-            label: "First Name",
-            xl: 5,
-            md: 5,
-            xs: 8,
-            select: {
-              status: "fill",
-              // data: props.editdata.firstname,
-              data: props.editdata != null ? props.editdata.firstname : "",
-            },
-            handle: (e) => setFirstname(e.target.value),
-          },
-          {
-            id: 2,
-            label: "Last Name",
-            xl: 5,
-            md: 5,
-            xs: 8,
-            select: {
-              status: "fill",
-              data: props.editdata != null ? props.editdata.lastname : "",
-            },
-            // handle: (e) => setPersonalData({ ...personalData,lastname: e.target.value }),
-            handle: (e) => setLastname(e.target.value),
-          },
-          {
-            id: 3,
-            label: "Gender",
-            xl: 1,
-            md: 1,
-            xs: 4,
-            select: {
-              status: "option",
-              data: optiongender.map((option) => (
-                <option
-                  // defaultValue={props.editdata != null ? props.editdata.sex : ""}
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </option>
-              )),
-              defaultvalue: props.editdata != null ? props.editdata.sex : "",
-            },
-            handle: (e) => setSex(e.target.value),
-          },
-          {
-            id: 4,
-            label: "Choose a Document Type*",
-            xl: 2,
-            md: 2,
-            xs: 12,
-            select: {
-              status: "option",
-              data: optionDocumentType.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                  noWrap
-                >
-                  {option.label}
-                </option>
-              )),
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 5,
-            label: "ID Number",
-            xl: 2,
-            md: 2,
-            xs: 12,
-            select: {
-              status: "fill",
-              data: props.editdata != null ? props.editdata.idcardandpass : "",
-            },
-            handle: (e) => handleData(e.target.value),
-          },
-          {
-            id: 6,
-            label: "Nationality*",
-            xl: 2,
-            md: 2,
-            xs: 12,
-            select: {
-              status: "option",
-              data: optionnationality.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </option>
-              )),
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 7,
-            label: "Issue Date",
-            xl: 2,
-            md: 2,
-            xs: 12,
-            select: {
-              status: "datetime",
-              data: "",
-            },
-            handle: " ",
-          },
-          {
-            id: 8,
-            label: "Expiry Date",
-            xl: 2,
-            md: 2,
-            xs: 12,
-            select: {
-              status: "datetime",
-              data: "",
-            },
-            handle: " ",
-          },
-          {
-            id: 9,
-            label: "Date of Birth",
-            xl: 2,
-            md: 2,
-            xs: 12,
-            select: {
-              status: "datetime",
-              data: "",
-            },
-            handle: " ",
-          },
-        ],
-      },
-      {
-        id: "2",
-        title: "Comunication",
-        expend: true,
-        content: [
-          {
-            id: 1,
-            label: "Email",
-            xl: 3,
-            md: 3,
-            xs: 6,
-            select: {
-              status: "fix",
-              data: "Email Address",
-            },
-          },
-          {
-            id: 2,
-            label: "Email",
-            xl: 9,
-            md: 9,
-            xs: 6,
-            select: {
-              status: "fillnolabel",
-              data: "Email",
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 3,
-            label: "Mobile Number",
-            xl: 3,
-            md: 3,
-            xs: 6,
-            select: {
-              status: "fix",
-              data: "Mobile Number",
-            },
-          },
-          {
-            id: 4,
-            label: "Mobile Number",
-            xl: 9,
-            md: 9,
-            xs: 6,
-            select: {
-              status: "fillnolabel",
-              data: "Mobile Number",
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 99,
-            label: "Phone Number",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "AddComunication",
-              data: "+ Add",
-            },
-            // handle: (e) => handleAddComunication(e),
-          },
-        ],
-      },
-      {
-        id: "3",
-        title: "Address",
-        expend: true,
-        content: [
-          {
-            id: 1,
-            label: "Home Address",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "fix",
-              data: "Home Address",
-            },
-          },
-          {
-            id: 2,
-            label: "Address",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "fill",
-              data: "",
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 4,
-            label: "Choose a country",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "option",
-              data: optioncountry.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </option>
-              )),
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 5,
-            label: "City",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "fill",
-              data: "",
-              // optionCity.map((option) => (
-              //   <option
-              //     style={headerTableStyle}
-              //     key={option.value}
-              //     value={option.value}
-              //   >
-              //     {option.label}
-              //   </option>
-              //  )),
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 6,
-            label: "State",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "fill",
-              data: "",
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 7,
-            label: "Postal",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "fill",
-              data: "",
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 8,
-            label: "Resident Address",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "fix",
-              data: "Resident Address",
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 9,
-            label: "Address",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "fill",
-              data: "",
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 10,
-            label: "Choose a country",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "option",
-              data: optioncountry.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </option>
-              )),
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 11,
-            label: "City",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "option",
-              data: optionCity.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </option>
-              )),
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 12,
-            label: "State",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "fill",
-              data: "",
-            },
-            handle: (e) => handleData(e),
-          },
-          {
-            id: 13,
-            label: "Postal",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "fill",
-              data: "",
-            },
-            handle: (e) => handleData(e),
-          },
-        ],
-      },
-      {
-        id: "4",
-        title: "Relation",
-        expend: true,
-        content: [
-          {
-            id: 99,
-            label: "Relation",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "AddRelation",
-              data: "+ Add",
-            },
-            // handle: (e) => handleAddComunication(e),
-          },
-        ],
-      }
-    ])
-    }
-    getconfig()
-  }, []);
 
-  const handleData = (e) => {
-    // console.log("Value from handleData : ", e.target.value);
-    console.log("handleData : ", title, firstname, lastname, sex);
-  };
+  React.useEffect(() => {
+    async function getconfig() {
+      console.log("demostate");
+      let getconfigdata = await getconfigurationbypropertycode(
+        sessionStorage.getItem("auth"),
+        pageProperty
+      );
+      console.log(getconfigdata);
+      let configdata = getconfigdata.content[getconfigdata.content.length - 1];
+      let optionTitle = await getlist(configdata, "PCINDTT");
+      // let optionDocumentType = await getlist(configdata,"");
+      let optiongender = await getlist(configdata, "PCINDGD");
+      let relation = await getlist(configdata, "PCINDRL");
+      let communication = await getlist(configdata, "PCINDGD");
+      // let optionDocumentType = await getlist(configdata,"");
+      setOptionrelation(relation);
+      setOptioncommunication(communication);
+      setList([
+        {
+          id: "1",
+          title: "Personal",
+          expend: true,
+          content: [
+            {
+              id: 0,
+              label: "Title",
+              xl: 1,
+              md: 1,
+              xs: 4,
+              select: {
+                status: "option",
+                data: optionTitle.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                    noWrap
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.title : "",
+              },
+              handle: (e) => setNamePrefix(e.target.value),
+            },
+            {
+              id: 1,
+              label: "First Name",
+              xl: 5,
+              md: 5,
+              xs: 8,
+              select: {
+                status: "fill",
+                // data: props.editdata.firstname,
+                data: props.editdata != null ? props.editdata.firstname : "",
+              },
+              handle: (e) => setFirstname(e.target.value),
+            },
+            {
+              id: 2,
+              label: "Last Name",
+              xl: 5,
+              md: 5,
+              xs: 8,
+              select: {
+                status: "fill",
+                data: props.editdata != null ? props.editdata.lastname : "",
+              },
+              // handle: (e) => setPersonalData({ ...personalData,lastname: e.target.value }),
+              handle: (e) => setLastname(e.target.value),
+            },
+            {
+              id: 3,
+              label: "Gender",
+              xl: 1,
+              md: 1,
+              xs: 4,
+              select: {
+                status: "option",
+                data: optiongender.map((option) => (
+                  <option
+                    // defaultValue={props.editdata != null ? props.editdata.sex : ""}
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.gender : "",
+              },
+              handle: (e) => setGender(e.target.value),
+            },
+            {
+              id: 4,
+              label: "Choose a Document Type*",
+              xl: 2,
+              md: 2,
+              xs: 12,
+              select: {
+                status: "option",
+                data: optionDocumentType.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                    noWrap
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 5,
+              label: "ID Number",
+              xl: 2,
+              md: 2,
+              xs: 12,
+              select: {
+                status: "fill",
+                data:
+                  props.editdata != null ? props.editdata.idcardandpass : "",
+              },
+              handle: (e) => setIDNumber(e.target.value),
+            },
+            {
+              id: 6,
+              label: "Nationality*",
+              xl: 2,
+              md: 2,
+              xs: 12,
+              select: {
+                status: "option",
+                data: optionnationality.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => setNationality(e.target.value),
+            },
+            {
+              id: 7,
+              label: "Issue Date",
+              xl: 2,
+              md: 2,
+              xs: 12,
+              select: {
+                status: "datetime",
+                data: "",
+              },
+              handle: " ",
+            },
+            {
+              id: 8,
+              label: "Expiry Date",
+              xl: 2,
+              md: 2,
+              xs: 12,
+              select: {
+                status: "datetime",
+                data: "",
+              },
+              handle: " ",
+            },
+            {
+              id: 9,
+              label: "Date of Birth",
+              xl: 2,
+              md: 2,
+              xs: 12,
+              select: {
+                status: "datetime",
+                data: "",
+              },
+              handle: " ",
+            },
+          ],
+        },
+        {
+          id: "2",
+          title: "Comunication",
+          expend: true,
+          content: [
+            {
+              id: 1,
+              label: "Email",
+              xl: 3,
+              md: 3,
+              xs: 6,
+              select: {
+                status: "fix",
+                data: "Email Address",
+              },
+            },
+            {
+              id: 2,
+              label: "Email",
+              xl: 9,
+              md: 9,
+              xs: 6,
+              select: {
+                status: "fillnolabel",
+                data: "Email",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 3,
+              label: "Mobile Number",
+              xl: 3,
+              md: 3,
+              xs: 6,
+              select: {
+                status: "fix",
+                data: "Mobile Number",
+              },
+            },
+            {
+              id: 4,
+              label: "Mobile Number",
+              xl: 9,
+              md: 9,
+              xs: 6,
+              select: {
+                status: "fillnolabel",
+                data: "Mobile Number",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 99,
+              label: "Phone Number",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "AddComunication",
+                data: "+ Add",
+              },
+              // handle: (e) => handleAddComunication(e),
+            },
+          ],
+        },
+        {
+          id: "3",
+          title: "Address",
+          expend: true,
+          content: [
+            {
+              id: 1,
+              label: "Home Address",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fix",
+                data: "Home Address",
+              },
+            },
+            {
+              id: 2,
+              label: "Address",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 4,
+              label: "Choose a country",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 5,
+              label: "City",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+                // optionCity.map((option) => (
+                //   <option
+                //     style={headerTableStyle}
+                //     key={option.value}
+                //     value={option.value}
+                //   >
+                //     {option.label}
+                //   </option>
+                //  )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 6,
+              label: "State",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 7,
+              label: "Postal",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 8,
+              label: "Resident Address",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fix",
+                data: "Resident Address",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 9,
+              label: "Address",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 10,
+              label: "Choose a country",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 11,
+              label: "City",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optionCity.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 12,
+              label: "State",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 13,
+              label: "Postal",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+          ],
+        },
+        {
+          id: "4",
+          title: "Relation",
+          expend: true,
+          content: [
+            {
+              id: 99,
+              label: "Relation",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "AddRelation",
+                data: "+ Add",
+              },
+              // handle: (e) => handleAddComunication(e),
+            },
+          ],
+        },
+      ]);
+    }
+    getconfig();
+  }, []);
 
   const handleExpend = (id, expend) => {
     let index = demoData.findIndex((x) => x.id === id);
@@ -2804,6 +2812,42 @@ export const TestDnD = (props) => {
     }
   };
 
+  const handleData = async (e) => {
+    // console.log("Value from handleData : ", e.target.value);
+    console.log(
+      "handleData : ",
+      guestNameInfoID,
+      firstname,
+      lastname,
+      namePrefix,
+      gender,
+      idnumber,
+      nationality
+    );
+    let req = {
+      guestnameinfoid: await Math.floor(Math.random() * (1000 - 99 + 1) + 99),
+      nameprefix: namePrefix,
+      firstname: firstname,
+      lastname: lastname,
+      gender: gender,
+      idnumber: idnumber,
+      nationality: nationality,
+    };
+    const data = await postIndividualProfile(
+      sessionStorage.getItem("auth"),
+      req
+    );
+    console.log("datafrom post", data);
+  };
+  // React.useEffect(async () => {
+  //   if (action == "add") {
+  //     console.log("action", props.action);
+  //   } else {
+  //     console.log("action", props.action);
+  //   }
+  //   // const data = await getIndividualProfile(sessionStorage.getItem("auth"),);
+  // }, props.action);
+
   return (
     <Container
       maxWidth="xl"
@@ -2830,13 +2874,13 @@ export const TestDnD = (props) => {
                 style={{ marginTop: 10, backgroundColor: themeState.paper }}
                 ref={provided.innerRef}
               >
-                {/* <Button
-                variant="contained"
-                color="default"
-                onClick={() => handleData()}
-              >
-                TestData
-              </Button> */}
+                <Button
+                  variant="contained"
+                  color="default"
+                  onClick={() => handleData()}
+                >
+                  TestData
+                </Button>
                 {list.map((item, index) => (
                   <Draggable draggableId={item.id} key={item.id} index={index}>
                     {(provided, snapshot) => (
@@ -2865,7 +2909,6 @@ export const TestDnD = (props) => {
                           )}
                         </AccordionSummary>
                         <AccordionDetails>
-                         
                           <Grid container spacing={2}>
                             {item.content.map((detail, index) => (
                               <Grid
@@ -2955,12 +2998,10 @@ export const TestDnD = (props) => {
                                   />
                                 ) : detail.select.status === "option" ? (
                                   <TextField
-                                 
                                     className={classes.root}
                                     label={detail.label}
                                     variant="outlined"
                                     fullWidth
-                                    
                                     select
                                     defaultValue={detail.select.defaultvalue}
                                     SelectProps={{
@@ -2972,8 +3013,8 @@ export const TestDnD = (props) => {
                                     // value={detail.select.defaultvalue}
                                     onChange={detail.handle}
                                     textOverflow="ellipsis"
-                                 
-                                   // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
+
+                                    // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
                                   >
                                     {detail.select.data}
                                   </TextField>

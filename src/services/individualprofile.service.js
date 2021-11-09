@@ -87,6 +87,7 @@ module.exports = {
     });
   },
   deleteIndividualProfileById: async function (accessToken, id) {
+    console.log("deleteIndividualProfileById", id);
     return fetch(
       `http://${
         process.env.REACT_APP_host || "localhost"
