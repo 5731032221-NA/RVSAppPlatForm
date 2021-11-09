@@ -76,7 +76,7 @@ export default function MainListItems() {
   }, [indextTab]);
 
   const comps = useSelector((state) => state.reducer.permission);
-  // console.log("comps", comps);
+  console.log("comps", comps);
 
   const handleListItemClick = (event, index) => {
     // console.log("in", index);
@@ -266,7 +266,7 @@ export default function MainListItems() {
       ) : null}
       {comps.includes("FD-WN") ||
       comps.includes("FD-CI") ||
-      comps.includes("*FD-CO") ||
+      comps.includes("FD-CO") ||
       comps.includes("FD-RS") ||
       comps.includes("*ALL") ? (
         <List style={{ marginTop: -10 }}>
