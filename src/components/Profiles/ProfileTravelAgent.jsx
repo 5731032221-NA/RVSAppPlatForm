@@ -1220,10 +1220,10 @@ export const ProfileTravelAgent = (props) => {
       expend: true,
       content: [
         {
-          id: 1,
+          id: 3,
           label: "Name 1",
-          xl: 4,
-          md: 4,
+          xl: 6,
+          md: 6,
           xs: 12,
           select: {
             status: "fill",
@@ -1231,10 +1231,10 @@ export const ProfileTravelAgent = (props) => {
           }
         },
         {
-          id: 2,
+          id: 4,
           label: "Name 2",
-          xl: 4,
-          md: 4,
+          xl: 6,
+          md: 6,
           xs: 12,
           select: {
             status: "fill",
@@ -1243,13 +1243,109 @@ export const ProfileTravelAgent = (props) => {
           handle: (e) => handleData(e),
         },
         {
-          id: 3,
-          label: "Name 3",
+          id: 5,
+          label: "Abbreviation",
           xl: 4,
           md: 4,
           xs: 12,
           select: {
             status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 6,
+          label: "Guarantee Method Code",
+          xl: 4,
+          md: 4,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 7,
+          label: "Property",
+          xl: 4,
+          md: 4,
+          xs: 12,
+          select: {
+            status: "option",
+            data: [{ label: "SPJ1" }, { label: "SPJ2" }].map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.label}
+                value={option.label}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 7,
+          label: "Currency",
+          xl: 3,
+          md: 3,
+          xs: 12,
+          select: {
+            status: "option",
+            data: [{ label: "THB" }, { label: "USD" }].map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.label}
+                value={option.label}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "Credit Rating",
+          xl: 3,
+          md: 3,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optioncreditrating.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.label}
+                value={option.label}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 9,
+          label: "IATA",
+          xl: 3,
+          md: 3,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 10,
+          label: "Status",
+          xl: 3,
+          md: 3,
+          xs: 12,
+          select: {
+            status: "status",
             data: "",
           },
           handle: (e) => handleData(e),
@@ -1263,45 +1359,9 @@ export const ProfileTravelAgent = (props) => {
       content: [
         {
           id: 1,
-          label: "Address 1",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Address 2",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Address 3",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Address 4",
-          xl: 3,
-          md: 6,
+          label: "Street Address",
+          xl: 12,
+          md: 12,
           xs: 12,
           select: {
             status: "fill",
@@ -1368,6 +1428,104 @@ export const ProfileTravelAgent = (props) => {
     },
     {
       id: "3",
+      title: "Billing Address",
+      expend: true,
+      content: [
+        {
+          id: 1,
+          label: "Street Address",
+          xl: 12,
+          md: 12,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 5,
+          label: "Choose a country",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "option",
+            data: optioncountry.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 6,
+          label: "City",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+        },
+        {
+          id: 7,
+          label: "State",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "Postal",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "TaxID",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 8,
+          label: "TaxID2",
+          xl: 3,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+      ],
+    },
+    {
+      id: "4",
       title: "Communication",
       expend: true,
       content: [
@@ -1385,7 +1543,7 @@ export const ProfileTravelAgent = (props) => {
       ],
     },
     {
-      id: "4",
+      id: "5",
       title: "Relationship (Internal)",
       expend: true,
       content: [
@@ -1401,222 +1559,114 @@ export const ProfileTravelAgent = (props) => {
           },
           // handle: (e) => handleAddComunication(e),
         }
-        // {
-        //   id: 1,
-        //   label: "Owner",
-        //   xl: 2,
-        //   md: 6,
-        //   xs: 12,
-        //   select: {
-        //     status: "fill",
-        //     data: "",
-        //   },
-        //   handle: (e) => handleData(e),
-        // },
-        // {
-        //   id: 2,
-        //   label: "Temitory",
-        //   xl: 2,
-        //   md: 6,
-        //   xs: 12,
-        //   select: {
-        //     status: "fill",
-        //     data: "",
-        //   },
-        //   handle: (e) => handleData(e),
-        // },
-        // {
-        //   id: 3,
-        //   label: "Trace Code",
-        //   xl: 2,
-        //   md: 6,
-        //   xs: 12,
-        //   select: {
-        //     status: "fill",
-        //     data: "",
-        //   },
-        //   handle: (e) => handleData(e),
-        // },
-        // {
-        //   id: 4,
-        //   label: "Keyword",
-        //   xl: 3,
-        //   md: 6,
-        //   xs: 12,
-        //   select: {
-        //     status: "fill",
-        //     data: "",
-        //   },
-        //   handle: (e) => handleData(e),
-        // },
-        // {
-        //   id: 5,
-        //   label: "Type",
-        //   xl: 3,
-        //   md: 6,
-        //   xs: 12,
-        //   select: {
-        //     status: "fill",
-        //     data: "",
-        //   },
-        //   handle: (e) => handleData(e),
-        // },
-      ],
-    },
-    {
-      id: "5",
-      title: "A/R Number",
-      expend: true,
-      content: [
-        {
-          id: 1,
-          label: "IATA",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Ref. Currency",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optioncurrency.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Credit Rating",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optioncreditrating.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Active Reason",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
       ],
     },
     {
       id: "6",
-      title: "More Information",
+      title: "A/R Number",
       expend: true,
       content: [
-        {
-          id: 1,
-          label: "Guest Type",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
+        // {
+        //   id: 1,
+        //   label: "IATA",
+        //   xl: 3,
+        //   md: 3,
+        //   xs: 12,
+        //   select: {
+        //     status: "fill",
+        //     data: "",
+        //   },
+        //   handle: (e) => handleData(e),
+        // },
         {
           id: 2,
-          label: "Tax ID",
+          label: "Credit Card Number",
           xl: 3,
-          md: 6,
+          md: 3,
           xs: 12,
           select: {
             status: "fill",
-            data: "",
+            data: ""
           },
           handle: (e) => handleData(e),
         },
         {
           id: 3,
-          label: "Billing Instruction",
-          xl: 2,
-          md: 6,
+          label: "Outstanding Amount",
+          xl: 3,
+          md: 3,
           xs: 12,
           select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            status: "fill",
+            data: ""
           },
           handle: (e) => handleData(e),
         },
         {
           id: 4,
-          label: "Auto Populate Yn",
-          xl: 2,
-          md: 6,
+          label: "Floating Deposition Amount",
+          xl: 3,
+          md: 3,
           xs: 12,
           select: {
-            status: "checkbox",
+            status: "fill",
             data: "",
           },
           handle: (e) => handleData(e),
         },
         {
           id: 5,
-          label: "Payment",
-          xl: 2,
-          md: 6,
+          label: "AR Number",
+          xl: 3,
+          md: 3,
           xs: 12,
           select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            status: "fill",
+            data: "",
           },
           handle: (e) => handleData(e),
         },
       ],
     },
+    // {
+    //   id: "6",
+    //   title: "More Information",
+    //   expend: true,
+    //   content: [
+    //     {
+    //       id: 1,
+    //       label: "Tax ID",
+    //       xl: 3,
+    //       md: 6,
+    //       xs: 12,
+    //       select: {
+    //         status: "fill",
+    //         data: "",
+    //       },
+    //       handle: (e) => handleData(e),
+    //     },
+    //     {
+    //       id: 2,
+    //       label: "Billing Instruction",
+    //       xl: 3,
+    //       md: 6,
+    //       xs: 12,
+    //       select: {
+    //         status: "option",
+    //         data: optiondata.map((option) => (
+    //           <option
+    //             style={headerTableStyle}
+    //             key={option.value}
+    //             value={option.value}
+    //           >
+    //             {option.label}
+    //           </option>
+    //         )),
+    //       },
+    //       handle: (e) => handleData(e),
+    //     },
+    //   ],
+    // },
     {
       id: "7",
       title: "Sales Information",
@@ -1624,37 +1674,28 @@ export const ProfileTravelAgent = (props) => {
       content: [
         {
           id: 1,
-          label: "Priority",
-          xl: 3,
+          label: "Sales User Name",
+          xl: 6,
           md: 6,
           xs: 12,
           select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
+            status: "fill",
+            data: "",
+          }
         },
         {
           id: 2,
-          label: "Room Potential",
-          xl: 3,
+          label: "Industry",
+          xl: 2,
           md: 6,
           xs: 12,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: [{ label: "Insurrance" }, { label: "Government" }, { label: "Educcation" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
@@ -1662,39 +1703,31 @@ export const ProfileTravelAgent = (props) => {
           },
           handle: (e) => handleData(e),
         },
-        {
-          id: 3,
-          label: "Scope",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
+        // {
+        //   id: 3,
+        //   label: "IATA",
+        //   xl: 3,
+        //   md: 6,
+        //   xs: 12,
+        //   select: {
+        //     status: "fill",
+        //     data: ""
+        //   },
+        //   handle: (e) => handleData(e),
+        // },
         {
           id: 4,
-          label: "Scope City",
-          xl: 3,
+          label: "Market Segment",
+          xl: 4,
           md: 6,
           xs: 12,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
@@ -1704,17 +1737,17 @@ export const ProfileTravelAgent = (props) => {
         },
         {
           id: 5,
-          label: "Action Code",
+          label: "Source Of Business",
           xl: 3,
           md: 6,
           xs: 12,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
@@ -1724,17 +1757,17 @@ export const ProfileTravelAgent = (props) => {
         },
         {
           id: 6,
-          label: "Business Segment",
+          label: "Track Code",
           xl: 3,
           md: 6,
           xs: 12,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
@@ -1744,17 +1777,17 @@ export const ProfileTravelAgent = (props) => {
         },
         {
           id: 7,
-          label: "Account Type",
+          label: "Reason For Stay",
           xl: 3,
           md: 6,
           xs: 12,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
@@ -1764,65 +1797,70 @@ export const ProfileTravelAgent = (props) => {
         },
         {
           id: 8,
-          label: "Source",
+          label: "Geographic",
           xl: 3,
           md: 6,
           xs: 12,
           select: {
             status: "option",
-            data: optiondata.map((option) => (
+            data: [{ label: "SEA" }, { label: "EUROPE" }, { label: "CHINA" }, { label: "AFRICA" }].map((option) => (
               <option
                 style={headerTableStyle}
-                key={option.value}
-                value={option.value}
+                key={option.label}
+                value={option.label}
               >
                 {option.label}
               </option>
             )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 9,
-          label: "Industry Code",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 10,
-          label: "Compentition Code",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
+          }
+        }
+        // ,
+        // {
+        //   id: "1",
+        //   title: "Commission",
+        //   expend: true,
+        //   content: [
+        //     {
+        //       id: 1,
+        //       label: "Commission Flag",
+        //       xl: 3,
+        //       md: 3,
+        //       xs: 12,
+        //       select: {
+        //         status: "option",
+        //         data: [{ label: "Pay" }, { label: "Not Pay" }].map((option) => (
+        //           <option
+        //             style={headerTableStyle}
+        //             key={option.label}
+        //             value={option.label}
+        //           >
+        //             {option.label}
+        //           </option>
+        //         )),
+        //       }
+        //     },
+        //     {
+        //       id: 2,
+        //       label: "Commission Type",
+        //       xl: 3,
+        //       md: 3,
+        //       xs: 12,
+        //       select: {
+        //         status: "option",
+        //         data: [{ label: "Percent" }, { label: "Amount" }].map((option) => (
+        //           <option
+        //             style={headerTableStyle}
+        //             key={option.label}
+        //             value={option.label}
+        //           >
+        //             {option.label}
+        //           </option>
+        //         )),
+        //       },
+        //     },
+        //   ]
+        // }
+      ]
     },
   ]);
 
@@ -2037,7 +2075,7 @@ export const ProfileTravelAgent = (props) => {
                     <FormControlLabel
                       value="start"
                       control={<Checkbox color="primary" />}
-                      label="Central Protected"
+                      label="Negotiated Rates Only"
                       labelPlacement="start"
                     />
                   </Grid>

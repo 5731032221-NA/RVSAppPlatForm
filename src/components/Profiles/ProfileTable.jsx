@@ -206,7 +206,6 @@ export const ProfileTable = (props) => {
 
   // const [individualData, setIndividualData] = React.useState(rows);
   const [action, setAction] = React.useState("");
-  const [hidecreatebuttun, setHidecreatebuttun] = React.useState(false);
   const [individualData, setIndividualData] = React.useState(null);
   const [statusprofile, setStatusprofile] = React.useState("none");
   const [dialogDelete, setDialogDelete] = React.useState(false);
@@ -228,7 +227,6 @@ export const ProfileTable = (props) => {
   const handleNewData = async () => {
     await setAction("none");
     await setEditData(null);
-    await setHidecreatebuttun(true);
     await setStatusprofile("add");
   };
 
@@ -424,25 +422,7 @@ export const ProfileTable = (props) => {
             </Link>
           </Breadcrumbs>
         </Grid>
-        {/* {hidecreatebuttun ? null : (
-          <Grid item>
-            <Button
-              variant="outlined"
-              style={{
-                backgroundColor: mainColor,
-                color: "white",
-                alignItems: "center",
-              }}
-              size="large"
-              onClick={handleNewData}
-            >
-              <AddRoundedIcon />
-              <Typography variant="body1" style={{}}>
-                Create New Profile
-              </Typography>
-            </Button>
-          </Grid>
-        )} */}
+
         {/* </Grid> */}
         {statusprofile === "add" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
