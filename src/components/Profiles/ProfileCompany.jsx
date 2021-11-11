@@ -31,7 +31,7 @@ import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Breadcrumbs, Link } from "@material-ui/core";
-
+import { getconfigurationbypropertycode } from "../../services/user.service";
 import { nextComponent } from "../../middleware/action";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -1181,10 +1181,10 @@ export const ProfileCompany = (props) => {
   const [action, setAction] = React.useState(props.action);
 
 
-  React.useEffect(async( ) => {
-   console.log("props.action:",props.action);
-               await handleAddDatatoDatabase();
-  },[props.action])
+  // React.useEffect(async( ) => {
+  //  console.log("props.action:",props.action);
+  //              await handleAddDatatoDatabase();
+  // },[props.action])
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -1231,9 +1231,54 @@ export const ProfileCompany = (props) => {
   };
 
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
-  React.useEffect(() => {
+  const pageProperty = useSelector((state) => state.reducer.property);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [errorParameter, setErrorParameter] = useState(null);
+  React.useEffect( async() => {
+
     setSmallwidth(window.innerWidth < 1000);
+
+
+  
+    let getconfigdata = await getconfigurationbypropertycode(
+      sessionStorage.getItem("auth"),
+      pageProperty
+    );
+    console.log("getconfigdata:",getconfigdata);
+    let configdata = getconfigdata.content[getconfigdata.content.length - 1];
+    let optionTitle = await getlist(configdata, "PCINDTT");
+    // let optionDocumentType = await getlist(configdata,"");
+    console.log("optionTitle:",optionTitle);
+    let optiongender = await getlist(configdata, "PCINDGD");
+    console.log("optiongender:",optiongender);
+    let relation = await getlist(configdata, "PCINDRL");
+    console.log("relation:",relation);
+    let communication = await getlist(configdata, "PCINDCM");
+    console.log("communication:",communication);
+    // let optionDocumentType = await getlist(configdata,"");
+
+
+
   }, []);
+
+  async function getlist(config, field) {
+    for (var i = 0; i < config.length; i++) {
+      var obj = config[i];
+      if (obj.code === field) {
+        let list = [];
+        obj.children.forEach((element) =>
+          list.push({
+            value: element.name_en,
+            label: element.name_en,
+          })
+        );
+        return list;
+      } else if (obj.children) {
+        let _getlist = await getlist(obj.children, field);
+        if (_getlist) return _getlist;
+      }
+    }
+  }
 
   const handleComponentState = async (comp) => {
     console.log("setcomp", comp);
@@ -2025,6 +2070,17 @@ export const ProfileCompany = (props) => {
     TrackCode,
     ReasonForStay, 
     Geographic);
+
+    props.setAction("none");
+    if(nameOne == ""){
+      setErrorParameter("name1 is required")
+      setErrorMessage(true);
+    }else if(nameTwo == ""){
+      setErrorParameter("name2 is required")
+      setErrorMessage(true);
+    }else {
+
+      setErrorMessage(false);
   
     let req = {
       nameOne: nameOne,
@@ -2068,7 +2124,11 @@ export const ProfileCompany = (props) => {
       sessionStorage.getItem("auth"),
       req
     );
+   
+    
     console.log("datafrom post", data);
+
+   }
   };
 
   //data from button for  trigger (add or delete)
@@ -2277,6 +2337,21 @@ export const ProfileCompany = (props) => {
                   </Grid>
                 </Grid>
               </Container> */}
+
+              {errorMessage ? (
+                  <div
+                  style={{
+                  background: "#ff0033",
+                  textAlign: "center",
+                  color: "white",
+                  height: "30px",
+                  marginTop: 5,
+                  paddingTop: 5,
+                   }}
+                  >
+                {errorParameter}
+              </div>
+            ) : null}
               <Divider
                 style={{ marginTop: 10, backgroundColor: themeState.color }}
               />

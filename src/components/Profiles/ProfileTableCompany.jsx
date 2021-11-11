@@ -213,15 +213,16 @@ export const ProfileTableCompany = (props) => {
     setStatusprofile();
   };
   const handleNewData = () => {
-    setAction("add")
+    // setAction("add")
     setStatusprofile("add");
   };
   const handleAddData = (rows) => {
+    console.log("ok");
     setAction("add")
 
     console.log("rows:",rows);
-    setStatusprofile("moredata");
-    setIndividualData(rows);
+    // setStatusprofile("moredata");
+    // setIndividualData(rows);
   };
   const handleEditData = () => {
     setStatusprofile("edit");
@@ -337,7 +338,7 @@ export const ProfileTableCompany = (props) => {
         ) : null}
       </Grid>
       {statusprofile === "edit" || statusprofile === "add" ? (
-        <ProfileCompany editdata={editData} action={action} />
+        <ProfileCompany editdata={editData} action={action} setAction={setAction} />
       ) : (
         [
           individualData == null ? (
