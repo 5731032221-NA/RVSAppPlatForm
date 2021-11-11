@@ -1160,6 +1160,10 @@ const optioncommunication = [
     label: "Trip Advisor",
   },
   {
+    value: "www",
+    label: "www",
+  },
+  {
     value: "BookingDotCom",
     label: "Booking Website",
   }
@@ -1297,7 +1301,7 @@ export const ProfileCompany = (props) => {
         },
         {
           id: 7,
-          label: "Property",
+          label: "Hotel Origin",
           xl: 4,
           md: 4,
           xs: 12,
@@ -1388,7 +1392,7 @@ export const ProfileCompany = (props) => {
       content: [
         {
           id: 1,
-          label: "Street Address",
+          label: "Address",
           xl: 12,
           md: 12,
           xs: 12,
@@ -1462,7 +1466,7 @@ export const ProfileCompany = (props) => {
       content: [
         {
           id: 1,
-          label: "Street Address",
+          label: "Address",
           xl: 12,
           md: 12,
           xs: 12,

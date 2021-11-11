@@ -1107,6 +1107,18 @@ const optioncommunication = [
   {
     value: "Facebook",
     label: "Facebook",
+  },
+  {
+    value: "TripAdvisor",
+    label: "Trip Advisor",
+  },
+  {
+    value: "www",
+    label: "www",
+  },
+  {
+    value: "BookingDotCom",
+    label: "Booking Website",
   }
 ];
 
@@ -1268,7 +1280,7 @@ export const ProfileTravelAgent = (props) => {
         },
         {
           id: 7,
-          label: "Property",
+          label: "Hotel Origin",
           xl: 4,
           md: 4,
           xs: 12,
@@ -1359,7 +1371,7 @@ export const ProfileTravelAgent = (props) => {
       content: [
         {
           id: 1,
-          label: "Street Address",
+          label: "Address",
           xl: 12,
           md: 12,
           xs: 12,
@@ -1433,7 +1445,7 @@ export const ProfileTravelAgent = (props) => {
       content: [
         {
           id: 1,
-          label: "Street Address",
+          label: "Address",
           xl: 12,
           md: 12,
           xs: 12,
