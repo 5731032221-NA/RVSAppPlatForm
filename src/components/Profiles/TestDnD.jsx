@@ -16,6 +16,7 @@ import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import Switch from "@material-ui/core/Switch";
 import DateFnsUtils from "@date-io/date-fns";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -2238,10 +2239,10 @@ export const TestDnD = (props) => {
           content: [
             {
               id: 0,
-              label: "Title",
+              label: "Name Title",
               xl: 1,
               md: 1,
-              xs: 4,
+              xs: 2,
               select: {
                 status: "option",
                 data: optionTitle.map((option) => (
@@ -2265,7 +2266,7 @@ export const TestDnD = (props) => {
               label: "First Name",
               xl: 5,
               md: 5,
-              xs: 8,
+              xs: 10,
               select: {
                 status: "fill",
                 // data: props.editdata.firstname,
@@ -2278,7 +2279,7 @@ export const TestDnD = (props) => {
               label: "Last Name",
               xl: 5,
               md: 5,
-              xs: 8,
+              xs: 10,
               select: {
                 status: "fill",
                 data: props.editdata != null ? props.editdata.lastname : "",
@@ -2288,6 +2289,54 @@ export const TestDnD = (props) => {
             },
             {
               id: 3,
+              label: "Name Prefix",
+              xl: 1,
+              md: 1,
+              xs: 2,
+              select: {
+                status: "option",
+                data: [{ label: "Option1" }, { label: "Option2" }, { label: "Option3" }].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.title : "Mr.",
+              },
+              handle: (e) => setNamePrefix(e.target.value),
+            },
+            {
+              id: 4,
+              label: "Name Suffix",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "fill",
+                // data: props.editdata.firstname,
+                data: props.editdata != null ? props.editdata.firstname : "",
+              },
+              handle: (e) => setFirstname(e.target.value),
+            },
+            {
+              id: 5,
+              label: "Middle Initial",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "fill",
+                // data: props.editdata.firstname,
+                data: props.editdata != null ? props.editdata.firstname : "",
+              },
+              handle: (e) => setFirstname(e.target.value),
+            },
+            {
+              id: 6,
               label: "Gender",
               xl: 1,
               md: 1,
@@ -2309,120 +2358,111 @@ export const TestDnD = (props) => {
               },
               handle: (e) => setGender(e.target.value),
             },
+
+            // {
+            //   id: 7,
+            //   label: "Choose a Document Type*",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "option",
+            //     data: optionDocumentType.map((option) => (
+            //       <option
+            //         style={headerTableStyle}
+            //         key={option.value}
+            //         value={option.value}
+            //         noWrap
+            //       >
+            //         {option.label}
+            //       </option>
+            //     )),
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 8,
+            //   label: "ID Number",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "fill",
+            //     data:
+            //       props.editdata != null ? props.editdata.idcardandpass : "",
+            //   },
+            //   handle: (e) => setIDNumber(e.target.value),
+            // },
+            // {
+            //   id: 9,
+            //   label: "Nationality*",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "option",
+            //     data: optionnationality.map((option) => (
+            //       <option
+            //         style={headerTableStyle}
+            //         key={option.value}
+            //         value={option.value}
+            //       >
+            //         {option.label}
+            //       </option>
+            //     )),
+            //     defaultvalue:
+            //       props.editdata != null ? props.editdata.gender : "",
+            //   },
+            //   handle: (e) => setNationality(e.target.value),
+            // },
+            // {
+            //   id: 10,
+            //   label: "Birth country",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "option",
+            //     data: optioncountry.map((option) => (
+            //       <option
+            //         style={headerTableStyle}
+            //         key={option.value}
+            //         value={option.value}
+            //       >
+            //         {option.label}
+            //       </option>
+            //     )),
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 11,
+            //   label: "Birth City",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "option",
+            //     data: optioncountry.map((option) => (
+            //       <option
+            //         style={headerTableStyle}
+            //         key={option.value}
+            //         value={option.value}
+            //       >
+            //         {option.label}
+            //       </option>
+            //     )),
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
             {
-              id: 4,
-              label: "Name Prefix",
+              id: 7,
+              label: "Religion",
               xl: 2,
               md: 2,
               xs: 4,
               select: {
                 status: "option",
-                data: optionTitle.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                    noWrap
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null ? props.editdata.title : "Mr.",
-              },
-              handle: (e) => setNamePrefix(e.target.value),
-            },
-            {
-              id: 5,
-              label: "Middle Initial",
-              xl: 5,
-              md: 5,
-              xs: 8,
-              select: {
-                status: "fill",
-                // data: props.editdata.firstname,
-                data: props.editdata != null ? props.editdata.firstname : "",
-              },
-              handle: (e) => setFirstname(e.target.value),
-            },
-            {
-              id: 6,
-              label: "Name Suffix",
-              xl: 5,
-              md: 5,
-              xs: 8,
-              select: {
-                status: "fill",
-                // data: props.editdata.firstname,
-                data: props.editdata != null ? props.editdata.firstname : "",
-              },
-              handle: (e) => setFirstname(e.target.value),
-            },
-
-            {
-              id: 7,
-              label: "Choose a Document Type*",
-              xl: 2,
-              md: 2,
-              xs: 12,
-              select: {
-                status: "option",
-                data: optionDocumentType.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                    noWrap
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 8,
-              label: "ID Number",
-              xl: 2,
-              md: 2,
-              xs: 12,
-              select: {
-                status: "fill",
-                data:
-                  props.editdata != null ? props.editdata.idcardandpass : "",
-              },
-              handle: (e) => setIDNumber(e.target.value),
-            },
-            {
-              id: 9,
-              label: "Nationality*",
-              xl: 2,
-              md: 2,
-              xs: 12,
-              select: {
-                status: "option",
-                data: optionnationality.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null ? props.editdata.gender : "",
-              },
-              handle: (e) => setNationality(e.target.value),
-            },
-            {
-              id: 10,
-              label: "Birth country",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
                 data: optioncountry.map((option) => (
                   <option
                     style={headerTableStyle}
@@ -2435,58 +2475,19 @@ export const TestDnD = (props) => {
               },
               handle: (e) => handleData(e),
             },
-            {
-              id: 11,
-              label: "Birth City",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 12,
-              label: "Religion",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 13,
-              label: "Date of Birth",
-              xl: 2,
-              md: 2,
-              xs: 12,
-              select: {
-                status: "datetime",
-                data: "",
-              },
-              handle: " ",
-            },
+            
+            // {
+            //   id: 13,
+            //   label: "Date of Birth",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "datetime",
+            //     data: "",
+            //   },
+            //   handle: " ",
+            // },
 
             // {
             //   id: 7,
@@ -2516,6 +2517,203 @@ export const TestDnD = (props) => {
         },
         {
           id: "2",
+          title: "Address",
+          expend: true,
+          content: [,
+            {
+              id: 1,
+              label: "Organisation",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 2,
+              label: "Province Of Residence",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 3,
+              label: "Border Crossing Entry Place",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 4,
+              label: "Border Crossing Entry Date",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 0,
+              label: "",
+              xl: 4,
+              md: 4,
+              xs: 4,
+              select: {
+                status: "offset",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 5,
+              label: "Address",
+              xl: 2,
+              md: 2,
+              xs: 12,
+              select: {
+                status: "option",
+                data: [{label:"Organisation",label:"Home",label:"Resident"}].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+            },
+            {
+              id: 6,
+              label: "Address 1",
+              xl: 5,
+              md: 5,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 7,
+              label: "Address 2",
+              xl: 5,
+              md: 5,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 8,
+              label: "Choose a country",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 9,
+              label: "City",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 10,
+              label: "State / Province",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 11,
+              label: "Postal",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 12,
+              label: "",
+              xl: 4,
+              md: 4,
+              xs: 4,
+              select: {
+                status: "offset",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 99,
+              label: "AddAddress",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "AddAddress",
+                data: "+ More Address",
+              },
+            }
+          ],
+        },
+        {
+          id: "3",
           title: "Comunication",
           expend: true,
           content: [
@@ -2573,191 +2771,9 @@ export const TestDnD = (props) => {
               xs: 6,
               select: {
                 status: "AddComunication",
-                data: "+ Add",
+                data: "+ More Communication",
               },
               // handle: (e) => handleAddComunication(e),
-            },
-          ],
-        },
-        {
-          id: "3",
-          title: "Address",
-          expend: true,
-          content: [
-            {
-              id: 1,
-              label: "Home Address",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fix",
-                data: "Home Address",
-              },
-            },
-            {
-              id: 2,
-              label: "Address",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 4,
-              label: "Choose a country",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 5,
-              label: "City",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 6,
-              label: "State",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 7,
-              label: "Postal",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 8,
-              label: "Resident Address",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fix",
-                data: "Resident Address",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 9,
-              label: "Address",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 10,
-              label: "Choose a country",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 11,
-              label: "City",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
-                data: optionCity.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 12,
-              label: "State",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 13,
-              label: "Postal",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
             },
           ],
         },
@@ -2774,7 +2790,7 @@ export const TestDnD = (props) => {
               xs: 6,
               select: {
                 status: "AddRelation",
-                data: "+ Add",
+                data: "+ More Relation",
               },
               // handle: (e) => handleAddComunication(e),
             },
@@ -2786,10 +2802,10 @@ export const TestDnD = (props) => {
           expend: true,
           content: [
             {
-              id: 0,
+              id: 1,
               label: "No Post",
-              xl: 2,
-              md: 2,
+              xl: 1,
+              md: 1,
               xs: 6,
               select: {
                 status: "check",
@@ -2798,7 +2814,31 @@ export const TestDnD = (props) => {
               handle: (e) => handleData(e),
             },
             {
-              id: 1,
+              id: 2,
+              label: "NRG",
+              xl: 1,
+              md: 1,
+              xs: 6,
+              select: {
+                status: "check",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 3,
+              label: "offset",
+              xl: 10,
+              md: 10,
+              xs: 0,
+              select: {
+                status: "offset",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 4,
               label: "Guest Catagory",
               xl: 2,
               md: 2,
@@ -2818,79 +2858,7 @@ export const TestDnD = (props) => {
               handle: (e) => handleData(e),
             },
             {
-              id: 2,
-              label: "NRG",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "check",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 3,
-              label: "VVIP",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
-                data: optiondata.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 4,
-              label: "Birth Region",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
-                data: optiondata.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => handleData(e),
-            },
-            {
               id: 5,
-              label: "Birth Province",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
-                data: optiondata.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 6,
               label: "Guest Type",
               xl: 2,
               md: 2,
@@ -2910,7 +2878,74 @@ export const TestDnD = (props) => {
               handle: (e) => handleData(e),
             },
             {
+              id: 6,
+              label: "VVIP",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
               id: 7,
+              label: "Birth Region",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 8,
+              label: "Birth Province",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            }
+          ]},
+        {
+          id: "6",
+          title: "Identification",
+          expend: true,
+          content: [
+            
+            {
+              id: 1,
               label: "ID Check",
               xl: 2,
               md: 2,
@@ -2920,9 +2955,19 @@ export const TestDnD = (props) => {
                 data: "",
               },
               handle: (e) => handleData(e),
+            }, {
+              id: 2,
+              label: "offset",
+              xl: 10,
+              md: 10,
+              xs: 6,
+              select: {
+                status: "offset",
+                data: "",
+              }
             },
             {
-              id: 8,
+              id: 3,
               label: "ID Type",
               xl: 2,
               md: 2,
@@ -2944,19 +2989,52 @@ export const TestDnD = (props) => {
               handle: (e) => handleData(e),
             },
             {
-              id: 9,
+              id: 4,
               label: "ID Number",
-              xl: 2,
-              md: 2,
-              xs: 6,
+              xl: 6,
+              md: 6,
+              xs: 12,
               select: {
                 status: "fill",
                 data: "",
               },
               handle: (e) => handleData(e),
+            },{
+              id: 5,
+                label: "Nationality*",
+                xl: 2,
+                md: 2,
+                xs: 6,
+                select: {
+                  status: "option",
+                  data: optionnationality.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  )),
+                  defaultvalue:
+                    props.editdata != null ? props.editdata.gender : "",
+                },
+                handle: (e) => setNationality(e.target.value),
+              },
+            {
+              id: 6,
+              label: "Date of Birth",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "datetime",
+                data: "",
+              },
+              handle: " ",
             },
             {
-              id: 10,
+              id: 7,
               label: "Issue Date",
               xl: 2,
               md: 2,
@@ -2968,7 +3046,7 @@ export const TestDnD = (props) => {
               handle: (e) => handleData(e),
             },
             {
-              id: 11,
+              id: 8,
               label: "ID Expiration Date",
               xl: 2,
               md: 2,
@@ -2980,31 +3058,18 @@ export const TestDnD = (props) => {
               handle: (e) => handleData(e),
             },
             {
-              id: 12,
-              label: "Passport Number",
-              xl: 2,
-              md: 2,
-              xs: 6,
+              id: 9,
+              label: "offset",
+              xl: 8,
+              md: 8,
+              xs: 0,
               select: {
-                status: "fill",
+                status: "offset",
                 data: "",
               },
-              handle: (e) => handleData(e),
             },
             {
-              id: 13,
-              label: "Passport Name",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 14,
+              id: 10,
               label: "Passport Visa Check",
               xl: 2,
               md: 2,
@@ -3016,30 +3081,96 @@ export const TestDnD = (props) => {
               handle: (e) => handleData(e),
             },
             {
-              id: 15,
-              label: "Issuing Country",
+              id: 11,
+              label: "Offset",
+              xl: 10,
+              md: 10,
+              xs: 6,
+              select: {
+                status: "offset",
+                data: "",
+              }
+            },
+            {
+              id: 12,
+              label: "Visa Type",
               xl: 2,
               md: 2,
               xs: 6,
               select: {
-                select: {
-                  status: "option",
-                  data: optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  )),
-                },
+                status: "option",
+                data: [{label:"Tourist"},{label:"Miliary"}].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+            },
+            {
+              id: 13,
+              label: "Visa Name",
+              xl: 6,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 14,
+              label: "Visa Number",
+              xl: 4,
+              md: 4,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            // {
+            //   id: 15,
+            //   label: "Issuing Country",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     select: {
+            //       status: "option",
+            //       data: optiondata.map((option) => (
+            //         <option
+            //           style={headerTableStyle}
+            //           key={option.value}
+            //           value={option.value}
+            //         >
+            //           {option.label}
+            //         </option>
+            //       )),
+            //     },
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            {
+              id: 15,
+              label: "Visa Issued Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: "",
               },
               handle: (e) => handleData(e),
             },
             {
               id: 16,
-              label: "Passport Issued Date",
+              label: "Visa Begin Date",
               xl: 2,
               md: 2,
               xs: 6,
@@ -3051,113 +3182,6 @@ export const TestDnD = (props) => {
             },
             {
               id: 17,
-              label: "Passport Expiration Date",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "date",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 18,
-              label: "Visa Name",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 19,
-              label: "Visa Note",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 20,
-              label: "Visa Number",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 21,
-              label: "Visa Type",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                select: {
-                  status: "option",
-                  data: optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  )),
-                },
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 22,
-              label: "Visa Status",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "check",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 23,
-              label: "Visa Issue Date",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "date",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 24,
-              label: "Visa Begin Date",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "date",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-
-            {
-              id: 25,
               label: "Visa Expiration Date",
               xl: 2,
               md: 2,
@@ -3168,8 +3192,128 @@ export const TestDnD = (props) => {
               },
               handle: (e) => handleData(e),
             },
+            // {
+            //   id: 18,
+            //   label: "Visa Name",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
             {
-              id: 26,
+              id: 18,
+              label: "Visa Status",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "status",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 19,
+              label: "Note",
+              xl: 12,
+              md: 12,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            // ,
+            // {
+            //   id: 20,
+            //   label: "Visa Number",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 21,
+            //   label: "Visa Type",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     select: {
+            //       status: "option",
+            //       data: optiondata.map((option) => (
+            //         <option
+            //           style={headerTableStyle}
+            //           key={option.value}
+            //           value={option.value}
+            //         >
+            //           {option.label}
+            //         </option>
+            //       )),
+            //     },
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 22,
+            //   label: "Visa Status",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "status",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 23,
+            //   label: "Visa Issue Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "date",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 24,
+            //   label: "Visa Begin Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "date",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+
+            // {
+            //   id: 25,
+            //   label: "Visa Expiration Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "date",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            {
+              id: 20,
               label: "Rank",
               xl: 2,
               md: 2,
@@ -3191,7 +3335,7 @@ export const TestDnD = (props) => {
               handle: (e) => handleData(e),
             },
             {
-              id: 27,
+              id: 21,
               label: "Grade",
               xl: 2,
               md: 2,
@@ -3213,8 +3357,8 @@ export const TestDnD = (props) => {
               handle: (e) => handleData(e),
             },
             {
-              id: 28,
-              label: "Guest ID Entity",
+              id: 22,
+              label: "Guest Identity",
               xl: 2,
               md: 2,
               xs: 6,
@@ -3224,81 +3368,69 @@ export const TestDnD = (props) => {
               },
               handle: (e) => handleData(e),
             },
-            {
-              id: 29,
-              label: "Passport Type",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 30,
-              label: "Passport Nationality",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 31,
-              label: "Passport Number",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 32,
-              label: "Passport Scan Name",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-            {
-              id: 33,
-              label: "Passport Scan Date",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-              },
-              handle: (e) => handleData(e),
-            },
-
-            {
-              id: 99,
-              label: "Relation",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "AddRelation",
-                data: "+ Add",
-              },
-              // handle: (e) => handleAddComunication(e),
-            },
+            // {
+            //   id: 29,
+            //   label: "Passport Type",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 30,
+            //   label: "Passport Nationality",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 31,
+            //   label: "Passport Number",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 32,
+            //   label: "Passport Scan Name",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 33,
+            //   label: "Passport Scan Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
           ],
-        },
+        }
+        
       ]);
     }
     getconfig();
@@ -3312,6 +3444,156 @@ export const TestDnD = (props) => {
       let new_data = list[index];
       new_data.expend = !expend;
       setList([...list.slice(0, index), new_data, ...list.slice(index + 1)]);
+    }
+  };
+  
+  const handleAddAddress = async (id) => {
+    console.log("handleAddAddress", id);
+    let index = list.findIndex((x) => x.id === id);
+    if (index === -1) return;
+    else {
+      let address = list[index];
+      delete address.content[address.content.length - 1];
+      let newid = await address.content.reduce(
+        (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
+        0
+      );
+      address.content.push({
+        id: newid+1,
+        label: "Address",
+        xl: 2,
+        md: 2,
+        xs: 12,
+        select: {
+          status: "option",
+          data: [{label:"Organisation",label:"Home",label:"Resident"}].map((option) => (
+            <option
+              style={headerTableStyle}
+              key={option.label}
+              value={option.label}
+            >
+              {option.label}
+            </option>
+          )),
+        },
+      },
+      {
+        id: newid+2,
+        label: "Address 1",
+        xl: 5,
+        md: 5,
+        xs: 12,
+        select: {
+          status: "fill",
+          data: "",
+        },
+        handle: (e) => handleData(e),
+      },
+      {
+        id: newid+3,
+        label: "Address 2",
+        xl: 5,
+        md: 5,
+        xs: 12,
+        select: {
+          status: "fill",
+          data: "",
+        },
+        handle: (e) => handleData(e),
+      },
+      {
+        id: newid+4,
+        label: "Choose a country",
+        xl: 2,
+        md: 2,
+        xs: 6,
+        select: {
+          status: "option",
+          data: optioncountry.map((option) => (
+            <option
+              style={headerTableStyle}
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          )),
+        },
+        handle: (e) => handleData(e),
+      },
+      {
+        id: newid+5,
+        label: "City",
+        xl: 2,
+        md: 2,
+        xs: 6,
+        select: {
+          status: "option",
+          data: optioncountry.map((option) => (
+            <option
+              style={headerTableStyle}
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          )),
+        },
+        handle: (e) => handleData(e),
+      },
+      {
+        id: newid+6,
+        label: "State / Province",
+        xl: 2,
+        md: 2,
+        xs: 6,
+        select: {
+          status: "fill",
+          data: "",
+        },
+        handle: (e) => handleData(e),
+      },
+      {
+        id: newid+7,
+        label: "Postal",
+        xl: 2,
+        md: 2,
+        xs: 6,
+        select: {
+          status: "fill",
+          data: "",
+        },
+        handle: (e) => handleData(e),
+      },
+      {
+        id: newid+8,
+        label: "",
+        xl: 4,
+        md: 4,
+        xs: 4,
+        select: {
+          status: "offset",
+          data: "",
+        },
+        handle: (e) => handleData(e),
+      },
+      {
+        id: 99,
+        label: "AddAddress",
+        xl: 2,
+        md: 2,
+        xs: 6,
+        select: {
+          status: "AddAddress",
+          data: "+ More Address",
+        },
+      }
+);
+      setList([
+        ...list.slice(0, index),
+        address,
+        ...list.slice(index + 1),
+      ]);
     }
   };
 
@@ -3367,7 +3649,7 @@ export const TestDnD = (props) => {
         xs: 2,
         select: {
           status: "AddComunication",
-          data: "+ Add",
+          data: "+ More Communication",
         },
       });
       setList([
@@ -3422,7 +3704,7 @@ export const TestDnD = (props) => {
       });
       relation.content.push({
         id: newid + 3,
-        label: "Notes",
+        label: "Note",
         xl: 6,
         md: 6,
         xs: 12,
@@ -3440,7 +3722,7 @@ export const TestDnD = (props) => {
         xs: 2,
         select: {
           status: "AddRelation",
-          data: "+ Add",
+          data: "+ More Relation",
         },
       });
       setList([...list.slice(0, index), relation, ...list.slice(index + 1)]);
@@ -3604,7 +3886,26 @@ export const TestDnD = (props) => {
                                 md={detail.md}
                                 xs={detail.xs}
                               >
-                                {detail.select.status === "AddRelation" ? (
+                                {detail.select.status == "offset" ? (
+                                  <div/>
+                                  ) :
+                                detail.select.status == "checkbox" ? (
+                                  <FormControlLabel
+                                    value="start"
+                                    control={<Checkbox color="primary" />}
+                                    label={detail.label}
+                                    labelPlacement="start"
+                                  />
+                                  ):detail.select.status === "status" ? (
+                                    <div style={{ paddingTop: 10 }}>
+                                      <a>Status</a>
+                                      <Switch
+                                        defaultChecked={true}
+                                        color="primary"
+                                        onChange={(e) => { }}
+                                      />
+                                    </div>
+                                  ) :detail.select.status === "AddRelation" ? (
                                   <Button
                                     className={classes.root}
                                     variant="outlined"
@@ -3617,9 +3918,28 @@ export const TestDnD = (props) => {
                                     value={detail.select.data}
                                     onClick={() => handleAddRelation(item.id)}
                                   >
-                                    + Add
+                                    {detail.select.data}
                                   </Button>
-                                ) : detail.select.status ===
+                                ) 
+                                : detail.select.status ===
+                                  "AddAddress" ? (
+                                  <Button
+                                    className={classes.root}
+                                    variant="outlined"
+                                    fullWidth
+                                    style={{
+                                      backgroundColor: "blue",
+                                      color: "white",
+                                    }}
+                                    value={detail.select.data}
+                                    onClick={() =>
+                                      handleAddAddress(item.id)
+                                    }
+                                  >
+                                    {detail.select.data}
+                                  </Button>
+                                )
+                                : detail.select.status ===
                                   "AddComunication" ? (
                                   <Button
                                     className={classes.root}
@@ -3634,7 +3954,7 @@ export const TestDnD = (props) => {
                                       handleAddComunication(item.id)
                                     }
                                   >
-                                    + Add
+                                    {detail.select.data}
                                   </Button>
                                 ) : detail.select.status === "fix" ? (
                                   <TextField
