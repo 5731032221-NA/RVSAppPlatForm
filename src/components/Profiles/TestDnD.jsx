@@ -2944,6 +2944,8 @@ export const TestDnD = (props) => {
                         className={classes.defaultTheme}
                         expanded={item.expend}
                       >
+                        {
+                          item.title == "Personal"? null :
                         <AccordionSummary
                           style={{ color: mainColor, fontSize: 18 }}
                           onClick={() => handleExpend(item.id, item.expend)}
@@ -2957,6 +2959,7 @@ export const TestDnD = (props) => {
                             <ArrowDropUpIcon style={{ color: "blue" }} />
                           )}
                         </AccordionSummary>
+                        }
                         <AccordionDetails>
                           <Grid container spacing={2}>
                             {item.content.map((detail, index) => (

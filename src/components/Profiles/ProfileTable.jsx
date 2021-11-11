@@ -624,12 +624,14 @@ export const ProfileTable = (props) => {
                   ],
                   headerStyle: headerTableStyle,
                   searchFieldStyle: {
+                    placeholder: "test",
                     backgroundColor: themeState.paper,
                     color: themeState.color,
                     borderBottomColor: themeState.color,
-                    width: 230,
+                    width: 430,
                   },
                 }}
+                localization={{ toolbar: { searchPlaceholder: 'Search by name, ID Card/Passport, status' } }}
                 actions={[
                   {
                     icon: "edit",
