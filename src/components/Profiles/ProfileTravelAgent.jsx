@@ -20,6 +20,7 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import SearchIcon from "@material-ui/icons/Search";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
+import Switch from "@material-ui/core/Switch";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
 import TestDnD from "./TestDnD";
@@ -1082,16 +1083,56 @@ const optioncountry = [
   }
 ]
 
+const optioncreditrating = [
+  {
+    value: "1",
+    label: "5",
+  },
+  {
+    value: "2",
+    label: "4",
+  }, {
+    value: "3",
+    label: "3",
+  },
+  {
+    value: "4",
+    label: "2",
+  }, {
+    value: "5",
+    label: "1",
+  }
+]
+
+const optionrelation = [
+  {
+    value: "employer",
+    label: "employer",
+  },
+  {
+    value: "parentcompany",
+    label: "Parent Company",
+  },
+  {
+    value: "childcompany",
+    label: "Child Company",
+  },
+  {
+    value: "ManagerProfile",
+    label: "Manager",
+  }
+];
+
 
 const optioncommunication = [
-  {
-    value: "Telephone",
-    label: "Telephone Number",
-  },
-  {
-    value: "Mobile",
-    label: "Mobile Number",
-  },
+  // {
+  //   value: "Telephone",
+  //   label: "Telephone Number",
+  // },
+  // {
+  //   value: "Mobile",
+  //   label: "Mobile Number",
+  // },
   {
     value: "Email",
     label: "Email Address",
@@ -1119,53 +1160,6 @@ const optioncommunication = [
   {
     value: "BookingDotCom",
     label: "Booking Website",
-  }
-];
-
-const optioncurrency = [
-  {
-    value: "1",
-    label: "Baht ฿",
-  },
-  {
-    value: "2",
-    label: "Dollar $",
-  }
-]
-
-const optioncreditrating = [
-  {
-    value: "1",
-    label: "5",
-  },
-  {
-    value: "2",
-    label: "4",
-  },{
-    value: "3",
-    label: "3",
-  },
-  {
-    value: "4",
-    label: "2",
-  },{
-    value: "5",
-    label: "1",
-  }
-]
-
-const optionrelation = [
-  {
-    value: "employer",
-    label: "employer",
-  },
-  {
-    value: "parentcompany",
-    label: "Parent Company",
-  },
-  {
-    value: "childcompany",
-    label: "Child Company",
   }
 ];
 
@@ -1681,6 +1675,35 @@ export const ProfileTravelAgent = (props) => {
     // },
     {
       id: "7",
+      title: "Rate/Contract Information",
+      expend: false,
+      content: [
+        {
+          id: 1,
+          label: "Negotiated Rates Only",
+          xl: 6,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "check",
+            data: "",
+          }
+        },
+        {
+          id: 2,
+          label: "Rate Contract",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: ""
+          }
+        },
+      ]
+    },
+    {
+      id: "8",
       title: "Sales Information",
       expend: false,
       content: [
@@ -1919,49 +1942,49 @@ export const ProfileTravelAgent = (props) => {
     }
   };
 
-  
+
   const handleAddComunication = async (id) => {
 
-    let index = demoData.findIndex(x=> x.id === id);
+    let index = demoData.findIndex(x => x.id === id);
     if (index === -1) return;
-    else{
-     let comunication = demoData[index];
-     delete comunication.content[comunication.content.length-1];
-     let newid = await comunication.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
-     comunication.content.push(
-     {
-        id: newid+1,
-        label: "Choose a communication",
-        xl: 3,
-        md: 3,
-        xs: 6,
-        select: {
-          status: "option",
-          data: optioncommunication.map((option) => (
-            <option
-              style={headerTableStyle}
-              key={option.value}
-              value={option.value}
-            >
-              {option.label}
-            </option>
-          )),
-        },
-        handle: (e) => handleData(e),
-      })
+    else {
+      let comunication = demoData[index];
+      delete comunication.content[comunication.content.length - 1];
+      let newid = await comunication.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
       comunication.content.push(
-      {
-        id: newid+2,
-        label: "communication",
-        xl: 9,
-        md: 9,
-        xs: 6,
-        select: {
-          status: "fillnolabel",
-          data: "",
-        },
-        handle: (e) => handleData(e),
-      })
+        {
+          id: newid + 1,
+          label: "Choose a communication",
+          xl: 3,
+          md: 3,
+          xs: 6,
+          select: {
+            status: "option",
+            data: optioncommunication.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        })
+      comunication.content.push(
+        {
+          id: newid + 2,
+          label: "communication",
+          xl: 9,
+          md: 9,
+          xs: 6,
+          select: {
+            status: "fillnolabel",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        })
       comunication.content.push(
         {
           id: 99,
@@ -1975,9 +1998,9 @@ export const ProfileTravelAgent = (props) => {
           }
         })
       setDemoData([
-        ...demoData.slice(0,index),
+        ...demoData.slice(0, index),
         comunication,
-        ...demoData.slice(index+1)
+        ...demoData.slice(index + 1)
       ]);
     }
   };
@@ -1985,49 +2008,49 @@ export const ProfileTravelAgent = (props) => {
 
   const handleAddRelation = async (id) => {
 
-    let index = demoData.findIndex(x=> x.id === id);
+    let index = demoData.findIndex(x => x.id === id);
     if (index === -1) return;
-    else{
-     let relation = demoData[index];
-     delete relation.content[relation.content.length-1];
-     let newid = await relation.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
-      relation.content.push(
-      {
-        id: newid+1,
-        label: "Name",
-        xl: 4,
-        md: 4,
-        xs: 6,
-        select: {
-          status: "fill",
-          data: "",
-        },
-        handle: (e) => handleData(e),
-      })
+    else {
+      let relation = demoData[index];
+      delete relation.content[relation.content.length - 1];
+      let newid = await relation.content.reduce((acc, shot) => acc = acc > shot.id ? acc : shot.id, 0);
       relation.content.push(
         {
-           id: newid+2,
-           label: "Name Type",
-           xl: 2,
-           md: 2,
-           xs: 6,
-           select: {
-             status: "option",
-             data: optionrelation.map((option) => (
-               <option
-                 style={headerTableStyle}
-                 key={option.value}
-                 value={option.value}
-               >
-                 {option.label}
-               </option>
-             )),
-           },
-           handle: (e) => handleData(e),
-         })
+          id: newid + 1,
+          label: "Name",
+          xl: 4,
+          md: 4,
+          xs: 6,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        })
       relation.content.push(
         {
-          id: newid+3,
+          id: newid + 2,
+          label: "Name Type",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "option",
+            data: optionrelation.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        })
+      relation.content.push(
+        {
+          id: newid + 3,
           label: "Notes",
           xl: 6,
           md: 6,
@@ -2051,9 +2074,9 @@ export const ProfileTravelAgent = (props) => {
           }
         })
       setDemoData([
-        ...demoData.slice(0,index),
+        ...demoData.slice(0, index),
         relation,
-        ...demoData.slice(index+1)
+        ...demoData.slice(index + 1)
       ]);
     }
   };
@@ -2078,7 +2101,7 @@ export const ProfileTravelAgent = (props) => {
                 backgroundColor: themeState.paper,
               }}
             >
-              <Container maxWidth="xl">
+              {/* <Container maxWidth="xl">
                 <Grid container alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
                     {" "}
@@ -2092,7 +2115,7 @@ export const ProfileTravelAgent = (props) => {
                     />
                   </Grid>
                 </Grid>
-              </Container>
+              </Container> */}
               <Divider
                 style={{ marginTop: 10, backgroundColor: themeState.color }}
               />
@@ -2105,30 +2128,30 @@ export const ProfileTravelAgent = (props) => {
                 {list.map((item, index) => (
                   <Draggable draggableId={item.id} key={item.id} index={index}>
                     {(provided, snapshot) => (
-                       <Accordion
-                       ref={provided.innerRef}
-                       {...provided.draggableProps}
-                       {...provided.dragHandleProps}
-                       style={getItemStyle(
-                         snapshot.isDragging,
-                         provided.draggableProps.style
-                       )}
-                       className={classes.defaultTheme}
-                       expanded={item.expend}
-                     >
-                       <AccordionSummary
-                         style={{ color: mainColor, fontSize: 18 }}
-                         onClick={()=>handleExpend(item.id,item.expend)}
-                       >
-                        <div style={{ color: "blue" }}>
-                             {item.title}&nbsp;
-                           </div>{" "}
-                           {item.expend ? (
-                             <ArrowDropDownIcon style={{ color: "blue" }} />
-                           ) : (
-                             <ArrowDropUpIcon style={{ color: "blue" }} />
-                           )}
-                       </AccordionSummary>
+                      <Accordion
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                        className={classes.defaultTheme}
+                        expanded={item.expend}
+                      >
+                        <AccordionSummary
+                          style={{ color: mainColor, fontSize: 18 }}
+                          onClick={() => handleExpend(item.id, item.expend)}
+                        >
+                          <div style={{ color: "blue" }}>
+                            {item.title}&nbsp;
+                          </div>{" "}
+                          {item.expend ? (
+                            <ArrowDropDownIcon style={{ color: "blue" }} />
+                          ) : (
+                            <ArrowDropUpIcon style={{ color: "blue" }} />
+                          )}
+                        </AccordionSummary>
                         <AccordionDetails>
                           <Grid container spacing={2}>
                             {item.content.map((detail, index) => (
@@ -2140,88 +2163,113 @@ export const ProfileTravelAgent = (props) => {
                                 md={detail.md}
                                 xs={detail.xs}
                               >
-                                { detail.select.status === "AddComunication" ? (
-                                    <Button
-                                    className={classes.root}
-                                      variant="outlined"
-                                      fullWidth
-                                      style={{backgroundColor:"blue",color:"white"}}
-                                      value={detail.select.data}
-                                      onClick={() => handleAddComunication(item.id)}
-                                      >+ Add</Button>
-                                  ) :detail.select.status === "fillnolabel" ? (
-                                    <TextField
-                                      className={classes.root}
-                                      // label={detail.label}
-                                      variant="outlined"
-                                      InputProps={{
-                                        style: headerTableStyle,
-                                      }}
-                                      InputLabelProps={{
-                                        style: {color:"#AAAAAA"}
-                                      }}
-                                      fullWidth
-                                      onChange={detail.handle}
-                                    />
-                                  ):detail.select.status === "AddRelation" ? (
-                                    <Button
-                                    className={classes.root}
-                                      variant="outlined"
-                                      fullWidth
-                                      style={{backgroundColor:"blue",color:"white"}}
-                                      value={detail.select.data}
-                                      onClick={() => handleAddRelation(item.id)}
-                                      >+ Add</Button>
-                                  ) :detail.select.status === "fix" ? (
-                                    <TextField
-                                    className={classes.root}
-                                      variant="outlined"
-                                      fullWidth
-                                      style={{backgroundColor:"#EEEEEE"}}
-                                      // disabled={true}
-                                      value={detail.select.data}
-                                      onFocus={false}
-                                      />
-                                  ) :detail.select.status === "fill" ? (
-                                  <TextField
-                                    className={classes.root}
-                                    label={detail.label}
-                                    variant="outlined"
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    InputLabelProps={{
-                                      style: {color:"#AAAAAA"}
-                                    }}
-                                    fullWidth
-                                    onChange={detail.handle}
-                                  />
-                                ) : detail.select.status === "option" ? (
-                                  <TextField
-                                    className={classes.root}
-                                    label={detail.label}
-                                    variant="outlined"
-                                    fullWidth
-                                    select
-                                    defaultValue={" "}
-                                    SelectProps={{
-                                      native: true,
-                                    }}
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    onChange={detail.handle}
-                                  >
-                                    {detail.select.data}
-                                  </TextField>
-                                ) : (
+                                {detail.select.status === "check" ? (
                                   <FormControlLabel
-                                    value="start"
+                                    // value="start"
                                     control={<Checkbox color="primary" />}
                                     label={detail.label}
-                                    labelPlacement="start"
+                                    labelPlacement="end"
                                   />
-                                )}
+                                ) :
+                                  detail.select.status == "checkbox" ? (
+                                    <FormControlLabel
+                                      value="start"
+                                      control={<Checkbox color="primary" />}
+                                      label={detail.select.data}
+                                      labelPlacement="start"
+                                    />
+                                  ) :
+                                    detail.select.status === "status" ? (
+                                      <div style={{ paddingTop: 10 }}>
+                                        <a>Status</a>
+                                        <Switch
+                                          defaultChecked={true}
+                                          color="primary"
+                                          onChange={(e) => { }}
+                                        />
+                                      </div>
+                                    ) : detail.select.status === "AddComunication" ? (
+                                      <Button
+                                        className={classes.root}
+                                        variant="outlined"
+                                        fullWidth
+                                        style={{ backgroundColor: "blue", color: "white" }}
+                                        value={detail.select.data}
+                                        onClick={() => handleAddComunication(item.id)}
+                                      >+ Add</Button>
+                                    ) : detail.select.status === "fillnolabel" ? (
+                                      <TextField
+                                        className={classes.root}
+                                        // label={detail.label}
+                                        variant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" }
+                                        }}
+                                        fullWidth
+                                        onChange={detail.handle}
+                                      />
+                                    ) : detail.select.status === "AddRelation" ? (
+                                      <Button
+                                        className={classes.root}
+                                        variant="outlined"
+                                        fullWidth
+                                        style={{ backgroundColor: "blue", color: "white" }}
+                                        value={detail.select.data}
+                                        onClick={() => handleAddRelation(item.id)}
+                                      >+ Add</Button>
+                                    ) : detail.select.status === "fix" ? (
+                                      <TextField
+                                        className={classes.root}
+                                        variant="outlined"
+                                        fullWidth
+                                        style={{ backgroundColor: "#EEEEEE" }}
+                                        // disabled={true}
+                                        value={detail.select.data}
+                                        onFocus={false}
+                                      />
+                                    ) : detail.select.status === "fill" ? (
+                                      <TextField
+                                        className={classes.root}
+                                        label={detail.label}
+                                        variant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" }
+                                        }}
+                                        fullWidth
+                                        onChange={detail.handle}
+                                      />
+                                    ) : detail.select.status === "option" ? (
+                                      <TextField
+                                        className={classes.root}
+                                        label={detail.label}
+                                        variant="outlined"
+                                        fullWidth
+                                        select
+                                        defaultValue={" "}
+                                        SelectProps={{
+                                          native: true,
+                                        }}
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        onChange={detail.handle}
+                                      >
+                                        {detail.select.data}
+                                      </TextField>
+                                    ) : (
+                                      <FormControlLabel
+                                        value="start"
+                                        control={<Checkbox color="primary" />}
+                                        label={detail.label}
+                                        labelPlacement="start"
+                                      />
+                                    )}
                               </Grid>
                             ))}
                           </Grid>

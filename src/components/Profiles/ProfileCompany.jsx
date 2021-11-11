@@ -31,9 +31,16 @@ import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Breadcrumbs, Link } from "@material-ui/core";
-
+import { getconfigurationbypropertycode } from "../../services/user.service";
 import { nextComponent } from "../../middleware/action";
 import DateFnsUtils from "@date-io/date-fns";
+import {
+  getCompanyProfile,
+  getCompanyProfileById,
+  postCompanyProfile,
+  updateCompanyProfile,
+  deleteCompanyProfileById,
+} from "../../services/companyprofile.service";
 import {
   DatePicker,
   TimePicker,
@@ -1174,9 +1181,10 @@ export const ProfileCompany = (props) => {
   const [action, setAction] = React.useState(props.action);
 
 
-  React.useEffect(()=>{
-   console.log("props.action:",props.action);
-  },[props.action])
+  // React.useEffect(async( ) => {
+  //  console.log("props.action:",props.action);
+  //              await handleAddDatatoDatabase();
+  // },[props.action])
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -1223,18 +1231,63 @@ export const ProfileCompany = (props) => {
   };
 
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
-  React.useEffect(() => {
+  const pageProperty = useSelector((state) => state.reducer.property);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [errorParameter, setErrorParameter] = useState(null);
+  React.useEffect(async () => {
+
     setSmallwidth(window.innerWidth < 1000);
+
+
+
+    let getconfigdata = await getconfigurationbypropertycode(
+      sessionStorage.getItem("auth"),
+      pageProperty
+    );
+    console.log("getconfigdata:", getconfigdata);
+    let configdata = getconfigdata.content[getconfigdata.content.length - 1];
+    let optionTitle = await getlist(configdata, "PCINDTT");
+    // let optionDocumentType = await getlist(configdata,"");
+    console.log("optionTitle:", optionTitle);
+    let optiongender = await getlist(configdata, "PCINDGD");
+    console.log("optiongender:", optiongender);
+    let relation = await getlist(configdata, "PCINDRL");
+    console.log("relation:", relation);
+    let communication = await getlist(configdata, "PCINDCM");
+    console.log("communication:", communication);
+    // let optionDocumentType = await getlist(configdata,"");
+
+
+
   }, []);
+
+  async function getlist(config, field) {
+    for (var i = 0; i < config.length; i++) {
+      var obj = config[i];
+      if (obj.code === field) {
+        let list = [];
+        obj.children.forEach((element) =>
+          list.push({
+            value: element.name_en,
+            label: element.name_en,
+          })
+        );
+        return list;
+      } else if (obj.children) {
+        let _getlist = await getlist(obj.children, field);
+        if (_getlist) return _getlist;
+      }
+    }
+  }
 
   const handleComponentState = async (comp) => {
     console.log("setcomp", comp);
     props.nextComponent(comp);
   };
 
- 
-  const [name1, setname1] = useState("");
-  const [name2, setname2] = React.useState("");
+
+  const [nameOne, setnameOne] = useState("");
+  const [nameTwo, setnameTwo] = React.useState("");
   const [CompanyTypeCode, setCompanyTypeCode] = React.useState("");
   const [Abbreviation, setAbbreviation] = React.useState("");
   const [GuaranteeMethodCode, setGuaranteeMethodCode] = React.useState("");
@@ -1271,13 +1324,13 @@ export const ProfileCompany = (props) => {
 
 
 
-  React.useEffect(() => {
-    console.log("name1:",name1);
- },[name1])
+  //   React.useEffect(() => {
+  //     console.log("name1:",name1);
+  //  },[name1])
 
- React.useEffect(() => {
-  console.log("name2:",name2);
-},[name2])
+  //  React.useEffect(() => {
+  //   console.log("name2:",name2);
+  // },[name2])
 
   const [demoData, setDemoData] = React.useState([
     {
@@ -1295,7 +1348,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: " "
           },
-          handle: (e) => setname1(e.target.value),
+          handle: (e) => setnameOne(e.target.value),
         },
         {
           id: 2,
@@ -1307,7 +1360,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: " ",
           },
-          handle: (e) => setname2(e.target.value),
+          handle: (e) => setnameTwo(e.target.value),
         },
         {
           id: 3,
@@ -1327,7 +1380,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setCompanyTypeCode(e.target.value),
         },
         {
           id: 4,
@@ -1339,7 +1392,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setAbbreviation(e.target.value),
         },
         {
           id: 5,
@@ -1359,7 +1412,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setProperty(e.target.value),
         },
         {
           id: 6,
@@ -1391,7 +1444,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setCurrency(e.target.value),
         },
         {
           id: 8,
@@ -1411,7 +1464,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setCreditRating(e.target.value),
         },
         {
           id: 9,
@@ -1423,7 +1476,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setIATA(e.target.value),
         },
         {
           id: 10,
@@ -1435,7 +1488,7 @@ export const ProfileCompany = (props) => {
             status: "status",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setStatus(e.target.value),
         },
       ],
     },
@@ -1454,7 +1507,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setStreetAddress(e.target.value),
         },
         {
           id: 5,
@@ -1474,7 +1527,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setChooseacountry(e.target.value),
         },
         {
           id: 6,
@@ -1486,7 +1539,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setCity(e.target.value),
         },
         {
           id: 7,
@@ -1498,7 +1551,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setState(e.target.value),
         },
         {
           id: 8,
@@ -1510,7 +1563,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setPostal(e.target.value),
         },
       ],
     },
@@ -1529,7 +1582,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setBStreetAddress(e.target.value),
         },
         {
           id: 5,
@@ -1549,7 +1602,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setBChooseacountry(e.target.value),
         },
         {
           id: 6,
@@ -1561,6 +1614,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
+          handle: (e) => setBCity(e.target.value),
         },
         {
           id: 7,
@@ -1572,7 +1626,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setBState(e.target.value),
         },
         {
           id: 8,
@@ -1584,7 +1638,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setBPostal(e.target.value),
         },
         {
           id: 8,
@@ -1596,7 +1650,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setTaxID(e.target.value),
         },
         {
           id: 8,
@@ -1608,7 +1662,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setTaxID2(e.target.value),
         },
       ],
     },
@@ -1676,7 +1730,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: ""
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setCreditCardNumber(e.target.value),
         },
         {
           id: 3,
@@ -1688,7 +1742,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: ""
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setOutstandingAmount(e.target.value),
         },
         {
           id: 4,
@@ -1700,7 +1754,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setFloatingDepositionAmount(e.target.value),
         },
         {
           id: 5,
@@ -1712,7 +1766,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setARNumber(e.target.value),
         },
       ],
     },
@@ -1757,6 +1811,35 @@ export const ProfileCompany = (props) => {
     // },
     {
       id: "7",
+      title: "Rate/Contract Information",
+      expend: false,
+      content: [
+        {
+          id: 1,
+          label: "Negotiated Rates Only",
+          xl: 6,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "check",
+            data: "",
+          }
+        },
+        {
+          id: 2,
+          label: "Rate Contract",
+          xl: 2,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: ""
+          }
+        },
+      ]
+    },
+    {
+      id: "8",
       title: "Sales Information",
       expend: false,
       content: [
@@ -1769,7 +1852,8 @@ export const ProfileCompany = (props) => {
           select: {
             status: "fill",
             data: "",
-          }
+          },
+          handle: (e) => setSalesUserName(e.target.value),
         },
         {
           id: 2,
@@ -1789,7 +1873,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setIndustry(e.target.value),
         },
         // {
         //   id: 3,
@@ -1810,8 +1894,8 @@ export const ProfileCompany = (props) => {
           md: 6,
           xs: 12,
           select: {
-            status:  "option",
-            data:[{ label: "Code1" }, { label: "Code2" }].map((option) => (
+            status: "option",
+            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
               <option
                 style={headerTableStyle}
                 key={option.label}
@@ -1821,7 +1905,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setMarketSegment(e.target.value),
         },
         {
           id: 5,
@@ -1830,8 +1914,8 @@ export const ProfileCompany = (props) => {
           md: 6,
           xs: 12,
           select: {
-            status:  "option",
-            data:[{ label: "Code1" }, { label: "Code2" }].map((option) => (
+            status: "option",
+            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
               <option
                 style={headerTableStyle}
                 key={option.label}
@@ -1841,7 +1925,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setSourceOfBusiness(e.target.value),
         },
         {
           id: 6,
@@ -1861,7 +1945,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setTrackCode(e.target.value),
         },
         {
           id: 7,
@@ -1881,7 +1965,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setReasonForStay(e.target.value),
         },
         {
           id: 8,
@@ -1900,7 +1984,8 @@ export const ProfileCompany = (props) => {
                 {option.label}
               </option>
             )),
-          }
+          },
+          handle: (e) => setGeographic(e.target.value),
         }
         // ,
         // {
@@ -1975,27 +2060,121 @@ export const ProfileCompany = (props) => {
     }),
   });
 
- 
 
-  
-  const handleData = (e) => {
-    try {
-      
-      console.log("handleDataname1 : ", name1);
-    } catch (error) {
-      console.log("::::",error);
+
+  const handleAddDatatoDatabase = async (e) => {
+
+    console.log(nameOne,
+      nameTwo,
+      CompanyTypeCode,
+      Abbreviation,
+      GuaranteeMethodCode,
+      Property,
+      Currency,
+      CreditRating,
+      IATA,
+      Status,
+      StreetAddress,
+      Chooseacountry,
+      City,
+      State,
+      Postal,
+      BStreetAddress,
+      BChooseacountry,
+      BCity,
+      BState,
+      BPostal,
+      TaxID,
+      TaxID2,
+      Communication,
+      Relationship,
+      CreditCardNumber,
+      OutstandingAmount,
+      FloatingDepositionAmount,
+      ARNumber,
+      SalesUserName,
+      Industry,
+      MarketSegment,
+      SourceOfBusiness,
+      TrackCode,
+      ReasonForStay,
+      Geographic);
+
+    props.setAction("none");
+    if (nameOne == "") {
+      setErrorParameter("name1 is required")
+      setErrorMessage(true);
+    } else if (nameTwo == "") {
+      setErrorParameter("name2 is required")
+      setErrorMessage(true);
+    } else {
+
+      setErrorMessage(false);
+
+      let req = {
+        nameOne: nameOne,
+        nameTwo: nameTwo,
+        CompanyTypeCode: CompanyTypeCode,
+        Abbreviation: Abbreviation,
+        GuaranteeMethodCode: GuaranteeMethodCode,
+        Property: Property,
+        Currency: Currency,
+        CreditRating: CreditRating,
+        IATA: IATA,
+        Status: Status,
+        StreetAddress: StreetAddress,
+        Chooseacountry: Chooseacountry,
+        City: City,
+        State: State,
+        Postal: Postal,
+        BStreetAddress: BStreetAddress,
+        BChooseacountry: BChooseacountry,
+        BCity: BCity,
+        BState: BState,
+        BPostal: BPostal,
+        TaxID: TaxID,
+        TaxID2: TaxID2,
+        Communication: Communication,
+        Relationship: Relationship,
+        CreditCardNumber: CreditCardNumber,
+        OutstandingAmount: OutstandingAmount,
+        FloatingDepositionAmount: FloatingDepositionAmount,
+        ARNumber: ARNumber,
+        SalesUserName: SalesUserName,
+        Industry: Industry,
+        MarketSegment: MarketSegment,
+        SourceOfBusiness: SourceOfBusiness,
+        TrackCode: TrackCode,
+        ReasonForStay: ReasonForStay,
+        Geographic: Geographic
+      };
+      console.log("datafrom post", req)
+      const data = await postCompanyProfile(
+        sessionStorage.getItem("auth"),
+        req
+      );
+
+
+      console.log("datafrom post", data);
+
     }
-  
   };
-  
-  const handleData1 = (e) => {
-    console.log("checkfield1:",e.target.value);
-   
-    // if("name1" == checkfield){
-    //   setname1(e.target.value)
-    //   console.log("name : ", name1);
-    // }
-  };
+
+  //data from button for  trigger (add or delete)
+  React.useEffect(async () => {
+    if (props.action == "add") {
+      console.log("action add", props.action);
+      await handleAddDatatoDatabase();
+    } else if (props.action == "edit") {
+      // await handleEditDatatoDatabase();
+      console.log("action edit", props.action);
+    }
+  }, [props.action]);
+
+  const handleData = (e) => {
+
+  }
+
 
   const handleExpend = (id, expend) => {
     let index = demoData.findIndex((x) => x.id === id);
@@ -2187,6 +2366,21 @@ export const ProfileCompany = (props) => {
                   </Grid>
                 </Grid>
               </Container> */}
+
+              {errorMessage ? (
+                <div
+                  style={{
+                    background: "#ff0033",
+                    textAlign: "center",
+                    color: "white",
+                    height: "30px",
+                    marginTop: 5,
+                    paddingTop: 5,
+                  }}
+                >
+                  {errorParameter}
+                </div>
+              ) : null}
               <Divider
                 style={{ marginTop: 10, backgroundColor: themeState.color }}
               />
@@ -2199,7 +2393,7 @@ export const ProfileCompany = (props) => {
                 {list.map((item, index) => (
                   <Draggable draggableId={item.id} key={item.id} index={index}>
                     {(provided, snapshot) => (
-                      <Accordion 
+                      <Accordion
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -2234,127 +2428,134 @@ export const ProfileCompany = (props) => {
                                 md={detail.md}
                                 xs={detail.xs}
                               >
-                                {
+                                {detail.select.status === "check" ? (
+                                  <FormControlLabel
+                                    // value="start"
+                                    control={<Checkbox color="primary" />}
+                                    label={detail.label}
+                                    labelPlacement="end"
+                                  />
+                                ) :
                                   detail.select.status == "checkbox" ? (
                                     <FormControlLabel
-                      value="start"
-                      control={<Checkbox color="primary" />}
-                      label={detail.select.data}
-                      labelPlacement="start"
-                    />
-                                  ):
-                                  detail.select.status === "status" ? (
-                                    <div style={{ paddingTop: 10 }}>
-                                      <a>Status</a>
-                                      <Switch
-                                        defaultChecked={true}
-                                        color="primary"
-                                        onChange={(e) => { }}
-                                      />
-                                    </div>
-                                  ) : detail.select.status === "AddComunication" ? (
-                                    <Button
-                                      className={classes.root}
-                                      variant="outlined"
-                                      fullWidth
-                                      style={{ backgroundColor: "blue", color: "white" }}
-                                      value={detail.select.data}
-                                      onClick={() => handleAddComunication(item.id)}
-                                    >+ Add</Button>
-                                  ) : detail.select.status === "fillnolabel" ? (
-                                    <TextField
-                                      className={classes.root}
-                                      // label={detail.label}
-                                      variant="outlined"
-                                      InputProps={{
-                                        style: headerTableStyle,
-                                      }}
-                                      InputLabelProps={{
-                                        style: { color: "#AAAAAA" }
-                                      }}
-                                      fullWidth
-                                      onChange={detail.handle}
+                                      value="start"
+                                      control={<Checkbox color="primary" />}
+                                      label={detail.select.data}
+                                      labelPlacement="start"
                                     />
-                                  ) : detail.select.status === "AddRelation" ? (
-                                    <Button
-                                      className={classes.root}
-                                      variant="outlined"
-                                      fullWidth
-                                      style={{ backgroundColor: "blue", color: "white" }}
-                                      value={detail.select.data}
-                                      onClick={() => handleAddRelation(item.id)}
-                                    >+ Add</Button>
-                                  ) : detail.select.status === "fix" ? (
-                                    <TextField
-                                      className={classes.root}
-                                      variant="outlined"
-                                      fullWidth
-                                      style={{ backgroundColor: "#EEEEEE" }}
-                                      // disabled={true}
-                                      value={detail.select.data}
-                                      onFocus={false}
-                                    />
-                                  ) : detail.select.status === "fill" ? (
-                                    <TextField
-                                      className={classes.root}
-                                      label={detail.label}
-                                      variant="outlined"
-                                      InputProps={{
-                                        style: headerTableStyle,
-                                      }}
-                                      InputLabelProps={{
-                                        style: { color: "#AAAAAA" }
-                                      }}
-                                      fullWidth
-                                      onChange={detail.handle}
-                                    />
-                                  ) : detail.select.status === "option" ? (
-                                    <TextField
-                                      className={classes.root}
-                                      label={detail.label}
-                                      variant="outlined"
-                                      fullWidth
-                                      select
-                                      defaultValue={" "}
-                                      SelectProps={{
-                                        native: true,
-                                      }}
-                                      InputProps={{
-                                        style: headerTableStyle,
-                                      }}
-                                      onChange={detail.handle}
-                                    >
-                                      {detail.select.data}
-                                    </TextField>
-                                  ) : detail.select.status === "datetime" ? (
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                      <KeyboardDatePicker
+                                  ) :
+                                    detail.select.status === "status" ? (
+                                      <div style={{ paddingTop: 10 }}>
+                                        <a>Status</a>
+                                        <Switch
+                                          defaultChecked={true}
+                                          color="primary"
+                                          onChange={(e) => { }}
+                                        />
+                                      </div>
+                                    ) : detail.select.status === "AddComunication" ? (
+                                      <Button
                                         className={classes.root}
-                                        label={detail.label}
-                                        inputVariant="outlined"
+                                        variant="outlined"
+                                        fullWidth
+                                        style={{ backgroundColor: "blue", color: "white" }}
+                                        value={detail.select.data}
+                                        onClick={() => handleAddComunication(item.id)}
+                                      >+ Add</Button>
+                                    ) : detail.select.status === "fillnolabel" ? (
+                                      <TextField
+                                        className={classes.root}
+                                        // label={detail.label}
+                                        variant="outlined"
                                         InputProps={{
                                           style: headerTableStyle,
                                         }}
-                                        // format="dd/MM/yyyy"
-                                        // value={selectedDateStartEdit}
-                                        // onChange={handleDateStartEdit}
-                                        onChange={detail.handle}
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" }
+                                        }}
                                         fullWidth
+                                        onChange={detail.handle}
                                       />
-                                    </MuiPickersUtilsProvider>
-                                  ) : (
-                                    <Typography
-                                      variant="subtitle1"
-                                      color="initial"
-                                      style={{
-                                        paddingBottom: 10,
-                                        paddingTop: 10,
-                                        color: "blue",
-                                      }}
-                                    >
-                                      {detail.label}
-                                    </Typography>
-                                  )}
+                                    ) : detail.select.status === "AddRelation" ? (
+                                      <Button
+                                        className={classes.root}
+                                        variant="outlined"
+                                        fullWidth
+                                        style={{ backgroundColor: "blue", color: "white" }}
+                                        value={detail.select.data}
+                                        onClick={() => handleAddRelation(item.id)}
+                                      >+ Add</Button>
+                                    ) : detail.select.status === "fix" ? (
+                                      <TextField
+                                        className={classes.root}
+                                        variant="outlined"
+                                        fullWidth
+                                        style={{ backgroundColor: "#EEEEEE" }}
+                                        // disabled={true}
+                                        value={detail.select.data}
+                                        onFocus={false}
+                                      />
+                                    ) : detail.select.status === "fill" ? (
+                                      <TextField
+                                        className={classes.root}
+                                        label={detail.label}
+                                        variant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" }
+                                        }}
+                                        fullWidth
+                                        onChange={detail.handle}
+                                      />
+                                    ) : detail.select.status === "option" ? (
+                                      <TextField
+                                        className={classes.root}
+                                        label={detail.label}
+                                        variant="outlined"
+                                        fullWidth
+                                        select
+                                        defaultValue={" "}
+                                        SelectProps={{
+                                          native: true,
+                                        }}
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        onChange={detail.handle}
+                                      >
+                                        {detail.select.data}
+                                      </TextField>
+                                    ) : detail.select.status === "datetime" ? (
+                                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <KeyboardDatePicker
+                                          className={classes.root}
+                                          label={detail.label}
+                                          inputVariant="outlined"
+                                          InputProps={{
+                                            style: headerTableStyle,
+                                          }}
+                                          // format="dd/MM/yyyy"
+                                          // value={selectedDateStartEdit}
+                                          // onChange={handleDateStartEdit}
+                                          onChange={detail.handle}
+                                          fullWidth
+                                        />
+                                      </MuiPickersUtilsProvider>
+                                    ) : (
+                                      <Typography
+                                        variant="subtitle1"
+                                        color="initial"
+                                        style={{
+                                          paddingBottom: 10,
+                                          paddingTop: 10,
+                                          color: "blue",
+                                        }}
+                                      >
+                                        {detail.label}
+                                      </Typography>
+                                    )}
                               </Grid>
                             ))}
                           </Grid>
