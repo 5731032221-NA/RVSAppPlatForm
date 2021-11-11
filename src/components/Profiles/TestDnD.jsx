@@ -22,6 +22,10 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import { getconfigurationbypropertycode } from "../../services/user.service";
 import {
   getIndividualProfile,
@@ -2307,6 +2311,56 @@ export const TestDnD = (props) => {
             },
             {
               id: 4,
+              label: "Name Prefix",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "option",
+                data: optionTitle.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                    noWrap
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.title : "Mr.",
+              },
+              handle: (e) => setNamePrefix(e.target.value),
+            },
+            {
+              id: 5,
+              label: "Middle Initial",
+              xl: 5,
+              md: 5,
+              xs: 8,
+              select: {
+                status: "fill",
+                // data: props.editdata.firstname,
+                data: props.editdata != null ? props.editdata.firstname : "",
+              },
+              handle: (e) => setFirstname(e.target.value),
+            },
+            {
+              id: 6,
+              label: "Name Suffix",
+              xl: 5,
+              md: 5,
+              xs: 8,
+              select: {
+                status: "fill",
+                // data: props.editdata.firstname,
+                data: props.editdata != null ? props.editdata.firstname : "",
+              },
+              handle: (e) => setFirstname(e.target.value),
+            },
+
+            {
+              id: 7,
               label: "Choose a Document Type*",
               xl: 2,
               md: 2,
@@ -2327,7 +2381,7 @@ export const TestDnD = (props) => {
               handle: (e) => handleData(e),
             },
             {
-              id: 5,
+              id: 8,
               label: "ID Number",
               xl: 2,
               md: 2,
@@ -2340,7 +2394,7 @@ export const TestDnD = (props) => {
               handle: (e) => setIDNumber(e.target.value),
             },
             {
-              id: 6,
+              id: 9,
               label: "Nationality*",
               xl: 2,
               md: 2,
@@ -2362,31 +2416,67 @@ export const TestDnD = (props) => {
               handle: (e) => setNationality(e.target.value),
             },
             {
-              id: 7,
-              label: "Issue Date",
+              id: 10,
+              label: "Birth country",
               xl: 2,
               md: 2,
-              xs: 12,
+              xs: 6,
               select: {
-                status: "datetime",
-                data: "",
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
               },
-              handle: " ",
+              handle: (e) => handleData(e),
             },
             {
-              id: 8,
-              label: "Expiry Date",
+              id: 11,
+              label: "Birth City",
               xl: 2,
               md: 2,
-              xs: 12,
+              xs: 6,
               select: {
-                status: "datetime",
-                data: "",
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
               },
-              handle: " ",
+              handle: (e) => handleData(e),
             },
             {
-              id: 9,
+              id: 12,
+              label: "Religion",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 13,
               label: "Date of Birth",
               xl: 2,
               md: 2,
@@ -2397,6 +2487,31 @@ export const TestDnD = (props) => {
               },
               handle: " ",
             },
+
+            // {
+            //   id: 7,
+            //   label: "Issue Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "datetime",
+            //     data: "",
+            //   },
+            //   handle: " ",
+            // },
+            // {
+            //   id: 8,
+            //   label: "Expiry Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "datetime",
+            //     data: "",
+            //   },
+            //   handle: " ",
+            // },
           ],
         },
         {
@@ -2519,17 +2634,16 @@ export const TestDnD = (props) => {
               md: 2,
               xs: 6,
               select: {
-                status: "fill",
-                data: "",
-                // optionCity.map((option) => (
-                //   <option
-                //     style={headerTableStyle}
-                //     key={option.value}
-                //     value={option.value}
-                //   >
-                //     {option.label}
-                //   </option>
-                //  )),
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
               },
               handle: (e) => handleData(e),
             },
@@ -2652,6 +2766,525 @@ export const TestDnD = (props) => {
           title: "Relation",
           expend: true,
           content: [
+            {
+              id: 99,
+              label: "Relation",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "AddRelation",
+                data: "+ Add",
+              },
+              // handle: (e) => handleAddComunication(e),
+            },
+          ],
+        },
+        {
+          id: "5",
+          title: "Internal Infomation",
+          expend: true,
+          content: [
+            {
+              id: 0,
+              label: "No Post",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "check",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 1,
+              label: "Guest Catagory",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 2,
+              label: "NRG",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "check",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 3,
+              label: "VVIP",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 4,
+              label: "Birth Region",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 5,
+              label: "Birth Province",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 6,
+              label: "Guest Type",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 7,
+              label: "ID Check",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "check",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 8,
+              label: "ID Type",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                select: {
+                  status: "option",
+                  data: optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  )),
+                },
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 9,
+              label: "ID Number",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 10,
+              label: "Issue Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 11,
+              label: "ID Expiration Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 12,
+              label: "Passport Number",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 13,
+              label: "Passport Name",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 14,
+              label: "Passport Visa Check",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "check",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 15,
+              label: "Issuing Country",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                select: {
+                  status: "option",
+                  data: optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  )),
+                },
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 16,
+              label: "Passport Issued Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 17,
+              label: "Passport Expiration Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 18,
+              label: "Visa Name",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 19,
+              label: "Visa Note",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 20,
+              label: "Visa Number",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 21,
+              label: "Visa Type",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                select: {
+                  status: "option",
+                  data: optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  )),
+                },
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 22,
+              label: "Visa Status",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "check",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 23,
+              label: "Visa Issue Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 24,
+              label: "Visa Begin Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+
+            {
+              id: 25,
+              label: "Visa Expiration Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 26,
+              label: "Rank",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                select: {
+                  status: "option",
+                  data: optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  )),
+                },
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 27,
+              label: "Grade",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                select: {
+                  status: "option",
+                  data: optiondata.map((option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  )),
+                },
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 28,
+              label: "Guest ID Entity",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 29,
+              label: "Passport Type",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 30,
+              label: "Passport Nationality",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 31,
+              label: "Passport Number",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 32,
+              label: "Passport Scan Name",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 33,
+              label: "Passport Scan Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+
             {
               id: 99,
               label: "Relation",
@@ -3067,6 +3700,13 @@ export const TestDnD = (props) => {
                                   >
                                     {detail.select.data}
                                   </TextField>
+                                ) : detail.select.status === "check" ? (
+                                  <FormControlLabel
+                                    // value="start"
+                                    control={<Checkbox color="primary" />}
+                                    label={detail.label}
+                                    labelPlacement="end"
+                                  />
                                 ) : (
                                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <KeyboardDatePicker
