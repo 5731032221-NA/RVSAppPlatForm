@@ -35,6 +35,13 @@ import { Breadcrumbs, Link } from "@material-ui/core";
 import { nextComponent } from "../../middleware/action";
 import DateFnsUtils from "@date-io/date-fns";
 import {
+  getCompanyProfile,
+  getCompanyProfileById,
+  postCompanyProfile,
+  updateCompanyProfile,
+  deleteCompanyProfileById,
+} from "../../services/companyprofile.service";
+import {
   DatePicker,
   TimePicker,
   DateTimePicker,
@@ -1170,8 +1177,9 @@ export const ProfileCompany = (props) => {
   const [action, setAction] = React.useState(props.action);
 
 
-  React.useEffect(()=>{
+  React.useEffect(async( ) => {
    console.log("props.action:",props.action);
+               await handleAddDatatoDatabase();
   },[props.action])
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
@@ -1229,8 +1237,8 @@ export const ProfileCompany = (props) => {
   };
 
  
-  const [name1, setname1] = useState("");
-  const [name2, setname2] = React.useState("");
+  const [nameOne, setnameOne] = useState("");
+  const [nameTwo, setnameTwo] = React.useState("");
   const [CompanyTypeCode, setCompanyTypeCode] = React.useState("");
   const [Abbreviation, setAbbreviation] = React.useState("");
   const [GuaranteeMethodCode, setGuaranteeMethodCode] = React.useState("");
@@ -1267,13 +1275,13 @@ export const ProfileCompany = (props) => {
 
 
 
-  React.useEffect(() => {
-    console.log("name1:",name1);
- },[name1])
+//   React.useEffect(() => {
+//     console.log("name1:",name1);
+//  },[name1])
 
- React.useEffect(() => {
-  console.log("name2:",name2);
-},[name2])
+//  React.useEffect(() => {
+//   console.log("name2:",name2);
+// },[name2])
 
   const [demoData, setDemoData] = React.useState([
     {
@@ -1291,7 +1299,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: " "
           },
-          handle: (e) => setname1(e.target.value),
+          handle: (e) => setnameOne(e.target.value),
         },
         {
           id: 4,
@@ -1303,7 +1311,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: " ",
           },
-          handle: (e) => setname2(e.target.value),
+          handle: (e) => setnameTwo(e.target.value),
         },
         {
           id: 7,
@@ -1323,7 +1331,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setCompanyTypeCode(e.target.value),
         },
         {
           id: 5,
@@ -1335,7 +1343,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setAbbreviation(e.target.value),
         },
         {
           id: 6,
@@ -1347,7 +1355,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setGuaranteeMethodCode(e.target.value),
         },
         {
           id: 7,
@@ -1367,7 +1375,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setProperty(e.target.value),
         },
         {
           id: 7,
@@ -1387,7 +1395,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setCurrency(e.target.value),
         },
         {
           id: 8,
@@ -1407,7 +1415,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setCreditRating(e.target.value),
         },
         {
           id: 9,
@@ -1419,7 +1427,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setIATA(e.target.value),
         },
         {
           id: 10,
@@ -1431,7 +1439,7 @@ export const ProfileCompany = (props) => {
             status: "status",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setStatus(e.target.value),
         },
       ],
     },
@@ -1450,7 +1458,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setStreetAddress(e.target.value),
         },
         {
           id: 5,
@@ -1470,7 +1478,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setChooseacountry(e.target.value),
         },
         {
           id: 6,
@@ -1482,7 +1490,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setCity(e.target.value),
         },
         {
           id: 7,
@@ -1494,7 +1502,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setState(e.target.value),
         },
         {
           id: 8,
@@ -1506,7 +1514,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setPostal(e.target.value),
         },
       ],
     },
@@ -1525,7 +1533,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setBStreetAddress(e.target.value),
         },
         {
           id: 5,
@@ -1545,7 +1553,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setBChooseacountry(e.target.value),
         },
         {
           id: 6,
@@ -1557,6 +1565,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
+          handle: (e) => setBCity(e.target.value),
         },
         {
           id: 7,
@@ -1568,7 +1577,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setBState(e.target.value),
         },
         {
           id: 8,
@@ -1580,7 +1589,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setBPostal(e.target.value),
         },
         {
           id: 8,
@@ -1592,7 +1601,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setTaxID(e.target.value),
         },
         {
           id: 8,
@@ -1604,7 +1613,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setTaxID2(e.target.value),
         },
       ],
     },
@@ -1672,7 +1681,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: ""
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setCreditCardNumber(e.target.value),
         },
         {
           id: 3,
@@ -1684,7 +1693,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: ""
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setOutstandingAmount(e.target.value),
         },
         {
           id: 4,
@@ -1696,7 +1705,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setFloatingDepositionAmount(e.target.value),
         },
         {
           id: 5,
@@ -1708,7 +1717,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setARNumber(e.target.value),
         },
       ],
     },
@@ -1765,7 +1774,8 @@ export const ProfileCompany = (props) => {
           select: {
             status: "fill",
             data: "",
-          }
+          },
+          handle: (e) => setSalesUserName(e.target.value),
         },
         {
           id: 2,
@@ -1785,7 +1795,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setIndustry(e.target.value),
         },
         // {
         //   id: 3,
@@ -1817,7 +1827,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setMarketSegment(e.target.value),
         },
         {
           id: 5,
@@ -1837,7 +1847,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setSourceOfBusiness(e.target.value),
         },
         {
           id: 6,
@@ -1857,7 +1867,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setTrackCode(e.target.value),
         },
         {
           id: 7,
@@ -1877,7 +1887,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setReasonForStay(e.target.value),
         },
         {
           id: 8,
@@ -1896,7 +1906,8 @@ export const ProfileCompany = (props) => {
                 {option.label}
               </option>
             )),
-          }
+          },
+          handle: (e) => setGeographic(e.target.value),
         }
         // ,
         // {
@@ -1973,25 +1984,104 @@ export const ProfileCompany = (props) => {
 
  
 
+  const handleAddDatatoDatabase = async (e) => {
+
+   console.log( nameOne,
+    nameTwo,
+    CompanyTypeCode, 
+    Abbreviation, 
+    GuaranteeMethodCode,
+    Property,
+    Currency,
+    CreditRating,
+    IATA, 
+    Status,
+    StreetAddress,
+    Chooseacountry, 
+    City,
+    State,
+    Postal,
+    BStreetAddress,
+    BChooseacountry,
+    BCity,
+    BState,
+    BPostal,
+    TaxID,
+    TaxID2,
+    Communication, 
+    Relationship,
+    CreditCardNumber,
+    OutstandingAmount,
+    FloatingDepositionAmount, 
+    ARNumber, 
+    SalesUserName,
+    Industry,
+    MarketSegment,
+    SourceOfBusiness,
+    TrackCode,
+    ReasonForStay, 
+    Geographic);
   
-  const handleData = (e) => {
-    try {
-      
-      console.log("handleDataname1 : ", name1);
-    } catch (error) {
-      console.log("::::",error);
+    let req = {
+      nameOne: nameOne,
+      nameTwo: nameTwo,
+      CompanyTypeCode: CompanyTypeCode, 
+      Abbreviation: Abbreviation, 
+      GuaranteeMethodCode: GuaranteeMethodCode,
+      Property: Property,
+      Currency: Currency,
+      CreditRating: CreditRating,
+      IATA: IATA, 
+      Status: Status,
+      StreetAddress: StreetAddress,
+      Chooseacountry: Chooseacountry, 
+      City: City,
+      State: State,
+      Postal:  Postal,
+      BStreetAddress: BStreetAddress,
+      BChooseacountry: BChooseacountry,
+      BCity: BCity,
+      BState: BState,
+      BPostal: BPostal,
+      TaxID: TaxID,
+      TaxID2: TaxID2,
+      Communication: Communication, 
+      Relationship: Relationship,
+      CreditCardNumber: CreditCardNumber,
+      OutstandingAmount: OutstandingAmount,
+      FloatingDepositionAmount: FloatingDepositionAmount, 
+      ARNumber: ARNumber, 
+      SalesUserName: SalesUserName,
+      Industry: Industry,
+      MarketSegment: MarketSegment,
+      SourceOfBusiness: SourceOfBusiness,
+      TrackCode: TrackCode,
+      ReasonForStay: ReasonForStay, 
+      Geographic:Geographic
+    };
+    console.log("datafrom post", req)
+    const data = await postCompanyProfile(
+      sessionStorage.getItem("auth"),
+      req
+    );
+    console.log("datafrom post", data);
+  };
+
+  //data from button for  trigger (add or delete)
+  React.useEffect(async () => {
+    if (props.action == "add") {
+      console.log("action add", props.action);
+      await handleAddDatatoDatabase();
+    } else if (props.action == "edit") {
+      // await handleEditDatatoDatabase();
+      console.log("action edit", props.action);
     }
-  
-  };
-  
-  const handleData1 = (e) => {
-    console.log("checkfield1:",e.target.value);
-   
-    // if("name1" == checkfield){
-    //   setname1(e.target.value)
-    //   console.log("name : ", name1);
-    // }
-  };
+  }, [props.action]);
+
+  const handleData = (e) => {
+
+  }
+
 
   const handleExpend = (id, expend) => {
     let index = demoData.findIndex((x) => x.id === id);
