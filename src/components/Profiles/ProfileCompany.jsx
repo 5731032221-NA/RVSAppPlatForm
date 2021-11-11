@@ -1282,12 +1282,12 @@ export const ProfileCompany = (props) => {
   const [demoData, setDemoData] = React.useState([
     {
       id: "1",
-      title: "Account",
+      title: "Company Account",
       expend: true,
       content: [
         {
-          id: 3,
-          label: "Name 1",
+          id: 1,
+          label: "Company Name1",
           xl: 5,
           md: 5,
           xs: 12,
@@ -1298,8 +1298,8 @@ export const ProfileCompany = (props) => {
           handle: (e) => setname1(e.target.value),
         },
         {
-          id: 4,
-          label: "Name 2",
+          id: 2,
+          label: "Company Name2",
           xl: 5,
           md: 5,
           xs: 12,
@@ -1310,8 +1310,8 @@ export const ProfileCompany = (props) => {
           handle: (e) => setname2(e.target.value),
         },
         {
-          id: 7,
-          label: "CompanyTypeCode",
+          id: 3,
+          label: "Company Type",
           xl: 2,
           md: 2,
           xs: 12,
@@ -1330,11 +1330,11 @@ export const ProfileCompany = (props) => {
           handle: (e) => handleData(e),
         },
         {
-          id: 5,
+          id: 4,
           label: "Abbreviation",
-          xl: 4,
-          md: 4,
-          xs: 12,
+          xl: 3,
+          md: 3,
+          xs: 6,
           select: {
             status: "fill",
             data: "",
@@ -1342,19 +1342,7 @@ export const ProfileCompany = (props) => {
           handle: (e) => handleData(e),
         },
         {
-          id: 6,
-          label: "Guarantee Method Code",
-          xl: 4,
-          md: 4,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 7,
+          id: 5,
           label: "Hotel Origin",
           xl: 4,
           md: 4,
@@ -1370,6 +1358,18 @@ export const ProfileCompany = (props) => {
                 {option.label}
               </option>
             )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 6,
+          label: "Guarantee Method",
+          xl: 4,
+          md: 4,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
           },
           handle: (e) => handleData(e),
         },
