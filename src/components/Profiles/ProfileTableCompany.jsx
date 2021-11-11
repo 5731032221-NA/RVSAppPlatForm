@@ -146,6 +146,9 @@ const family = [
 ];
 
 export const ProfileTableCompany = (props) => {
+
+  const [action, setAction] = React.useState("");
+  const [editData, setEditData] = React.useState(" ");
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -210,9 +213,13 @@ export const ProfileTableCompany = (props) => {
     setStatusprofile();
   };
   const handleNewData = () => {
+    setAction("add")
     setStatusprofile("add");
   };
   const handleAddData = (rows) => {
+    setAction("add")
+
+    console.log("rows:",rows);
     setStatusprofile("moredata");
     setIndividualData(rows);
   };
@@ -330,7 +337,7 @@ export const ProfileTableCompany = (props) => {
         ) : null}
       </Grid>
       {statusprofile === "edit" || statusprofile === "add" ? (
-        <ProfileCompany />
+        <ProfileCompany editdata={editData} action={action} />
       ) : (
         [
           individualData == null ? (

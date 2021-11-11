@@ -1167,6 +1167,12 @@ const optioncommunication = [
 
 export const ProfileCompany = (props) => {
   const { store } = useContext(ReactReduxContext);
+  const [action, setAction] = React.useState(props.action);
+
+
+  React.useEffect(()=>{
+   console.log("props.action:",props.action);
+  },[props.action])
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -1222,6 +1228,53 @@ export const ProfileCompany = (props) => {
     props.nextComponent(comp);
   };
 
+ 
+  const [name1, setname1] = useState("");
+  const [name2, setname2] = React.useState("");
+  const [CompanyTypeCode, setCompanyTypeCode] = React.useState("");
+  const [Abbreviation, setAbbreviation] = React.useState("");
+  const [GuaranteeMethodCode, setGuaranteeMethodCode] = React.useState("");
+  const [Property, setProperty] = React.useState("");
+  const [Currency, setCurrency] = React.useState("");
+  const [CreditRating, setCreditRating] = React.useState("");
+  const [IATA, setIATA] = React.useState("");
+  const [Status, setStatus] = React.useState("");
+  const [StreetAddress, setStreetAddress] = React.useState("");
+  const [Chooseacountry, setChooseacountry] = React.useState("");
+  const [City, setCity] = React.useState("");
+  const [State, setState] = React.useState("");
+  const [Postal, setPostal] = React.useState("");
+  const [BStreetAddress, setBStreetAddress] = React.useState("");
+  const [BChooseacountry, setBChooseacountry] = React.useState("");
+  const [BCity, setBCity] = React.useState("");
+  const [BState, setBState] = React.useState("");
+  const [BPostal, setBPostal] = React.useState("");
+  const [TaxID, setTaxID] = React.useState("");
+  const [TaxID2, setTaxID2] = React.useState("");
+  const [Communication, setCommunication] = React.useState("");
+  const [Relationship, setRelationship] = React.useState("");
+  const [CreditCardNumber, setCreditCardNumber] = React.useState("");
+  const [OutstandingAmount, setOutstandingAmount] = React.useState("");
+  const [FloatingDepositionAmount, setFloatingDepositionAmount] = React.useState("");
+  const [ARNumber, setARNumber] = React.useState("");
+  const [SalesUserName, setSalesUserName] = React.useState("");
+  const [Industry, setIndustry] = React.useState("");
+  const [MarketSegment, setMarketSegment] = React.useState("");
+  const [SourceOfBusiness, setSourceOfBusiness] = React.useState("");
+  const [TrackCode, setTrackCode] = React.useState("");
+  const [ReasonForStay, setReasonForStay] = React.useState("");
+  const [Geographic, setGeographic] = React.useState("");
+
+
+
+  React.useEffect(() => {
+    console.log("name1:",name1);
+ },[name1])
+
+ React.useEffect(() => {
+  console.log("name2:",name2);
+},[name2])
+
   const [demoData, setDemoData] = React.useState([
     {
       id: "1",
@@ -1236,8 +1289,9 @@ export const ProfileCompany = (props) => {
           xs: 12,
           select: {
             status: "fill",
-            data: ""
-          }
+            data: " "
+          },
+          handle: (e) => setname1(e.target.value),
         },
         {
           id: 4,
@@ -1249,7 +1303,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: " ",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setname2(e.target.value),
         },
         {
           id: 7,
@@ -1428,6 +1482,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
+          handle: (e) => handleData(e),
         },
         {
           id: 7,
@@ -1916,8 +1971,26 @@ export const ProfileCompany = (props) => {
     }),
   });
 
+ 
+
+  
   const handleData = (e) => {
-    console.log("Value from handleData : ", e.target.value);
+    try {
+      
+      console.log("handleDataname1 : ", name1);
+    } catch (error) {
+      console.log("::::",error);
+    }
+  
+  };
+  
+  const handleData1 = (e) => {
+    console.log("checkfield1:",e.target.value);
+   
+    // if("name1" == checkfield){
+    //   setname1(e.target.value)
+    //   console.log("name : ", name1);
+    // }
   };
 
   const handleExpend = (id, expend) => {
@@ -2122,7 +2195,7 @@ export const ProfileCompany = (props) => {
                 {list.map((item, index) => (
                   <Draggable draggableId={item.id} key={item.id} index={index}>
                     {(provided, snapshot) => (
-                      <Accordion
+                      <Accordion 
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
