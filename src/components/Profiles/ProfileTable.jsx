@@ -96,7 +96,7 @@ function createData(
   firstname,
   lastname,
   nameprefix,
-  sex,
+  gender,
   idcardandpass,
   nationality,
   nextstay,
@@ -109,7 +109,7 @@ function createData(
     firstname,
     lastname,
     nameprefix,
-    sex,
+    gender,
     idcardandpass,
     nationality,
     nextstay,
@@ -211,7 +211,7 @@ export const ProfileTable = (props) => {
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [deleteData, setDeleteData] = React.useState({
     guestnameinfoid: "guestnameinfoid",
-    title: "title",
+    nameprefix: "title",
     firstname: "firstname",
     lastname: "lastname",
   });
@@ -221,27 +221,33 @@ export const ProfileTable = (props) => {
     console.log("setcomp", comp);
     props.nextComponent(comp);
   };
-  const handleStatusProfile = () => {
-    setStatusprofile();
-  };
+  // const handleStatusProfile = () => {
+  //   setStatusprofile();
+  // };
   const handleNewData = async () => {
-    setEditData(null);
-    setStatusprofile("add");
-    setAction("none");
+    await setAction("none");
+    await setEditData(null);
+    await setStatusprofile("add");
   };
 
+  //save button on **add component
   const handleAddData = async () => {
-    setAction("add");
-    setEditData(null);
-    setStatusprofile("moredata");
+    await setAction("add");
+    await setEditData(null);
+    // await setStatusprofile("moredata");
+    await handleReloadTable();
   };
 
+  //save button on **edit component
   const handleSaveEditData = async () => {
-    setAction("edit");
-    setEditData(null);
-    setStatusprofile("moredata");
+    await setAction("edit");
+    await setEditData(null);
+    // await setStatusprofile("moredata");
+    await handleReloadTable();
   };
+
   const handleEditData = async (rowData) => {
+    await setAction("none");
     console.log("rowData", rowData);
     setEditData(rowData);
     handleDeleteData(
@@ -275,10 +281,33 @@ export const ProfileTable = (props) => {
       id
     );
     console.log("deleteData return", datafordelete);
+    handleReloadTable();
+    setDialogDelete(false);
+  };
+
+  const handleDialogDeleteOpen = async (
+    guestnameinfoid,
+    firstname,
+    lastname,
+    nameprefix
+  ) => {
+    await setDeleteData({
+      guestnameinfoid: guestnameinfoid,
+      nameprefix: nameprefix,
+      firstname: firstname,
+      lastname: lastname,
+    });
+    console.log(guestnameinfoid, firstname, lastname, nameprefix);
+    await setDialogDelete(true);
+  };
+  const handleDialogDeleteClose = () => {
+    setDialogDelete(false);
+  };
+
+  const handleReloadTable = async () => {
     const data = await getIndividualProfile(sessionStorage.getItem("auth"));
     console.log("data", data);
     let _individualData = [];
-    let i = 0;
     if (data.content.length != 0) {
       data.content[data.content.length - 1].forEach((element) =>
         _individualData.push(
@@ -302,35 +331,16 @@ export const ProfileTable = (props) => {
         )
       );
     }
+    console.log("individualData", _individualData);
     setIndividualData(_individualData);
     setStatusprofile("moredata");
-    setDialogDelete(false);
   };
 
-  const handleDialogDeleteOpen = async (
-    guestnameinfoid,
-    firstname,
-    lastname,
-    nameprefix
-  ) => {
-    setDeleteData({
-      guestnameinfoid: guestnameinfoid,
-      title: nameprefix,
-      firstname: firstname,
-      lastname: lastname,
-    });
-    console.log(guestnameinfoid, firstname, lastname, nameprefix);
-    setDialogDelete(true);
-  };
-  const handleDialogDeleteClose = () => {
-    setDialogDelete(false);
-  };
-
+  //initial data to table
   React.useEffect(async () => {
     const data = await getIndividualProfile(sessionStorage.getItem("auth"));
     console.log("data", data);
     let _individualData = [];
-    let i = 0;
     if (data.content.length != 0) {
       data.content[data.content.length - 1].forEach((element) =>
         _individualData.push(
@@ -371,47 +381,48 @@ export const ProfileTable = (props) => {
     >
       <Grid container style={{ paddingLeft: 30, paddingRight: 30 }}>
         {/* <Grid item xs={6} sm={10} md={10} style={{ flexGrow: 1 }}> */}
-          <Grid item style={{ flexGrow: 1 }}>
-            <Breadcrumbs
-              separator={
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 20,
-                    color: themeState.color,
-                  }}
-                >
-                  /
-                </Typography>
-              }
-            >
-              <Link
-                color="inherit"
-                href="#"
-                onClick={() => handleComponentState("Configuration")}
+        <Grid item style={{ flexGrow: 1 }}>
+          <Breadcrumbs
+            separator={
+              <Typography
+                variant="h6"
+                style={{
+                  marginBottom: 15,
+                  fontSize: 20,
+                  color: themeState.color,
+                }}
               >
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
-                >
-                  Profiles
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={" "}>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  Individual
-                </Typography>
-              </Link>
-            </Breadcrumbs>
-          </Grid>
+                /
+              </Typography>
+            }
+          >
+            <Link
+              color="inherit"
+              href="#"
+              onClick={() => handleComponentState("Configuration")}
+            >
+              <Typography
+                variant="h6"
+                style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
+              >
+                Profiles
+              </Typography>
+            </Link>
+            <Link color="inherit" href="#" onClick={" "}>
+              <Typography
+                variant="h6"
+                style={{
+                  marginBottom: 15,
+                  fontSize: 14,
+                  color: themeState.color,
+                }}
+              >
+                Individual
+              </Typography>
+            </Link>
+          </Breadcrumbs>
+        </Grid>
+
         {/* </Grid> */}
         {statusprofile === "add" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
@@ -536,7 +547,7 @@ export const ProfileTable = (props) => {
                   },
                   {
                     title: "Sex",
-                    field: "sex",
+                    field: "gender",
                     headerStyle: headerTableStyle,
                   },
                   {

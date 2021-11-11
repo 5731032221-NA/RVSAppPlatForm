@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -2088,7 +2088,9 @@ export const TestDnD = (props) => {
     colorlevel: "900",
   });
 
-  const { action } = props;
+  // const { action } = props;
+  // const action = props.action;
+  const [action, setAction] = React.useState(props.action);
   const [optionrelation, setOptionrelation] = React.useState([]);
   const [optioncommunication, setOptioncommunication] = React.useState([]);
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
@@ -2175,7 +2177,9 @@ export const TestDnD = (props) => {
     }),
   });
 
-  const [guestNameInfoID, setGuestNameInfoID] = React.useState("");
+  // const [guestNameInfoID, setGuestNameInfoID] = React.useState(
+  //   props.editdata.guestnameinfoid
+  // );
   const [firstname, setFirstname] = React.useState("");
   const [lastname, setLastname] = React.useState("");
   const [namePrefix, setNamePrefix] = React.useState("");
@@ -2247,7 +2251,7 @@ export const TestDnD = (props) => {
                   </option>
                 )),
                 defaultvalue:
-                  props.editdata != null ? props.editdata.title : "",
+                  props.editdata != null ? props.editdata.title : "Mr.",
               },
               handle: (e) => setNamePrefix(e.target.value),
             },
@@ -2297,7 +2301,7 @@ export const TestDnD = (props) => {
                   </option>
                 )),
                 defaultvalue:
-                  props.editdata != null ? props.editdata.gender : "",
+                  props.editdata != null ? props.editdata.gender : "Male",
               },
               handle: (e) => setGender(e.target.value),
             },
@@ -2352,6 +2356,8 @@ export const TestDnD = (props) => {
                     {option.label}
                   </option>
                 )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.gender : "",
               },
               handle: (e) => setNationality(e.target.value),
             },
@@ -2810,12 +2816,26 @@ export const TestDnD = (props) => {
 
   const handleData = async (e) => {
     // console.log("Value from handleData : ", e.target.value);
+    console.log("Value from props.editdata : ", props.editdata);
+    // console.log(
+    //   "handleData : ",
+    //   guestNameInfoID,
+    //   firstname,
+    //   lastname,
+    //   namePrefix,
+    //   gender,
+    //   idnumber,
+    //   nationality
+    // );
+  };
+
+  const handleAddDatatoDatabase = async (e) => {
     console.log(
       "handleData : ",
-      guestNameInfoID,
+      // guestNameInfoID,
+      namePrefix,
       firstname,
       lastname,
-      namePrefix,
       gender,
       idnumber,
       nationality
@@ -2835,14 +2855,47 @@ export const TestDnD = (props) => {
     );
     console.log("datafrom post", data);
   };
-  // React.useEffect(async () => {
-  //   if (action == "add") {
-  //     console.log("action", props.action);
-  //   } else {
-  //     console.log("action", props.action);
-  //   }
-  //   // const data = await getIndividualProfile(sessionStorage.getItem("auth"),);
-  // }, props.action);
+
+  const handleEditDatatoDatabase = async (e) => {
+    let id = props.editdata.guestnameinfoid;
+    console.log(
+      "handleData : ",
+      id,
+      namePrefix,
+      firstname,
+      lastname,
+      gender,
+      idnumber,
+      nationality
+    );
+
+    let req = {
+      guestnameinfoid: id,
+      nameprefix: namePrefix,
+      firstname: firstname,
+      lastname: lastname,
+      gender: gender,
+      idnumber: idnumber,
+      nationality: nationality,
+    };
+    const data = await updateIndividualProfile(
+      sessionStorage.getItem("auth"),
+      id,
+      req
+    );
+    console.log("datafrom post", data);
+  };
+
+  //data from button for  trigger (add or delete)
+  React.useEffect(async () => {
+    if (props.action == "add") {
+      console.log("action add", props.action);
+      await handleAddDatatoDatabase();
+    } else if (props.action == "edit") {
+      await handleEditDatatoDatabase();
+      console.log("action edit", props.action);
+    }
+  }, [props.action]);
 
   return (
     <Container
@@ -2870,13 +2923,13 @@ export const TestDnD = (props) => {
                 style={{ marginTop: 10, backgroundColor: themeState.paper }}
                 ref={provided.innerRef}
               >
-                <Button
+                {/* <Button
                   variant="contained"
                   color="default"
                   onClick={() => handleData()}
                 >
                   TestData
-                </Button>
+                </Button> */}
                 {list.map((item, index) => (
                   <Draggable draggableId={item.id} key={item.id} index={index}>
                     {(provided, snapshot) => (
