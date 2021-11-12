@@ -2415,7 +2415,7 @@ export const TestDnD = (props) => {
                   </option>
                 )),
                 defaultvalue:
-                  props.editdata != null ? props.editdata.nametitle : "Mr.",
+                  props.editdata != null ? props.editdata.nametitle : "KHUN1",
               },
               handle: (e) => setNameTitle(e.target.value),
             },
@@ -3805,15 +3805,7 @@ export const TestDnD = (props) => {
           xs: 6,
           select: {
             status: "option",
-            data: optioncountry.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            data: ""
           },
           handle: (e) => handleData(e),
         },
