@@ -4357,21 +4357,34 @@ export const TestDnD = (props) => {
                                   </Button>
                                 ) : detail.select.status === "fix" ? (
                                   <TextField
-                                    className={classes.root}
-                                    variant="outlined"
-                                    fullWidth
-                                    style={{
-                                      backgroundColor: "#EFEFEF",
-                                      borderColor: "white",
-                                    }}
-                                    // disabled={true}
-                                    defaultValue={detail.select.defaultvalue}
-                                    onFocus={false}
-                                  />
+                                        className={classes.root}
+                                        variant="outlined"
+                                        fullWidth
+                                        style={{ backgroundColor: "#EFEFEF",
+                                            borderColor: "white"}}
+                                        // disabled={true}
+                                        value={detail.select.data}
+                                        defaultValue={detail.select.defaultvalue}
+                                        onFocus={false}
+                                      />
+                                  // <TextField
+                                  //   className={classes.root}
+                                  //   variant="outlined"
+                                  //   label={detail.select.defaultvalue}
+                                  //   fullWidth
+                                  //   style={{
+                                  //     backgroundColor: "#EFEFEF",
+                                  //     borderColor: "white",
+                                  //   }}
+                                  //   // disabled={true}
+                                  //   value={detail.select.defaultvalue}
+                                  //   defaultValue={detail.select.defaultvalue}
+                                  //   onFocus={false}
+                                  // />
                                 ) : detail.select.status === "fillnolabel" ? (
                                   <TextField
                                     className={classes.root}
-                                    label={detail.label}
+                                    // label={detail.label}
                                     variant="outlined"
                                     InputProps={{
                                       style: headerTableStyle,
@@ -4381,7 +4394,7 @@ export const TestDnD = (props) => {
                                       style: { color: "#AAAAAA" },
                                     }}
                                     fullWidth
-                                    defaultValue={detail.select.defaultvalue}
+                                    defaultValue=""
                                     onChange={detail.handle}
                                   />
                                 ) : detail.select.status === "fill" ? (
