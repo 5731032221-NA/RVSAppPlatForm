@@ -4371,7 +4371,7 @@ export const TestDnD = (props) => {
                                 ) : detail.select.status === "fillnolabel" ? (
                                   <TextField
                                     className={classes.root}
-                                    // label={detail.label}
+                                    label={detail.label}
                                     variant="outlined"
                                     InputProps={{
                                       style: headerTableStyle,
