@@ -2845,23 +2845,8 @@ export const TestDnD = (props) => {
               md: 2,
               xs: 6,
               select: {
-<<<<<<< HEAD
                 status: "fill",
                 data: ""
-=======
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null ? props.editdata.city : "Thailand",
->>>>>>> c9f4c1b354f4637b30ebf42cfc0611a77a80a89e
               },
               handle: (e) => setCity(e.target.value),
             },
