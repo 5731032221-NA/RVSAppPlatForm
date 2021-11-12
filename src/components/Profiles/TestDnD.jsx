@@ -2456,7 +2456,7 @@ export const TestDnD = (props) => {
               xs: 2,
               select: {
                 status: "option",
-                data:  [
+                data: [
                   { label: "KHUN1" },
                   { label: "KHUN2" },
                   { label: "KHUN3" },
@@ -2682,6 +2682,19 @@ export const TestDnD = (props) => {
             //   },
             //   handle: " ",
             // },
+            ,
+            {
+              id: 8,
+              label: "Status",
+              xl: 3,
+              md: 3,
+              xs: 12,
+              select: {
+                status: "status",
+                data: "",
+              },
+              handle: (e) => setStatus(e.target.value),
+            },
           ],
         },
         {
@@ -3783,7 +3796,7 @@ export const TestDnD = (props) => {
           },
           handle: (e) => handleData(e),
         },
-      {
+        {
           id: newid + 4,
           label: "Choose a country",
           xl: 2,
@@ -4355,16 +4368,18 @@ export const TestDnD = (props) => {
                                   </Button>
                                 ) : detail.select.status === "fix" ? (
                                   <TextField
-                                        className={classes.root}
-                                        variant="outlined"
-                                        fullWidth
-                                        style={{ backgroundColor: "#EFEFEF",
-                                            borderColor: "white"}}
-                                        // disabled={true}
-                                        value={detail.select.data}
-                                        defaultValue={detail.select.defaultvalue}
-                                        onFocus={false}
-                                      />
+                                    className={classes.root}
+                                    variant="outlined"
+                                    fullWidth
+                                    style={{
+                                      backgroundColor: "#EFEFEF",
+                                      borderColor: "white"
+                                    }}
+                                    // disabled={true}
+                                    value={detail.select.data}
+                                    defaultValue={detail.select.defaultvalue}
+                                    onFocus={false}
+                                  />
                                   // <TextField
                                   //   className={classes.root}
                                   //   variant="outlined"
@@ -4429,7 +4444,7 @@ export const TestDnD = (props) => {
                                     onChange={detail.handle}
                                     textOverflow="ellipsis"
 
-                                    // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
+                                  // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
                                   >
                                     {detail.select.data}
                                   </TextField>
