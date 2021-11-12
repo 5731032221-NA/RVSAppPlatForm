@@ -122,15 +122,15 @@ const optionDocumentType = [
 
 const optiondata = [
   {
-    value: "1",
+    value: "Option1",
     label: "Option1",
   },
   {
-    value: "2",
+    value: "Option",
     label: "Option2",
   },
   {
-    value: "3",
+    value: "Option",
     label: "Option3",
   },
 ];
@@ -2066,6 +2066,17 @@ const optioncountry = [
   },
 ];
 
+const addressType = [
+  { label: "Organisation", value: "Organisation" },
+  {
+    label: "Home",
+    value: "Home",
+  },
+  {
+    label: "Resident",
+    value: "Resident",
+  },
+];
 // const optionrelation = [
 //   {
 //     value: "Family",
@@ -2093,9 +2104,6 @@ export const TestDnD = (props) => {
     colorlevel: "900",
   });
 
-  // const { action } = props;
-  // const action = props.action;
-  const [action, setAction] = React.useState(props.action);
   const [optionrelation, setOptionrelation] = React.useState([]);
   const [optioncommunication, setOptioncommunication] = React.useState([]);
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
@@ -2182,15 +2190,162 @@ export const TestDnD = (props) => {
     }),
   });
 
-  // const [guestNameInfoID, setGuestNameInfoID] = React.useState(
-  //   props.editdata.guestnameinfoid
-  // );
-  const [firstname, setFirstname] = React.useState("");
-  const [lastname, setLastname] = React.useState("");
-  const [namePrefix, setNamePrefix] = React.useState("");
-  const [gender, setGender] = React.useState("");
-  const [idnumber, setIDNumber] = React.useState("");
-  const [nationality, setNationality] = React.useState("");
+  // [nameID,setNameID] = React.useState("");
+  const [nameTitle, setNameTitle] = React.useState(
+    props.editdata != null ? props.editdata.nametitle : "Mr."
+  );
+  const [firstName, setFirstName] = React.useState(
+    props.editdata != null ? props.editdata.firstname : ""
+  );
+  const [lastName, setLastName] = React.useState(
+    props.editdata != null ? props.editdata.lastname : ""
+  );
+  const [namePrefix, setNamePrefix] = React.useState(
+    props.editdata != null ? props.editdata.nameprefix : "KHUN"
+  );
+  const [nameSuffix, setNameSuffix] = React.useState(
+    props.editdata != null ? props.editdata.namesuffix : ""
+  );
+  const [middleInitial, setMiddleInitial] = React.useState(
+    props.editdata != null ? props.editdata.middleinitial : ""
+  );
+  const [gender, setGender] = React.useState(
+    props.editdata != null ? props.editdata.gender : "Male."
+  );
+  const [religion, setReligion] = React.useState(
+    props.editdata != null ? props.editdata.religion : "Thailand"
+  );
+
+  const [organization, setOrganization] = React.useState(
+    props.editdata != null ? props.editdata.organization : ""
+  );
+  const [provinceOfResidence, setProvinceOfResidence] = React.useState(
+    props.editdata != null ? props.editdata.provinceofresidence : ""
+  );
+  const [borderCrossingEntryPlace, setBorderCrossingEntryPlace] =
+    React.useState(
+      props.editdata != null ? props.editdata.bordercrossingentryplace : ""
+    );
+  const [borderCrossingEntryDate, setborderCrossingEntryDate] = React.useState(
+    props.editdata != null ? props.editdata.bordercrossingentrydate : ""
+  );
+  const [address, setAddress] = React.useState(
+    props.editdata != null ? props.editdata.address : "organization"
+  );
+  const [address1, setAddress1] = React.useState(
+    props.editdata != null ? props.editdata.address1 : ""
+  );
+  const [address2, setAddress2] = React.useState(
+    props.editdata != null ? props.editdata.address2 : ""
+  );
+  const [conuty, setCountry] = React.useState(
+    props.editdata != null ? props.editdata.conuty : "Thailand"
+  );
+  const [city, setCity] = React.useState(
+    props.editdata != null ? props.editdata.city : "Thailand"
+  );
+  const [stateProvince, setStateprovince] = React.useState(
+    props.editdata != null ? props.editdata.stateprovince : ""
+  );
+  const [postal, setPostal] = React.useState(
+    props.editdata != null ? props.editdata.postal : ""
+  );
+
+  const [noPost, setNoPost] = React.useState(
+    props.editdata != null ? props.editdata.nopost : "N"
+  );
+  const [NRG, setNRG] = React.useState(
+    props.editdata != null ? props.editdata.nrg : "N"
+  );
+  const [guestCategory, setGuestCategory] = React.useState(
+    props.editdata != null ? props.editdata.guestcategory : "MIDDLE-AGED-ADULTS"
+  );
+  const [guestType, setGuestType] = React.useState(
+    props.editdata != null ? props.editdata.guesttype : "option1"
+  );
+  const [VVIP, setVVIP] = React.useState(
+    props.editdata != null ? props.editdata.vvip : "V20"
+  );
+  const [birthRegion, setBirthRegion] = React.useState(
+    props.editdata != null ? props.editdata.birthregion : "option1"
+  );
+  const [birthProvince, setBirthProvince] = React.useState(
+    props.editdata != null ? props.editdata.birthprovince : "option1"
+  );
+
+  const [IDCheck, setIDCheck] = React.useState(
+    props.editdata != null ? props.editdata.idcheck : "N"
+  );
+  const [IDType, setIDType] = React.useState(
+    props.editdata != null ? props.editdata.idtype : "option1"
+  );
+  const [IDNumber, setIDNumber] = React.useState(
+    props.editdata != null ? props.editdata.idnumber : ""
+  );
+  const [nationality, setNationality] = React.useState(
+    props.editdata != null ? props.editdata.nationality : "Thai"
+  );
+  const [dateOfBirth, setDateOfBirth] = React.useState(
+    props.editdata != null
+      ? props.editdata.dateofbirth
+      : new Date("2021-09-13T21:11:54")
+  );
+  const [IDIssuedDate, setIDIssuedDate] = React.useState(
+    props.editdata != null
+      ? props.editdata.idissueddate
+      : new Date("2021-09-13T21:11:54")
+  );
+  const [IDExpirationDate, setIDExpirationDate] = React.useState(
+    props.editdata != null
+      ? props.editdata.idexpirationdate
+      : new Date("2021-09-13T21:11:54")
+  );
+
+  const [passportVisaCheck, setPassportVisaCheck] = React.useState(
+    props.editdata != null ? props.editdata.passportvisacheck : "N"
+  );
+  const [visaType, setVisaType] = React.useState(
+    props.editdata != null ? props.editdata.visatype : "Tourist"
+  );
+  const [visaName, setVisaName] = React.useState(
+    props.editdata != null ? props.editdata.visaname : ""
+  );
+  const [visaNumber, setVisaNumber] = React.useState(
+    props.editdata != null ? props.editdata.visanumber : ""
+  );
+  const [visaIssuedDate, setVisaIssuedDate] = React.useState(
+    props.editdata != null
+      ? props.editdata.visaissueddate
+      : new Date("2021-09-13T21:11:54")
+  );
+  const [visaBeginDate, setVisaBeginDate] = React.useState(
+    props.editdata != null
+      ? props.editdata.visabegindate
+      : new Date("2021-09-13T21:11:54")
+  );
+  const [visaExpirationDate, setVisaExpirationDate] = React.useState(
+    props.editdata != null
+      ? props.editdata.visaexpirationdate
+      : new Date("2021-09-13T21:11:54")
+  );
+
+  const [visaStatus, setVisaStatus] = React.useState(
+    props.editdata != null ? props.editdata.visastatus : "Y"
+  );
+  const [visaNotes, setVisaNotes] = React.useState(
+    props.editdata != null ? props.editdata.visanotes : ""
+  );
+  const [rank, setRank] = React.useState(
+    props.editdata != null ? props.editdata.rank : "option1"
+  );
+  const [grade, setGrade] = React.useState(
+    props.editdata != null ? props.editdata.grade : "option1"
+  );
+  const [guestIdentity, setGuestIdentity] = React.useState(
+    props.editdata != null ? props.editdata.guestidentity : ""
+  );
+
+  const [individualData, setIndividualData] = React.useState("");
 
   const pageProperty = useSelector((state) => state.reducer.property);
 
@@ -2245,7 +2400,11 @@ export const TestDnD = (props) => {
               xs: 2,
               select: {
                 status: "option",
-                data: optionTitle.map((option) => (
+                data: [
+                  { label: "KHUN1" },
+                  { label: "KHUN2" },
+                  { label: "KHUN3" },
+                ].map((option) => (
                   <option
                     style={headerTableStyle}
                     key={option.value}
@@ -2256,9 +2415,9 @@ export const TestDnD = (props) => {
                   </option>
                 )),
                 defaultvalue:
-                  props.editdata != null ? props.editdata.title : "Mr.",
+                  props.editdata != null ? props.editdata.nametitle : "Mr.",
               },
-              handle: (e) => setNamePrefix(e.target.value),
+              handle: (e) => setNameTitle(e.target.value),
             },
 
             {
@@ -2270,9 +2429,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 // data: props.editdata.firstname,
-                data: props.editdata != null ? props.editdata.firstname : "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.firstname : "",
               },
-              handle: (e) => setFirstname(e.target.value),
+              handle: (e) => setFirstName(e.target.value),
             },
             {
               id: 2,
@@ -2282,10 +2442,11 @@ export const TestDnD = (props) => {
               xs: 10,
               select: {
                 status: "fill",
-                data: props.editdata != null ? props.editdata.lastname : "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.lastname : "",
               },
               // handle: (e) => setPersonalData({ ...personalData,lastname: e.target.value }),
-              handle: (e) => setLastname(e.target.value),
+              handle: (e) => setLastName(e.target.value),
             },
             {
               id: 3,
@@ -2295,7 +2456,11 @@ export const TestDnD = (props) => {
               xs: 2,
               select: {
                 status: "option",
-                data: [{ label: "Option1" }, { label: "Option2" }, { label: "Option3" }].map((option) => (
+                data: [
+                  { label: "Mr." },
+                  { label: "Mrs." },
+                  { label: "Miss" },
+                ].map((option) => (
                   <option
                     style={headerTableStyle}
                     key={option.label}
@@ -2305,7 +2470,7 @@ export const TestDnD = (props) => {
                   </option>
                 )),
                 defaultvalue:
-                  props.editdata != null ? props.editdata.title : "Mr.",
+                  props.editdata != null ? props.editdata.nameprefix : "Mr.",
               },
               handle: (e) => setNamePrefix(e.target.value),
             },
@@ -2318,9 +2483,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 // data: props.editdata.firstname,
-                data: props.editdata != null ? props.editdata.firstname : "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.namesuffix : "",
               },
-              handle: (e) => setFirstname(e.target.value),
+              handle: (e) => setNameSuffix(e.target.value),
             },
             {
               id: 5,
@@ -2331,9 +2497,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 // data: props.editdata.firstname,
-                data: props.editdata != null ? props.editdata.firstname : "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.middleinitial : "",
               },
-              handle: (e) => setFirstname(e.target.value),
+              handle: (e) => setMiddleInitial(e.target.value),
             },
             {
               id: 6,
@@ -2472,10 +2639,12 @@ export const TestDnD = (props) => {
                     {option.label}
                   </option>
                 )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.religion : "Thailand",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setReligion(e.target.value),
             },
-            
+
             // {
             //   id: 13,
             //   label: "Date of Birth",
@@ -2519,7 +2688,7 @@ export const TestDnD = (props) => {
           id: "2",
           title: "Address",
           expend: true,
-          content: [,
+          content: [
             {
               id: 1,
               label: "Organisation",
@@ -2529,8 +2698,11 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.organization : "",
               },
-              handle: (e) => handleData(e),
+
+              handle: (e) => setOrganization(e.target.value),
             },
             {
               id: 2,
@@ -2541,8 +2713,12 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.provinceofresidence
+                    : "",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setProvinceOfResidence(e.target.value),
             },
             {
               id: 3,
@@ -2553,8 +2729,12 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.bordercrossingentryplace
+                    : "",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setBorderCrossingEntryPlace(e.target.value),
             },
             {
               id: 4,
@@ -2565,8 +2745,12 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.bordercrossingentrydate
+                    : "",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setborderCrossingEntryDate(e.target.value),
             },
             {
               id: 0,
@@ -2588,7 +2772,7 @@ export const TestDnD = (props) => {
               xs: 12,
               select: {
                 status: "option",
-                data: [{label:"Organisation",label:"Home",label:"Resident"}].map((option) => (
+                data: addressType.map((option) => (
                   <option
                     style={headerTableStyle}
                     key={option.value}
@@ -2597,7 +2781,12 @@ export const TestDnD = (props) => {
                     {option.label}
                   </option>
                 )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.address
+                    : "organization",
               },
+              handle: (e) => setAddress(e.target.value),
             },
             {
               id: 6,
@@ -2608,8 +2797,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.address1 : "",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setAddress1(e.target.value),
             },
             {
               id: 7,
@@ -2620,8 +2811,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.address2 : "",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setAddress2(e.target.value),
             },
             {
               id: 8,
@@ -2640,8 +2833,10 @@ export const TestDnD = (props) => {
                     {option.label}
                   </option>
                 )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.conuty : "Thailand",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setCountry(e.target.value),
             },
             {
               id: 9,
@@ -2660,8 +2855,10 @@ export const TestDnD = (props) => {
                     {option.label}
                   </option>
                 )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.city : "Thailand",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setCity(e.target.value),
             },
             {
               id: 10,
@@ -2672,8 +2869,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.stateprovince : "",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setStateprovince(e.target.value),
             },
             {
               id: 11,
@@ -2684,8 +2883,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.postal : "",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setPostal(e.target.value),
             },
             {
               id: 12,
@@ -2697,7 +2898,7 @@ export const TestDnD = (props) => {
                 status: "offset",
                 data: "",
               },
-              handle: (e) => handleData(e),
+              // handle: (e) => handleData(e),
             },
             {
               id: 99,
@@ -2709,7 +2910,7 @@ export const TestDnD = (props) => {
                 status: "AddAddress",
                 data: "+ More Address",
               },
-            }
+            },
           ],
         },
         {
@@ -2738,7 +2939,7 @@ export const TestDnD = (props) => {
                 status: "fillnolabel",
                 data: "Email",
               },
-              handle: (e) => handleData(e),
+              // handle: (e) => handleData(e),
             },
             {
               id: 3,
@@ -2761,7 +2962,7 @@ export const TestDnD = (props) => {
                 status: "fillnolabel",
                 data: "Mobile Number",
               },
-              handle: (e) => handleData(e),
+              // handle: (e) => handleData(e),
             },
             {
               id: 99,
@@ -2810,8 +3011,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "check",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.nopost : "N",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setNoPost(handleBoolean(e.target.checked)),
             },
             {
               id: 2,
@@ -2822,8 +3025,9 @@ export const TestDnD = (props) => {
               select: {
                 status: "check",
                 data: "",
+                defaultvalue: props.editdata != null ? props.editdata.nrg : "N",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setNRG(handleBoolean(e.target.checked)),
             },
             {
               id: 3,
@@ -2835,7 +3039,7 @@ export const TestDnD = (props) => {
                 status: "offset",
                 data: "",
               },
-              handle: (e) => handleData(e),
+              // handle: (e) => handleData(e),
             },
             {
               id: 4,
@@ -2845,17 +3049,26 @@ export const TestDnD = (props) => {
               xs: 6,
               select: {
                 status: "option",
-                data: optiondata.map((option) => (
+                data: [
+                  { label: "CHILD" },
+                  { label: "YOUNG-ADULTS" },
+                  { label: "MIDDLE-AGED-ADULTS" },
+                  { label: "OLD-ADGE-ADULTS" },
+                ].map((option) => (
                   <option
                     style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
+                    key={option.label}
+                    value={option.label}
                   >
                     {option.label}
                   </option>
                 )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.guestcategory
+                    : "option1",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setGuestCategory(e.target.value),
             },
             {
               id: 5,
@@ -2874,8 +3087,10 @@ export const TestDnD = (props) => {
                     {option.label}
                   </option>
                 )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.guesttype : "option1",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setGuestType(e.target.value),
             },
             {
               id: 6,
@@ -2885,17 +3100,23 @@ export const TestDnD = (props) => {
               xs: 6,
               select: {
                 status: "option",
-                data: optiondata.map((option) => (
+                data: [
+                  { label: "V20" },
+                  { label: "V55" },
+                  { label: "V99" },
+                ].map((option) => (
                   <option
                     style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
+                    key={option.label}
+                    value={option.label}
                   >
                     {option.label}
                   </option>
                 )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.vvip : "option1",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setVVIP(e.target.value),
             },
             {
               id: 7,
@@ -2914,8 +3135,12 @@ export const TestDnD = (props) => {
                     {option.label}
                   </option>
                 )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.birthregion
+                    : "option1",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setBirthRegion(e.target.value),
             },
             {
               id: 8,
@@ -2934,16 +3159,20 @@ export const TestDnD = (props) => {
                     {option.label}
                   </option>
                 )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.birthprovince
+                    : "option1",
               },
-              handle: (e) => handleData(e),
-            }
-          ]},
+              handle: (e) => setBirthProvince(e.target.value),
+            },
+          ],
+        },
         {
           id: "6",
           title: "Identification",
           expend: true,
           content: [
-            
             {
               id: 1,
               label: "ID Check",
@@ -2953,9 +3182,13 @@ export const TestDnD = (props) => {
               select: {
                 status: "check",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.idcheck : "N",
               },
-              handle: (e) => handleData(e),
-            }, {
+
+              handle: (e) => setIDCheck(handleBoolean(e.target.checked)),
+            },
+            {
               id: 2,
               label: "offset",
               xl: 10,
@@ -2964,7 +3197,7 @@ export const TestDnD = (props) => {
               select: {
                 status: "offset",
                 data: "",
-              }
+              },
             },
             {
               id: 3,
@@ -2973,20 +3206,21 @@ export const TestDnD = (props) => {
               md: 2,
               xs: 6,
               select: {
-                select: {
-                  status: "option",
-                  data: optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  )),
-                },
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.idtype : "option1",
               },
-              handle: (e) => handleData(e),
+
+              handle: (e) => setIDType(e.target.value),
             },
             {
               id: 4,
@@ -2997,30 +3231,33 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.idnumber : "",
               },
-              handle: (e) => handleData(e),
-            },{
+              handle: (e) => setIDNumber(e.target.value),
+            },
+            {
               id: 5,
-                label: "Nationality*",
-                xl: 2,
-                md: 2,
-                xs: 6,
-                select: {
-                  status: "option",
-                  data: optionnationality.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  )),
-                  defaultvalue:
-                    props.editdata != null ? props.editdata.gender : "",
-                },
-                handle: (e) => setNationality(e.target.value),
+              label: "Nationality*",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optionnationality.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.nationality : "Thai",
               },
+              handle: (e) => setNationality(e.target.value),
+            },
             {
               id: 6,
               label: "Date of Birth",
@@ -3029,21 +3266,29 @@ export const TestDnD = (props) => {
               xs: 6,
               select: {
                 status: "datetime",
-                data: "",
+                data: dateOfBirth,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.dateofbirth
+                    : new Date("2021-09-13T21:11:54"),
               },
-              handle: " ",
+              handle: (e) => setDateOfBirth(convertTimeToString(e)),
             },
             {
               id: 7,
-              label: "Issue Date",
+              label: "ID Issue Date",
               xl: 2,
               md: 2,
               xs: 6,
               select: {
                 status: "date",
-                data: "",
+                data: IDIssuedDate,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.idissuedDate
+                    : new Date("2021-09-13T21:11:54"),
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setIDIssuedDate(new Date(e)),
             },
             {
               id: 8,
@@ -3053,9 +3298,13 @@ export const TestDnD = (props) => {
               xs: 6,
               select: {
                 status: "date",
-                data: "",
+                data: IDExpirationDate,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.idexpirationDate
+                    : new Date("2021-09-13T21:11:54"),
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setIDExpirationDate(new Date(e)),
             },
             {
               id: 9,
@@ -3077,8 +3326,13 @@ export const TestDnD = (props) => {
               select: {
                 status: "check",
                 data: "",
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.passportvisacheck
+                    : "N",
               },
-              handle: (e) => handleData(e),
+              handle: (e) =>
+                setPassportVisaCheck(handleBoolean(e.target.checked)),
             },
             {
               id: 11,
@@ -3089,7 +3343,7 @@ export const TestDnD = (props) => {
               select: {
                 status: "offset",
                 data: "",
-              }
+              },
             },
             {
               id: 12,
@@ -3099,16 +3353,21 @@ export const TestDnD = (props) => {
               xs: 6,
               select: {
                 status: "option",
-                data: [{label:"Tourist"},{label:"Miliary"}].map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.label}
-                    value={option.label}
-                  >
-                    {option.label}
-                  </option>
-                )),
+                data: [{ label: "Tourist" }, { label: "Miliary" }].map(
+                  (option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.label}
+                      value={option.label}
+                    >
+                      {option.label}
+                    </option>
+                  )
+                ),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.visatype : "Tourist",
               },
+              handle: (e) => setVisaType(e.target.value),
             },
             {
               id: 13,
@@ -3119,8 +3378,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.visaname : "",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setVisaName(e.target.value),
             },
             {
               id: 14,
@@ -3131,8 +3392,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.visanumber : "",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setVisaNumber(e.target.value),
             },
             // {
             //   id: 15,
@@ -3164,9 +3427,14 @@ export const TestDnD = (props) => {
               xs: 6,
               select: {
                 status: "date",
-                data: "",
+                data: visaIssuedDate,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.visaissueddate
+                    : new Date("2021-09-13T21:11:54"),
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setVisaIssuedDate(new Date(e)),
+              // handle: (e) => setVisaIssuedDate(convertTimeToString(e)),
             },
             {
               id: 16,
@@ -3176,9 +3444,13 @@ export const TestDnD = (props) => {
               xs: 6,
               select: {
                 status: "date",
-                data: "",
+                data: visaBeginDate,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.visabegindate
+                    : new Date("2021-09-13T21:11:54"),
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setVisaBeginDate(new Date(e)),
             },
             {
               id: 17,
@@ -3188,9 +3460,13 @@ export const TestDnD = (props) => {
               xs: 6,
               select: {
                 status: "date",
-                data: "",
+                data: visaExpirationDate,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.visaexpirationdate
+                    : new Date("2021-09-13T21:11:54"),
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setVisaExpirationDate(new Date(e)),
             },
             // {
             //   id: 18,
@@ -3213,8 +3489,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "status",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.visastatus : "Y",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setVisaStatus(handleBoolean(e.target.checked)),
             },
             {
               id: 19,
@@ -3225,8 +3503,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.visanotes : "",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setVisaNotes(e.target.value),
             },
             // ,
             // {
@@ -3319,20 +3599,20 @@ export const TestDnD = (props) => {
               md: 2,
               xs: 6,
               select: {
-                select: {
-                  status: "option",
-                  data: optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  )),
-                },
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.rank : "option1",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setRank(e.target.value),
             },
             {
               id: 21,
@@ -3341,20 +3621,20 @@ export const TestDnD = (props) => {
               md: 2,
               xs: 6,
               select: {
-                select: {
-                  status: "option",
-                  data: optiondata.map((option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  )),
-                },
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.grade : "option1",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setGrade(e.target.value),
             },
             {
               id: 22,
@@ -3365,8 +3645,10 @@ export const TestDnD = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.guestidentity : "",
               },
-              handle: (e) => handleData(e),
+              handle: (e) => setGuestIdentity(e.target.value),
             },
             // {
             //   id: 29,
@@ -3429,8 +3711,7 @@ export const TestDnD = (props) => {
             //   handle: (e) => handleData(e),
             // },
           ],
-        }
-        
+        },
       ]);
     }
     getconfig();
@@ -3446,7 +3727,7 @@ export const TestDnD = (props) => {
       setList([...list.slice(0, index), new_data, ...list.slice(index + 1)]);
     }
   };
-  
+
   const handleAddAddress = async (id) => {
     console.log("handleAddAddress", id);
     let index = list.findIndex((x) => x.id === id);
@@ -3458,142 +3739,143 @@ export const TestDnD = (props) => {
         (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
         0
       );
-      address.content.push({
-        id: newid+1,
-        label: "Address",
-        xl: 2,
-        md: 2,
-        xs: 12,
-        select: {
-          status: "option",
-          data: [{label:"Organisation",label:"Home",label:"Resident"}].map((option) => (
-            <option
-              style={headerTableStyle}
-              key={option.label}
-              value={option.label}
-            >
-              {option.label}
-            </option>
-          )),
+      address.content.push(
+        {
+          id: newid + 1,
+          label: "Address",
+          xl: 2,
+          md: 2,
+          xs: 12,
+          select: {
+            status: "option",
+            data: [
+              { label: "Organisation" },
+              { label: "Home" },
+              { label: "Resident" },
+            ].map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.label}
+                value={option.label}
+              >
+                {option.label}
+              </option>
+            )),
+          },
         },
-      },
-      {
-        id: newid+2,
-        label: "Address 1",
-        xl: 5,
-        md: 5,
-        xs: 12,
-        select: {
-          status: "fill",
-          data: "",
+        {
+          id: newid + 2,
+          label: "Address 1",
+          xl: 5,
+          md: 5,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
         },
-        handle: (e) => handleData(e),
-      },
-      {
-        id: newid+3,
-        label: "Address 2",
-        xl: 5,
-        md: 5,
-        xs: 12,
-        select: {
-          status: "fill",
-          data: "",
+        {
+          id: newid + 3,
+          label: "Address 2",
+          xl: 5,
+          md: 5,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
         },
-        handle: (e) => handleData(e),
-      },
-      {
-        id: newid+4,
-        label: "Choose a country",
-        xl: 2,
-        md: 2,
-        xs: 6,
-        select: {
-          status: "option",
-          data: optioncountry.map((option) => (
-            <option
-              style={headerTableStyle}
-              key={option.value}
-              value={option.value}
-            >
-              {option.label}
-            </option>
-          )),
+        {
+          id: newid + 4,
+          label: "Choose a country",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "option",
+            data: optioncountry.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
         },
-        handle: (e) => handleData(e),
-      },
-      {
-        id: newid+5,
-        label: "City",
-        xl: 2,
-        md: 2,
-        xs: 6,
-        select: {
-          status: "option",
-          data: optioncountry.map((option) => (
-            <option
-              style={headerTableStyle}
-              key={option.value}
-              value={option.value}
-            >
-              {option.label}
-            </option>
-          )),
+        {
+          id: newid + 5,
+          label: "City",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "option",
+            data: optioncountry.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
         },
-        handle: (e) => handleData(e),
-      },
-      {
-        id: newid+6,
-        label: "State / Province",
-        xl: 2,
-        md: 2,
-        xs: 6,
-        select: {
-          status: "fill",
-          data: "",
+        {
+          id: newid + 6,
+          label: "State / Province",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
         },
-        handle: (e) => handleData(e),
-      },
-      {
-        id: newid+7,
-        label: "Postal",
-        xl: 2,
-        md: 2,
-        xs: 6,
-        select: {
-          status: "fill",
-          data: "",
+        {
+          id: newid + 7,
+          label: "Postal",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
         },
-        handle: (e) => handleData(e),
-      },
-      {
-        id: newid+8,
-        label: "",
-        xl: 4,
-        md: 4,
-        xs: 4,
-        select: {
-          status: "offset",
-          data: "",
+        {
+          id: newid + 8,
+          label: "",
+          xl: 4,
+          md: 4,
+          xs: 4,
+          select: {
+            status: "offset",
+            data: "",
+          },
+          handle: (e) => handleData(e),
         },
-        handle: (e) => handleData(e),
-      },
-      {
-        id: 99,
-        label: "AddAddress",
-        xl: 2,
-        md: 2,
-        xs: 6,
-        select: {
-          status: "AddAddress",
-          data: "+ More Address",
-        },
-      }
-);
-      setList([
-        ...list.slice(0, index),
-        address,
-        ...list.slice(index + 1),
-      ]);
+        {
+          id: 99,
+          label: "AddAddress",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "AddAddress",
+            data: "+ More Address",
+          },
+        }
+      );
+      setList([...list.slice(0, index), address, ...list.slice(index + 1)]);
     }
   };
 
@@ -3729,40 +4011,128 @@ export const TestDnD = (props) => {
     }
   };
 
+  const convertTimeToString = (e) => {
+    let dateNoTiome = e.toISOString();
+    let T = dateNoTiome.split("T");
+    // console.log(T);
+    return T[0];
+  };
+
+  const handleBoolean = (e) => {
+    if (e == true) {
+      return "Y";
+    } else return "N";
+  };
+
   const handleData = async (e) => {
+    // console.log("Value from handleData : ", e);
     // console.log("Value from handleData : ", e.target.value);
     console.log("Value from props.editdata : ", props.editdata);
+    // console.log("idividualData==", individualData);
     // console.log(
-    //   "handleData : ",
-    //   guestNameInfoID,
-    //   firstname,
-    //   lastname,
-    //   namePrefix,
-    //   gender,
-    //   idnumber,
-    //   nationality
+    //   "setvalue check==",
+    //   lastName == null || lastName == undefined || lastName == ""
+    //     ? individualData.lastname
+    //     : lastName
     // );
+
+    console.table(
+      "handleData : ",
+      nameTitle,
+      firstName,
+      lastName,
+      namePrefix,
+      nameSuffix,
+      middleInitial,
+      gender,
+      religion,
+      organization,
+      provinceOfResidence,
+      borderCrossingEntryPlace,
+      borderCrossingEntryDate,
+      address,
+      address1,
+      address2,
+      conuty,
+      city,
+      stateProvince,
+      postal,
+      noPost,
+      NRG,
+      guestCategory,
+      VVIP,
+      birthRegion,
+      birthProvince,
+      guestType,
+      IDCheck,
+      IDType,
+      IDNumber,
+      nationality,
+      dateOfBirth,
+      IDIssuedDate,
+      IDExpirationDate,
+      passportVisaCheck,
+      visaType,
+      visaName,
+      visaNumber,
+      visaIssuedDate,
+      visaBeginDate,
+      visaExpirationDate,
+      visaStatus,
+      visaNotes,
+      rank,
+      grade,
+      guestIdentity
+    );
   };
 
   const handleAddDatatoDatabase = async (e) => {
-    console.log(
-      "handleData : ",
-      // guestNameInfoID,
-      namePrefix,
-      firstname,
-      lastname,
-      gender,
-      idnumber,
-      nationality
-    );
     let req = {
-      guestnameinfoid: await Math.floor(Math.random() * (1000 - 99 + 1) + 99),
+      nametitle: nameTitle,
+      firstname: firstName,
+      lastname: lastName,
       nameprefix: namePrefix,
-      firstname: firstname,
-      lastname: lastname,
+      namesuffix: nameSuffix,
+      middleinitial: middleInitial,
       gender: gender,
-      idnumber: idnumber,
+      religion: religion,
+      organization: organization,
+      provinceofresidence: provinceOfResidence,
+      bordercrossingentryplace: borderCrossingEntryPlace,
+      bordercrossingentrydate: borderCrossingEntryDate,
+      address: address,
+      address1: address1,
+      address2: address2,
+      conuty: conuty,
+      city: city,
+      stateprovince: stateProvince,
+      postal: postal,
+      nopost: noPost,
+      nrg: NRG,
+      guestcategory: guestCategory,
+      vvip: VVIP,
+      birthregion: birthRegion,
+      birthprovince: birthProvince,
+      guesttype: guestType,
+      idcheck: IDCheck,
+      idtype: IDType,
+      idnumber: IDNumber,
       nationality: nationality,
+      dateofbirth: dateOfBirth,
+      idissueddate: IDIssuedDate,
+      idexpirationdate: IDExpirationDate,
+      passportvisacheck: passportVisaCheck,
+      visatype: visaType,
+      visaname: visaName,
+      visanumber: visaNumber,
+      visaissueddate: visaIssuedDate,
+      visabegindate: visaBeginDate,
+      visaexpirationdate: visaExpirationDate,
+      visastatus: visaStatus,
+      visanotes: visaNotes,
+      rank: rank,
+      grade: grade,
+      guestidentity: guestIdentity,
     };
     const data = await postIndividualProfile(
       sessionStorage.getItem("auth"),
@@ -3772,26 +4142,54 @@ export const TestDnD = (props) => {
   };
 
   const handleEditDatatoDatabase = async (e) => {
-    let id = props.editdata.guestnameinfoid;
-    console.log(
-      "handleData : ",
-      id,
-      namePrefix,
-      firstname,
-      lastname,
-      gender,
-      idnumber,
-      nationality
-    );
+    let id = props.editdata.nameid;
 
     let req = {
-      guestnameinfoid: id,
+      nametitle: nameTitle,
+      firstname: firstName,
+      lastname: lastName,
       nameprefix: namePrefix,
-      firstname: firstname,
-      lastname: lastname,
+      namesuffix: nameSuffix,
+      middleinitial: middleInitial,
       gender: gender,
-      idnumber: idnumber,
+      religion: religion,
+      organization: organization,
+      provinceofresidence: provinceOfResidence,
+      bordercrossingentryplace: borderCrossingEntryPlace,
+      bordercrossingentrydate: borderCrossingEntryDate,
+      address: address,
+      address1: address1,
+      address2: address2,
+      conuty: conuty,
+      city: city,
+      stateprovince: stateProvince,
+      postal: postal,
+      nopost: noPost,
+      nrg: NRG,
+      guestcategory: guestCategory,
+      vvip: VVIP,
+      birthregion: birthRegion,
+      birthprovince: birthProvince,
+      guesttype: guestType,
+      idcheck: IDCheck,
+      idtype: IDType,
+      idnumber: IDNumber,
       nationality: nationality,
+      dateofbirth: dateOfBirth,
+      idissueddate: IDIssuedDate,
+      idexpirationdate: IDExpirationDate,
+      passportvisacheck: passportVisaCheck,
+      visatype: visaType,
+      visaname: visaName,
+      visanumber: visaNumber,
+      visaissueddate: visaIssuedDate,
+      visabegindate: visaBeginDate,
+      visaexpirationdate: visaExpirationDate,
+      visastatus: visaStatus,
+      visanotes: visaNotes,
+      rank: rank,
+      grade: grade,
+      guestidentity: guestIdentity,
     };
     const data = await updateIndividualProfile(
       sessionStorage.getItem("auth"),
@@ -3802,15 +4200,32 @@ export const TestDnD = (props) => {
   };
 
   //data from button for  trigger (add or delete)
-  React.useEffect(async () => {
-    if (props.action == "add") {
-      console.log("action add", props.action);
-      await handleAddDatatoDatabase();
-    } else if (props.action == "edit") {
-      await handleEditDatatoDatabase();
-      console.log("action edit", props.action);
+  React.useEffect(() => {
+    async function handlebutton() {
+      if (props.action === "add") {
+        console.log("action add", props.action);
+        await handleAddDatatoDatabase();
+      } else if (props.action === "edit") {
+        await handleEditDatatoDatabase();
+        console.log("action edit", props.action);
+      }
     }
+    handlebutton();
   }, [props.action]);
+
+  //data from button for  trigger (add or delete)
+  // React.useEffect(() => {
+  //   // console.log("props.editdata.nameid", props.editdata.nameid);
+  //   // async function fetchdDtaforEdit() {
+  //   //   var individualdata = await getIndividualProfileById(
+  //   //     sessionStorage.getItem("auth"),
+  //   //     props.editdata.nameid
+  //   //   );
+  //   //   console.log("individualdata for edit :", individualdata);
+  //   //   setIndividualData(individualdata.content[0]);
+  //   // }
+  //   // fetchdDtaforEdit();
+  // }, []);
 
   return (
     <Container
@@ -3859,22 +4274,21 @@ export const TestDnD = (props) => {
                         className={classes.defaultTheme}
                         expanded={item.expend}
                       >
-                        {
-                          item.title == "Personal"? null :
-                        <AccordionSummary
-                          style={{ color: mainColor, fontSize: 18 }}
-                          onClick={() => handleExpend(item.id, item.expend)}
-                        >
-                          <div style={{ color: "blue" }}>
-                            {item.title}&nbsp;
-                          </div>{" "}
-                          {item.expend ? (
-                            <ArrowDropDownIcon style={{ color: "blue" }} />
-                          ) : (
-                            <ArrowDropUpIcon style={{ color: "blue" }} />
-                          )}
-                        </AccordionSummary>
-                        }
+                        {item.title == "Personal" ? null : (
+                          <AccordionSummary
+                            style={{ color: mainColor, fontSize: 18 }}
+                            onClick={() => handleExpend(item.id, item.expend)}
+                          >
+                            <div style={{ color: "blue" }}>
+                              {item.title}&nbsp;
+                            </div>{" "}
+                            {item.expend ? (
+                              <ArrowDropDownIcon style={{ color: "blue" }} />
+                            ) : (
+                              <ArrowDropUpIcon style={{ color: "blue" }} />
+                            )}
+                          </AccordionSummary>
+                        )}
                         <AccordionDetails>
                           <Grid container spacing={2}>
                             {item.content.map((detail, index) => (
@@ -3887,25 +4301,25 @@ export const TestDnD = (props) => {
                                 xs={detail.xs}
                               >
                                 {detail.select.status == "offset" ? (
-                                  <div/>
-                                  ) :
-                                detail.select.status == "checkbox" ? (
-                                  <FormControlLabel
-                                    value="start"
-                                    control={<Checkbox color="primary" />}
-                                    label={detail.label}
-                                    labelPlacement="start"
-                                  />
-                                  ):detail.select.status === "status" ? (
-                                    <div style={{ paddingTop: 10 }}>
-                                      <a>Status</a>
+                                  <div />
+                                ) : detail.select.status === "status" ? (
+                                  <div style={{ paddingTop: 10 }}>
+                                    <a>Status</a>
+                                    {detail.select.defaultvalue === "Y" ? (
                                       <Switch
                                         defaultChecked={true}
                                         color="primary"
-                                        onChange={(e) => { }}
+                                        onChange={detail.handle}
                                       />
-                                    </div>
-                                  ) :detail.select.status === "AddRelation" ? (
+                                    ) : (
+                                      <Switch
+                                        defaultChecked={false}
+                                        color="primary"
+                                        onChange={detail.handle}
+                                      />
+                                    )}
+                                  </div>
+                                ) : detail.select.status === "AddRelation" ? (
                                   <Button
                                     className={classes.root}
                                     variant="outlined"
@@ -3920,9 +4334,7 @@ export const TestDnD = (props) => {
                                   >
                                     {detail.select.data}
                                   </Button>
-                                ) 
-                                : detail.select.status ===
-                                  "AddAddress" ? (
+                                ) : detail.select.status === "AddAddress" ? (
                                   <Button
                                     className={classes.root}
                                     variant="outlined"
@@ -3932,14 +4344,11 @@ export const TestDnD = (props) => {
                                       color: "white",
                                     }}
                                     value={detail.select.data}
-                                    onClick={() =>
-                                      handleAddAddress(item.id)
-                                    }
+                                    onClick={() => handleAddAddress(item.id)}
                                   >
                                     {detail.select.data}
                                   </Button>
-                                )
-                                : detail.select.status ===
+                                ) : detail.select.status ===
                                   "AddComunication" ? (
                                   <Button
                                     className={classes.root}
@@ -3966,7 +4375,7 @@ export const TestDnD = (props) => {
                                       borderColor: "white",
                                     }}
                                     // disabled={true}
-                                    defaultValue={detail.select.data}
+                                    defaultValue={detail.select.defaultvalue}
                                     onFocus={false}
                                   />
                                 ) : detail.select.status === "fillnolabel" ? (
@@ -3982,7 +4391,7 @@ export const TestDnD = (props) => {
                                       style: { color: "#AAAAAA" },
                                     }}
                                     fullWidth
-                                    defaultValue={detail.select.data}
+                                    defaultValue={detail.select.defaultvalue}
                                     onChange={detail.handle}
                                   />
                                 ) : detail.select.status === "fill" ? (
@@ -3998,7 +4407,7 @@ export const TestDnD = (props) => {
                                       style: { color: "#AAAAAA" },
                                     }}
                                     fullWidth
-                                    defaultValue={detail.select.data}
+                                    defaultValue={detail.select.defaultvalue}
                                     onChange={detail.handle}
                                   />
                                 ) : detail.select.status === "option" ? (
@@ -4024,12 +4433,33 @@ export const TestDnD = (props) => {
                                     {detail.select.data}
                                   </TextField>
                                 ) : detail.select.status === "check" ? (
-                                  <FormControlLabel
-                                    // value="start"
-                                    control={<Checkbox color="primary" />}
-                                    label={detail.label}
-                                    labelPlacement="end"
-                                  />
+                                  <span>
+                                    {detail.select.defaultvalue === "Y" ? (
+                                      <FormControlLabel
+                                        control={
+                                          <Checkbox
+                                            defaultChecked={true}
+                                            color="primary"
+                                          />
+                                        }
+                                        label={detail.label}
+                                        labelPlacement="end"
+                                        onChange={detail.handle}
+                                      />
+                                    ) : (
+                                      <FormControlLabel
+                                        control={
+                                          <Checkbox
+                                            defaultChecked={false}
+                                            color="primary"
+                                          />
+                                        }
+                                        label={detail.label}
+                                        labelPlacement="end"
+                                        onChange={detail.handle}
+                                      />
+                                    )}
+                                  </span>
                                 ) : (
                                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <KeyboardDatePicker
@@ -4039,12 +4469,11 @@ export const TestDnD = (props) => {
                                       InputProps={{
                                         style: headerTableStyle,
                                       }}
-                                      // format="dd/MM/yyyy"
-                                      // value={selectedDateStartEdit}
-                                      // onChange={handleDateStartEdit}
-
+                                      format="dd/MM/yyyy"
+                                      value={detail.select.data}
                                       onChange={detail.handle}
                                       fullWidth
+                                      defaultValue={detail.select.defaultvalue}
                                     />
                                   </MuiPickersUtilsProvider>
                                 )}

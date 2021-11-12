@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function createData(
-  guestnameinfoid,
+  nameid,
   firstname,
   lastname,
   nameprefix,
@@ -105,7 +105,7 @@ function createData(
   status
 ) {
   return {
-    guestnameinfoid,
+    nameid,
     firstname,
     lastname,
     nameprefix,
@@ -210,7 +210,7 @@ export const ProfileTable = (props) => {
   const [statusprofile, setStatusprofile] = React.useState("none");
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [deleteData, setDeleteData] = React.useState({
-    guestnameinfoid: "guestnameinfoid",
+    nameid: "nameid",
     nameprefix: "title",
     firstname: "firstname",
     lastname: "lastname",
@@ -248,25 +248,25 @@ export const ProfileTable = (props) => {
 
   const handleEditData = async (rowData) => {
     await setAction("none");
-    console.log("rowData", rowData);
-    setEditData(rowData);
+    var individualdata = await getIndividualProfileById(
+      sessionStorage.getItem("auth"),
+      rowData.nameid
+    );
+    // console.log("rowData", rowData);
+    console.log("individualdata ==", individualdata.content[0]);
+    setEditData(individualdata.content[0]);
     handleDeleteData(
-      rowData.guestnameinfoid,
+      rowData.nameid,
       rowData.nameprefix,
       rowData.firstname,
       rowData.lastname
     );
     setStatusprofile("edit");
   };
-  const handleDeleteData = async (
-    guestnameinfoid,
-    nameprefix,
-    firstname,
-    lastname
-  ) => {
-    console.log("data : ", guestnameinfoid, nameprefix, firstname, lastname);
+  const handleDeleteData = async (nameid, nameprefix, firstname, lastname) => {
+    console.log("data : ", nameid, nameprefix, firstname, lastname);
     setDeleteData({
-      guestnameinfoid: guestnameinfoid,
+      nameid: nameid,
       title: nameprefix,
       firstname: firstname,
       lastname: lastname,
@@ -274,8 +274,8 @@ export const ProfileTable = (props) => {
   };
 
   const handleConfirmDeleteData = async () => {
-    console.log(deleteData.guestnameinfoid);
-    let id = deleteData.guestnameinfoid;
+    console.log(deleteData.nameid);
+    let id = deleteData.nameid;
     let datafordelete = await deleteIndividualProfileById(
       sessionStorage.getItem("auth"),
       id
@@ -286,18 +286,18 @@ export const ProfileTable = (props) => {
   };
 
   const handleDialogDeleteOpen = async (
-    guestnameinfoid,
+    nameid,
     firstname,
     lastname,
     nameprefix
   ) => {
     await setDeleteData({
-      guestnameinfoid: guestnameinfoid,
+      nameid: nameid,
       nameprefix: nameprefix,
       firstname: firstname,
       lastname: lastname,
     });
-    console.log(guestnameinfoid, firstname, lastname, nameprefix);
+    console.log(nameid, firstname, lastname, nameprefix);
     await setDialogDelete(true);
   };
   const handleDialogDeleteClose = () => {
@@ -312,7 +312,7 @@ export const ProfileTable = (props) => {
       data.content[data.content.length - 1].forEach((element) =>
         _individualData.push(
           createData(
-            element.guestnameinfoid,
+            element.nameid,
             element.firstname,
             element.lastname,
             element.nameprefix,
@@ -332,40 +332,44 @@ export const ProfileTable = (props) => {
       );
     }
     console.log("individualData", _individualData);
-    setIndividualData(_individualData);
-    setStatusprofile("moredata");
+    await setIndividualData(_individualData);
+    await setStatusprofile("moredata");
   };
 
   //initial data to table
-  React.useEffect(async () => {
-    const data = await getIndividualProfile(sessionStorage.getItem("auth"));
-    console.log("data", data);
-    let _individualData = [];
-    if (data.content.length != 0) {
-      data.content[data.content.length - 1].forEach((element) =>
-        _individualData.push(
-          createData(
-            element.guestnameinfoid,
-            element.firstname,
-            element.lastname,
-            element.nameprefix,
-            element.gender,
-            element.idnumber,
-            element.nationality,
-            // element.nextstay,
-            "22/11/2021",
-            // element.laststay,
-            "10/12/2020",
-            // element.score,
-            "5",
-            // element.status
-            "Check-In"
+  React.useEffect(() => {
+    async function fetchData() {
+      const data = await getIndividualProfile(sessionStorage.getItem("auth"));
+      console.log("data", data);
+      let _individualData = [];
+      if (data.content.length !== 0) {
+        data.content[data.content.length - 1].forEach((element) =>
+          _individualData.push(
+            createData(
+              element.nameid,
+              element.firstname,
+              element.lastname,
+              element.nameprefix,
+              element.gender,
+              element.idnumber,
+              element.nationality,
+              // element.nextstay,
+              "22/11/2021",
+              // element.laststay,
+              "10/12/2020",
+              // element.score,
+              "5",
+              // element.status
+              "Check-In"
+            )
           )
-        )
-      );
+        );
+        console.log("individualData", _individualData);
+      }
+
+      setIndividualData(_individualData);
     }
-    console.log("individualData", _individualData);
-    setIndividualData(_individualData);
+    fetchData();
     setStatusprofile("moredata");
   }, []);
 
@@ -526,8 +530,8 @@ export const ProfileTable = (props) => {
                 }}
                 columns={[
                   {
-                    title: "Guest ID",
-                    field: "guestnameinfoid",
+                    title: "Name ID",
+                    field: "nameid",
                     headerStyle: headerTableStyle,
                   },
                   {
@@ -631,7 +635,12 @@ export const ProfileTable = (props) => {
                     width: 430,
                   },
                 }}
-                localization={{ toolbar: { searchPlaceholder: 'Search by name, ID Card/Passport, status' } }}
+                localization={{
+                  toolbar: {
+                    searchPlaceholder:
+                      "Search by name, ID Card/Passport, status",
+                  },
+                }}
                 actions={[
                   {
                     icon: "edit",
@@ -647,7 +656,7 @@ export const ProfileTable = (props) => {
                     tooltip: "Delete",
                     onClick: (event, rowData) => {
                       handleDialogDeleteOpen(
-                        rowData.guestnameinfoid,
+                        rowData.nameid,
                         rowData.firstname,
                         rowData.lastname,
                         rowData.nameprefix
