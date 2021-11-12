@@ -211,7 +211,7 @@ export const ProfileTable = (props) => {
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [deleteData, setDeleteData] = React.useState({
     nameid: "nameid",
-    nameprefix: "title",
+    nameprefix: "nameprefix",
     firstname: "firstname",
     lastname: "lastname",
   });
@@ -267,7 +267,7 @@ export const ProfileTable = (props) => {
     console.log("data : ", nameid, nameprefix, firstname, lastname);
     setDeleteData({
       nameid: nameid,
-      title: nameprefix,
+      nameprefix: nameprefix,
       firstname: firstname,
       lastname: lastname,
     });
@@ -698,7 +698,7 @@ export const ProfileTable = (props) => {
                   Title:&nbsp;
                 </Typography>
                 <Typography color="initial" display="inline">
-                  {deleteData.title}
+                  {deleteData.nameprefix}
                 </Typography>
               </Typography>
               <Typography>
