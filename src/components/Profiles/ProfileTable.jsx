@@ -427,11 +427,11 @@ export const ProfileTable = (props) => {
             </Link>
           </Breadcrumbs>
         </Grid>
-          {statusprofile === "add" || statusprofile === "edit" || statusprofile === "delete" ? (
+          {statusprofile === "add" || statusprofile === "edit"  ? (
           <Grid item xs={6} sm={2} md={2} style={{ paddingLeft: 450 ,textAlign: "right" }}>
             <Button
               variant="contained"
-              style={{ backgroundColor: "red", color: "white" }}
+              style={{ backgroundColor: "gray", color: "white" }}
               startIcon={<ClearIcon />}
               onClick={() => setStatusprofile("moredata")}
             >
