@@ -525,10 +525,7 @@ export const ProfileTableCompany = (props) => {
                     title: "IATA",
                     field: "iata",
                     headerStyle: headerTableStyle,
-                  },
-                 
-
-                 
+                  }
                 ]}
                 data={companyData}
                 options={{

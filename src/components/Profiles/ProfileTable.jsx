@@ -27,6 +27,7 @@ import ProfileIndividual from "./ProfileIndividual";
 import TestDnD from "./TestDnD";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import DeleteIcon from "@material-ui/icons/DeleteOutlined";
+import ClearIcon from '@material-ui/icons/Clear';
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import Dialog from "@material-ui/core/Dialog";
@@ -426,7 +427,18 @@ export const ProfileTable = (props) => {
             </Link>
           </Breadcrumbs>
         </Grid>
-
+          {statusprofile === "add" || statusprofile === "edit" || statusprofile === "delete" ? (
+          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "red", color: "white" }}
+              startIcon={<ClearIcon />}
+              onClick={() => setStatusprofile("none")}
+            >
+              Cancel
+            </Button>
+          </Grid>
+        ) : null}
         {/* </Grid> */}
         {statusprofile === "add" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
