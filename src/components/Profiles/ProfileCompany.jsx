@@ -1258,6 +1258,7 @@ export const ProfileCompany = (props) => {
     // let optionDocumentType = await getlist(configdata,"");
 
 
+    console.log("propseditData:",props.editdata);
 
   }, []);
 
@@ -1295,7 +1296,7 @@ export const ProfileCompany = (props) => {
   const [Currency, setCurrency] = React.useState("");
   const [CreditRating, setCreditRating] = React.useState("");
   const [IATA, setIATA] = React.useState("");
-  const [Status, setStatus] = React.useState("");
+  const [Status, setStatus] = React.useState(true);
   const [StreetAddress, setStreetAddress] = React.useState("");
   const [Chooseacountry, setChooseacountry] = React.useState("");
   const [City, setCity] = React.useState("");
@@ -1346,7 +1347,10 @@ export const ProfileCompany = (props) => {
           xs: 12,
           select: {
             status: "fill",
-            data: " "
+            data: "",
+            defaultvalue:  props.editdata != null ? props.editdata[0].name : "",
+                
+               
           },
           handle: (e) => setnameOne(e.target.value),
         },
@@ -1358,7 +1362,9 @@ export const ProfileCompany = (props) => {
           xs: 12,
           select: {
             status: "fill",
-            data: " ",
+            data: "",
+            defaultvalue:  props.editdata != null ? props.editdata.name2 : "",
+             
           },
           handle: (e) => setnameTwo(e.target.value),
         },
@@ -1375,6 +1381,7 @@ export const ProfileCompany = (props) => {
                 style={headerTableStyle}
                 key={option.label}
                 value={option.label}
+                defaultvalue= {props.editdata != null ? props.editdata.name : ""}
               >
                 {option.label}
               </option>
@@ -1391,6 +1398,7 @@ export const ProfileCompany = (props) => {
           select: {
             status: "fill",
             data: "",
+            defaultvalue:  props.editdata != null ? props.editdata.abbreviation : "",
           },
           handle: (e) => setAbbreviation(e.target.value),
         },
@@ -1424,7 +1432,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => handleData(e),
+          handle: (e) => setGuaranteeMethodCode(e.target.value),
         },
         {
           id: 7,
@@ -1641,7 +1649,7 @@ export const ProfileCompany = (props) => {
           handle: (e) => setBPostal(e.target.value),
         },
         {
-          id: 8,
+          id: 9,
           label: "TaxID",
           xl: 3,
           md: 6,
@@ -1653,7 +1661,7 @@ export const ProfileCompany = (props) => {
           handle: (e) => setTaxID(e.target.value),
         },
         {
-          id: 8,
+          id: 10,
           label: "TaxID2",
           xl: 3,
           md: 6,
@@ -2064,49 +2072,89 @@ export const ProfileCompany = (props) => {
 
   const handleAddDatatoDatabase = async (e) => {
 
-    console.log(nameOne,
-      nameTwo,
-      CompanyTypeCode,
-      Abbreviation,
-      GuaranteeMethodCode,
-      Property,
-      Currency,
-      CreditRating,
-      IATA,
-      Status,
-      StreetAddress,
-      Chooseacountry,
-      City,
-      State,
-      Postal,
-      BStreetAddress,
-      BChooseacountry,
-      BCity,
-      BState,
-      BPostal,
-      TaxID,
-      TaxID2,
-      Communication,
-      Relationship,
-      CreditCardNumber,
-      OutstandingAmount,
-      FloatingDepositionAmount,
-      ARNumber,
-      SalesUserName,
-      Industry,
-      MarketSegment,
-      SourceOfBusiness,
-      TrackCode,
-      ReasonForStay,
-      Geographic);
+    // console.log(nameOne,
+    //   nameTwo,
+    //   CompanyTypeCode,
+    //   Abbreviation,
+    //   GuaranteeMethodCode,
+    //   Property,
+    //   Currency,
+    //   CreditRating,
+    //   IATA,
+    //   Status,
+    //   StreetAddress,
+    //   Chooseacountry,
+    //   City,
+    //   State,
+    //   Postal,
+    //   BStreetAddress,
+    //   BChooseacountry,
+    //   BCity,
+    //   BState,
+    //   BPostal,
+    //   TaxID,
+    //   TaxID2,
+    //   Communication,
+    //   Relationship,
+    //   CreditCardNumber,
+    //   OutstandingAmount,
+    //   FloatingDepositionAmount,
+    //   ARNumber,
+    //   SalesUserName,
+    //   Industry,
+    //   MarketSegment,
+    //   SourceOfBusiness,
+    //   TrackCode,
+    //   ReasonForStay,
+    //   Geographic);
 
     props.setAction("none");
     if (nameOne == "") {
       setErrorParameter("name1 is required")
       setErrorMessage(true);
-    } else if (nameTwo == "") {
-      setErrorParameter("name2 is required")
-      setErrorMessage(true);
+    // } else if (nameTwo == "") {
+    //   setErrorParameter("name2 is required")
+    //   setErrorMessage(true);
+    // } else if (Abbreviation == "") {
+    //   setErrorParameter("Abbreviation is required")
+    //   setErrorMessage(true);
+    // } else if (GuaranteeMethodCode == "") {
+    //   setErrorParameter("GuaranteeMethodCode is required")
+    //   setErrorMessage(true);
+    // } else if (IATA == "") {
+    //   setErrorParameter("IATA is required")
+    //   setErrorMessage(true);
+    // } else if (StreetAddress == "") {
+    //   setErrorParameter("StreetAddress is required")
+    //   setErrorMessage(true);
+    // } else if (City == "") {
+    //   setErrorParameter("City is required")
+    //   setErrorMessage(true);
+    // } else if (State == "") {
+    //   setErrorParameter("State is required")
+    //   setErrorMessage(true);
+    // } else if (Postal == "") {
+    //   setErrorParameter("Postal is required")
+    //   setErrorMessage(true);
+    // } else if (BStreetAddress == "") {
+    //   setErrorParameter("Billing StreetAddress is required")
+    //   setErrorMessage(true);
+    // } else if (BCity == "") {
+    //   setErrorParameter("Billing City is required")
+    //   setErrorMessage(true);
+    // }else if (BState == "") {
+    //   setErrorParameter("Billing State is required")
+    //   setErrorMessage(true);
+    // }else if (BPostal == "") {
+    //   setErrorParameter("Billing Postal is required")
+    //   setErrorMessage(true);
+    // }else if (TaxID == "") {
+    //   setErrorParameter("TaxID is required")
+    //   setErrorMessage(true);
+    // }else if (TaxID2 == "") {
+    //   setErrorParameter("TaxID2 is required")
+    //   setErrorMessage(true);
+    // } else {
     } else {
 
       setErrorMessage(false);
@@ -2149,24 +2197,192 @@ export const ProfileCompany = (props) => {
         Geographic: Geographic
       };
       console.log("datafrom post", req)
-      const data = await postCompanyProfile(
+      const resp = await postCompanyProfile(
         sessionStorage.getItem("auth"),
         req
       );
 
+      if(resp.status == "2000"){
+        props.setAction("success");
+      }else{
+        props.setAction("dupic");
+        setErrorParameter(resp.msg)
+        setErrorMessage(true);
+      }
 
-      console.log("datafrom post", data);
+      
+
+
+      // console.log("datafrom post", data);
 
     }
   };
 
+  const handleAddDataEdittoDatabase = async (e) => {
+
+    // console.log(nameOne,
+    //   nameTwo,
+    //   CompanyTypeCode,
+    //   Abbreviation,
+    //   GuaranteeMethodCode,
+    //   Property,
+    //   Currency,
+    //   CreditRating,
+    //   IATA,
+    //   Status,
+    //   StreetAddress,
+    //   Chooseacountry,
+    //   City,
+    //   State,
+    //   Postal,
+    //   BStreetAddress,
+    //   BChooseacountry,
+    //   BCity,
+    //   BState,
+    //   BPostal,
+    //   TaxID,
+    //   TaxID2,
+    //   Communication,
+    //   Relationship,
+    //   CreditCardNumber,
+    //   OutstandingAmount,
+    //   FloatingDepositionAmount,
+    //   ARNumber,
+    //   SalesUserName,
+    //   Industry,
+    //   MarketSegment,
+    //   SourceOfBusiness,
+    //   TrackCode,
+    //   ReasonForStay,
+    //   Geographic);
+
+    props.setAction("none");
+    if (nameOne == "") {
+      setErrorParameter("name1 is required")
+      setErrorMessage(true);
+    // } else if (nameTwo == "") {
+    //   setErrorParameter("name2 is required")
+    //   setErrorMessage(true);
+    // } else if (Abbreviation == "") {
+    //   setErrorParameter("Abbreviation is required")
+    //   setErrorMessage(true);
+    // } else if (GuaranteeMethodCode == "") {
+    //   setErrorParameter("GuaranteeMethodCode is required")
+    //   setErrorMessage(true);
+    // } else if (IATA == "") {
+    //   setErrorParameter("IATA is required")
+    //   setErrorMessage(true);
+    // } else if (StreetAddress == "") {
+    //   setErrorParameter("StreetAddress is required")
+    //   setErrorMessage(true);
+    // } else if (City == "") {
+    //   setErrorParameter("City is required")
+    //   setErrorMessage(true);
+    // } else if (State == "") {
+    //   setErrorParameter("State is required")
+    //   setErrorMessage(true);
+    // } else if (Postal == "") {
+    //   setErrorParameter("Postal is required")
+    //   setErrorMessage(true);
+    // } else if (BStreetAddress == "") {
+    //   setErrorParameter("Billing StreetAddress is required")
+    //   setErrorMessage(true);
+    // } else if (BCity == "") {
+    //   setErrorParameter("Billing City is required")
+    //   setErrorMessage(true);
+    // }else if (BState == "") {
+    //   setErrorParameter("Billing State is required")
+    //   setErrorMessage(true);
+    // }else if (BPostal == "") {
+    //   setErrorParameter("Billing Postal is required")
+    //   setErrorMessage(true);
+    // }else if (TaxID == "") {
+    //   setErrorParameter("TaxID is required")
+    //   setErrorMessage(true);
+    // }else if (TaxID2 == "") {
+    //   setErrorParameter("TaxID2 is required")
+    //   setErrorMessage(true);
+    // } else {
+    } else {
+
+      setErrorMessage(false);
+
+      let req = {
+        nameOne: nameOne,
+        nameTwo: nameTwo,
+        CompanyTypeCode: CompanyTypeCode,
+        Abbreviation: Abbreviation,
+        GuaranteeMethodCode: GuaranteeMethodCode,
+        Property: Property,
+        Currency: Currency,
+        CreditRating: CreditRating,
+        IATA: IATA,
+        Status: Status,
+        StreetAddress: StreetAddress,
+        Chooseacountry: Chooseacountry,
+        City: City,
+        State: State,
+        Postal: Postal,
+        BStreetAddress: BStreetAddress,
+        BChooseacountry: BChooseacountry,
+        BCity: BCity,
+        BState: BState,
+        BPostal: BPostal,
+        TaxID: TaxID,
+        TaxID2: TaxID2,
+        Communication: Communication,
+        Relationship: Relationship,
+        CreditCardNumber: CreditCardNumber,
+        OutstandingAmount: OutstandingAmount,
+        FloatingDepositionAmount: FloatingDepositionAmount,
+        ARNumber: ARNumber,
+        SalesUserName: SalesUserName,
+        Industry: Industry,
+        MarketSegment: MarketSegment,
+        SourceOfBusiness: SourceOfBusiness,
+        TrackCode: TrackCode,
+        ReasonForStay: ReasonForStay,
+        Geographic: Geographic
+      };
+      console.log("datafrom post", req)
+      console.log("props.editData[0].id:",props.editdata);
+      console.log("props.editData[0].id:",props.editdata[0].id);
+      const resp = await updateCompanyProfile(
+        sessionStorage.getItem("auth"),props.editdata[0].id,
+        req
+      );
+
+      if(resp.status == "2000"){
+        props.setAction("success");
+      }else{
+        props.setAction("dupic");
+        setErrorParameter(resp.msg)
+        setErrorMessage(true);
+      }
+
+      
+
+
+      // console.log("datafrom post", data);
+
+    }
+  };
+
+
+  const changeSwitch = (e) => {
+  
+    setStatus(!Status)
+    console.log(Status);
+  }
+
   //data from button for  trigger (add or delete)
   React.useEffect(async () => {
+    console.log("props.action:::",props.action);
     if (props.action == "add") {
       console.log("action add", props.action);
       await handleAddDatatoDatabase();
     } else if (props.action == "edit") {
-      // await handleEditDatatoDatabase();
+       await handleAddDataEdittoDatabase();
       console.log("action edit", props.action);
     }
   }, [props.action]);
@@ -2448,9 +2664,10 @@ export const ProfileCompany = (props) => {
                                       <div style={{ paddingTop: 10 }}>
                                         <a>Status</a>
                                         <Switch
-                                          defaultChecked={true}
+                                          defaultChecked={Status}
+                                          value={Status}
                                           color="primary"
-                                          onChange={(e) => { }}
+                                          onChange={(e) => changeSwitch(e)}
                                         />
                                       </div>
                                     ) : detail.select.status === "AddComunication" ? (
@@ -2493,6 +2710,7 @@ export const ProfileCompany = (props) => {
                                         style={{ backgroundColor: "#EEEEEE" }}
                                         // disabled={true}
                                         value={detail.select.data}
+                                        defaultValue={detail.select.defaultvalue}
                                         onFocus={false}
                                       />
                                     ) : detail.select.status === "fill" ? (
@@ -2507,6 +2725,7 @@ export const ProfileCompany = (props) => {
                                           style: { color: "#AAAAAA" }
                                         }}
                                         fullWidth
+                                        defaultValue={detail.select.defaultvalue}
                                         onChange={detail.handle}
                                       />
                                     ) : detail.select.status === "option" ? (

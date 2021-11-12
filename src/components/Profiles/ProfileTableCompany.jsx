@@ -4,6 +4,7 @@ import { nextComponent } from "../../middleware/action";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import { blue, green, yellow } from "@material-ui/core/colors";
+
 import {
   Container,
   Grid,
@@ -31,6 +32,15 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import SearchIcon from '@material-ui/icons/Search';
+
+import {
+  getCompanyProfile,
+  getCompanyProfileById,
+  postCompanyProfile,
+  updateCompanyProfile,
+  deleteCompanyProfileById,
+} from "../../services/companyprofile.service";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -195,8 +205,8 @@ export const ProfileTableCompany = (props) => {
     color: themeState.color,
   };
 
-  // const [individualData, setIndividualData] = React.useState(rows);
-  const [individualData, setIndividualData] = React.useState(null);
+  const [companyData, setcompanyData] = React.useState(rows);
+  // const [companyData, setcompanyData] = React.useState(null);
   const [statusprofile, setStatusprofile] = React.useState("none");
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [deleteData, setDeleteData] = React.useState({
@@ -204,6 +214,22 @@ export const ProfileTableCompany = (props) => {
     firstname: "firstname",
     lastname: "lastname",
   });
+
+  React.useEffect( async() => {
+   await handleGetCompanyProfile();
+  },[])
+
+  const handleGetCompanyProfile = async () => {
+    const resp = await getCompanyProfile(sessionStorage.getItem("auth"));
+    console.log(resp.content);
+    if(resp.content[0].length > 0){
+      setStatusprofile("moredata");
+      setcompanyData(resp.content[0]);
+    }
+   
+  }
+
+ 
 
   const handleComponentState = async (comp) => {
     console.log("setcomp", comp);
@@ -216,25 +242,60 @@ export const ProfileTableCompany = (props) => {
     // setAction("add")
     setStatusprofile("add");
   };
-  const handleAddData = (rows) => {
+  const handleAddData = async (companyData) => {
     console.log("ok");
     setAction("add")
 
-    console.log("rows:",rows);
-    // setStatusprofile("moredata");
-    // setIndividualData(rows);
+    console.log("companyData:",companyData);
+    if(action == "success"){
+      setStatusprofile("moredata");
+      await handleGetCompanyProfile()
+      // setcompanyData(companyData);
+    }
+   
   };
-  const handleEditData = () => {
-    setStatusprofile("edit");
-  };
-  const handleDeleteData = () => {
-    setStatusprofile("moredata");
-    setDialogDelete(false);
+  const handleAddDataEdit = async (companyData) => {
+    console.log("ok");
+    setAction("edit")
+
+    console.log("companyData:",companyData);
+    if(action == "success"){
+      setStatusprofile("moredata");
+      await handleGetCompanyProfile()
+      // setcompanyData(companyData);
+    }
+   
   };
 
-  const handleDialogDeleteOpen = async (title, firstname, lastname) => {
-    console.log("data : ", title, firstname, lastname);
-    setDeleteData({ title: title, firstname: firstname, lastname: lastname });
+
+
+
+  const handleEditData = async (data) => {
+    const resp = await getCompanyProfileById(sessionStorage.getItem("auth"),data.id);
+    console.log(resp);
+    setEditData(resp.content)
+    console.log("editData:",editData);
+    setStatusprofile("edit");
+  };
+  const handleDeleteData = async () => {
+    try {
+      const resp = await deleteCompanyProfileById(sessionStorage.getItem("auth"),deleteData.id);
+      console.log("resp:",resp);
+      if(resp.status == "2000"){
+       await handleGetCompanyProfile()
+      }
+      setStatusprofile("moredata");
+      setDialogDelete(false);
+    } catch (error) {
+      
+    }
+  
+  };
+
+  const handleDialogDeleteOpen = async (id,name, www, city) => {
+    console.log("id:",id);
+    console.log("data : ",name, www, city);
+    setDeleteData({id:id, name: name, www: www, city: city });
     setDialogDelete(true);
   };
   const handleDialogDeleteClose = () => {
@@ -300,7 +361,7 @@ export const ProfileTableCompany = (props) => {
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
               startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleAddData(rows)}
+              onClick={() => handleAddData(companyData)}
             >
               Save
             </Button>
@@ -311,7 +372,7 @@ export const ProfileTableCompany = (props) => {
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
               startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleAddData(rows)}
+              onClick={() => handleAddDataEdit(companyData)}
             >
               Save
             </Button>
@@ -341,7 +402,7 @@ export const ProfileTableCompany = (props) => {
         <ProfileCompany editdata={editData} action={action} setAction={setAction} />
       ) : (
         [
-          individualData == null ? (
+          companyData == null ? (
             <Grid
               container
               direction="column"
@@ -380,7 +441,7 @@ export const ProfileTableCompany = (props) => {
                     fullWidth
                     onClick={() => handleNewData()}
                   >
-                    Create New Profile
+                    Create New CompanyProfile
                   </Button>
                 </Grid>
               </Grid>
@@ -388,6 +449,46 @@ export const ProfileTableCompany = (props) => {
           ) : (
             <Container maxWidth="xl">
               <MaterialTable
+               localization={{
+                body: {
+                  emptyDataSourceMessage: <>   <Typography
+                    variant="h1"
+                    align="center"
+                    style={{ fontSize: 25, color: themeState.color }}
+                  >
+                    <ErrorOutlineOutlinedIcon
+                      style={{ fontSize: 100, color: "lightgray" }}
+                    />
+                  </Typography>
+                    <Typography
+                      align="center"
+                      variant="h2"
+                      style={{
+                        fontWeight: 400,
+                        fontSize: 30,
+                        color: "rgb(0 0 0 / 47%)",
+                        marginBottom: 20,
+                      }}
+                    >
+                      No Data Available
+                    </Typography>
+                    <Grid item>
+                      <Button
+                        startIcon={<AddOutlinedIcon />}
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        // style={{ padding: 13 }}
+                        // fullWidth
+                        // onClick={() => setCreateindividual(true)}
+                        onClick={() => handleNewData()}
+                      >
+                       New CompanyProfile
+                      </Button>
+                    </Grid>
+                  </>
+                }
+              }}
                 style={{
                   paddingLeft: 30,
                   paddingRight: 30,
@@ -396,28 +497,18 @@ export const ProfileTableCompany = (props) => {
                 }}
                 columns={[
                   {
-                    title: "First Name",
-                    field: "firstname",
+                    title: "Name",
+                    field: "name",
                     headerStyle: headerTableStyle,
                   },
                   {
-                    title: "Last Name",
-                    field: "lastname",
+                    title: "www",
+                    field: "www",
                     headerStyle: headerTableStyle,
                   },
                   {
-                    title: "Title",
-                    field: "title",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "Sex",
-                    field: "sex",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "ID Card/Passport",
-                    field: "idcardandpass",
+                    title: "City/Country",
+                    field: "city",
                     headerStyle: headerTableStyle,
                   },
                   // {
@@ -426,54 +517,20 @@ export const ProfileTableCompany = (props) => {
                   //   headerStyle: headerTableStyle,
                   // },
                   {
-                    title: "Last Stay",
-                    field: "laststay",
+                    title: "Industry",
+                    field: "industry",
                     headerStyle: headerTableStyle,
                   },
                   {
-                    title: "Score",
-                    field: "score",
+                    title: "IATA",
+                    field: "iata",
                     headerStyle: headerTableStyle,
                   },
+                 
 
-                  {
-                    render: (rowData) => {
-                      return rowData.status === "Check-Out" ? (
-                        <Button
-                          variant="contained"
-                          style={{
-                            borderRadius: 20,
-                            backgroundColor: "red",
-                            color: "white",
-                          }}
-                        >
-                          {rowData.status}
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="contained"
-                          style={{
-                            borderRadius: 20,
-                            backgroundColor: mainColor,
-                            color: "white",
-                          }}
-                        >
-                          {rowData.status}
-                        </Button>
-                      );
-                    },
-                    cellStyle: { textAlign: "center" },
-                    headerStyle: {
-                      textAlign: "center",
-                      paddingLeft: 37,
-                      backgroundColor: themeState.paper,
-                      color: themeState.color,
-                    },
-                    title: "Status",
-                    field: "status",
-                  },
+                 
                 ]}
-                data={individualData}
+                data={companyData}
                 options={{
                   searchFieldAlignment: "left",
                   showTitle: false,
@@ -485,7 +542,7 @@ export const ProfileTableCompany = (props) => {
                     5,
                     10,
                     20,
-                    { value: rows.length, label: "All" },
+                    { value: companyData.length, label: "All" },
                   ],
                   headerStyle: headerTableStyle,
                   searchFieldStyle: {
@@ -496,6 +553,7 @@ export const ProfileTableCompany = (props) => {
                   },
                 }}
                 actions={[
+               
                   {
                     icon: "edit",
                     iconProps: { style: { color: themeState.color } },
@@ -510,9 +568,10 @@ export const ProfileTableCompany = (props) => {
                     tooltip: "Delete",
                     onClick: (event, rowData) => {
                       handleDialogDeleteOpen(
-                        rowData.title,
-                        rowData.firstname,
-                        rowData.lastname
+                        rowData.id,
+                        rowData.name,
+                        rowData.city,
+                      
                       );
                     },
                   },
@@ -539,7 +598,7 @@ export const ProfileTableCompany = (props) => {
                 color: mainColor,
               }}
             >
-              Confirm Delete Profile
+              Confirm Delete CompanyProfile
             </DialogTitle>
             <DialogContent style={headerTableStyle}>
               <Typography>
@@ -548,10 +607,10 @@ export const ProfileTableCompany = (props) => {
                   style={{ fontWeight: 600 }}
                   display="inline"
                 >
-                  Title:&nbsp;
+                  Name:&nbsp;
                 </Typography>
                 <Typography color="initial" display="inline">
-                  {deleteData.title}
+                  {deleteData.name}
                 </Typography>
               </Typography>
               <Typography>
@@ -560,10 +619,10 @@ export const ProfileTableCompany = (props) => {
                   style={{ fontWeight: 600 }}
                   display="inline"
                 >
-                  First Name:&nbsp;
+                  www:&nbsp;
                 </Typography>
                 <Typography color="initial" display="inline">
-                  {deleteData.firstname}
+                  {deleteData.www}
                 </Typography>
               </Typography>
               <Typography>
@@ -572,10 +631,10 @@ export const ProfileTableCompany = (props) => {
                   style={{ fontWeight: 600 }}
                   display="inline"
                 >
-                  Last Name:&nbsp;
+                  City:&nbsp;
                 </Typography>
                 <Typography color="initial" display="inline">
-                  {deleteData.lastname}
+                  {deleteData.city}
                 </Typography>
               </Typography>
             </DialogContent>
