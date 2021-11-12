@@ -2728,7 +2728,7 @@ export const TestDnD = (props) => {
               xs: 4,
               select: {
                 status: "fill",
-                data: "",
+                data: bordercrossingentryplace,
                 defaultvalue:
                   props.editdata != null
                     ? props.editdata.bordercrossingentryplace
