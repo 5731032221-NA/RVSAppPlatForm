@@ -2692,7 +2692,7 @@ export const TestDnD = (props) => {
               xs: 12,
               select: {
                 status: "status",
-                data: "",
+                data: "Y",
               },
               // handle: (e) => setStatus(e.target.value),
             },
