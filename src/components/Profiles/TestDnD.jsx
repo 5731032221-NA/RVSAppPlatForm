@@ -2368,6 +2368,7 @@ export const TestDnD = (props) => {
     }
   }
 
+
   React.useEffect(() => {
     async function getconfig() {
       console.log("demostate");
@@ -2693,7 +2694,7 @@ export const TestDnD = (props) => {
                 status: "status",
                 data: "",
               },
-              handle: (e) => setStatus(e.target.value),
+              // handle: (e) => setStatus(e.target.value),
             },
           ],
         },
