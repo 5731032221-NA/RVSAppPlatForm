@@ -2728,7 +2728,7 @@ export const TestDnD = (props) => {
               xs: 4,
               select: {
                 status: "fill",
-                data: bordercrossingentryplace,
+                data: "",
                 defaultvalue:
                   props.editdata != null
                     ? props.editdata.bordercrossingentryplace
@@ -2744,7 +2744,7 @@ export const TestDnD = (props) => {
               xs: 4,
               select: {
                 status: "datetime",
-                data: "",
+                data: borderCrossingEntryDate,
                 defaultvalue:
                   props.editdata != null
                     ? props.editdata.bordercrossingentrydate
