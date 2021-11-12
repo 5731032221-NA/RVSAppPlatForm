@@ -428,7 +428,7 @@ export const ProfileTable = (props) => {
           </Breadcrumbs>
         </Grid>
           {statusprofile === "add" || statusprofile === "edit" || statusprofile === "delete" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+          <Grid item xs={6} sm={2} md={2} style={{ paddingLeft: 450 ,textAlign: "right" }}>
             <Button
               variant="contained"
               style={{ backgroundColor: "red", color: "white" }}
