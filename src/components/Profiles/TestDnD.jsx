@@ -2192,7 +2192,7 @@ export const TestDnD = (props) => {
 
   // [nameID,setNameID] = React.useState("");
   const [nameTitle, setNameTitle] = React.useState(
-    props.editdata != null ? props.editdata.nametitle : "KHUN"
+    props.editdata != null ? props.editdata.nametitle : "Mr."
   );
   const [firstName, setFirstName] = React.useState(
     props.editdata != null ? props.editdata.firstname : ""
@@ -2401,9 +2401,9 @@ export const TestDnD = (props) => {
               select: {
                 status: "option",
                 data: [
-                  { label: "KHUN1" },
-                  { label: "KHUN2" },
-                  { label: "KHUN3" },
+                  { label: "Mr." },
+                  { label: "Mrs." },
+                  { label: "Miss" },
                 ].map((option) => (
                   <option
                     style={headerTableStyle}
@@ -2415,7 +2415,7 @@ export const TestDnD = (props) => {
                   </option>
                 )),
                 defaultvalue:
-                  props.editdata != null ? props.editdata.nametitle : "KHUN1",
+                  props.editdata != null ? props.editdata.nametitle : "Mr.",
               },
               handle: (e) => setNameTitle(e.target.value),
             },
@@ -2456,10 +2456,10 @@ export const TestDnD = (props) => {
               xs: 2,
               select: {
                 status: "option",
-                data: [
-                  { label: "Mr." },
-                  { label: "Mrs." },
-                  { label: "Miss" },
+                data:  [
+                  { label: "KHUN1" },
+                  { label: "KHUN2" },
+                  { label: "KHUN3" },
                 ].map((option) => (
                   <option
                     style={headerTableStyle}
@@ -2470,7 +2470,7 @@ export const TestDnD = (props) => {
                   </option>
                 )),
                 defaultvalue:
-                  props.editdata != null ? props.editdata.nameprefix : "Mr.",
+                  props.editdata != null ? props.editdata.nameprefix : "KHUN1",
               },
               handle: (e) => setNamePrefix(e.target.value),
             },
