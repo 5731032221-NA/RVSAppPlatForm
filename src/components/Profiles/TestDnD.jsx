@@ -2227,7 +2227,7 @@ export const TestDnD = (props) => {
       props.editdata != null ? props.editdata.bordercrossingentryplace : ""
     );
   const [borderCrossingEntryDate, setborderCrossingEntryDate] = React.useState(
-    props.editdata != null ? props.editdata.bordercrossingentrydate : ""
+    props.editdata != null ? props.editdata.bordercrossingentrydate : new Date("2021-09-13T21:11:54")
   );
   const [address, setAddress] = React.useState(
     props.editdata != null ? props.editdata.address : "organization"
@@ -2747,7 +2747,7 @@ export const TestDnD = (props) => {
                 data: "",
                 defaultvalue:
                   props.editdata != null
-                    ? props.editdata.bordercrossingentryplace
+                    ? props.editdata.bordercrossingentrydate
                     : new Date("2021-09-13T21:11:54"),
                 // status: "fill",
                 // data: "",
