@@ -2192,7 +2192,7 @@ export const TestDnD = (props) => {
 
   // [nameID,setNameID] = React.useState("");
   const [nameTitle, setNameTitle] = React.useState(
-    props.editdata != null ? props.editdata.nametitle : "Mr."
+    props.editdata != null ? props.editdata.nametitle : "KHUN"
   );
   const [firstName, setFirstName] = React.useState(
     props.editdata != null ? props.editdata.firstname : ""
@@ -2743,12 +2743,18 @@ export const TestDnD = (props) => {
               md: 2,
               xs: 4,
               select: {
-                status: "fill",
+                status: "datetime",
                 data: "",
                 defaultvalue:
                   props.editdata != null
-                    ? props.editdata.bordercrossingentrydate
-                    : "",
+                    ? props.editdata.bordercrossingentryplace
+                    : new Date("2021-09-13T21:11:54"),
+                // status: "fill",
+                // data: "",
+                // defaultvalue:
+                //   props.editdata != null
+                //     ? props.editdata.bordercrossingentrydate
+                //     : "",
               },
               handle: (e) => setborderCrossingEntryDate(e.target.value),
             },
