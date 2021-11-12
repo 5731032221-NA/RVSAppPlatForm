@@ -412,11 +412,11 @@ export const ProfileTableTravelAgent = (props) => {
                     field: "idcardandpass",
                     headerStyle: headerTableStyle,
                   },
-                  {
-                    title: "Next Stay",
-                    field: "nextstay",
-                    headerStyle: headerTableStyle,
-                  },
+                  // {
+                  //   title: "Next Stay",
+                  //   field: "nextstay",
+                  //   headerStyle: headerTableStyle,
+                  // },
                   {
                     title: "Last Stay",
                     field: "laststay",

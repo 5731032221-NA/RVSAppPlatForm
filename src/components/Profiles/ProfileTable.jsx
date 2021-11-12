@@ -408,7 +408,7 @@ export const ProfileTable = (props) => {
                 Profiles
               </Typography>
             </Link>
-            <Link color="inherit" href="#" onClick={" "}>
+            <Link color="inherit" href="#" onClick={() => setStatusprofile("none")}>
               <Typography
                 variant="h6"
                 style={{
@@ -555,11 +555,11 @@ export const ProfileTable = (props) => {
                     field: "idcardandpass",
                     headerStyle: headerTableStyle,
                   },
-                  {
-                    title: "Next Stay",
-                    field: "nextstay",
-                    headerStyle: headerTableStyle,
-                  },
+                  // {
+                  //   title: "Next Stay",
+                  //   field: "nextstay",
+                  //   headerStyle: headerTableStyle,
+                  // },
                   {
                     title: "Last Stay",
                     field: "laststay",

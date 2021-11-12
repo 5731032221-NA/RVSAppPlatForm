@@ -2650,16 +2650,8 @@ export const TestDnD = (props) => {
               md: 2,
               xs: 6,
               select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
+                status: "fill",
+                data: ""
               },
               handle: (e) => handleData(e),
             },
@@ -3528,16 +3520,8 @@ export const TestDnD = (props) => {
         md: 2,
         xs: 6,
         select: {
-          status: "option",
-          data: optioncountry.map((option) => (
-            <option
-              style={headerTableStyle}
-              key={option.value}
-              value={option.value}
-            >
-              {option.label}
-            </option>
-          )),
+          status: "fill",
+          data: ""
         },
         handle: (e) => handleData(e),
       },
