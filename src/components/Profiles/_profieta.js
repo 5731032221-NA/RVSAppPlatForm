@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
+import Radio from "@material-ui/core/Radio";
 import Checkbox from "@material-ui/core/Checkbox";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -17,11 +18,13 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
-import Switch from "@material-ui/core/Switch";
+import SearchIcon from "@material-ui/icons/Search";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
+import Switch from "@material-ui/core/Switch";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
 import TestDnD from "./TestDnD";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -29,18 +32,12 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Breadcrumbs, Link } from "@material-ui/core";
-import { getconfigurationbypropertycode } from "../../services/user.service";
 import { nextComponent } from "../../middleware/action";
+import { Breadcrumbs, Link } from "@material-ui/core";
+
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 import DateFnsUtils from "@date-io/date-fns";
-import {
-  getCompanyProfile,
-  getCompanyProfileById,
-  postCompanyProfile,
-  updateCompanyProfile,
-  deleteCompanyProfileById,
-} from "../../services/companyprofile.service";
 import {
   DatePicker,
   TimePicker,
@@ -137,6 +134,7 @@ const optiondata2 = [
     label: "Option40",
   },
 ];
+
 
 const optioncountry = [
   {
@@ -1085,17 +1083,6 @@ const optioncountry = [
   }
 ]
 
-const optioncurrency = [
-  {
-    value: "1",
-    label: "Baht ฿",
-  },
-  {
-    value: "2",
-    label: "Dollar $",
-  }
-]
-
 const optioncreditrating = [
   {
     value: "1",
@@ -1176,15 +1163,7 @@ const optioncommunication = [
   }
 ];
 
-export const ProfileCompany = (props) => {
-  const { store } = useContext(ReactReduxContext);
-  const [action, setAction] = React.useState(props.action);
-
-
-  // React.useEffect(async( ) => {
-  //  console.log("props.action:",props.action);
-  //              await handleAddDatatoDatabase();
-  // },[props.action])
+export const ProfileTravelAgent = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -1231,179 +1210,70 @@ export const ProfileCompany = (props) => {
   };
 
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
-  const pageProperty = useSelector((state) => state.reducer.property);
-  const [errorMessage, setErrorMessage] = useState(false);
-  const [errorParameter, setErrorParameter] = useState(null);
-  React.useEffect(async () => {
-
+  React.useEffect(() => {
     setSmallwidth(window.innerWidth < 1000);
-
-
-
-    let getconfigdata = await getconfigurationbypropertycode(
-      sessionStorage.getItem("auth"),
-      pageProperty
-    );
-    console.log("getconfigdata:", getconfigdata);
-    let configdata = getconfigdata.content[getconfigdata.content.length - 1];
-    let optionTitle = await getlist(configdata, "PCINDTT");
-    // let optionDocumentType = await getlist(configdata,"");
-    console.log("optionTitle:", optionTitle);
-    let optiongender = await getlist(configdata, "PCINDGD");
-    console.log("optiongender:", optiongender);
-    let relation = await getlist(configdata, "PCINDRL");
-    console.log("relation:", relation);
-    let communication = await getlist(configdata, "PCINDCM");
-    console.log("communication:", communication);
-    // let optionDocumentType = await getlist(configdata,"");
-
-
-    console.log("propseditData:",props.editdata);
-
   }, []);
-
-  async function getlist(config, field) {
-    for (var i = 0; i < config.length; i++) {
-      var obj = config[i];
-      if (obj.code === field) {
-        let list = [];
-        obj.children.forEach((element) =>
-          list.push({
-            value: element.name_en,
-            label: element.name_en,
-          })
-        );
-        return list;
-      } else if (obj.children) {
-        let _getlist = await getlist(obj.children, field);
-        if (_getlist) return _getlist;
-      }
-    }
-  }
 
   const handleComponentState = async (comp) => {
     console.log("setcomp", comp);
     props.nextComponent(comp);
   };
 
-
-  const [nameOne, setnameOne] = useState("");
-  const [nameTwo, setnameTwo] = React.useState("");
-  const [CompanyTypeCode, setCompanyTypeCode] = React.useState("");
-  const [Abbreviation, setAbbreviation] = React.useState("");
-  const [GuaranteeMethodCode, setGuaranteeMethodCode] = React.useState("");
-  const [Property, setProperty] = React.useState("");
-  const [Currency, setCurrency] = React.useState("");
-  const [CreditRating, setCreditRating] = React.useState("");
-  const [iata, setiata] = React.useState("");
-  const [Status, setStatus] = React.useState(true);
-  const [StreetAddress, setStreetAddress] = React.useState("");
-  const [Chooseacountry, setChooseacountry] = React.useState("Thailand");
-  const [City, setCity] = React.useState("");
-  const [State, setState] = React.useState("");
-  const [Postal, setPostal] = React.useState("");
-  const [BStreetAddress, setBStreetAddress] = React.useState("");
-  const [BChooseacountry, setBChooseacountry] = React.useState("");
-  const [BCity, setBCity] = React.useState("");
-  const [BState, setBState] = React.useState("");
-  const [BPostal, setBPostal] = React.useState("");
-  const [TaxID, setTaxID] = React.useState("");
-  const [TaxID2, setTaxID2] = React.useState("");
-  const [Communication, setCommunication] = React.useState("");
-  const [Relationship, setRelationship] = React.useState("");
-  const [CreditCardNumber, setCreditCardNumber] = React.useState("");
-  const [OutstandingAmount, setOutstandingAmount] = React.useState("");
-  const [FloatingDepositionAmount, setFloatingDepositionAmount] = React.useState("");
-  const [ARNumber, setARNumber] = React.useState("");
-  const [SalesUserName, setSalesUserName] = React.useState("");
-  const [Industry, setIndustry] = React.useState("");
-  const [MarketSegment, setMarketSegment] = React.useState("");
-  const [SourceOfBusiness, setSourceOfBusiness] = React.useState("");
-  const [TrackCode, setTrackCode] = React.useState("");
-  const [ReasonForStay, setReasonForStay] = React.useState("");
-  const [Geographic, setGeographic] = React.useState("");
-
-
-
-  //   React.useEffect(() => {
-  //     console.log("name1:",name1);
-  //  },[name1])
-
-  //  React.useEffect(() => {
-  //   console.log("name2:",name2);
-  // },[name2])
-
   const [demoData, setDemoData] = React.useState([
     {
       id: "1",
-      title: "Company Account",
+      title: "Account",
       expend: true,
       content: [
         {
-          id: 1,
-          label: "Company Name1",
-          xl: 5,
-          md: 5,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:  props.editdata != null ? props.editdata[0].name : "",
-                
-               
-          },
-          handle: (e) => setnameOne(e.target.value),
-        },
-        {
-          id: 2,
-          label: "Company Name2",
-          xl: 5,
-          md: 5,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:  props.editdata != null ? props.editdata.name2 : "",
-             
-          },
-          handle: (e) => setnameTwo(e.target.value),
-        },
-        {
           id: 3,
-          label: "Company Type",
-          xl: 2,
-          md: 2,
+          label: "Name 1",
+          xl: 6,
+          md: 6,
           xs: 12,
           select: {
-            status: "option",
-            data: [{ label: "Government" }, { label: "Association" }].map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.label}
-                value={option.label}
-                defaultvalue= {props.editdata != null ? props.editdata.name : ""}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => setCompanyTypeCode(e.target.value),
+            status: "fill",
+            data: ""
+          }
         },
         {
           id: 4,
-          label: "Abbreviation",
-          xl: 3,
-          md: 3,
-          xs: 6,
+          label: "Name 2",
+          xl: 6,
+          md: 6,
+          xs: 12,
           select: {
             status: "fill",
-            data: "",
-            defaultvalue:  props.editdata != null ? props.editdata.abbreviation : "",
+            data: " ",
           },
-          handle: (e) => setAbbreviation(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 5,
+          label: "Abbreviation",
+          xl: 4,
+          md: 4,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 6,
+          label: "Guarantee Method Code",
+          xl: 4,
+          md: 4,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 7,
           label: "Hotel Origin",
           xl: 4,
           md: 4,
@@ -1420,19 +1290,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => setProperty(e.target.value),
-        },
-        {
-          id: 6,
-          label: "Guarantee Method",
-          xl: 4,
-          md: 4,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => setGuaranteeMethodCode(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 7,
@@ -1452,7 +1310,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => setCurrency(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 8,
@@ -1472,7 +1330,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => setCreditRating(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 9,
@@ -1484,7 +1342,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setiata(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 10,
@@ -1496,7 +1354,7 @@ export const ProfileCompany = (props) => {
             status: "status",
             data: "",
           },
-          handle: (e) => setStatus(e.target.value),
+          handle: (e) => handleData(e),
         },
       ],
     },
@@ -1515,7 +1373,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setStreetAddress(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 5,
@@ -1535,7 +1393,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => setChooseacountry(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 6,
@@ -1547,7 +1405,6 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setCity(e.target.value),
         },
         {
           id: 7,
@@ -1559,7 +1416,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setState(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 8,
@@ -1571,7 +1428,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setPostal(e.target.value),
+          handle: (e) => handleData(e),
         },
       ],
     },
@@ -1590,7 +1447,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setBStreetAddress(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 5,
@@ -1610,7 +1467,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => setBChooseacountry(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 6,
@@ -1622,7 +1479,6 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setBCity(e.target.value),
         },
         {
           id: 7,
@@ -1634,7 +1490,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setBState(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 8,
@@ -1646,10 +1502,10 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setBPostal(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
-          id: 9,
+          id: 8,
           label: "TaxID",
           xl: 3,
           md: 6,
@@ -1658,10 +1514,10 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setTaxID(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
-          id: 10,
+          id: 8,
           label: "TaxID2",
           xl: 3,
           md: 6,
@@ -1670,7 +1526,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setTaxID2(e.target.value),
+          handle: (e) => handleData(e),
         },
       ],
     },
@@ -1738,7 +1594,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: ""
           },
-          handle: (e) => setCreditCardNumber(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 3,
@@ -1750,7 +1606,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: ""
           },
-          handle: (e) => setOutstandingAmount(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 4,
@@ -1762,7 +1618,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setFloatingDepositionAmount(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 5,
@@ -1774,7 +1630,7 @@ export const ProfileCompany = (props) => {
             status: "fill",
             data: "",
           },
-          handle: (e) => setARNumber(e.target.value),
+          handle: (e) => handleData(e),
         },
       ],
     },
@@ -1860,8 +1716,7 @@ export const ProfileCompany = (props) => {
           select: {
             status: "fill",
             data: "",
-          },
-          handle: (e) => setSalesUserName(e.target.value),
+          }
         },
         {
           id: 2,
@@ -1881,7 +1736,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => setIndustry(e.target.value),
+          handle: (e) => handleData(e),
         },
         // {
         //   id: 3,
@@ -1913,7 +1768,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => setMarketSegment(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 5,
@@ -1933,7 +1788,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => setSourceOfBusiness(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 6,
@@ -1953,7 +1808,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => setTrackCode(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 7,
@@ -1973,7 +1828,7 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => setReasonForStay(e.target.value),
+          handle: (e) => handleData(e),
         },
         {
           id: 8,
@@ -1992,8 +1847,7 @@ export const ProfileCompany = (props) => {
                 {option.label}
               </option>
             )),
-          },
-          handle: (e) => setGeographic(e.target.value),
+          }
         }
         // ,
         // {
@@ -2044,6 +1898,7 @@ export const ProfileCompany = (props) => {
       ]
     },
   ]);
+
   const [list, setList] = React.useState(demoData);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -2068,331 +1923,9 @@ export const ProfileCompany = (props) => {
     }),
   });
 
-
-
-  const handleAddDatatoDatabase = async (e) => {
-
-    // console.log(nameOne,
-    //   nameTwo,
-    //   CompanyTypeCode,
-    //   Abbreviation,
-    //   GuaranteeMethodCode,
-    //   Property,
-    //   Currency,
-    //   CreditRating,
-    //   IATA,
-    //   Status,
-    //   StreetAddress,
-    //   Chooseacountry,
-    //   City,
-    //   State,
-    //   Postal,
-    //   BStreetAddress,
-    //   BChooseacountry,
-    //   BCity,
-    //   BState,
-    //   BPostal,
-    //   TaxID,
-    //   TaxID2,
-    //   Communication,
-    //   Relationship,
-    //   CreditCardNumber,
-    //   OutstandingAmount,
-    //   FloatingDepositionAmount,
-    //   ARNumber,
-    //   SalesUserName,
-    //   Industry,
-    //   MarketSegment,
-    //   SourceOfBusiness,
-    //   TrackCode,
-    //   ReasonForStay,
-    //   Geographic);
-
-    props.setAction("none");
-    if (nameOne == "") {
-      setErrorParameter("name1 is required")
-      setErrorMessage(true);
-    // } else if (nameTwo == "") {
-    //   setErrorParameter("name2 is required")
-    //   setErrorMessage(true);
-    // } else if (Abbreviation == "") {
-    //   setErrorParameter("Abbreviation is required")
-    //   setErrorMessage(true);
-    // } else if (GuaranteeMethodCode == "") {
-    //   setErrorParameter("GuaranteeMethodCode is required")
-    //   setErrorMessage(true);
-    // } else if (IATA == "") {
-    //   setErrorParameter("IATA is required")
-    //   setErrorMessage(true);
-    // } else if (StreetAddress == "") {
-    //   setErrorParameter("StreetAddress is required")
-    //   setErrorMessage(true);
-    // } else if (City == "") {
-    //   setErrorParameter("City is required")
-    //   setErrorMessage(true);
-    // } else if (State == "") {
-    //   setErrorParameter("State is required")
-    //   setErrorMessage(true);
-    // } else if (Postal == "") {
-    //   setErrorParameter("Postal is required")
-    //   setErrorMessage(true);
-    // } else if (BStreetAddress == "") {
-    //   setErrorParameter("Billing StreetAddress is required")
-    //   setErrorMessage(true);
-    // } else if (BCity == "") {
-    //   setErrorParameter("Billing City is required")
-    //   setErrorMessage(true);
-    // }else if (BState == "") {
-    //   setErrorParameter("Billing State is required")
-    //   setErrorMessage(true);
-    // }else if (BPostal == "") {
-    //   setErrorParameter("Billing Postal is required")
-    //   setErrorMessage(true);
-    // }else if (TaxID == "") {
-    //   setErrorParameter("TaxID is required")
-    //   setErrorMessage(true);
-    // }else if (TaxID2 == "") {
-    //   setErrorParameter("TaxID2 is required")
-    //   setErrorMessage(true);
-    // } else {
-    } else {
-
-      setErrorMessage(false);
-
-      let req = {
-        recordtype: "C",
-        nameOne: nameOne,
-        nameTwo: nameTwo,
-        CompanyTypeCode: CompanyTypeCode,
-        Abbreviation: Abbreviation,
-        GuaranteeMethodCode: GuaranteeMethodCode,
-        Property: Property,
-        Currency: Currency,
-        CreditRating: CreditRating,
-        iata: iata,
-        Status: Status,
-        StreetAddress: StreetAddress,
-        Chooseacountry: Chooseacountry,
-        City: City,
-        State: State,
-        Postal: Postal,
-        BStreetAddress: BStreetAddress,
-        BChooseacountry: BChooseacountry,
-        BCity: BCity,
-        BState: BState,
-        BPostal: BPostal,
-        TaxID: TaxID,
-        TaxID2: TaxID2,
-        Communication: Communication,
-        Relationship: Relationship,
-        CreditCardNumber: CreditCardNumber,
-        OutstandingAmount: OutstandingAmount,
-        FloatingDepositionAmount: FloatingDepositionAmount,
-        ARNumber: ARNumber,
-        SalesUserName: SalesUserName,
-        Industry: Industry,
-        MarketSegment: MarketSegment,
-        SourceOfBusiness: SourceOfBusiness,
-        TrackCode: TrackCode,
-        ReasonForStay: ReasonForStay,
-        Geographic: Geographic
-      };
-      console.log("datafrom post", req)
-      const resp = await postCompanyProfile(
-        sessionStorage.getItem("auth"),
-        req
-      );
-
-      if(resp.status == "2000"){
-        props.setAction("success");
-      }else{
-        props.setAction("dupic");
-        setErrorParameter(resp.msg)
-        setErrorMessage(true);
-      }
-
-      
-
-
-      // console.log("datafrom post", data);
-
-    }
-  };
-
-  const handleAddDataEdittoDatabase = async (e) => {
-
-    // console.log(nameOne,
-    //   nameTwo,
-    //   CompanyTypeCode,
-    //   Abbreviation,
-    //   GuaranteeMethodCode,
-    //   Property,
-    //   Currency,
-    //   CreditRating,
-    //   IATA,
-    //   Status,
-    //   StreetAddress,
-    //   Chooseacountry,
-    //   City,
-    //   State,
-    //   Postal,
-    //   BStreetAddress,
-    //   BChooseacountry,
-    //   BCity,
-    //   BState,
-    //   BPostal,
-    //   TaxID,
-    //   TaxID2,
-    //   Communication,
-    //   Relationship,
-    //   CreditCardNumber,
-    //   OutstandingAmount,
-    //   FloatingDepositionAmount,
-    //   ARNumber,
-    //   SalesUserName,
-    //   Industry,
-    //   MarketSegment,
-    //   SourceOfBusiness,
-    //   TrackCode,
-    //   ReasonForStay,
-    //   Geographic);
-
-    props.setAction("none");
-    if (nameOne == "") {
-      setErrorParameter("name1 is required")
-      setErrorMessage(true);
-    // } else if (nameTwo == "") {
-    //   setErrorParameter("name2 is required")
-    //   setErrorMessage(true);
-    // } else if (Abbreviation == "") {
-    //   setErrorParameter("Abbreviation is required")
-    //   setErrorMessage(true);
-    // } else if (GuaranteeMethodCode == "") {
-    //   setErrorParameter("GuaranteeMethodCode is required")
-    //   setErrorMessage(true);
-    // } else if (IATA == "") {
-    //   setErrorParameter("IATA is required")
-    //   setErrorMessage(true);
-    // } else if (StreetAddress == "") {
-    //   setErrorParameter("StreetAddress is required")
-    //   setErrorMessage(true);
-    // } else if (City == "") {
-    //   setErrorParameter("City is required")
-    //   setErrorMessage(true);
-    // } else if (State == "") {
-    //   setErrorParameter("State is required")
-    //   setErrorMessage(true);
-    // } else if (Postal == "") {
-    //   setErrorParameter("Postal is required")
-    //   setErrorMessage(true);
-    // } else if (BStreetAddress == "") {
-    //   setErrorParameter("Billing StreetAddress is required")
-    //   setErrorMessage(true);
-    // } else if (BCity == "") {
-    //   setErrorParameter("Billing City is required")
-    //   setErrorMessage(true);
-    // }else if (BState == "") {
-    //   setErrorParameter("Billing State is required")
-    //   setErrorMessage(true);
-    // }else if (BPostal == "") {
-    //   setErrorParameter("Billing Postal is required")
-    //   setErrorMessage(true);
-    // }else if (TaxID == "") {
-    //   setErrorParameter("TaxID is required")
-    //   setErrorMessage(true);
-    // }else if (TaxID2 == "") {
-    //   setErrorParameter("TaxID2 is required")
-    //   setErrorMessage(true);
-    // } else {
-    } else {
-
-      setErrorMessage(false);
-
-      let req = {
-        recordtype: "C",
-        nameOne: nameOne,
-        nameTwo: nameTwo,
-        CompanyTypeCode: CompanyTypeCode,
-        Abbreviation: Abbreviation,
-        GuaranteeMethodCode: GuaranteeMethodCode,
-        Property: Property,
-        Currency: Currency,
-        CreditRating: CreditRating,
-        iata: iata,
-        Status: Status,
-        StreetAddress: StreetAddress,
-        Chooseacountry: Chooseacountry,
-        City: City,
-        State: State,
-        Postal: Postal,
-        BStreetAddress: BStreetAddress,
-        BChooseacountry: BChooseacountry,
-        BCity: BCity,
-        BState: BState,
-        BPostal: BPostal,
-        TaxID: TaxID,
-        TaxID2: TaxID2,
-        Communication: Communication,
-        Relationship: Relationship,
-        CreditCardNumber: CreditCardNumber,
-        OutstandingAmount: OutstandingAmount,
-        FloatingDepositionAmount: FloatingDepositionAmount,
-        ARNumber: ARNumber,
-        SalesUserName: SalesUserName,
-        Industry: Industry,
-        MarketSegment: MarketSegment,
-        SourceOfBusiness: SourceOfBusiness,
-        TrackCode: TrackCode,
-        ReasonForStay: ReasonForStay,
-        Geographic: Geographic
-      };
-      console.log("datafrom post", req)
-      console.log("props.editData[0].id:",props.editdata);
-      console.log("props.editData[0].id:",props.editdata[0].id);
-      const resp = await updateCompanyProfile(
-        sessionStorage.getItem("auth"),props.editdata[0].id,
-        req
-      );
-
-      if(resp.status == "2000"){
-        props.setAction("success");
-      }else{
-        props.setAction("dupic");
-        setErrorParameter(resp.msg)
-        setErrorMessage(true);
-      }
-
-      
-
-
-      // console.log("datafrom post", data);
-
-    }
-  };
-
-
-  const changeSwitch = (e) => {
-  
-    setStatus(!Status)
-    console.log(Status);
-  }
-
-  //data from button for  trigger (add or delete)
-  React.useEffect(async () => {
-    console.log("props.action:::",props.action);
-    if (props.action == "add") {
-      console.log("action add", props.action);
-      await handleAddDatatoDatabase();
-    } else if (props.action == "edit") {
-       await handleAddDataEdittoDatabase();
-      console.log("action edit", props.action);
-    }
-  }, [props.action]);
-
   const handleData = (e) => {
-
-  }
-
+    console.log("Value from handleData : ", e.target.value);
+  };
 
   const handleExpend = (id, expend) => {
     let index = demoData.findIndex((x) => x.id === id);
@@ -2564,7 +2097,6 @@ export const ProfileCompany = (props) => {
               elevation={3}
               style={{
                 padding: 20,
-
                 color: themeState.color,
                 backgroundColor: themeState.paper,
               }}
@@ -2584,21 +2116,6 @@ export const ProfileCompany = (props) => {
                   </Grid>
                 </Grid>
               </Container> */}
-
-              {errorMessage ? (
-                <div
-                  style={{
-                    background: "#ff0033",
-                    textAlign: "center",
-                    color: "white",
-                    height: "30px",
-                    marginTop: 5,
-                    paddingTop: 5,
-                  }}
-                >
-                  {errorParameter}
-                </div>
-              ) : null}
               <Divider
                 style={{ marginTop: 10, backgroundColor: themeState.color }}
               />
@@ -2666,10 +2183,9 @@ export const ProfileCompany = (props) => {
                                       <div style={{ paddingTop: 10 }}>
                                         <a>Status</a>
                                         <Switch
-                                          defaultChecked={Status}
-                                          value={Status}
+                                          defaultChecked={true}
                                           color="primary"
-                                          onChange={(e) => changeSwitch(e)}
+                                          onChange={(e) => { }}
                                         />
                                       </div>
                                     ) : detail.select.status === "AddComunication" ? (
@@ -2712,7 +2228,6 @@ export const ProfileCompany = (props) => {
                                         style={{ backgroundColor: "#EEEEEE" }}
                                         // disabled={true}
                                         value={detail.select.data}
-                                        defaultValue={detail.select.defaultvalue}
                                         onFocus={false}
                                       />
                                     ) : detail.select.status === "fill" ? (
@@ -2727,7 +2242,6 @@ export const ProfileCompany = (props) => {
                                           style: { color: "#AAAAAA" }
                                         }}
                                         fullWidth
-                                        defaultValue={detail.select.defaultvalue}
                                         onChange={detail.handle}
                                       />
                                     ) : detail.select.status === "option" ? (
@@ -2748,34 +2262,13 @@ export const ProfileCompany = (props) => {
                                       >
                                         {detail.select.data}
                                       </TextField>
-                                    ) : detail.select.status === "datetime" ? (
-                                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                        <KeyboardDatePicker
-                                          className={classes.root}
-                                          label={detail.label}
-                                          inputVariant="outlined"
-                                          InputProps={{
-                                            style: headerTableStyle,
-                                          }}
-                                          // format="dd/MM/yyyy"
-                                          // value={selectedDateStartEdit}
-                                          // onChange={handleDateStartEdit}
-                                          onChange={detail.handle}
-                                          fullWidth
-                                        />
-                                      </MuiPickersUtilsProvider>
                                     ) : (
-                                      <Typography
-                                        variant="subtitle1"
-                                        color="initial"
-                                        style={{
-                                          paddingBottom: 10,
-                                          paddingTop: 10,
-                                          color: "blue",
-                                        }}
-                                      >
-                                        {detail.label}
-                                      </Typography>
+                                      <FormControlLabel
+                                        value="start"
+                                        control={<Checkbox color="primary" />}
+                                        label={detail.label}
+                                        labelPlacement="start"
+                                      />
                                     )}
                               </Grid>
                             ))}
@@ -2803,4 +2296,15 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileCompany);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileTravelAgent);
+
+// {
+//   <Grid item xl={2} md={6} xs={12}>
+//     <FormControlLabel
+//       value="start"
+//       control={<Checkbox color="primary" />}
+//       label="Auto Populate Yn"
+//       labelPlacement="start"
+//     />
+//   </Grid>;
+// }

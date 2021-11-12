@@ -4,6 +4,7 @@ import { nextComponent } from "../../middleware/action";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import { blue, green, yellow } from "@material-ui/core/colors";
+import ClearIcon from '@material-ui/icons/Clear';
 
 import {
   Container,
@@ -205,7 +206,7 @@ export const ProfileTableCompany = (props) => {
     color: themeState.color,
   };
 
-  const [companyData, setcompanyData] = React.useState(rows);
+  const [companyData, setcompanyData] = React.useState([]);
   // const [companyData, setcompanyData] = React.useState(null);
   const [statusprofile, setStatusprofile] = React.useState("none");
   const [dialogDelete, setDialogDelete] = React.useState(false);
@@ -340,7 +341,7 @@ export const ProfileTableCompany = (props) => {
                   Profiles
                 </Typography>
               </Link>
-              <Link color="inherit" href="#" onClick={" "}>
+              <Link color="inherit" href="#" onClick={() => setStatusprofile("moredata")}>
                 <Typography
                   variant="h6"
                   style={{
@@ -355,6 +356,18 @@ export const ProfileTableCompany = (props) => {
               
             </Breadcrumbs>
           </Grid>
+          {statusprofile === "add" || statusprofile === "edit"  ? (
+            <Grid item xs={6} sm={2} md={2} style={{ paddingLeft: 1200 ,textAlign: "right" }}>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: "gray", color: "white" }}
+                startIcon={<ClearIcon />}
+                onClick={() => setStatusprofile("moredata")}
+              >
+                Cancel
+              </Button>
+            </Grid>
+          ) : null}
         {statusprofile === "add" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
@@ -385,7 +398,7 @@ export const ProfileTableCompany = (props) => {
               Delete
             </Button>
           </Grid>
-        ) : statusprofile === "moredata" ? (
+        ) : statusprofile === "moredata" || statusprofile === "none"  ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
@@ -508,7 +521,7 @@ export const ProfileTableCompany = (props) => {
                   },
                   {
                     title: "City/Country",
-                    field: "city",
+                    field: "countrycode",
                     headerStyle: headerTableStyle,
                   },
                   // {

@@ -4,8 +4,6 @@ import { nextComponent } from "../../middleware/action";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import { blue, green, yellow } from "@material-ui/core/colors";
-import ClearIcon from '@material-ui/icons/Clear';
-
 import {
   Container,
   Grid,
@@ -33,15 +31,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import SearchIcon from '@material-ui/icons/Search';
-
-import {
-  getTAProfile,
-  getTAProfileById,
-  postCompanyProfile,
-  updateCompanyProfile,
-  deleteCompanyProfileById,
-} from "../../services/companyprofile.service";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -71,7 +60,8 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: themeState.color,
+        // borderColor: themeState.color,
+        borderColor: "grey.500",
         color: themeState.color,
       },
       "&:hover fieldset": {
@@ -156,10 +146,7 @@ const family = [
   },
 ];
 
-export const ProfileTableCompany = (props) => {
-
-  const [action, setAction] = React.useState("");
-  const [editData, setEditData] = React.useState(" ");
+export const ProfileTableTravelAgent = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -206,8 +193,8 @@ export const ProfileTableCompany = (props) => {
     color: themeState.color,
   };
 
-  const [companyData, setcompanyData] = React.useState([]);
-  // const [companyData, setcompanyData] = React.useState(null);
+  // const [individualData, setIndividualData] = React.useState(rows);
+  const [individualData, setIndividualData] = React.useState(null);
   const [statusprofile, setStatusprofile] = React.useState("none");
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [deleteData, setDeleteData] = React.useState({
@@ -215,22 +202,6 @@ export const ProfileTableCompany = (props) => {
     firstname: "firstname",
     lastname: "lastname",
   });
-
-  React.useEffect( async() => {
-   await handleGetTAProfile();
-  },[])
-
-  const handleGetTAProfile = async () => {
-    const resp = await getTAProfile(sessionStorage.getItem("auth"));
-    console.log(resp.content);
-    if(resp.content[0].length > 0){
-      setStatusprofile("moredata");
-      setcompanyData(resp.content[0]);
-    }
-   
-  }
-
- 
 
   const handleComponentState = async (comp) => {
     console.log("setcomp", comp);
@@ -240,63 +211,23 @@ export const ProfileTableCompany = (props) => {
     setStatusprofile();
   };
   const handleNewData = () => {
-    // setAction("add")
     setStatusprofile("add");
   };
-  const handleAddData = async (companyData) => {
-    console.log("ok");
-    setAction("add")
-
-    console.log("companyData:",companyData);
-    if(action == "success"){
-      setStatusprofile("moredata");
-      await handleGetTAProfile()
-      // setcompanyData(companyData);
-    }
-   
+  const handleAddData = (rows) => {
+    setStatusprofile("moredata");
+    setIndividualData(rows);
   };
-  const handleAddDataEdit = async (companyData) => {
-    console.log("ok");
-    setAction("edit")
-
-    console.log("companyData:",companyData);
-    if(action == "success"){
-      setStatusprofile("moredata");
-      await handleGetTAProfile()
-      // setcompanyData(companyData);
-    }
-   
-  };
-
-
-
-
-  const handleEditData = async (data) => {
-    const resp = await getTAProfileById(sessionStorage.getItem("auth"),data.id);
-    console.log(resp);
-    setEditData(resp.content)
-    console.log("editData:",editData);
+  const handleEditData = () => {
     setStatusprofile("edit");
   };
-  const handleDeleteData = async () => {
-    try {
-      const resp = await deleteCompanyProfileById(sessionStorage.getItem("auth"),deleteData.id);
-      console.log("resp:",resp);
-      if(resp.status == "2000"){
-       await handleGetTAProfile()
-      }
-      setStatusprofile("moredata");
-      setDialogDelete(false);
-    } catch (error) {
-      
-    }
-  
+  const handleDeleteData = () => {
+    setStatusprofile("moredata");
+    setDialogDelete(false);
   };
 
-  const handleDialogDeleteOpen = async (id,name, www, city) => {
-    console.log("id:",id);
-    console.log("data : ",name, www, city);
-    setDeleteData({id:id, name: name, www: www, city: city });
+  const handleDialogDeleteOpen = async (title, firstname, lastname) => {
+    console.log("data : ", title, firstname, lastname);
+    setDeleteData({ title: title, firstname: firstname, lastname: lastname });
     setDialogDelete(true);
   };
   const handleDialogDeleteClose = () => {
@@ -313,7 +244,7 @@ export const ProfileTableCompany = (props) => {
         backgroundColor: themeState.background,
       }}
     >
-      <Grid container style={{ paddingLeft: 25, paddingRight: 25 }}>
+      <Grid container style={{ paddingLeft: 30, paddingRight: 30 }}>
       <Grid item xs={6} sm={10} md={10} lg={10} style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
@@ -341,7 +272,7 @@ export const ProfileTableCompany = (props) => {
                   Profiles
                 </Typography>
               </Link>
-              <Link color="inherit" href="#" onClick={() => setStatusprofile("moredata")}>
+              <Link color="inherit" href="#" onClick={" "}>
                 <Typography
                   variant="h6"
                   style={{
@@ -353,28 +284,15 @@ export const ProfileTableCompany = (props) => {
                   Travel Agent
                 </Typography>
               </Link>
-              
-            </Breadcrumbs>
+              </Breadcrumbs>
           </Grid>
-          {statusprofile === "add" || statusprofile === "edit"  ? (
-          <Grid item xs={6} sm={2} md={2} style={{ paddingLeft: 1200 ,textAlign: "right" }}>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "gray", color: "white" }}
-              startIcon={<ClearIcon />}
-              onClick={() => setStatusprofile("moredata")}
-            >
-              Cancel
-            </Button>
-          </Grid>
-        ) : null}
         {statusprofile === "add" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
               startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleAddData(companyData)}
+              onClick={() => handleAddData(rows)}
             >
               Save
             </Button>
@@ -385,7 +303,7 @@ export const ProfileTableCompany = (props) => {
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
               startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleAddDataEdit(companyData)}
+              onClick={() => handleAddData(rows)}
             >
               Save
             </Button>
@@ -398,7 +316,7 @@ export const ProfileTableCompany = (props) => {
               Delete
             </Button>
           </Grid>
-        ) : statusprofile === "moredata" || statusprofile === "none"  ? (
+        ) : statusprofile === "moredata" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
@@ -412,10 +330,10 @@ export const ProfileTableCompany = (props) => {
         ) : null}
       </Grid>
       {statusprofile === "edit" || statusprofile === "add" ? (
-        <ProfileTravelAgent editdata={editData} action={action} setAction={setAction} />
+        <ProfileTravelAgent />
       ) : (
         [
-          companyData == null ? (
+          individualData == null ? (
             <Grid
               container
               direction="column"
@@ -454,7 +372,7 @@ export const ProfileTableCompany = (props) => {
                     fullWidth
                     onClick={() => handleNewData()}
                   >
-                    Create New Travel Agent Profile
+                    Create New Profile
                   </Button>
                 </Grid>
               </Grid>
@@ -462,46 +380,6 @@ export const ProfileTableCompany = (props) => {
           ) : (
             <Container maxWidth="xl">
               <MaterialTable
-               localization={{
-                body: {
-                  emptyDataSourceMessage: <>   <Typography
-                    variant="h1"
-                    align="center"
-                    style={{ fontSize: 25, color: themeState.color }}
-                  >
-                    <ErrorOutlineOutlinedIcon
-                      style={{ fontSize: 100, color: "lightgray" }}
-                    />
-                  </Typography>
-                    <Typography
-                      align="center"
-                      variant="h2"
-                      style={{
-                        fontWeight: 400,
-                        fontSize: 30,
-                        color: "rgb(0 0 0 / 47%)",
-                        marginBottom: 20,
-                      }}
-                    >
-                      No Data Available
-                    </Typography>
-                    <Grid item>
-                      <Button
-                        startIcon={<AddOutlinedIcon />}
-                        size="large"
-                        variant="contained"
-                        color="primary"
-                        // style={{ padding: 13 }}
-                        // fullWidth
-                        // onClick={() => setCreateindividual(true)}
-                        onClick={() => handleNewData()}
-                      >
-                       New Travel Agent Profile
-                      </Button>
-                    </Grid>
-                  </>
-                }
-              }}
                 style={{
                   paddingLeft: 30,
                   paddingRight: 30,
@@ -510,18 +388,28 @@ export const ProfileTableCompany = (props) => {
                 }}
                 columns={[
                   {
-                    title: "Name",
-                    field: "name",
+                    title: "First Name",
+                    field: "firstname",
                     headerStyle: headerTableStyle,
                   },
                   {
-                    title: "www",
-                    field: "www",
+                    title: "Last Name",
+                    field: "lastname",
                     headerStyle: headerTableStyle,
                   },
                   {
-                    title: "City/Country",
-                    field: "countrycode",
+                    title: "Title",
+                    field: "title",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Sex",
+                    field: "sex",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "ID Card/Passport",
+                    field: "idcardandpass",
                     headerStyle: headerTableStyle,
                   },
                   // {
@@ -530,17 +418,54 @@ export const ProfileTableCompany = (props) => {
                   //   headerStyle: headerTableStyle,
                   // },
                   {
-                    title: "Industry",
-                    field: "industry",
+                    title: "Last Stay",
+                    field: "laststay",
                     headerStyle: headerTableStyle,
                   },
                   {
-                    title: "IATA",
-                    field: "iata",
+                    title: "Score",
+                    field: "score",
                     headerStyle: headerTableStyle,
-                  }
+                  },
+
+                  {
+                    render: (rowData) => {
+                      return rowData.status === "Check-Out" ? (
+                        <Button
+                          variant="contained"
+                          style={{
+                            borderRadius: 20,
+                            backgroundColor: "red",
+                            color: "white",
+                          }}
+                        >
+                          {rowData.status}
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          style={{
+                            borderRadius: 20,
+                            backgroundColor: mainColor,
+                            color: "white",
+                          }}
+                        >
+                          {rowData.status}
+                        </Button>
+                      );
+                    },
+                    cellStyle: { textAlign: "center" },
+                    headerStyle: {
+                      textAlign: "center",
+                      paddingLeft: 37,
+                      backgroundColor: themeState.paper,
+                      color: themeState.color,
+                    },
+                    title: "Status",
+                    field: "status",
+                  },
                 ]}
-                data={companyData}
+                data={individualData}
                 options={{
                   searchFieldAlignment: "left",
                   showTitle: false,
@@ -552,7 +477,7 @@ export const ProfileTableCompany = (props) => {
                     5,
                     10,
                     20,
-                    { value: companyData.length, label: "All" },
+                    { value: rows.length, label: "All" },
                   ],
                   headerStyle: headerTableStyle,
                   searchFieldStyle: {
@@ -563,7 +488,6 @@ export const ProfileTableCompany = (props) => {
                   },
                 }}
                 actions={[
-               
                   {
                     icon: "edit",
                     iconProps: { style: { color: themeState.color } },
@@ -578,10 +502,9 @@ export const ProfileTableCompany = (props) => {
                     tooltip: "Delete",
                     onClick: (event, rowData) => {
                       handleDialogDeleteOpen(
-                        rowData.id,
-                        rowData.name,
-                        rowData.city,
-                      
+                        rowData.title,
+                        rowData.firstname,
+                        rowData.lastname
                       );
                     },
                   },
@@ -608,7 +531,7 @@ export const ProfileTableCompany = (props) => {
                 color: mainColor,
               }}
             >
-              Confirm Delete Travel Agent Profile
+              Confirm Delete Profile
             </DialogTitle>
             <DialogContent style={headerTableStyle}>
               <Typography>
@@ -617,10 +540,10 @@ export const ProfileTableCompany = (props) => {
                   style={{ fontWeight: 600 }}
                   display="inline"
                 >
-                  Name:&nbsp;
+                  Title:&nbsp;
                 </Typography>
                 <Typography color="initial" display="inline">
-                  {deleteData.name}
+                  {deleteData.title}
                 </Typography>
               </Typography>
               <Typography>
@@ -629,10 +552,10 @@ export const ProfileTableCompany = (props) => {
                   style={{ fontWeight: 600 }}
                   display="inline"
                 >
-                  www:&nbsp;
+                  First Name:&nbsp;
                 </Typography>
                 <Typography color="initial" display="inline">
-                  {deleteData.www}
+                  {deleteData.firstname}
                 </Typography>
               </Typography>
               <Typography>
@@ -641,10 +564,10 @@ export const ProfileTableCompany = (props) => {
                   style={{ fontWeight: 600 }}
                   display="inline"
                 >
-                  City:&nbsp;
+                  Last Name:&nbsp;
                 </Typography>
                 <Typography color="initial" display="inline">
-                  {deleteData.city}
+                  {deleteData.lastname}
                 </Typography>
               </Typography>
             </DialogContent>
@@ -704,4 +627,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProfileTableCompany);
+)(ProfileTableTravelAgent);
