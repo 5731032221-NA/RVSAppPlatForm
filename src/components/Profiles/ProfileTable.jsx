@@ -413,7 +413,7 @@ export const ProfileTable = (props) => {
                 Profiles
               </Typography>
             </Link>
-            <Link color="inherit" href="#" onClick={() => setStatusprofile("none")}>
+            <Link color="inherit" href="#" onClick={() => setStatusprofile("moredata")}>
               <Typography
                 variant="h6"
                 style={{
@@ -433,7 +433,7 @@ export const ProfileTable = (props) => {
               variant="contained"
               style={{ backgroundColor: "red", color: "white" }}
               startIcon={<ClearIcon />}
-              onClick={() => setStatusprofile("none")}
+              onClick={() => setStatusprofile("moredata")}
             >
               Cancel
             </Button>
