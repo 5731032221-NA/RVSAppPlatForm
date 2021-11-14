@@ -23,7 +23,6 @@ import { connect, ReactReduxContext, useSelector } from "react-redux";
 import Switch from "@material-ui/core/Switch";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { blue, green, yellow } from "@material-ui/core/colors";
-import TestDnD from "./TestDnD";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";

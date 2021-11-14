@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { connect, ReactReduxContext, useSelector } from "react-redux";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { blue, green, yellow } from "@material-ui/core/colors";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
@@ -12,25 +15,29 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import { connect, ReactReduxContext, useSelector } from "react-redux";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import { blue, green, yellow } from "@material-ui/core/colors";
-import TestDnD from "./TestDnD";
-import ProfileTable from "./ProfileTable";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import { optioncountry } from '../../static/country.js'
+import { optionnationality } from '../../static/nationality'
+import Switch from "@material-ui/core/Switch";
+import DateFnsUtils from "@date-io/date-fns";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
-import WhatsAppIcon from "@material-ui/icons/WhatsApp";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { nextComponent } from "../../middleware/action";
-import { Breadcrumbs, Link } from "@material-ui/core";
-
-import DateFnsUtils from "@date-io/date-fns";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import { getconfigurationbypropertycode } from "../../services/user.service";
+import {
+  getIndividualProfileCommunication,
+  getIndividualProfile,
+  getIndividualProfileById,
+  postIndividualProfile,
+  updateIndividualProfile,
+  deleteIndividualProfileById,
+} from "../../services/individualprofile.service";
 import {
   DatePicker,
   TimePicker,
@@ -40,7 +47,7 @@ import {
   KeyboardDatePicker,
   DateRangePicker,
 } from "@material-ui/pickers";
-import MaterialTable from "material-table";
+
 const useStyles = makeStyles((theme) => ({
   seeMore: {
     marginTop: theme.spacing(3),
@@ -69,7 +76,8 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: themeState.color,
+        // borderColor: themeState.color,
+        borderColor: "grey.500",
         color: themeState.color,
       },
       "&:hover fieldset": {
@@ -88,74 +96,148 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: themeState.paper,
     },
   }),
-  defaultTheme: (themeState) => ({
-    backgroundColor: themeState.paper,
-    color: themeState.color,
-  }),
 }));
 
-function createData(room, arrival, departure, night, rate, status) {
-  return {
-    room,
-    arrival,
-    departure,
-    night,
-    rate,
-    status,
-  };
-}
-
-const rows = [
-  createData("B1014", "12/05/2021", "15/05/2021", "3", "1,500.00", "Check-Out"),
-  createData("B1016", "12/08/2021", "15/08/2021", "3", "1,500.00", "Check-In"),
+var optionTitle = [
+  {
+    value: "Mr.",
+    label: "Mr.",
+  },
+  {
+    value: "Mrs.",
+    label: "Mrs.",
+  },
+  {
+    value: "Ms.",
+    label: "Ms.",
+  },
+];
+const optionDocumentType = [
+  {
+    value: "1",
+    label: "ID Card",
+  },
+  {
+    value: "2",
+    label: "Passport",
+  },
 ];
 
 const optiondata = [
   {
-    value: "1",
+    value: "Option1",
     label: "Option1",
   },
   {
-    value: "2",
+    value: "Option",
     label: "Option2",
   },
   {
-    value: "3",
+    value: "Option",
     label: "Option3",
   },
 ];
 const optiondata2 = [
   {
-    value: "10",
-    label: "Option10",
+    value: "Male",
+    label: "Male",
   },
   {
-    value: "20",
-    label: "Option20",
-  },
-  {
-    value: "30",
-    label: "Option30",
-  },
-  {
-    value: "40",
-    label: "Option40",
+    value: "Female",
+    label: "Female",
   },
 ];
+
+// const optioncommunication = [
+//   {
+//     value: "Telephone",
+//     label: "Telephone Number",
+//   },
+//   {
+//     value: "Mobile",
+//     label: "Mobile Number",
+//   },
+//   {
+//     value: "Email",
+//     label: "Email Address",
+//   },
+//   {
+//     value: "Twitter",
+//     label: "Twitter",
+//   },
+//   {
+//     value: "Instagram",
+//     label: "Instagram",
+//   },
+//   {
+//     value: "Facebook",
+//     label: "Facebook",
+//   },
+// ];
+
+
+
+const addressType = [
+  { label: "Organisation", value: "Organisation" },
+  {
+    label: "Home",
+    value: "Home",
+  },
+  {
+    label: "Resident",
+    value: "Resident",
+  },
+];
+// const optionrelation = [
+//   {
+//     value: "Family",
+//     label: "Family",
+//   },
+//   {
+//     value: "Sprouse",
+//     label: "Sprouse",
+//   },
+//   {
+//     value: "Colleague",
+//     label: "Colleague",
+//   },
+//   {
+//     value: "ReportTo",
+//     label: "Report To",
+//   },
+// ];
 
 export const ProfileIndividual = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
-    paper: "#000",
+    paper: "#FFFFFF",
     colorlevel: "900",
   });
+
+  const [optionrelation, setOptionrelation] = React.useState([]);
+  const [optioncommunication, setOptioncommunication] = React.useState([]);
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
+
+  const [optionCity, setOptionCity] = React.useState([
+    {
+      value: "1",
+      label: "Option1",
+    },
+    {
+      value: "2",
+      label: "Option2",
+    },
+    {
+      value: "3",
+      label: "Option3",
+    },
+  ]);
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
       setThemeState({
         background: "#FFFFFF",
-        color: "#000000",
+        color: "#666666",
         paper: "#FFFFFF",
         colorlevel: "A400",
         // matStyle: this.classes.normalmode
@@ -166,6 +248,7 @@ export const ProfileIndividual = (props) => {
         color: "#FAFAFA",
         paper: "#424242",
         colorlevel: "600",
+        holderColor: "A9A9AC",
         // matStyle: this.classes.darkmode
       });
     }
@@ -182,10 +265,33 @@ export const ProfileIndividual = (props) => {
     }
   }, [maincolor]);
 
+
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
- 
-  React.useEffect(() => {
+  React.useEffect(async () => {
     setSmallwidth(window.innerWidth < 1000);
+    // if(props.editdata != null) {
+    // let getCommunications = await getIndividualProfileCommunication(
+    //   sessionStorage.getItem("auth"),
+    //   props.editdata.nameid
+    // );
+    // let getCommunicationsDatas = {}
+    // console.log("getCommunications.contents",getCommunications.contents)
+    // getCommunications.contents[0].forEach((element) =>
+    //   {if(element.communication == "email"){
+    //     console.log("e",element.value)
+    //     getCommunicationsDatas.email = element.value
+    //   }else if(element.communication == "mobile"){
+    //     console.log("m",element.value)
+    //     getCommunicationsDatas.mobile = element.value
+    //   }else{
+    //     console.log("element.communication",element)
+    //   }
+    //   }
+    // );
+    // setCommunicationDatas(prev => ({...prev,getCommunicationsDatas}));
+    // console.log("getCommunicationsDatas",getCommunicationsDatas,communicationDatas)
+
+    // }
 
   }, []);
 
@@ -195,425 +301,8 @@ export const ProfileIndividual = (props) => {
     color: themeState.color,
   };
 
-  const [editDataProps, setEditDataProps] = React.useState(props.editdata);
-
-  const [demoData, setDemoData] = React.useState([
-    {
-      id: "1",
-      title: "Personal Information",
-      content: [
-        {
-          id: 1,
-          label: "Title",
-          xl: 1,
-          md: 2,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "First Name",
-          xl: 5,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: editDataProps.firstname,
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Last Name",
-          xl: 5,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: editDataProps.lastname,
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "Gender",
-          xl: 1,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: "Choose a Document Type*",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 6,
-          label: "ID Number*",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: editDataProps.idcardandpass,
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 7,
-          label: "Nationality*",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: editDataProps.nationality,
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 8,
-          label: "Issue Date",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "datetime",
-            data: "",
-          },
-          handle: " ",
-        },
-        {
-          id: 9,
-          label: "Expiry Date",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "datetime",
-            data: "",
-          },
-          handle: " ",
-        },
-        {
-          id: 10,
-          label: "Date of Birth",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "datetime",
-            data: "",
-          },
-          handle: " ",
-        },
-      ],
-    },
-    {
-      id: "2",
-      title: "Comunication",
-      content: [
-        {
-          id: 1,
-          label: "Email",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Mobile Number",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: "Phone Number",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "3",
-      title: "Address",
-      content: [
-        {
-          id: 1,
-          label: "Choose a Document Type*",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: "Address",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-
-        {
-          id: 3,
-          label: "Country",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optiondata2.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: "City",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-        },
-        {
-          id: 5,
-          label: "State",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 6,
-          label: "Postal",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "4",
-      title: "Social",
-      content: [
-        {
-          id: 1,
-          label: (
-            <Grid container alignItems="center">
-              <AlternateEmailIcon style={{ marginRight: 10, color: "green" }} />
-              Line
-            </Grid>
-          ),
-          xl: 2,
-          md: 2,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 2,
-          label: (
-            <Grid container alignItems="center">
-              <WhatsAppIcon style={{ marginRight: 10, color: "green" }} />
-              WhatsApp
-            </Grid>
-          ),
-          xl: 2,
-          md: 2,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 3,
-          label: (
-            <Grid container alignItems="center">
-              <FacebookIcon style={{ marginRight: 10, color: "blue" }} />
-              Facebook
-            </Grid>
-          ),
-          xl: 2,
-          md: 2,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 4,
-          label: (
-            <Grid container alignItems="center">
-              <InstagramIcon style={{ marginRight: 10, color: "orange" }} />
-              Instagram
-            </Grid>
-          ),
-          xl: 2,
-          md: 2,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-        {
-          id: 5,
-          label: (
-            <Grid container alignItems="center">
-              <TwitterIcon style={{ marginRight: 10, color: "#1DA1F2" }} />
-              Twitter
-            </Grid>
-          ),
-          xl: 2,
-          md: 2,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "5",
-      title: "Note",
-      content: [
-        {
-          id: 1,
-          label: "Note",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "note",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-    {
-      id: "6",
-      title: "Booking History",
-      content: [
-        {
-          id: 1,
-          label: "booking data list here !!!",
-          xl: 12,
-          md: 12,
-          xs: 12,
-          select: {
-            status: "list",
-            data: "",
-          },
-          handle: (e) => handleData(e),
-        },
-      ],
-    },
-  ]);
-
-  const [list, setList] = React.useState(demoData);
+  // const [demoData, setDemoData] = useState([]);
+  const [list, setList] = React.useState([]);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -637,14 +326,2141 @@ export const ProfileIndividual = (props) => {
     }),
   });
 
-  const handleData = (e) => {
-    console.log("Value from handleData : ", e.target.value);
+  // [nameID,setNameID] = React.useState("");
+  const [nameTitle, setNameTitle] = React.useState(
+    props.editdata != null ? props.editdata.nametitle : "Mr."
+  );
+  const [firstName, setFirstName] = React.useState(
+    props.editdata != null ? props.editdata.firstname : ""
+  );
+  const [lastName, setLastName] = React.useState(
+    props.editdata != null ? props.editdata.lastname : ""
+  );
+  const [namePrefix, setNamePrefix] = React.useState(
+    props.editdata != null ? props.editdata.nameprefix : "KHUN"
+  );
+  const [nameSuffix, setNameSuffix] = React.useState(
+    props.editdata != null ? props.editdata.namesuffix : ""
+  );
+  const [middleInitial, setMiddleInitial] = React.useState(
+    props.editdata != null ? props.editdata.middleinitial : ""
+  );
+  const [gender, setGender] = React.useState(
+    props.editdata != null ? props.editdata.gender : "Male."
+  );
+  const [religion, setReligion] = React.useState(
+    props.editdata != null ? props.editdata.religion : "Thailand"
+  );
+  const [statusProfile, setStatusProfile] = React.useState(
+    props.editdata != null ? props.editdata.profile : "Y"
+  );
+  const [organization, setOrganization] = React.useState(
+    props.editdata != null ? props.editdata.organization : ""
+  );
+  const [provinceOfResidence, setProvinceOfResidence] = React.useState(
+    props.editdata != null ? props.editdata.provinceofresidence : ""
+  );
+  const [borderCrossingEntryPlace, setBorderCrossingEntryPlace] =
+    React.useState(
+      props.editdata != null ? props.editdata.bordercrossingentryplace : ""
+    );
+  const [borderCrossingEntryDate, setborderCrossingEntryDate] = React.useState(
+    props.editdata != null ? props.editdata.bordercrossingentrydate : new Date("2021-09-13T21:11:54")
+  );
+  const [address, setAddress] = React.useState(
+    props.editdata != null ? props.editdata.address : "organization"
+  );
+  const [address1, setAddress1] = React.useState(
+    props.editdata != null ? props.editdata.address1 : ""
+  );
+  const [address2, setAddress2] = React.useState(
+    props.editdata != null ? props.editdata.address2 : ""
+  );
+  const [conuty, setCountry] = React.useState(
+    props.editdata != null ? props.editdata.conuty : "Thailand"
+  );
+  const [city, setCity] = React.useState(
+    props.editdata != null ? props.editdata.city : "Thailand"
+  );
+  const [stateProvince, setStateprovince] = React.useState(
+    props.editdata != null ? props.editdata.stateprovince : ""
+  );
+  const [postal, setPostal] = React.useState(
+    props.editdata != null ? props.editdata.postal : ""
+  );
+
+  const [noPost, setNoPost] = React.useState(
+    props.editdata != null ? props.editdata.nopost : "N"
+  );
+  const [NRG, setNRG] = React.useState(
+    props.editdata != null ? props.editdata.nrg : "N"
+  );
+  const [guestCategory, setGuestCategory] = React.useState(
+    props.editdata != null ? props.editdata.guestcategory : "MIDDLE-AGED-ADULTS"
+  );
+  const [guestType, setGuestType] = React.useState(
+    props.editdata != null ? props.editdata.guesttype : "option1"
+  );
+  const [VVIP, setVVIP] = React.useState(
+    props.editdata != null ? props.editdata.vvip : "V20"
+  );
+  const [birthRegion, setBirthRegion] = React.useState(
+    props.editdata != null ? props.editdata.birthregion : "option1"
+  );
+  const [birthProvince, setBirthProvince] = React.useState(
+    props.editdata != null ? props.editdata.birthprovince : "option1"
+  );
+
+  const [IDCheck, setIDCheck] = React.useState(
+    props.editdata != null ? props.editdata.idcheck : "N"
+  );
+  const [IDType, setIDType] = React.useState(
+    props.editdata != null ? props.editdata.idtype : "option1"
+  );
+  const [IDNumber, setIDNumber] = React.useState(
+    props.editdata != null ? props.editdata.idnumber : ""
+  );
+  const [nationality, setNationality] = React.useState(
+    props.editdata != null ? props.editdata.nationality : "Thai"
+  );
+  const [dateOfBirth, setDateOfBirth] = React.useState(
+    props.editdata != null
+      ? props.editdata.dateofbirth
+      : new Date("2021-09-13T21:11:54")
+  );
+  const [IDIssuedDate, setIDIssuedDate] = React.useState(
+    props.editdata != null
+      ? props.editdata.idissueddate
+      : new Date("2021-09-13T21:11:54")
+  );
+  const [IDExpirationDate, setIDExpirationDate] = React.useState(
+    props.editdata != null
+      ? props.editdata.idexpirationdate
+      : new Date("2021-09-13T21:11:54")
+  );
+
+  const [passportVisaCheck, setPassportVisaCheck] = React.useState(
+    props.editdata != null ? props.editdata.passportvisacheck : "N"
+  );
+  const [visaType, setVisaType] = React.useState(
+    props.editdata != null ? props.editdata.visatype : "Tourist"
+  );
+  const [visaName, setVisaName] = React.useState(
+    props.editdata != null ? props.editdata.visaname : ""
+  );
+  const [visaNumber, setVisaNumber] = React.useState(
+    props.editdata != null ? props.editdata.visanumber : ""
+  );
+  const [visaIssuedDate, setVisaIssuedDate] = React.useState(
+    props.editdata != null
+      ? props.editdata.visaissueddate
+      : new Date("2021-09-13T21:11:54")
+  );
+  const [visaBeginDate, setVisaBeginDate] = React.useState(
+    props.editdata != null
+      ? props.editdata.visabegindate
+      : new Date("2021-09-13T21:11:54")
+  );
+  const [visaExpirationDate, setVisaExpirationDate] = React.useState(
+    props.editdata != null
+      ? props.editdata.visaexpirationdate
+      : new Date("2021-09-13T21:11:54")
+  );
+
+  const [visaStatus, setVisaStatus] = React.useState(
+    props.editdata != null ? props.editdata.visastatus : "Y"
+  );
+  const [visaNotes, setVisaNotes] = React.useState(
+    props.editdata != null ? props.editdata.visanotes : ""
+  );
+  const [rank, setRank] = React.useState(
+    props.editdata != null ? props.editdata.rank : "option1"
+  );
+  const [grade, setGrade] = React.useState(
+    props.editdata != null ? props.editdata.grade : "option1"
+  );
+  const [guestIdentity, setGuestIdentity] = React.useState(
+    props.editdata != null ? props.editdata.guestidentity : ""
+  );
+
+  const [individualData, setIndividualData] = React.useState("");
+
+  const pageProperty = useSelector((state) => state.reducer.property);
+
+  const [communicationDatas, setCommunicationDatas] = React.useState({});
+
+  async function getlist(config, field) {
+    for (var i = 0; i < config.length; i++) {
+      var obj = config[i];
+      if (obj.code === field) {
+        let list = [];
+        obj.children.forEach((element) =>
+          list.push({
+            value: element.name_en,
+            label: element.name_en,
+          })
+        );
+        return list;
+      } else if (obj.children) {
+        let _getlist = await getlist(obj.children, field);
+        if (_getlist) return _getlist;
+      }
+    }
+  }
+
+
+  React.useEffect(() => {
+    async function getconfig() {
+      let getCommunicationsDatas = {}
+      let getcomunication = []
+      console.log("demostate");
+      let getconfigdata = await getconfigurationbypropertycode(
+        sessionStorage.getItem("auth"),
+        pageProperty
+      );
+      console.log(getconfigdata);
+      let configdata = getconfigdata.content[getconfigdata.content.length - 1];
+      let optionTitle = await getlist(configdata, "PCINDTT");
+      // let optionDocumentType = await getlist(configdata,"");
+      let optiongender = await getlist(configdata, "PCINDGD");
+      let relation = await getlist(configdata, "PCINDRL");
+      let communication = await getlist(configdata, "PCINDCM");
+      // let optionDocumentType = await getlist(configdata,"");
+      setOptionrelation(relation);
+      setOptioncommunication(communication);
+      console.log("optioncommunication", optioncommunication);
+      if (props.editdata != null) {
+        let getCommunications = await getIndividualProfileCommunication(
+          sessionStorage.getItem("auth"),
+          props.editdata.nameid
+        );
+        console.log("getCommunications.contents", getCommunications.contents)
+        let count = 3;
+        getCommunications.contents[0].forEach((element) => {
+          if (element.communication == "email") {
+            console.log("e", element.value)
+            getCommunicationsDatas.email = element.value
+          } else if (element.communication == "mobile") {
+            console.log("m", element.value)
+            getCommunicationsDatas.mobile = element.value
+          } else {
+            getcomunication.push({
+              id: count,
+              label: "Choose a communication",
+              xl: 3,
+              md: 3,
+              xs: 6,
+              select: {
+                status: "option",
+                data: communication.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                    selected={option.label == element.communication}
+                    // defaultValue={element.communication}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => setCommunicationDatas(prev => ({
+                ...prev,
+                [count]: element.communication
+              })),
+            });
+            getcomunication.push({
+              id: count+1,
+              label: "communication",
+              xl: 9,
+              md: 9,
+              xs: 6,
+              select: {
+                status: "fillnolabel",
+                data: "",
+                defaultvalue: element.value
+              },
+              handle: (e) => setCommunicationDatas(prev => ({
+                ...prev,
+                [count+1]: element.value
+              })),
+            });
+            count = count +2;
+          }
+        }
+        );
+      }
+      console.log("comunication a",getcomunication);
+      setList([
+        {
+          id: "1",
+          title: "Personal",
+          expend: true,
+          content: [
+            {
+              id: 0,
+              label: "Name Title",
+              xl: 1,
+              md: 1,
+              xs: 2,
+              select: {
+                status: "option",
+                data: [
+                  { label: "Mr." },
+                  { label: "Mrs." },
+                  { label: "Miss" },
+                ].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                    noWrap
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.nametitle : "Mr.",
+              },
+              handle: (e) => setNameTitle(e.target.value),
+            },
+
+            {
+              id: 1,
+              label: "First Name",
+              xl: 5,
+              md: 5,
+              xs: 10,
+              select: {
+                status: "fill",
+                // data: props.editdata.firstname,
+                defaultvalue:
+                  props.editdata != null ? props.editdata.firstname : "",
+              },
+              handle: (e) => setFirstName(e.target.value),
+            },
+            {
+              id: 2,
+              label: "Last Name",
+              xl: 5,
+              md: 5,
+              xs: 10,
+              select: {
+                status: "fill",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.lastname : "",
+              },
+              // handle: (e) => setPersonalData({ ...personalData,lastname: e.target.value }),
+              handle: (e) => setLastName(e.target.value),
+            },
+            {
+              id: 3,
+              label: "Name Prefix",
+              xl: 1,
+              md: 1,
+              xs: 2,
+              select: {
+                status: "option",
+                data: [
+                  { label: "KHUN1" },
+                  { label: "KHUN2" },
+                  { label: "KHUN3" },
+                ].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.nameprefix : "KHUN1",
+              },
+              handle: (e) => setNamePrefix(e.target.value),
+            },
+            {
+              id: 4,
+              label: "Name Suffix",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "fill",
+                // data: props.editdata.firstname,
+                defaultvalue:
+                  props.editdata != null ? props.editdata.namesuffix : "",
+              },
+              handle: (e) => setNameSuffix(e.target.value),
+            },
+            {
+              id: 5,
+              label: "Middle Initial",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "fill",
+                // data: props.editdata.firstname,
+                defaultvalue:
+                  props.editdata != null ? props.editdata.middleinitial : "",
+              },
+              handle: (e) => setMiddleInitial(e.target.value),
+            },
+            {
+              id: 6,
+              label: "Gender",
+              xl: 1,
+              md: 1,
+              xs: 4,
+              select: {
+                status: "option",
+                data: optiongender.map((option) => (
+                  <option
+                    // defaultValue={props.editdata != null ? props.editdata.sex : ""}
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.gender : "Male",
+              },
+              handle: (e) => setGender(e.target.value),
+            },
+
+            // {
+            //   id: 7,
+            //   label: "Choose a Document Type*",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "option",
+            //     data: optionDocumentType.map((option) => (
+            //       <option
+            //         style={headerTableStyle}
+            //         key={option.value}
+            //         value={option.value}
+            //         noWrap
+            //       >
+            //         {option.label}
+            //       </option>
+            //     )),
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 8,
+            //   label: "ID Number",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "fill",
+            //     data:
+            //       props.editdata != null ? props.editdata.idcardandpass : "",
+            //   },
+            //   handle: (e) => setIDNumber(e.target.value),
+            // },
+            // {
+            //   id: 9,
+            //   label: "Nationality*",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "option",
+            //     data: optionnationality.map((option) => (
+            //       <option
+            //         style={headerTableStyle}
+            //         key={option.value}
+            //         value={option.value}
+            //       >
+            //         {option.label}
+            //       </option>
+            //     )),
+            //     defaultvalue:
+            //       props.editdata != null ? props.editdata.gender : "",
+            //   },
+            //   handle: (e) => setNationality(e.target.value),
+            // },
+            // {
+            //   id: 10,
+            //   label: "Birth country",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "option",
+            //     data: optioncountry.map((option) => (
+            //       <option
+            //         style={headerTableStyle}
+            //         key={option.value}
+            //         value={option.value}
+            //       >
+            //         {option.label}
+            //       </option>
+            //     )),
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 11,
+            //   label: "Birth City",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "option",
+            //     data: optioncountry.map((option) => (
+            //       <option
+            //         style={headerTableStyle}
+            //         key={option.value}
+            //         value={option.value}
+            //       >
+            //         {option.label}
+            //       </option>
+            //     )),
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            {
+              id: 7,
+              label: "Religion",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.religion : "Thailand",
+              },
+              handle: (e) => setReligion(e.target.value),
+            },
+
+            // {
+            //   id: 13,
+            //   label: "Date of Birth",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "datetime",
+            //     data: "",
+            //   },
+            //   handle: " ",
+            // },
+
+            // {
+            //   id: 7,
+            //   label: "Issue Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "datetime",
+            //     data: "",
+            //   },
+            //   handle: " ",
+            // },
+            // {
+            //   id: 8,
+            //   label: "Expiry Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 12,
+            //   select: {
+            //     status: "datetime",
+            //     data: "",
+            //   },
+            //   handle: " ",
+            // },
+            ,
+            {
+              id: 8,
+              label: "Status",
+              xl: 3,
+              md: 3,
+              xs: 12,
+              select: {
+                status: "status",
+                defaultvalue: props.editdata != null ? props.editdata.statusProfile : "Y",
+                data: "Y",
+              },
+              // handle: (e) => setStatus(e.target.value),
+            },
+          ],
+        },
+        {
+          id: "2",
+          title: "Address",
+          expend: true,
+          content: [
+            {
+              id: 1,
+              label: "Organisation",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.organization : "",
+              },
+
+              handle: (e) => setOrganization(e.target.value),
+            },
+            {
+              id: 2,
+              label: "Province Of Residence",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.provinceofresidence
+                    : "",
+              },
+              handle: (e) => setProvinceOfResidence(e.target.value),
+            },
+            {
+              id: 3,
+              label: "Border Crossing Entry Place",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.bordercrossingentryplace
+                    : "",
+              },
+              handle: (e) => setBorderCrossingEntryPlace(e.target.value),
+            },
+            {
+              id: 4,
+              label: "Border Crossing Entry Date",
+              xl: 2,
+              md: 2,
+              xs: 4,
+              select: {
+                status: "datetime",
+                data: borderCrossingEntryDate,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.bordercrossingentrydate
+                    : new Date("2021-09-13T21:11:54"),
+                // status: "fill",
+                // data: "",
+                // defaultvalue:
+                //   props.editdata != null
+                //     ? props.editdata.bordercrossingentrydate
+                //     : "",
+              },
+              handle: (e) => setborderCrossingEntryDate(e.target.value),
+            },
+            {
+              id: 0,
+              label: "",
+              xl: 4,
+              md: 4,
+              xs: 4,
+              select: {
+                status: "offset",
+                data: "",
+              },
+              handle: (e) => handleData(e),
+            },
+            {
+              id: 5,
+              label: "Address",
+              xl: 2,
+              md: 2,
+              xs: 12,
+              select: {
+                status: "option",
+                data: addressType.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.address
+                    : "organization",
+              },
+              handle: (e) => setAddress(e.target.value),
+            },
+            {
+              id: 6,
+              label: "Address 1",
+              xl: 5,
+              md: 5,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.address1 : "",
+              },
+              handle: (e) => setAddress1(e.target.value),
+            },
+            {
+              id: 7,
+              label: "Address 2",
+              xl: 5,
+              md: 5,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.address2 : "",
+              },
+              handle: (e) => setAddress2(e.target.value),
+            },
+            {
+              id: 8,
+              label: "Choose a country",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.conuty : "Thailand",
+              },
+              handle: (e) => setCountry(e.target.value),
+            },
+            {
+              id: 9,
+              label: "City",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: ""
+              },
+              handle: (e) => setCity(e.target.value),
+            },
+            {
+              id: 10,
+              label: "State / Province",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.stateprovince : "",
+              },
+              handle: (e) => setStateprovince(e.target.value),
+            },
+            {
+              id: 11,
+              label: "Postal",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.postal : "",
+              },
+              handle: (e) => setPostal(e.target.value),
+            },
+            {
+              id: 12,
+              label: "",
+              xl: 4,
+              md: 4,
+              xs: 4,
+              select: {
+                status: "offset",
+                data: "",
+              },
+              // handle: (e) => handleData(e),
+            },
+            {
+              id: 99,
+              label: "AddAddress",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "AddAddress",
+                data: "+ More Address",
+              },
+            },
+          ],
+        },
+        {
+          id: "3",
+          title: "Communication",
+          expend: true,
+          content: [
+            {
+              id: 1,
+              label: "Email",
+              xl: 3,
+              md: 3,
+              xs: 6,
+              select: {
+                status: "fix",
+                data: "Email Address",
+              },
+            },
+            {
+              id: 2,
+              label: "Email",
+              xl: 9,
+              md: 9,
+              xs: 6,
+              select: {
+                status: "fillnolabel",
+                data: "Email",
+                defaultvalue: props.editdata != null ? getCommunicationsDatas.email : "email"
+              },
+              handle: (e) => setCommunicationDatas(prev => ({
+                ...prev,
+                email: e.target.value
+              })),
+            },
+            {
+              id: 3,
+              label: "Mobile Number",
+              xl: 3,
+              md: 3,
+              xs: 6,
+              select: {
+                status: "fix",
+                data: "Mobile Number",
+              },
+            },
+            {
+              id: 4,
+              label: "Mobile Number",
+              xl: 9,
+              md: 9,
+              xs: 6,
+              select: {
+                status: "fillnolabel",
+                data: "Mobile Number",
+                defaultvalue: props.editdata != null ? getCommunicationsDatas.mobile : "mobile"
+              },
+              handle: (e) => setCommunicationDatas(prev => ({
+                ...prev,
+                mobile: e.target.value
+              })),
+            },
+            ...getcomunication
+            ,
+            {
+              id: 99,
+              label: "Phone Number",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "AddComunication",
+                data: "+ More Communication",
+              },
+              // handle: (e) => handleAddComunication(e),
+            },
+          ],
+        },
+        {
+          id: "4",
+          title: "Relation",
+          expend: true,
+          content: [
+            {
+              id: 99,
+              label: "Relation",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "AddRelation",
+                data: "+ More Relation",
+              },
+              // handle: (e) => handleAddComunication(e),
+            },
+          ],
+        },
+        {
+          id: "5",
+          title: "Internal Infomation",
+          expend: true,
+          content: [
+            {
+              id: 1,
+              label: "No Post",
+              xl: 1,
+              md: 1,
+              xs: 6,
+              select: {
+                status: "check",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.nopost : "N",
+              },
+              handle: (e) => setNoPost(handleBoolean(e.target.checked)),
+            },
+            {
+              id: 2,
+              label: "NRG",
+              xl: 1,
+              md: 1,
+              xs: 6,
+              select: {
+                status: "check",
+                data: "",
+                defaultvalue: props.editdata != null ? props.editdata.nrg : "N",
+              },
+              handle: (e) => setNRG(handleBoolean(e.target.checked)),
+            },
+            {
+              id: 3,
+              label: "offset",
+              xl: 10,
+              md: 10,
+              xs: 0,
+              select: {
+                status: "offset",
+                data: "",
+              },
+              // handle: (e) => handleData(e),
+            },
+            {
+              id: 4,
+              label: "Guest Catagory",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: [
+                  { label: "CHILD" },
+                  { label: "YOUNG-ADULTS" },
+                  { label: "MIDDLE-AGED-ADULTS" },
+                  { label: "OLD-ADGE-ADULTS" },
+                ].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.guestcategory
+                    : "option1",
+              },
+              handle: (e) => setGuestCategory(e.target.value),
+            },
+            {
+              id: 5,
+              label: "Guest Type",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.guesttype : "option1",
+              },
+              handle: (e) => setGuestType(e.target.value),
+            },
+            {
+              id: 6,
+              label: "VVIP",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: [
+                  { label: "V20" },
+                  { label: "V55" },
+                  { label: "V99" },
+                ].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.vvip : "option1",
+              },
+              handle: (e) => setVVIP(e.target.value),
+            },
+            {
+              id: 7,
+              label: "Birth Region",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.birthregion
+                    : "option1",
+              },
+              handle: (e) => setBirthRegion(e.target.value),
+            },
+            {
+              id: 8,
+              label: "Birth Province",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.birthprovince
+                    : "option1",
+              },
+              handle: (e) => setBirthProvince(e.target.value),
+            },
+          ],
+        },
+        {
+          id: "6",
+          title: "Identification",
+          expend: true,
+          content: [
+            {
+              id: 1,
+              label: "ID Check",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "check",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.idcheck : "N",
+              },
+
+              handle: (e) => setIDCheck(handleBoolean(e.target.checked)),
+            },
+            {
+              id: 2,
+              label: "offset",
+              xl: 10,
+              md: 10,
+              xs: 6,
+              select: {
+                status: "offset",
+                data: "",
+              },
+            },
+            {
+              id: 3,
+              label: "ID Type",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.idtype : "option1",
+              },
+
+              handle: (e) => setIDType(e.target.value),
+            },
+            {
+              id: 4,
+              label: "ID Number",
+              xl: 6,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.idnumber : "",
+              },
+              handle: (e) => setIDNumber(e.target.value),
+            },
+            {
+              id: 5,
+              label: "Nationality*",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optionnationality.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.nationality : "Thai",
+              },
+              handle: (e) => setNationality(e.target.value),
+            },
+            {
+              id: 6,
+              label: "Date of Birth",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "datetime",
+                data: dateOfBirth,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.dateofbirth
+                    : new Date("2021-09-13T21:11:54"),
+              },
+              handle: (e) => setDateOfBirth(convertTimeToString(e)),
+            },
+            {
+              id: 7,
+              label: "ID Issue Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: IDIssuedDate,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.idissuedDate
+                    : new Date("2021-09-13T21:11:54"),
+              },
+              handle: (e) => setIDIssuedDate(new Date(e)),
+            },
+            {
+              id: 8,
+              label: "ID Expiration Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: IDExpirationDate,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.idexpirationDate
+                    : new Date("2021-09-13T21:11:54"),
+              },
+              handle: (e) => setIDExpirationDate(new Date(e)),
+            },
+            {
+              id: 9,
+              label: "offset",
+              xl: 8,
+              md: 8,
+              xs: 0,
+              select: {
+                status: "offset",
+                data: "",
+              },
+            },
+            {
+              id: 10,
+              label: "Passport Visa Check",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "check",
+                data: "",
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.passportvisacheck
+                    : "N",
+              },
+              handle: (e) =>
+                setPassportVisaCheck(handleBoolean(e.target.checked)),
+            },
+            {
+              id: 11,
+              label: "Offset",
+              xl: 10,
+              md: 10,
+              xs: 6,
+              select: {
+                status: "offset",
+                data: "",
+              },
+            },
+            {
+              id: 12,
+              label: "Visa Type",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: [{ label: "Tourist" }, { label: "Miliary" }].map(
+                  (option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.label}
+                      value={option.label}
+                    >
+                      {option.label}
+                    </option>
+                  )
+                ),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.visatype : "Tourist",
+              },
+              handle: (e) => setVisaType(e.target.value),
+            },
+            {
+              id: 13,
+              label: "Visa Name",
+              xl: 6,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.visaname : "",
+              },
+              handle: (e) => setVisaName(e.target.value),
+            },
+            {
+              id: 14,
+              label: "Visa Number",
+              xl: 4,
+              md: 4,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.visanumber : "",
+              },
+              handle: (e) => setVisaNumber(e.target.value),
+            },
+            // {
+            //   id: 15,
+            //   label: "Issuing Country",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     select: {
+            //       status: "option",
+            //       data: optiondata.map((option) => (
+            //         <option
+            //           style={headerTableStyle}
+            //           key={option.value}
+            //           value={option.value}
+            //         >
+            //           {option.label}
+            //         </option>
+            //       )),
+            //     },
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            {
+              id: 15,
+              label: "Visa Issued Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: visaIssuedDate,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.visaissueddate
+                    : new Date("2021-09-13T21:11:54"),
+              },
+              handle: (e) => setVisaIssuedDate(new Date(e)),
+              // handle: (e) => setVisaIssuedDate(convertTimeToString(e)),
+            },
+            {
+              id: 16,
+              label: "Visa Begin Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: visaBeginDate,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.visabegindate
+                    : new Date("2021-09-13T21:11:54"),
+              },
+              handle: (e) => setVisaBeginDate(new Date(e)),
+            },
+            {
+              id: 17,
+              label: "Visa Expiration Date",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "date",
+                data: visaExpirationDate,
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata.visaexpirationdate
+                    : new Date("2021-09-13T21:11:54"),
+              },
+              handle: (e) => setVisaExpirationDate(new Date(e)),
+            },
+            // {
+            //   id: 18,
+            //   label: "Visa Name",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            {
+              id: 18,
+              label: "Visa Status",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "status",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.visastatus : "Y",
+              },
+              handle: (e) => setVisaStatus(handleBoolean(e.target.checked)),
+            },
+            {
+              id: 19,
+              label: "Note",
+              xl: 12,
+              md: 12,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.visanotes : "",
+              },
+              handle: (e) => setVisaNotes(e.target.value),
+            },
+            // ,
+            // {
+            //   id: 20,
+            //   label: "Visa Number",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 21,
+            //   label: "Visa Type",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     select: {
+            //       status: "option",
+            //       data: optiondata.map((option) => (
+            //         <option
+            //           style={headerTableStyle}
+            //           key={option.value}
+            //           value={option.value}
+            //         >
+            //           {option.label}
+            //         </option>
+            //       )),
+            //     },
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 22,
+            //   label: "Visa Status",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "status",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 23,
+            //   label: "Visa Issue Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "date",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 24,
+            //   label: "Visa Begin Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "date",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+
+            // {
+            //   id: 25,
+            //   label: "Visa Expiration Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "date",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            {
+              id: 20,
+              label: "Rank",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.rank : "option1",
+              },
+              handle: (e) => setRank(e.target.value),
+            },
+            {
+              id: 21,
+              label: "Grade",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optiondata.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata.grade : "option1",
+              },
+              handle: (e) => setGrade(e.target.value),
+            },
+            {
+              id: 22,
+              label: "Guest Identity",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.guestidentity : "",
+              },
+              handle: (e) => setGuestIdentity(e.target.value),
+            },
+            // {
+            //   id: 29,
+            //   label: "Passport Type",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 30,
+            //   label: "Passport Nationality",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 31,
+            //   label: "Passport Number",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 32,
+            //   label: "Passport Scan Name",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            // {
+            //   id: 33,
+            //   label: "Passport Scan Date",
+            //   xl: 2,
+            //   md: 2,
+            //   xs: 6,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+          ],
+        },
+      ]);
+    }
+    getconfig();
+  }, []);
+
+  const handleExpend = (id, expend) => {
+    let index = list.findIndex((x) => x.id === id);
+    console.log(Object.assign({}, list[index], { expend: !expend }));
+    if (index === -1) return;
+    else {
+      let new_data = list[index];
+      new_data.expend = !expend;
+      setList([...list.slice(0, index), new_data, ...list.slice(index + 1)]);
+    }
   };
 
-  const handleComponentState = async (comp) => {
-    console.log("setcomp", comp);
-    props.nextComponent(comp);
+  const handleAddAddress = async (id) => {
+    console.log("handleAddAddress", id);
+    let index = list.findIndex((x) => x.id === id);
+    if (index === -1) return;
+    else {
+      let address = list[index];
+      delete address.content[address.content.length - 1];
+      let newid = await address.content.reduce(
+        (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
+        0
+      );
+      address.content.push(
+        {
+          id: newid + 1,
+          label: "Address",
+          xl: 2,
+          md: 2,
+          xs: 12,
+          select: {
+            status: "option",
+            data: [
+              { label: "Organisation" },
+              { label: "Home" },
+              { label: "Resident" },
+            ].map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.label}
+                value={option.label}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+        },
+        {
+          id: newid + 2,
+          label: "Address 1",
+          xl: 5,
+          md: 5,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: newid + 3,
+          label: "Address 2",
+          xl: 5,
+          md: 5,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: newid + 4,
+          label: "Choose a country",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "option",
+            data: optioncountry.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: newid + 5,
+          label: "City",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "option",
+            data: ""
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: newid + 6,
+          label: "State / Province",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: newid + 7,
+          label: "Postal",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "fill",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: newid + 8,
+          label: "",
+          xl: 4,
+          md: 4,
+          xs: 4,
+          select: {
+            status: "offset",
+            data: "",
+          },
+          handle: (e) => handleData(e),
+        },
+        {
+          id: 99,
+          label: "AddAddress",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "AddAddress",
+            data: "+ More Address",
+          },
+        }
+      );
+      setList([...list.slice(0, index), address, ...list.slice(index + 1)]);
+    }
   };
+
+  const handleAddComunication = async (id) => {
+    console.log("handleAddComunication", id);
+    let index = list.findIndex((x) => x.id === id);
+    if (index === -1) return;
+    else {
+      let comunication = list[index];
+      delete comunication.content[comunication.content.length - 1];
+      let newid = await comunication.content.reduce(
+        (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
+        0
+      );
+      console.log("optioncommunication2", optioncommunication);
+      setCommunicationDatas(prev => ({
+        ...prev,
+        [newid + 1]: "Telephone Number"
+      }))
+      comunication.content.push({
+        id: newid + 1,
+        label: "Choose a communication",
+        xl: 3,
+        md: 3,
+        xs: 6,
+        select: {
+          status: "option",
+          data: optioncommunication.map((option) => (
+            <option
+              style={headerTableStyle}
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          )),
+        },
+        handle: (e) => setCommunicationDatas(prev => ({
+          ...prev,
+          [newid + 1]: e.target.value
+        })),
+      });
+      comunication.content.push({
+        id: newid + 2,
+        label: "communication",
+        xl: 9,
+        md: 9,
+        xs: 6,
+        select: {
+          status: "fillnolabel",
+          data: "",
+        },
+        handle: (e) => setCommunicationDatas(prev => ({
+          ...prev,
+          [newid + 2]: e.target.value
+        })),
+      });
+      comunication.content.push({
+        id: 99,
+        label: "AddComunication",
+        xl: 2,
+        md: 2,
+        xs: 2,
+        select: {
+          status: "AddComunication",
+          data: "+ More Communication",
+        },
+      });
+      setList([
+        ...list.slice(0, index),
+        comunication,
+        ...list.slice(index + 1),
+      ]);
+    }
+  };
+
+  const handleAddRelation = async (id) => {
+    let index = list.findIndex((x) => x.id === id);
+    if (index === -1) return;
+    else {
+      let relation = list[index];
+      delete relation.content[relation.content.length - 1];
+      let newid = await relation.content.reduce(
+        (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
+        0
+      );
+      relation.content.push({
+        id: newid + 1,
+        label: "Name",
+        xl: 4,
+        md: 4,
+        xs: 6,
+        select: {
+          status: "fill",
+          data: "",
+        },
+        handle: (e) => handleData(e),
+      });
+      relation.content.push({
+        id: newid + 2,
+        label: "Name Type",
+        xl: 2,
+        md: 2,
+        xs: 6,
+        select: {
+          status: "option",
+          data: optionrelation.map((option) => (
+            <option
+              style={headerTableStyle}
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          )),
+        },
+        handle: (e) => handleData(e),
+      });
+      relation.content.push({
+        id: newid + 3,
+        label: "Note",
+        xl: 6,
+        md: 6,
+        xs: 12,
+        select: {
+          status: "fill",
+          data: "",
+        },
+        handle: (e) => handleData(e),
+      });
+      relation.content.push({
+        id: 99,
+        label: "AddRelation",
+        xl: 2,
+        md: 2,
+        xs: 2,
+        select: {
+          status: "AddRelation",
+          data: "+ More Relation",
+        },
+      });
+      setList([...list.slice(0, index), relation, ...list.slice(index + 1)]);
+    }
+  };
+
+  const convertTimeToString = (e) => {
+    let dateNoTiome = e.toISOString();
+    let T = dateNoTiome.split("T");
+    // console.log(T);
+    return T[0];
+  };
+
+  const handleBoolean = (e) => {
+    if (e == true) {
+      return "Y";
+    } else return "N";
+  };
+
+  const handleData = async (e) => {
+    // console.log("Value from handleData : ", e);
+    // console.log("Value from handleData : ", e.target.value);
+    console.log("Value from props.editdata : ", props.editdata);
+    // console.log("idividualData==", individualData);
+    // console.log(
+    //   "setvalue check==",
+    //   lastName == null || lastName == undefined || lastName == ""
+    //     ? individualData.lastname
+    //     : lastName
+    // );
+
+    console.table(
+      "handleData : ",
+      nameTitle,
+      firstName,
+      lastName,
+      namePrefix,
+      nameSuffix,
+      middleInitial,
+      gender,
+      religion,
+      organization,
+      provinceOfResidence,
+      borderCrossingEntryPlace,
+      borderCrossingEntryDate,
+      address,
+      address1,
+      address2,
+      conuty,
+      city,
+      stateProvince,
+      postal,
+      noPost,
+      NRG,
+      guestCategory,
+      VVIP,
+      birthRegion,
+      birthProvince,
+      guestType,
+      IDCheck,
+      IDType,
+      IDNumber,
+      nationality,
+      dateOfBirth,
+      IDIssuedDate,
+      IDExpirationDate,
+      passportVisaCheck,
+      visaType,
+      visaName,
+      visaNumber,
+      visaIssuedDate,
+      visaBeginDate,
+      visaExpirationDate,
+      visaStatus,
+      visaNotes,
+      rank,
+      grade,
+      guestIdentity
+    );
+  };
+
+  const handleAddDatatoDatabase = async (e) => {
+    // let index = list.findIndex((x) => x.title == "Communication");
+    // let communications = list[index];
+    // delete communications.content[communications.content.length - 1];
+    let indexRelation = list.findIndex((x) => x.title == "Relation");
+    let relations = list[indexRelation];
+    delete relations.content[relations.content.length - 1];
+    let req = {
+      nametitle: nameTitle,
+      firstname: firstName,
+      lastname: lastName,
+      nameprefix: namePrefix,
+      namesuffix: nameSuffix,
+      middleinitial: middleInitial,
+      gender: gender,
+      religion: religion,
+      organization: organization,
+      provinceofresidence: provinceOfResidence,
+      bordercrossingentryplace: borderCrossingEntryPlace,
+      bordercrossingentrydate: borderCrossingEntryDate,
+      address: address,
+      address1: address1,
+      address2: address2,
+      conuty: conuty,
+      city: city,
+      stateprovince: stateProvince,
+      postal: postal,
+      nopost: noPost,
+      nrg: NRG,
+      guestcategory: guestCategory,
+      vvip: VVIP,
+      birthregion: birthRegion,
+      birthprovince: birthProvince,
+      guesttype: guestType,
+      idcheck: IDCheck,
+      idtype: IDType,
+      idnumber: IDNumber,
+      nationality: nationality,
+      dateofbirth: dateOfBirth,
+      idissueddate: IDIssuedDate,
+      idexpirationdate: IDExpirationDate,
+      passportvisacheck: passportVisaCheck,
+      visatype: visaType,
+      visaname: visaName,
+      visanumber: visaNumber,
+      visaissueddate: visaIssuedDate,
+      visabegindate: visaBeginDate,
+      visaexpirationdate: visaExpirationDate,
+      visastatus: visaStatus,
+      visanotes: visaNotes,
+      rank: rank,
+      grade: grade,
+      guestidentity: guestIdentity,
+      communications: communicationDatas,
+      relations: relations
+    };
+    const data = await postIndividualProfile(
+      sessionStorage.getItem("auth"),
+      req
+    );
+    console.log("datafrom post", data);
+  };
+
+  const handleEditDatatoDatabase = async (e) => {
+    let id = props.editdata.nameid;
+
+    let req = {
+      nametitle: nameTitle,
+      firstname: firstName,
+      lastname: lastName,
+      nameprefix: namePrefix,
+      namesuffix: nameSuffix,
+      middleinitial: middleInitial,
+      gender: gender,
+      religion: religion,
+      organization: organization,
+      provinceofresidence: provinceOfResidence,
+      bordercrossingentryplace: borderCrossingEntryPlace,
+      bordercrossingentrydate: borderCrossingEntryDate,
+      // address: address,
+      address1: address1,
+      address2: address2,
+      conuty: conuty,
+      city: city,
+      stateprovince: stateProvince,
+      postal: postal,
+      nopost: noPost,
+      nrg: NRG,
+      guestcategory: guestCategory,
+      vvip: VVIP,
+      birthregion: birthRegion,
+      birthprovince: birthProvince,
+      guesttype: guestType,
+      idcheck: IDCheck,
+      idtype: IDType,
+      idnumber: IDNumber,
+      nationality: nationality,
+      dateofbirth: dateOfBirth,
+      idissueddate: IDIssuedDate,
+      idexpirationdate: IDExpirationDate,
+      passportvisacheck: passportVisaCheck,
+      visatype: visaType,
+      visaname: visaName,
+      visanumber: visaNumber,
+      visaissueddate: visaIssuedDate,
+      visabegindate: visaBeginDate,
+      visaexpirationdate: visaExpirationDate,
+      visastatus: visaStatus,
+      visanotes: visaNotes,
+      rank: rank,
+      grade: grade,
+      guestidentity: guestIdentity,
+    };
+    const data = await updateIndividualProfile(
+      sessionStorage.getItem("auth"),
+      id,
+      req
+    );
+    console.log("datafrom post", data);
+  };
+
+  //data from button for  trigger (add or delete)
+  React.useEffect(() => {
+    async function handlebutton() {
+      if (props.action === "add") {
+        console.log("action add", props.action);
+        await handleAddDatatoDatabase();
+      } else if (props.action === "edit") {
+        await handleEditDatatoDatabase();
+        console.log("action edit", props.action);
+      }
+    }
+    handlebutton();
+  }, [props.action]);
+
+  //data from button for  trigger (add or delete)
+  // React.useEffect(() => {
+  //   // console.log("props.editdata.nameid", props.editdata.nameid);
+  //   // async function fetchdDtaforEdit() {
+  //   //   var individualdata = await getIndividualProfileById(
+  //   //     sessionStorage.getItem("auth"),
+  //   //     props.editdata.nameid
+  //   //   );
+  //   //   console.log("individualdata for edit :", individualdata);
+  //   //   setIndividualData(individualdata.content[0]);
+  //   // }
+  //   // fetchdDtaforEdit();
+  // }, []);
 
   return (
     <Container
@@ -655,7 +2471,7 @@ export const ProfileIndividual = (props) => {
         backgroundColor: themeState.background,
       }}
     >
-      {/* <DragDropContext onDragEnd={onEnd}>
+      <DragDropContext onDragEnd={onEnd}>
         <Droppable droppableId="01">
           {(provided, snapshot) => (
             <Paper
@@ -666,20 +2482,23 @@ export const ProfileIndividual = (props) => {
                 backgroundColor: themeState.paper,
               }}
             >
-              <Divider
-                style={{ marginTop: 10, backgroundColor: themeState.color }}
-              />
               <Container
                 maxWidth="xl"
                 disableGutters
                 style={{ marginTop: 10, backgroundColor: themeState.paper }}
                 ref={provided.innerRef}
               >
+                {/* <Button
+                  variant="contained"
+                  color="default"
+                  onClick={() => handleData()}
+                >
+                  TestData
+                </Button> */}
                 {list.map((item, index) => (
                   <Draggable draggableId={item.id} key={item.id} index={index}>
                     {(provided, snapshot) => (
                       <Accordion
-                        // expanded={true}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -688,17 +2507,23 @@ export const ProfileIndividual = (props) => {
                           provided.draggableProps.style
                         )}
                         className={classes.defaultTheme}
+                        expanded={item.expend}
                       >
-                        <AccordionSummary
-                          style={{ color: mainColor, fontSize: 18 }}
-                          expandIcon={
-                            <ArrowDropDownIcon
-                              style={{ color: mainColor, fontSize: 30 }}
-                            />
-                          }
-                        >
-                          {item.title}
-                        </AccordionSummary>
+                        {item.title == "Personal" ? null : (
+                          <AccordionSummary
+                            style={{ color: mainColor, fontSize: 18 }}
+                            onClick={() => handleExpend(item.id, item.expend)}
+                          >
+                            <div style={{ color: "blue" }}>
+                              {item.title}&nbsp;
+                            </div>{" "}
+                            {item.expend ? (
+                              <ArrowDropDownIcon style={{ color: "blue" }} />
+                            ) : (
+                              <ArrowDropUpIcon style={{ color: "blue" }} />
+                            )}
+                          </AccordionSummary>
+                        )}
                         <AccordionDetails>
                           <Grid container spacing={2}>
                             {item.content.map((detail, index) => (
@@ -710,7 +2535,116 @@ export const ProfileIndividual = (props) => {
                                 md={detail.md}
                                 xs={detail.xs}
                               >
-                                {detail.select.status === "fill" ? (
+                                {detail.select.status == "offset" ? (
+                                  <div />
+                                ) : detail.select.status === "status" ? (
+                                  <div style={{ paddingTop: 10 }}>
+                                    <a>Status</a>
+                                    {detail.select.defaultvalue === "Y" ? (
+                                      <Switch
+                                        defaultChecked={true}
+                                        color="primary"
+                                        onChange={detail.handle}
+                                      />
+                                    ) : (
+                                      <Switch
+                                        defaultChecked={false}
+                                        color="primary"
+                                        onChange={detail.handle}
+                                      />
+                                    )}
+                                  </div>
+                                ) : detail.select.status === "AddRelation" ? (
+                                  <Button
+                                    className={classes.root}
+                                    variant="outlined"
+                                    fullWidth
+                                    noWrap
+                                    style={{
+                                      backgroundColor: "blue",
+                                      color: "white",
+                                    }}
+                                    value={detail.select.data}
+                                    onClick={() => handleAddRelation(item.id)}
+                                  >
+                                    {detail.select.data}
+                                  </Button>
+                                ) : detail.select.status === "AddAddress" ? (
+                                  <Button
+                                    className={classes.root}
+                                    variant="outlined"
+                                    fullWidth
+                                    style={{
+                                      backgroundColor: "blue",
+                                      color: "white",
+                                    }}
+                                    value={detail.select.data}
+                                    onClick={() => handleAddAddress(item.id)}
+                                  >
+                                    {detail.select.data}
+                                  </Button>
+                                ) : detail.select.status ===
+                                  "AddComunication" ? (
+                                  <Button
+                                    className={classes.root}
+                                    variant="outlined"
+                                    fullWidth
+                                    style={{
+                                      backgroundColor: "blue",
+                                      color: "white",
+                                    }}
+                                    value={detail.select.data}
+                                    onClick={() =>
+                                      handleAddComunication(item.id)
+                                    }
+                                  >
+                                    {detail.select.data}
+                                  </Button>
+                                ) : detail.select.status === "fix" ? (
+                                  <TextField
+                                    className={classes.root}
+                                    variant="outlined"
+                                    fullWidth
+                                    style={{
+                                      backgroundColor: "#EFEFEF",
+                                      borderColor: "white"
+                                    }}
+                                    // disabled={true}
+                                    value={detail.select.data}
+                                    defaultValue={detail.select.defaultvalue}
+                                    onFocus={false}
+                                  />
+                                  // <TextField
+                                  //   className={classes.root}
+                                  //   variant="outlined"
+                                  //   label={detail.select.defaultvalue}
+                                  //   fullWidth
+                                  //   style={{
+                                  //     backgroundColor: "#EFEFEF",
+                                  //     borderColor: "white",
+                                  //   }}
+                                  //   // disabled={true}
+                                  //   value={detail.select.defaultvalue}
+                                  //   defaultValue={detail.select.defaultvalue}
+                                  //   onFocus={false}
+                                  // />
+                                ) : detail.select.status === "fillnolabel" ? (
+                                  <TextField
+                                    className={classes.root}
+                                    // label={detail.label}
+                                    variant="outlined"
+                                    InputProps={{
+                                      style: headerTableStyle,
+                                    }}
+                                    noWrap
+                                    InputLabelProps={{
+                                      style: { color: "#AAAAAA" },
+                                    }}
+                                    fullWidth
+                                    defaultValue={detail.select.defaultvalue}
+                                    onChange={detail.handle}
+                                  />
+                                ) : detail.select.status === "fill" ? (
                                   <TextField
                                     className={classes.root}
                                     label={detail.label}
@@ -718,8 +2652,12 @@ export const ProfileIndividual = (props) => {
                                     InputProps={{
                                       style: headerTableStyle,
                                     }}
+                                    noWrap
+                                    InputLabelProps={{
+                                      style: { color: "#AAAAAA" },
+                                    }}
                                     fullWidth
-                                    defaultValue={detail.select.data}
+                                    defaultValue={detail.select.defaultvalue}
                                     onChange={detail.handle}
                                   />
                                 ) : detail.select.status === "option" ? (
@@ -729,18 +2667,50 @@ export const ProfileIndividual = (props) => {
                                     variant="outlined"
                                     fullWidth
                                     select
-                                    defaultValue={" "}
+                                    defaultValue={detail.select.defaultvalue}
                                     SelectProps={{
                                       native: true,
                                     }}
                                     InputProps={{
                                       style: headerTableStyle,
                                     }}
+                                    // value={detail.select.defaultvalue}
                                     onChange={detail.handle}
+                                    textOverflow="ellipsis"
+
+                                  // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
                                   >
                                     {detail.select.data}
                                   </TextField>
-                                ) : detail.select.status === "datetime" ? (
+                                ) : detail.select.status === "check" ? (
+                                  <span>
+                                    {detail.select.defaultvalue === "Y" ? (
+                                      <FormControlLabel
+                                        control={
+                                          <Checkbox
+                                            defaultChecked={true}
+                                            color="primary"
+                                          />
+                                        }
+                                        label={detail.label}
+                                        labelPlacement="end"
+                                        onChange={detail.handle}
+                                      />
+                                    ) : (
+                                      <FormControlLabel
+                                        control={
+                                          <Checkbox
+                                            defaultChecked={false}
+                                            color="primary"
+                                          />
+                                        }
+                                        label={detail.label}
+                                        labelPlacement="end"
+                                        onChange={detail.handle}
+                                      />
+                                    )}
+                                  </span>
+                                ) : (
                                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <KeyboardDatePicker
                                       className={classes.root}
@@ -749,118 +2719,13 @@ export const ProfileIndividual = (props) => {
                                       InputProps={{
                                         style: headerTableStyle,
                                       }}
-                                      // format="dd/MM/yyyy"
-                                      // value={selectedDateStartEdit}
-                                      // onChange={handleDateStartEdit}
+                                      format="dd/MM/yyyy"
+                                      value={detail.select.data}
                                       onChange={detail.handle}
                                       fullWidth
+                                      defaultValue={detail.select.defaultvalue}
                                     />
                                   </MuiPickersUtilsProvider>
-                                ) : detail.select.status === "note" ? (
-                                  <TextField
-                                    className={classes.root}
-                                    // label={detail.label}
-                                    variant="outlined"
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    fullWidth
-                                    multiline
-                                    rows={4}
-                                    // value={detail.select.data.firstname}
-                                    onChange={detail.handle}
-                                  />
-                                ) : (
-                                  <MaterialTable
-                                    elevation={0}
-                                    style={{
-                                      paddingLeft: 30,
-                                      paddingRight: 30,
-                                      color: themeState.color,
-                                      backgroundColor: themeState.paper,
-                                    }}
-                                    columns={[
-                                      {
-                                        title: "Room",
-                                        field: "room",
-                                        headerStyle: headerTableStyle,
-                                      },
-                                      {
-                                        title: "Arrival",
-                                        field: "arrival",
-                                        headerStyle: headerTableStyle,
-                                      },
-                                      {
-                                        title: "Departure",
-                                        field: "departure",
-                                        headerStyle: headerTableStyle,
-                                      },
-
-                                      {
-                                        title: "Night",
-                                        field: "night",
-                                        headerStyle: headerTableStyle,
-                                      },
-
-                                      {
-                                        title: "Rate",
-                                        field: "rate",
-                                        headerStyle: headerTableStyle,
-                                      },
-
-                                      {
-                                        render: (rowData) => {
-                                          return rowData.status ===
-                                            "Check-Out" ? (
-                                            <Button
-                                              variant="contained"
-                                              style={{
-                                                borderRadius: 20,
-                                                backgroundColor: "red",
-                                                color: "white",
-                                              }}
-                                            >
-                                              {rowData.status}
-                                            </Button>
-                                          ) : (
-                                            <Button
-                                              variant="contained"
-                                              style={{
-                                                borderRadius: 20,
-                                                backgroundColor: mainColor,
-                                                color: "white",
-                                              }}
-                                            >
-                                              {rowData.status}
-                                            </Button>
-                                          );
-                                        },
-                                        cellStyle: { textAlign: "center" },
-                                        headerStyle: {
-                                          textAlign: "center",
-                                          paddingLeft: 37,
-                                          backgroundColor: themeState.paper,
-                                          color: themeState.color,
-                                        },
-                                        title: "Status",
-                                        field: "status",
-                                      },
-                                    ]}
-                                    data={rows}
-                                    options={{
-                                      // searchFieldAlignment: "left",
-                                      showTitle: false,
-                                      search: false,
-                                      actionsColumnIndex: -1,
-                                      pageSizeOptions: [
-                                        5,
-                                        10,
-                                        20,
-                                        { value: rows.length, label: "All" },
-                                      ],
-                                      headerStyle: headerTableStyle,
-                                    }}
-                                  />
                                 )}
                               </Grid>
                             ))}
@@ -875,36 +2740,13 @@ export const ProfileIndividual = (props) => {
             </Paper>
           )}
         </Droppable>
-      </DragDropContext> */}
-      <TestDnD />
+      </DragDropContext>
     </Container>
   );
 };
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    nextComponent: (comp) => dispatch(nextComponent(comp)),
-  };
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileIndividual);
-
-// {
-//   <Accordion>
-//     <AccordionSummary expandIcon={<ExpandMore />}>
-//       Booking History
-//     </AccordionSummary>
-//     <AccordionDetails>
-//       <Divider style={{ marginTop: 10, backgroundColor: themeState.color }} />
-//       <Typography
-//         variant="subtitle1"
-//         color="initial"
-//         style={{ paddingBottom: 10, paddingTop: 10 }}
-//       >
-//         booking data list here !!!
-//       </Typography>
-//     </AccordionDetails>
-//   </Accordion>;
-// }
