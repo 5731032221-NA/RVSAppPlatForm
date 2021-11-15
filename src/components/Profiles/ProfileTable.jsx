@@ -26,7 +26,7 @@ import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import ProfileIndividual from "./ProfileIndividual";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import DeleteIcon from "@material-ui/icons/DeleteOutlined";
-import ClearIcon from '@material-ui/icons/Clear';
+import ClearIcon from "@material-ui/icons/Clear";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import Dialog from "@material-ui/core/Dialog";
@@ -221,9 +221,11 @@ export const ProfileTable = (props) => {
     console.log("setcomp", comp);
     props.nextComponent(comp);
   };
+
   // const handleStatusProfile = () => {
   //   setStatusprofile();
   // };
+
   const handleNewData = async () => {
     await setAction("none");
     await setEditData(null);
@@ -248,20 +250,21 @@ export const ProfileTable = (props) => {
 
   const handleEditData = async (rowData) => {
     await setAction("none");
-    var individualdata = await getIndividualProfileById(
+    let individualdata = await getIndividualProfileById(
       sessionStorage.getItem("auth"),
       rowData.nameid
     );
     // console.log("rowData", rowData);
     console.log("individualdata ==", individualdata.content[0]);
-    setEditData(individualdata.content[0]);
-    handleDeleteData(
+    await setEditData(individualdata.content[0]);
+    await handleDeleteData(
       rowData.nameid,
       rowData.nameprefix,
       rowData.firstname,
       rowData.lastname
     );
-    setStatusprofile("edit");
+    await setStatusprofile("edit");
+    console.log("test Edit");
   };
   const handleDeleteData = async (nameid, nameprefix, firstname, lastname) => {
     console.log("data : ", nameid, nameprefix, firstname, lastname);
@@ -281,7 +284,7 @@ export const ProfileTable = (props) => {
       id
     );
     console.log("deleteData return", datafordelete);
-    handleReloadTable();
+    await handleReloadTable();
     setDialogDelete(false);
   };
 
@@ -412,7 +415,11 @@ export const ProfileTable = (props) => {
                 Profiles
               </Typography>
             </Link>
-            <Link color="inherit" href="#" onClick={() => setStatusprofile("moredata")}>
+            <Link
+              color="inherit"
+              href="#"
+              onClick={() => setStatusprofile("moredata")}
+            >
               <Typography
                 variant="h6"
                 style={{
@@ -426,21 +433,21 @@ export const ProfileTable = (props) => {
             </Link>
           </Breadcrumbs>
         </Grid>
-          {statusprofile === "add" || statusprofile === "edit"  ? (
-          <Grid item xs={6} sm={2} md={2} style={{ paddingLeft: 450 ,textAlign: "right" }}>
+
+        {statusprofile === "add" ? (
+          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
-              style={{ backgroundColor: "gray", color: "white" }}
+              style={{
+                backgroundColor: "gray",
+                color: "white",
+                marginRight: 10,
+              }}
               startIcon={<ClearIcon />}
               onClick={() => setStatusprofile("moredata")}
             >
               Cancel
             </Button>
-          </Grid>
-        ) : null}
-        {/* </Grid> */}
-        {statusprofile === "add" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
@@ -451,10 +458,27 @@ export const ProfileTable = (props) => {
             </Button>
           </Grid>
         ) : statusprofile === "edit" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+          <Grid item xs={6} sm={3} md={3} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
-              style={{ backgroundColor: mainColor, color: "white" }}
+              style={{
+                backgroundColor: "gray",
+                color: "white",
+                marginRight: 10,
+              }}
+              startIcon={<ClearIcon />}
+              onClick={() => setStatusprofile("moredata")}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: mainColor,
+                color: "white",
+                marginRight: 10,
+              }}
               startIcon={<SaveOutlinedIcon />}
               onClick={() => handleSaveEditData()}
             >
@@ -462,7 +486,7 @@ export const ProfileTable = (props) => {
             </Button>
             <Button
               variant="contained"
-              style={{ backgroundColor: "red", color: "white", marginLeft: 15 }}
+              style={{ backgroundColor: "red", color: "white" }}
               startIcon={<DeleteIcon />}
               onClick={() => setDialogDelete(true)}
             >

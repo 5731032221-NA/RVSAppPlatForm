@@ -16,8 +16,8 @@ import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
-import { optioncountry } from '../../static/country.js'
-import { optionnationality } from '../../static/nationality'
+import { optioncountry } from "../../static/country.js";
+import { optionnationality } from "../../static/nationality";
 import Switch from "@material-ui/core/Switch";
 import DateFnsUtils from "@date-io/date-fns";
 import Accordion from "@material-ui/core/Accordion";
@@ -112,6 +112,7 @@ var optionTitle = [
     label: "Ms.",
   },
 ];
+
 const optionDocumentType = [
   {
     value: "1",
@@ -174,8 +175,6 @@ const optiondata2 = [
 //     label: "Facebook",
 //   },
 // ];
-
-
 
 const addressType = [
   { label: "Organisation", value: "Organisation" },
@@ -265,7 +264,6 @@ export const ProfileIndividual = (props) => {
     }
   }, [maincolor]);
 
-
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
   React.useEffect(async () => {
     setSmallwidth(window.innerWidth < 1000);
@@ -292,7 +290,6 @@ export const ProfileIndividual = (props) => {
     // console.log("getCommunicationsDatas",getCommunicationsDatas,communicationDatas)
 
     // }
-
   }, []);
 
   const classes = useStyles(themeState);
@@ -352,7 +349,7 @@ export const ProfileIndividual = (props) => {
     props.editdata != null ? props.editdata.religion : "Thailand"
   );
   const [statusProfile, setStatusProfile] = React.useState(
-    props.editdata != null ? props.editdata.profile : "Y"
+    props.editdata != null ? props.editdata.statusprofile : "Y"
   );
   const [organization, setOrganization] = React.useState(
     props.editdata != null ? props.editdata.organization : ""
@@ -365,7 +362,9 @@ export const ProfileIndividual = (props) => {
       props.editdata != null ? props.editdata.bordercrossingentryplace : ""
     );
   const [borderCrossingEntryDate, setborderCrossingEntryDate] = React.useState(
-    props.editdata != null ? props.editdata.bordercrossingentrydate : new Date("2021-09-13T21:11:54")
+    props.editdata != null
+      ? props.editdata.bordercrossingentrydate
+      : new Date("2021-09-13T21:11:54")
   );
   const [address, setAddress] = React.useState(
     props.editdata != null ? props.editdata.address : "organization"
@@ -508,11 +507,10 @@ export const ProfileIndividual = (props) => {
     }
   }
 
-
   React.useEffect(() => {
     async function getconfig() {
-      let getCommunicationsDatas = {}
-      let getcomunication = []
+      let getCommunicationsDatas = {};
+      let getcomunication = [];
       console.log("demostate");
       let getconfigdata = await getconfigurationbypropertycode(
         sessionStorage.getItem("auth"),
@@ -529,68 +527,69 @@ export const ProfileIndividual = (props) => {
       setOptionrelation(relation);
       setOptioncommunication(communication);
       console.log("optioncommunication", optioncommunication);
-      if (props.editdata != null) {
-        let getCommunications = await getIndividualProfileCommunication(
-          sessionStorage.getItem("auth"),
-          props.editdata.nameid
-        );
-        console.log("getCommunications.contents", getCommunications.contents)
-        let count = 3;
-        getCommunications.contents[0].forEach((element) => {
-          if (element.communication == "email") {
-            console.log("e", element.value)
-            getCommunicationsDatas.email = element.value
-          } else if (element.communication == "mobile") {
-            console.log("m", element.value)
-            getCommunicationsDatas.mobile = element.value
-          } else {
-            getcomunication.push({
-              id: count,
-              label: "Choose a communication",
-              xl: 3,
-              md: 3,
-              xs: 6,
-              select: {
-                status: "option",
-                data: communication.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                    selected={option.label == element.communication}
-                    // defaultValue={element.communication}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => setCommunicationDatas(prev => ({
-                ...prev,
-                [count]: element.communication
-              })),
-            });
-            getcomunication.push({
-              id: count+1,
-              label: "communication",
-              xl: 9,
-              md: 9,
-              xs: 6,
-              select: {
-                status: "fillnolabel",
-                data: "",
-                defaultvalue: element.value
-              },
-              handle: (e) => setCommunicationDatas(prev => ({
-                ...prev,
-                [count+1]: element.value
-              })),
-            });
-            count = count +2;
-          }
-        }
-        );
-      }
-      console.log("comunication a",getcomunication);
+      // if (props.editdata != null) {
+      //   let getCommunications = await getIndividualProfileCommunication(
+      //     sessionStorage.getItem("auth"),
+      //     props.editdata.nameid
+      //   );
+      //   console.log("getCommunications.contents", getCommunications.contents);
+      //   let count = 3;
+      //   getCommunications.contents[0].forEach((element) => {
+      //     if (element.communication == "email") {
+      //       console.log("e", element.value);
+      //       getCommunicationsDatas.email = element.value;
+      //     } else if (element.communication == "mobile") {
+      //       console.log("m", element.value);
+      //       getCommunicationsDatas.mobile = element.value;
+      //     } else {
+      //       getcomunication.push({
+      //         id: count,
+      //         label: "Choose a communication",
+      //         xl: 3,
+      //         md: 3,
+      //         xs: 6,
+      //         select: {
+      //           status: "option",
+      //           data: communication.map((option) => (
+      //             <option
+      //               style={headerTableStyle}
+      //               key={option.value}
+      //               value={option.value}
+      //               selected={option.label == element.communication}
+      //               // defaultValue={element.communication}
+      //             >
+      //               {option.label}
+      //             </option>
+      //           )),
+      //         },
+      //         handle: (e) =>
+      //           setCommunicationDatas((prev) => ({
+      //             ...prev,
+      //             [count]: element.communication,
+      //           })),
+      //       });
+      //       getcomunication.push({
+      //         id: count + 1,
+      //         label: "communication",
+      //         xl: 9,
+      //         md: 9,
+      //         xs: 6,
+      //         select: {
+      //           status: "fillnolabel",
+      //           data: "",
+      //           defaultvalue: element.value,
+      //         },
+      //         handle: (e) =>
+      //           setCommunicationDatas((prev) => ({
+      //             ...prev,
+      //             [count + 1]: element.value,
+      //           })),
+      //       });
+      //       count = count + 2;
+      //     }
+      //   });
+      // }
+      console.log("comunication a", getcomunication);
       setList([
         {
           id: "1",
@@ -887,7 +886,7 @@ export const ProfileIndividual = (props) => {
             //   },
             //   handle: " ",
             // },
-            ,
+
             {
               id: 8,
               label: "Status",
@@ -896,10 +895,11 @@ export const ProfileIndividual = (props) => {
               xs: 12,
               select: {
                 status: "status",
-                defaultvalue: props.editdata != null ? props.editdata.statusProfile : "Y",
+                defaultvalue:
+                  props.editdata != null ? props.editdata.statusprofile : "Y",
                 data: "Y",
               },
-              // handle: (e) => setStatus(e.target.value),
+              handle: (e) => setStatusProfile(handleBoolean(e.target.checked)),
             },
           ],
         },
@@ -968,14 +968,8 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null
                     ? props.editdata.bordercrossingentrydate
                     : new Date("2021-09-13T21:11:54"),
-                // status: "fill",
-                // data: "",
-                // defaultvalue:
-                //   props.editdata != null
-                //     ? props.editdata.bordercrossingentrydate
-                //     : "",
               },
-              handle: (e) => setborderCrossingEntryDate(e.target.value),
+              handle: (e) => setborderCrossingEntryDate(new Date(e)),
             },
             {
               id: 0,
@@ -1071,7 +1065,7 @@ export const ProfileIndividual = (props) => {
               xs: 6,
               select: {
                 status: "fill",
-                data: ""
+                data: "",
               },
               handle: (e) => setCity(e.target.value),
             },
@@ -1153,12 +1147,16 @@ export const ProfileIndividual = (props) => {
               select: {
                 status: "fillnolabel",
                 data: "Email",
-                defaultvalue: props.editdata != null ? getCommunicationsDatas.email : "email"
+                defaultvalue:
+                  props.editdata != null
+                    ? getCommunicationsDatas.email
+                    : "email",
               },
-              handle: (e) => setCommunicationDatas(prev => ({
-                ...prev,
-                email: e.target.value
-              })),
+              handle: (e) =>
+                setCommunicationDatas((prev) => ({
+                  ...prev,
+                  email: e.target.value,
+                })),
             },
             {
               id: 3,
@@ -1180,15 +1178,18 @@ export const ProfileIndividual = (props) => {
               select: {
                 status: "fillnolabel",
                 data: "Mobile Number",
-                defaultvalue: props.editdata != null ? getCommunicationsDatas.mobile : "mobile"
+                defaultvalue:
+                  props.editdata != null
+                    ? getCommunicationsDatas.mobile
+                    : "mobile",
               },
-              handle: (e) => setCommunicationDatas(prev => ({
-                ...prev,
-                mobile: e.target.value
-              })),
+              handle: (e) =>
+                setCommunicationDatas((prev) => ({
+                  ...prev,
+                  mobile: e.target.value,
+                })),
             },
-            ...getcomunication
-            ,
+            ...getcomunication,
             {
               id: 99,
               label: "Phone Number",
@@ -2040,7 +2041,7 @@ export const ProfileIndividual = (props) => {
           xs: 6,
           select: {
             status: "option",
-            data: ""
+            data: "",
           },
           handle: (e) => handleData(e),
         },
@@ -2108,10 +2109,10 @@ export const ProfileIndividual = (props) => {
         0
       );
       console.log("optioncommunication2", optioncommunication);
-      setCommunicationDatas(prev => ({
+      setCommunicationDatas((prev) => ({
         ...prev,
-        [newid + 1]: "Telephone Number"
-      }))
+        [newid + 1]: "Telephone Number",
+      }));
       comunication.content.push({
         id: newid + 1,
         label: "Choose a communication",
@@ -2130,10 +2131,11 @@ export const ProfileIndividual = (props) => {
             </option>
           )),
         },
-        handle: (e) => setCommunicationDatas(prev => ({
-          ...prev,
-          [newid + 1]: e.target.value
-        })),
+        handle: (e) =>
+          setCommunicationDatas((prev) => ({
+            ...prev,
+            [newid + 1]: e.target.value,
+          })),
       });
       comunication.content.push({
         id: newid + 2,
@@ -2145,10 +2147,11 @@ export const ProfileIndividual = (props) => {
           status: "fillnolabel",
           data: "",
         },
-        handle: (e) => setCommunicationDatas(prev => ({
-          ...prev,
-          [newid + 2]: e.target.value
-        })),
+        handle: (e) =>
+          setCommunicationDatas((prev) => ({
+            ...prev,
+            [newid + 2]: e.target.value,
+          })),
       });
       comunication.content.push({
         id: 99,
@@ -2274,6 +2277,7 @@ export const ProfileIndividual = (props) => {
       gender,
       religion,
       organization,
+      statusProfile,
       provinceOfResidence,
       borderCrossingEntryPlace,
       borderCrossingEntryDate,
@@ -2329,6 +2333,7 @@ export const ProfileIndividual = (props) => {
       middleinitial: middleInitial,
       gender: gender,
       religion: religion,
+      statusprofile: statusProfile,
       organization: organization,
       provinceofresidence: provinceOfResidence,
       bordercrossingentryplace: borderCrossingEntryPlace,
@@ -2367,7 +2372,7 @@ export const ProfileIndividual = (props) => {
       grade: grade,
       guestidentity: guestIdentity,
       communications: communicationDatas,
-      relations: relations
+      relations: relations,
     };
     const data = await postIndividualProfile(
       sessionStorage.getItem("auth"),
@@ -2388,11 +2393,12 @@ export const ProfileIndividual = (props) => {
       middleinitial: middleInitial,
       gender: gender,
       religion: religion,
+      statusprofile: statusProfile,
       organization: organization,
       provinceofresidence: provinceOfResidence,
       bordercrossingentryplace: borderCrossingEntryPlace,
       bordercrossingentrydate: borderCrossingEntryDate,
-      // address: address,
+      address: address,
       address1: address1,
       address2: address2,
       conuty: conuty,
@@ -2448,18 +2454,18 @@ export const ProfileIndividual = (props) => {
     handlebutton();
   }, [props.action]);
 
-  //data from button for  trigger (add or delete)
+  // data from button for  trigger (add or delete)
   // React.useEffect(() => {
-  //   // console.log("props.editdata.nameid", props.editdata.nameid);
-  //   // async function fetchdDtaforEdit() {
-  //   //   var individualdata = await getIndividualProfileById(
-  //   //     sessionStorage.getItem("auth"),
-  //   //     props.editdata.nameid
-  //   //   );
-  //   //   console.log("individualdata for edit :", individualdata);
-  //   //   setIndividualData(individualdata.content[0]);
-  //   // }
-  //   // fetchdDtaforEdit();
+  //   console.log("props.editdata.nameid", props.editdata.nameid);
+  //   async function fetchdDtaforEdit() {
+  //     var individualdata = await getIndividualProfileById(
+  //       sessionStorage.getItem("auth"),
+  //       props.editdata.nameid
+  //     );
+  //     console.log("individualdata for edit :", individualdata);
+  //     setIndividualData(individualdata.content[0]);
+  //   }
+  //   fetchdDtaforEdit();
   // }, []);
 
   return (
@@ -2607,28 +2613,28 @@ export const ProfileIndividual = (props) => {
                                     fullWidth
                                     style={{
                                       backgroundColor: "#EFEFEF",
-                                      borderColor: "white"
+                                      borderColor: "white",
                                     }}
                                     // disabled={true}
                                     value={detail.select.data}
                                     defaultValue={detail.select.defaultvalue}
                                     onFocus={false}
                                   />
-                                  // <TextField
-                                  //   className={classes.root}
-                                  //   variant="outlined"
-                                  //   label={detail.select.defaultvalue}
-                                  //   fullWidth
-                                  //   style={{
-                                  //     backgroundColor: "#EFEFEF",
-                                  //     borderColor: "white",
-                                  //   }}
-                                  //   // disabled={true}
-                                  //   value={detail.select.defaultvalue}
-                                  //   defaultValue={detail.select.defaultvalue}
-                                  //   onFocus={false}
-                                  // />
-                                ) : detail.select.status === "fillnolabel" ? (
+                                ) : // <TextField
+                                //   className={classes.root}
+                                //   variant="outlined"
+                                //   label={detail.select.defaultvalue}
+                                //   fullWidth
+                                //   style={{
+                                //     backgroundColor: "#EFEFEF",
+                                //     borderColor: "white",
+                                //   }}
+                                //   // disabled={true}
+                                //   value={detail.select.defaultvalue}
+                                //   defaultValue={detail.select.defaultvalue}
+                                //   onFocus={false}
+                                // />
+                                detail.select.status === "fillnolabel" ? (
                                   <TextField
                                     className={classes.root}
                                     // label={detail.label}
@@ -2678,7 +2684,7 @@ export const ProfileIndividual = (props) => {
                                     onChange={detail.handle}
                                     textOverflow="ellipsis"
 
-                                  // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
+                                    // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
                                   >
                                     {detail.select.data}
                                   </TextField>

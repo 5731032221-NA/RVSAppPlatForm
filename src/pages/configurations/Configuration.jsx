@@ -513,7 +513,6 @@ export default function Configuration() {
         payload: "RoomManagement",
       });
     } else if (name == "DEVICE") {
-     
       history.replace(`/Device-Manager`);
       store.dispatch({
         type: EDIT_CONFIGSTATE,
@@ -521,7 +520,7 @@ export default function Configuration() {
       });
     } else if (name == "COMPRT") {
       history.replace(`/Computer-printer`);
-    
+
       store.dispatch({
         type: EDIT_CONFIGSTATE,
         payload: "ComputerPrinter",
@@ -594,10 +593,8 @@ export default function Configuration() {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       // console.log("refNo:::",obj.RefNo, label,obj.children,obj.createdate);
-     
-      if (obj.RefNo === label) {
 
-  
+      if (obj.RefNo === label) {
         let currentdate = new Date();
         let day = ("0" + currentdate.getDate()).slice(-2);
         let month = ("0" + (currentdate.getMonth() + 1)).slice(-2);
@@ -611,20 +608,24 @@ export default function Configuration() {
           let isreadydata = null;
           for (let c = 0; c < obj.children.length; c++) {
             console.log("22:");
-            console.log("obj.children[c].code:",obj.children[c].code, code);
-            console.log("obj.children[c].name_en:",obj.children[c].name_en, name);
-          
-             if( obj.children[c].code === code){
-                 console.log("obj.children[c].code:",obj.children[c].code);
-                //  setErrorParameter(`Dupicate ${obj.children[c].code}` );
-                isreadydata = obj.children[c].code;
-             }
-             if(obj.children[c].name_en === name){
+            console.log("obj.children[c].code:", obj.children[c].code, code);
+            console.log(
+              "obj.children[c].name_en:",
+              obj.children[c].name_en,
+              name
+            );
+
+            if (obj.children[c].code === code) {
+              console.log("obj.children[c].code:", obj.children[c].code);
+              //  setErrorParameter(`Dupicate ${obj.children[c].code}` );
+              isreadydata = obj.children[c].code;
+            }
+            if (obj.children[c].name_en === name) {
               isreadydata = obj.children[c].name_en;
-             }
+            }
           }
 
-          if(!isreadydata){
+          if (!isreadydata) {
             console.log("33:");
             obj.children = [
               ...obj.children,
@@ -649,8 +650,7 @@ export default function Configuration() {
                 addchild: true,
               },
             ];
-           }
-
+          }
 
           // obj.children = [
           //   ...obj.children,
@@ -677,77 +677,74 @@ export default function Configuration() {
           // ];
         } else {
           console.log("44:");
-        //   let isreadydata = null;
-        //   for (let c = 0; c < obj.children.length; c++) {
-          
-        //      if( obj.children[c].code === name){
-        //          console.log("obj.children[c].code:",obj.children[c].code);
-        //         //  setErrorParameter(`Dupicate ${obj.children[c].code}` );
-        //         isreadydata = obj.children[c].code;
-        //      }
-        //       if(obj.children[c].name_en === label){
-        //       isreadydata = obj.children[c].name_en;
-        //      }
-        //   }
+          //   let isreadydata = null;
+          //   for (let c = 0; c < obj.children.length; c++) {
 
-        //   if(!isreadydata){
-        //   obj.children = [
-        //     {
-        //       RefNo: newid,
-        //       code: code,
-        //       name_en: name,
-        //       description: description,
-        //       createdate:
-        //         year +
-        //         "-" +
-        //         month +
-        //         "-" +
-        //         day +
-        //         " " +
-        //         hours +
-        //         ":" +
-        //         minutes +
-        //         ":" +
-        //         seconds,
-        //       master: false,
-        //       addchild: false,
-        //     },
-        //   ];
-        //  }
+          //      if( obj.children[c].code === name){
+          //          console.log("obj.children[c].code:",obj.children[c].code);
+          //         //  setErrorParameter(`Dupicate ${obj.children[c].code}` );
+          //         isreadydata = obj.children[c].code;
+          //      }
+          //       if(obj.children[c].name_en === label){
+          //       isreadydata = obj.children[c].name_en;
+          //      }
+          //   }
 
+          //   if(!isreadydata){
+          //   obj.children = [
+          //     {
+          //       RefNo: newid,
+          //       code: code,
+          //       name_en: name,
+          //       description: description,
+          //       createdate:
+          //         year +
+          //         "-" +
+          //         month +
+          //         "-" +
+          //         day +
+          //         " " +
+          //         hours +
+          //         ":" +
+          //         minutes +
+          //         ":" +
+          //         seconds,
+          //       master: false,
+          //       addchild: false,
+          //     },
+          //   ];
+          //  }
 
-        obj.children = [
-          {
-            RefNo: newid,
-            code: code,
-            name_en: name,
-            description: description,
-            createdate:
-              year +
-              "-" +
-              month +
-              "-" +
-              day +
-              " " +
-              hours +
-              ":" +
-              minutes +
-              ":" +
-              seconds,
-            master: false,
-            addchild: true,
-          },
-        ];
+          obj.children = [
+            {
+              RefNo: newid,
+              code: code,
+              name_en: name,
+              description: description,
+              createdate:
+                year +
+                "-" +
+                month +
+                "-" +
+                day +
+                " " +
+                hours +
+                ":" +
+                minutes +
+                ":" +
+                seconds,
+              master: false,
+              addchild: true,
+            },
+          ];
         }
       } else if (obj.children) {
-     
         adding(obj.children, label, name, newid);
       }
     }
   };
 
   const handleAdd = async () => {
-
     setErrorMessageDu(false);
     if (code == null || code == "") {
       setErrorMessage(true);
@@ -759,7 +756,6 @@ export default function Configuration() {
       setErrorMessage(true);
       setErrorParameter("Description");
     } else {
-
       //   let id = addChildid;
       //   console.log("addparentid", id);
       //   let newid = await runningid(data, id);
@@ -769,7 +765,7 @@ export default function Configuration() {
 
       // if(errorParameter !== null){
       //   setErrorMessage(true);
-      
+
       // }else{
       //   setErrorMessage(false);
       //   let updateconfig = await updateconfiguration(
@@ -779,8 +775,6 @@ export default function Configuration() {
       //   // setData(data)
       //   setDialogAdd(false);
       // }
-
-
 
       let id = addChildid;
       console.log("addparentid", id);
@@ -792,40 +786,40 @@ export default function Configuration() {
       let checkdupli = {
         RefNo: id,
         name: addChildValue,
-        code: code
-      }
-
+        code: code,
+      };
 
       setErrorMessage(false);
       let updateconfig = await updateconfiguration(
         sessionStorage.getItem("auth"),
-        { configuration: data, propertycode: property ,propertycheckduplicate:checkdupli }
+        {
+          configuration: data,
+          propertycode: property,
+          propertycheckduplicate: checkdupli,
+        }
       );
       // setData(data)
-     
 
       if (updateconfig.status == "2000") {
-       
         setDialogAdd(false);
-      }else if(updateconfig.status == "1000"){
+      } else if (updateconfig.status == "1000") {
         setErrorMessageDu(true);
         const dupic = updateconfig.msg;
-        setErrorParameterDu(dupic)
+        setErrorParameterDu(dupic);
       }
-     
     }
   };
 
   const editing = async (array, label, name) => {
-    console.log("array, label, name:",array, label, name);
+    console.log("array, label, name:", array, label, name);
     const s = label.split(".");
     let ab = "";
     let isc = 0;
-    for(const sm in s){
-      if(isc == 0){
-        ab += s[sm]
-      }else if(s.length - 1 > isc){
-        ab += "."+ s[sm]
+    for (const sm in s) {
+      if (isc == 0) {
+        ab += s[sm];
+      } else if (s.length - 1 > isc) {
+        ab += "." + s[sm];
       }
       isc += 1;
     }
@@ -833,29 +827,27 @@ export default function Configuration() {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       console.log(obj.RefNo, label);
-      console.log("ab1:", ab,"obj.RefNo:",obj.RefNo);
+      console.log("ab1:", ab, "obj.RefNo:", obj.RefNo);
       if (obj.RefNo == ab) {
         console.log("ab:", ab);
         let checkdup = null;
-         for (let c = 0; c < obj.children.length; c++) {
-           console.log("obj.children[c]:",obj.children[c].name_en); 
-           if(obj.children[c].name_en == name && obj.children[c].code != code){
-            checkdup = name
-            setErrorParameterDu(name)
-           }          
-         }
-         if(!checkdup){
-           console.log("a::::",obj.RefNo,label);
-           for (let ic = 0; ic < obj.children.length; ic++) {
-           
-             if (obj.children[ic].RefNo === label) {
+        for (let c = 0; c < obj.children.length; c++) {
+          console.log("obj.children[c]:", obj.children[c].name_en);
+          if (obj.children[c].name_en == name && obj.children[c].code != code) {
+            checkdup = name;
+            setErrorParameterDu(name);
+          }
+        }
+        if (!checkdup) {
+          console.log("a::::", obj.RefNo, label);
+          for (let ic = 0; ic < obj.children.length; ic++) {
+            if (obj.children[ic].RefNo === label) {
               console.log("a:::2:");
               obj.children[ic].code = code;
               obj.children[ic].name_en = name;
               obj.children[ic].description = description;
             }
-             
-           }
+          }
           // if (obj.RefNo === label) {
           //   console.log("a:::2:");
           //   obj.code = code;
@@ -864,17 +856,14 @@ export default function Configuration() {
           // } else if (obj.children) {
           //   editing(obj.children, label, name);
           // }
-         }
-      }else if (obj.children) {
+        }
+      } else if (obj.children) {
         editing(obj.children, label, name);
       }
-      
     }
-
   };
 
   const handleEdit = async () => {
-
     setErrorMessageDu(false);
     setErrorParameterDu(null);
     if (addChildValue == null || addChildValue == "") {
@@ -895,29 +884,28 @@ export default function Configuration() {
         RefNo: id,
         name: addChildValue,
         code: code,
-        type: "edit"
-      }
+        type: "edit",
+      };
 
-      console.log("checkdupli:",checkdupli);
+      console.log("checkdupli:", checkdupli);
 
-   
-        let updateconfig = await updateconfiguration(
-          sessionStorage.getItem("auth"),
-          { configuration: data, propertycode: property, propertycheckduplicate: checkdupli }
-        );
-        // setData(data)
-       
-        if (updateconfig.status == "2000") {
-       
-          setDialogEdit(false);
-        }else if(updateconfig.status == "1000"){
-          setErrorMessageDu(true);
-          const dupic = updateconfig.msg;
-          setErrorParameterDu(dupic)
+      let updateconfig = await updateconfiguration(
+        sessionStorage.getItem("auth"),
+        {
+          configuration: data,
+          propertycode: property,
+          propertycheckduplicate: checkdupli,
         }
-      
-      
-    
+      );
+      // setData(data)
+
+      if (updateconfig.status == "2000") {
+        setDialogEdit(false);
+      } else if (updateconfig.status == "1000") {
+        setErrorMessageDu(true);
+        const dupic = updateconfig.msg;
+        setErrorParameterDu(dupic);
+      }
     }
   };
 
@@ -974,7 +962,10 @@ export default function Configuration() {
                   noWrap
                   style={{ paddind: 5 }}
                 >
-                  <div style={{ width: 100 }} onClick={() => handleConfig(nodes.code)}>
+                  <div
+                    style={{ width: 100 }}
+                    onClick={() => handleConfig(nodes.code)}
+                  >
                     {nodes["name_" + lang] != null
                       ? nodes["name_" + lang]
                       : nodes["name_en"]}
@@ -1044,350 +1035,6 @@ export default function Configuration() {
                 <AddRoundedIcon /> Add child
               </MenuItem>
             </Menu>
-
-            <Dialog
-              className={classes.root}
-              fullWidth="true"
-              maxWidth="xs"
-              open={dialogAdd}
-              onClose={handleDialogAddClose}
-              aria-labelledby="form-dialog-title"
-              style={{
-                backgroundColor: "#000000",
-                opacity: 0.13,
-              }}
-            >
-              <DialogTitle
-                id="form-dialog-title"
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: blue[themeState.colorlevel],
-                }}
-              >
-                New Master Config
-              </DialogTitle>
-
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
-                <Container maxWidth="xl" disableGutters>
-                  {/* <TextField
-                        autoFocus
-                        helperText={
-                          <Grid
-                            container
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <Typography variant="title1" color="initial">
-                              3/50
-                            </Typography>
-                          </Grid>
-                        }
-                        id="outlined-basic"
-                        label="Parent"
-                        variant="outlined"
-                        fullWidth
-                      /> */}
-                  <h2>Parent Name: {addChildName}</h2>
-                  <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                    <TextField
-                      className={classes.root}
-                      autoFocus
-                      id="outlined-basic"
-                      label="Code"
-                      variant="outlined"
-                      value={code}
-                      onChange={(e) => handleChangeCode(e)}
-                      helperText={
-                        <Grid
-                          container
-                          justifyContent="flex-end"
-                          alignItems="center"
-                        >
-                          <Typography
-                            variant="title1"
-                            style={{ color: themeState.color }}
-                          >
-                            {code.length}/50
-                          </Typography>
-                        </Grid>
-                      }
-                      fullWidth
-                    />
-
-                    <TextField
-                      autoFocus
-                      id="outlined-basic"
-                      label="Name (EN)"
-                      variant="outlined"
-                      value={addChildValue}
-                      onChange={(e) => handleChangeValue(e)}
-                      helperText={
-                        <Grid
-                          container
-                          justifyContent="flex-end"
-                          alignItems="center"
-                        >
-                          <Typography
-                            variant="title1"
-                            style={{ color: themeState.color }}
-                          >
-                            {addChildValue.length}/50
-                          </Typography>
-                        </Grid>
-                      }
-                      fullWidth
-                    />
-
-                    <TextField
-                      autoFocus
-                      id="outlined-basic"
-                      label="Description"
-                      variant="outlined"
-                      value={description}
-                      onChange={(e) => handleChangeDescription(e)}
-                      helperText={
-                        <Grid
-                          container
-                          justifyContent="flex-end"
-                          alignItems="center"
-                        >
-                          <Typography
-                            variant="title1"
-                            style={{ color: themeState.color }}
-                          >
-                            {description.length}/50
-                          </Typography>
-                        </Grid>
-                      }
-                      fullWidth
-                    />
-                  </Grid>
-                </Container>
-                {errorMessage ? (
-                  <div
-                    style={{
-                      background: "#ff0033",
-                      textAlign: "center",
-                      color: "white",
-                      height: "30px",
-                      paddingTop: 5,
-                    }}
-                  >
-                    {errorParameter} is required
-                  </div>
-                ) : null}
-                   {errorMessageDu ? (
-                  <div
-                    style={{
-                      background: "#ff0033",
-                      textAlign: "center",
-                      color: "white",
-                      height: "30px",
-                      paddingTop: 5,
-                    }}
-                  >
-                    {errorParameterDu}
-                  </div>
-                ) : null}
-              </DialogContent>
-              <DialogActions
-                style={{
-                  padding: 20,
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
-                <Button
-                  onClick={handleDialogAddClose}
-                  variant="text"
-                  color="primary"
-                >
-                  Cancel
-                </Button>
-                <Button onClick={handleAdd} variant="contained" color="primary">
-                  Save
-                </Button>
-              </DialogActions>
-            </Dialog>
-            <Dialog
-              className={classes.root}
-              fullWidth="true"
-              maxWidth="xs"
-              open={dialogEdit}
-              onClose={handleDialogAddClose}
-              aria-labelledby="form-dialog-title"
-              style={{
-                backgroundColor: "#000000",
-                opacity: 0.13,
-              }}
-            >
-              <DialogTitle
-                id="form-dialog-title"
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: blue[themeState.colorlevel],
-                }}
-              >
-                Edit Master Config
-              </DialogTitle>
-
-              <DialogContent
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
-                <Container maxWidth="xl" disableGutters>
-                  <h2>Code: {code}</h2>
-                  <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                    <TextField
-                      autoFocus
-                      id="outlined-basic"
-                      label="Name (EN)"
-                      variant="outlined"
-                      // defaultValue={row.name_en}
-                      value={addChildValue}
-                      onChange={(e) => handleChangeValue(e)}
-                      helperText={
-                        <Grid
-                          container
-                          justifyContent="flex-end"
-                          alignItems="center"
-                        >
-                          <Typography
-                            variant="title1"
-                            style={{ color: themeState.color }}
-                          >
-                            {addChildValue.length}/50
-                          </Typography>
-                        </Grid>
-                      }
-                      fullWidth
-                    />
-                  </Grid>
-
-                  {lang != "en" ? (
-                    <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                      <TextField
-                        autoFocus
-                        id="outlined-basic"
-                        label={"Name (" + lang.toUpperCase() + ")"}
-                        variant="outlined"
-                        value={addChildNameLang}
-                        onChange={(e) => handleChangeLang(e)}
-                        helperText={
-                          <Grid
-                            container
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <Typography
-                              variant="title1"
-                              style={{ color: themeState.color }}
-                            >
-                              {addChildNameLang.length}/50
-                            </Typography>
-                          </Grid>
-                        }
-                        fullWidth
-                      />
-                    </Grid>
-                  ) : null}
-
-                  <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
-                    <TextField
-                      autoFocus
-                      id="outlined-basic"
-                      label="Description"
-                      variant="outlined"
-                      // defaultValue={row.description}
-                      value={description}
-                      onChange={(e) => handleChangeDescription(e)}
-                      helperText={
-                        <Grid
-                          container
-                          justifyContent="flex-end"
-                          alignItems="center"
-                        >
-                          <Typography
-                            variant="title1"
-                            style={{ color: themeState.color }}
-                          >
-                            {description.length}/50
-                          </Typography>
-                        </Grid>
-                      }
-                      fullWidth
-                    />
-                  </Grid>
-                </Container>
-                {errorMessage ? (
-                  <div
-                    style={{
-                      background: "#ff0033",
-                      textAlign: "center",
-                      color: "white",
-                      height: "30px",
-                      paddingTop: 5,
-                    }}
-                  >
-                    {errorParameter} is required
-                  </div>
-                ) : null}
-                     {errorMessageDu ? (
-                  <div
-                    style={{
-                      background: "#ff0033",
-                      textAlign: "center",
-                      color: "white",
-                      height: "30px",
-                      paddingTop: 5,
-                    }}
-                  >
-                    {errorParameterDu}
-                  </div>
-                ) : null}
-              </DialogContent>
-              <DialogActions
-                style={{
-                  padding: 20,
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
-                <Button
-                  onClick={handleDialogEditClose}
-                  variant="text"
-                  color="primary"
-                >
-                  Cancel
-                </Button>
-                {lang == "en" ? (
-                  <Button
-                    onClick={handleEdit}
-                    variant="contained"
-                    color="primary"
-                  >
-                    {" "}
-                    Save
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleEditLang}
-                    variant="contained"
-                    color="primary"
-                  >
-                    {" "}
-                    Save
-                  </Button>
-                )}
-              </DialogActions>
-            </Dialog>
           </div>
         }
       >
@@ -1403,7 +1050,7 @@ export default function Configuration() {
       style={{
         backgroundColor: themeState.background,
         color: themeState.color,
-        marginTop:22
+        marginTop: 22,
       }}
     >
       {configState == "Configuration" ? (
@@ -1421,7 +1068,6 @@ export default function Configuration() {
                   separator={
                     <Typography
                       variant="h6"
-                      
                       style={{
                         marginBottom: 15,
                         fontSize: 20,
@@ -1562,6 +1208,323 @@ export default function Configuration() {
       ) : (
         <UserManagement />
       )}
+
+      {/* =================================== */}
+      <Dialog
+        className={classes.root}
+        fullWidth="true"
+        maxWidth="xs"
+        open={dialogAdd}
+        onClose={handleDialogAddClose}
+        aria-labelledby="form-dialog-title"
+        // style={{
+        //   backgroundColor: "#000000",
+        //   opacity: 0.13,
+        // }}
+      >
+        <DialogTitle
+          id="form-dialog-title"
+          style={{
+            backgroundColor: themeState.paper,
+            color: blue[themeState.colorlevel],
+          }}
+        >
+          New Master Config
+        </DialogTitle>
+
+        <DialogContent
+          style={{
+            backgroundColor: themeState.paper,
+            color: themeState.color,
+          }}
+        >
+          <Container maxWidth="xl" disableGutters>
+            {/* <TextField
+                        autoFocus
+                        helperText={
+                          <Grid
+                            container
+                            justifyContent="flex-end"
+                            alignItems="center"
+                          >
+                            <Typography variant="title1" color="initial">
+                              3/50
+                            </Typography>
+                          </Grid>
+                        }
+                        id="outlined-basic"
+                        label="Parent"
+                        variant="outlined"
+                        fullWidth
+                      /> */}
+            <h2>Parent Name: {addChildName}</h2>
+            <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+              <TextField
+                className={classes.root}
+                autoFocus
+                id="outlined-basic"
+                label="Code"
+                variant="outlined"
+                value={code}
+                onChange={(e) => handleChangeCode(e)}
+                helperText={
+                  <Grid container justifyContent="flex-end" alignItems="center">
+                    <Typography
+                      variant="title1"
+                      style={{ color: themeState.color }}
+                    >
+                      {code.length}/50
+                    </Typography>
+                  </Grid>
+                }
+                fullWidth
+              />
+
+              <TextField
+                autoFocus
+                id="outlined-basic"
+                label="Name (EN)"
+                variant="outlined"
+                value={addChildValue}
+                onChange={(e) => handleChangeValue(e)}
+                helperText={
+                  <Grid container justifyContent="flex-end" alignItems="center">
+                    <Typography
+                      variant="title1"
+                      style={{ color: themeState.color }}
+                    >
+                      {addChildValue.length}/50
+                    </Typography>
+                  </Grid>
+                }
+                fullWidth
+              />
+
+              <TextField
+                autoFocus
+                id="outlined-basic"
+                label="Description"
+                variant="outlined"
+                value={description}
+                onChange={(e) => handleChangeDescription(e)}
+                helperText={
+                  <Grid container justifyContent="flex-end" alignItems="center">
+                    <Typography
+                      variant="title1"
+                      style={{ color: themeState.color }}
+                    >
+                      {description.length}/50
+                    </Typography>
+                  </Grid>
+                }
+                fullWidth
+              />
+            </Grid>
+          </Container>
+          {errorMessage ? (
+            <div
+              style={{
+                background: "#ff0033",
+                textAlign: "center",
+                color: "white",
+                height: "30px",
+                paddingTop: 5,
+              }}
+            >
+              {errorParameter} is required
+            </div>
+          ) : null}
+          {errorMessageDu ? (
+            <div
+              style={{
+                background: "#ff0033",
+                textAlign: "center",
+                color: "white",
+                height: "30px",
+                paddingTop: 5,
+              }}
+            >
+              {errorParameterDu}
+            </div>
+          ) : null}
+        </DialogContent>
+        <DialogActions
+          style={{
+            padding: 20,
+            backgroundColor: themeState.paper,
+            color: themeState.color,
+          }}
+        >
+          <Button onClick={handleDialogAddClose} variant="text" color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleAdd} variant="contained" color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        className={classes.root}
+        fullWidth="true"
+        maxWidth="xs"
+        open={dialogEdit}
+        onClose={handleDialogAddClose}
+        aria-labelledby="form-dialog-title"
+        // style={{
+        //   backgroundColor: "#000000",
+        //   opacity: 0.13,
+        // }}
+      >
+        <DialogTitle
+          id="form-dialog-title"
+          style={{
+            backgroundColor: themeState.paper,
+            color: blue[themeState.colorlevel],
+          }}
+        >
+          Edit Master Config
+        </DialogTitle>
+
+        <DialogContent
+          style={{
+            backgroundColor: themeState.paper,
+            color: themeState.color,
+          }}
+        >
+          <Container maxWidth="xl" disableGutters>
+            <h2>Code: {code}</h2>
+            <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+              <TextField
+                autoFocus
+                id="outlined-basic"
+                label="Name (EN)"
+                variant="outlined"
+                // defaultValue={row.name_en}
+                value={addChildValue}
+                onChange={(e) => handleChangeValue(e)}
+                helperText={
+                  <Grid container justifyContent="flex-end" alignItems="center">
+                    <Typography
+                      variant="title1"
+                      style={{ color: themeState.color }}
+                    >
+                      {addChildValue.length}/50
+                    </Typography>
+                  </Grid>
+                }
+                fullWidth
+              />
+            </Grid>
+
+            {lang != "en" ? (
+              <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+                <TextField
+                  autoFocus
+                  id="outlined-basic"
+                  label={"Name (" + lang.toUpperCase() + ")"}
+                  variant="outlined"
+                  value={addChildNameLang}
+                  onChange={(e) => handleChangeLang(e)}
+                  helperText={
+                    <Grid
+                      container
+                      justifyContent="flex-end"
+                      alignItems="center"
+                    >
+                      <Typography
+                        variant="title1"
+                        style={{ color: themeState.color }}
+                      >
+                        {addChildNameLang.length}/50
+                      </Typography>
+                    </Grid>
+                  }
+                  fullWidth
+                />
+              </Grid>
+            ) : null}
+
+            <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
+              <TextField
+                autoFocus
+                id="outlined-basic"
+                label="Description"
+                variant="outlined"
+                // defaultValue={row.description}
+                value={description}
+                onChange={(e) => handleChangeDescription(e)}
+                helperText={
+                  <Grid container justifyContent="flex-end" alignItems="center">
+                    <Typography
+                      variant="title1"
+                      style={{ color: themeState.color }}
+                    >
+                      {description.length}/50
+                    </Typography>
+                  </Grid>
+                }
+                fullWidth
+              />
+            </Grid>
+          </Container>
+          {errorMessage ? (
+            <div
+              style={{
+                background: "#ff0033",
+                textAlign: "center",
+                color: "white",
+                height: "30px",
+                paddingTop: 5,
+              }}
+            >
+              {errorParameter} is required
+            </div>
+          ) : null}
+          {errorMessageDu ? (
+            <div
+              style={{
+                background: "#ff0033",
+                textAlign: "center",
+                color: "white",
+                height: "30px",
+                paddingTop: 5,
+              }}
+            >
+              {errorParameterDu}
+            </div>
+          ) : null}
+        </DialogContent>
+        <DialogActions
+          style={{
+            padding: 20,
+            backgroundColor: themeState.paper,
+            color: themeState.color,
+          }}
+        >
+          <Button
+            onClick={handleDialogEditClose}
+            variant="text"
+            color="primary"
+          >
+            Cancel
+          </Button>
+          {lang == "en" ? (
+            <Button onClick={handleEdit} variant="contained" color="primary">
+              {" "}
+              Save
+            </Button>
+          ) : (
+            <Button
+              onClick={handleEditLang}
+              variant="contained"
+              color="primary"
+            >
+              {" "}
+              Save
+            </Button>
+          )}
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
