@@ -32,6 +32,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { getconfigurationbypropertycode } from "../../services/user.service";
 import {
   getIndividualProfileCommunication,
+  getIndividualProfileRelation,
   getIndividualProfile,
   getIndividualProfileById,
   postIndividualProfile,
@@ -488,7 +489,7 @@ export const ProfileIndividual = (props) => {
   const pageProperty = useSelector((state) => state.reducer.property);
 
   const [communicationDatas, setCommunicationDatas] = React.useState({});
-
+  const [relationDatas, setRelationDatas] = React.useState({});
   async function getlist(config, field) {
     for (var i = 0; i < config.length; i++) {
       var obj = config[i];
@@ -513,6 +514,7 @@ export const ProfileIndividual = (props) => {
     async function getconfig() {
       let getCommunicationsDatas = {}
       let getcomunication = []
+      let getrelation = []
       console.log("demostate");
       let getconfigdata = await getconfigurationbypropertycode(
         sessionStorage.getItem("auth"),
@@ -534,14 +536,16 @@ export const ProfileIndividual = (props) => {
           sessionStorage.getItem("auth"),
           props.editdata.nameid
         );
+        let getRelations = await getIndividualProfileRelation(
+          sessionStorage.getItem("auth"),
+          props.editdata.nameid
+        );
         console.log("getCommunications.contents", getCommunications.contents)
         let count = 3;
         getCommunications.contents[0].forEach((element) => {
           if (element.communication == "email") {
-            console.log("e", element.value)
             getCommunicationsDatas.email = element.value
           } else if (element.communication == "mobile") {
-            console.log("m", element.value)
             getCommunicationsDatas.mobile = element.value
           } else {
             getcomunication.push({
@@ -558,7 +562,7 @@ export const ProfileIndividual = (props) => {
                     key={option.value}
                     value={option.value}
                     selected={option.label == element.communication}
-                    // defaultValue={element.communication}
+                  // defaultValue={element.communication}
                   >
                     {option.label}
                   </option>
@@ -570,7 +574,7 @@ export const ProfileIndividual = (props) => {
               })),
             });
             getcomunication.push({
-              id: count+1,
+              id: count + 1,
               label: "communication",
               xl: 9,
               md: 9,
@@ -582,15 +586,83 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setCommunicationDatas(prev => ({
                 ...prev,
-                [count+1]: element.value
+                [count + 1]: element.value
               })),
             });
-            count = count +2;
+            count = count + 2;
           }
         }
         );
+
+
+        let relationid = 1;
+        console.log(getRelations.contents[0])
+          getRelations.contents[0].forEach((element) => {
+            getrelation.push({
+              id: relationid,
+              label: "Name",
+              xl: 4,
+              md: 4,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue: element.value
+              },
+              handle: (e) => setRelationDatas(prev => ({
+                ...prev,
+                [relationid]: element.value
+              }))
+            });
+            getrelation.push({
+              id: relationid + 1,
+              label: "Name Type",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "option",
+                data: relation.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                    selected={option.label == element.relation}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => setRelationDatas(prev => ({
+                ...prev,
+                [relationid + 1]: element.relation
+              }))
+            });
+            getrelation.push({
+              id: relationid + 2,
+              label: "Note",
+              xl: 6,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue: element.note
+              },
+              handle: (e) => setRelationDatas(prev => ({
+                ...prev,
+                [relationid + 2]: element.note
+              }))
+            });
+            relationid = relationid + 3;
+          }
+          );
+          console.log("getrelation",getrelation)
+        
+
+
       }
-      console.log("comunication a",getcomunication);
+
       setList([
         {
           id: "1",
@@ -1153,7 +1225,7 @@ export const ProfileIndividual = (props) => {
               select: {
                 status: "fillnolabel",
                 data: "Email",
-                defaultvalue: props.editdata != null ? getCommunicationsDatas.email : "email"
+                defaultvalue: props.editdata != null ? getCommunicationsDatas.email : ""
               },
               handle: (e) => setCommunicationDatas(prev => ({
                 ...prev,
@@ -1180,7 +1252,7 @@ export const ProfileIndividual = (props) => {
               select: {
                 status: "fillnolabel",
                 data: "Mobile Number",
-                defaultvalue: props.editdata != null ? getCommunicationsDatas.mobile : "mobile"
+                defaultvalue: props.editdata != null ? getCommunicationsDatas.mobile : ""
               },
               handle: (e) => setCommunicationDatas(prev => ({
                 ...prev,
@@ -1208,6 +1280,7 @@ export const ProfileIndividual = (props) => {
           title: "Relation",
           expend: true,
           content: [
+            ...getrelation,
             {
               id: 99,
               label: "Relation",
@@ -2179,6 +2252,12 @@ export const ProfileIndividual = (props) => {
         (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
         0
       );
+      setRelationDatas(prev => ({
+        ...prev,
+        [newid + 1]: "",
+        [newid + 2]: optionrelation[0].label,
+        [newid + 3]: ""
+      }))
       relation.content.push({
         id: newid + 1,
         label: "Name",
@@ -2189,7 +2268,10 @@ export const ProfileIndividual = (props) => {
           status: "fill",
           data: "",
         },
-        handle: (e) => handleData(e),
+        handle: (e) => setRelationDatas(prev => ({
+          ...prev,
+          [newid + 1]: e.target.value
+        }))
       });
       relation.content.push({
         id: newid + 2,
@@ -2209,7 +2291,10 @@ export const ProfileIndividual = (props) => {
             </option>
           )),
         },
-        handle: (e) => handleData(e),
+        handle: (e) => setRelationDatas(prev => ({
+          ...prev,
+          [newid + 2]: e.target.value
+        }))
       });
       relation.content.push({
         id: newid + 3,
@@ -2221,7 +2306,10 @@ export const ProfileIndividual = (props) => {
           status: "fill",
           data: "",
         },
-        handle: (e) => handleData(e),
+        handle: (e) => setRelationDatas(prev => ({
+          ...prev,
+          [newid + 3]: e.target.value
+        }))
       });
       relation.content.push({
         id: 99,
@@ -2367,7 +2455,7 @@ export const ProfileIndividual = (props) => {
       grade: grade,
       guestidentity: guestIdentity,
       communications: communicationDatas,
-      relations: relations
+      relations: relationDatas
     };
     const data = await postIndividualProfile(
       sessionStorage.getItem("auth"),
