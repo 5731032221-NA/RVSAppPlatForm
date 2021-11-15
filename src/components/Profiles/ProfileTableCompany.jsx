@@ -223,10 +223,14 @@ export const ProfileTableCompany = (props) => {
   const handleGetCompanyProfile = async () => {
     const resp = await getCompanyProfile(sessionStorage.getItem("auth"));
     console.log(resp.content);
+    if(resp.status == "2000"){
+
+  
     if(resp.content[0].length > 0){
       setStatusprofile("moredata");
       setcompanyData(resp.content[0]);
     }
+  }
    
   }
 
@@ -241,6 +245,7 @@ export const ProfileTableCompany = (props) => {
   };
   const handleNewData = () => {
     // setAction("add")
+    setEditData(null)
     setStatusprofile("add");
   };
   const handleAddData = async (companyData) => {
@@ -356,7 +361,7 @@ export const ProfileTableCompany = (props) => {
               
             </Breadcrumbs>
           </Grid>
-          {statusprofile === "add" || statusprofile === "edit"  ? (
+          {/* {statusprofile === "add" || statusprofile === "edit"  ? (
             <Grid item xs={6} sm={2} md={2} style={{ paddingLeft: 1200 ,textAlign: "right" }}>
               <Button
                 variant="contained"
@@ -367,9 +372,21 @@ export const ProfileTableCompany = (props) => {
                 Cancel
               </Button>
             </Grid>
-          ) : null}
+          ) : null} */}
         {statusprofile === "add" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+          <Grid  container
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="center"
+         item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+            <Button
+                variant="contained"
+                style={{ backgroundColor: "gray", color: "white" }}
+                startIcon={<ClearIcon />}
+                onClick={() => setStatusprofile("moredata")}
+              >
+                Cancel
+              </Button>
             <Button
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
@@ -380,7 +397,17 @@ export const ProfileTableCompany = (props) => {
             </Button>
           </Grid>
         ) : statusprofile === "edit" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+          <Grid container direction="row"
+          justifyContent="space-evenly"
+          alignItems="center" item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+            <Button
+                variant="contained"
+                style={{ backgroundColor: "gray", color: "white" }}
+                startIcon={<ClearIcon />}
+                onClick={() => setStatusprofile("moredata")}
+              >
+                Cancel
+              </Button>
             <Button
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
@@ -389,14 +416,14 @@ export const ProfileTableCompany = (props) => {
             >
               Save
             </Button>
-            <Button
+            {/* <Button
               variant="contained"
               style={{ backgroundColor: "red", color: "white", marginLeft: 15 }}
               startIcon={<DeleteIcon />}
               onClick={() => handleDialogDeleteOpen()}
             >
               Delete
-            </Button>
+            </Button> */}
           </Grid>
         ) : statusprofile === "moredata" || statusprofile === "none"  ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
@@ -531,7 +558,7 @@ export const ProfileTableCompany = (props) => {
                   // },
                   {
                     title: "Industry",
-                    field: "industry",
+                    field: "industrycode",
                     headerStyle: headerTableStyle,
                   },
                   {
@@ -662,7 +689,7 @@ export const ProfileTableCompany = (props) => {
                 alignItems="center"
                 spacing={4}
               >
-                <Grid item sm={6} md={6} lg={6} xl={6}>
+                <Grid  item sm={6} md={6} lg={6} xl={6}>
                   <Button
                     fullWidth
                     onClick={handleDialogDeleteClose}
