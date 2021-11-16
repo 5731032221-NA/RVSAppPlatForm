@@ -545,9 +545,22 @@ export const ProfileIndividual = (props) => {
         getCommunications.contents[0].forEach((element) => {
           if (element.communication == "email") {
             getCommunicationsDatas.email = element.value
+            setCommunicationDatas((prev) => ({
+              ...prev,
+              email: element.value,
+            }))
           } else if (element.communication == "mobile") {
             getCommunicationsDatas.mobile = element.value
+            setCommunicationDatas((prev) => ({
+              ...prev,
+              mobile: element.value,
+            }))
           } else {
+            setCommunicationDatas(prev => ({
+              ...prev,
+              [count]: element.communication,
+              [count + 1]: element.value
+            }))
             getcomunication.push({
               id: count,
               label: "Choose a communication",
@@ -598,6 +611,12 @@ export const ProfileIndividual = (props) => {
         console.log(getRelations.contents[0])
         
           getRelations.contents[0].forEach((element) => {
+            setRelationDatas(prev => ({
+              ...prev,
+              [relationid]: element.relation,
+              [relationid+1]: element.value,
+              [relationid + 2]: element.note
+            }))
             getrelation.push({
               id: relationid ,
               label: "Name Type",
