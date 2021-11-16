@@ -2401,6 +2401,7 @@ export const ProfileIndividual = (props) => {
         [newid + 2]: optionrelation[0].label,
         [newid + 3]: "",
       }));
+ 
       relation.content.push({
         id: newid + 1,
         label: "Name Type",
@@ -2425,6 +2426,7 @@ export const ProfileIndividual = (props) => {
             [newid + 1]: e.target.value,
           })),
       });
+
       relation.content.push({
         id: newid + 2,
         label: "Name",
