@@ -401,8 +401,7 @@ export const ProfileCompany = (props) => {
   const [TaxID2, setTaxID2] = React.useState(
     props.editdata != null ? props.editdata[0].taxid2 : "" 
   );
-  const [Communication, setCommunication] = React.useState("");
-  const [Relationship, setRelationship] = React.useState("");
+
   const [CreditCardNumber, setCreditCardNumber] = React.useState(
     props.editdata != null ? props.editdata[0].creditcardid : "" 
   );
@@ -443,7 +442,11 @@ export const ProfileCompany = (props) => {
   const [negotiatedratesonly, setnegotiatedratesonly] = React.useState(
     props.editdata != null ? props.editdata[0].negotiatedratesonly : false);
 
-  const [communicationDatas, setCommunicationDatas] = React.useState([]);
+  const [communicationDatas, setCommunicationDatas] = React.useState({});
+
+  const [Communication, setCommunication] = React.useState("");
+  const [Relationship, setRelationship] = React.useState("");
+  const [relationDatas, setRelationDatas] = React.useState({});
 
   //   React.useEffect(() => {
   //     console.log("name1:",name1);
@@ -1444,8 +1447,8 @@ export const ProfileCompany = (props) => {
         Geographic: Geographic,
         negotiatedratesonly: negotiatedratesonly,
         ratecontractcode: ratecontractcode,
-        // communications: communications,
-        // relations: relations
+        communications: communicationDatas,
+        relations: relationDatas,
       };
 
       console.log("datafrom post", req);
@@ -1624,6 +1627,8 @@ export const ProfileCompany = (props) => {
         Geographic: Geographic,
         negotiatedratesonly: negotiatedratesonly,
         ratecontractcode: ratecontractcode,
+        communications: communicationDatas,
+        relations: relationDatas,
       };
       console.log("datafrom post", req);
       console.log("props.editData[0].id:", props.editdata);
@@ -1687,10 +1692,10 @@ export const ProfileCompany = (props) => {
         (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
         0
       );
-      setCommunicationDatas(prev => ([...prev,{
-        
-        [optioncommunication[0].value] : ""
-      }]))
+      setCommunicationDatas((prev) => ({
+        ...prev,
+        [newid + 1]: optioncommunication[0].value,
+      }));
       console.log("communicationDatas:",communicationDatas);
       comunication.content.push({
         id: newid + 1,
@@ -1710,7 +1715,11 @@ export const ProfileCompany = (props) => {
             </option>
           )),
         },
-        handle: (e) => handleData(e),
+        handle:  (e) =>
+        setCommunicationDatas((prev) => ({
+          ...prev,
+          [newid + 1]: e.target.value,
+        })),
       });
       comunication.content.push({
         id: newid + 2,
@@ -1722,7 +1731,11 @@ export const ProfileCompany = (props) => {
           status: "fillnolabel",
           data: "",
         },
-        handle: (e) => handleData(e),
+        handle: (e) =>
+        setCommunicationDatas((prev) => ({
+          ...prev,
+          [newid + 2]: e.target.value,
+        })),
       });
       comunication.content.push({
         id: 99,
@@ -1740,6 +1753,7 @@ export const ProfileCompany = (props) => {
         comunication,
         ...demoData.slice(index + 1),
       ]);
+      console.log("communicationDatas:",communicationDatas);
     }
     console.log("demoData[index]:",demoData[index]);
   };
@@ -1754,20 +1768,15 @@ export const ProfileCompany = (props) => {
         (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
         0
       );
+      setRelationDatas((prev) => ({
+        ...prev,
+        [newid + 1]: "",
+        [newid + 2]: optionrelation[0].label,
+        [newid + 3]: "",
+      }));
+    
       relation.content.push({
         id: newid + 1,
-        label: "Name",
-        xl: 4,
-        md: 4,
-        xs: 6,
-        select: {
-          status: "fill",
-          data: "",
-        },
-        handle: (e) => handleData(e),
-      });
-      relation.content.push({
-        id: newid + 2,
         label: "Name Type",
         xl: 2,
         md: 2,
@@ -1784,7 +1793,28 @@ export const ProfileCompany = (props) => {
             </option>
           )),
         },
-        handle: (e) => handleData(e),
+        handle: (e) =>
+        setRelationDatas((prev) => ({
+          ...prev,
+          [newid + 1]: e.target.value,
+        })),
+      });
+
+      relation.content.push({
+        id: newid + 2,
+        label: "Name",
+        xl: 4,
+        md: 4,
+        xs: 6,
+        select: {
+          status: "fill",
+          data: "",
+        },
+        handle: (e) =>
+        setRelationDatas((prev) => ({
+          ...prev,
+          [newid + 2]: e.target.value,
+        })),
       });
       relation.content.push({
         id: newid + 3,
@@ -1796,7 +1826,11 @@ export const ProfileCompany = (props) => {
           status: "fill",
           data: "",
         },
-        handle: (e) => handleData(e),
+        handle:  (e) =>
+        setRelationDatas((prev) => ({
+          ...prev,
+          [newid + 3]: e.target.value,
+        })),
       });
       relation.content.push({
         id: 99,
@@ -1814,6 +1848,8 @@ export const ProfileCompany = (props) => {
         relation,
         ...demoData.slice(index + 1),
       ]);
+
+      console.log("relationDatas:",relationDatas);
     }
   };
 
