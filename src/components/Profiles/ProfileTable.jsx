@@ -605,12 +605,12 @@ export const ProfileTable = (props) => {
 
                   {
                     render: (rowData) => {
-                      return rowData.status === "Check-Out" ? (
+                      return rowData.status === "Inactive" ? (
                         <Button
                           variant="contained"
                           style={{
                             borderRadius: 20,
-                            backgroundColor: "red",
+                            backgroundColor: "gray",
                             color: "white",
                           }}
                         >
