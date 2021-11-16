@@ -483,7 +483,9 @@ export const ProfileIndividual = (props) => {
     props.editdata != null ? props.editdata.guestidentity : ""
   );
 
-  const [individualData, setIndividualData] = React.useState("");
+  const [isRequired, setIsRequired] = React.useState(false);
+
+  // const [individualData, setIndividualData] = React.useState("");
 
   const pageProperty = useSelector((state) => state.reducer.property);
 
@@ -690,6 +692,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.nametitle : "Mr.",
               },
               handle: (e) => setNameTitle(e.target.value),
+              dataType: "string",
+              dataCheck: nameTitle,
+              dataCheckStatus: false,
             },
 
             {
@@ -705,6 +710,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.firstname : "",
               },
               handle: (e) => setFirstName(e.target.value),
+              dataType: "string",
+              dataCheck: firstName,
+              dataCheckStatus: false,
             },
             {
               id: 2,
@@ -719,6 +727,9 @@ export const ProfileIndividual = (props) => {
               },
               // handle: (e) => setPersonalData({ ...personalData,lastname: e.target.value }),
               handle: (e) => setLastName(e.target.value),
+              dataType: "string",
+              dataCheck: lastName,
+              dataCheckStatus: false,
             },
             {
               id: 3,
@@ -745,6 +756,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.nameprefix : "KHUN1",
               },
               handle: (e) => setNamePrefix(e.target.value),
+              dataType: "string",
+              dataCheck: namePrefix,
+              dataCheckStatus: false,
             },
             {
               id: 4,
@@ -759,6 +773,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.namesuffix : "",
               },
               handle: (e) => setNameSuffix(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 5,
@@ -773,6 +790,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.middleinitial : "",
               },
               handle: (e) => setMiddleInitial(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 6,
@@ -796,6 +816,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.gender : "Male",
               },
               handle: (e) => setGender(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
 
             // {
@@ -915,6 +938,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.religion : "Thailand",
               },
               handle: (e) => setReligion(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
 
             // {
@@ -968,6 +994,9 @@ export const ProfileIndividual = (props) => {
                 data: "Y",
               },
               handle: (e) => setStatusProfile(handleBoolean(e.target.checked)),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
           ],
         },
@@ -990,6 +1019,9 @@ export const ProfileIndividual = (props) => {
               },
 
               handle: (e) => setOrganization(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 2,
@@ -1006,6 +1038,9 @@ export const ProfileIndividual = (props) => {
                     : "",
               },
               handle: (e) => setProvinceOfResidence(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 3,
@@ -1022,6 +1057,9 @@ export const ProfileIndividual = (props) => {
                     : "",
               },
               handle: (e) => setBorderCrossingEntryPlace(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 4,
@@ -1038,6 +1076,9 @@ export const ProfileIndividual = (props) => {
                     : new Date("2021-09-13T21:11:54"),
               },
               handle: (e) => setborderCrossingEntryDate(new Date(e)),
+              dataType: "date",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 0,
@@ -1074,6 +1115,9 @@ export const ProfileIndividual = (props) => {
                     : "organization",
               },
               handle: (e) => setAddress(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 6,
@@ -1088,6 +1132,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.address1 : "",
               },
               handle: (e) => setAddress1(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 7,
@@ -1102,6 +1149,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.address2 : "",
               },
               handle: (e) => setAddress2(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 8,
@@ -1124,6 +1174,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.conuty : "Thailand",
               },
               handle: (e) => setCountry(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 9,
@@ -1136,6 +1189,9 @@ export const ProfileIndividual = (props) => {
                 data: "",
               },
               handle: (e) => setCity(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 10,
@@ -1150,6 +1206,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.stateprovince : "",
               },
               handle: (e) => setStateprovince(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 11,
@@ -1164,6 +1223,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.postal : "",
               },
               handle: (e) => setPostal(e.target.value),
+              dataType: "number",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 12,
@@ -1205,6 +1267,8 @@ export const ProfileIndividual = (props) => {
                 status: "fix",
                 data: "Email Address",
               },
+              // dataType: "email",
+              // dataCheck: "",dataCheckStatus: false,
             },
             {
               id: 2,
@@ -1223,6 +1287,9 @@ export const ProfileIndividual = (props) => {
                   ...prev,
                   email: e.target.value,
                 })),
+              dataType: "email",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 3,
@@ -1252,6 +1319,9 @@ export const ProfileIndividual = (props) => {
                   ...prev,
                   mobile: e.target.value,
                 })),
+              dataType: "number",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             ...getcomunication,
             {
@@ -1306,6 +1376,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.nopost : "N",
               },
               handle: (e) => setNoPost(handleBoolean(e.target.checked)),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 2,
@@ -1319,6 +1392,9 @@ export const ProfileIndividual = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata.nrg : "N",
               },
               handle: (e) => setNRG(handleBoolean(e.target.checked)),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 3,
@@ -1360,6 +1436,9 @@ export const ProfileIndividual = (props) => {
                     : "option1",
               },
               handle: (e) => setGuestCategory(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 5,
@@ -1382,6 +1461,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.guesttype : "option1",
               },
               handle: (e) => setGuestType(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 6,
@@ -1408,6 +1490,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.vvip : "option1",
               },
               handle: (e) => setVVIP(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 7,
@@ -1432,6 +1517,9 @@ export const ProfileIndividual = (props) => {
                     : "option1",
               },
               handle: (e) => setBirthRegion(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 8,
@@ -1456,6 +1544,9 @@ export const ProfileIndividual = (props) => {
                     : "option1",
               },
               handle: (e) => setBirthProvince(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
           ],
         },
@@ -1478,6 +1569,9 @@ export const ProfileIndividual = (props) => {
               },
 
               handle: (e) => setIDCheck(handleBoolean(e.target.checked)),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 2,
@@ -1512,6 +1606,9 @@ export const ProfileIndividual = (props) => {
               },
 
               handle: (e) => setIDType(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 4,
@@ -1526,6 +1623,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.idnumber : "",
               },
               handle: (e) => setIDNumber(e.target.value),
+              dataType: "number",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 5,
@@ -1548,6 +1648,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.nationality : "Thai",
               },
               handle: (e) => setNationality(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 6,
@@ -1564,6 +1667,9 @@ export const ProfileIndividual = (props) => {
                     : new Date("2021-09-13T21:11:54"),
               },
               handle: (e) => setDateOfBirth(convertTimeToString(e)),
+              dataType: "date",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 7,
@@ -1580,6 +1686,9 @@ export const ProfileIndividual = (props) => {
                     : new Date("2021-09-13T21:11:54"),
               },
               handle: (e) => setIDIssuedDate(new Date(e)),
+              dataType: "date",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 8,
@@ -1596,6 +1705,9 @@ export const ProfileIndividual = (props) => {
                     : new Date("2021-09-13T21:11:54"),
               },
               handle: (e) => setIDExpirationDate(new Date(e)),
+              dataType: "date",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 9,
@@ -1624,6 +1736,9 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) =>
                 setPassportVisaCheck(handleBoolean(e.target.checked)),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 11,
@@ -1659,6 +1774,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.visatype : "Tourist",
               },
               handle: (e) => setVisaType(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 13,
@@ -1673,6 +1791,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.visaname : "",
               },
               handle: (e) => setVisaName(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 14,
@@ -1687,6 +1808,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.visanumber : "",
               },
               handle: (e) => setVisaNumber(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             // {
             //   id: 15,
@@ -1725,6 +1849,9 @@ export const ProfileIndividual = (props) => {
                     : new Date("2021-09-13T21:11:54"),
               },
               handle: (e) => setVisaIssuedDate(new Date(e)),
+              dataType: "date",
+              dataCheck: "",
+              dataCheckStatus: false,
               // handle: (e) => setVisaIssuedDate(convertTimeToString(e)),
             },
             {
@@ -1742,6 +1869,9 @@ export const ProfileIndividual = (props) => {
                     : new Date("2021-09-13T21:11:54"),
               },
               handle: (e) => setVisaBeginDate(new Date(e)),
+              dataType: "date",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 17,
@@ -1758,6 +1888,9 @@ export const ProfileIndividual = (props) => {
                     : new Date("2021-09-13T21:11:54"),
               },
               handle: (e) => setVisaExpirationDate(new Date(e)),
+              dataType: "date",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             // {
             //   id: 18,
@@ -1784,6 +1917,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.visastatus : "Y",
               },
               handle: (e) => setVisaStatus(handleBoolean(e.target.checked)),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 19,
@@ -1798,6 +1934,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.visanotes : "",
               },
               handle: (e) => setVisaNotes(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             // ,
             // {
@@ -1904,6 +2043,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.rank : "option1",
               },
               handle: (e) => setRank(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 21,
@@ -1926,6 +2068,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.grade : "option1",
               },
               handle: (e) => setGrade(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             {
               id: 22,
@@ -1940,6 +2085,9 @@ export const ProfileIndividual = (props) => {
                   props.editdata != null ? props.editdata.guestidentity : "",
               },
               handle: (e) => setGuestIdentity(e.target.value),
+              dataType: "string",
+              dataCheck: "",
+              dataCheckStatus: false,
             },
             // {
             //   id: 29,
@@ -2255,22 +2403,6 @@ export const ProfileIndividual = (props) => {
       }));
       relation.content.push({
         id: newid + 1,
-        label: "Name",
-        xl: 4,
-        md: 4,
-        xs: 6,
-        select: {
-          status: "fill",
-          data: "",
-        },
-        handle: (e) =>
-          setRelationDatas((prev) => ({
-            ...prev,
-            [newid + 1]: e.target.value,
-          })),
-      });
-      relation.content.push({
-        id: newid + 2,
         label: "Name Type",
         xl: 2,
         md: 2,
@@ -2286,6 +2418,22 @@ export const ProfileIndividual = (props) => {
               {option.label}
             </option>
           )),
+        },
+        handle: (e) =>
+          setRelationDatas((prev) => ({
+            ...prev,
+            [newid + 1]: e.target.value,
+          })),
+      });
+      relation.content.push({
+        id: newid + 2,
+        label: "Name",
+        xl: 4,
+        md: 4,
+        xs: 6,
+        select: {
+          status: "fill",
+          data: "",
         },
         handle: (e) =>
           setRelationDatas((prev) => ({
@@ -2335,6 +2483,10 @@ export const ProfileIndividual = (props) => {
     if (e == true) {
       return "Y";
     } else return "N";
+  };
+
+  const HanddleIsRequired = () => {
+    console.log(setList);
   };
 
   const handleData = async (e) => {
@@ -2527,8 +2679,152 @@ export const ProfileIndividual = (props) => {
   React.useEffect(() => {
     async function handlebutton() {
       if (props.action === "add") {
+        let _IsRequired =
+          nameTitle !== null ||
+          nameTitle !== "" ||
+          firstName !== " " ||
+          firstName !== null ||
+          firstName !== "" ||
+          firstName !== " " ||
+          lastName !== null ||
+          lastName !== "" ||
+          lastName !== " " ||
+          namePrefix !== null ||
+          namePrefix !== "" ||
+          namePrefix !== " " ||
+          nameSuffix !== null ||
+          nameSuffix !== "" ||
+          nameSuffix !== " " ||
+          middleInitial !== null ||
+          middleInitial !== "" ||
+          middleInitial !== " " ||
+          gender !== null ||
+          gender !== "" ||
+          gender !== " " ||
+          religion !== null ||
+          religion !== "" ||
+          religion !== " " ||
+          organization !== null ||
+          organization !== "" ||
+          organization !== " " ||
+          statusProfile !== null ||
+          statusProfile !== "" ||
+          statusProfile !== " " ||
+          provinceOfResidence !== null ||
+          provinceOfResidence !== "" ||
+          provinceOfResidence !== " " ||
+          borderCrossingEntryPlace !== null ||
+          borderCrossingEntryPlace !== "" ||
+          borderCrossingEntryPlace !== " " ||
+          borderCrossingEntryDate !== null ||
+          borderCrossingEntryDate !== "" ||
+          borderCrossingEntryDate !== " " ||
+          address !== null ||
+          address !== "" ||
+          address !== " " ||
+          address1 !== null ||
+          address1 !== "" ||
+          address1 !== " " ||
+          address2 !== null ||
+          address2 !== "" ||
+          address2 !== " " ||
+          conuty !== null ||
+          conuty !== "" ||
+          conuty !== " " ||
+          city !== null ||
+          city !== "" ||
+          city !== " " ||
+          stateProvince !== null ||
+          stateProvince !== "" ||
+          stateProvince !== " " ||
+          postal !== null ||
+          postal !== "" ||
+          postal !== " " ||
+          noPost !== null ||
+          noPost !== "" ||
+          noPost !== " " ||
+          NRG !== null ||
+          NRG !== "" ||
+          NRG !== " " ||
+          guestCategory !== null ||
+          guestCategory !== "" ||
+          guestCategory !== " " ||
+          VVIP !== null ||
+          VVIP !== "" ||
+          VVIP !== " " ||
+          birthRegion !== null ||
+          birthRegion !== "" ||
+          birthRegion !== " " ||
+          birthProvince !== null ||
+          birthProvince !== "" ||
+          birthProvince !== " " ||
+          guestType !== null ||
+          guestType !== "" ||
+          guestType !== " " ||
+          IDCheck !== null ||
+          IDCheck !== "" ||
+          IDCheck !== " " ||
+          IDType !== null ||
+          IDType !== "" ||
+          IDType !== " " ||
+          IDNumber !== null ||
+          IDNumber !== "" ||
+          IDNumber !== " " ||
+          nationality !== null ||
+          nationality !== "" ||
+          nationality !== " " ||
+          dateOfBirth !== null ||
+          dateOfBirth !== "" ||
+          dateOfBirth !== " " ||
+          IDIssuedDate !== null ||
+          IDIssuedDate !== "" ||
+          IDIssuedDate !== " " ||
+          IDExpirationDate !== null ||
+          IDExpirationDate !== "" ||
+          IDExpirationDate !== " " ||
+          passportVisaCheck !== null ||
+          passportVisaCheck !== "" ||
+          passportVisaCheck !== " " ||
+          visaType !== null ||
+          visaType !== "" ||
+          visaType !== " " ||
+          visaName !== null ||
+          visaName !== "" ||
+          visaName !== " " ||
+          visaNumber !== null ||
+          visaNumber !== "" ||
+          visaNumber !== " " ||
+          visaIssuedDate !== null ||
+          visaIssuedDate !== "" ||
+          visaIssuedDate !== " " ||
+          visaBeginDate !== null ||
+          visaBeginDate !== "" ||
+          visaBeginDate !== " " ||
+          visaExpirationDate !== null ||
+          visaExpirationDate !== "" ||
+          visaExpirationDate !== " " ||
+          visaStatus !== null ||
+          visaStatus !== "" ||
+          visaStatus !== " " ||
+          visaNotes !== null ||
+          visaNotes !== "" ||
+          visaNotes !== " " ||
+          rank !== null ||
+          rank !== "" ||
+          rank !== " " ||
+          grade !== null ||
+          grade !== "" ||
+          grade !== " " ||
+          guestIdentity !== null ||
+          guestIdentity !== "" ||
+          guestIdentity !== " ";
+        console.log("_IsRequired", _IsRequired);
         console.log("action add", props.action);
-        await handleAddDatatoDatabase();
+        if (_IsRequired === false) {
+          await handleAddDatatoDatabase();
+        } else {
+          setIsRequired(true);
+        }
       } else if (props.action === "edit") {
         await handleEditDatatoDatabase();
         console.log("action edit", props.action);
@@ -2536,6 +2832,16 @@ export const ProfileIndividual = (props) => {
     }
     handlebutton();
   }, [props.action]);
+
+  // const handleValidation = (dataV) => {
+  //   if (dataV == null || dataV == "" || dataV == " ") {
+  //     console.log("dataV", dataV);
+  //     // return true;
+  //   } else {
+  //     console.log("dataV not null ", dataV);
+  //     // return false;
+  //   }
+  // };
 
   // data from button for  trigger (add or delete)
   // React.useEffect(() => {
@@ -2719,6 +3025,21 @@ export const ProfileIndividual = (props) => {
                                 // />
                                 detail.select.status === "fillnolabel" ? (
                                   <TextField
+                                    // error={handleValidation(detail.dataCheck)}
+                                    // error={
+                                    //   detail.dataCheck == null ||
+                                    //   detail.dataCheck == ""
+                                    //     ? true
+                                    //     : false
+                                    // }
+                                    // helperText={
+                                    //   detail.dataCheck == null ||
+                                    //   detail.dataCheck == ""
+                                    //     ? "This ib formation can't null"
+                                    //     : false
+                                    // }
+                                    // required={true}
+                                    type={detail.datatype}
                                     className={classes.root}
                                     // label={detail.label}
                                     variant="outlined"
@@ -2734,21 +3055,79 @@ export const ProfileIndividual = (props) => {
                                     onChange={detail.handle}
                                   />
                                 ) : detail.select.status === "fill" ? (
-                                  <TextField
-                                    className={classes.root}
-                                    label={detail.label}
-                                    variant="outlined"
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    noWrap
-                                    InputLabelProps={{
-                                      style: { color: "#AAAAAA" },
-                                    }}
-                                    fullWidth
-                                    defaultValue={detail.select.defaultvalue}
-                                    onChange={detail.handle}
-                                  />
+                                  [
+                                    isRequired ? (
+                                      <TextField
+                                        error={
+                                          detail.dataCheck == null ||
+                                          detail.dataCheck === "" ||
+                                          detail.dataCheck === " "
+                                            ? true
+                                            : false
+                                        }
+                                        // error={detail.dataCheck}
+                                        helperText={
+                                          detail.dataCheck == null ||
+                                          detail.dataCheck === ""
+                                            ? `${detail.label} is Required`
+                                            : false
+                                        }
+                                        // required={true}
+                                        type={detail.dataType}
+                                        className={classes.root}
+                                        label={detail.label}
+                                        variant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        noWrap
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" },
+                                        }}
+                                        fullWidth
+                                        defaultValue={
+                                          detail.select.defaultvalue
+                                        }
+                                        onChange={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
+                                      />
+                                    ) : (
+                                      <TextField
+                                        // error={
+                                        //   detail.dataCheck == null ||
+                                        //   detail.dataCheck === "" ||
+                                        //   detail.dataCheck === " "
+                                        //     ? true
+                                        //     : false
+                                        // }
+                                        // // error={detail.dataCheck}
+                                        // helperText={
+                                        //   detail.dataCheck == null ||
+                                        //   detail.dataCheck === ""
+                                        //     ? `${detail.label} is Required`
+                                        //     : false
+                                        // }
+                                        // required={true}
+                                        type={detail.dataType}
+                                        className={classes.root}
+                                        label={detail.label}
+                                        variant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        noWrap
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" },
+                                        }}
+                                        fullWidth
+                                        defaultValue={
+                                          detail.select.defaultvalue
+                                        }
+                                        onChange={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
+                                      />
+                                    ),
+                                  ]
                                 ) : detail.select.status === "option" ? (
                                   <TextField
                                     className={classes.root}
