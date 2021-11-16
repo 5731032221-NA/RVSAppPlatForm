@@ -1,4 +1,44 @@
 module.exports = {
+    getCompanyProfileCommunication: async function (accessToken, id) {
+        return fetch(
+            `http://${
+        process.env.REACT_APP_host || "localhost"
+      }:8000/apis/companyprofilecommunication/${id}`, {
+                method: "GET",
+                headers: {
+                    Authorization: accessToken,
+                    "Content-Type": "application/json",
+                },
+            }
+        ).then(async (res) => {
+            if (res.status == 401) {
+                sessionStorage.removeItem("token");
+                sessionStorage.removeItem("property");
+                sessionStorage.removeItem("curent_component");
+                window.location.reload(false);
+            } else return res.json();
+        });
+    },
+    getCompanyProfileRelation: async function (accessToken, id) {
+        return fetch(
+            `http://${
+        process.env.REACT_APP_host || "localhost"
+      }:8000/apis/companyprofilerelation/${id}`, {
+                method: "GET",
+                headers: {
+                    Authorization: accessToken,
+                    "Content-Type": "application/json",
+                },
+            }
+        ).then(async (res) => {
+            if (res.status == 401) {
+                sessionStorage.removeItem("token");
+                sessionStorage.removeItem("property");
+                sessionStorage.removeItem("curent_component");
+                window.location.reload(false);
+            } else return res.json();
+        });
+    },
     getTAProfile: async function (accessToken) {
         return fetch(
             "http://" +

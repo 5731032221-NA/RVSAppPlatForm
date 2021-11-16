@@ -234,9 +234,10 @@ export const ProfileTable = (props) => {
 
   //save button on **add component
   const handleAddData = async () => {
+    
     await setAction("add");
     await setEditData(null);
-    // await setStatusprofile("moredata");
+    // // await setStatusprofile("moredata");
     await handleReloadTable();
   };
 
