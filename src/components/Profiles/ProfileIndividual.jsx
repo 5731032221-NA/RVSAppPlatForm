@@ -335,7 +335,7 @@ export const ProfileIndividual = (props) => {
     props.editdata != null ? props.editdata.lastname : ""
   );
   const [namePrefix, setNamePrefix] = React.useState(
-    props.editdata != null ? props.editdata.nameprefix : "KHUN"
+    props.editdata != null ? props.editdata.nameprefix : "KHUN1"
   );
   const [nameSuffix, setNameSuffix] = React.useState(
     props.editdata != null ? props.editdata.namesuffix : ""

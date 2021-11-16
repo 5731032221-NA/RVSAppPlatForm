@@ -93,26 +93,24 @@ const useStyles = makeStyles((theme) => ({
 
 function createData(
   nameid,
+  title,
   firstname,
   lastname,
-  nameprefix,
   gender,
   idcardandpass,
   nationality,
-  nextstay,
   laststay,
   score,
   status
 ) {
   return {
     nameid,
+    title,
     firstname,
     lastname,
-    nameprefix,
     gender,
     idcardandpass,
     nationality,
-    nextstay,
     laststay,
     score,
     status,
@@ -120,30 +118,28 @@ function createData(
 }
 
 const rows = [
-  createData(
-    "Somchai",
-    "Wongnut",
-    "Mr.",
-    "Male",
-    "1100700222876",
-    "Thai",
-    "12/11/2021",
-    "30/10/2020",
-    "5",
-    "Check-Out"
-  ),
-  createData(
-    "Sommul",
-    "Liu",
-    "Ms.",
-    "Female",
-    "C00102188",
-    "China",
-    "22/11/2021",
-    "10/12/2020",
-    "2",
-    "Check-In"
-  ),
+  // createData(
+  //   "Somchai",
+  //   "Wongnut",
+  //   "Mr.",
+  //   "Male",
+  //   "1100700222876",
+  //   "Thai",
+  //   "30/10/2020",
+  //   "5",
+  //   "Check-Out"
+  // ),
+  // createData(
+  //   "Sommul",
+  //   "Liu",
+  //   "Ms.",
+  //   "Female",
+  //   "C00102188",
+  //   "China",
+  //   "10/12/2020",
+  //   "2",
+  //   "Check-In"
+  // ),
   // createData("YongAPI", " ", "Joy", "DOS", "A", 3),
   // createData("TH Chamber", " ", "Joy", "Secretary", "A", 4),
   // createData("MSC", "SIG/DTS", "P'Pui", "VP", "I-24/09/21", " "),
@@ -211,7 +207,7 @@ export const ProfileTable = (props) => {
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [deleteData, setDeleteData] = React.useState({
     nameid: "nameid",
-    nameprefix: "nameprefix",
+    title: "title",
     firstname: "firstname",
     lastname: "lastname",
   });
@@ -260,18 +256,18 @@ export const ProfileTable = (props) => {
     await setEditData(individualdata.content[0]);
     await handleDeleteData(
       rowData.nameid,
-      rowData.nameprefix,
+      rowData.title,
       rowData.firstname,
       rowData.lastname
     );
     await setStatusprofile("edit");
     console.log("test Edit");
   };
-  const handleDeleteData = async (nameid, nameprefix, firstname, lastname) => {
-    console.log("data : ", nameid, nameprefix, firstname, lastname);
+  const handleDeleteData = async (nameid, title, firstname, lastname) => {
+    console.log("data : ", nameid, title, firstname, lastname);
     setDeleteData({
       nameid: nameid,
-      nameprefix: nameprefix,
+      title: title,
       firstname: firstname,
       lastname: lastname,
     });
@@ -293,15 +289,15 @@ export const ProfileTable = (props) => {
     nameid,
     firstname,
     lastname,
-    nameprefix
+    title
   ) => {
     await setDeleteData({
       nameid: nameid,
-      nameprefix: nameprefix,
+      title: title,
       firstname: firstname,
       lastname: lastname,
     });
-    console.log(nameid, firstname, lastname, nameprefix);
+    console.log(nameid, firstname, lastname, title);
     await setDialogDelete(true);
   };
   const handleDialogDeleteClose = () => {
@@ -317,20 +313,18 @@ export const ProfileTable = (props) => {
         _individualData.push(
           createData(
             element.nameid,
+            element.nametitle,
             element.firstname,
             element.lastname,
-            element.nameprefix,
             element.gender,
             element.idnumber,
             element.nationality,
-            // element.nextstay,
-            "22/11/2021",
             // element.laststay,
-            "10/12/2020",
+            "-",
             // element.score,
-            "5",
+            "-",
             // element.status
-            "Check-In"
+            element.statusprofile == "Y" ? "Active" : "Inactive"
           )
         )
       );
@@ -351,20 +345,18 @@ export const ProfileTable = (props) => {
           _individualData.push(
             createData(
               element.nameid,
+              element.nametitle,
               element.firstname,
               element.lastname,
-              element.nameprefix,
               element.gender,
               element.idnumber,
               element.nationality,
-              // element.nextstay,
-              "22/11/2021",
               // element.laststay,
-              "10/12/2020",
-              // element.score,
-              "5",
-              // element.status
-              "Check-In"
+            "-",
+            // element.score,
+            "-",
+            // element.status
+            element.statusprofile == "Y" ? "Active" : "Inactive"
             )
           )
         );
@@ -571,6 +563,11 @@ export const ProfileTable = (props) => {
                     headerStyle: headerTableStyle,
                   },
                   {
+                    title: "Title",
+                    field: "title",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
                     title: "First Name",
                     field: "firstname",
                     headerStyle: headerTableStyle,
@@ -578,11 +575,6 @@ export const ProfileTable = (props) => {
                   {
                     title: "Last Name",
                     field: "lastname",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "Name Prefix",
-                    field: "nameprefix",
                     headerStyle: headerTableStyle,
                   },
                   {
@@ -695,7 +687,7 @@ export const ProfileTable = (props) => {
                         rowData.nameid,
                         rowData.firstname,
                         rowData.lastname,
-                        rowData.nameprefix
+                        rowData.title
                       );
                     },
                   },
@@ -734,7 +726,7 @@ export const ProfileTable = (props) => {
                   Title:&nbsp;
                 </Typography>
                 <Typography color="initial" display="inline">
-                  {deleteData.nameprefix}
+                  {deleteData.title}
                 </Typography>
               </Typography>
               <Typography>
