@@ -907,7 +907,7 @@ export const ProfileCompany = (props) => {
                 status: "fill",
                 data: "",
                 defaultvalue:
-                  props.editdata != null ? props.editdata[0].postalcode : "",
+                  props.editdata != null ? props.editdata[0].postalcode : 0,
               },
               handle: (e) => setPostal(e.target.value),
               dataType: "number",
@@ -997,7 +997,7 @@ export const ProfileCompany = (props) => {
                 status: "fill",
                 data: "",
                 defaultvalue:
-                  props.editdata != null ? props.editdata[0].billingpostalcode : "",
+                  props.editdata != null ? props.editdata[0].billingpostalcode : 0,
               },
               handle: (e) => setBPostal(e.target.value),
               dataType: "number",
@@ -1664,11 +1664,11 @@ export const ProfileCompany = (props) => {
    
     props.setAction("none");
 
-    const checkvali = await checkvalidate();
-    if(checkvali){
-      setIsRequired(true);
-    } else {
-      setIsRequired(false);
+    // const checkvali = await checkvalidate();
+    // if(checkvali){
+    //   setIsRequired(true);
+    // } else {
+    //   setIsRequired(false);
 
       let req = {
         recordtype: "C",
@@ -1712,7 +1712,7 @@ export const ProfileCompany = (props) => {
         communications: communicationDatas,
         relations: relationDatas,
       };
-      // console.log("datafrom post", req);
+      console.log("datafrom update", req);
       // console.log("props.editData[0].id:", props.editdata);
       // console.log("props.editData[0].id:", props.editdata[0].id);
       const resp = await updateCompanyProfile(
@@ -1730,7 +1730,7 @@ export const ProfileCompany = (props) => {
       }
 
       // console.log("datafrom post", data);
-    }
+    // }
   };
 
   //data from button for  trigger (add or delete)
@@ -1826,11 +1826,11 @@ export const ProfileCompany = (props) => {
       StreetAddress.trim() === "" ||
       City.trim() === "" ||
       State.trim() === "" ||
-      Postal.trim() === "" ||
+      Postal === 0 ||
       BStreetAddress.trim() === "" ||
       BCity.trim() === "" ||
       BState.trim() === "" ||
-      BPostal.trim() === "" ||
+      BPostal === 0 ||
       TaxID.trim() === "" ||
       Industry.trim() === "" ||
       MarketSegment.trim() === "" ||
@@ -1850,6 +1850,69 @@ export const ProfileCompany = (props) => {
         updateList()
       }
     } else if (props.action == "edit") {
+      console.log(nameOne,
+        Abbreviation,
+        GuaranteeMethodCode,
+        iata,
+        StreetAddress,
+        City,
+        State,
+        Postal,
+        BStreetAddress,
+        BCity,
+        BState,
+        BPostal,
+        TaxID,
+        CreditCardNumber,
+        OutstandingAmount,
+        OutstandingAmount,
+        FloatingDepositionAmount,
+        ARNumber,
+        Industry,
+        MarketSegment,
+        SourceOfBusiness,
+        TrackCode,
+        ReasonForStay,
+        Geographic)
+        console.log(nameOne === null ,
+          Abbreviation === null ,
+          GuaranteeMethodCode === null ,
+          iata === null ,
+          StreetAddress === null ,
+          City === null ,
+          State === null ,
+          Postal === null ,
+          BStreetAddress === null ,
+          BCity === null ,
+          BState === null ,
+          BPostal === null ,
+          TaxID === null ,
+          Industry === null ,
+          MarketSegment === null ,
+          SourceOfBusiness === null ,
+          TrackCode === null ,
+          ReasonForStay === null ,
+          Geographic  === null ,
+          nameOne.trim() === "" ,
+          Abbreviation.trim() === "" ,
+          GuaranteeMethodCode.trim() === "" ,
+          iata.trim() === "" ,
+          StreetAddress.trim() === "" ,
+          City.trim() === "" ,
+          State.trim() === "" ,
+          Postal === 0 ,
+          BStreetAddress.trim() === "" ,
+          BCity.trim() === "" ,
+          BState.trim() === "" ,
+          BPostal === 0 ,
+          TaxID.trim() === "" ,
+          Industry.trim() === "" ,
+          MarketSegment.trim() === "" ,
+          SourceOfBusiness.trim() === "" ,
+          TrackCode.trim() === "" ,
+          ReasonForStay.trim() === "" ,
+          Geographic.trim() === "")
+
       let _IsRequired = nameOne === null ||
       Abbreviation === null ||
       GuaranteeMethodCode === null ||
