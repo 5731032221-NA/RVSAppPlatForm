@@ -490,13 +490,19 @@ export const ProfileCompany = (props) => {
           props.editdata[0].id
         );
         console.log("getCommunications.contents", getCommunications.contents)
-        let count = 3;
+        let count = 1;
         getCommunications.contents[0].forEach((element) => {
           if (element.communication == "email") {
             getCommunicationsDatas.email = element.value
           } else if (element.communication == "mobile") {
             getCommunicationsDatas.mobile = element.value
           } else {
+            setCommunicationDatas(prev => ({
+              ...prev,
+              [count]: element.communication,
+              [count + 1]: element.value
+            }))
+            
             getcomunication.push({
               id: count,
               label: "Choose a communication",
@@ -542,11 +548,16 @@ export const ProfileCompany = (props) => {
           }
         }
         );
-
         let relationid = 1;
         console.log(getRelations.contents[0])
 
         getRelations.contents[0].forEach((element) => {
+          setRelationDatas(prev => ({
+            ...prev,
+            [relationid]: element.relation,
+            [relationid + 1]: element.value,
+            [relationid + 2]: element.note
+          }))
           getrelation.push({
             id: relationid,
             label: "Name Type",
@@ -1011,7 +1022,7 @@ export const ProfileCompany = (props) => {
               xs: 6,
               select: {
                 status: "AddComunication",
-                data: "+ Add",
+                data: "+ More Communication",
               },
             },
           ],
@@ -1030,7 +1041,7 @@ export const ProfileCompany = (props) => {
               xs: 6,
               select: {
                 status: "AddRelation",
-                data: "+ Add",
+                data: "+ More Relation",
               },
               // handle: (e) => handleAddComunication(e),
             },
@@ -1852,7 +1863,7 @@ export const ProfileCompany = (props) => {
       );
       setCommunicationDatas((prev) => ({
         ...prev,
-        [newid + 1]: optioncommunication[0].value,
+        [newid + 1]: optioncommunication[0].label,
       }));
       console.log("communicationDatas:", communicationDatas);
       comunication.content.push({
@@ -1903,7 +1914,7 @@ export const ProfileCompany = (props) => {
         xs: 6,
         select: {
           status: "AddComunication",
-          data: "+ Add",
+          data: "+ More Communication",
         },
       });
       setList([
@@ -1998,7 +2009,7 @@ export const ProfileCompany = (props) => {
         xs: 6,
         select: {
           status: "AddRelation",
-          data: "+ Add",
+          data: "+ More Relation",
         },
       });
       setList([
@@ -2060,9 +2071,6 @@ export const ProfileCompany = (props) => {
                   }}
                 >
                   {errorParameter}
-                  <Divider
-                    style={{ marginTop: 10, backgroundColor: themeState.color }}
-                  />
                 </div>
               ) : null}
 
@@ -2190,7 +2198,7 @@ export const ProfileCompany = (props) => {
                                       handleAddComunication(item.id)
                                     }
                                   >
-                                    + Add
+                                    {detail.select.data}
                                   </Button>
                                 ) : detail.select.status === "fillnolabel" ? (
                                   <TextField
@@ -2219,7 +2227,7 @@ export const ProfileCompany = (props) => {
                                     value={detail.select.data}
                                     onClick={() => handleAddRelation(item.id)}
                                   >
-                                    + Add
+                                    {detail.select.data}
                                   </Button>
                                 ) : detail.select.status === "fix" ? (
                                   <TextField

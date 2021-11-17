@@ -609,74 +609,74 @@ export const ProfileIndividual = (props) => {
 
         let relationid = 1;
         console.log(getRelations.contents[0])
-        
-          getRelations.contents[0].forEach((element) => {
-            setRelationDatas(prev => ({
+
+        getRelations.contents[0].forEach((element) => {
+          setRelationDatas(prev => ({
+            ...prev,
+            [relationid]: element.relation,
+            [relationid + 1]: element.value,
+            [relationid + 2]: element.note
+          }))
+          getrelation.push({
+            id: relationid,
+            label: "Name Type",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "option",
+              data: relation.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                  selected={option.label == element.relation}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) => setRelationDatas(prev => ({
               ...prev,
-              [relationid]: element.relation,
-              [relationid+1]: element.value,
+              [relationid]: element.relation
+            }))
+          });
+          getrelation.push({
+            id: relationid + 1,
+            label: "Name",
+            xl: 4,
+            md: 4,
+            xs: 6,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: element.value
+            },
+            handle: (e) => setRelationDatas(prev => ({
+              ...prev,
+              [relationid + 1]: element.value
+            }))
+          });
+          getrelation.push({
+            id: relationid + 2,
+            label: "Note",
+            xl: 6,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: element.note
+            },
+            handle: (e) => setRelationDatas(prev => ({
+              ...prev,
               [relationid + 2]: element.note
             }))
-            getrelation.push({
-              id: relationid ,
-              label: "Name Type",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
-                data: relation.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                    selected={option.label == element.relation}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => setRelationDatas(prev => ({
-                ...prev,
-                [relationid]: element.relation
-              }))
-            });
-            getrelation.push({
-              id: relationid+1,
-              label: "Name",
-              xl: 4,
-              md: 4,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue: element.value
-              },
-              handle: (e) => setRelationDatas(prev => ({
-                ...prev,
-                [relationid+1]: element.value
-              }))
-            });
-            getrelation.push({
-              id: relationid + 2,
-              label: "Note",
-              xl: 6,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue: element.note
-              },
-              handle: (e) => setRelationDatas(prev => ({
-                ...prev,
-                [relationid + 2]: element.note
-              }))
-            });
-            relationid = relationid + 3;
-          }
-          );
-          console.log("getrelation",getrelation)
+          });
+          relationid = relationid + 3;
+        }
+        );
+        console.log("getrelation", getrelation)
 
       }
 
@@ -2421,7 +2421,7 @@ export const ProfileIndividual = (props) => {
         [newid + 2]: optionrelation[0].label,
         [newid + 3]: "",
       }));
- 
+
       relation.content.push({
         id: newid + 2,
         label: "Name Type",
@@ -2846,8 +2846,8 @@ export const ProfileIndividual = (props) => {
         // console.log("_IsRequired", _IsRequired);
         // console.log("action add", props.action);
         // if (_IsRequired === false) {
-          await handleAddDatatoDatabase();
-          
+        await handleAddDatatoDatabase();
+
         // } else {
         //   setIsRequired(true);
         // }
@@ -3036,191 +3036,191 @@ export const ProfileIndividual = (props) => {
                                     onFocus={false}
                                   />
                                 ) : // <TextField
-                                //   className={classes.root}
-                                //   variant="outlined"
-                                //   label={detail.select.defaultvalue}
-                                //   fullWidth
-                                //   style={{
-                                //     backgroundColor: "#EFEFEF",
-                                //     borderColor: "white",
-                                //   }}
-                                //   // disabled={true}
-                                //   value={detail.select.defaultvalue}
-                                //   defaultValue={detail.select.defaultvalue}
-                                //   onFocus={false}
-                                // />
-                                detail.select.status === "fillnolabel" ? (
-                                  <TextField
-                                    // error={handleValidation(detail.dataCheck)}
-                                    // error={
-                                    //   detail.dataCheck == null ||
-                                    //   detail.dataCheck == ""
-                                    //     ? true
-                                    //     : false
-                                    // }
-                                    // helperText={
-                                    //   detail.dataCheck == null ||
-                                    //   detail.dataCheck == ""
-                                    //     ? "This ib formation can't null"
-                                    //     : false
-                                    // }
-                                    // required={true}
-                                    type={detail.datatype}
-                                    className={classes.root}
-                                    // label={detail.label}
-                                    variant="outlined"
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    noWrap
-                                    InputLabelProps={{
-                                      style: { color: "#AAAAAA" },
-                                    }}
-                                    fullWidth
-                                    defaultValue={detail.select.defaultvalue}
-                                    onChange={detail.handle}
-                                  />
-                                ) : detail.select.status === "fill" ? (
-                                  [
-                                    isRequired ? (
-                                      <TextField
-                                        error={
-                                          detail.dataCheck == null ||
-                                          detail.dataCheck === "" ||
-                                          detail.dataCheck === " "
-                                            ? true
-                                            : false
-                                        }
-                                        // error={detail.dataCheck}
-                                        helperText={
-                                          detail.dataCheck == null ||
-                                          detail.dataCheck === ""
-                                            ? `${detail.label} is Required`
-                                            : false
-                                        }
-                                        // required={true}
-                                        type={detail.dataType}
-                                        className={classes.root}
-                                        label={detail.label}
-                                        variant="outlined"
-                                        InputProps={{
-                                          style: headerTableStyle,
-                                        }}
-                                        noWrap
-                                        InputLabelProps={{
-                                          style: { color: "#AAAAAA" },
-                                        }}
-                                        fullWidth
-                                        defaultValue={
-                                          detail.select.defaultvalue
-                                        }
-                                        onChange={detail.handle}
-                                        // onBlur={handleValidation(detail.dataCheck)}
-                                      />
-                                    ) : (
-                                      <TextField
-                                        // error={
-                                        //   detail.dataCheck == null ||
-                                        //   detail.dataCheck === "" ||
-                                        //   detail.dataCheck === " "
-                                        //     ? true
-                                        //     : false
-                                        // }
-                                        // // error={detail.dataCheck}
-                                        // helperText={
-                                        //   detail.dataCheck == null ||
-                                        //   detail.dataCheck === ""
-                                        //     ? `${detail.label} is Required`
-                                        //     : false
-                                        // }
-                                        // required={true}
-                                        type={detail.dataType}
-                                        className={classes.root}
-                                        label={detail.label}
-                                        variant="outlined"
-                                        InputProps={{
-                                          style: headerTableStyle,
-                                        }}
-                                        noWrap
-                                        InputLabelProps={{
-                                          style: { color: "#AAAAAA" },
-                                        }}
-                                        fullWidth
-                                        defaultValue={
-                                          detail.select.defaultvalue
-                                        }
-                                        onChange={detail.handle}
-                                        // onBlur={handleValidation(detail.dataCheck)}
-                                      />
-                                    ),
-                                  ]
-                                ) : detail.select.status === "option" ? (
-                                  <TextField
-                                    className={classes.root}
-                                    label={detail.label}
-                                    variant="outlined"
-                                    fullWidth
-                                    select
-                                    defaultValue={detail.select.defaultvalue}
-                                    SelectProps={{
-                                      native: true,
-                                    }}
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    // value={detail.select.defaultvalue}
-                                    onChange={detail.handle}
-                                    textOverflow="ellipsis"
-
-                                    // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
-                                  >
-                                    {detail.select.data}
-                                  </TextField>
-                                ) : detail.select.status === "check" ? (
-                                  <span>
-                                    {detail.select.defaultvalue === "Y" ? (
-                                      <FormControlLabel
-                                        control={
-                                          <Checkbox
-                                            defaultChecked={true}
-                                            color="primary"
-                                          />
-                                        }
-                                        label={detail.label}
-                                        labelPlacement="end"
-                                        onChange={detail.handle}
-                                      />
-                                    ) : (
-                                      <FormControlLabel
-                                        control={
-                                          <Checkbox
-                                            defaultChecked={false}
-                                            color="primary"
-                                          />
-                                        }
-                                        label={detail.label}
-                                        labelPlacement="end"
-                                        onChange={detail.handle}
-                                      />
-                                    )}
-                                  </span>
-                                ) : (
-                                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardDatePicker
+                                  //   className={classes.root}
+                                  //   variant="outlined"
+                                  //   label={detail.select.defaultvalue}
+                                  //   fullWidth
+                                  //   style={{
+                                  //     backgroundColor: "#EFEFEF",
+                                  //     borderColor: "white",
+                                  //   }}
+                                  //   // disabled={true}
+                                  //   value={detail.select.defaultvalue}
+                                  //   defaultValue={detail.select.defaultvalue}
+                                  //   onFocus={false}
+                                  // />
+                                  detail.select.status === "fillnolabel" ? (
+                                    <TextField
+                                      // error={handleValidation(detail.dataCheck)}
+                                      // error={
+                                      //   detail.dataCheck == null ||
+                                      //   detail.dataCheck == ""
+                                      //     ? true
+                                      //     : false
+                                      // }
+                                      // helperText={
+                                      //   detail.dataCheck == null ||
+                                      //   detail.dataCheck == ""
+                                      //     ? "This ib formation can't null"
+                                      //     : false
+                                      // }
+                                      // required={true}
+                                      type={detail.datatype}
                                       className={classes.root}
-                                      label={detail.label}
-                                      inputVariant="outlined"
+                                      // label={detail.label}
+                                      variant="outlined"
                                       InputProps={{
                                         style: headerTableStyle,
                                       }}
-                                      format="dd/MM/yyyy"
-                                      value={detail.select.data}
-                                      onChange={detail.handle}
+                                      noWrap
+                                      InputLabelProps={{
+                                        style: { color: "#AAAAAA" },
+                                      }}
                                       fullWidth
                                       defaultValue={detail.select.defaultvalue}
+                                      onChange={detail.handle}
                                     />
-                                  </MuiPickersUtilsProvider>
-                                )}
+                                  ) : detail.select.status === "fill" ? (
+                                    [
+                                      isRequired ? (
+                                        <TextField
+                                          error={
+                                            detail.dataCheck == null ||
+                                              detail.dataCheck === "" ||
+                                              detail.dataCheck === " "
+                                              ? true
+                                              : false
+                                          }
+                                          // error={detail.dataCheck}
+                                          helperText={
+                                            detail.dataCheck == null ||
+                                              detail.dataCheck === ""
+                                              ? `${detail.label} is Required`
+                                              : false
+                                          }
+                                          // required={true}
+                                          type={detail.dataType}
+                                          className={classes.root}
+                                          label={detail.label}
+                                          variant="outlined"
+                                          InputProps={{
+                                            style: headerTableStyle,
+                                          }}
+                                          noWrap
+                                          InputLabelProps={{
+                                            style: { color: "#AAAAAA" },
+                                          }}
+                                          fullWidth
+                                          defaultValue={
+                                            detail.select.defaultvalue
+                                          }
+                                          onChange={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
+                                        />
+                                      ) : (
+                                        <TextField
+                                          // error={
+                                          //   detail.dataCheck == null ||
+                                          //   detail.dataCheck === "" ||
+                                          //   detail.dataCheck === " "
+                                          //     ? true
+                                          //     : false
+                                          // }
+                                          // // error={detail.dataCheck}
+                                          // helperText={
+                                          //   detail.dataCheck == null ||
+                                          //   detail.dataCheck === ""
+                                          //     ? `${detail.label} is Required`
+                                          //     : false
+                                          // }
+                                          // required={true}
+                                          type={detail.dataType}
+                                          className={classes.root}
+                                          label={detail.label}
+                                          variant="outlined"
+                                          InputProps={{
+                                            style: headerTableStyle,
+                                          }}
+                                          noWrap
+                                          InputLabelProps={{
+                                            style: { color: "#AAAAAA" },
+                                          }}
+                                          fullWidth
+                                          defaultValue={
+                                            detail.select.defaultvalue
+                                          }
+                                          onChange={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
+                                        />
+                                      ),
+                                    ]
+                                  ) : detail.select.status === "option" ? (
+                                    <TextField
+                                      className={classes.root}
+                                      label={detail.label}
+                                      variant="outlined"
+                                      fullWidth
+                                      select
+                                      defaultValue={detail.select.defaultvalue}
+                                      SelectProps={{
+                                        native: true,
+                                      }}
+                                      InputProps={{
+                                        style: headerTableStyle,
+                                      }}
+                                      // value={detail.select.defaultvalue}
+                                      onChange={detail.handle}
+                                      textOverflow="ellipsis"
+
+                                    // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
+                                    >
+                                      {detail.select.data}
+                                    </TextField>
+                                  ) : detail.select.status === "check" ? (
+                                    <span>
+                                      {detail.select.defaultvalue === "Y" ? (
+                                        <FormControlLabel
+                                          control={
+                                            <Checkbox
+                                              defaultChecked={true}
+                                              color="primary"
+                                            />
+                                          }
+                                          label={detail.label}
+                                          labelPlacement="end"
+                                          onChange={detail.handle}
+                                        />
+                                      ) : (
+                                        <FormControlLabel
+                                          control={
+                                            <Checkbox
+                                              defaultChecked={false}
+                                              color="primary"
+                                            />
+                                          }
+                                          label={detail.label}
+                                          labelPlacement="end"
+                                          onChange={detail.handle}
+                                        />
+                                      )}
+                                    </span>
+                                  ) : (
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                      <KeyboardDatePicker
+                                        className={classes.root}
+                                        label={detail.label}
+                                        inputVariant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        format="dd/MM/yyyy"
+                                        value={detail.select.data}
+                                        onChange={detail.handle}
+                                        fullWidth
+                                        defaultValue={detail.select.defaultvalue}
+                                      />
+                                    </MuiPickersUtilsProvider>
+                                  )}
                               </Grid>
                             ))}
                           </Grid>
