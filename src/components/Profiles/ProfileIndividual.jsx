@@ -2252,7 +2252,7 @@ export const ProfileIndividual = (props) => {
       updatelist()
     }
     getconfig();
-  }, [props.trigger,communicationDatas, relationDatas]);
+  }, [props.trigger]);
 
   const handleExpend = (id, expend) => {
     let index = list.findIndex((x) => x.id === id);
