@@ -34,6 +34,8 @@ import { getconfigurationbypropertycode } from "../../services/user.service";
 import { nextComponent } from "../../middleware/action";
 import DateFnsUtils from "@date-io/date-fns";
 import {
+  getCompanyProfileCommunication,
+  getCompanyProfileRelation,
   getCompanyProfile,
   getCompanyProfileById,
   postCompanyProfile,
@@ -363,8 +365,8 @@ export const ProfileCompany = (props) => {
     props.editdata != null ? props.editdata[0].iata : ""
   );
   const [Status, setStatus] = React.useState(
-    props.editdata != null ? props.editdata[0].statuscode : false
-    );
+    props.editdata != null ? props.editdata[0].statuscode : true
+  );
   const [StreetAddress, setStreetAddress] = React.useState(
     props.editdata != null ? props.editdata[0].address : ""
   );
@@ -373,7 +375,7 @@ export const ProfileCompany = (props) => {
   );
   const [City, setCity] = React.useState(
     props.editdata != null ? props.editdata[0].city : ""
-    );
+  );
   const [State, setState] = React.useState(
     props.editdata != null ? props.editdata[0].stateprovince : ""
   );
@@ -393,30 +395,30 @@ export const ProfileCompany = (props) => {
     props.editdata != null ? props.editdata[0].billingstateprovince : ""
   );
   const [BPostal, setBPostal] = React.useState(
-    props.editdata != null ? props.editdata[0].billingpostalcode : "" 
+    props.editdata != null ? props.editdata[0].billingpostalcode : ""
   );
   const [TaxID, setTaxID] = React.useState(
-    props.editdata != null ? props.editdata[0].taxid : "" 
+    props.editdata != null ? props.editdata[0].taxid : ""
   );
   const [TaxID2, setTaxID2] = React.useState(
-    props.editdata != null ? props.editdata[0].taxid2 : "" 
+    props.editdata != null ? props.editdata[0].taxid2 : ""
   );
 
   const [CreditCardNumber, setCreditCardNumber] = React.useState(
-    props.editdata != null ? props.editdata[0].creditcardid : "" 
+    props.editdata != null ? props.editdata[0].creditcardid : ""
   );
   const [OutstandingAmount, setOutstandingAmount] = React.useState(
-    props.editdata != null ? props.editdata[0].outstandingamout : "" 
+    props.editdata != null ? props.editdata[0].outstandingamout : ""
   );
   const [FloatingDepositionAmount, setFloatingDepositionAmount] =
     React.useState(
-      props.editdata != null ? props.editdata[0].floatingdepositamount : "" 
+      props.editdata != null ? props.editdata[0].floatingdepositamount : ""
     );
   const [ARNumber, setARNumber] = React.useState(
-    props.editdata != null ? props.editdata[0].ar_number : "" 
+    props.editdata != null ? props.editdata[0].ar_number : ""
   );
   const [SalesUserName, setSalesUserName] = React.useState(
-    props.editdata != null ? props.editdata[0].salesusername : "" 
+    props.editdata != null ? props.editdata[0].salesusername : ""
   );
   const [Industry, setIndustry] = React.useState(
     props.editdata != null ? props.editdata[0].industrycode : "Insurrance"
@@ -456,812 +458,968 @@ export const ProfileCompany = (props) => {
   //   console.log("name2:",name2);
   // },[name2])
 
-  const [demoData, setDemoData] = React.useState([
-    {
-      id: "1",
-      title: "Company Account",
-      expend: true,
-      content: [
-        {
-          id: 1,
-          label: "Company Name1",
-          xl: 5,
-          md: 5,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue: props.editdata != null ? props.editdata[0].name : "",
-          },
-          handle: (e) => setnameOne(e.target.value),
-        },
-        {
-          id: 2,
-          label: "Company Name2",
-          xl: 5,
-          md: 5,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue: props.editdata != null ? props.editdata[0].name2 : "",
-          },
-          handle: (e) => setnameTwo(e.target.value),
-        },
-        {
-          id: 3,
-          label: "Company Type",
-          xl: 2,
-          md: 2,
-          xs: 12,
-          select: {
-            status: "option",
-            data: [{ label: "Government" }, { label: "Association" }].map(
-              (option) => (
+  // const [demoData, setDemoData] = React.useState(
+  const [list, setList] = React.useState([]);
+  React.useEffect(() => {
+    async function getconfig() {
+      let getCommunicationsDatas = {};
+      let getcomunication = [];
+      let getrelation = [];
+      console.log("demostate");
+      // let getconfigdata = await getconfigurationbypropertycode(
+      //   sessionStorage.getItem("auth"),
+      //   pageProperty
+      // );
+      // console.log(getconfigdata);
+      // let configdata = getconfigdata.content[getconfigdata.content.length - 1];
+      // let optionTitle = await getlist(configdata, "PCINDTT");
+      // let optiongender = await getlist(configdata, "PCINDGD");
+      // let relation = await getlist(configdata, "PCINDRL");
+      // let communication = await getlist(configdata, "PCINDCM");
+      // setOptionrelation(relation);
+      // setOptioncommunication(communication);
+      // console.log("optioncommunication", optioncommunication);
+      if (props.editdata != null) {
+        console.log("props.editdata", props.editdata)
+        let getCommunications = await getCompanyProfileCommunication(
+          sessionStorage.getItem("auth"),
+          props.editdata[0].id
+        );
+        let getRelations = await getCompanyProfileRelation(
+          sessionStorage.getItem("auth"),
+          props.editdata[0].id
+        );
+        console.log("getCommunications.contents", getCommunications.contents)
+        let count = 3;
+        getCommunications.contents[0].forEach((element) => {
+          if (element.communication == "email") {
+            getCommunicationsDatas.email = element.value
+          } else if (element.communication == "mobile") {
+            getCommunicationsDatas.mobile = element.value
+          } else {
+            getcomunication.push({
+              id: count,
+              label: "Choose a communication",
+              xl: 3,
+              md: 3,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optioncommunication.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                    selected={option.label == element.communication}
+                  // defaultValue={element.communication}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) => setCommunicationDatas(prev => ({
+                ...prev,
+                [count]: element.communication
+              })),
+            });
+            getcomunication.push({
+              id: count + 1,
+              label: "communication",
+              xl: 9,
+              md: 9,
+              xs: 6,
+              select: {
+                status: "fillnolabel",
+                data: "",
+                defaultvalue: element.value
+              },
+              handle: (e) => setCommunicationDatas(prev => ({
+                ...prev,
+                [count + 1]: element.value
+              })),
+            });
+            count = count + 2;
+          }
+        }
+        );
+
+        let relationid = 1;
+        console.log(getRelations.contents[0])
+
+        getRelations.contents[0].forEach((element) => {
+          getrelation.push({
+            id: relationid,
+            label: "Name Type",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "option",
+              data: optionrelation.map((option) => (
                 <option
                   style={headerTableStyle}
-                  key={option.label}
-                  value={option.label}
+                  key={option.value}
+                  value={option.value}
+                  selected={option.label == element.relation}
                 >
                   {option.label}
                 </option>
-              )
-            ),
-            defaultvalue:
-              props.editdata != null
-                ? props.editdata[0].companytypecode
-                : "Government",
-          },
-          handle: (e) => setCompanyTypeCode(e.target.value),
-        },
-        {
-          id: 4,
-          label: "Abbreviation",
-          xl: 3,
-          md: 3,
-          xs: 6,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].abbreviation : "",
-          },
-          handle: (e) => setAbbreviation(e.target.value),
-        },
-        {
-          id: 5,
-          label: "Hotel Origin",
-          xl: 4,
-          md: 4,
-          xs: 12,
-          select: {
-            status: "option",
-            data: [{ label: "SPJ1" }, { label: "SPJ2" }].map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.label}
-                value={option.label}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].property : "SPJ1",
-          },
-          handle: (e) => setProperty(e.target.value),
-        },
-        {
-          id: 6,
-          label: "Guarantee Method",
-          xl: 4,
-          md: 4,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null
-                ? props.editdata[0].guaranteemethodcode
-                : "",
-          },
-          handle: (e) => setGuaranteeMethodCode(e.target.value),
-        },
-        {
-          id: 7,
-          label: "Currency",
-          xl: 3,
-          md: 3,
-          xs: 12,
-          select: {
-            status: "option",
-            data: [{ label: "THB" }, { label: "USD" }].map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.label}
-                value={option.label}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].currencycode : "THB",
-          },
-          handle: (e) => setCurrency(e.target.value),
-        },
-        {
-          id: 8,
-          label: "Credit Rating",
-          xl: 3,
-          md: 3,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optioncreditrating.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.label}
-                value={option.label}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue:
-              props.editdata != null
-                ? props.editdata[0].creditrating
-                : optioncreditrating[0].value,
-          },
-          handle: (e) => setCreditRating(e.target.value),
-        },
-        {
-          id: 9,
-          label: "IATA",
-          xl: 3,
-          md: 3,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue: props.editdata != null ? props.editdata[0].iata : "",
-          },
-          handle: (e) => setiata(e.target.value),
-        },
-        {
-          id: 10,
-          label: "Status",
-          xl: 3,
-          md: 3,
-          xs: 12,
-          select: {
-            status: "status",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].statuscode : " ",
-          },
-          handle: (e) => setStatus(e.target.checked),
-        },
-      ],
-    },
-    {
-      id: "2",
-      title: "Address",
-      expend: true,
-      content: [
-        {
-          id: 1,
-          label: "Address",
-          xl: 12,
-          md: 12,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].address : "",
-          },
-          handle: (e) => setStreetAddress(e.target.value),
-        },
-        {
-          id: 5,
-          label: "Choose a country",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optioncountry.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue:
-              props.editdata != null
-                ? props.editdata[0].countrycode
-                : "Thailand",
-          },
-          handle: (e) => setChooseacountry(e.target.value),
-        },
-        {
-          id: 6,
-          label: "City",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue: props.editdata != null ? props.editdata[0].city : "",
-          },
-          handle: (e) => setCity(e.target.value),
-        },
-        {
-          id: 7,
-          label: "State",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].stateprovince : "",
-          },
-          handle: (e) => setState(e.target.value),
-        },
-        {
-          id: 8,
-          label: "Postal",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].postalcode : "",
-          },
-          handle: (e) => setPostal(e.target.value),
-        },
-      ],
-    },
-    {
-      id: "3",
-      title: "Billing Address",
-      expend: true,
-      content: [
-        {
-          id: 1,
-          label: "Address",
-          xl: 12,
-          md: 12,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].billingaddress : "",
-          },
-          handle: (e) => setBStreetAddress(e.target.value),
-        },
-        {
-          id: 5,
-          label: "Choose a country",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: optioncountry.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue:
-              props.editdata != null
-                ? props.editdata[0].billingcountrycode
-                : "Thailand",
-          },
-          handle: (e) => setBChooseacountry(e.target.value),
-        },
-        {
-          id: 6,
-          label: "City",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].billingcity : "",
-          },
-          handle: (e) => setBCity(e.target.value),
-        },
-        {
-          id: 7,
-          label: "State",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null
-                ? props.editdata[0].billingstateprovince
-                : "",
-          },
-          handle: (e) => setBState(e.target.value),
-        },
-        {
-          id: 8,
-          label: "Postal",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].billingpostalcode : "",
-          },
-          handle: (e) => setBPostal(e.target.value),
-        },
-        {
-          id: 9,
-          label: "TaxID",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue: props.editdata != null ? props.editdata[0].taxid : "",
-          },
-          handle: (e) => setTaxID(e.target.value),
-        },
-        {
-          id: 10,
-          label: "TaxID2",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].taxid2 : "",
-          },
-          handle: (e) => setTaxID2(e.target.value),
-        },
-      ],
-    },
-    {
-      id: "4",
-      title: "Communication",
-      expend: true,
-      content: [
-        {
-          id: 99,
-          label: "Phone Number",
-          xl: 2,
-          md: 2,
-          xs: 6,
-          select: {
-            status: "AddComunication",
-            data: "+ Add",
-          },
-        },
-      ],
-    },
-    {
-      id: "5",
-      title: "Relationship (Internal)",
-      expend: true,
-      content: [
-        {
-          id: 99,
-          label: "Relation",
-          xl: 2,
-          md: 2,
-          xs: 6,
-          select: {
-            status: "AddRelation",
-            data: "+ Add",
-          },
-          // handle: (e) => handleAddComunication(e),
-        },
-      ],
-    },
-    {
-      id: "6",
-      title: "A/R Number",
-      expend: true,
-      content: [
-        // {
-        //   id: 1,
-        //   label: "IATA",
-        //   xl: 3,
-        //   md: 3,
-        //   xs: 12,
-        //   select: {
-        //     status: "fill",
-        //     data: "",
-        //   },
-        //   handle: (e) => handleData(e),
-        // },
-        {
-          id: 2,
-          label: "Credit Card Number",
-          xl: 3,
-          md: 3,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].creditcardid : "",
-          },
-          handle: (e) => setCreditCardNumber(e.target.value),
-        },
-        {
-          id: 3,
-          label: "Outstanding Amount",
-          xl: 3,
-          md: 3,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].outstandingamout : "",
-          },
-          handle: (e) => setOutstandingAmount(e.target.value),
-        },
-        {
-          id: 4,
-          label: "Floating Deposition Amount",
-          xl: 3,
-          md: 3,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null
-                ? props.editdata[0].floatingdepositamount
-                : "",
-          },
-          handle: (e) => setFloatingDepositionAmount(e.target.value),
-        },
-        {
-          id: 5,
-          label: "AR Number",
-          xl: 3,
-          md: 3,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].ar_number : "",
-          },
-          handle: (e) => setARNumber(e.target.value),
-        },
-      ],
-    },
-    // {
-    //   id: "6",
-    //   title: "More Information",
-    //   expend: true,
-    //   content: [
-    //     {
-    //       id: 1,
-    //       label: "Tax ID",
-    //       xl: 3,
-    //       md: 6,
-    //       xs: 12,
-    //       select: {
-    //         status: "fill",
-    //         data: "",
-    //       },
-    //       handle: (e) => handleData(e),
-    //     },
-    //     {
-    //       id: 2,
-    //       label: "Billing Instruction",
-    //       xl: 3,
-    //       md: 6,
-    //       xs: 12,
-    //       select: {
-    //         status: "option",
-    //         data: optiondata.map((option) => (
-    //           <option
-    //             style={headerTableStyle}
-    //             key={option.value}
-    //             value={option.value}
-    //           >
-    //             {option.label}
-    //           </option>
-    //         )),
-    //       },
-    //       handle: (e) => handleData(e),
-    //     },
-    //   ],
-    // },
+              )),
+            },
+            handle: (e) => setRelationDatas(prev => ({
+              ...prev,
+              [relationid]: element.relation
+            }))
+          });
+          getrelation.push({
+            id: relationid + 1,
+            label: "Name",
+            xl: 4,
+            md: 4,
+            xs: 6,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: element.value
+            },
+            handle: (e) => setRelationDatas(prev => ({
+              ...prev,
+              [relationid + 1]: element.value
+            }))
+          });
+          getrelation.push({
+            id: relationid + 2,
+            label: "Note",
+            xl: 6,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: element.note
+            },
+            handle: (e) => setRelationDatas(prev => ({
+              ...prev,
+              [relationid + 2]: element.note
+            }))
+          });
+          relationid = relationid + 3;
+        }
+        );
+        console.log("getrelation", getrelation)
 
-    {
-      id: "7",
-      title: "Rate/Contract Information",
-      expend: false,
-      content: [
+      }
+
+      setList([
         {
-          id: 1,
-          label: "Negotiated Rates Only",
-          xl: 6,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "check",
-            data: "",
-            defaultvalue:
-              props.editdata != null
-                ? props.editdata[0].negotiatedratesonly
-                : "",
-          },
-          handle: (e) => setnegotiatedratesonly(e.target.checked),
+          id: "1",
+          title: "Company Account",
+          expend: true,
+          content: [
+            {
+              id: 1,
+              label: "Company Name1",
+              xl: 5,
+              md: 5,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue: props.editdata != null ? props.editdata[0].name : "",
+              },
+              handle: (e) => setnameOne(e.target.value),
+            },
+            {
+              id: 2,
+              label: "Company Name2",
+              xl: 5,
+              md: 5,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue: props.editdata != null ? props.editdata[0].name2 : "",
+              },
+              handle: (e) => setnameTwo(e.target.value),
+            },
+            {
+              id: 3,
+              label: "Company Type",
+              xl: 2,
+              md: 2,
+              xs: 12,
+              select: {
+                status: "option",
+                data: [{ label: "Government" }, { label: "Association" }].map(
+                  (option) => (
+                    <option
+                      style={headerTableStyle}
+                      key={option.label}
+                      value={option.label}
+                    >
+                      {option.label}
+                    </option>
+                  )
+                ),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata[0].companytypecode
+                    : "Government",
+              },
+              handle: (e) => setCompanyTypeCode(e.target.value),
+            },
+            {
+              id: 4,
+              label: "Abbreviation",
+              xl: 3,
+              md: 3,
+              xs: 6,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].abbreviation : "",
+              },
+              handle: (e) => setAbbreviation(e.target.value),
+            },
+            {
+              id: 5,
+              label: "Hotel Origin",
+              xl: 4,
+              md: 4,
+              xs: 12,
+              select: {
+                status: "option",
+                data: [{ label: "SPJ1" }, { label: "SPJ2" }].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].property : "SPJ1",
+              },
+              handle: (e) => setProperty(e.target.value),
+            },
+            {
+              id: 6,
+              label: "Guarantee Method",
+              xl: 4,
+              md: 4,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata[0].guaranteemethodcode
+                    : "",
+              },
+              handle: (e) => setGuaranteeMethodCode(e.target.value),
+            },
+            {
+              id: 7,
+              label: "Currency",
+              xl: 3,
+              md: 3,
+              xs: 12,
+              select: {
+                status: "option",
+                data: [{ label: "THB" }, { label: "USD" }].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].currencycode : "THB",
+              },
+              handle: (e) => setCurrency(e.target.value),
+            },
+            {
+              id: 8,
+              label: "Credit Rating",
+              xl: 3,
+              md: 3,
+              xs: 12,
+              select: {
+                status: "option",
+                data: optioncreditrating.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata[0].creditrating
+                    : optioncreditrating[0].value,
+              },
+              handle: (e) => setCreditRating(e.target.value),
+            },
+            {
+              id: 9,
+              label: "IATA",
+              xl: 3,
+              md: 3,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue: props.editdata != null ? props.editdata[0].iata : "",
+              },
+              handle: (e) => setiata(e.target.value),
+            },
+            {
+              id: 10,
+              label: "Status",
+              xl: 3,
+              md: 3,
+              xs: 12,
+              select: {
+                status: "status",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].statuscode : " ",
+              },
+              handle: (e) => setStatus(e.target.checked),
+            },
+          ],
         },
         {
-          id: 2,
-          label: "Rate Contract",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].ratecontractcode : "",
-          },
-          handle: (e) => setratecontractcode(e.target.value),
+          id: "2",
+          title: "Address",
+          expend: true,
+          content: [
+            {
+              id: 1,
+              label: "Address",
+              xl: 12,
+              md: 12,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].address : "",
+              },
+              handle: (e) => setStreetAddress(e.target.value),
+            },
+            {
+              id: 5,
+              label: "Choose a country",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata[0].countrycode
+                    : "Thailand",
+              },
+              handle: (e) => setChooseacountry(e.target.value),
+            },
+            {
+              id: 6,
+              label: "City",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue: props.editdata != null ? props.editdata[0].city : "",
+              },
+              handle: (e) => setCity(e.target.value),
+            },
+            {
+              id: 7,
+              label: "State",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].stateprovince : "",
+              },
+              handle: (e) => setState(e.target.value),
+            },
+            {
+              id: 8,
+              label: "Postal",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].postalcode : "",
+              },
+              handle: (e) => setPostal(e.target.value),
+            },
+          ],
         },
-      ],
-    },
-    {
-      id: "8",
-      title: "Sales Information",
-      expend: false,
-      content: [
         {
-          id: 1,
-          label: "Sales User Name",
-          xl: 6,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].salesusername : "",
-          },
-          handle: (e) => setSalesUserName(e.target.value),
+          id: "3",
+          title: "Billing Address",
+          expend: true,
+          content: [
+            {
+              id: 1,
+              label: "Address",
+              xl: 12,
+              md: 12,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].billingaddress : "",
+              },
+              handle: (e) => setBStreetAddress(e.target.value),
+            },
+            {
+              id: 5,
+              label: "Choose a country",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "option",
+                data: optioncountry.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata[0].billingcountrycode
+                    : "Thailand",
+              },
+              handle: (e) => setBChooseacountry(e.target.value),
+            },
+            {
+              id: 6,
+              label: "City",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].billingcity : "",
+              },
+              handle: (e) => setBCity(e.target.value),
+            },
+            {
+              id: 7,
+              label: "State",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata[0].billingstateprovince
+                    : "",
+              },
+              handle: (e) => setBState(e.target.value),
+            },
+            {
+              id: 8,
+              label: "Postal",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].billingpostalcode : "",
+              },
+              handle: (e) => setBPostal(e.target.value),
+            },
+            {
+              id: 9,
+              label: "TaxID",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue: props.editdata != null ? props.editdata[0].taxid : "",
+              },
+              handle: (e) => setTaxID(e.target.value),
+            },
+            {
+              id: 10,
+              label: "TaxID2",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].taxid2 : "",
+              },
+              handle: (e) => setTaxID2(e.target.value),
+            },
+          ],
         },
         {
-          id: 2,
-          label: "Industry",
-          xl: 2,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: [
-              { label: "Insurrance" },
-              { label: "Government" },
-              { label: "Educcation" },
-            ].map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.label}
-                value={option.label}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue:
-              props.editdata != null
-                ? props.editdata[0].industrycode
-                : "Insurrance",
-          },
-          handle: (e) => setIndustry(e.target.value),
+          id: "4",
+          title: "Communication",
+          expend: true,
+          content: [
+            ...getcomunication,
+            {
+              id: 99,
+              label: "Phone Number",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "AddComunication",
+                data: "+ Add",
+              },
+            },
+          ],
+        },
+        {
+          id: "5",
+          title: "Relationship (Internal)",
+          expend: true,
+          content: [
+            ...getrelation,
+            {
+              id: 99,
+              label: "Relation",
+              xl: 2,
+              md: 2,
+              xs: 6,
+              select: {
+                status: "AddRelation",
+                data: "+ Add",
+              },
+              // handle: (e) => handleAddComunication(e),
+            },
+          ],
+        },
+        {
+          id: "6",
+          title: "A/R Number",
+          expend: true,
+          content: [
+            // {
+            //   id: 1,
+            //   label: "IATA",
+            //   xl: 3,
+            //   md: 3,
+            //   xs: 12,
+            //   select: {
+            //     status: "fill",
+            //     data: "",
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            {
+              id: 2,
+              label: "Credit Card Number",
+              xl: 3,
+              md: 3,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].creditcardid : "",
+              },
+              handle: (e) => setCreditCardNumber(e.target.value),
+            },
+            {
+              id: 3,
+              label: "Outstanding Amount",
+              xl: 3,
+              md: 3,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].outstandingamout : "",
+              },
+              handle: (e) => setOutstandingAmount(e.target.value),
+            },
+            {
+              id: 4,
+              label: "Floating Deposition Amount",
+              xl: 3,
+              md: 3,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata[0].floatingdepositamount
+                    : "",
+              },
+              handle: (e) => setFloatingDepositionAmount(e.target.value),
+            },
+            {
+              id: 5,
+              label: "AR Number",
+              xl: 3,
+              md: 3,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].ar_number : "",
+              },
+              handle: (e) => setARNumber(e.target.value),
+            },
+          ],
         },
         // {
-        //   id: 3,
-        //   label: "IATA",
-        //   xl: 3,
-        //   md: 6,
-        //   xs: 12,
-        //   select: {
-        //     status: "fill",
-        //     data: ""
-        //   },
-        //   handle: (e) => handleData(e),
-        // },
-        {
-          id: 4,
-          label: "Market Segment",
-          xl: 4,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.label}
-                value={option.label}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue:
-              props.editdata != null
-                ? props.editdata[0].marketsegmentcode
-                : "Code1",
-          },
-          handle: (e) => setMarketSegment(e.target.value),
-        },
-        {
-          id: 5,
-          label: "Source Of Business",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.label}
-                value={option.label}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue:
-              props.editdata != null
-                ? props.editdata[0].sourceofbusinesscode
-                : "Code1",
-          },
-          handle: (e) => setSourceOfBusiness(e.target.value),
-        },
-        {
-          id: 6,
-          label: "Track Code",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.label}
-                value={option.label}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].trackcode : "Code1",
-          },
-          handle: (e) => setTrackCode(e.target.value),
-        },
-        {
-          id: 7,
-          label: "Reason For Stay",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.label}
-                value={option.label}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].reasonforstaycode : "Code1",
-          },
-          handle: (e) => setReasonForStay(e.target.value),
-        },
-        {
-          id: 8,
-          label: "Geographic",
-          xl: 3,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "option",
-            data: [
-              { label: "SEA" },
-              { label: "EUROPE" },
-              { label: "CHINA" },
-              { label: "AFRICA" },
-            ].map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.label}
-                value={option.label}
-              >
-                {option.label}
-              </option>
-            )),
-            defaultvalue:
-              props.editdata != null ? props.editdata[0].geographiccode : "SEA",
-          },
-          handle: (e) => setGeographic(e.target.value),
-        },
-        // ,
-        // {
-        //   id: "1",
-        //   title: "Commission",
+        //   id: "6",
+        //   title: "More Information",
         //   expend: true,
         //   content: [
         //     {
         //       id: 1,
-        //       label: "Commission Flag",
+        //       label: "Tax ID",
         //       xl: 3,
-        //       md: 3,
+        //       md: 6,
         //       xs: 12,
         //       select: {
-        //         status: "option",
-        //         data: [{ label: "Pay" }, { label: "Not Pay" }].map((option) => (
-        //           <option
-        //             style={headerTableStyle}
-        //             key={option.label}
-        //             value={option.label}
-        //           >
-        //             {option.label}
-        //           </option>
-        //         )),
-        //       }
+        //         status: "fill",
+        //         data: "",
+        //       },
+        //       handle: (e) => handleData(e),
         //     },
         //     {
         //       id: 2,
-        //       label: "Commission Type",
+        //       label: "Billing Instruction",
         //       xl: 3,
-        //       md: 3,
+        //       md: 6,
         //       xs: 12,
         //       select: {
         //         status: "option",
-        //         data: [{ label: "Percent" }, { label: "Amount" }].map((option) => (
+        //         data: optiondata.map((option) => (
         //           <option
         //             style={headerTableStyle}
-        //             key={option.label}
-        //             value={option.label}
+        //             key={option.value}
+        //             value={option.value}
         //           >
         //             {option.label}
         //           </option>
         //         )),
         //       },
+        //       handle: (e) => handleData(e),
         //     },
-        //   ]
-        // }
-      ],
-    },
-  ]);
-  const [list, setList] = React.useState(demoData);
+        //   ],
+        // },
+
+        {
+          id: "7",
+          title: "Rate/Contract Information",
+          expend: false,
+          content: [
+            {
+              id: 1,
+              label: "Negotiated Rates Only",
+              xl: 6,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "check",
+                data: "",
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata[0].negotiatedratesonly
+                    : "",
+              },
+              handle: (e) => setnegotiatedratesonly(e.target.checked),
+            },
+            {
+              id: 2,
+              label: "Rate Contract",
+              xl: 2,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].ratecontractcode : "",
+              },
+              handle: (e) => setratecontractcode(e.target.value),
+            },
+          ],
+        },
+        {
+          id: "8",
+          title: "Sales Information",
+          expend: false,
+          content: [
+            {
+              id: 1,
+              label: "Sales User Name",
+              xl: 6,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "fill",
+                data: "",
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].salesusername : "",
+              },
+              handle: (e) => setSalesUserName(e.target.value),
+            },
+            {
+              id: 2,
+              label: "Industry",
+              xl: 2,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "option",
+                data: [
+                  { label: "Insurrance" },
+                  { label: "Government" },
+                  { label: "Educcation" },
+                ].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata[0].industrycode
+                    : "Insurrance",
+              },
+              handle: (e) => setIndustry(e.target.value),
+            },
+            // {
+            //   id: 3,
+            //   label: "IATA",
+            //   xl: 3,
+            //   md: 6,
+            //   xs: 12,
+            //   select: {
+            //     status: "fill",
+            //     data: ""
+            //   },
+            //   handle: (e) => handleData(e),
+            // },
+            {
+              id: 4,
+              label: "Market Segment",
+              xl: 4,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "option",
+                data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata[0].marketsegmentcode
+                    : "Code1",
+              },
+              handle: (e) => setMarketSegment(e.target.value),
+            },
+            {
+              id: 5,
+              label: "Source Of Business",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "option",
+                data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null
+                    ? props.editdata[0].sourceofbusinesscode
+                    : "Code1",
+              },
+              handle: (e) => setSourceOfBusiness(e.target.value),
+            },
+            {
+              id: 6,
+              label: "Track Code",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "option",
+                data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].trackcode : "Code1",
+              },
+              handle: (e) => setTrackCode(e.target.value),
+            },
+            {
+              id: 7,
+              label: "Reason For Stay",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "option",
+                data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].reasonforstaycode : "Code1",
+              },
+              handle: (e) => setReasonForStay(e.target.value),
+            },
+            {
+              id: 8,
+              label: "Geographic",
+              xl: 3,
+              md: 6,
+              xs: 12,
+              select: {
+                status: "option",
+                data: [
+                  { label: "SEA" },
+                  { label: "EUROPE" },
+                  { label: "CHINA" },
+                  { label: "AFRICA" },
+                ].map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )),
+                defaultvalue:
+                  props.editdata != null ? props.editdata[0].geographiccode : "SEA",
+              },
+              handle: (e) => setGeographic(e.target.value),
+            },
+            // ,
+            // {
+            //   id: "1",
+            //   title: "Commission",
+            //   expend: true,
+            //   content: [
+            //     {
+            //       id: 1,
+            //       label: "Commission Flag",
+            //       xl: 3,
+            //       md: 3,
+            //       xs: 12,
+            //       select: {
+            //         status: "option",
+            //         data: [{ label: "Pay" }, { label: "Not Pay" }].map((option) => (
+            //           <option
+            //             style={headerTableStyle}
+            //             key={option.label}
+            //             value={option.label}
+            //           >
+            //             {option.label}
+            //           </option>
+            //         )),
+            //       }
+            //     },
+            //     {
+            //       id: 2,
+            //       label: "Commission Type",
+            //       xl: 3,
+            //       md: 3,
+            //       xs: 12,
+            //       select: {
+            //         status: "option",
+            //         data: [{ label: "Percent" }, { label: "Amount" }].map((option) => (
+            //           <option
+            //             style={headerTableStyle}
+            //             key={option.label}
+            //             value={option.label}
+            //           >
+            //             {option.label}
+            //           </option>
+            //         )),
+            //       },
+            //     },
+            //   ]
+            // }
+          ],
+        },
+      ]);
+    }
+    getconfig();
+  }, []);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -1407,7 +1565,7 @@ export const ProfileCompany = (props) => {
       let index = list.findIndex((x) => x.title == "Communication");
       let communications = list[index];
       // let index = list.findIndex((x) => x.title == "Communication");
-      let relations = demoData[index];
+      let relations = list[index];
       let req = {
         recordtype: "C",
         nameOne: nameOne,
@@ -1663,30 +1821,30 @@ export const ProfileCompany = (props) => {
     }
   }, [props.action]);
 
-  const handleData = (e) => {};
+  const handleData = (e) => { };
 
   const handleExpend = (id, expend) => {
-    let index = demoData.findIndex((x) => x.id === id);
-  
-    console.log(Object.assign({}, demoData[index], { expend: !expend }));
+    let index = list.findIndex((x) => x.id === id);
+
+    console.log(Object.assign({}, list[index], { expend: !expend }));
     if (index === -1) return;
     else {
-      let new_data = demoData[index];
+      let new_data = list[index];
       new_data.expend = !expend;
-      setDemoData([
-        ...demoData.slice(0, index),
+      setList([
+        ...list.slice(0, index),
         new_data,
-        ...demoData.slice(index + 1),
+        ...list.slice(index + 1),
       ]);
     }
   };
 
   const handleAddComunication = async (id) => {
-    
-    let index = demoData.findIndex((x) => x.id === id);
+
+    let index = list.findIndex((x) => x.id === id);
     if (index === -1) return;
     else {
-      let comunication = demoData[index];
+      let comunication = list[index];
       delete comunication.content[comunication.content.length - 1];
       let newid = await comunication.content.reduce(
         (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
@@ -1696,7 +1854,7 @@ export const ProfileCompany = (props) => {
         ...prev,
         [newid + 1]: optioncommunication[0].value,
       }));
-      console.log("communicationDatas:",communicationDatas);
+      console.log("communicationDatas:", communicationDatas);
       comunication.content.push({
         id: newid + 1,
         label: "Choose a communication",
@@ -1715,11 +1873,11 @@ export const ProfileCompany = (props) => {
             </option>
           )),
         },
-        handle:  (e) =>
-        setCommunicationDatas((prev) => ({
-          ...prev,
-          [newid + 1]: e.target.value,
-        })),
+        handle: (e) =>
+          setCommunicationDatas((prev) => ({
+            ...prev,
+            [newid + 1]: e.target.value,
+          })),
       });
       comunication.content.push({
         id: newid + 2,
@@ -1732,10 +1890,10 @@ export const ProfileCompany = (props) => {
           data: "",
         },
         handle: (e) =>
-        setCommunicationDatas((prev) => ({
-          ...prev,
-          [newid + 2]: e.target.value,
-        })),
+          setCommunicationDatas((prev) => ({
+            ...prev,
+            [newid + 2]: e.target.value,
+          })),
       });
       comunication.content.push({
         id: 99,
@@ -1748,21 +1906,21 @@ export const ProfileCompany = (props) => {
           data: "+ Add",
         },
       });
-      setDemoData([
-        ...demoData.slice(0, index),
+      setList([
+        ...list.slice(0, index),
         comunication,
-        ...demoData.slice(index + 1),
+        ...list.slice(index + 1),
       ]);
-      console.log("communicationDatas:",communicationDatas);
+      console.log("communicationDatas:", communicationDatas);
     }
-    console.log("demoData[index]:",demoData[index]);
+    console.log("demoData[index]:", list[index]);
   };
 
   const handleAddRelation = async (id) => {
-    let index = demoData.findIndex((x) => x.id === id);
+    let index = list.findIndex((x) => x.id === id);
     if (index === -1) return;
     else {
-      let relation = demoData[index];
+      let relation = list[index];
       delete relation.content[relation.content.length - 1];
       let newid = await relation.content.reduce(
         (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
@@ -1774,9 +1932,9 @@ export const ProfileCompany = (props) => {
         [newid + 2]: optionrelation[0].label,
         [newid + 3]: "",
       }));
-    
+
       relation.content.push({
-        id: newid + 1,
+        id: newid + 2,
         label: "Name Type",
         xl: 2,
         md: 2,
@@ -1794,14 +1952,14 @@ export const ProfileCompany = (props) => {
           )),
         },
         handle: (e) =>
-        setRelationDatas((prev) => ({
-          ...prev,
-          [newid + 1]: e.target.value,
-        })),
+          setRelationDatas((prev) => ({
+            ...prev,
+            [newid + 2]: e.target.value,
+          })),
       });
 
       relation.content.push({
-        id: newid + 2,
+        id: newid + 1,
         label: "Name",
         xl: 4,
         md: 4,
@@ -1811,10 +1969,10 @@ export const ProfileCompany = (props) => {
           data: "",
         },
         handle: (e) =>
-        setRelationDatas((prev) => ({
-          ...prev,
-          [newid + 2]: e.target.value,
-        })),
+          setRelationDatas((prev) => ({
+            ...prev,
+            [newid + 1]: e.target.value,
+          })),
       });
       relation.content.push({
         id: newid + 3,
@@ -1826,11 +1984,11 @@ export const ProfileCompany = (props) => {
           status: "fill",
           data: "",
         },
-        handle:  (e) =>
-        setRelationDatas((prev) => ({
-          ...prev,
-          [newid + 3]: e.target.value,
-        })),
+        handle: (e) =>
+          setRelationDatas((prev) => ({
+            ...prev,
+            [newid + 3]: e.target.value,
+          })),
       });
       relation.content.push({
         id: 99,
@@ -1843,13 +2001,13 @@ export const ProfileCompany = (props) => {
           data: "+ Add",
         },
       });
-      setDemoData([
-        ...demoData.slice(0, index),
+      setList([
+        ...list.slice(0, index),
         relation,
-        ...demoData.slice(index + 1),
+        ...list.slice(index + 1),
       ]);
 
-      console.log("relationDatas:",relationDatas);
+      console.log("relationDatas:", relationDatas);
     }
   };
 
@@ -1902,11 +2060,12 @@ export const ProfileCompany = (props) => {
                   }}
                 >
                   {errorParameter}
+                  <Divider
+                    style={{ marginTop: 10, backgroundColor: themeState.color }}
+                  />
                 </div>
               ) : null}
-              <Divider
-                style={{ marginTop: 10, backgroundColor: themeState.color }}
-              />
+
               <Container
                 maxWidth="xl"
                 disableGutters
@@ -2038,6 +2197,7 @@ export const ProfileCompany = (props) => {
                                     className={classes.root}
                                     // label={detail.label}
                                     variant="outlined"
+                                    defaultValue={detail.select.defaultvalue}
                                     InputProps={{
                                       style: headerTableStyle,
                                     }}
