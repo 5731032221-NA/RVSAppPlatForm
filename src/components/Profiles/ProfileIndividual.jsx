@@ -840,6 +840,22 @@ export const ProfileIndividual = (props) => {
             dataType: "string",
             dataCheck: nameTitle,
           },
+          {
+            id: 3,
+            label: "Name Prefix",
+            xl: 2,
+            md: 2,
+            xs: 4,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata.nameprefix : "",
+            },
+            handle: (e) => setNamePrefix(e.target.value),
+            dataType: "string",
+            dataCheck: namePrefix,
+          },
 
           {
             id: 1,
@@ -856,50 +872,6 @@ export const ProfileIndividual = (props) => {
             handle: (e) => setFirstName(e.target.value),
             dataType: "string",
             dataCheck: firstName,
-          },
-          {
-            id: 2,
-            label: "Last Name",
-            xl: 5,
-            md: 5,
-            xs: 10,
-            select: {
-              status: "fill",
-              defaultvalue:
-                props.editdata != null ? props.editdata.lastname : "",
-            },
-            // handle: (e) => setPersonalData({ ...personalData,lastname: e.target.value }),
-            handle: (e) => setLastName(e.target.value),
-            dataType: "string",
-            dataCheck: lastName,
-          },
-          {
-            id: 3,
-            label: "Name Prefix",
-            xl: 1,
-            md: 1,
-            xs: 2,
-            select: {
-              status: "option",
-              data: [
-                { label: "KHUN1" },
-                { label: "KHUN2" },
-                { label: "KHUN3" },
-              ].map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.label}
-                  value={option.label}
-                >
-                  {option.label}
-                </option>
-              )),
-              defaultvalue:
-                props.editdata != null ? props.editdata.nameprefix : "KHUN1",
-            },
-            handle: (e) => setNamePrefix(e.target.value),
-            dataType: "string",
-            dataCheck: namePrefix,
           },
           {
             id: 4,
@@ -932,6 +904,22 @@ export const ProfileIndividual = (props) => {
             handle: (e) => setMiddleInitial(e.target.value),
             dataType: "string",
             dataCheck: middleInitial,
+          },
+          {
+            id: 2,
+            label: "Last Name",
+            xl: 5,
+            md: 5,
+            xs: 10,
+            select: {
+              status: "fill",
+              defaultvalue:
+                props.editdata != null ? props.editdata.lastname : "",
+            },
+            // handle: (e) => setPersonalData({ ...personalData,lastname: e.target.value }),
+            handle: (e) => setLastName(e.target.value),
+            dataType: "string",
+            dataCheck: lastName,
           },
           {
             id: 6,
@@ -1357,17 +1345,17 @@ export const ProfileIndividual = (props) => {
             },
             // handle: (e) => handleData(e),
           },
-          {
-            id: 99,
-            label: "AddAddress",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "AddAddress",
-              data: "+ More Address",
-            },
-          },
+          // {
+          //   id: 99,
+          //   label: "AddAddress",
+          //   xl: 2,
+          //   md: 2,
+          //   xs: 6,
+          //   select: {
+          //     status: "AddAddress",
+          //     data: "+ More Address",
+          //   },
+          // },
         ],
       },
       {

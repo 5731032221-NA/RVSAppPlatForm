@@ -193,10 +193,10 @@ const optionrelation = [
 ];
 
 const optioncommunication = [
-  // {
-  //   value: "Telephone",
-  //   label: "Telephone Number",
-  // },
+  {
+    value: "Telephone",
+    label: "Telephone Number",
+  },
   // {
   //   value: "Mobile",
   //   label: "Mobile Number",
@@ -564,12 +564,12 @@ export const ProfileCompany = (props) => {
         getRelations.contents[0].forEach((element) => {
           setRelationDatas(prev => ({
             ...prev,
-            [relationid]: element.relation,
-            [relationid + 1]: element.value,
+            [relationid + 1]: element.relation,
+            [relationid]: element.value,
             [relationid + 2]: element.note
           }))
           getrelation.push({
-            id: relationid,
+            id: relationid + 1,
             label: "Name Type",
             xl: 2,
             md: 2,
@@ -589,11 +589,11 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setRelationDatas(prev => ({
               ...prev,
-              [relationid]: element.relation
+              [relationid + 1]: element.relation
             }))
           });
           getrelation.push({
-            id: relationid + 1,
+            id: relationid,
             label: "Name",
             xl: 4,
             md: 4,
@@ -605,7 +605,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setRelationDatas(prev => ({
               ...prev,
-              [relationid + 1]: element.value
+              [relationid]: element.value
             })),
         
           });

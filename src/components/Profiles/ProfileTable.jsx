@@ -98,7 +98,7 @@ function createData(
   firstname,
   lastname,
   gender,
-  idcardandpass,
+  countrycode,
   nationality,
   laststay,
   score,
@@ -110,7 +110,7 @@ function createData(
     firstname,
     lastname,
     gender,
-    idcardandpass,
+    countrycode,
     nationality,
     laststay,
     score,
@@ -333,7 +333,7 @@ export const ProfileTable = (props) => {
             element.firstname,
             element.lastname,
             element.gender,
-            (element.idnumber || element.idnumber != "" ) ? element.idnumber : element.visanumber,
+            element.conuty,
             element.nationality,
             // element.laststay,
             "-",
@@ -365,7 +365,7 @@ export const ProfileTable = (props) => {
               element.firstname,
               element.lastname,
               element.gender,
-              (element.idnumber && element.idnumber != "" ) ? element.idnumber : element.visanumber,
+              element.conuty,
               element.nationality,
               // element.laststay,
               "-",
@@ -603,8 +603,8 @@ export const ProfileTable = (props) => {
                     headerStyle: headerTableStyle,
                   },
                   {
-                    title: "ID Card/Passport",
-                    field: "idcardandpass",
+                    title: "Country",
+                    field: "countrycode",
                     headerStyle: headerTableStyle,
                   },
                   // {
@@ -686,7 +686,7 @@ export const ProfileTable = (props) => {
                 localization={{
                   toolbar: {
                     searchPlaceholder:
-                      "Search by ID, Title, First Name, Last Name, Gender, ID Card/Passport",
+                      "Search by ID, Title, First Name, Last Name, Gender, country",
                   },
                 }}
                 actions={[
