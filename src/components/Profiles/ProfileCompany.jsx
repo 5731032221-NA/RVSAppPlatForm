@@ -492,11 +492,18 @@ export const ProfileCompany = (props) => {
         console.log("getCommunications.contents", getCommunications.contents)
         let count = 3;
         getCommunications.contents[0].forEach((element) => {
+
           if (element.communication == "email") {
             getCommunicationsDatas.email = element.value
           } else if (element.communication == "mobile") {
             getCommunicationsDatas.mobile = element.value
           } else {
+
+            setCommunicationDatas(prev => ({
+              ...prev,
+              [count]: element.communication,
+              [count + 1]: element.value
+            }))
             getcomunication.push({
               id: count,
               label: "Choose a communication",
@@ -510,7 +517,7 @@ export const ProfileCompany = (props) => {
                     style={headerTableStyle}
                     key={option.value}
                     value={option.value}
-                    selected={option.label == element.communication}
+                    selected={option.value == element.communication}
                   // defaultValue={element.communication}
                   >
                     {option.label}
@@ -519,7 +526,7 @@ export const ProfileCompany = (props) => {
               },
               handle: (e) => setCommunicationDatas(prev => ({
                 ...prev,
-                [count]: element.communication
+                [count]: e.target.value
               })),
             });
             getcomunication.push({
@@ -535,7 +542,7 @@ export const ProfileCompany = (props) => {
               },
               handle: (e) => setCommunicationDatas(prev => ({
                 ...prev,
-                [count + 1]: element.value
+                [count + 1]: e.target.value
               })),
             });
             count = count + 2;
@@ -547,6 +554,12 @@ export const ProfileCompany = (props) => {
         console.log(getRelations.contents[0])
 
         getRelations.contents[0].forEach((element) => {
+          setRelationDatas(prev => ({
+            ...prev,
+            [relationid]: element.relation,
+            [relationid+1]: element.value,
+            [relationid + 2]: element.note
+          }))
           getrelation.push({
             id: relationid,
             label: "Name Type",
@@ -560,7 +573,7 @@ export const ProfileCompany = (props) => {
                   style={headerTableStyle}
                   key={option.value}
                   value={option.value}
-                  selected={option.label == element.relation}
+                  selected={option.value == element.relation}
                 >
                   {option.label}
                 </option>
@@ -1788,9 +1801,9 @@ export const ProfileCompany = (props) => {
         communications: communicationDatas,
         relations: relationDatas,
       };
-      console.log("datafrom post", req);
-      console.log("props.editData[0].id:", props.editdata);
-      console.log("props.editData[0].id:", props.editdata[0].id);
+      // console.log("datafrom post", req);
+      // console.log("props.editData[0].id:", props.editdata);
+      // console.log("props.editData[0].id:", props.editdata[0].id);
       const resp = await updateCompanyProfile(
         sessionStorage.getItem("auth"),
         props.editdata[0].id,
@@ -1811,13 +1824,13 @@ export const ProfileCompany = (props) => {
 
   //data from button for  trigger (add or delete)
   React.useEffect(async () => {
-    console.log("props.action:::", props.action);
+ 
     if (props.action == "add") {
-      console.log("action add", props.action);
+    
       await handleAddDatatoDatabase();
     } else if (props.action == "edit") {
       await handleAddDataEdittoDatabase();
-      console.log("action edit", props.action);
+ 
     }
   }, [props.action]);
 
