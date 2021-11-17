@@ -168,6 +168,7 @@ export const ProfileTableCompany = (props) => {
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
 
+
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
       setThemeState({
@@ -217,12 +218,20 @@ export const ProfileTableCompany = (props) => {
   });
 
   React.useEffect( async() => {
+    if(action == "success"){
+      await handleGetCompanyProfile();
+      await setStatusprofile("moredata");
+      
+    }
+  },[action])
+
+
+  React.useEffect( async() => {
    await handleGetCompanyProfile();
   },[])
 
   const handleGetCompanyProfile = async () => {
     const resp = await getCompanyProfile(sessionStorage.getItem("auth"));
-    console.log(resp.content);
     if(resp.status == "2000"){
 
   
@@ -247,34 +256,16 @@ export const ProfileTableCompany = (props) => {
   const handleStatusProfile = () => {
     setStatusprofile();
   };
-  const handleNewData = () => {
-    // setAction("add")
-    setEditData(null)
-    setStatusprofile("add");
+  const handleNewData = async() => {
+    await  setAction("none")
+    await setEditData(null)
+    await setStatusprofile("add");
   };
   const handleAddData = async (companyData) => {
-    console.log("ok");
-    setAction("add")
-
-    console.log("companyData:",companyData);
-    if(action == "success"){
-      setStatusprofile("moredata");
-      await handleGetCompanyProfile()
-      // setcompanyData(companyData);
-    }
-   
+    await  setAction("add")
   };
   const handleAddDataEdit = async (companyData) => {
-    console.log("ok");
-    setAction("edit")
-
-    console.log("companyData:",companyData);
-    if(action == "success"){
-      setStatusprofile("moredata");
-      await handleGetCompanyProfile()
-      // setcompanyData(companyData);
-    }
-   
+    await setAction("edit")  
   };
 
 
@@ -282,20 +273,18 @@ export const ProfileTableCompany = (props) => {
 
   const handleEditData = async (data) => {
     const resp = await getCompanyProfileById(sessionStorage.getItem("auth"),data.id);
-    console.log(resp);
-    setEditData(resp.content)
-    console.log("editData:",editData);
-    setStatusprofile("edit");
+    await setEditData(resp.content)
+    await setAction("none")
+    await setStatusprofile("edit");
   };
   const handleDeleteData = async () => {
     try {
       const resp = await deleteCompanyProfileById(sessionStorage.getItem("auth"),deleteData.id);
-      console.log("resp:",resp);
       if(resp.status == "2000"){
        await handleGetCompanyProfile()
       }
-      setStatusprofile("moredata");
-      setDialogDelete(false);
+      await setStatusprofile("moredata");
+      await setDialogDelete(false);
     } catch (error) {
       
     }
@@ -305,11 +294,11 @@ export const ProfileTableCompany = (props) => {
   const handleDialogDeleteOpen = async (id,name, www, city) => {
     console.log("id:",id);
     console.log("data : ",name, www, city);
-    setDeleteData({id:id, name: name, www: www, city: city });
-    setDialogDelete(true);
+    await  setDeleteData({id:id, name: name, www: www, city: city });
+    await  setDialogDelete(true);
   };
-  const handleDialogDeleteClose = () => {
-    setDialogDelete(false);
+  const handleDialogDeleteClose = async () => {
+    await setDialogDelete(false);
   };
 
   return (

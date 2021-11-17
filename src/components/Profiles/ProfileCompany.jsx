@@ -283,7 +283,7 @@ export const ProfileCompany = (props) => {
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
-  const [isRequired, setIsRequired] = React.useState(false);
+  // const [isRequired, setIsRequired] = React.useState(false);
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
   const pageProperty = useSelector((state) => state.reducer.property);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -380,7 +380,7 @@ export const ProfileCompany = (props) => {
     props.editdata != null ? props.editdata[0].stateprovince : ""
   );
   const [Postal, setPostal] = React.useState(
-    props.editdata != null ? props.editdata[0].postalcode : ""
+    props.editdata != null ? props.editdata[0].postalcode : 0
   );
   const [BStreetAddress, setBStreetAddress] = React.useState(
     props.editdata != null ? props.editdata[0].billingaddress : ""
@@ -395,7 +395,7 @@ export const ProfileCompany = (props) => {
     props.editdata != null ? props.editdata[0].billingstateprovince : ""
   );
   const [BPostal, setBPostal] = React.useState(
-    props.editdata != null ? props.editdata[0].billingpostalcode : ""
+    props.editdata != null ? props.editdata[0].billingpostalcode : 0
   );
   const [TaxID, setTaxID] = React.useState(
     props.editdata != null ? props.editdata[0].taxid : ""
@@ -405,17 +405,17 @@ export const ProfileCompany = (props) => {
   );
 
   const [CreditCardNumber, setCreditCardNumber] = React.useState(
-    props.editdata != null ? props.editdata[0].creditcardid : ""
+    props.editdata != null ? props.editdata[0].creditcardid : 0
   );
   const [OutstandingAmount, setOutstandingAmount] = React.useState(
-    props.editdata != null ? props.editdata[0].outstandingamout : ""
+    props.editdata != null ? props.editdata[0].outstandingamout : 0
   );
   const [FloatingDepositionAmount, setFloatingDepositionAmount] =
     React.useState(
-      props.editdata != null ? props.editdata[0].floatingdepositamount : ""
+      props.editdata != null ? props.editdata[0].floatingdepositamount : 0
     );
   const [ARNumber, setARNumber] = React.useState(
-    props.editdata != null ? props.editdata[0].ar_number : ""
+    props.editdata != null ? props.editdata[0].ar_number : 0
   );
   const [SalesUserName, setSalesUserName] = React.useState(
     props.editdata != null ? props.editdata[0].salesusername : ""
@@ -449,16 +449,9 @@ export const ProfileCompany = (props) => {
   const [Communication, setCommunication] = React.useState("");
   const [Relationship, setRelationship] = React.useState("");
   const [relationDatas, setRelationDatas] = React.useState({});
+  const [isRequired, setIsRequired] = React.useState(false);
 
-  //   React.useEffect(() => {
-  //     console.log("name1:",name1);
-  //  },[name1])
-
-  //  React.useEffect(() => {
-  //   console.log("name2:",name2);
-  // },[name2])
-
-  // const [demoData, setDemoData] = React.useState(
+ 
   const [list, setList] = React.useState([]);
   React.useEffect(() => {
     async function getconfig() {
@@ -466,28 +459,28 @@ export const ProfileCompany = (props) => {
     }
     getconfig();
   }, []);
-  const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
+  // const reorder = (list, startIndex, endIndex) => {
+  //   const result = Array.from(list);
+  //   const [removed] = result.splice(startIndex, 1);
+  //   result.splice(endIndex, 0, removed);
 
-    return result;
-  };
-  const onEnd = (result) => {
-    if (!result.destination) {
-      return;
-    }
-    setList(reorder(list, result.source.index, result.destination.index));
-    console.log(result);
-  };
-  const getItemStyle = (isDragging, draggableStyle) => ({
-    // styles we need to apply on draggables
-    ...draggableStyle,
+  //   return result;
+  // };
+  // const onEnd = (result) => {
+  //   if (!result.destination) {
+  //     return;
+  //   }
+  //   setList(reorder(list, result.source.index, result.destination.index));
+  //   console.log(result);
+  // };
+  // const getItemStyle = (isDragging, draggableStyle) => ({
+  //   // styles we need to apply on draggables
+  //   ...draggableStyle,
 
-    ...(isDragging && {
-      background: "lightblue",
-    }),
-  });
+  //   ...(isDragging && {
+  //     background: "lightblue",
+  //   }),
+  // });
 
   
   async function updateList(){
@@ -508,6 +501,7 @@ export const ProfileCompany = (props) => {
         console.log("getCommunications.contents", getCommunications.contents)
         let count = 1;
         getCommunications.contents[0].forEach((element) => {
+
           if (element.communication == "email") {
             getCommunicationsDatas.email = element.value
           } else if (element.communication == "mobile") {
@@ -518,7 +512,6 @@ export const ProfileCompany = (props) => {
               [count]: element.communication,
               [count + 1]: element.value
             }))
-            
             getcomunication.push({
               id: count,
               label: "Choose a communication",
@@ -532,7 +525,7 @@ export const ProfileCompany = (props) => {
                     style={headerTableStyle}
                     key={option.value}
                     value={option.value}
-                    selected={option.label == element.communication}
+                    selected={option.value == element.communication}
                   // defaultValue={element.communication}
                   >
                     {option.label}
@@ -541,8 +534,9 @@ export const ProfileCompany = (props) => {
               },
               handle: (e) => setCommunicationDatas(prev => ({
                 ...prev,
-                [count]: element.communication
+                [count]: e.target.value
               })),
+            
             });
             getcomunication.push({
               id: count + 1,
@@ -557,7 +551,7 @@ export const ProfileCompany = (props) => {
               },
               handle: (e) => setCommunicationDatas(prev => ({
                 ...prev,
-                [count + 1]: element.value
+                [count + 1]: e.target.value
               })),
             });
             count = count + 2;
@@ -587,7 +581,7 @@ export const ProfileCompany = (props) => {
                   style={headerTableStyle}
                   key={option.value}
                   value={option.value}
-                  selected={option.label == element.relation}
+                  selected={option.value == element.relation}
                 >
                   {option.label}
                 </option>
@@ -612,7 +606,8 @@ export const ProfileCompany = (props) => {
             handle: (e) => setRelationDatas(prev => ({
               ...prev,
               [relationid + 1]: element.value
-            }))
+            })),
+        
           });
           getrelation.push({
             id: relationid + 2,
@@ -655,7 +650,8 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].name : "",
               },
               handle: (e) => setnameOne(e.target.value),
-              dataCheck: nameOne
+              dataType: "string",
+              dataCheck: nameOne,
             },
             {
               id: 2,
@@ -669,7 +665,8 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].name2 : "",
               },
               handle: (e) => setnameTwo(e.target.value),
-              dataCheck: true
+              dataType: "string",
+              dataCheck: nameTwo,
             },
             {
               id: 3,
@@ -710,7 +707,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].abbreviation : "",
               },
               handle: (e) => setAbbreviation(e.target.value),
-              dataCheck: Abbreviation
+              dataType: "string",
+              dataCheck: Abbreviation,
             },
             {
               id: 5,
@@ -749,7 +747,8 @@ export const ProfileCompany = (props) => {
                     : "",
               },
               handle: (e) => setGuaranteeMethodCode(e.target.value),
-              dataCheck: GuaranteeMethodCode
+              dataType: "string",
+              dataCheck: GuaranteeMethodCode,
             },
             {
               id: 7,
@@ -809,7 +808,8 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].iata : "",
               },
               handle: (e) => setiata(e.target.value),
-              dataCheck: iata
+              dataType: "string",
+              dataCheck: iata,
             },
             {
               id: 10,
@@ -824,6 +824,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].statuscode : " ",
               },
               handle: (e) => setStatus(e.target.checked),
+
             },
           ],
         },
@@ -845,7 +846,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].address : "",
               },
               handle: (e) => setStreetAddress(e.target.value),
-              dataCheck: StreetAddress
+              dataType: "string",
+              dataCheck: StreetAddress,
             },
             {
               id: 5,
@@ -876,7 +878,8 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].city : "",
               },
               handle: (e) => setCity(e.target.value),
-              dataCheck: City
+              dataType: "string",
+              dataCheck: City,
             },
             {
               id: 7,
@@ -891,7 +894,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].stateprovince : "",
               },
               handle: (e) => setState(e.target.value),
-              dataCheck: State
+              dataType: "string",
+              dataCheck: State,
             },
             {
               id: 8,
@@ -906,7 +910,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].postalcode : "",
               },
               handle: (e) => setPostal(e.target.value),
-              dataCheck: Postal
+              dataType: "number",
+              dataCheck: Postal,
             },
           ],
         },
@@ -928,7 +933,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].billingaddress : "",
               },
               handle: (e) => setBStreetAddress(e.target.value),
-              dataCheck: BStreetAddress
+              dataType: "string",
+              dataCheck: BStreetAddress,
             },
             {
               id: 5,
@@ -960,7 +966,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].billingcity : "",
               },
               handle: (e) => setBCity(e.target.value),
-              dataCheck: BCity
+              dataType: "string",
+              dataCheck: BCity,
             },
             {
               id: 7,
@@ -977,7 +984,8 @@ export const ProfileCompany = (props) => {
                     : "",
               },
               handle: (e) => setBState(e.target.value),
-              dataCheck: BState
+              dataType: "string",
+              dataCheck: BState,
             },
             {
               id: 8,
@@ -992,7 +1000,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].billingpostalcode : "",
               },
               handle: (e) => setBPostal(e.target.value),
-              dataCheck: BPostal
+              dataType: "number",
+              dataCheck: BPostal,
             },
             {
               id: 9,
@@ -1006,7 +1015,8 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].taxid : "",
               },
               handle: (e) => setTaxID(e.target.value),
-              dataCheck: TaxID
+              dataType: "string",
+              dataCheck: TaxID,
             },
             {
               id: 10,
@@ -1021,7 +1031,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].taxid2 : "",
               },
               handle: (e) => setTaxID2(e.target.value),
-              dataCheck: true
+              dataType: "string",
+              dataCheck: true,
             },
           ],
         },
@@ -1094,7 +1105,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].creditcardid : "",
               },
               handle: (e) => setCreditCardNumber(e.target.value),
-              dataCheck: true
+              dataType: "number",
+              dataCheck: true,
             },
             {
               id: 3,
@@ -1109,7 +1121,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].outstandingamout : "",
               },
               handle: (e) => setOutstandingAmount(e.target.value),
-              dataCheck: true
+              dataType: "number",
+              dataCheck: true,
             },
             {
               id: 4,
@@ -1126,7 +1139,8 @@ export const ProfileCompany = (props) => {
                     : "",
               },
               handle: (e) => setFloatingDepositionAmount(e.target.value),
-              dataCheck: true
+              dataType: "number",
+              dataCheck: true,
             },
             {
               id: 5,
@@ -1141,7 +1155,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].ar_number : "",
               },
               handle: (e) => setARNumber(e.target.value),
-              dataCheck: true
+              dataType: "number",
+              dataCheck: true,
             },
           ],
         },
@@ -1219,7 +1234,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].ratecontractcode : "",
               },
               handle: (e) => setratecontractcode(e.target.value),
-              dataCheck: true
+              dataType: "string",
+              dataCheck: true,
             },
           ],
         },
@@ -1241,7 +1257,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].salesusername : "",
               },
               handle: (e) => setSalesUserName(e.target.value),
-              dataCheck: true
+              dataType: "string",
+              dataCheck: true,
             },
             {
               id: 2,
@@ -1451,131 +1468,136 @@ export const ProfileCompany = (props) => {
           ],
         },
       ]);
+    // }
+    // getconfig();
+  };
+  const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+  const onEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+    setList(reorder(list, result.source.index, result.destination.index));
+    console.log(result);
+  };
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // styles we need to apply on draggables
+    ...draggableStyle,
+
+    ...(isDragging && {
+      background: "lightblue",
+    }),
+  });
+
+
+  const checkvalidate = () => {
+    let checkerror = false;
+    if (nameOne == "" || nameOne == " " || nameOne == null ) {
+    //  setErrorParameter("name1 is required");
+      checkerror = true;
+    } else if (nameTwo == "" || nameTwo == " " || nameTwo == null ) {
+      console.log("ss2");
+   //   setErrorParameter("name2 is required");
+       checkerror = true;
+    } else if (Abbreviation == ""  || Abbreviation == " " || Abbreviation == null) {
+   //   setErrorParameter("Abbreviation is required");
+       checkerror = true;
+    } else if (GuaranteeMethodCode == "" || GuaranteeMethodCode == " " || GuaranteeMethodCode == null) {
+     // setErrorParameter("GuaranteeMethodCode is required");
+       checkerror = true;
+    } else if (iata == "" || iata == " " || iata == null) {
+     // setErrorParameter("IATA is required");
+       checkerror = true;
+    } else if (StreetAddress == "" || StreetAddress == " " || StreetAddress == null) {
+    //  setErrorParameter("StreetAddress is required");
+       checkerror = true;
+    } else if (City == "" || City == " " || City == null) {
+    //  setErrorParameter("City is required");
+       checkerror = true;
+    } else if (State == "" || State == " " || State == null) {
+    //  setErrorParameter("State is required");
+       checkerror = true;
+    } else if (Postal == "" || Postal == " " || Postal == null) {
+    //  setErrorParameter("Postal is required");
+       checkerror = true;
+    } else if (BStreetAddress == "" || BStreetAddress == " " || BStreetAddress == null) {
+    //  setErrorParameter("Billing StreetAddress is required");
+       checkerror = true;
+    } else if (BCity == "" || BCity == " " || BCity == null) {
+    //  setErrorParameter("Billing City is required");
+       checkerror = true;
+    } else if (BState == "" || BState == " " || BState == null) {
+    //  setErrorParameter("Billing State is required");
+       checkerror = true;
+    } else if (BPostal == "" || BPostal == " " || BPostal == null) {
+    //  setErrorParameter("Billing Postal is required");
+       checkerror = true;
+    } else if (TaxID == "" || TaxID == " " || TaxID == null) {
+    //  setErrorParameter("TaxID is required");
+       checkerror = true;
+    } else if (TaxID2 == "" || TaxID2 == " " || TaxID2 == null) {
+     // setErrorParameter("TaxID2 is required");
+       checkerror = true;
+    } else if (CreditCardNumber == "" || CreditCardNumber == " " || CreditCardNumber == null) {
+    //  setErrorParameter("CreditCardNumber is required");
+       checkerror = true;
+    } else if (OutstandingAmount == "" || OutstandingAmount == " " || OutstandingAmount == null) {
+     // setErrorParameter("OutstandingAmount is required");
+       checkerror = true;
+    } else if (FloatingDepositionAmount == "" || FloatingDepositionAmount == " " || FloatingDepositionAmount == null) {
+    //  setErrorParameter("FloatingDepositionAmount is required");
+       checkerror = true;
+    } else if (ARNumber == "" || ARNumber == " " || ARNumber == null) {
+    //  setErrorParameter("ARNumber is required");
+       checkerror = true;
+    } else if (SalesUserName == "" || SalesUserName == " " || SalesUserName == null) {
+     // setErrorParameter("SalesUserName is required");
+       checkerror = true;
+    } else if (Industry == "" || Industry == " " || Industry == null) {
+     // setErrorParameter("Industry is required");
+       checkerror = true;
+    } else if (MarketSegment == "" || MarketSegment == " " || MarketSegment == null) {
+    //  setErrorParameter("MarketSegment is required");
+       checkerror = true;
+    } else if (SourceOfBusiness == "" || SourceOfBusiness == " " || SourceOfBusiness == null) {
+     // setErrorParameter("SourceOfBusiness is required");
+       checkerror = true;
+    } else if (TrackCode == "" || TrackCode == " " || TrackCode == null) {
+     // setErrorParameter("TrackCode is required");
+       checkerror = true;
+    } else if (ReasonForStay == "" || ReasonForStay == " " || ReasonForStay == null) {
+     // setErrorParameter("ReasonForStay is required");
+       checkerror = true;
+    } else if (Geographic == "" || Geographic == " " || Geographic == null) {
+      // setErrorParameter("Geographic is required");
+       checkerror = true;
+    }else {
+      setIsRequired(false);
+      checkerror = false;
+    }
+
+    return checkerror
   }
 
   const handleAddDatatoDatabase = async (e) => {
-    // console.log(nameOne,
-    //   nameTwo,
-    //   CompanyTypeCode,
-    //   Abbreviation,
-    //   GuaranteeMethodCode,
-    //   Property,
-    //   Currency,
-    //   CreditRating,
-    //   IATA,
-    //   Status,
-    //   StreetAddress,
-    //   Chooseacountry,
-    //   City,
-    //   State,
-    //   Postal,
-    //   BStreetAddress,
-    //   BChooseacountry,
-    //   BCity,
-    //   BState,
-    //   BPostal,
-    //   TaxID,
-    //   TaxID2,
-    //   Communication,
-    //   Relationship,
-    //   CreditCardNumber,
-    //   OutstandingAmount,
-    //   FloatingDepositionAmount,
-    //   ARNumber,
-    //   SalesUserName,
-    //   Industry,
-    //   MarketSegment,
-    //   SourceOfBusiness,
-    //   TrackCode,
-    //   ReasonForStay,
-    //   Geographic,
-    //ratecontractcode,negotiatedratesonly);
-
-    props.setAction("none");
-    // if (nameOne == "") {
-    //   setErrorParameter("name1 is required");
-    //   setErrorMessage(true);
-    // } else if (nameTwo == "") {
-    //   setErrorParameter("name2 is required");
-    //   setErrorMessage(true);
-    // } else if (Abbreviation == "") {
-    //   setErrorParameter("Abbreviation is required");
-    //   setErrorMessage(true);
-    // } else if (GuaranteeMethodCode == "") {
-    //   setErrorParameter("GuaranteeMethodCode is required");
-    //   setErrorMessage(true);
-    // } else if (iata == "") {
-    //   setErrorParameter("IATA is required");
-    //   setErrorMessage(true);
-    // } else if (StreetAddress == "") {
-    //   setErrorParameter("StreetAddress is required");
-    //   setErrorMessage(true);
-    // } else if (City == "") {
-    //   setErrorParameter("City is required");
-    //   setErrorMessage(true);
-    // } else if (State == "") {
-    //   setErrorParameter("State is required");
-    //   setErrorMessage(true);
-    // } else if (Postal == "") {
-    //   setErrorParameter("Postal is required");
-    //   setErrorMessage(true);
-    // } else if (BStreetAddress == "") {
-    //   setErrorParameter("Billing StreetAddress is required");
-    //   setErrorMessage(true);
-    // } else if (BCity == "") {
-    //   setErrorParameter("Billing City is required");
-    //   setErrorMessage(true);
-    // } else if (BState == "") {
-    //   setErrorParameter("Billing State is required");
-    //   setErrorMessage(true);
-    // } else if (BPostal == "") {
-    //   setErrorParameter("Billing Postal is required");
-    //   setErrorMessage(true);
-    // } else if (TaxID == "") {
-    //   setErrorParameter("TaxID is required");
-    //   setErrorMessage(true);
-    // } else if (TaxID2 == "") {
-    //   setErrorParameter("TaxID2 is required");
-    //   setErrorMessage(true);
-    // } else if (CreditCardNumber == "") {
-    //   setErrorParameter("CreditCardNumber is required");
-    //   setErrorMessage(true);
-    // } else if (OutstandingAmount == "") {
-    //   setErrorParameter("OutstandingAmount is required");
-    //   setErrorMessage(true);
-    // } else if (FloatingDepositionAmount == "") {
-    //   setErrorParameter("FloatingDepositionAmount is required");
-    //   setErrorMessage(true);
-    // } else if (ARNumber == "") {
-    //   setErrorParameter("ARNumber is required");
-    //   setErrorMessage(true);
-    // } else if (SalesUserName == "") {
-    //   setErrorParameter("SalesUserName is required");
-    //   setErrorMessage(true);
-    // } else if (Industry == "") {
-    //   setErrorParameter("Industry is required");
-    //   setErrorMessage(true);
-    // } else if (MarketSegment == "") {
-    //   setErrorParameter("MarketSegment is required");
-    //   setErrorMessage(true);
-    // } else if (SourceOfBusiness == "") {
-    //   setErrorParameter("SourceOfBusiness is required");
-    //   setErrorMessage(true);
-    // } else if (TrackCode == "") {
-    //   setErrorParameter("TrackCode is required");
-    //   setErrorMessage(true);
-    // } else if (ReasonForStay == "") {
-    //   setErrorParameter("ReasonForStay is required");
-    //   setErrorMessage(true);
-    // } else if (Geographic == "") {
-    //   setErrorParameter("Geographic is required");
-    //   setErrorMessage(true);
+   
+    // props.setAction("none");
+    // const checkvali = await checkvalidate();
+    // if(checkvali){
+    //   setIsRequired(true);
     // } else {
-    //   setErrorMessage(false);
+    //   setIsRequired(false);
       let index = list.findIndex((x) => x.title == "Communication");
       let communications = list[index];
+      console.log("communications:",communications);
       // let index = list.findIndex((x) => x.title == "Communication");
       let relations = list[index];
+      console.log("relations:",relations);
       let req = {
         recordtype: "C",
         nameOne: nameOne,
@@ -1634,47 +1656,20 @@ export const ProfileCompany = (props) => {
       }
 
       // console.log("datafrom post", data);
-    
+    // }
   };
 
+
   const handleAddDataEdittoDatabase = async (e) => {
-    // console.log(nameOne,
-    //   nameTwo,
-    //   CompanyTypeCode,
-    //   Abbreviation,
-    //   GuaranteeMethodCode,
-    //   Property,
-    //   Currency,
-    //   CreditRating,
-    //   IATA,
-    //   Status,
-    //   StreetAddress,
-    //   Chooseacountry,
-    //   City,
-    //   State,
-    //   Postal,
-    //   BStreetAddress,
-    //   BChooseacountry,
-    //   BCity,
-    //   BState,
-    //   BPostal,
-    //   TaxID,
-    //   TaxID2,
-    //   Communication,
-    //   Relationship,
-    //   CreditCardNumber,
-    //   OutstandingAmount,
-    //   FloatingDepositionAmount,
-    //   ARNumber,
-    //   SalesUserName,
-    //   Industry,
-    //   MarketSegment,
-    //   SourceOfBusiness,
-    //   TrackCode,
-    //   ReasonForStay,
-    //   Geographic);
+   
     props.setAction("none");
-    
+
+    const checkvali = await checkvalidate();
+    if(checkvali){
+      setIsRequired(true);
+    } else {
+      setIsRequired(false);
+
       let req = {
         recordtype: "C",
         nameOne: nameOne,
@@ -1717,9 +1712,9 @@ export const ProfileCompany = (props) => {
         communications: communicationDatas,
         relations: relationDatas,
       };
-      console.log("datafrom post", req);
-      console.log("props.editData[0].id:", props.editdata);
-      console.log("props.editData[0].id:", props.editdata[0].id);
+      // console.log("datafrom post", req);
+      // console.log("props.editData[0].id:", props.editdata);
+      // console.log("props.editData[0].id:", props.editdata[0].id);
       const resp = await updateCompanyProfile(
         sessionStorage.getItem("auth"),
         props.editdata[0].id,
@@ -1735,12 +1730,12 @@ export const ProfileCompany = (props) => {
       }
 
       // console.log("datafrom post", data);
-    
+    }
   };
 
   //data from button for  trigger (add or delete)
   React.useEffect(async () => {
-    console.log("props.action:::", props.action);
+ 
     if (props.action == "add") {
       console.log(nameOne,
         Abbreviation,
@@ -1792,11 +1787,11 @@ export const ProfileCompany = (props) => {
           StreetAddress.trim() === "" ,
           City.trim() === "" ,
           State.trim() === "" ,
-          Postal.trim() === "" ,
+          Postal === 0 ,
           BStreetAddress.trim() === "" ,
           BCity.trim() === "" ,
           BState.trim() === "" ,
-          BPostal.trim() === "" ,
+          BPostal === 0 ,
           TaxID.trim() === "" ,
           Industry.trim() === "" ,
           MarketSegment.trim() === "" ,
@@ -1804,6 +1799,7 @@ export const ProfileCompany = (props) => {
           TrackCode.trim() === "" ,
           ReasonForStay.trim() === "" ,
           Geographic.trim() === "")
+
       let _IsRequired = nameOne === null ||
       Abbreviation === null ||
       GuaranteeMethodCode === null ||
@@ -1880,11 +1876,11 @@ export const ProfileCompany = (props) => {
       StreetAddress.trim() === "" ||
       City.trim() === "" ||
       State.trim() === "" ||
-      Postal.trim() === "" ||
+      Postal === 0 ||
       BStreetAddress.trim() === "" ||
       BCity.trim() === "" ||
       BState.trim() === "" ||
-      BPostal.trim() === "" ||
+      BPostal === 0 ||
       TaxID.trim() === "" ||
       Industry.trim() === "" ||
       MarketSegment.trim() === "" ||
@@ -1896,6 +1892,7 @@ export const ProfileCompany = (props) => {
       console.log('_IsRequired',_IsRequired)
       if(_IsRequired == false){
       await handleAddDataEdittoDatabase();
+
       console.log("action edit", props.action);
     }else{
       setIsRequired(true);
@@ -1903,6 +1900,7 @@ export const ProfileCompany = (props) => {
       props.setAction("none");
       updateList()
     }
+
     }
   }, [props.action]);
 
@@ -2315,8 +2313,25 @@ export const ProfileCompany = (props) => {
                                     onFocus={false}
                                   />
                                 ) : detail.select.status === "fill" ? (
+                                  // <TextField
+                                  //   className={classes.root}
+                                  //   label={detail.label}
+                                  //   variant="outlined"
+                                  //   InputProps={{
+                                  //     style: headerTableStyle,
+                                  //   }}
+                                  //   InputLabelProps={{
+                                  //     style: { color: "#AAAAAA" },
+                                  //   }}
+                                  //   fullWidth
+                                  //   defaultValue={detail.select.defaultvalue}
+                                  //   onChange={detail.handle}
+                                  // />
+                               
+                                
                                   [
                                     isRequired ? (
+                                    
                                       <TextField
                                         error={
                                           detail.dataCheck == null ||
