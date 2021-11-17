@@ -365,7 +365,7 @@ export const ProfileTable = (props) => {
               element.firstname,
               element.lastname,
               element.gender,
-              (element.idnumber || element.idnumber != "" ) ? element.idnumber : element.passportnumber,
+              (element.idnumber && element.idnumber != "" ) ? element.idnumber : element.visanumber,
               element.nationality,
               // element.laststay,
               "-",
@@ -578,7 +578,7 @@ export const ProfileTable = (props) => {
                 }}
                 columns={[
                   {
-                    title: "Name ID",
+                    title: "ID",
                     field: "nameid",
                     headerStyle: headerTableStyle,
                   },
@@ -598,7 +598,7 @@ export const ProfileTable = (props) => {
                     headerStyle: headerTableStyle,
                   },
                   {
-                    title: "Sex",
+                    title: "Gender",
                     field: "gender",
                     headerStyle: headerTableStyle,
                   },
