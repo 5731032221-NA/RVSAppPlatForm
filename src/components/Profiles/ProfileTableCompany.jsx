@@ -234,9 +234,15 @@ export const ProfileTableCompany = (props) => {
     const resp = await getCompanyProfile(sessionStorage.getItem("auth"));
     if(resp.status == "2000"){
 
-      await setStatusprofile("moredata");
-      await  setcompanyData(resp.content[0]);
-    
+  
+    if(resp.content[0].length > 0){
+
+      resp.content[0].forEach(function(part, index) {
+        this[index].citycountry = (this[index].city?this[index].city : "-")+"/"+(this[index].countrycode?this[index].countrycode :"-");
+      }, resp.content[0])
+      setStatusprofile("moredata");
+      setcompanyData(resp.content[0]);
+    }
   }
    
   }
@@ -535,7 +541,7 @@ export const ProfileTableCompany = (props) => {
                   },
                   {
                     title: "City/Country",
-                    field: "countrycode",
+                    field: "citycountry",
                     headerStyle: headerTableStyle,
                   },
                   // {
@@ -573,13 +579,13 @@ export const ProfileTableCompany = (props) => {
                     backgroundColor: themeState.paper,
                     color: themeState.color,
                     borderBottomColor: themeState.color,
-                    width: 230,
+                    width: 530,
                   },
                 }}
                 localization={{
                   toolbar: {
                     searchPlaceholder:
-                      "Search by name, ID Card/Passport, status",
+                      "Search by Name, www, City/Country, Industry, IATA",
                   },
                 }}
                 actions={[
