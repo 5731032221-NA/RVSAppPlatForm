@@ -513,7 +513,7 @@ export const ProfileIndividual = (props) => {
     }
   }
 
-  async function updatelist(commu, rela) {
+  async function updatelist() {
     let getCommunicationsDatas = {};
     let getcomunication = [];
     let getrelation = [];
@@ -533,8 +533,8 @@ export const ProfileIndividual = (props) => {
     setOptionrelation(relation);
     setOptioncommunication(communication);
     console.log("optioncommunication", optioncommunication);
-    console.log("old data",props.editdata != null , Object.keys(commu).length === 0 , Object.keys(rela).length === 0,commu,rela,props.editdata)
-    if (props.editdata != null && Object.keys(commu).length === 0 && Object.keys(rela).length === 0) {
+    // console.log("old data",props.editdata != null , Object.keys(communicationDatas).length === 0 , Object.keys(rela).length === 0,commu,rela,props.editdata)
+    if (props.editdata != null && Object.keys(communicationDatas).length === 0 && Object.keys(relationDatas).length === 0) {
       let getCommunications = await getIndividualProfileCommunication(
         sessionStorage.getItem("auth"),
         props.editdata.nameid
@@ -685,9 +685,9 @@ export const ProfileIndividual = (props) => {
       console.log("getrelation", getrelation);
     } else {
       let count = 3
-      console.log("commu",commu)
-      console.log("rela",rela)
-      for (var key in commu) {
+      console.log("commu",communicationDatas)
+      console.log("rela",relationDatas)
+      for (var key in communicationDatas) {
         if (key % 2 == 0) {
           getcomunication.push({
             id: count,
@@ -702,7 +702,7 @@ export const ProfileIndividual = (props) => {
                   style={headerTableStyle}
                   key={option.value}
                   value={option.value}
-                  selected={option.label == commu[key - 1]}
+                  selected={option.label == communicationDatas[key - 1]}
                 // defaultValue={element.communication}
                 >
                   {option.label}
@@ -724,7 +724,7 @@ export const ProfileIndividual = (props) => {
             select: {
               status: "fillnolabel",
               data: "",
-              defaultvalue: commu[key],
+              defaultvalue: communicationDatas[key],
             },
             handle: (e) =>
               setCommunicationDatas((prev) => setCommunicationDatas((prev) => ({
@@ -737,7 +737,7 @@ export const ProfileIndividual = (props) => {
       }
 
       let relationid = 1;
-      for (var key in rela) {
+      for (var key in relationDatas) {
         if (key % 3 == 0) {
           getrelation.push({
             id: relationid,
@@ -752,7 +752,7 @@ export const ProfileIndividual = (props) => {
                   style={headerTableStyle}
                   key={option.value}
                   value={option.value}
-                  selected={option.label == rela[key - 1]}
+                  selected={option.label == relationDatas[key - 1]}
                 >
                   {option.label}
                 </option>
@@ -773,7 +773,7 @@ export const ProfileIndividual = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: rela[key - 2],
+              defaultvalue: relationDatas[key - 2],
             },
             handle: (e) =>
               setRelationDatas((prev) => ({
@@ -790,7 +790,7 @@ export const ProfileIndividual = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: rela[key],
+              defaultvalue: relationDatas[key],
             },
             handle: (e) =>
               setRelationDatas((prev) => ({
@@ -2249,10 +2249,10 @@ export const ProfileIndividual = (props) => {
 
   React.useEffect(() => {
     async function getconfig() {
-      updatelist(communicationDatas, relationDatas)
+      updatelist()
     }
     getconfig();
-  }, [props.trigger]);
+  }, [props.trigger,communicationDatas, relationDatas]);
 
   const handleExpend = (id, expend) => {
     let index = list.findIndex((x) => x.id === id);

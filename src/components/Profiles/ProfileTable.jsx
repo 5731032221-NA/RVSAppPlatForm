@@ -333,7 +333,7 @@ export const ProfileTable = (props) => {
             element.firstname,
             element.lastname,
             element.gender,
-            (element.idnumber || element.idnumber != "" ) ? element.idnumber : element.passportnumber,
+            (element.idnumber || element.idnumber != "" ) ? element.idnumber : element.visanumber,
             element.nationality,
             // element.laststay,
             "-",
