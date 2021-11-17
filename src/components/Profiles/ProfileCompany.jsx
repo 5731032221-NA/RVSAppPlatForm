@@ -283,7 +283,7 @@ export const ProfileCompany = (props) => {
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
-
+  const [isRequired, setIsRequired] = React.useState(false);
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
   const pageProperty = useSelector((state) => state.reducer.property);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -462,23 +462,39 @@ export const ProfileCompany = (props) => {
   const [list, setList] = React.useState([]);
   React.useEffect(() => {
     async function getconfig() {
-      let getCommunicationsDatas = {};
+      updateList();
+    }
+    getconfig();
+  }, []);
+  const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+  const onEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+    setList(reorder(list, result.source.index, result.destination.index));
+    console.log(result);
+  };
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // styles we need to apply on draggables
+    ...draggableStyle,
+
+    ...(isDragging && {
+      background: "lightblue",
+    }),
+  });
+
+  
+  async function updateList(){
+    let getCommunicationsDatas = {};
       let getcomunication = [];
       let getrelation = [];
       console.log("demostate");
-      // let getconfigdata = await getconfigurationbypropertycode(
-      //   sessionStorage.getItem("auth"),
-      //   pageProperty
-      // );
-      // console.log(getconfigdata);
-      // let configdata = getconfigdata.content[getconfigdata.content.length - 1];
-      // let optionTitle = await getlist(configdata, "PCINDTT");
-      // let optiongender = await getlist(configdata, "PCINDGD");
-      // let relation = await getlist(configdata, "PCINDRL");
-      // let communication = await getlist(configdata, "PCINDCM");
-      // setOptionrelation(relation);
-      // setOptioncommunication(communication);
-      // console.log("optioncommunication", optioncommunication);
       if (props.editdata != null) {
         console.log("props.editdata", props.editdata)
         let getCommunications = await getCompanyProfileCommunication(
@@ -639,6 +655,7 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].name : "",
               },
               handle: (e) => setnameOne(e.target.value),
+              dataCheck: nameOne
             },
             {
               id: 2,
@@ -652,6 +669,7 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].name2 : "",
               },
               handle: (e) => setnameTwo(e.target.value),
+              dataCheck: true
             },
             {
               id: 3,
@@ -677,7 +695,7 @@ export const ProfileCompany = (props) => {
                     ? props.editdata[0].companytypecode
                     : "Government",
               },
-              handle: (e) => setCompanyTypeCode(e.target.value),
+              handle: (e) => setCompanyTypeCode(e.target.value)
             },
             {
               id: 4,
@@ -692,6 +710,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].abbreviation : "",
               },
               handle: (e) => setAbbreviation(e.target.value),
+              dataCheck: Abbreviation
             },
             {
               id: 5,
@@ -730,6 +749,7 @@ export const ProfileCompany = (props) => {
                     : "",
               },
               handle: (e) => setGuaranteeMethodCode(e.target.value),
+              dataCheck: GuaranteeMethodCode
             },
             {
               id: 7,
@@ -789,6 +809,7 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].iata : "",
               },
               handle: (e) => setiata(e.target.value),
+              dataCheck: iata
             },
             {
               id: 10,
@@ -824,29 +845,23 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].address : "",
               },
               handle: (e) => setStreetAddress(e.target.value),
+              dataCheck: StreetAddress
             },
             {
               id: 5,
-              label: "Choose a country",
+              label: "Country",
               xl: 3,
               md: 6,
               xs: 12,
               select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
+                status: "fill",
+                data: "",
                 defaultvalue:
                   props.editdata != null
                     ? props.editdata[0].countrycode
-                    : "Thailand",
+                    : "",
               },
+              dataCheck: Chooseacountry,
               handle: (e) => setChooseacountry(e.target.value),
             },
             {
@@ -861,6 +876,7 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].city : "",
               },
               handle: (e) => setCity(e.target.value),
+              dataCheck: City
             },
             {
               id: 7,
@@ -875,6 +891,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].stateprovince : "",
               },
               handle: (e) => setState(e.target.value),
+              dataCheck: BState
             },
             {
               id: 8,
@@ -889,6 +906,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].postalcode : "",
               },
               handle: (e) => setPostal(e.target.value),
+              dataCheck: BPostal
             },
           ],
         },
@@ -910,30 +928,24 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].billingaddress : "",
               },
               handle: (e) => setBStreetAddress(e.target.value),
+              dataCheck: BStreetAddress
             },
             {
               id: 5,
-              label: "Choose a country",
+              label: "Billing Country",
               xl: 3,
               md: 6,
               xs: 12,
               select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
+                status: "fill",
+                data: "",
                 defaultvalue:
                   props.editdata != null
                     ? props.editdata[0].billingcountrycode
-                    : "Thailand",
+                    : "",
               },
               handle: (e) => setBChooseacountry(e.target.value),
+              dataCheck: BChooseacountry
             },
             {
               id: 6,
@@ -948,6 +960,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].billingcity : "",
               },
               handle: (e) => setBCity(e.target.value),
+              dataCheck: BCity
             },
             {
               id: 7,
@@ -964,6 +977,7 @@ export const ProfileCompany = (props) => {
                     : "",
               },
               handle: (e) => setBState(e.target.value),
+              dataCheck: BState
             },
             {
               id: 8,
@@ -978,6 +992,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].billingpostalcode : "",
               },
               handle: (e) => setBPostal(e.target.value),
+              dataCheck: BPostal
             },
             {
               id: 9,
@@ -991,6 +1006,7 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].taxid : "",
               },
               handle: (e) => setTaxID(e.target.value),
+              dataCheck: TaxID
             },
             {
               id: 10,
@@ -1005,6 +1021,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].taxid2 : "",
               },
               handle: (e) => setTaxID2(e.target.value),
+              dataCheck: true
             },
           ],
         },
@@ -1077,6 +1094,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].creditcardid : "",
               },
               handle: (e) => setCreditCardNumber(e.target.value),
+              dataCheck: true
             },
             {
               id: 3,
@@ -1091,6 +1109,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].outstandingamout : "",
               },
               handle: (e) => setOutstandingAmount(e.target.value),
+              dataCheck: true
             },
             {
               id: 4,
@@ -1107,6 +1126,7 @@ export const ProfileCompany = (props) => {
                     : "",
               },
               handle: (e) => setFloatingDepositionAmount(e.target.value),
+              dataCheck: true
             },
             {
               id: 5,
@@ -1121,6 +1141,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].ar_number : "",
               },
               handle: (e) => setARNumber(e.target.value),
+              dataCheck: true
             },
           ],
         },
@@ -1198,6 +1219,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].ratecontractcode : "",
               },
               handle: (e) => setratecontractcode(e.target.value),
+              dataCheck: true
             },
           ],
         },
@@ -1219,6 +1241,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].salesusername : "",
               },
               handle: (e) => setSalesUserName(e.target.value),
+              dataCheck: true
             },
             {
               id: 2,
@@ -1428,31 +1451,7 @@ export const ProfileCompany = (props) => {
           ],
         },
       ]);
-    }
-    getconfig();
-  }, []);
-  const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-  };
-  const onEnd = (result) => {
-    if (!result.destination) {
-      return;
-    }
-    setList(reorder(list, result.source.index, result.destination.index));
-    console.log(result);
-  };
-  const getItemStyle = (isDragging, draggableStyle) => ({
-    // styles we need to apply on draggables
-    ...draggableStyle,
-
-    ...(isDragging && {
-      background: "lightblue",
-    }),
-  });
+  }
 
   const handleAddDatatoDatabase = async (e) => {
     // console.log(nameOne,
@@ -1674,7 +1673,6 @@ export const ProfileCompany = (props) => {
     //   TrackCode,
     //   ReasonForStay,
     //   Geographic);
-
     props.setAction("none");
     if (nameOne == "") {
       setErrorParameter("name1 is required");
@@ -1718,24 +1716,24 @@ export const ProfileCompany = (props) => {
     } else if (TaxID == "") {
       setErrorParameter("TaxID is required");
       setErrorMessage(true);
-    } else if (TaxID2 == "") {
-      setErrorParameter("TaxID2 is required");
-      setErrorMessage(true);
-    } else if (CreditCardNumber == "") {
-      setErrorParameter("CreditCardNumber is required");
-      setErrorMessage(true);
-    } else if (OutstandingAmount == "") {
-      setErrorParameter("OutstandingAmount is required");
-      setErrorMessage(true);
-    } else if (FloatingDepositionAmount == "") {
-      setErrorParameter("FloatingDepositionAmount is required");
-      setErrorMessage(true);
+    // } else if (TaxID2 == "") {
+    //   setErrorParameter("TaxID2 is required");
+    //   setErrorMessage(true);
+    // } else if (CreditCardNumber == "") {
+    //   setErrorParameter("CreditCardNumber is required");
+    //   setErrorMessage(true);
+    // } else if (OutstandingAmount == "") {
+    //   setErrorParameter("OutstandingAmount is required");
+    //   setErrorMessage(true);
+    // } else if (FloatingDepositionAmount == "") {
+    //   setErrorParameter("FloatingDepositionAmount is required");
+    //   setErrorMessage(true);
     } else if (ARNumber == "") {
       setErrorParameter("ARNumber is required");
       setErrorMessage(true);
-    } else if (SalesUserName == "") {
-      setErrorParameter("SalesUserName is required");
-      setErrorMessage(true);
+    // } else if (SalesUserName == "") {
+    //   setErrorParameter("SalesUserName is required");
+    //   setErrorMessage(true);
     } else if (Industry == "") {
       setErrorParameter("Industry is required");
       setErrorMessage(true);
@@ -1824,8 +1822,84 @@ export const ProfileCompany = (props) => {
   React.useEffect(async () => {
     console.log("props.action:::", props.action);
     if (props.action == "add") {
+      console.log(nameOne,
+        Abbreviation,
+        GuaranteeMethodCode,
+        iata,
+        StreetAddress,
+        City,
+        State,
+        Postal,
+        BStreetAddress,
+        BCity,
+        BState,
+        BPostal,
+        TaxID,
+        CreditCardNumber,
+        OutstandingAmount,
+        OutstandingAmount,
+        FloatingDepositionAmount,
+        ARNumber,
+        SalesUserName,
+        Industry,
+        MarketSegment,
+        SourceOfBusiness,
+        TrackCode,
+        ReasonForStay,
+        Geographic)
+      let _IsRequired = nameOne === null ||
+      Abbreviation === null ||
+      GuaranteeMethodCode === null ||
+      iata === null ||
+      StreetAddress === null ||
+      City === null ||
+      State === null ||
+      Postal === null ||
+      BStreetAddress === null ||
+      BCity === null ||
+      BState === null ||
+      BPostal === null ||
+      TaxID === null ||
+      ARNumber === null ||
+      SalesUserName === null ||
+      Industry === null ||
+      MarketSegment === null ||
+      SourceOfBusiness === null ||
+      TrackCode === null ||
+      ReasonForStay === null ||
+      Geographic  === null ||
+      nameOne.trim() === "" ||
+      Abbreviation.trim() === "" ||
+      GuaranteeMethodCode.trim() === "" ||
+      iata.trim() === "" ||
+      StreetAddress.trim() === "" ||
+      City.trim() === "" ||
+      State.trim() === "" ||
+      Postal.trim() === "" ||
+      BStreetAddress.trim() === "" ||
+      BCity.trim() === "" ||
+      BState.trim() === "" ||
+      BPostal.trim() === "" ||
+      TaxID.trim() === "" ||
+      ARNumber.trim() === "" ||
+      SalesUserName.trim() === "" ||
+      Industry.trim() === "" ||
+      MarketSegment.trim() === "" ||
+      SourceOfBusiness.trim() === "" ||
+      TrackCode.trim() === "" ||
+      ReasonForStay.trim() === "" ||
+      Geographic.trim() === "";
       console.log("action add", props.action);
+      console.log('_IsRequired',_IsRequired)
+      if(_IsRequired == false){
+        setIsRequired(false);
       await handleAddDatatoDatabase();
+      }else{
+        setIsRequired(true);
+        console.log("isRequired",isRequired)
+        props.setAction("none");
+        updateList()
+      }
     } else if (props.action == "edit") {
       await handleAddDataEdittoDatabase();
       console.log("action edit", props.action);
@@ -2241,20 +2315,79 @@ export const ProfileCompany = (props) => {
                                     onFocus={false}
                                   />
                                 ) : detail.select.status === "fill" ? (
-                                  <TextField
-                                    className={classes.root}
-                                    label={detail.label}
-                                    variant="outlined"
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    InputLabelProps={{
-                                      style: { color: "#AAAAAA" },
-                                    }}
-                                    fullWidth
-                                    defaultValue={detail.select.defaultvalue}
-                                    onChange={detail.handle}
-                                  />
+                                  [
+                                    isRequired ? (
+                                      <TextField
+                                        error={
+                                          detail.dataCheck == null ||
+                                          detail.dataCheck === "" ||
+                                          detail.dataCheck === " "
+                                            ? true
+                                            : false
+                                        }
+                                        // error={detail.dataCheck}
+                                        helperText={
+                                          detail.dataCheck == null ||
+                                          detail.dataCheck === ""
+                                            ? `${detail.label} is Required`
+                                            : false
+                                        }
+                                        // required={true}
+                                        type={detail.dataType}
+                                        className={classes.root}
+                                        label={detail.label}
+                                        variant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        noWrap
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" },
+                                        }}
+                                        fullWidth
+                                        defaultValue={
+                                          detail.select.defaultvalue
+                                        }
+                                        onChange={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
+                                      />
+                                    ) : (
+                                      <TextField
+                                        // error={
+                                        //   detail.dataCheck == null ||
+                                        //   detail.dataCheck === "" ||
+                                        //   detail.dataCheck === " "
+                                        //     ? true
+                                        //     : false
+                                        // }
+                                        // // error={detail.dataCheck}
+                                        // helperText={
+                                        //   detail.dataCheck == null ||
+                                        //   detail.dataCheck === ""
+                                        //     ? `${detail.label} is Required`
+                                        //     : false
+                                        // }
+                                        // required={true}
+                                        type={detail.dataType}
+                                        className={classes.root}
+                                        label={detail.label}
+                                        variant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        noWrap
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" },
+                                        }}
+                                        fullWidth
+                                        defaultValue={
+                                          detail.select.defaultvalue
+                                        }
+                                        onChange={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
+                                      />
+                                    ),
+                                  ]
                                 ) : detail.select.status === "option" ? (
                                   <TextField
                                     className={classes.root}

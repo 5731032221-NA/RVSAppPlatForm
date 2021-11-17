@@ -472,7 +472,7 @@ export const ProfileTableCompany = (props) => {
                 >
                   No Data Available
                 </Typography>
-                <Grid item>
+                {/* <Grid item>
                   <Button
                     startIcon={<AddOutlinedIcon />}
                     size="large"
@@ -483,7 +483,7 @@ export const ProfileTableCompany = (props) => {
                   >
                     Create New CompanyProfile
                   </Button>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Grid>
           ) : (
@@ -587,6 +587,12 @@ export const ProfileTableCompany = (props) => {
                     color: themeState.color,
                     borderBottomColor: themeState.color,
                     width: 230,
+                  },
+                }}
+                localization={{
+                  toolbar: {
+                    searchPlaceholder:
+                      "Search by name, ID Card/Passport, status",
                   },
                 }}
                 actions={[
