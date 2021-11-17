@@ -568,6 +568,7 @@ export const ProfileTableCompany = (props) => {
                   actionsColumnIndex: -1,
                   //   page: page,
                   //   pageSize: rowsPerPage,
+                  pageSize:10,
                   pageSizeOptions: [
                     10,
                     20,
