@@ -371,7 +371,7 @@ export const ProfileCompany = (props) => {
     props.editdata != null ? props.editdata[0].address : ""
   );
   const [Chooseacountry, setChooseacountry] = React.useState(
-    props.editdata != null ? props.editdata[0].countrycode : "Thailand"
+    props.editdata != null ? props.editdata[0].countrycode : ""
   );
   const [City, setCity] = React.useState(
     props.editdata != null ? props.editdata[0].city : ""
@@ -386,7 +386,7 @@ export const ProfileCompany = (props) => {
     props.editdata != null ? props.editdata[0].billingaddress : ""
   );
   const [BChooseacountry, setBChooseacountry] = React.useState(
-    props.editdata != null ? props.editdata[0].billingcountrycode : "Thailand"
+    props.editdata != null ? props.editdata[0].billingcountrycode : ""
   );
   const [BCity, setBCity] = React.useState(
     props.editdata != null ? props.editdata[0].billingcity : ""
@@ -891,7 +891,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].stateprovince : "",
               },
               handle: (e) => setState(e.target.value),
-              dataCheck: BState
+              dataCheck: State
             },
             {
               id: 8,
@@ -906,7 +906,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].postalcode : "",
               },
               handle: (e) => setPostal(e.target.value),
-              dataCheck: BPostal
+              dataCheck: Postal
             },
           ],
         },
@@ -1674,87 +1674,7 @@ export const ProfileCompany = (props) => {
     //   ReasonForStay,
     //   Geographic);
     props.setAction("none");
-    if (nameOne == "") {
-      setErrorParameter("name1 is required");
-      setErrorMessage(true);
-    } else if (nameTwo == "") {
-      setErrorParameter("name2 is required");
-      setErrorMessage(true);
-    } else if (Abbreviation == "") {
-      setErrorParameter("Abbreviation is required");
-      setErrorMessage(true);
-    } else if (GuaranteeMethodCode == "") {
-      setErrorParameter("GuaranteeMethodCode is required");
-      setErrorMessage(true);
-    } else if (iata == "") {
-      setErrorParameter("IATA is required");
-      setErrorMessage(true);
-    } else if (StreetAddress == "") {
-      setErrorParameter("StreetAddress is required");
-      setErrorMessage(true);
-    } else if (City == "") {
-      setErrorParameter("City is required");
-      setErrorMessage(true);
-    } else if (State == "") {
-      setErrorParameter("State is required");
-      setErrorMessage(true);
-    } else if (Postal == "") {
-      setErrorParameter("Postal is required");
-      setErrorMessage(true);
-    } else if (BStreetAddress == "") {
-      setErrorParameter("Billing StreetAddress is required");
-      setErrorMessage(true);
-    } else if (BCity == "") {
-      setErrorParameter("Billing City is required");
-      setErrorMessage(true);
-    } else if (BState == "") {
-      setErrorParameter("Billing State is required");
-      setErrorMessage(true);
-    } else if (BPostal == "") {
-      setErrorParameter("Billing Postal is required");
-      setErrorMessage(true);
-    } else if (TaxID == "") {
-      setErrorParameter("TaxID is required");
-      setErrorMessage(true);
-    // } else if (TaxID2 == "") {
-    //   setErrorParameter("TaxID2 is required");
-    //   setErrorMessage(true);
-    // } else if (CreditCardNumber == "") {
-    //   setErrorParameter("CreditCardNumber is required");
-    //   setErrorMessage(true);
-    // } else if (OutstandingAmount == "") {
-    //   setErrorParameter("OutstandingAmount is required");
-    //   setErrorMessage(true);
-    // } else if (FloatingDepositionAmount == "") {
-    //   setErrorParameter("FloatingDepositionAmount is required");
-    //   setErrorMessage(true);
-    } else if (ARNumber == "") {
-      setErrorParameter("ARNumber is required");
-      setErrorMessage(true);
-    // } else if (SalesUserName == "") {
-    //   setErrorParameter("SalesUserName is required");
-    //   setErrorMessage(true);
-    } else if (Industry == "") {
-      setErrorParameter("Industry is required");
-      setErrorMessage(true);
-    } else if (MarketSegment == "") {
-      setErrorParameter("MarketSegment is required");
-      setErrorMessage(true);
-    } else if (SourceOfBusiness == "") {
-      setErrorParameter("SourceOfBusiness is required");
-      setErrorMessage(true);
-    } else if (TrackCode == "") {
-      setErrorParameter("TrackCode is required");
-      setErrorMessage(true);
-    } else if (ReasonForStay == "") {
-      setErrorParameter("ReasonForStay is required");
-      setErrorMessage(true);
-    } else if (Geographic == "") {
-      setErrorParameter("Geographic is required");
-      setErrorMessage(true);
-    } else {
-      setErrorMessage(false);
-
+    
       let req = {
         recordtype: "C",
         nameOne: nameOne,
@@ -1815,7 +1735,7 @@ export const ProfileCompany = (props) => {
       }
 
       // console.log("datafrom post", data);
-    }
+    
   };
 
   //data from button for  trigger (add or delete)
@@ -1840,13 +1760,50 @@ export const ProfileCompany = (props) => {
         OutstandingAmount,
         FloatingDepositionAmount,
         ARNumber,
-        SalesUserName,
         Industry,
         MarketSegment,
         SourceOfBusiness,
         TrackCode,
         ReasonForStay,
         Geographic)
+        console.log(nameOne === null ,
+          Abbreviation === null ,
+          GuaranteeMethodCode === null ,
+          iata === null ,
+          StreetAddress === null ,
+          City === null ,
+          State === null ,
+          Postal === null ,
+          BStreetAddress === null ,
+          BCity === null ,
+          BState === null ,
+          BPostal === null ,
+          TaxID === null ,
+          Industry === null ,
+          MarketSegment === null ,
+          SourceOfBusiness === null ,
+          TrackCode === null ,
+          ReasonForStay === null ,
+          Geographic  === null ,
+          nameOne.trim() === "" ,
+          Abbreviation.trim() === "" ,
+          GuaranteeMethodCode.trim() === "" ,
+          iata.trim() === "" ,
+          StreetAddress.trim() === "" ,
+          City.trim() === "" ,
+          State.trim() === "" ,
+          Postal.trim() === "" ,
+          BStreetAddress.trim() === "" ,
+          BCity.trim() === "" ,
+          BState.trim() === "" ,
+          BPostal.trim() === "" ,
+          TaxID.trim() === "" ,
+          Industry.trim() === "" ,
+          MarketSegment.trim() === "" ,
+          SourceOfBusiness.trim() === "" ,
+          TrackCode.trim() === "" ,
+          ReasonForStay.trim() === "" ,
+          Geographic.trim() === "")
       let _IsRequired = nameOne === null ||
       Abbreviation === null ||
       GuaranteeMethodCode === null ||
@@ -1860,8 +1817,6 @@ export const ProfileCompany = (props) => {
       BState === null ||
       BPostal === null ||
       TaxID === null ||
-      ARNumber === null ||
-      SalesUserName === null ||
       Industry === null ||
       MarketSegment === null ||
       SourceOfBusiness === null ||
@@ -1881,8 +1836,6 @@ export const ProfileCompany = (props) => {
       BState.trim() === "" ||
       BPostal.trim() === "" ||
       TaxID.trim() === "" ||
-      ARNumber.trim() === "" ||
-      SalesUserName.trim() === "" ||
       Industry.trim() === "" ||
       MarketSegment.trim() === "" ||
       SourceOfBusiness.trim() === "" ||
@@ -1901,8 +1854,55 @@ export const ProfileCompany = (props) => {
         updateList()
       }
     } else if (props.action == "edit") {
+      let _IsRequired = nameOne === null ||
+      Abbreviation === null ||
+      GuaranteeMethodCode === null ||
+      iata === null ||
+      StreetAddress === null ||
+      City === null ||
+      State === null ||
+      Postal === null ||
+      BStreetAddress === null ||
+      BCity === null ||
+      BState === null ||
+      BPostal === null ||
+      TaxID === null ||
+      Industry === null ||
+      MarketSegment === null ||
+      SourceOfBusiness === null ||
+      TrackCode === null ||
+      ReasonForStay === null ||
+      Geographic  === null ||
+      nameOne.trim() === "" ||
+      Abbreviation.trim() === "" ||
+      GuaranteeMethodCode.trim() === "" ||
+      iata.trim() === "" ||
+      StreetAddress.trim() === "" ||
+      City.trim() === "" ||
+      State.trim() === "" ||
+      Postal.trim() === "" ||
+      BStreetAddress.trim() === "" ||
+      BCity.trim() === "" ||
+      BState.trim() === "" ||
+      BPostal.trim() === "" ||
+      TaxID.trim() === "" ||
+      Industry.trim() === "" ||
+      MarketSegment.trim() === "" ||
+      SourceOfBusiness.trim() === "" ||
+      TrackCode.trim() === "" ||
+      ReasonForStay.trim() === "" ||
+      Geographic.trim() === "";
+      console.log("action add", props.action);
+      console.log('_IsRequired',_IsRequired)
+      if(_IsRequired == false){
       await handleAddDataEdittoDatabase();
       console.log("action edit", props.action);
+    }else{
+      setIsRequired(true);
+      console.log("isRequired",isRequired)
+      props.setAction("none");
+      updateList()
+    }
     }
   }, [props.action]);
 
