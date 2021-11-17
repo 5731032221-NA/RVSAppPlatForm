@@ -569,9 +569,9 @@ export const ProfileTableCompany = (props) => {
                   //   page: page,
                   //   pageSize: rowsPerPage,
                   pageSizeOptions: [
-                    5,
                     10,
                     20,
+                    30,
                     { value: companyData.length, label: "All" },
                   ],
                   headerStyle: headerTableStyle,

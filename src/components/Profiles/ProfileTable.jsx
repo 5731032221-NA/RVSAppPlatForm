@@ -669,9 +669,9 @@ export const ProfileTable = (props) => {
                   //   page: page,
                   //   pageSize: rowsPerPage,
                   pageSizeOptions: [
-                    5,
                     10,
                     20,
+                    30,
                     { value: rows.length, label: "All" },
                   ],
                   headerStyle: headerTableStyle,
