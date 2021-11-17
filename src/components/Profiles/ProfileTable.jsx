@@ -225,8 +225,9 @@ export const ProfileTable = (props) => {
   // };
 
   const handleNewData = async () => {
-    await setAction("none");
     await setTriggerButton(!triggerButton);
+    await setAction("none");
+    console.log("triggerButton :: ", triggerButton);
     await props.handleRedirectToTableIndividual(false);
     await setEditData(null);
     await setStatusprofile("add");
@@ -237,10 +238,12 @@ export const ProfileTable = (props) => {
     await setTriggerButton(!triggerButton);
     await setAction("add");
     await setEditData(null);
+    console.log("triggerButton :: ", triggerButton);
 
     // await setStatusprofile("moredata");
     console.log("Table page :: ", props.RedirectToTableIndividual);
     if (props.RedirectToTableIndividual) {
+      await handleReloadTable();
       await handleReloadTable();
     }
   };
@@ -248,6 +251,7 @@ export const ProfileTable = (props) => {
   //save button on **edit component
   const handleSaveEditData = async () => {
     await setTriggerButton(!triggerButton);
+    console.log("triggerButton :: ", triggerButton);
     await setAction("edit");
     await setEditData(null);
     // await setStatusprofile("moredata");
@@ -259,15 +263,15 @@ export const ProfileTable = (props) => {
   };
 
   const handleEditData = async (rowData) => {
+    await setTriggerButton(!triggerButton);
     await setAction("none");
-
+    console.log("triggerButton :: ", triggerButton);
     let individualdata = await getIndividualProfileById(
       sessionStorage.getItem("auth"),
       rowData.nameid
     );
-    await setTriggerButton(!triggerButton);
-    await props.handleRedirectToTableIndividual(false);
-    // console.log("rowData", rowData);
+
+    console.log("rowData", rowData);
     console.log("individualdata ==", individualdata.content[0]);
     await setEditData(individualdata.content[0]);
     await handleDeleteData(
@@ -279,6 +283,7 @@ export const ProfileTable = (props) => {
     await setStatusprofile("edit");
     console.log("test Edit");
   };
+
   const handleDeleteData = async (nameid, title, firstname, lastname) => {
     console.log("data : ", nameid, title, firstname, lastname);
     setDeleteData({
@@ -301,12 +306,7 @@ export const ProfileTable = (props) => {
     setDialogDelete(false);
   };
 
-  const handleDialogDeleteOpen = async (
-    nameid,
-    firstname,
-    lastname,
-    title
-  ) => {
+  const handleDialogDeleteOpen = async (nameid, firstname, lastname, title) => {
     await setDeleteData({
       nameid: nameid,
       title: title,
@@ -368,11 +368,11 @@ export const ProfileTable = (props) => {
               element.idnumber ? element.idnumber : element.passportnumber,
               element.nationality,
               // element.laststay,
-            "-",
-            // element.score,
-            "-",
-            // element.status
-            element.statusprofile == "Y" ? "Active" : "Inactive"
+              "-",
+              // element.score,
+              "-",
+              // element.status
+              element.statusprofile == "Y" ? "Active" : "Inactive"
             )
           )
         );

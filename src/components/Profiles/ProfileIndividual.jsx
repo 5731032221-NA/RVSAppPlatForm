@@ -325,7 +325,9 @@ export const ProfileIndividual = (props) => {
     }),
   });
 
-  // [nameID,setNameID] = React.useState("");
+  const [nameID, setNameID] = React.useState(
+    props.editdata != null ? props.editdata.nameid : "Mr."
+  );
   const [nameTitle, setNameTitle] = React.useState(
     props.editdata != null ? props.editdata.nametitle : "Mr."
   );
@@ -541,27 +543,27 @@ export const ProfileIndividual = (props) => {
           sessionStorage.getItem("auth"),
           props.editdata.nameid
         );
-        console.log("getCommunications.contents", getCommunications.contents)
+        console.log("getCommunications.contents", getCommunications.contents);
         let count = 3;
         getCommunications.contents[0].forEach((element) => {
           if (element.communication == "email") {
-            getCommunicationsDatas.email = element.value
+            getCommunicationsDatas.email = element.value;
             setCommunicationDatas((prev) => ({
               ...prev,
               email: element.value,
-            }))
+            }));
           } else if (element.communication == "mobile") {
-            getCommunicationsDatas.mobile = element.value
+            getCommunicationsDatas.mobile = element.value;
             setCommunicationDatas((prev) => ({
               ...prev,
               mobile: element.value,
-            }))
+            }));
           } else {
-            setCommunicationDatas(prev => ({
+            setCommunicationDatas((prev) => ({
               ...prev,
               [count]: element.communication,
-              [count + 1]: element.value
-            }))
+              [count + 1]: element.value,
+            }));
             getcomunication.push({
               id: count,
               label: "Choose a communication",
@@ -576,16 +578,17 @@ export const ProfileIndividual = (props) => {
                     key={option.value}
                     value={option.value}
                     selected={option.label == element.communication}
-                  // defaultValue={element.communication}
+                    // defaultValue={element.communication}
                   >
                     {option.label}
                   </option>
                 )),
               },
-              handle: (e) => setCommunicationDatas(prev => ({
-                ...prev,
-                [count]: element.communication
-              })),
+              handle: (e) =>
+                setCommunicationDatas((prev) => ({
+                  ...prev,
+                  [count]: element.communication,
+                })),
             });
             getcomunication.push({
               id: count + 1,
@@ -596,89 +599,90 @@ export const ProfileIndividual = (props) => {
               select: {
                 status: "fillnolabel",
                 data: "",
-                defaultvalue: element.value
+                defaultvalue: element.value,
               },
-              handle: (e) => setCommunicationDatas(prev => ({
-                ...prev,
-                [count + 1]: element.value
-              })),
+              handle: (e) =>
+                setCommunicationDatas((prev) => ({
+                  ...prev,
+                  [count + 1]: element.value,
+                })),
             });
             count = count + 2;
           }
-        }
-        );
+        });
 
         let relationid = 1;
-        console.log(getRelations.contents[0])
-        
-          getRelations.contents[0].forEach((element) => {
-            setRelationDatas(prev => ({
-              ...prev,
-              [relationid]: element.relation,
-              [relationid+1]: element.value,
-              [relationid + 2]: element.note
-            }))
-            getrelation.push({
-              id: relationid ,
-              label: "Name Type",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "option",
-                data: relation.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                    selected={option.label == element.relation}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => setRelationDatas(prev => ({
-                ...prev,
-                [relationid]: element.relation
-              }))
-            });
-            getrelation.push({
-              id: relationid+1,
-              label: "Name",
-              xl: 4,
-              md: 4,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue: element.value
-              },
-              handle: (e) => setRelationDatas(prev => ({
-                ...prev,
-                [relationid+1]: element.value
-              }))
-            });
-            getrelation.push({
-              id: relationid + 2,
-              label: "Note",
-              xl: 6,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue: element.note
-              },
-              handle: (e) => setRelationDatas(prev => ({
-                ...prev,
-                [relationid + 2]: element.note
-              }))
-            });
-            relationid = relationid + 3;
-          }
-          );
-          console.log("getrelation",getrelation)
+        console.log(getRelations.contents[0]);
 
+        getRelations.contents[0].forEach((element) => {
+          setRelationDatas((prev) => ({
+            ...prev,
+            [relationid]: element.relation,
+            [relationid + 1]: element.value,
+            [relationid + 2]: element.note,
+          }));
+          getrelation.push({
+            id: relationid,
+            label: "Name Type",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "option",
+              data: relation.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                  selected={option.label == element.relation}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relationid]: element.relation,
+              })),
+          });
+          getrelation.push({
+            id: relationid + 1,
+            label: "Name",
+            xl: 4,
+            md: 4,
+            xs: 6,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: element.value,
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relationid + 1]: element.value,
+              })),
+          });
+          getrelation.push({
+            id: relationid + 2,
+            label: "Note",
+            xl: 6,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: element.note,
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relationid + 2]: element.note,
+              })),
+          });
+          relationid = relationid + 3;
+        });
+        console.log("getrelation", getrelation);
       }
 
       setList([
@@ -2469,7 +2473,7 @@ export const ProfileIndividual = (props) => {
   const handleData = async (e) => {
     // console.log("Value from handleData : ", e);
     // console.log("Value from handleData : ", e.target.value);
-    console.log("Value from props.editdata : ", props.editdata);
+    // console.log("Value from props.editdata : ", props.editdata);
     // console.log("idividualData==", individualData);
     // console.log(
     //   "setvalue check==",
@@ -2530,7 +2534,7 @@ export const ProfileIndividual = (props) => {
   };
 
   const handleAddDatatoDatabase = async (e) => {
-    console.log("handleAddDatatoDatabase")
+    console.log("handleAddDatatoDatabase");
     // let index = list.findIndex((x) => x.title == "Communication");
     // let communications = list[index];
     // delete communications.content[communications.content.length - 1];
@@ -2595,7 +2599,7 @@ export const ProfileIndividual = (props) => {
   };
 
   const handleEditDatatoDatabase = async (e) => {
-    let id = props.editdata.nameid;
+    let id = nameID;
 
     let req = {
       nametitle: nameTitle,
@@ -2655,157 +2659,354 @@ export const ProfileIndividual = (props) => {
     console.log("datafrom post", data);
   };
 
+  const [validationStatus, setValidationStatus] = React.useState(true);
+  React.useEffect(() => {
+    ///check is required in every field
+    var _IsRequired =
+      nameTitle === null ||
+      nameTitle === "" ||
+      firstName === " " ||
+      firstName === null ||
+      firstName === "" ||
+      firstName === " " ||
+      lastName === null ||
+      lastName === "" ||
+      lastName === " " ||
+      namePrefix === null ||
+      namePrefix === "" ||
+      namePrefix === " " ||
+      nameSuffix === null ||
+      nameSuffix === "" ||
+      nameSuffix === " " ||
+      middleInitial === null ||
+      middleInitial === "" ||
+      middleInitial === " " ||
+      gender === null ||
+      gender === "" ||
+      gender === " " ||
+      religion === null ||
+      religion === "" ||
+      religion === " " ||
+      organization === null ||
+      organization === "" ||
+      organization === " " ||
+      statusProfile === null ||
+      statusProfile === "" ||
+      statusProfile === " " ||
+      provinceOfResidence === null ||
+      provinceOfResidence === "" ||
+      provinceOfResidence === " " ||
+      borderCrossingEntryPlace === null ||
+      borderCrossingEntryPlace === "" ||
+      borderCrossingEntryPlace === " " ||
+      borderCrossingEntryDate === null ||
+      borderCrossingEntryDate === "" ||
+      borderCrossingEntryDate === " " ||
+      address === null ||
+      address === "" ||
+      address === " " ||
+      address1 === null ||
+      address1 === "" ||
+      address1 === " " ||
+      address2 === null ||
+      address2 === "" ||
+      address2 === " " ||
+      conuty === null ||
+      conuty === "" ||
+      conuty === " " ||
+      city === null ||
+      city === "" ||
+      city === " " ||
+      stateProvince === null ||
+      stateProvince === "" ||
+      stateProvince === " " ||
+      postal === null ||
+      postal === "" ||
+      postal === " " ||
+      noPost === null ||
+      noPost === "" ||
+      noPost === " " ||
+      NRG === null ||
+      NRG === "" ||
+      NRG === " " ||
+      guestCategory === null ||
+      guestCategory === "" ||
+      guestCategory === " " ||
+      VVIP === null ||
+      VVIP === "" ||
+      VVIP === " " ||
+      birthRegion === null ||
+      birthRegion === "" ||
+      birthRegion === " " ||
+      birthProvince === null ||
+      birthProvince === "" ||
+      birthProvince === " " ||
+      guestType === null ||
+      guestType === "" ||
+      guestType === " " ||
+      IDCheck === null ||
+      IDCheck === "" ||
+      IDCheck === " " ||
+      IDType === null ||
+      IDType === "" ||
+      IDType === " " ||
+      IDNumber === null ||
+      IDNumber === "" ||
+      IDNumber === " " ||
+      nationality === null ||
+      nationality === "" ||
+      nationality === " " ||
+      dateOfBirth === null ||
+      dateOfBirth === "" ||
+      dateOfBirth === " " ||
+      IDIssuedDate === null ||
+      IDIssuedDate === "" ||
+      IDIssuedDate === " " ||
+      IDExpirationDate === null ||
+      IDExpirationDate === "" ||
+      IDExpirationDate === " " ||
+      passportVisaCheck === null ||
+      passportVisaCheck === "" ||
+      passportVisaCheck === " " ||
+      visaType === null ||
+      visaType === "" ||
+      visaType === " " ||
+      visaName === null ||
+      visaName === "" ||
+      visaName === " " ||
+      visaNumber === null ||
+      visaNumber === "" ||
+      visaNumber === " " ||
+      visaIssuedDate === null ||
+      visaIssuedDate === "" ||
+      visaIssuedDate === " " ||
+      visaBeginDate === null ||
+      visaBeginDate === "" ||
+      visaBeginDate === " " ||
+      visaExpirationDate === null ||
+      visaExpirationDate === "" ||
+      visaExpirationDate === " " ||
+      visaStatus === null ||
+      visaStatus === "" ||
+      visaStatus === " " ||
+      visaNotes === null ||
+      visaNotes === "" ||
+      visaNotes === " " ||
+      rank === null ||
+      rank === "" ||
+      rank === " " ||
+      grade === null ||
+      grade === "" ||
+      grade === " " ||
+      guestIdentity === null ||
+      guestIdentity === "" ||
+      guestIdentity === " ";
+    // console.log("_IsRequired ::::::::: ", _IsRequired);
+    setValidationStatus(_IsRequired);
+    if (_IsRequired === false) {
+      setIsRequired(false);
+      props.handleRedirectToTableIndividual(true);
+    }
+  }, [
+    IDCheck,
+    IDExpirationDate,
+    IDIssuedDate,
+    IDNumber,
+    IDType,
+    NRG,
+    VVIP,
+    address,
+    address1,
+    address2,
+    birthProvince,
+    birthRegion,
+    borderCrossingEntryDate,
+    borderCrossingEntryPlace,
+    city,
+    conuty,
+    dateOfBirth,
+    firstName,
+    gender,
+    grade,
+    guestCategory,
+    guestIdentity,
+    guestType,
+    lastName,
+    middleInitial,
+    namePrefix,
+    nameSuffix,
+    nameTitle,
+    nationality,
+    noPost,
+    organization,
+    passportVisaCheck,
+    postal,
+    props,
+    provinceOfResidence,
+    rank,
+    religion,
+    stateProvince,
+    statusProfile,
+    visaBeginDate,
+    visaExpirationDate,
+    visaIssuedDate,
+    visaName,
+    visaNotes,
+    visaNumber,
+    visaStatus,
+    visaType,
+  ]);
+
   //data from button for  trigger (add or delete)
   React.useEffect(() => {
     async function handlebutton() {
       if (props.action === "add") {
-        //check is required in every field
-        let _IsRequired =
-          nameTitle === null ||
-          nameTitle === "" ||
-          firstName === " " ||
-          firstName === null ||
-          firstName === "" ||
-          firstName === " " ||
-          lastName === null ||
-          lastName === "" ||
-          lastName === " " ||
-          namePrefix === null ||
-          namePrefix === "" ||
-          namePrefix === " " ||
-          nameSuffix === null ||
-          nameSuffix === "" ||
-          nameSuffix === " " ||
-          middleInitial === null ||
-          middleInitial === "" ||
-          middleInitial === " " ||
-          gender === null ||
-          gender === "" ||
-          gender === " " ||
-          religion === null ||
-          religion === "" ||
-          religion === " " ||
-          organization === null ||
-          organization === "" ||
-          organization === " " ||
-          statusProfile === null ||
-          statusProfile === "" ||
-          statusProfile === " " ||
-          provinceOfResidence === null ||
-          provinceOfResidence === "" ||
-          provinceOfResidence === " " ||
-          borderCrossingEntryPlace === null ||
-          borderCrossingEntryPlace === "" ||
-          borderCrossingEntryPlace === " " ||
-          borderCrossingEntryDate === null ||
-          borderCrossingEntryDate === "" ||
-          borderCrossingEntryDate === " " ||
-          address === null ||
-          address === "" ||
-          address === " " ||
-          address1 === null ||
-          address1 === "" ||
-          address1 === " " ||
-          address2 === null ||
-          address2 === "" ||
-          address2 === " " ||
-          conuty === null ||
-          conuty === "" ||
-          conuty === " " ||
-          city === null ||
-          city === "" ||
-          city === " " ||
-          stateProvince === null ||
-          stateProvince === "" ||
-          stateProvince === " " ||
-          postal === null ||
-          postal === "" ||
-          postal === " " ||
-          noPost === null ||
-          noPost === "" ||
-          noPost === " " ||
-          NRG === null ||
-          NRG === "" ||
-          NRG === " " ||
-          guestCategory === null ||
-          guestCategory === "" ||
-          guestCategory === " " ||
-          VVIP === null ||
-          VVIP === "" ||
-          VVIP === " " ||
-          birthRegion === null ||
-          birthRegion === "" ||
-          birthRegion === " " ||
-          birthProvince === null ||
-          birthProvince === "" ||
-          birthProvince === " " ||
-          guestType === null ||
-          guestType === "" ||
-          guestType === " " ||
-          IDCheck === null ||
-          IDCheck === "" ||
-          IDCheck === " " ||
-          IDType === null ||
-          IDType === "" ||
-          IDType === " " ||
-          IDNumber === null ||
-          IDNumber === "" ||
-          IDNumber === " " ||
-          nationality === null ||
-          nationality === "" ||
-          nationality === " " ||
-          dateOfBirth === null ||
-          dateOfBirth === "" ||
-          dateOfBirth === " " ||
-          IDIssuedDate === null ||
-          IDIssuedDate === "" ||
-          IDIssuedDate === " " ||
-          IDExpirationDate === null ||
-          IDExpirationDate === "" ||
-          IDExpirationDate === " " ||
-          passportVisaCheck === null ||
-          passportVisaCheck === "" ||
-          passportVisaCheck === " " ||
-          visaType === null ||
-          visaType === "" ||
-          visaType === " " ||
-          visaName === null ||
-          visaName === "" ||
-          visaName === " " ||
-          visaNumber === null ||
-          visaNumber === "" ||
-          visaNumber === " " ||
-          visaIssuedDate === null ||
-          visaIssuedDate === "" ||
-          visaIssuedDate === " " ||
-          visaBeginDate === null ||
-          visaBeginDate === "" ||
-          visaBeginDate === " " ||
-          visaExpirationDate === null ||
-          visaExpirationDate === "" ||
-          visaExpirationDate === " " ||
-          visaStatus === null ||
-          visaStatus === "" ||
-          visaStatus === " " ||
-          visaNotes === null ||
-          visaNotes === "" ||
-          visaNotes === " " ||
-          rank === null ||
-          rank === "" ||
-          rank === " " ||
-          grade === null ||
-          grade === "" ||
-          grade === " " ||
-          guestIdentity === null ||
-          guestIdentity === "" ||
-          guestIdentity === " ";
-        console.log("_IsRequired", _IsRequired);
+        // let _IsRequired =
+        //   nameTitle === null ||
+        //   nameTitle === "" ||
+        //   firstName === " " ||
+        //   firstName === null ||
+        //   firstName === "" ||
+        //   firstName === " " ||
+        //   lastName === null ||
+        //   lastName === "" ||
+        //   lastName === " " ||
+        //   namePrefix === null ||
+        //   namePrefix === "" ||
+        //   namePrefix === " " ||
+        //   nameSuffix === null ||
+        //   nameSuffix === "" ||
+        //   nameSuffix === " " ||
+        //   middleInitial === null ||
+        //   middleInitial === "" ||
+        //   middleInitial === " " ||
+        //   gender === null ||
+        //   gender === "" ||
+        //   gender === " " ||
+        //   religion === null ||
+        //   religion === "" ||
+        //   religion === " " ||
+        //   organization === null ||
+        //   organization === "" ||
+        //   organization === " " ||
+        //   statusProfile === null ||
+        //   statusProfile === "" ||
+        //   statusProfile === " " ||
+        //   provinceOfResidence === null ||
+        //   provinceOfResidence === "" ||
+        //   provinceOfResidence === " " ||
+        //   borderCrossingEntryPlace === null ||
+        //   borderCrossingEntryPlace === "" ||
+        //   borderCrossingEntryPlace === " " ||
+        //   borderCrossingEntryDate === null ||
+        //   borderCrossingEntryDate === "" ||
+        //   borderCrossingEntryDate === " " ||
+        //   address === null ||
+        //   address === "" ||
+        //   address === " " ||
+        //   address1 === null ||
+        //   address1 === "" ||
+        //   address1 === " " ||
+        //   address2 === null ||
+        //   address2 === "" ||
+        //   address2 === " " ||
+        //   conuty === null ||
+        //   conuty === "" ||
+        //   conuty === " " ||
+        //   city === null ||
+        //   city === "" ||
+        //   city === " " ||
+        //   stateProvince === null ||
+        //   stateProvince === "" ||
+        //   stateProvince === " " ||
+        //   postal === null ||
+        //   postal === "" ||
+        //   postal === " " ||
+        //   noPost === null ||
+        //   noPost === "" ||
+        //   noPost === " " ||
+        //   NRG === null ||
+        //   NRG === "" ||
+        //   NRG === " " ||
+        //   guestCategory === null ||
+        //   guestCategory === "" ||
+        //   guestCategory === " " ||
+        //   VVIP === null ||
+        //   VVIP === "" ||
+        //   VVIP === " " ||
+        //   birthRegion === null ||
+        //   birthRegion === "" ||
+        //   birthRegion === " " ||
+        //   birthProvince === null ||
+        //   birthProvince === "" ||
+        //   birthProvince === " " ||
+        //   guestType === null ||
+        //   guestType === "" ||
+        //   guestType === " " ||
+        //   IDCheck === null ||
+        //   IDCheck === "" ||
+        //   IDCheck === " " ||
+        //   IDType === null ||
+        //   IDType === "" ||
+        //   IDType === " " ||
+        //   IDNumber === null ||
+        //   IDNumber === "" ||
+        //   IDNumber === " " ||
+        //   nationality === null ||
+        //   nationality === "" ||
+        //   nationality === " " ||
+        //   dateOfBirth === null ||
+        //   dateOfBirth === "" ||
+        //   dateOfBirth === " " ||
+        //   IDIssuedDate === null ||
+        //   IDIssuedDate === "" ||
+        //   IDIssuedDate === " " ||
+        //   IDExpirationDate === null ||
+        //   IDExpirationDate === "" ||
+        //   IDExpirationDate === " " ||
+        //   passportVisaCheck === null ||
+        //   passportVisaCheck === "" ||
+        //   passportVisaCheck === " " ||
+        //   visaType === null ||
+        //   visaType === "" ||
+        //   visaType === " " ||
+        //   visaName === null ||
+        //   visaName === "" ||
+        //   visaName === " " ||
+        //   visaNumber === null ||
+        //   visaNumber === "" ||
+        //   visaNumber === " " ||
+        //   visaIssuedDate === null ||
+        //   visaIssuedDate === "" ||
+        //   visaIssuedDate === " " ||
+        //   visaBeginDate === null ||
+        //   visaBeginDate === "" ||
+        //   visaBeginDate === " " ||
+        //   visaExpirationDate === null ||
+        //   visaExpirationDate === "" ||
+        //   visaExpirationDate === " " ||
+        //   visaStatus === null ||
+        //   visaStatus === "" ||
+        //   visaStatus === " " ||
+        //   visaNotes === null ||
+        //   visaNotes === "" ||
+        //   visaNotes === " " ||
+        //   rank === null ||
+        //   rank === "" ||
+        //   rank === " " ||
+        //   grade === null ||
+        //   grade === "" ||
+        //   grade === " " ||
+        //   guestIdentity === null ||
+        //   guestIdentity === "" ||
+        //   guestIdentity === " ";
+        // console.log("_IsRequired", _IsRequired);
         console.log("action add", props.action);
-        await props.handleRedirectToTableIndividual(false);
-        if (_IsRequired === false) {
+        // await props.handleRedirectToTableIndividual(false);
+        if (validationStatus === false) {
+          // await props.handleRedirectToTableIndividual(true);
           await setIsRequired(false);
           await handleAddDatatoDatabase();
-          await props.handleRedirectToTableIndividual(true);
         } else {
           setIsRequired(true);
         }
@@ -2816,17 +3017,7 @@ export const ProfileIndividual = (props) => {
       }
     }
     handlebutton();
-  }, [props.trigger]);
-
-  // const handleValidation = (dataV) => {
-  //   if (dataV == null || dataV == "" || dataV == " ") {
-  //     console.log("dataV", dataV);
-  //     // return true;
-  //   } else {
-  //     console.log("dataV not null ", dataV);
-  //     // return false;
-  //   }
-  // };
+  }, [props.trigger, props.action]);
 
   // data from button for  trigger (add or delete)
   // React.useEffect(() => {
@@ -3023,7 +3214,7 @@ export const ProfileIndividual = (props) => {
                                     //     ? "This ib formation can't null"
                                     //     : false
                                     // }
-                                    // required={true}
+
                                     type={detail.datatype}
                                     className={classes.root}
                                     // label={detail.label}
@@ -3050,7 +3241,6 @@ export const ProfileIndividual = (props) => {
                                             ? true
                                             : false
                                         }
-                                        // error={detail.dataCheck}
                                         helperText={
                                           detail.dataCheck == null ||
                                           detail.dataCheck === ""
@@ -3078,21 +3268,6 @@ export const ProfileIndividual = (props) => {
                                       />
                                     ) : (
                                       <TextField
-                                        // error={
-                                        //   detail.dataCheck == null ||
-                                        //   detail.dataCheck === "" ||
-                                        //   detail.dataCheck === " "
-                                        //     ? true
-                                        //     : false
-                                        // }
-                                        // // error={detail.dataCheck}
-                                        // helperText={
-                                        //   detail.dataCheck == null ||
-                                        //   detail.dataCheck === ""
-                                        //     ? `${detail.label} is Required`
-                                        //     : false
-                                        // }
-                                        // required={true}
                                         type={detail.dataType}
                                         className={classes.root}
                                         label={detail.label}
