@@ -227,6 +227,7 @@ export const ProfileTableCompany = (props) => {
 
   
     if(resp.content[0].length > 0){
+      resp.content[0].citycountry = resp.content[0].city+"/"+resp.content[0].countrycode
       setStatusprofile("moredata");
       setcompanyData(resp.content[0]);
     }
@@ -548,7 +549,7 @@ export const ProfileTableCompany = (props) => {
                   },
                   {
                     title: "City/Country",
-                    field: "countrycode",
+                    field: "citycountry",
                     headerStyle: headerTableStyle,
                   },
                   // {
@@ -586,13 +587,13 @@ export const ProfileTableCompany = (props) => {
                     backgroundColor: themeState.paper,
                     color: themeState.color,
                     borderBottomColor: themeState.color,
-                    width: 230,
+                    width: 430,
                   },
                 }}
                 localization={{
                   toolbar: {
                     searchPlaceholder:
-                      "Search by name, ID Card/Passport, status",
+                      "Search by Name, www, City/Country, Industry, IATA",
                   },
                 }}
                 actions={[

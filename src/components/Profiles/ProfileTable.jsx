@@ -493,14 +493,14 @@ export const ProfileTable = (props) => {
             >
               Save
             </Button>
-            <Button
+            {/* <Button
               variant="contained"
               style={{ backgroundColor: "red", color: "white" }}
               startIcon={<DeleteIcon />}
               onClick={() => setDialogDelete(true)}
             >
               Delete
-            </Button>
+            </Button> */}
           </Grid>
         ) : statusprofile === "moredata" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
@@ -686,7 +686,7 @@ export const ProfileTable = (props) => {
                 localization={{
                   toolbar: {
                     searchPlaceholder:
-                      "Search by name, ID Card/Passport, status",
+                      "Search by ID, Title, First Name, Last Name, Gender, ID Card/Passport",
                   },
                 }}
                 actions={[
