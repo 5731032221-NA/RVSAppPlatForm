@@ -283,7 +283,7 @@ export const ProfileCompany = (props) => {
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
-
+  // const [isRequired, setIsRequired] = React.useState(false);
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
   const pageProperty = useSelector((state) => state.reducer.property);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -451,35 +451,43 @@ export const ProfileCompany = (props) => {
   const [relationDatas, setRelationDatas] = React.useState({});
   const [isRequired, setIsRequired] = React.useState(false);
 
-  //   React.useEffect(() => {
-  //     console.log("name1:",name1);
-  //  },[name1])
-
-  //  React.useEffect(() => {
-  //   console.log("name2:",name2);
-  // },[name2])
-
-  // const [demoData, setDemoData] = React.useState(
+ 
   const [list, setList] = React.useState([]);
   React.useEffect(() => {
     async function getconfig() {
-      let getCommunicationsDatas = {};
+      updateList();
+    }
+    getconfig();
+  }, []);
+  // const reorder = (list, startIndex, endIndex) => {
+  //   const result = Array.from(list);
+  //   const [removed] = result.splice(startIndex, 1);
+  //   result.splice(endIndex, 0, removed);
+
+  //   return result;
+  // };
+  // const onEnd = (result) => {
+  //   if (!result.destination) {
+  //     return;
+  //   }
+  //   setList(reorder(list, result.source.index, result.destination.index));
+  //   console.log(result);
+  // };
+  // const getItemStyle = (isDragging, draggableStyle) => ({
+  //   // styles we need to apply on draggables
+  //   ...draggableStyle,
+
+  //   ...(isDragging && {
+  //     background: "lightblue",
+  //   }),
+  // });
+
+  
+  async function updateList(){
+    let getCommunicationsDatas = {};
       let getcomunication = [];
       let getrelation = [];
       console.log("demostate");
-      // let getconfigdata = await getconfigurationbypropertycode(
-      //   sessionStorage.getItem("auth"),
-      //   pageProperty
-      // );
-      // console.log(getconfigdata);
-      // let configdata = getconfigdata.content[getconfigdata.content.length - 1];
-      // let optionTitle = await getlist(configdata, "PCINDTT");
-      // let optiongender = await getlist(configdata, "PCINDGD");
-      // let relation = await getlist(configdata, "PCINDRL");
-      // let communication = await getlist(configdata, "PCINDCM");
-      // setOptionrelation(relation);
-      // setOptioncommunication(communication);
-      // console.log("optioncommunication", optioncommunication);
       if (props.editdata != null) {
         console.log("props.editdata", props.editdata)
         let getCommunications = await getCompanyProfileCommunication(
@@ -684,7 +692,7 @@ export const ProfileCompany = (props) => {
                     ? props.editdata[0].companytypecode
                     : "Government",
               },
-              handle: (e) => setCompanyTypeCode(e.target.value),
+              handle: (e) => setCompanyTypeCode(e.target.value)
             },
             {
               id: 4,
@@ -843,26 +851,19 @@ export const ProfileCompany = (props) => {
             },
             {
               id: 5,
-              label: "Choose a country",
+              label: "Country",
               xl: 3,
               md: 6,
               xs: 12,
               select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
+                status: "fill",
+                data: "",
                 defaultvalue:
                   props.editdata != null
                     ? props.editdata[0].countrycode
-                    : "Thailand",
+                    : "",
               },
+              dataCheck: Chooseacountry,
               handle: (e) => setChooseacountry(e.target.value),
             },
             {
@@ -937,27 +938,20 @@ export const ProfileCompany = (props) => {
             },
             {
               id: 5,
-              label: "Choose a country",
+              label: "Billing Country",
               xl: 3,
               md: 6,
               xs: 12,
               select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
+                status: "fill",
+                data: "",
                 defaultvalue:
                   props.editdata != null
                     ? props.editdata[0].billingcountrycode
-                    : "Thailand",
+                    : "",
               },
               handle: (e) => setBChooseacountry(e.target.value),
+              dataCheck: BChooseacountry
             },
             {
               id: 6,
@@ -1474,9 +1468,9 @@ export const ProfileCompany = (props) => {
           ],
         },
       ]);
-    }
-    getconfig();
-  }, [props.action]);
+    // }
+    // getconfig();
+  };
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -1592,12 +1586,12 @@ export const ProfileCompany = (props) => {
 
   const handleAddDatatoDatabase = async (e) => {
    
-    props.setAction("none");
-    const checkvali = await checkvalidate();
-    if(checkvali){
-      setIsRequired(true);
-    } else {
-      setIsRequired(false);
+    // props.setAction("none");
+    // const checkvali = await checkvalidate();
+    // if(checkvali){
+    //   setIsRequired(true);
+    // } else {
+    //   setIsRequired(false);
       let index = list.findIndex((x) => x.title == "Communication");
       let communications = list[index];
       console.log("communications:",communications);
@@ -1662,7 +1656,7 @@ export const ProfileCompany = (props) => {
       }
 
       // console.log("datafrom post", data);
-    }
+    // }
   };
 
 
@@ -1743,7 +1737,59 @@ export const ProfileCompany = (props) => {
  
     if (props.action == "add") {
     
+      let _IsRequired = nameOne === null ||
+      Abbreviation === null ||
+      GuaranteeMethodCode === null ||
+      iata === null ||
+      StreetAddress === null ||
+      City === null ||
+      State === null ||
+      Postal === null ||
+      BStreetAddress === null ||
+      BCity === null ||
+      BState === null ||
+      BPostal === null ||
+      TaxID === null ||
+      ARNumber === null ||
+      SalesUserName === null ||
+      Industry === null ||
+      MarketSegment === null ||
+      SourceOfBusiness === null ||
+      TrackCode === null ||
+      ReasonForStay === null ||
+      Geographic  === null ||
+      nameOne.trim() === "" ||
+      Abbreviation.trim() === "" ||
+      GuaranteeMethodCode.trim() === "" ||
+      iata.trim() === "" ||
+      StreetAddress.trim() === "" ||
+      City.trim() === "" ||
+      State.trim() === "" ||
+      Postal.trim() === "" ||
+      BStreetAddress.trim() === "" ||
+      BCity.trim() === "" ||
+      BState.trim() === "" ||
+      BPostal.trim() === "" ||
+      TaxID.trim() === "" ||
+      ARNumber.trim() === "" ||
+      SalesUserName.trim() === "" ||
+      Industry.trim() === "" ||
+      MarketSegment.trim() === "" ||
+      SourceOfBusiness.trim() === "" ||
+      TrackCode.trim() === "" ||
+      ReasonForStay.trim() === "" ||
+      Geographic.trim() === "";
+      console.log("action add", props.action);
+      console.log('_IsRequired',_IsRequired)
+      if(_IsRequired == false){
+        setIsRequired(false);
       await handleAddDatatoDatabase();
+      }else{
+        setIsRequired(true);
+        console.log("isRequired",isRequired)
+        props.setAction("none");
+        updateList()
+      }
     } else if (props.action == "edit") {
       await handleAddDataEdittoDatabase();
  

@@ -445,7 +445,7 @@ export const ProfileTableCompany = (props) => {
                 >
                   No Data Available
                 </Typography>
-                <Grid item>
+                {/* <Grid item>
                   <Button
                     startIcon={<AddOutlinedIcon />}
                     size="large"
@@ -456,7 +456,7 @@ export const ProfileTableCompany = (props) => {
                   >
                     Create New Travel Agent Profile
                   </Button>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Grid>
           ) : (
