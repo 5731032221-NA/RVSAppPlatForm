@@ -227,6 +227,10 @@ export const ProfileTableCompany = (props) => {
 
   
     if(resp.content[0].length > 0){
+
+      resp.content[0].forEach(function(part, index) {
+        this[index].citycountry = (this[index].city?this[index].city : "-")+"/"+(this[index].countrycode?this[index].countrycode :"-");
+      }, resp.content[0])
       setStatusprofile("moredata");
       setcompanyData(resp.content[0]);
     }
@@ -472,7 +476,7 @@ export const ProfileTableCompany = (props) => {
                 >
                   No Data Available
                 </Typography>
-                <Grid item>
+                {/* <Grid item>
                   <Button
                     startIcon={<AddOutlinedIcon />}
                     size="large"
@@ -483,7 +487,7 @@ export const ProfileTableCompany = (props) => {
                   >
                     Create New CompanyProfile
                   </Button>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Grid>
           ) : (
@@ -548,7 +552,7 @@ export const ProfileTableCompany = (props) => {
                   },
                   {
                     title: "City/Country",
-                    field: "countrycode",
+                    field: "citycountry",
                     headerStyle: headerTableStyle,
                   },
                   // {
@@ -586,7 +590,13 @@ export const ProfileTableCompany = (props) => {
                     backgroundColor: themeState.paper,
                     color: themeState.color,
                     borderBottomColor: themeState.color,
-                    width: 230,
+                    width: 530,
+                  },
+                }}
+                localization={{
+                  toolbar: {
+                    searchPlaceholder:
+                      "Search by Name, www, City/Country, Industry, IATA",
                   },
                 }}
                 actions={[

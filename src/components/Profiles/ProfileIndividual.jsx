@@ -380,7 +380,7 @@ export const ProfileIndividual = (props) => {
     props.editdata != null ? props.editdata.address2 : ""
   );
   const [conuty, setCountry] = React.useState(
-    props.editdata != null ? props.editdata.conuty : "Thailand"
+    props.editdata != null ? props.editdata.conuty : ""
   );
   const [city, setCity] = React.useState(
     props.editdata != null ? props.editdata.city : ""
@@ -1164,23 +1164,15 @@ export const ProfileIndividual = (props) => {
             },
             {
               id: 8,
-              label: "Choose a country",
+              label: "Country",
               xl: 2,
               md: 2,
               xs: 6,
               select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
+                status: "fill",
+                data: "",
                 defaultvalue:
-                  props.editdata != null ? props.editdata.conuty : "Thailand",
+                  props.editdata != null ? props.editdata.conuty : "",
               },
               handle: (e) => setCountry(e.target.value),
               dataType: "string",
@@ -2207,21 +2199,13 @@ export const ProfileIndividual = (props) => {
         },
         {
           id: newid + 4,
-          label: "Choose a country",
+          label: "Country",
           xl: 2,
           md: 2,
           xs: 6,
           select: {
             status: "option",
-            data: optioncountry.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            data: "",
           },
           handle: (e) => handleData(e),
         },
