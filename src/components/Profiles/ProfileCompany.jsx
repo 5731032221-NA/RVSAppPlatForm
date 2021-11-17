@@ -449,6 +449,7 @@ export const ProfileCompany = (props) => {
   const [Communication, setCommunication] = React.useState("");
   const [Relationship, setRelationship] = React.useState("");
   const [relationDatas, setRelationDatas] = React.useState({});
+  const [isRequired, setIsRequired] = React.useState(false);
 
   //   React.useEffect(() => {
   //     console.log("name1:",name1);
@@ -498,19 +499,11 @@ export const ProfileCompany = (props) => {
           } else if (element.communication == "mobile") {
             getCommunicationsDatas.mobile = element.value
           } else {
-<<<<<<< HEAD
-
-=======
->>>>>>> d8615400b8446cfcc429435ced9617f93605fb30
             setCommunicationDatas(prev => ({
               ...prev,
               [count]: element.communication,
               [count + 1]: element.value
             }))
-<<<<<<< HEAD
-=======
-            
->>>>>>> d8615400b8446cfcc429435ced9617f93605fb30
             getcomunication.push({
               id: count,
               label: "Choose a communication",
@@ -535,6 +528,7 @@ export const ProfileCompany = (props) => {
                 ...prev,
                 [count]: e.target.value
               })),
+            
             });
             getcomunication.push({
               id: count + 1,
@@ -563,11 +557,7 @@ export const ProfileCompany = (props) => {
           setRelationDatas(prev => ({
             ...prev,
             [relationid]: element.relation,
-<<<<<<< HEAD
-            [relationid+1]: element.value,
-=======
             [relationid + 1]: element.value,
->>>>>>> d8615400b8446cfcc429435ced9617f93605fb30
             [relationid + 2]: element.note
           }))
           getrelation.push({
@@ -608,7 +598,8 @@ export const ProfileCompany = (props) => {
             handle: (e) => setRelationDatas(prev => ({
               ...prev,
               [relationid + 1]: element.value
-            }))
+            })),
+        
           });
           getrelation.push({
             id: relationid + 2,
@@ -651,6 +642,8 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].name : "",
               },
               handle: (e) => setnameOne(e.target.value),
+              dataType: "string",
+              dataCheck: nameOne,
             },
             {
               id: 2,
@@ -664,6 +657,8 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].name2 : "",
               },
               handle: (e) => setnameTwo(e.target.value),
+              dataType: "string",
+              dataCheck: nameTwo,
             },
             {
               id: 3,
@@ -704,6 +699,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].abbreviation : "",
               },
               handle: (e) => setAbbreviation(e.target.value),
+              dataType: "string",
+              dataCheck: Abbreviation,
             },
             {
               id: 5,
@@ -742,6 +739,8 @@ export const ProfileCompany = (props) => {
                     : "",
               },
               handle: (e) => setGuaranteeMethodCode(e.target.value),
+              dataType: "string",
+              dataCheck: GuaranteeMethodCode,
             },
             {
               id: 7,
@@ -801,6 +800,8 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].iata : "",
               },
               handle: (e) => setiata(e.target.value),
+              dataType: "string",
+              dataCheck: iata,
             },
             {
               id: 10,
@@ -815,6 +816,7 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].statuscode : " ",
               },
               handle: (e) => setStatus(e.target.checked),
+
             },
           ],
         },
@@ -836,6 +838,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].address : "",
               },
               handle: (e) => setStreetAddress(e.target.value),
+              dataType: "string",
+              dataCheck: StreetAddress,
             },
             {
               id: 5,
@@ -873,6 +877,8 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].city : "",
               },
               handle: (e) => setCity(e.target.value),
+              dataType: "string",
+              dataCheck: City,
             },
             {
               id: 7,
@@ -887,6 +893,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].stateprovince : "",
               },
               handle: (e) => setState(e.target.value),
+              dataType: "string",
+              dataCheck: State,
             },
             {
               id: 8,
@@ -901,6 +909,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].postalcode : "",
               },
               handle: (e) => setPostal(e.target.value),
+              dataType: "number",
+              dataCheck: Postal,
             },
           ],
         },
@@ -922,6 +932,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].billingaddress : "",
               },
               handle: (e) => setBStreetAddress(e.target.value),
+              dataType: "string",
+              dataCheck: BStreetAddress,
             },
             {
               id: 5,
@@ -960,6 +972,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].billingcity : "",
               },
               handle: (e) => setBCity(e.target.value),
+              dataType: "string",
+              dataCheck: BCity,
             },
             {
               id: 7,
@@ -976,6 +990,8 @@ export const ProfileCompany = (props) => {
                     : "",
               },
               handle: (e) => setBState(e.target.value),
+              dataType: "string",
+              dataCheck: BState,
             },
             {
               id: 8,
@@ -990,6 +1006,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].billingpostalcode : "",
               },
               handle: (e) => setBPostal(e.target.value),
+              dataType: "number",
+              dataCheck: BPostal,
             },
             {
               id: 9,
@@ -1003,6 +1021,8 @@ export const ProfileCompany = (props) => {
                 defaultvalue: props.editdata != null ? props.editdata[0].taxid : "",
               },
               handle: (e) => setTaxID(e.target.value),
+              dataType: "string",
+              dataCheck: TaxID,
             },
             {
               id: 10,
@@ -1017,6 +1037,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].taxid2 : "",
               },
               handle: (e) => setTaxID2(e.target.value),
+              dataType: "string",
+              dataCheck: TaxID2,
             },
           ],
         },
@@ -1089,6 +1111,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].creditcardid : "",
               },
               handle: (e) => setCreditCardNumber(e.target.value),
+              dataType: "number",
+              dataCheck: CreditCardNumber,
             },
             {
               id: 3,
@@ -1103,6 +1127,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].outstandingamout : "",
               },
               handle: (e) => setOutstandingAmount(e.target.value),
+              dataType: "number",
+              dataCheck: OutstandingAmount,
             },
             {
               id: 4,
@@ -1119,6 +1145,8 @@ export const ProfileCompany = (props) => {
                     : "",
               },
               handle: (e) => setFloatingDepositionAmount(e.target.value),
+              dataType: "number",
+              dataCheck: FloatingDepositionAmount,
             },
             {
               id: 5,
@@ -1133,6 +1161,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].ar_number : "",
               },
               handle: (e) => setARNumber(e.target.value),
+              dataType: "number",
+              dataCheck: ARNumber,
             },
           ],
         },
@@ -1210,6 +1240,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].ratecontractcode : "",
               },
               handle: (e) => setratecontractcode(e.target.value),
+              dataType: "string",
+              dataCheck: ratecontractcode,
             },
           ],
         },
@@ -1231,6 +1263,8 @@ export const ProfileCompany = (props) => {
                   props.editdata != null ? props.editdata[0].salesusername : "",
               },
               handle: (e) => setSalesUserName(e.target.value),
+              dataType: "string",
+              dataCheck: SalesUserName,
             },
             {
               id: 2,
@@ -1442,7 +1476,7 @@ export const ProfileCompany = (props) => {
       ]);
     }
     getconfig();
-  }, []);
+  }, [props.action]);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -1466,129 +1500,110 @@ export const ProfileCompany = (props) => {
     }),
   });
 
-  const handleAddDatatoDatabase = async (e) => {
-    // console.log(nameOne,
-    //   nameTwo,
-    //   CompanyTypeCode,
-    //   Abbreviation,
-    //   GuaranteeMethodCode,
-    //   Property,
-    //   Currency,
-    //   CreditRating,
-    //   IATA,
-    //   Status,
-    //   StreetAddress,
-    //   Chooseacountry,
-    //   City,
-    //   State,
-    //   Postal,
-    //   BStreetAddress,
-    //   BChooseacountry,
-    //   BCity,
-    //   BState,
-    //   BPostal,
-    //   TaxID,
-    //   TaxID2,
-    //   Communication,
-    //   Relationship,
-    //   CreditCardNumber,
-    //   OutstandingAmount,
-    //   FloatingDepositionAmount,
-    //   ARNumber,
-    //   SalesUserName,
-    //   Industry,
-    //   MarketSegment,
-    //   SourceOfBusiness,
-    //   TrackCode,
-    //   ReasonForStay,
-    //   Geographic,
-    //ratecontractcode,negotiatedratesonly);
 
+  const checkvalidate = () => {
+    let checkerror = false;
+    if (nameOne == "" || nameOne == " " || nameOne == null ) {
+    //  setErrorParameter("name1 is required");
+      checkerror = true;
+    } else if (nameTwo == "" || nameTwo == " " || nameTwo == null ) {
+      console.log("ss2");
+   //   setErrorParameter("name2 is required");
+       checkerror = true;
+    } else if (Abbreviation == ""  || Abbreviation == " " || Abbreviation == null) {
+   //   setErrorParameter("Abbreviation is required");
+       checkerror = true;
+    } else if (GuaranteeMethodCode == "" || GuaranteeMethodCode == " " || GuaranteeMethodCode == null) {
+     // setErrorParameter("GuaranteeMethodCode is required");
+       checkerror = true;
+    } else if (iata == "" || iata == " " || iata == null) {
+     // setErrorParameter("IATA is required");
+       checkerror = true;
+    } else if (StreetAddress == "" || StreetAddress == " " || StreetAddress == null) {
+    //  setErrorParameter("StreetAddress is required");
+       checkerror = true;
+    } else if (City == "" || City == " " || City == null) {
+    //  setErrorParameter("City is required");
+       checkerror = true;
+    } else if (State == "" || State == " " || State == null) {
+    //  setErrorParameter("State is required");
+       checkerror = true;
+    } else if (Postal == "" || Postal == " " || Postal == null) {
+    //  setErrorParameter("Postal is required");
+       checkerror = true;
+    } else if (BStreetAddress == "" || BStreetAddress == " " || BStreetAddress == null) {
+    //  setErrorParameter("Billing StreetAddress is required");
+       checkerror = true;
+    } else if (BCity == "" || BCity == " " || BCity == null) {
+    //  setErrorParameter("Billing City is required");
+       checkerror = true;
+    } else if (BState == "" || BState == " " || BState == null) {
+    //  setErrorParameter("Billing State is required");
+       checkerror = true;
+    } else if (BPostal == "" || BPostal == " " || BPostal == null) {
+    //  setErrorParameter("Billing Postal is required");
+       checkerror = true;
+    } else if (TaxID == "" || TaxID == " " || TaxID == null) {
+    //  setErrorParameter("TaxID is required");
+       checkerror = true;
+    } else if (TaxID2 == "" || TaxID2 == " " || TaxID2 == null) {
+     // setErrorParameter("TaxID2 is required");
+       checkerror = true;
+    } else if (CreditCardNumber == "" || CreditCardNumber == " " || CreditCardNumber == null) {
+    //  setErrorParameter("CreditCardNumber is required");
+       checkerror = true;
+    } else if (OutstandingAmount == "" || OutstandingAmount == " " || OutstandingAmount == null) {
+     // setErrorParameter("OutstandingAmount is required");
+       checkerror = true;
+    } else if (FloatingDepositionAmount == "" || FloatingDepositionAmount == " " || FloatingDepositionAmount == null) {
+    //  setErrorParameter("FloatingDepositionAmount is required");
+       checkerror = true;
+    } else if (ARNumber == "" || ARNumber == " " || ARNumber == null) {
+    //  setErrorParameter("ARNumber is required");
+       checkerror = true;
+    } else if (SalesUserName == "" || SalesUserName == " " || SalesUserName == null) {
+     // setErrorParameter("SalesUserName is required");
+       checkerror = true;
+    } else if (Industry == "" || Industry == " " || Industry == null) {
+     // setErrorParameter("Industry is required");
+       checkerror = true;
+    } else if (MarketSegment == "" || MarketSegment == " " || MarketSegment == null) {
+    //  setErrorParameter("MarketSegment is required");
+       checkerror = true;
+    } else if (SourceOfBusiness == "" || SourceOfBusiness == " " || SourceOfBusiness == null) {
+     // setErrorParameter("SourceOfBusiness is required");
+       checkerror = true;
+    } else if (TrackCode == "" || TrackCode == " " || TrackCode == null) {
+     // setErrorParameter("TrackCode is required");
+       checkerror = true;
+    } else if (ReasonForStay == "" || ReasonForStay == " " || ReasonForStay == null) {
+     // setErrorParameter("ReasonForStay is required");
+       checkerror = true;
+    } else if (Geographic == "" || Geographic == " " || Geographic == null) {
+      // setErrorParameter("Geographic is required");
+       checkerror = true;
+    }else {
+      setIsRequired(false);
+      checkerror = false;
+    }
+
+    return checkerror
+  }
+
+  const handleAddDatatoDatabase = async (e) => {
+   
     props.setAction("none");
-    if (nameOne == "") {
-      setErrorParameter("name1 is required");
-      setErrorMessage(true);
-    } else if (nameTwo == "") {
-      setErrorParameter("name2 is required");
-      setErrorMessage(true);
-    } else if (Abbreviation == "") {
-      setErrorParameter("Abbreviation is required");
-      setErrorMessage(true);
-    } else if (GuaranteeMethodCode == "") {
-      setErrorParameter("GuaranteeMethodCode is required");
-      setErrorMessage(true);
-    } else if (iata == "") {
-      setErrorParameter("IATA is required");
-      setErrorMessage(true);
-    } else if (StreetAddress == "") {
-      setErrorParameter("StreetAddress is required");
-      setErrorMessage(true);
-    } else if (City == "") {
-      setErrorParameter("City is required");
-      setErrorMessage(true);
-    } else if (State == "") {
-      setErrorParameter("State is required");
-      setErrorMessage(true);
-    } else if (Postal == "") {
-      setErrorParameter("Postal is required");
-      setErrorMessage(true);
-    } else if (BStreetAddress == "") {
-      setErrorParameter("Billing StreetAddress is required");
-      setErrorMessage(true);
-    } else if (BCity == "") {
-      setErrorParameter("Billing City is required");
-      setErrorMessage(true);
-    } else if (BState == "") {
-      setErrorParameter("Billing State is required");
-      setErrorMessage(true);
-    } else if (BPostal == "") {
-      setErrorParameter("Billing Postal is required");
-      setErrorMessage(true);
-    } else if (TaxID == "") {
-      setErrorParameter("TaxID is required");
-      setErrorMessage(true);
-    } else if (TaxID2 == "") {
-      setErrorParameter("TaxID2 is required");
-      setErrorMessage(true);
-    } else if (CreditCardNumber == "") {
-      setErrorParameter("CreditCardNumber is required");
-      setErrorMessage(true);
-    } else if (OutstandingAmount == "") {
-      setErrorParameter("OutstandingAmount is required");
-      setErrorMessage(true);
-    } else if (FloatingDepositionAmount == "") {
-      setErrorParameter("FloatingDepositionAmount is required");
-      setErrorMessage(true);
-    } else if (ARNumber == "") {
-      setErrorParameter("ARNumber is required");
-      setErrorMessage(true);
-    } else if (SalesUserName == "") {
-      setErrorParameter("SalesUserName is required");
-      setErrorMessage(true);
-    } else if (Industry == "") {
-      setErrorParameter("Industry is required");
-      setErrorMessage(true);
-    } else if (MarketSegment == "") {
-      setErrorParameter("MarketSegment is required");
-      setErrorMessage(true);
-    } else if (SourceOfBusiness == "") {
-      setErrorParameter("SourceOfBusiness is required");
-      setErrorMessage(true);
-    } else if (TrackCode == "") {
-      setErrorParameter("TrackCode is required");
-      setErrorMessage(true);
-    } else if (ReasonForStay == "") {
-      setErrorParameter("ReasonForStay is required");
-      setErrorMessage(true);
-    } else if (Geographic == "") {
-      setErrorParameter("Geographic is required");
-      setErrorMessage(true);
+    const checkvali = await checkvalidate();
+    if(checkvali){
+      setIsRequired(true);
     } else {
-      setErrorMessage(false);
+      setIsRequired(false);
       let index = list.findIndex((x) => x.title == "Communication");
       let communications = list[index];
+      console.log("communications:",communications);
       // let index = list.findIndex((x) => x.title == "Communication");
       let relations = list[index];
+      console.log("relations:",relations);
       let req = {
         recordtype: "C",
         nameOne: nameOne,
@@ -1650,124 +1665,15 @@ export const ProfileCompany = (props) => {
     }
   };
 
-  const handleAddDataEdittoDatabase = async (e) => {
-    // console.log(nameOne,
-    //   nameTwo,
-    //   CompanyTypeCode,
-    //   Abbreviation,
-    //   GuaranteeMethodCode,
-    //   Property,
-    //   Currency,
-    //   CreditRating,
-    //   IATA,
-    //   Status,
-    //   StreetAddress,
-    //   Chooseacountry,
-    //   City,
-    //   State,
-    //   Postal,
-    //   BStreetAddress,
-    //   BChooseacountry,
-    //   BCity,
-    //   BState,
-    //   BPostal,
-    //   TaxID,
-    //   TaxID2,
-    //   Communication,
-    //   Relationship,
-    //   CreditCardNumber,
-    //   OutstandingAmount,
-    //   FloatingDepositionAmount,
-    //   ARNumber,
-    //   SalesUserName,
-    //   Industry,
-    //   MarketSegment,
-    //   SourceOfBusiness,
-    //   TrackCode,
-    //   ReasonForStay,
-    //   Geographic);
 
+  const handleAddDataEdittoDatabase = async (e) => {
+   
     props.setAction("none");
-    if (nameOne == "") {
-      setErrorParameter("name1 is required");
-      setErrorMessage(true);
-    } else if (nameTwo == "") {
-      setErrorParameter("name2 is required");
-      setErrorMessage(true);
-    } else if (Abbreviation == "") {
-      setErrorParameter("Abbreviation is required");
-      setErrorMessage(true);
-    } else if (GuaranteeMethodCode == "") {
-      setErrorParameter("GuaranteeMethodCode is required");
-      setErrorMessage(true);
-    } else if (iata == "") {
-      setErrorParameter("IATA is required");
-      setErrorMessage(true);
-    } else if (StreetAddress == "") {
-      setErrorParameter("StreetAddress is required");
-      setErrorMessage(true);
-    } else if (City == "") {
-      setErrorParameter("City is required");
-      setErrorMessage(true);
-    } else if (State == "") {
-      setErrorParameter("State is required");
-      setErrorMessage(true);
-    } else if (Postal == "") {
-      setErrorParameter("Postal is required");
-      setErrorMessage(true);
-    } else if (BStreetAddress == "") {
-      setErrorParameter("Billing StreetAddress is required");
-      setErrorMessage(true);
-    } else if (BCity == "") {
-      setErrorParameter("Billing City is required");
-      setErrorMessage(true);
-    } else if (BState == "") {
-      setErrorParameter("Billing State is required");
-      setErrorMessage(true);
-    } else if (BPostal == "") {
-      setErrorParameter("Billing Postal is required");
-      setErrorMessage(true);
-    } else if (TaxID == "") {
-      setErrorParameter("TaxID is required");
-      setErrorMessage(true);
-    } else if (TaxID2 == "") {
-      setErrorParameter("TaxID2 is required");
-      setErrorMessage(true);
-    } else if (CreditCardNumber == "") {
-      setErrorParameter("CreditCardNumber is required");
-      setErrorMessage(true);
-    } else if (OutstandingAmount == "") {
-      setErrorParameter("OutstandingAmount is required");
-      setErrorMessage(true);
-    } else if (FloatingDepositionAmount == "") {
-      setErrorParameter("FloatingDepositionAmount is required");
-      setErrorMessage(true);
-    } else if (ARNumber == "") {
-      setErrorParameter("ARNumber is required");
-      setErrorMessage(true);
-    } else if (SalesUserName == "") {
-      setErrorParameter("SalesUserName is required");
-      setErrorMessage(true);
-    } else if (Industry == "") {
-      setErrorParameter("Industry is required");
-      setErrorMessage(true);
-    } else if (MarketSegment == "") {
-      setErrorParameter("MarketSegment is required");
-      setErrorMessage(true);
-    } else if (SourceOfBusiness == "") {
-      setErrorParameter("SourceOfBusiness is required");
-      setErrorMessage(true);
-    } else if (TrackCode == "") {
-      setErrorParameter("TrackCode is required");
-      setErrorMessage(true);
-    } else if (ReasonForStay == "") {
-      setErrorParameter("ReasonForStay is required");
-      setErrorMessage(true);
-    } else if (Geographic == "") {
-      setErrorParameter("Geographic is required");
-      setErrorMessage(true);
+    const checkvali = await checkvalidate();
+    if(checkvali){
+      setIsRequired(true);
     } else {
-      setErrorMessage(false);
+      setIsRequired(false);
 
       let req = {
         recordtype: "C",
@@ -2253,20 +2159,96 @@ export const ProfileCompany = (props) => {
                                     onFocus={false}
                                   />
                                 ) : detail.select.status === "fill" ? (
-                                  <TextField
-                                    className={classes.root}
-                                    label={detail.label}
-                                    variant="outlined"
-                                    InputProps={{
-                                      style: headerTableStyle,
-                                    }}
-                                    InputLabelProps={{
-                                      style: { color: "#AAAAAA" },
-                                    }}
-                                    fullWidth
-                                    defaultValue={detail.select.defaultvalue}
-                                    onChange={detail.handle}
-                                  />
+                                  // <TextField
+                                  //   className={classes.root}
+                                  //   label={detail.label}
+                                  //   variant="outlined"
+                                  //   InputProps={{
+                                  //     style: headerTableStyle,
+                                  //   }}
+                                  //   InputLabelProps={{
+                                  //     style: { color: "#AAAAAA" },
+                                  //   }}
+                                  //   fullWidth
+                                  //   defaultValue={detail.select.defaultvalue}
+                                  //   onChange={detail.handle}
+                                  // />
+                               
+                                
+                                  [
+                                    isRequired ? (
+                                    
+                                      <TextField
+                                        error={
+                                          detail.dataCheck == null ||
+                                          detail.dataCheck === "" ||
+                                          detail.dataCheck === " "
+                                            ? true
+                                            : false
+                                        }
+                                        // error={detail.dataCheck}
+                                        helperText={
+                                          detail.dataCheck == null ||
+                                          detail.dataCheck === ""
+                                            ? `${detail.label} is Required`
+                                            : false
+                                        }
+                                        // required={true}
+                                        type={detail.dataType}
+                                        className={classes.root}
+                                        label={detail.label}
+                                        variant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        noWrap
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" },
+                                        }}
+                                        fullWidth
+                                        defaultValue={
+                                          detail.select.defaultvalue
+                                        }
+                                        onChange={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
+                                      />
+                                    ) : (
+                                      <TextField
+                                        // error={
+                                        //   detail.dataCheck == null ||
+                                        //   detail.dataCheck === "" ||
+                                        //   detail.dataCheck === " "
+                                        //     ? true
+                                        //     : false
+                                        // }
+                                        // // error={detail.dataCheck}
+                                        // helperText={
+                                        //   detail.dataCheck == null ||
+                                        //   detail.dataCheck === ""
+                                        //     ? `${detail.label} is Required`
+                                        //     : false
+                                        // }
+                                        // required={true}
+                                        type={detail.dataType}
+                                        className={classes.root}
+                                        label={detail.label}
+                                        variant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        noWrap
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" },
+                                        }}
+                                        fullWidth
+                                        defaultValue={
+                                          detail.select.defaultvalue
+                                        }
+                                        onChange={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
+                                      />
+                                    ),
+                                  ]
                                 ) : detail.select.status === "option" ? (
                                   <TextField
                                     className={classes.root}
