@@ -11,6 +11,7 @@ export const EDIT_PROPERTY = "EDIT_PROPERTY";
 export const EDIT_CONFIGSTATE = "EDIT_CONFIGSTATE";
 export const EDIT_PERMISSION = "EDIT_PERMISSION";
 export const EDIT_INDEXTAB = "EDIT_INDEXTAB";
+export const EDIT_REDIRECT_INDIVIDUAL = "EDIT_REDIRECT_INDIVIDUAL";
 
 export const editAuth = (auth) => {
   return (dispatch) => {
@@ -34,94 +35,107 @@ export const editLang = (lang) => {
 
 export const delUser = (id) => {
   return (dispatch) => {
-    axios.delete(`http://${(process.env.REACT_APP_host || "localhost")}:80/users/${id}`).then((res) => {
-      // console.log(res);
-      dispatch({
-        type: "DEL_USER",
-        payload: res.data.id,
+    axios
+      .delete(
+        `http://${process.env.REACT_APP_host || "localhost"}:80/users/${id}`
+      )
+      .then((res) => {
+        // console.log(res);
+        dispatch({
+          type: "DEL_USER",
+          payload: res.data.id,
+        });
       });
-    });
   };
 };
 
 export const addUser = (data) => {
   return (dispatch) => {
-    axios.post("http://"+(process.env.REACT_APP_host || "localhost")+":80/users", data).then((res) => {
-      // console.log(res);
-      dispatch({
-        type: "ADD_USER",
-        payload: res.data,
+    axios
+      .post(
+        "http://" + (process.env.REACT_APP_host || "localhost") + ":80/users",
+        data
+      )
+      .then((res) => {
+        // console.log(res);
+        dispatch({
+          type: "ADD_USER",
+          payload: res.data,
+        });
       });
-    });
   };
 };
 
 export const editUser = (data) => {
   return (dispatch) => {
-    axios.put(`http://${(process.env.REACT_APP_host || "localhost")}:80/users/${data.id}`, data).then((res) => {
-      // console.log(res);
-      dispatch({
-        type: "EDIT_USER",
-        payload: res.data,
+    axios
+      .put(
+        `http://${process.env.REACT_APP_host || "localhost"}:80/users/${
+          data.id
+        }`,
+        data
+      )
+      .then((res) => {
+        // console.log(res);
+        dispatch({
+          type: "EDIT_USER",
+          payload: res.data,
+        });
       });
-    });
   };
 };
 
 export const getUser = (id) => {
   return (dispatch) => {
-    axios.get(`http://${(process.env.REACT_APP_host || "localhost")}:80/users/${id}`).then(() => {
-      dispatch({
-        type: "GET_USER",
-        payload: id,
+    axios
+      .get(`http://${process.env.REACT_APP_host || "localhost"}:80/users/${id}`)
+      .then(() => {
+        dispatch({
+          type: "GET_USER",
+          payload: id,
+        });
       });
-    });
   };
 };
 
 export const indexTab = (indexTab) => {
-
   return {
     type: EDIT_INDEXTAB,
     payload: {
       indextTab: indexTab,
     },
-  }
- 
+  };
 };
 
 export const nextComponent = (comp) => {
-
   return {
     type: EDIT_COMPONENT,
     payload: comp,
-  }
- 
+  };
 };
 
 export const permission = (permission) => {
-
   return {
     type: EDIT_PERMISSION,
     payload: {
       permission: permission,
     },
-  }
- 
+  };
 };
 
 export const editproperty = (property) => {
-
   return {
     type: EDIT_PROPERTY,
     payload: {
       property: property,
     },
-  }
- 
+  };
 };
 
-
+export const editRedirectToTableIndividual = (payload) => ({
+  type: "EDIT_REDIRECT_INDIVIDUAL",
+  payload,
+});
 
 export const getUserList = () => {
   // return (dispatch) => {

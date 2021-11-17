@@ -41,6 +41,7 @@ import {
   updateIndividualProfile,
   deleteIndividualProfileById,
 } from "../../services/individualprofile.service";
+import * as actions from "../../middleware/action";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -201,6 +202,7 @@ export const ProfileTable = (props) => {
   };
 
   // const [individualData, setIndividualData] = React.useState(rows);
+  const [triggerButton, setTriggerButton] = React.useState(false);
   const [action, setAction] = React.useState("");
   const [individualData, setIndividualData] = React.useState(null);
   const [statusprofile, setStatusprofile] = React.useState("none");
@@ -224,33 +226,47 @@ export const ProfileTable = (props) => {
 
   const handleNewData = async () => {
     await setAction("none");
+    await setTriggerButton(!triggerButton);
+    await props.handleRedirectToTableIndividual(false);
     await setEditData(null);
     await setStatusprofile("add");
   };
 
   //save button on **add component
   const handleAddData = async () => {
-    
+    await setTriggerButton(!triggerButton);
     await setAction("add");
     await setEditData(null);
-    // // await setStatusprofile("moredata");
-    await handleReloadTable();
+
+    // await setStatusprofile("moredata");
+    console.log("Table page :: ", props.RedirectToTableIndividual);
+    if (props.RedirectToTableIndividual) {
+      await handleReloadTable();
+    }
   };
 
   //save button on **edit component
   const handleSaveEditData = async () => {
+    await setTriggerButton(!triggerButton);
     await setAction("edit");
     await setEditData(null);
     // await setStatusprofile("moredata");
-    await handleReloadTable();
+    // =========****
+    console.log("Table page :: ", props.RedirectToTableIndividual);
+    if (props.RedirectToTableIndividual) {
+      await handleReloadTable();
+    }
   };
 
   const handleEditData = async (rowData) => {
     await setAction("none");
+
     let individualdata = await getIndividualProfileById(
       sessionStorage.getItem("auth"),
       rowData.nameid
     );
+    await setTriggerButton(!triggerButton);
+    await props.handleRedirectToTableIndividual(false);
     // console.log("rowData", rowData);
     console.log("individualdata ==", individualdata.content[0]);
     await setEditData(individualdata.content[0]);
@@ -500,7 +516,11 @@ export const ProfileTable = (props) => {
         ) : null}
       </Grid>
       {statusprofile === "edit" || statusprofile === "add" ? (
-        <ProfileIndividual editdata={editData} action={action} />
+        <ProfileIndividual
+          editdata={editData}
+          action={action}
+          trigger={triggerButton}
+        />
       ) : (
         [
           individualData == null ? (
@@ -800,10 +820,18 @@ export const ProfileTable = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => {
+  return {
+    RedirectToTableIndividual: state.reducer.redirectToTableIndividual,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    handleRedirectToTableIndividual: (status) => {
+      return dispatch(actions.editRedirectToTableIndividual(status));
+    },
+
     nextComponent: (comp) => dispatch(nextComponent(comp)),
   };
 };

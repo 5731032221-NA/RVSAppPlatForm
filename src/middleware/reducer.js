@@ -17,7 +17,9 @@ import { EDIT_CONFIGSTATE } from "./action";
 
 import { EDIT_PERMISSION } from "./action";
 
-import { EDIT_INDEXTAB } from "./action"
+import { EDIT_INDEXTAB } from "./action";
+
+import { EDIT_REDIRECT_INDIVIDUAL } from "./action";
 
 const initialState = {
   users: [{ id: "0", name: "n" }],
@@ -37,6 +39,7 @@ const initialState = {
   configState: "Configuration",
   permission: [],
   indextTab: "",
+  redirectToTableIndividual: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -103,6 +106,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         users: action.payload,
       };
+    case EDIT_REDIRECT_INDIVIDUAL:
+      console.log("redirectToTableIndividual", action.payload);
+      return {
+        ...state,
+        redirectToTableIndividual: action.payload,
+      };
     case "DEL_USER":
       const newState = {
         ...state,
@@ -130,12 +139,12 @@ const reducer = (state = initialState, action) => {
         users: allUsers,
       };
       return editedState;
-      case EDIT_INDEXTAB:
-        // console.log(" action.payload:", action.payload);
-        return {
-          ...state,
-          indextTab: action.payload,
-        };
+    case EDIT_INDEXTAB:
+      // console.log(" action.payload:", action.payload);
+      return {
+        ...state,
+        indextTab: action.payload,
+      };
     default:
       break;
   }
