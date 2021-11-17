@@ -1492,86 +1492,86 @@ export const ProfileCompany = (props) => {
     //ratecontractcode,negotiatedratesonly);
 
     props.setAction("none");
-    if (nameOne == "") {
-      setErrorParameter("name1 is required");
-      setErrorMessage(true);
-    } else if (nameTwo == "") {
-      setErrorParameter("name2 is required");
-      setErrorMessage(true);
-    } else if (Abbreviation == "") {
-      setErrorParameter("Abbreviation is required");
-      setErrorMessage(true);
-    } else if (GuaranteeMethodCode == "") {
-      setErrorParameter("GuaranteeMethodCode is required");
-      setErrorMessage(true);
-    } else if (iata == "") {
-      setErrorParameter("IATA is required");
-      setErrorMessage(true);
-    } else if (StreetAddress == "") {
-      setErrorParameter("StreetAddress is required");
-      setErrorMessage(true);
-    } else if (City == "") {
-      setErrorParameter("City is required");
-      setErrorMessage(true);
-    } else if (State == "") {
-      setErrorParameter("State is required");
-      setErrorMessage(true);
-    } else if (Postal == "") {
-      setErrorParameter("Postal is required");
-      setErrorMessage(true);
-    } else if (BStreetAddress == "") {
-      setErrorParameter("Billing StreetAddress is required");
-      setErrorMessage(true);
-    } else if (BCity == "") {
-      setErrorParameter("Billing City is required");
-      setErrorMessage(true);
-    } else if (BState == "") {
-      setErrorParameter("Billing State is required");
-      setErrorMessage(true);
-    } else if (BPostal == "") {
-      setErrorParameter("Billing Postal is required");
-      setErrorMessage(true);
-    } else if (TaxID == "") {
-      setErrorParameter("TaxID is required");
-      setErrorMessage(true);
-    } else if (TaxID2 == "") {
-      setErrorParameter("TaxID2 is required");
-      setErrorMessage(true);
-    } else if (CreditCardNumber == "") {
-      setErrorParameter("CreditCardNumber is required");
-      setErrorMessage(true);
-    } else if (OutstandingAmount == "") {
-      setErrorParameter("OutstandingAmount is required");
-      setErrorMessage(true);
-    } else if (FloatingDepositionAmount == "") {
-      setErrorParameter("FloatingDepositionAmount is required");
-      setErrorMessage(true);
-    } else if (ARNumber == "") {
-      setErrorParameter("ARNumber is required");
-      setErrorMessage(true);
-    } else if (SalesUserName == "") {
-      setErrorParameter("SalesUserName is required");
-      setErrorMessage(true);
-    } else if (Industry == "") {
-      setErrorParameter("Industry is required");
-      setErrorMessage(true);
-    } else if (MarketSegment == "") {
-      setErrorParameter("MarketSegment is required");
-      setErrorMessage(true);
-    } else if (SourceOfBusiness == "") {
-      setErrorParameter("SourceOfBusiness is required");
-      setErrorMessage(true);
-    } else if (TrackCode == "") {
-      setErrorParameter("TrackCode is required");
-      setErrorMessage(true);
-    } else if (ReasonForStay == "") {
-      setErrorParameter("ReasonForStay is required");
-      setErrorMessage(true);
-    } else if (Geographic == "") {
-      setErrorParameter("Geographic is required");
-      setErrorMessage(true);
-    } else {
-      setErrorMessage(false);
+    // if (nameOne == "") {
+    //   setErrorParameter("name1 is required");
+    //   setErrorMessage(true);
+    // } else if (nameTwo == "") {
+    //   setErrorParameter("name2 is required");
+    //   setErrorMessage(true);
+    // } else if (Abbreviation == "") {
+    //   setErrorParameter("Abbreviation is required");
+    //   setErrorMessage(true);
+    // } else if (GuaranteeMethodCode == "") {
+    //   setErrorParameter("GuaranteeMethodCode is required");
+    //   setErrorMessage(true);
+    // } else if (iata == "") {
+    //   setErrorParameter("IATA is required");
+    //   setErrorMessage(true);
+    // } else if (StreetAddress == "") {
+    //   setErrorParameter("StreetAddress is required");
+    //   setErrorMessage(true);
+    // } else if (City == "") {
+    //   setErrorParameter("City is required");
+    //   setErrorMessage(true);
+    // } else if (State == "") {
+    //   setErrorParameter("State is required");
+    //   setErrorMessage(true);
+    // } else if (Postal == "") {
+    //   setErrorParameter("Postal is required");
+    //   setErrorMessage(true);
+    // } else if (BStreetAddress == "") {
+    //   setErrorParameter("Billing StreetAddress is required");
+    //   setErrorMessage(true);
+    // } else if (BCity == "") {
+    //   setErrorParameter("Billing City is required");
+    //   setErrorMessage(true);
+    // } else if (BState == "") {
+    //   setErrorParameter("Billing State is required");
+    //   setErrorMessage(true);
+    // } else if (BPostal == "") {
+    //   setErrorParameter("Billing Postal is required");
+    //   setErrorMessage(true);
+    // } else if (TaxID == "") {
+    //   setErrorParameter("TaxID is required");
+    //   setErrorMessage(true);
+    // } else if (TaxID2 == "") {
+    //   setErrorParameter("TaxID2 is required");
+    //   setErrorMessage(true);
+    // } else if (CreditCardNumber == "") {
+    //   setErrorParameter("CreditCardNumber is required");
+    //   setErrorMessage(true);
+    // } else if (OutstandingAmount == "") {
+    //   setErrorParameter("OutstandingAmount is required");
+    //   setErrorMessage(true);
+    // } else if (FloatingDepositionAmount == "") {
+    //   setErrorParameter("FloatingDepositionAmount is required");
+    //   setErrorMessage(true);
+    // } else if (ARNumber == "") {
+    //   setErrorParameter("ARNumber is required");
+    //   setErrorMessage(true);
+    // } else if (SalesUserName == "") {
+    //   setErrorParameter("SalesUserName is required");
+    //   setErrorMessage(true);
+    // } else if (Industry == "") {
+    //   setErrorParameter("Industry is required");
+    //   setErrorMessage(true);
+    // } else if (MarketSegment == "") {
+    //   setErrorParameter("MarketSegment is required");
+    //   setErrorMessage(true);
+    // } else if (SourceOfBusiness == "") {
+    //   setErrorParameter("SourceOfBusiness is required");
+    //   setErrorMessage(true);
+    // } else if (TrackCode == "") {
+    //   setErrorParameter("TrackCode is required");
+    //   setErrorMessage(true);
+    // } else if (ReasonForStay == "") {
+    //   setErrorParameter("ReasonForStay is required");
+    //   setErrorMessage(true);
+    // } else if (Geographic == "") {
+    //   setErrorParameter("Geographic is required");
+    //   setErrorMessage(true);
+    // } else {
+    //   setErrorMessage(false);
       let index = list.findIndex((x) => x.title == "Communication");
       let communications = list[index];
       // let index = list.findIndex((x) => x.title == "Communication");
@@ -1634,7 +1634,7 @@ export const ProfileCompany = (props) => {
       }
 
       // console.log("datafrom post", data);
-    }
+    
   };
 
   const handleAddDataEdittoDatabase = async (e) => {
