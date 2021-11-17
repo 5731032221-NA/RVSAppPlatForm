@@ -227,7 +227,10 @@ export const ProfileTableCompany = (props) => {
 
   
     if(resp.content[0].length > 0){
-      resp.content[0].citycountry = resp.content[0].city+"/"+resp.content[0].countrycode
+
+      resp.content[0].forEach(function(part, index) {
+        this[index].citycountry = this[index].city+"/"+this[index].countrycode;
+      }, arr)
       setStatusprofile("moredata");
       setcompanyData(resp.content[0]);
     }
