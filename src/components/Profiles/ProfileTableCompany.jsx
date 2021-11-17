@@ -587,7 +587,7 @@ export const ProfileTableCompany = (props) => {
                     backgroundColor: themeState.paper,
                     color: themeState.color,
                     borderBottomColor: themeState.color,
-                    width: 430,
+                    width: 530,
                   },
                 }}
                 localization={{
