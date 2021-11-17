@@ -48,6 +48,7 @@ import {
   KeyboardDatePicker,
   DateRangePicker,
 } from "@material-ui/pickers";
+import * as actions from "../../middleware/action";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -324,7 +325,9 @@ export const ProfileIndividual = (props) => {
     }),
   });
 
-  // [nameID,setNameID] = React.useState("");
+  const [nameID,setNameID] = React.useState(
+    props.editdata != null ? props.editdata.nameid : "Mr."
+  );
   const [nameTitle, setNameTitle] = React.useState(
     props.editdata != null ? props.editdata.nametitle : "Mr."
   );
@@ -377,10 +380,10 @@ export const ProfileIndividual = (props) => {
     props.editdata != null ? props.editdata.address2 : ""
   );
   const [conuty, setCountry] = React.useState(
-    props.editdata != null ? props.editdata.conuty : "Thailand"
+    props.editdata != null ? props.editdata.conuty : ""
   );
   const [city, setCity] = React.useState(
-    props.editdata != null ? props.editdata.city : "Thailand"
+    props.editdata != null ? props.editdata.city : ""
   );
   const [stateProvince, setStateprovince] = React.useState(
     props.editdata != null ? props.editdata.stateprovince : ""
@@ -714,7 +717,6 @@ export const ProfileIndividual = (props) => {
               handle: (e) => setNameTitle(e.target.value),
               dataType: "string",
               dataCheck: nameTitle,
-              dataCheckStatus: false,
             },
 
             {
@@ -732,7 +734,6 @@ export const ProfileIndividual = (props) => {
               handle: (e) => setFirstName(e.target.value),
               dataType: "string",
               dataCheck: firstName,
-              dataCheckStatus: false,
             },
             {
               id: 2,
@@ -749,7 +750,6 @@ export const ProfileIndividual = (props) => {
               handle: (e) => setLastName(e.target.value),
               dataType: "string",
               dataCheck: lastName,
-              dataCheckStatus: false,
             },
             {
               id: 3,
@@ -778,7 +778,6 @@ export const ProfileIndividual = (props) => {
               handle: (e) => setNamePrefix(e.target.value),
               dataType: "string",
               dataCheck: namePrefix,
-              dataCheckStatus: false,
             },
             {
               id: 4,
@@ -794,8 +793,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setNameSuffix(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: nameSuffix,
             },
             {
               id: 5,
@@ -811,8 +809,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setMiddleInitial(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: middleInitial,
             },
             {
               id: 6,
@@ -837,8 +834,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setGender(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: gender,
             },
 
             // {
@@ -959,8 +955,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setReligion(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: religion,
             },
 
             // {
@@ -1015,8 +1010,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setStatusProfile(handleBoolean(e.target.checked)),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: statusProfile,
             },
           ],
         },
@@ -1040,8 +1034,7 @@ export const ProfileIndividual = (props) => {
 
               handle: (e) => setOrganization(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: organization,
             },
             {
               id: 2,
@@ -1059,8 +1052,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setProvinceOfResidence(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: provinceOfResidence,
             },
             {
               id: 3,
@@ -1078,8 +1070,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setBorderCrossingEntryPlace(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: borderCrossingEntryPlace,
             },
             {
               id: 4,
@@ -1097,8 +1088,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setborderCrossingEntryDate(new Date(e)),
               dataType: "date",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: borderCrossingEntryDate,
             },
             {
               id: 0,
@@ -1136,8 +1126,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setAddress(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: address,
             },
             {
               id: 6,
@@ -1153,8 +1142,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setAddress1(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: address1,
             },
             {
               id: 7,
@@ -1170,33 +1158,23 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setAddress2(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: address2,
             },
             {
               id: 8,
-              label: "Choose a country",
+              label: "Country",
               xl: 2,
               md: 2,
               xs: 6,
               select: {
-                status: "option",
-                data: optioncountry.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                )),
+                status: "fill",
+                data: "",
                 defaultvalue:
-                  props.editdata != null ? props.editdata.conuty : "Thailand",
+                  props.editdata != null ? props.editdata.conuty : "",
               },
               handle: (e) => setCountry(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: conuty,
             },
             {
               id: 9,
@@ -1207,11 +1185,11 @@ export const ProfileIndividual = (props) => {
               select: {
                 status: "fill",
                 data: "",
+                defaultvalue: props.editdata != null ? props.editdata.city : "",
               },
               handle: (e) => setCity(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: city,
             },
             {
               id: 10,
@@ -1227,8 +1205,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setStateprovince(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: stateProvince,
             },
             {
               id: 11,
@@ -1244,8 +1221,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setPostal(e.target.value),
               dataType: "number",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: postal,
             },
             {
               id: 12,
@@ -1288,7 +1264,7 @@ export const ProfileIndividual = (props) => {
                 data: "Email Address",
               },
               // dataType: "email",
-              // dataCheck: "",dataCheckStatus: false,
+              // dataCheck: "",
             },
             {
               id: 2,
@@ -1308,8 +1284,7 @@ export const ProfileIndividual = (props) => {
                   email: e.target.value,
                 })),
               dataType: "email",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: communicationDatas,
             },
             {
               id: 3,
@@ -1340,8 +1315,7 @@ export const ProfileIndividual = (props) => {
                   mobile: e.target.value,
                 })),
               dataType: "number",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: communicationDatas,
             },
             ...getcomunication,
             {
@@ -1397,8 +1371,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setNoPost(handleBoolean(e.target.checked)),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: noPost,
             },
             {
               id: 2,
@@ -1413,8 +1386,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setNRG(handleBoolean(e.target.checked)),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: NRG,
             },
             {
               id: 3,
@@ -1457,8 +1429,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setGuestCategory(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: guestCategory,
             },
             {
               id: 5,
@@ -1482,8 +1453,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setGuestType(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: guestType,
             },
             {
               id: 6,
@@ -1511,8 +1481,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setVVIP(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: VVIP,
             },
             {
               id: 7,
@@ -1538,8 +1507,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setBirthRegion(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: birthRegion,
             },
             {
               id: 8,
@@ -1565,8 +1533,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setBirthProvince(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: birthProvince,
             },
           ],
         },
@@ -1590,8 +1557,7 @@ export const ProfileIndividual = (props) => {
 
               handle: (e) => setIDCheck(handleBoolean(e.target.checked)),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: IDCheck,
             },
             {
               id: 2,
@@ -1627,8 +1593,7 @@ export const ProfileIndividual = (props) => {
 
               handle: (e) => setIDType(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: IDType,
             },
             {
               id: 4,
@@ -1644,8 +1609,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setIDNumber(e.target.value),
               dataType: "number",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: IDNumber,
             },
             {
               id: 5,
@@ -1669,8 +1633,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setNationality(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: nationality,
             },
             {
               id: 6,
@@ -1688,8 +1651,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setDateOfBirth(convertTimeToString(e)),
               dataType: "date",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: dateOfBirth,
             },
             {
               id: 7,
@@ -1707,8 +1669,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setIDIssuedDate(new Date(e)),
               dataType: "date",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: IDIssuedDate,
             },
             {
               id: 8,
@@ -1726,8 +1687,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setIDExpirationDate(new Date(e)),
               dataType: "date",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: IDExpirationDate,
             },
             {
               id: 9,
@@ -1757,8 +1717,7 @@ export const ProfileIndividual = (props) => {
               handle: (e) =>
                 setPassportVisaCheck(handleBoolean(e.target.checked)),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: passportVisaCheck,
             },
             {
               id: 11,
@@ -1795,8 +1754,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setVisaType(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: visaType,
             },
             {
               id: 13,
@@ -1812,8 +1770,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setVisaName(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: visaName,
             },
             {
               id: 14,
@@ -1829,8 +1786,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setVisaNumber(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: visaNumber,
             },
             // {
             //   id: 15,
@@ -1870,8 +1826,8 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setVisaIssuedDate(new Date(e)),
               dataType: "date",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: visaIssuedDate,
+
               // handle: (e) => setVisaIssuedDate(convertTimeToString(e)),
             },
             {
@@ -1890,8 +1846,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setVisaBeginDate(new Date(e)),
               dataType: "date",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: visaBeginDate,
             },
             {
               id: 17,
@@ -1909,8 +1864,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setVisaExpirationDate(new Date(e)),
               dataType: "date",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: visaExpirationDate,
             },
             // {
             //   id: 18,
@@ -1938,8 +1892,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setVisaStatus(handleBoolean(e.target.checked)),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: visaStatus,
             },
             {
               id: 19,
@@ -1955,8 +1908,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setVisaNotes(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: visaNotes,
             },
             // ,
             // {
@@ -2064,8 +2016,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setRank(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: rank,
             },
             {
               id: 21,
@@ -2089,8 +2040,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setGrade(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: grade,
             },
             {
               id: 22,
@@ -2106,8 +2056,7 @@ export const ProfileIndividual = (props) => {
               },
               handle: (e) => setGuestIdentity(e.target.value),
               dataType: "string",
-              dataCheck: "",
-              dataCheckStatus: false,
+              dataCheck: guestIdentity,
             },
             // {
             //   id: 29,
@@ -2174,7 +2123,7 @@ export const ProfileIndividual = (props) => {
       ]);
     }
     getconfig();
-  }, []);
+  }, [props.trigger]);
 
   const handleExpend = (id, expend) => {
     let index = list.findIndex((x) => x.id === id);
@@ -2248,21 +2197,13 @@ export const ProfileIndividual = (props) => {
         },
         {
           id: newid + 4,
-          label: "Choose a country",
+          label: "Country",
           xl: 2,
           md: 2,
           xs: 6,
           select: {
             status: "option",
-            data: optioncountry.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            )),
+            data: "",
           },
           handle: (e) => handleData(e),
         },
@@ -2421,7 +2362,7 @@ export const ProfileIndividual = (props) => {
         [newid + 2]: optionrelation[0].label,
         [newid + 3]: "",
       }));
- 
+
       relation.content.push({
         id: newid + 2,
         label: "Name Type",
@@ -2507,9 +2448,9 @@ export const ProfileIndividual = (props) => {
     } else return "N";
   };
 
-  const HanddleIsRequired = () => {
-    console.log(setList);
-  };
+  // const HanddleIsRequired = () => {
+  //   console.log(setList);
+  // };
 
   const handleData = async (e) => {
     // console.log("Value from handleData : ", e);
@@ -2640,7 +2581,7 @@ export const ProfileIndividual = (props) => {
   };
 
   const handleEditDatatoDatabase = async (e) => {
-    let id = props.editdata.nameid;
+    let id = nameID;
 
     let req = {
       nametitle: nameTitle,
@@ -2704,160 +2645,164 @@ export const ProfileIndividual = (props) => {
   React.useEffect(() => {
     async function handlebutton() {
       if (props.action === "add") {
-        // let _IsRequired =
-        //   nameTitle !== null ||
-        //   nameTitle !== "" ||
-        //   firstName !== " " ||
-        //   firstName !== null ||
-        //   firstName !== "" ||
-        //   firstName !== " " ||
-        //   lastName !== null ||
-        //   lastName !== "" ||
-        //   lastName !== " " ||
-        //   namePrefix !== null ||
-        //   namePrefix !== "" ||
-        //   namePrefix !== " " ||
-        //   nameSuffix !== null ||
-        //   nameSuffix !== "" ||
-        //   nameSuffix !== " " ||
-        //   middleInitial !== null ||
-        //   middleInitial !== "" ||
-        //   middleInitial !== " " ||
-        //   gender !== null ||
-        //   gender !== "" ||
-        //   gender !== " " ||
-        //   religion !== null ||
-        //   religion !== "" ||
-        //   religion !== " " ||
-        //   organization !== null ||
-        //   organization !== "" ||
-        //   organization !== " " ||
-        //   statusProfile !== null ||
-        //   statusProfile !== "" ||
-        //   statusProfile !== " " ||
-        //   provinceOfResidence !== null ||
-        //   provinceOfResidence !== "" ||
-        //   provinceOfResidence !== " " ||
-        //   borderCrossingEntryPlace !== null ||
-        //   borderCrossingEntryPlace !== "" ||
-        //   borderCrossingEntryPlace !== " " ||
-        //   borderCrossingEntryDate !== null ||
-        //   borderCrossingEntryDate !== "" ||
-        //   borderCrossingEntryDate !== " " ||
-        //   address !== null ||
-        //   address !== "" ||
-        //   address !== " " ||
-        //   address1 !== null ||
-        //   address1 !== "" ||
-        //   address1 !== " " ||
-        //   address2 !== null ||
-        //   address2 !== "" ||
-        //   address2 !== " " ||
-        //   conuty !== null ||
-        //   conuty !== "" ||
-        //   conuty !== " " ||
-        //   city !== null ||
-        //   city !== "" ||
-        //   city !== " " ||
-        //   stateProvince !== null ||
-        //   stateProvince !== "" ||
-        //   stateProvince !== " " ||
-        //   postal !== null ||
-        //   postal !== "" ||
-        //   postal !== " " ||
-        //   noPost !== null ||
-        //   noPost !== "" ||
-        //   noPost !== " " ||
-        //   NRG !== null ||
-        //   NRG !== "" ||
-        //   NRG !== " " ||
-        //   guestCategory !== null ||
-        //   guestCategory !== "" ||
-        //   guestCategory !== " " ||
-        //   VVIP !== null ||
-        //   VVIP !== "" ||
-        //   VVIP !== " " ||
-        //   birthRegion !== null ||
-        //   birthRegion !== "" ||
-        //   birthRegion !== " " ||
-        //   birthProvince !== null ||
-        //   birthProvince !== "" ||
-        //   birthProvince !== " " ||
-        //   guestType !== null ||
-        //   guestType !== "" ||
-        //   guestType !== " " ||
-        //   IDCheck !== null ||
-        //   IDCheck !== "" ||
-        //   IDCheck !== " " ||
-        //   IDType !== null ||
-        //   IDType !== "" ||
-        //   IDType !== " " ||
-        //   IDNumber !== null ||
-        //   IDNumber !== "" ||
-        //   IDNumber !== " " ||
-        //   nationality !== null ||
-        //   nationality !== "" ||
-        //   nationality !== " " ||
-        //   dateOfBirth !== null ||
-        //   dateOfBirth !== "" ||
-        //   dateOfBirth !== " " ||
-        //   IDIssuedDate !== null ||
-        //   IDIssuedDate !== "" ||
-        //   IDIssuedDate !== " " ||
-        //   IDExpirationDate !== null ||
-        //   IDExpirationDate !== "" ||
-        //   IDExpirationDate !== " " ||
-        //   passportVisaCheck !== null ||
-        //   passportVisaCheck !== "" ||
-        //   passportVisaCheck !== " " ||
-        //   visaType !== null ||
-        //   visaType !== "" ||
-        //   visaType !== " " ||
-        //   visaName !== null ||
-        //   visaName !== "" ||
-        //   visaName !== " " ||
-        //   visaNumber !== null ||
-        //   visaNumber !== "" ||
-        //   visaNumber !== " " ||
-        //   visaIssuedDate !== null ||
-        //   visaIssuedDate !== "" ||
-        //   visaIssuedDate !== " " ||
-        //   visaBeginDate !== null ||
-        //   visaBeginDate !== "" ||
-        //   visaBeginDate !== " " ||
-        //   visaExpirationDate !== null ||
-        //   visaExpirationDate !== "" ||
-        //   visaExpirationDate !== " " ||
-        //   visaStatus !== null ||
-        //   visaStatus !== "" ||
-        //   visaStatus !== " " ||
-        //   visaNotes !== null ||
-        //   visaNotes !== "" ||
-        //   visaNotes !== " " ||
-        //   rank !== null ||
-        //   rank !== "" ||
-        //   rank !== " " ||
-        //   grade !== null ||
-        //   grade !== "" ||
-        //   grade !== " " ||
-        //   guestIdentity !== null ||
-        //   guestIdentity !== "" ||
-        //   guestIdentity !== " ";
-        // console.log("_IsRequired", _IsRequired);
-        // console.log("action add", props.action);
-        // if (_IsRequired === false) {
+        //check is required in every field
+        let _IsRequired =
+          nameTitle === null ||
+          nameTitle === "" ||
+          firstName === " " ||
+          firstName === null ||
+          firstName === "" ||
+          firstName === " " ||
+          lastName === null ||
+          lastName === "" ||
+          lastName === " " ||
+          namePrefix === null ||
+          namePrefix === "" ||
+          namePrefix === " " ||
+          nameSuffix === null ||
+          nameSuffix === "" ||
+          nameSuffix === " " ||
+          middleInitial === null ||
+          middleInitial === "" ||
+          middleInitial === " " ||
+          gender === null ||
+          gender === "" ||
+          gender === " " ||
+          religion === null ||
+          religion === "" ||
+          religion === " " ||
+          organization === null ||
+          organization === "" ||
+          organization === " " ||
+          statusProfile === null ||
+          statusProfile === "" ||
+          statusProfile === " " ||
+          provinceOfResidence === null ||
+          provinceOfResidence === "" ||
+          provinceOfResidence === " " ||
+          borderCrossingEntryPlace === null ||
+          borderCrossingEntryPlace === "" ||
+          borderCrossingEntryPlace === " " ||
+          borderCrossingEntryDate === null ||
+          borderCrossingEntryDate === "" ||
+          borderCrossingEntryDate === " " ||
+          address === null ||
+          address === "" ||
+          address === " " ||
+          address1 === null ||
+          address1 === "" ||
+          address1 === " " ||
+          address2 === null ||
+          address2 === "" ||
+          address2 === " " ||
+          conuty === null ||
+          conuty === "" ||
+          conuty === " " ||
+          city === null ||
+          city === "" ||
+          city === " " ||
+          stateProvince === null ||
+          stateProvince === "" ||
+          stateProvince === " " ||
+          postal === null ||
+          postal === "" ||
+          postal === " " ||
+          noPost === null ||
+          noPost === "" ||
+          noPost === " " ||
+          NRG === null ||
+          NRG === "" ||
+          NRG === " " ||
+          guestCategory === null ||
+          guestCategory === "" ||
+          guestCategory === " " ||
+          VVIP === null ||
+          VVIP === "" ||
+          VVIP === " " ||
+          birthRegion === null ||
+          birthRegion === "" ||
+          birthRegion === " " ||
+          birthProvince === null ||
+          birthProvince === "" ||
+          birthProvince === " " ||
+          guestType === null ||
+          guestType === "" ||
+          guestType === " " ||
+          IDCheck === null ||
+          IDCheck === "" ||
+          IDCheck === " " ||
+          IDType === null ||
+          IDType === "" ||
+          IDType === " " ||
+          IDNumber === null ||
+          IDNumber === "" ||
+          IDNumber === " " ||
+          nationality === null ||
+          nationality === "" ||
+          nationality === " " ||
+          dateOfBirth === null ||
+          dateOfBirth === "" ||
+          dateOfBirth === " " ||
+          IDIssuedDate === null ||
+          IDIssuedDate === "" ||
+          IDIssuedDate === " " ||
+          IDExpirationDate === null ||
+          IDExpirationDate === "" ||
+          IDExpirationDate === " " ||
+          passportVisaCheck === null ||
+          passportVisaCheck === "" ||
+          passportVisaCheck === " " ||
+          visaType === null ||
+          visaType === "" ||
+          visaType === " " ||
+          visaName === null ||
+          visaName === "" ||
+          visaName === " " ||
+          visaNumber === null ||
+          visaNumber === "" ||
+          visaNumber === " " ||
+          visaIssuedDate === null ||
+          visaIssuedDate === "" ||
+          visaIssuedDate === " " ||
+          visaBeginDate === null ||
+          visaBeginDate === "" ||
+          visaBeginDate === " " ||
+          visaExpirationDate === null ||
+          visaExpirationDate === "" ||
+          visaExpirationDate === " " ||
+          visaStatus === null ||
+          visaStatus === "" ||
+          visaStatus === " " ||
+          visaNotes === null ||
+          visaNotes === "" ||
+          visaNotes === " " ||
+          rank === null ||
+          rank === "" ||
+          rank === " " ||
+          grade === null ||
+          grade === "" ||
+          grade === " " ||
+          guestIdentity === null ||
+          guestIdentity === "" ||
+          guestIdentity === " ";
+        console.log("_IsRequired", _IsRequired);
+        console.log("action add", props.action);
+        await props.handleRedirectToTableIndividual(false);
+        if (_IsRequired === false) {
+          await setIsRequired(false);
           await handleAddDatatoDatabase();
-          
-        // } else {
-        //   setIsRequired(true);
-        // }
+          await props.handleRedirectToTableIndividual(true);
+        } else {
+          setIsRequired(true);
+        }
       } else if (props.action === "edit") {
         await handleEditDatatoDatabase();
+        await props.handleRedirectToTableIndividual(true);
         console.log("action edit", props.action);
       }
     }
     handlebutton();
-  }, [props.action]);
+  }, [props.trigger]);
 
   // const handleValidation = (dataV) => {
   //   if (dataV == null || dataV == "" || dataV == " ") {
@@ -2961,7 +2906,7 @@ export const ProfileIndividual = (props) => {
                                 ) : detail.select.status === "status" ? (
                                   <div style={{ paddingTop: 10 }}>
                                     <a>Status</a>
-                                    {detail.select.defaultvalue === "Y" ? (
+                                    {detail.select.defaultvalue == "Y" ? (
                                       <Switch
                                         defaultChecked={true}
                                         color="primary"
@@ -3177,8 +3122,9 @@ export const ProfileIndividual = (props) => {
                                     {detail.select.data}
                                   </TextField>
                                 ) : detail.select.status === "check" ? (
-                                  <span>
-                                    {detail.select.defaultvalue === "Y" ? (
+                                  [
+                                    detail.select.defaultvalue === "Y" ||
+                                    detail.select.defaultvalue === true ? (
                                       <FormControlLabel
                                         control={
                                           <Checkbox
@@ -3202,8 +3148,8 @@ export const ProfileIndividual = (props) => {
                                         labelPlacement="end"
                                         onChange={detail.handle}
                                       />
-                                    )}
-                                  </span>
+                                    ),
+                                  ]
                                 ) : (
                                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <KeyboardDatePicker
@@ -3241,6 +3187,12 @@ export const ProfileIndividual = (props) => {
 
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleRedirectToTableIndividual: (status) => {
+      return dispatch(actions.editRedirectToTableIndividual(status));
+    },
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileIndividual);
