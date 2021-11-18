@@ -293,8 +293,7 @@ export const ProfileTableCompany = (props) => {
   };
 
   const handleDialogDeleteOpen = async (id,name, www, city) => {
-    console.log("id:",id);
-    console.log("data : ",name, www, city);
+  
     await  setDeleteData({id:id, name: name, www: www, city: city });
     await  setDialogDelete(true);
   };
@@ -608,7 +607,9 @@ export const ProfileTableCompany = (props) => {
                       handleDialogDeleteOpen(
                         rowData.id,
                         rowData.name,
+                        rowData.www,
                         rowData.city,
+                      
                       
                       );
                     },
