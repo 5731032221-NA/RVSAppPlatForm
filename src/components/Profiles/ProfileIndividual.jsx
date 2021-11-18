@@ -713,7 +713,7 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setCommunicationDatas((prev) => ({
                 ...prev,
-                [count]: e.target.value,
+                [e.target.id]: e.target.value,
               })),
           });
           getcomunication.push({
@@ -730,7 +730,7 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
                setCommunicationDatas((prev) => ({
                   ...prev,
-                  [count + 1]: e.target.value,
+                  [e.target.id]: e.target.value,
                 })),
           });
           count = count + 2;
@@ -740,8 +740,9 @@ export const ProfileIndividual = (props) => {
       let relationid = 1;
       for (var key in rela) {
         if (key % 3 == 0) {
+          const relaid = relationid;
           getrelation.push({
-            id: relationid,
+            id: relaid,
             label: "Name Type",
             xl: 2,
             md: 2,
@@ -762,11 +763,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [relationid]: e.target.value,
+                [e.target.id]: e.target.value,
               })),
           });
           getrelation.push({
-            id: relationid + 1,
+            id: relaid + 1,
             label: "Name",
             xl: 4,
             md: 4,
@@ -779,11 +780,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [relationid + 1]: e.target.value,
+                [e.target.id]: e.target.value,
               })),
           });
           getrelation.push({
-            id: relationid + 2,
+            id: relaid + 2,
             label: "Note",
             xl: 6,
             md: 6,
@@ -796,7 +797,7 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [relationid + 2]: e.target.value,
+                [e.target.id]: e.target.value,
               })),
           });
           relationid = relationid + 3;
