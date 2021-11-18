@@ -484,11 +484,14 @@ export const ProfileCompany = (props) => {
 
   
   async function updateList(){
+    let commu = JSON.parse(JSON.stringify(communicationDatas));
+    let rela = JSON.parse(JSON.stringify(relationDatas));
     let getCommunicationsDatas = {};
       let getcomunication = [];
       let getrelation = [];
       console.log("demostate");
-      if (props.editdata != null) {
+      if (props.editdata != null && Object.keys(commu).length === 0 && Object.keys(rela).length === 0) {
+
         console.log("props.editdata", props.editdata)
         let getCommunications = await getCompanyProfileCommunication(
           sessionStorage.getItem("auth"),
@@ -589,11 +592,11 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setRelationDatas(prev => ({
               ...prev,
-              [relationid + 1]: element.relation
+              [relationid + 1]: e.target.value
             }))
           });
           getrelation.push({
-            id: relationid,
+            id: relationid ,
             label: "Name",
             xl: 4,
             md: 4,
@@ -605,7 +608,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setRelationDatas(prev => ({
               ...prev,
-              [relationid]: element.value
+              [relationid]: e.target.value
             })),
         
           });
@@ -622,13 +625,132 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setRelationDatas(prev => ({
               ...prev,
-              [relationid + 2]: element.note
+              [relationid + 2]: e.target.value
             }))
           });
           relationid = relationid + 3;
         }
         );
         console.log("getrelation", getrelation)
+
+      }else{
+        let count = 3
+      console.log("commu",commu)
+      console.log("rela",rela)
+      for (var key in commu) {
+        if (key % 2 == 0) {
+          getcomunication.push({
+            id: count,
+            label: "Choose a communication",
+            xl: 3,
+            md: 3,
+            xs: 6,
+            select: {
+              status: "option",
+              data: optioncommunication.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                  selected={option.label == commu[key - 1]}
+                // defaultValue={element.communication}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) =>
+              setCommunicationDatas((prev) => ({
+                ...prev,
+                [count]: e.target.value,
+              })),
+          });
+          getcomunication.push({
+            id: count + 1,
+            label: "communication",
+            xl: 9,
+            md: 9,
+            xs: 6,
+            select: {
+              status: "fillnolabel",
+              data: "",
+              defaultvalue: commu[key],
+            },
+            handle: (e) =>
+               setCommunicationDatas((prev) => ({
+                  ...prev,
+                  [count + 1]: e.target.value,
+                })),
+          });
+          count = count + 2;
+        }
+      }
+
+      let relationid = 1;
+      for (var key in rela) {
+        if (key % 3 == 0) {
+          getrelation.push({
+            id: relationid,
+            label: "Name Type",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "option",
+              data: optionrelation.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                  selected={option.label == rela[key - 1]}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relationid]: e.target.value,
+              })),
+          });
+          getrelation.push({
+            id: relationid + 1,
+            label: "Name",
+            xl: 4,
+            md: 4,
+            xs: 6,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: rela[key - 2],
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relationid + 1]: e.target.value,
+              })),
+          });
+          getrelation.push({
+            id: relationid + 2,
+            label: "Note",
+            xl: 6,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: rela[key],
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relationid + 2]: e.target.value,
+              })),
+          });
+          relationid = relationid + 3;
+        }
+      }
 
       }
 
@@ -1495,94 +1617,6 @@ export const ProfileCompany = (props) => {
   });
 
 
-  const checkvalidate = () => {
-    let checkerror = false;
-    if (nameOne == "" || nameOne == " " || nameOne == null ) {
-    //  setErrorParameter("name1 is required");
-      checkerror = true;
-    } else if (nameTwo == "" || nameTwo == " " || nameTwo == null ) {
-      console.log("ss2");
-   //   setErrorParameter("name2 is required");
-       checkerror = true;
-    } else if (Abbreviation == ""  || Abbreviation == " " || Abbreviation == null) {
-   //   setErrorParameter("Abbreviation is required");
-       checkerror = true;
-    } else if (GuaranteeMethodCode == "" || GuaranteeMethodCode == " " || GuaranteeMethodCode == null) {
-     // setErrorParameter("GuaranteeMethodCode is required");
-       checkerror = true;
-    } else if (iata == "" || iata == " " || iata == null) {
-     // setErrorParameter("IATA is required");
-       checkerror = true;
-    } else if (StreetAddress == "" || StreetAddress == " " || StreetAddress == null) {
-    //  setErrorParameter("StreetAddress is required");
-       checkerror = true;
-    } else if (City == "" || City == " " || City == null) {
-    //  setErrorParameter("City is required");
-       checkerror = true;
-    } else if (State == "" || State == " " || State == null) {
-    //  setErrorParameter("State is required");
-       checkerror = true;
-    } else if (Postal == "" || Postal == " " || Postal == null) {
-    //  setErrorParameter("Postal is required");
-       checkerror = true;
-    } else if (BStreetAddress == "" || BStreetAddress == " " || BStreetAddress == null) {
-    //  setErrorParameter("Billing StreetAddress is required");
-       checkerror = true;
-    } else if (BCity == "" || BCity == " " || BCity == null) {
-    //  setErrorParameter("Billing City is required");
-       checkerror = true;
-    } else if (BState == "" || BState == " " || BState == null) {
-    //  setErrorParameter("Billing State is required");
-       checkerror = true;
-    } else if (BPostal == "" || BPostal == " " || BPostal == null) {
-    //  setErrorParameter("Billing Postal is required");
-       checkerror = true;
-    } else if (TaxID == "" || TaxID == " " || TaxID == null) {
-    //  setErrorParameter("TaxID is required");
-       checkerror = true;
-    } else if (TaxID2 == "" || TaxID2 == " " || TaxID2 == null) {
-     // setErrorParameter("TaxID2 is required");
-       checkerror = true;
-    } else if (CreditCardNumber == "" || CreditCardNumber == " " || CreditCardNumber == null) {
-    //  setErrorParameter("CreditCardNumber is required");
-       checkerror = true;
-    } else if (OutstandingAmount == "" || OutstandingAmount == " " || OutstandingAmount == null) {
-     // setErrorParameter("OutstandingAmount is required");
-       checkerror = true;
-    } else if (FloatingDepositionAmount == "" || FloatingDepositionAmount == " " || FloatingDepositionAmount == null) {
-    //  setErrorParameter("FloatingDepositionAmount is required");
-       checkerror = true;
-    } else if (ARNumber == "" || ARNumber == " " || ARNumber == null) {
-    //  setErrorParameter("ARNumber is required");
-       checkerror = true;
-    } else if (SalesUserName == "" || SalesUserName == " " || SalesUserName == null) {
-     // setErrorParameter("SalesUserName is required");
-       checkerror = true;
-    } else if (Industry == "" || Industry == " " || Industry == null) {
-     // setErrorParameter("Industry is required");
-       checkerror = true;
-    } else if (MarketSegment == "" || MarketSegment == " " || MarketSegment == null) {
-    //  setErrorParameter("MarketSegment is required");
-       checkerror = true;
-    } else if (SourceOfBusiness == "" || SourceOfBusiness == " " || SourceOfBusiness == null) {
-     // setErrorParameter("SourceOfBusiness is required");
-       checkerror = true;
-    } else if (TrackCode == "" || TrackCode == " " || TrackCode == null) {
-     // setErrorParameter("TrackCode is required");
-       checkerror = true;
-    } else if (ReasonForStay == "" || ReasonForStay == " " || ReasonForStay == null) {
-     // setErrorParameter("ReasonForStay is required");
-       checkerror = true;
-    } else if (Geographic == "" || Geographic == " " || Geographic == null) {
-      // setErrorParameter("Geographic is required");
-       checkerror = true;
-    }else {
-      setIsRequired(false);
-      checkerror = false;
-    }
-
-    return checkerror
-  }
 
   const handleAddDatatoDatabase = async (e) => {
    
@@ -1664,11 +1698,6 @@ export const ProfileCompany = (props) => {
    
     props.setAction("none");
 
-    // const checkvali = await checkvalidate();
-    // if(checkvali){
-    //   setIsRequired(true);
-    // } else {
-    //   setIsRequired(false);
 
       let req = {
         recordtype: "C",
@@ -1713,8 +1742,7 @@ export const ProfileCompany = (props) => {
         relations: relationDatas,
       };
       console.log("datafrom update", req);
-      // console.log("props.editData[0].id:", props.editdata);
-      // console.log("props.editData[0].id:", props.editdata[0].id);
+   
       const resp = await updateCompanyProfile(
         sessionStorage.getItem("auth"),
         props.editdata[0].id,
@@ -1729,8 +1757,7 @@ export const ProfileCompany = (props) => {
         setErrorMessage(true);
       }
 
-      // console.log("datafrom post", data);
-    // }
+  
   };
 
   //data from button for  trigger (add or delete)

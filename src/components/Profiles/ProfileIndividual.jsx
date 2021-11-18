@@ -514,6 +514,8 @@ export const ProfileIndividual = (props) => {
   }
 
   async function updatelist() {
+    let commu = JSON.parse(JSON.stringify(communicationDatas));
+    let rela = JSON.parse(JSON.stringify(relationDatas));
     let getCommunicationsDatas = {};
     let getcomunication = [];
     let getrelation = [];
@@ -532,12 +534,11 @@ export const ProfileIndividual = (props) => {
     // let optionDocumentType = await getlist(configdata,"");
     setOptionrelation(relation);
     setOptioncommunication(communication);
-    console.log("optioncommunication", optioncommunication);
     // console.log("old data",props.editdata != null , Object.keys(communicationDatas).length === 0 , Object.keys(rela).length === 0,commu,rela,props.editdata)
     if (
       props.editdata != null &&
-      Object.keys(communicationDatas).length === 0 &&
-      Object.keys(relationDatas).length === 0
+      Object.keys(commu).length === 0 &&
+      Object.keys(rela).length === 0
     ) {
       let getCommunications = await getIndividualProfileCommunication(
         sessionStorage.getItem("auth"),
@@ -689,9 +690,9 @@ export const ProfileIndividual = (props) => {
       console.log("getrelation", getrelation);
     } else {
       let count = 3;
-      console.log("commu", communicationDatas);
-      console.log("rela", relationDatas);
-      for (var key in communicationDatas) {
+      console.log("commu", commu);
+      console.log("rela", rela);
+      for (var key in commu) {
         if (key % 2 == 0) {
           getcomunication.push({
             id: count,
@@ -706,7 +707,7 @@ export const ProfileIndividual = (props) => {
                   style={headerTableStyle}
                   key={option.value}
                   value={option.value}
-                  selected={option.label == communicationDatas[key - 1]}
+                  selected={option.label == commu[key - 1]}
                   // defaultValue={element.communication}
                 >
                   {option.label}
@@ -716,7 +717,7 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setCommunicationDatas((prev) => ({
                 ...prev,
-                [count]: e.target.value,
+                [e.target.id]: e.target.value,
               })),
           });
           getcomunication.push({
@@ -728,25 +729,24 @@ export const ProfileIndividual = (props) => {
             select: {
               status: "fillnolabel",
               data: "",
-              defaultvalue: communicationDatas[key],
+              defaultvalue: commu[key],
             },
             handle: (e) =>
-              setCommunicationDatas((prev) =>
-                setCommunicationDatas((prev) => ({
-                  ...prev,
-                  [count + 1]: e.target.value,
-                }))
-              ),
+              setCommunicationDatas((prev) => ({
+                ...prev,
+                [e.target.id]: e.target.value,
+              })),
           });
           count = count + 2;
         }
       }
 
       let relationid = 1;
-      for (var key in relationDatas) {
+      for (var key in rela) {
         if (key % 3 == 0) {
+          const relaid = relationid;
           getrelation.push({
-            id: relationid,
+            id: relaid,
             label: "Name Type",
             xl: 2,
             md: 2,
@@ -758,7 +758,7 @@ export const ProfileIndividual = (props) => {
                   style={headerTableStyle}
                   key={option.value}
                   value={option.value}
-                  selected={option.label == relationDatas[key - 1]}
+                  selected={option.label == rela[key - 1]}
                 >
                   {option.label}
                 </option>
@@ -767,11 +767,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [relationid]: e.target.value,
+                [e.target.id]: e.target.value,
               })),
           });
           getrelation.push({
-            id: relationid + 1,
+            id: relaid + 1,
             label: "Name",
             xl: 4,
             md: 4,
@@ -779,16 +779,16 @@ export const ProfileIndividual = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: relationDatas[key - 2],
+              defaultvalue: rela[key - 2],
             },
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [relationid + 1]: e.target.value,
+                [e.target.id]: e.target.value,
               })),
           });
           getrelation.push({
-            id: relationid + 2,
+            id: relaid + 2,
             label: "Note",
             xl: 6,
             md: 6,
@@ -796,12 +796,12 @@ export const ProfileIndividual = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: relationDatas[key],
+              defaultvalue: rela[key],
             },
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [relationid + 2]: e.target.value,
+                [e.target.id]: e.target.value,
               })),
           });
           relationid = relationid + 3;
@@ -3000,145 +3000,6 @@ export const ProfileIndividual = (props) => {
   React.useEffect(() => {
     async function handlebutton() {
       if (props.action === "add") {
-        // let _IsRequired =
-        //   nameTitle === null ||
-        //   nameTitle === "" ||
-        //   firstName === " " ||
-        //   firstName === null ||
-        //   firstName === "" ||
-        //   firstName === " " ||
-        //   lastName === null ||
-        //   lastName === "" ||
-        //   lastName === " " ||
-        //   namePrefix === null ||
-        //   namePrefix === "" ||
-        //   namePrefix === " " ||
-        //   nameSuffix === null ||
-        //   nameSuffix === "" ||
-        //   nameSuffix === " " ||
-        //   middleInitial === null ||
-        //   middleInitial === "" ||
-        //   middleInitial === " " ||
-        //   gender === null ||
-        //   gender === "" ||
-        //   gender === " " ||
-        //   religion === null ||
-        //   religion === "" ||
-        //   religion === " " ||
-        //   organization === null ||
-        //   organization === "" ||
-        //   organization === " " ||
-        //   statusProfile === null ||
-        //   statusProfile === "" ||
-        //   statusProfile === " " ||
-        //   provinceOfResidence === null ||
-        //   provinceOfResidence === "" ||
-        //   provinceOfResidence === " " ||
-        //   borderCrossingEntryPlace === null ||
-        //   borderCrossingEntryPlace === "" ||
-        //   borderCrossingEntryPlace === " " ||
-        //   borderCrossingEntryDate === null ||
-        //   borderCrossingEntryDate === "" ||
-        //   borderCrossingEntryDate === " " ||
-        //   address === null ||
-        //   address === "" ||
-        //   address === " " ||
-        //   address1 === null ||
-        //   address1 === "" ||
-        //   address1 === " " ||
-        //   address2 === null ||
-        //   address2 === "" ||
-        //   address2 === " " ||
-        //   conuty === null ||
-        //   conuty === "" ||
-        //   conuty === " " ||
-        //   city === null ||
-        //   city === "" ||
-        //   city === " " ||
-        //   stateProvince === null ||
-        //   stateProvince === "" ||
-        //   stateProvince === " " ||
-        //   postal === null ||
-        //   postal === "" ||
-        //   postal === " " ||
-        //   noPost === null ||
-        //   noPost === "" ||
-        //   noPost === " " ||
-        //   NRG === null ||
-        //   NRG === "" ||
-        //   NRG === " " ||
-        //   guestCategory === null ||
-        //   guestCategory === "" ||
-        //   guestCategory === " " ||
-        //   VVIP === null ||
-        //   VVIP === "" ||
-        //   VVIP === " " ||
-        //   birthRegion === null ||
-        //   birthRegion === "" ||
-        //   birthRegion === " " ||
-        //   birthProvince === null ||
-        //   birthProvince === "" ||
-        //   birthProvince === " " ||
-        //   guestType === null ||
-        //   guestType === "" ||
-        //   guestType === " " ||
-        //   IDCheck === null ||
-        //   IDCheck === "" ||
-        //   IDCheck === " " ||
-        //   IDType === null ||
-        //   IDType === "" ||
-        //   IDType === " " ||
-        //   IDNumber === null ||
-        //   IDNumber === "" ||
-        //   IDNumber === " " ||
-        //   nationality === null ||
-        //   nationality === "" ||
-        //   nationality === " " ||
-        //   dateOfBirth === null ||
-        //   dateOfBirth === "" ||
-        //   dateOfBirth === " " ||
-        //   IDIssuedDate === null ||
-        //   IDIssuedDate === "" ||
-        //   IDIssuedDate === " " ||
-        //   IDExpirationDate === null ||
-        //   IDExpirationDate === "" ||
-        //   IDExpirationDate === " " ||
-        //   passportVisaCheck === null ||
-        //   passportVisaCheck === "" ||
-        //   passportVisaCheck === " " ||
-        //   visaType === null ||
-        //   visaType === "" ||
-        //   visaType === " " ||
-        //   visaName === null ||
-        //   visaName === "" ||
-        //   visaName === " " ||
-        //   visaNumber === null ||
-        //   visaNumber === "" ||
-        //   visaNumber === " " ||
-        //   visaIssuedDate === null ||
-        //   visaIssuedDate === "" ||
-        //   visaIssuedDate === " " ||
-        //   visaBeginDate === null ||
-        //   visaBeginDate === "" ||
-        //   visaBeginDate === " " ||
-        //   visaExpirationDate === null ||
-        //   visaExpirationDate === "" ||
-        //   visaExpirationDate === " " ||
-        //   visaStatus === null ||
-        //   visaStatus === "" ||
-        //   visaStatus === " " ||
-        //   visaNotes === null ||
-        //   visaNotes === "" ||
-        //   visaNotes === " " ||
-        //   rank === null ||
-        //   rank === "" ||
-        //   rank === " " ||
-        //   grade === null ||
-        //   grade === "" ||
-        //   grade === " " ||
-        //   guestIdentity === null ||
-        //   guestIdentity === "" ||
-        //   guestIdentity === " ";
         // console.log("_IsRequired", _IsRequired);
         console.log("action add", props.action);
         // await props.handleRedirectToTableIndividual(false);
@@ -3184,13 +3045,6 @@ export const ProfileIndividual = (props) => {
                 style={{ marginTop: 10, backgroundColor: themeState.paper }}
                 ref={provided.innerRef}
               >
-                {/* <Button
-                  variant="contained"
-                  color="default"
-                  onClick={() => handleData()}
-                >
-                  TestData
-                </Button> */}
                 {list.map((item, index) => (
                   <Draggable draggableId={item.id} key={item.id} index={index}>
                     {(provided, snapshot) => (
@@ -3310,21 +3164,7 @@ export const ProfileIndividual = (props) => {
                                     defaultValue={detail.select.defaultvalue}
                                     onFocus={false}
                                   />
-                                ) : // <TextField
-                                //   className={classes.root}
-                                //   variant="outlined"
-                                //   label={detail.select.defaultvalue}
-                                //   fullWidth
-                                //   style={{
-                                //     backgroundColor: "#EFEFEF",
-                                //     borderColor: "white",
-                                //   }}
-                                //   // disabled={true}
-                                //   value={detail.select.defaultvalue}
-                                //   defaultValue={detail.select.defaultvalue}
-                                //   onFocus={false}
-                                // />
-                                detail.select.status === "fillnolabel" ? (
+                                ) : detail.select.status === "fillnolabel" ? (
                                   <TextField
                                     // error={handleValidation(detail.dataCheck)}
                                     // error={
