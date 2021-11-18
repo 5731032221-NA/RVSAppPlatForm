@@ -241,6 +241,7 @@ export const ProfileTableCompany = (props) => {
         this[index].citycountry = (this[index].city?this[index].city : "-")+"/"+(this[index].countrycode?this[index].countrycode :"-");
       }, resp.content[0])
       setStatusprofile("moredata");
+      console.log("resp.content[0]:",resp.content[0]);
       setcompanyData(resp.content[0]);
     }
   }
