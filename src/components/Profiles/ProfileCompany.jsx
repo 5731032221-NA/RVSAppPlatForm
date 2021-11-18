@@ -692,80 +692,74 @@ export const ProfileCompany = (props) => {
         }
       }
 
-
       let relationid = 1;
-      console.log(getRelations.contents[0])
-
-      getRelations.contents[0].forEach((element) => {
-        const relaid1 = relationid;
-        const relaid2 = relationid + 1;
-        const relaid3 = relationid + 2;
-        setRelationDatas(prev => ({
-          ...prev,
-          [relationid + 1]: element.relation,
-          [relationid]: element.value,
-          [relationid + 2]: element.note
-        }))
-        getrelation.push({
-          id: relaid2,
-          label: "Name Type",
-          xl: 2,
-          md: 2,
-          xs: 6,
-          select: {
-            status: "option",
-            data: optionrelation.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-                selected={option.value == element.relation}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => setRelationDatas(prev => ({
-            ...prev,
-            [relaid2]: e.target.value
-          }))
-        });
-        getrelation.push({
-          id: relaid1,
-          label: "Name",
-          xl: 4,
-          md: 4,
-          xs: 6,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue: element.value
-          },
-          handle: (e) => setRelationDatas(prev => ({
-            ...prev,
-            [relaid1]: e.target.value
-          })),
-
-        });
-        getrelation.push({
-          id: relaid3,
-          label: "Note",
-          xl: 6,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue: element.note
-          },
-          handle: (e) => setRelationDatas(prev => ({
-            ...prev,
-            [relaid3]: e.target.value
-          }))
-        });
-        relationid = relationid + 3;
+      for (var key in rela) {
+        if (key % 3 == 0) {
+          const relaid1 = relationid;
+          const relaid2 = relationid + 1;
+          const relaid3 = relationid + 2;
+          getrelation.push({
+            id: relaid2,
+            label: "Name Type",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "option",
+              data: optionrelation.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                  selected={option.label == rela[key - 1]}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relaid2]: e.target.value,
+              })),
+          });
+          getrelation.push({
+            id: relaid1,
+            label: "Name",
+            xl: 4,
+            md: 4,
+            xs: 6,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: rela[key - 2],
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relaid1]: e.target.value,
+              })),
+          });
+          getrelation.push({
+            id: relaid3,
+            label: "Note",
+            xl: 6,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: rela[key],
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relationid + 2]: e.target.value,
+              })),
+          });
+          relationid = relaid3;
+        }
       }
-      );
 
     }
 
