@@ -324,7 +324,7 @@ export const ProfileIndividual = (props) => {
       background: "lightblue",
     }),
   });
-
+  const [account, setaccount] = useState(sessionStorage.getItem("username"));
   const [nameID, setNameID] = React.useState(
     props.editdata != null ? props.editdata.nameid : "Mr."
   );
@@ -350,7 +350,7 @@ export const ProfileIndividual = (props) => {
     props.editdata != null ? props.editdata.gender : "Male."
   );
   const [religion, setReligion] = React.useState(
-    props.editdata != null ? props.editdata.religion : "Thailand"
+    props.editdata != null ? props.editdata.religion : "Buddhism"
   );
   const [statusProfile, setStatusProfile] = React.useState(
     props.editdata != null ? props.editdata.statusprofile : "Y"
@@ -524,7 +524,7 @@ export const ProfileIndividual = (props) => {
       sessionStorage.getItem("auth"),
       pageProperty
     );
-    console.log(getconfigdata);
+    console.log("getconfigdata:", getconfigdata);
     let configdata = getconfigdata.content[getconfigdata.content.length - 1];
     let optionTitle = await getlist(configdata, "PCINDTT");
     // let optionDocumentType = await getlist(configdata,"");
@@ -535,7 +535,11 @@ export const ProfileIndividual = (props) => {
     setOptionrelation(relation);
     setOptioncommunication(communication);
     // console.log("old data",props.editdata != null , Object.keys(communicationDatas).length === 0 , Object.keys(rela).length === 0,commu,rela,props.editdata)
-    if (props.editdata != null && Object.keys(commu).length === 0 && Object.keys(rela).length === 0) {
+    if (
+      props.editdata != null &&
+      Object.keys(commu).length === 0 &&
+      Object.keys(rela).length === 0
+    ) {
       let getCommunications = await getIndividualProfileCommunication(
         sessionStorage.getItem("auth"),
         props.editdata.nameid
@@ -548,7 +552,7 @@ export const ProfileIndividual = (props) => {
       let count = 3;
       getCommunications.contents[0].forEach((element) => {
         const commuid1 = count;
-        const commuid2 = count +1;
+        const commuid2 = count + 1;
 
         if (element.communication == "email") {
           getCommunicationsDatas.email = element.value;
@@ -566,7 +570,7 @@ export const ProfileIndividual = (props) => {
           setCommunicationDatas((prev) => ({
             ...prev,
             [count]: element.communication,
-            [count + 1]: element.value,
+            [count + 1]: element.value, //key number ? == value ???
           }));
           getcomunication.push({
             id: commuid1,
@@ -620,8 +624,8 @@ export const ProfileIndividual = (props) => {
 
       getRelations.contents[0].forEach((element) => {
         const relaid1 = relationid;
-        const relaid2 = relationid +1;
-        const relaid3 = relationid +2;
+        const relaid2 = relationid + 1;
+        const relaid3 = relationid + 2;
         setRelationDatas((prev) => ({
           ...prev,
           [relationid]: element.relation,
@@ -691,13 +695,15 @@ export const ProfileIndividual = (props) => {
       });
       console.log("getrelation", getrelation);
     } else {
-      let count = 3
-      console.log("commu",commu)
-      console.log("rela",rela)
+      let count = 3;
+      console.log("commu", commu);
+      console.log("rela", rela);
       for (var key in commu) {
         if (key % 2 == 0) {
+          const commuid1 = count;
+          const commuid2 = count + 1;
           getcomunication.push({
-            id: count,
+            id: commuid1,
             label: "Choose a communication",
             xl: 3,
             md: 3,
@@ -719,11 +725,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setCommunicationDatas((prev) => ({
                 ...prev,
-                [count]: e.target.value,
+                [commuid1]: e.target.value,
               })),
           });
           getcomunication.push({
-            id: count + 1,
+            id: commuid2,
             label: "communication",
             xl: 9,
             md: 9,
@@ -734,10 +740,10 @@ export const ProfileIndividual = (props) => {
               defaultvalue: commu[key],
             },
             handle: (e) =>
-               setCommunicationDatas((prev) => ({
-                  ...prev,
-                  [count + 1]: e.target.value,
-                })),
+              setCommunicationDatas((prev) => ({
+                ...prev,
+                [commuid2]: e.target.value,
+              })),
           });
           count = count + 2;
         }
@@ -746,8 +752,11 @@ export const ProfileIndividual = (props) => {
       let relationid = 1;
       for (var key in rela) {
         if (key % 3 == 0) {
+          const relaid1 = relationid;
+        const relaid2 = relationid + 1;
+        const relaid3 = relationid + 2;
           getrelation.push({
-            id: relationid,
+            id: relaid1,
             label: "Name Type",
             xl: 2,
             md: 2,
@@ -768,11 +777,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [relationid]: e.target.value,
+                [relaid1]: e.target.value,
               })),
           });
           getrelation.push({
-            id: relationid + 1,
+            id: relaid2,
             label: "Name",
             xl: 4,
             md: 4,
@@ -785,11 +794,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [relationid + 1]: e.target.value,
+                [relaid2]: e.target.value,
               })),
           });
           getrelation.push({
-            id: relationid + 2,
+            id: relaid3,
             label: "Note",
             xl: 6,
             md: 6,
@@ -802,14 +811,12 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [relationid + 2]: e.target.value,
+                [relaid3]: e.target.value,
               })),
           });
           relationid = relationid + 3;
         }
       }
-
-
     }
 
     setList([
@@ -1058,7 +1065,7 @@ export const ProfileIndividual = (props) => {
             xs: 4,
             select: {
               status: "option",
-              data: optioncountry.map((option) => (
+              data: [{ label: "Buddhism", value: "Buddhism" }, { label: "Judaism", value: "Judaism" }, { label: "Christianity", value: "Christianity" }, { label: "Islam", value: "Islam" }, { label: "Hinduism", value: "Hinduism" }].map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -1068,7 +1075,7 @@ export const ProfileIndividual = (props) => {
                 </option>
               )),
               defaultvalue:
-                props.editdata != null ? props.editdata.religion : "Thailand",
+                props.editdata != null ? props.editdata.religion : "Buddhism",
             },
             handle: (e) => setReligion(e.target.value),
             dataType: "string",
@@ -1112,9 +1119,101 @@ export const ProfileIndividual = (props) => {
           //   },
           //   handle: " ",
           // },
-
           {
             id: 8,
+            label: "Nationality*",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "option",
+              data: optionnationality.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null ? props.editdata.nationality : "Thai",
+            },
+            handle: (e) => setNationality(e.target.value),
+            dataType: "string",
+            dataCheck: nationality,
+          },
+          {
+            id: 9,
+            label: "Date of Birth",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "datetime",
+              data: dateOfBirth,
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata.dateofbirth
+                  : new Date("2021-09-13T21:11:54"),
+            },
+            handle: (e) => setDateOfBirth(convertTimeToString(e)),
+            dataType: "date",
+            dataCheck: dateOfBirth,
+          },
+
+          {
+            id: 10,
+            label: "Birth Region",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "option",
+              data: optiondata.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null ? props.editdata.birthregion : "option1",
+            },
+            handle: (e) => setBirthRegion(e.target.value),
+            dataType: "string",
+            dataCheck: birthRegion,
+          },
+          {
+            id: 11,
+            label: "Birth Province",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "option",
+              data: optiondata.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata.birthprovince
+                  : "option1",
+            },
+            handle: (e) => setBirthProvince(e.target.value),
+            dataType: "string",
+            dataCheck: birthProvince,
+          },
+          {
+            id: 12,
             label: "Status",
             xl: 3,
             md: 3,
@@ -1139,8 +1238,8 @@ export const ProfileIndividual = (props) => {
           {
             id: 1,
             label: "Organisation",
-            xl: 2,
-            md: 2,
+            xl: 3,
+            md: 3,
             xs: 4,
             select: {
               status: "fill",
@@ -1156,8 +1255,8 @@ export const ProfileIndividual = (props) => {
           {
             id: 2,
             label: "Province Of Residence",
-            xl: 2,
-            md: 2,
+            xl: 3,
+            md: 3,
             xs: 4,
             select: {
               status: "fill",
@@ -1174,8 +1273,8 @@ export const ProfileIndividual = (props) => {
           {
             id: 3,
             label: "Border Crossing Entry Place",
-            xl: 2,
-            md: 2,
+            xl: 3,
+            md: 3,
             xs: 4,
             select: {
               status: "fill",
@@ -1192,8 +1291,8 @@ export const ProfileIndividual = (props) => {
           {
             id: 4,
             label: "Border Crossing Entry Date",
-            xl: 2,
-            md: 2,
+            xl: 3,
+            md: 3,
             xs: 4,
             select: {
               status: "datetime",
@@ -1207,18 +1306,18 @@ export const ProfileIndividual = (props) => {
             dataType: "date",
             dataCheck: borderCrossingEntryDate,
           },
-          {
-            id: 0,
-            label: "",
-            xl: 4,
-            md: 4,
-            xs: 4,
-            select: {
-              status: "offset",
-              data: "",
-            },
-            handle: (e) => handleData(e),
-          },
+          // {
+          //   id: 0,
+          //   label: "",
+          //   xl: 4,
+          //   md: 4,
+          //   xs: 4,
+          //   select: {
+          //     status: "offset",
+          //     data: "",
+          //   },
+          //   handle: (e) => handleData(e),
+          // },
           {
             id: 5,
             label: "Address",
@@ -1286,8 +1385,7 @@ export const ProfileIndividual = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue:
-                props.editdata != null ? props.editdata.conuty : "",
+              defaultvalue: props.editdata != null ? props.editdata.conuty : "",
             },
             handle: (e) => setCountry(e.target.value),
             dataType: "string",
@@ -1333,8 +1431,7 @@ export const ProfileIndividual = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue:
-                props.editdata != null ? props.editdata.postal : "",
+              defaultvalue: props.editdata != null ? props.editdata.postal : "",
             },
             handle: (e) => setPostal(e.target.value),
             dataType: "number",
@@ -1580,77 +1677,23 @@ export const ProfileIndividual = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: [
-                { label: "V20" },
-                { label: "V55" },
-                { label: "V99" },
-              ].map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.label}
-                  value={option.label}
-                >
-                  {option.label}
-                </option>
-              )),
+              data: [{ label: "V20" }, { label: "V55" }, { label: "V99" }].map(
+                (option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )
+              ),
               defaultvalue:
                 props.editdata != null ? props.editdata.vvip : "option1",
             },
             handle: (e) => setVVIP(e.target.value),
             dataType: "string",
             dataCheck: VVIP,
-          },
-          {
-            id: 7,
-            label: "Birth Region",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "option",
-              data: optiondata.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </option>
-              )),
-              defaultvalue:
-                props.editdata != null
-                  ? props.editdata.birthregion
-                  : "option1",
-            },
-            handle: (e) => setBirthRegion(e.target.value),
-            dataType: "string",
-            dataCheck: birthRegion,
-          },
-          {
-            id: 8,
-            label: "Birth Province",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "option",
-              data: optiondata.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </option>
-              )),
-              defaultvalue:
-                props.editdata != null
-                  ? props.editdata.birthprovince
-                  : "option1",
-            },
-            handle: (e) => setBirthProvince(e.target.value),
-            dataType: "string",
-            dataCheck: birthProvince,
           },
         ],
       },
@@ -1710,7 +1753,7 @@ export const ProfileIndividual = (props) => {
 
             handle: (e) => setIDType(e.target.value),
             dataType: "string",
-            dataCheck: IDType,
+            dataCheck: IDCheck == "Y" ? IDType : true,
           },
           {
             id: 4,
@@ -1726,52 +1769,52 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setIDNumber(e.target.value),
             dataType: "number",
-            dataCheck: IDNumber,
+            dataCheck: IDCheck == "Y" ? IDNumber : true,
           },
+          // {
+          //   id: 5,
+          //   label: "Nationality*",
+          //   xl: 2,
+          //   md: 2,
+          //   xs: 6,
+          //   select: {
+          //     status: "option",
+          //     data: optionnationality.map((option) => (
+          //       <option
+          //         style={headerTableStyle}
+          //         key={option.value}
+          //         value={option.value}
+          //       >
+          //         {option.label}
+          //       </option>
+          //     )),
+          //     defaultvalue:
+          //       props.editdata != null ? props.editdata.nationality : "Thai",
+          //   },
+          //   handle: (e) => setNationality(e.target.value),
+          //   dataType: "string",
+          //   dataCheck: nationality,
+          // },
+          // {
+          //   id: 6,
+          //   label: "Date of Birth",
+          //   xl: 2,
+          //   md: 2,
+          //   xs: 6,
+          //   select: {
+          //     status: "datetime",
+          //     data: dateOfBirth,
+          //     defaultvalue:
+          //       props.editdata != null
+          //         ? props.editdata.dateofbirth
+          //         : new Date("2021-09-13T21:11:54"),
+          //   },
+          //   handle: (e) => setDateOfBirth(convertTimeToString(e)),
+          //   dataType: "date",
+          //   dataCheck: dateOfBirth,
+          // },
           {
             id: 5,
-            label: "Nationality*",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "option",
-              data: optionnationality.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </option>
-              )),
-              defaultvalue:
-                props.editdata != null ? props.editdata.nationality : "Thai",
-            },
-            handle: (e) => setNationality(e.target.value),
-            dataType: "string",
-            dataCheck: nationality,
-          },
-          {
-            id: 6,
-            label: "Date of Birth",
-            xl: 2,
-            md: 2,
-            xs: 6,
-            select: {
-              status: "datetime",
-              data: dateOfBirth,
-              defaultvalue:
-                props.editdata != null
-                  ? props.editdata.dateofbirth
-                  : new Date("2021-09-13T21:11:54"),
-            },
-            handle: (e) => setDateOfBirth(convertTimeToString(e)),
-            dataType: "date",
-            dataCheck: dateOfBirth,
-          },
-          {
-            id: 7,
             label: "ID Issue Date",
             xl: 2,
             md: 2,
@@ -1786,10 +1829,10 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setIDIssuedDate(new Date(e)),
             dataType: "date",
-            dataCheck: IDIssuedDate,
+            dataCheck: IDCheck == "Y" ? IDIssuedDate : true,
           },
           {
-            id: 8,
+            id: 6,
             label: "ID Expiration Date",
             xl: 2,
             md: 2,
@@ -1804,21 +1847,21 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setIDExpirationDate(new Date(e)),
             dataType: "date",
-            dataCheck: IDExpirationDate,
+            dataCheck: IDCheck == "Y" ? IDExpirationDate : true,
           },
+          // {
+          //   id: 7,
+          //   label: "offset",
+          //   xl: 8,
+          //   md: 8,
+          //   xs: 0,
+          //   select: {
+          //     status: "offset",
+          //     data: "",
+          //   },
+          // },
           {
-            id: 9,
-            label: "offset",
-            xl: 8,
-            md: 8,
-            xs: 0,
-            select: {
-              status: "offset",
-              data: "",
-            },
-          },
-          {
-            id: 10,
+            id: 8,
             label: "Passport Visa Check",
             xl: 2,
             md: 2,
@@ -1827,9 +1870,7 @@ export const ProfileIndividual = (props) => {
               status: "check",
               data: "",
               defaultvalue:
-                props.editdata != null
-                  ? props.editdata.passportvisacheck
-                  : "N",
+                props.editdata != null ? props.editdata.passportvisacheck : "N",
             },
             handle: (e) =>
               setPassportVisaCheck(handleBoolean(e.target.checked)),
@@ -1837,7 +1878,7 @@ export const ProfileIndividual = (props) => {
             dataCheck: passportVisaCheck,
           },
           {
-            id: 11,
+            id: 9,
             label: "Offset",
             xl: 10,
             md: 10,
@@ -1848,7 +1889,7 @@ export const ProfileIndividual = (props) => {
             },
           },
           {
-            id: 12,
+            id: 10,
             label: "Visa Type",
             xl: 2,
             md: 2,
@@ -1871,10 +1912,10 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaType(e.target.value),
             dataType: "string",
-            dataCheck: visaType,
+            dataCheck: passportVisaCheck == "Y",
           },
           {
-            id: 13,
+            id: 11,
             label: "Visa Name",
             xl: 6,
             md: 6,
@@ -1887,10 +1928,10 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaName(e.target.value),
             dataType: "string",
-            dataCheck: visaName,
+            dataCheck: passportVisaCheck == "Y" ? visaName : true,
           },
           {
-            id: 14,
+            id: 12,
             label: "Visa Number",
             xl: 4,
             md: 4,
@@ -1903,7 +1944,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaNumber(e.target.value),
             dataType: "string",
-            dataCheck: visaNumber,
+            dataCheck: passportVisaCheck == "Y" ? visaNumber : true,
           },
           // {
           //   id: 15,
@@ -1928,7 +1969,7 @@ export const ProfileIndividual = (props) => {
           //   handle: (e) => handleData(e),
           // },
           {
-            id: 15,
+            id: 12,
             label: "Visa Issued Date",
             xl: 2,
             md: 2,
@@ -1943,12 +1984,12 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaIssuedDate(new Date(e)),
             dataType: "date",
-            dataCheck: visaIssuedDate,
+            dataCheck: passportVisaCheck == "Y" ? visaIssuedDate : true,
 
             // handle: (e) => setVisaIssuedDate(convertTimeToString(e)),
           },
           {
-            id: 16,
+            id: 13,
             label: "Visa Begin Date",
             xl: 2,
             md: 2,
@@ -1963,10 +2004,10 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaBeginDate(new Date(e)),
             dataType: "date",
-            dataCheck: visaBeginDate,
+            dataCheck: passportVisaCheck == "Y" ? visaBeginDate : true,
           },
           {
-            id: 17,
+            id: 14,
             label: "Visa Expiration Date",
             xl: 2,
             md: 2,
@@ -1981,7 +2022,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaExpirationDate(new Date(e)),
             dataType: "date",
-            dataCheck: visaExpirationDate,
+            dataCheck: passportVisaCheck == "Y" ? visaExpirationDate : true,
           },
           // {
           //   id: 18,
@@ -1996,7 +2037,7 @@ export const ProfileIndividual = (props) => {
           //   handle: (e) => handleData(e),
           // },
           {
-            id: 18,
+            id: 15,
             label: "Visa Status",
             xl: 2,
             md: 2,
@@ -2009,10 +2050,10 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaStatus(handleBoolean(e.target.checked)),
             dataType: "string",
-            dataCheck: visaStatus,
+            dataCheck: passportVisaCheck == "Y" ? visaStatus : true,
           },
           {
-            id: 19,
+            id: 16,
             label: "Note",
             xl: 12,
             md: 12,
@@ -2025,7 +2066,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaNotes(e.target.value),
             dataType: "string",
-            dataCheck: visaNotes,
+            dataCheck: passportVisaCheck == "Y" ? visaNotes : true,
           },
           // ,
           // {
@@ -2112,7 +2153,7 @@ export const ProfileIndividual = (props) => {
           //   handle: (e) => handleData(e),
           // },
           {
-            id: 20,
+            id: 17,
             label: "Rank",
             xl: 2,
             md: 2,
@@ -2133,10 +2174,10 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setRank(e.target.value),
             dataType: "string",
-            dataCheck: rank,
+            dataCheck: true,
           },
           {
-            id: 21,
+            id: 18,
             label: "Grade",
             xl: 2,
             md: 2,
@@ -2157,10 +2198,10 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setGrade(e.target.value),
             dataType: "string",
-            dataCheck: grade,
+            dataCheck: true,
           },
           {
-            id: 22,
+            id: 19,
             label: "Guest Identity",
             xl: 2,
             md: 2,
@@ -2173,7 +2214,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setGuestIdentity(e.target.value),
             dataType: "string",
-            dataCheck: guestIdentity,
+            dataCheck: true,
           },
           // {
           //   id: 29,
@@ -2240,11 +2281,9 @@ export const ProfileIndividual = (props) => {
     ]);
   }
 
-
-
   React.useEffect(() => {
     async function getconfig() {
-      updatelist()
+      updatelist();
     }
     getconfig();
   }, [props.trigger]);
@@ -2696,6 +2735,7 @@ export const ProfileIndividual = (props) => {
       guestidentity: guestIdentity,
       communications: communicationDatas,
       relations: relationDatas,
+      createdby: account,
     };
     const data = await postIndividualProfile(
       sessionStorage.getItem("auth"),
@@ -2756,8 +2796,9 @@ export const ProfileIndividual = (props) => {
       guestidentity: guestIdentity,
       communications: communicationDatas,
       relations: relationDatas,
+      updatedby: account,
     };
-    console.log("update", req)
+    console.log("update", req);
     const data = await updateIndividualProfile(
       sessionStorage.getItem("auth"),
       id,
@@ -2782,12 +2823,12 @@ export const ProfileIndividual = (props) => {
       namePrefix === null ||
       namePrefix === "" ||
       namePrefix === " " ||
-      nameSuffix === null ||
-      nameSuffix === "" ||
-      nameSuffix === " " ||
-      middleInitial === null ||
-      middleInitial === "" ||
-      middleInitial === " " ||
+      // nameSuffix === null ||
+      // nameSuffix === "" ||
+      // nameSuffix === " " ||
+      // middleInitial === null ||
+      // middleInitial === "" ||
+      // middleInitial === " " ||
       gender === null ||
       gender === "" ||
       gender === " " ||
@@ -2800,24 +2841,24 @@ export const ProfileIndividual = (props) => {
       statusProfile === null ||
       statusProfile === "" ||
       statusProfile === " " ||
-      provinceOfResidence === null ||
-      provinceOfResidence === "" ||
-      provinceOfResidence === " " ||
-      borderCrossingEntryPlace === null ||
-      borderCrossingEntryPlace === "" ||
-      borderCrossingEntryPlace === " " ||
-      borderCrossingEntryDate === null ||
-      borderCrossingEntryDate === "" ||
-      borderCrossingEntryDate === " " ||
+      // provinceOfResidence === null ||
+      // provinceOfResidence === "" ||
+      // provinceOfResidence === " " ||
+      // borderCrossingEntryPlace === null ||
+      // borderCrossingEntryPlace === "" ||
+      // borderCrossingEntryPlace === " " ||
+      // borderCrossingEntryDate === null ||
+      // borderCrossingEntryDate === "" ||
+      // borderCrossingEntryDate === " " ||
       address === null ||
       address === "" ||
       address === " " ||
       address1 === null ||
       address1 === "" ||
       address1 === " " ||
-      address2 === null ||
-      address2 === "" ||
-      address2 === " " ||
+      // address2 === null ||
+      // address2 === "" ||
+      // address2 === " " ||
       conuty === null ||
       conuty === "" ||
       conuty === " " ||
@@ -2854,61 +2895,63 @@ export const ProfileIndividual = (props) => {
       IDCheck === null ||
       IDCheck === "" ||
       IDCheck === " " ||
-      IDType === null ||
-      IDType === "" ||
-      IDType === " " ||
-      IDNumber === null ||
-      IDNumber === "" ||
-      IDNumber === " " ||
+      // IDCheck == "Y" ? IDType === null : false||
+      // IDCheck == "Y" ? IDType === ""  : false||
+      // IDCheck == "Y" ? IDType === " "  : false||
+      // IDCheck == "Y" ? IDNumber === null  : false||
+      // IDCheck == "Y" ? IDNumber === ""  : false||
+      // IDCheck == "Y" ? IDNumber === " "  : false||
       nationality === null ||
       nationality === "" ||
       nationality === " " ||
       dateOfBirth === null ||
       dateOfBirth === "" ||
       dateOfBirth === " " ||
-      IDIssuedDate === null ||
-      IDIssuedDate === "" ||
-      IDIssuedDate === " " ||
-      IDExpirationDate === null ||
-      IDExpirationDate === "" ||
-      IDExpirationDate === " " ||
+      // IDCheck == "Y" ? IDIssuedDate === null  : false||
+      // IDCheck == "Y" ? IDIssuedDate === ""  : false||
+      // IDCheck == "Y" ? IDIssuedDate === " "  : false||
+      // IDCheck == "Y" ? IDExpirationDate === null  : false||
+      // IDCheck == "Y" ? IDExpirationDate === ""  : false||
+      // IDCheck == "Y" ? IDExpirationDate === " "  : false||
       passportVisaCheck === null ||
       passportVisaCheck === "" ||
-      passportVisaCheck === " " ||
-      visaType === null ||
-      visaType === "" ||
-      visaType === " " ||
-      visaName === null ||
-      visaName === "" ||
-      visaName === " " ||
-      visaNumber === null ||
-      visaNumber === "" ||
-      visaNumber === " " ||
-      visaIssuedDate === null ||
-      visaIssuedDate === "" ||
-      visaIssuedDate === " " ||
-      visaBeginDate === null ||
-      visaBeginDate === "" ||
-      visaBeginDate === " " ||
-      visaExpirationDate === null ||
-      visaExpirationDate === "" ||
-      visaExpirationDate === " " ||
-      visaStatus === null ||
-      visaStatus === "" ||
-      visaStatus === " " ||
-      visaNotes === null ||
-      visaNotes === "" ||
-      visaNotes === " " ||
-      rank === null ||
-      rank === "" ||
-      rank === " " ||
-      grade === null ||
-      grade === "" ||
-      grade === " " ||
-      guestIdentity === null ||
-      guestIdentity === "" ||
-      guestIdentity === " ";
+      passportVisaCheck === " ";
+    // passportVisaCheck == "Y" ?  visaType === null  : false||
+    // passportVisaCheck == "Y" ?  visaType === ""  : false||
+    // passportVisaCheck == "Y" ?  visaType === " "  : false||
+    // passportVisaCheck == "Y" ?  visaName === null  : false||
+    // passportVisaCheck == "Y" ?  visaName === ""  : false||
+    // passportVisaCheck == "Y" ?  visaName === " "  : false||
+    // passportVisaCheck == "Y" ?  visaNumber === null  : false||
+    // passportVisaCheck == "Y" ?  visaNumber === ""  : false||
+    // passportVisaCheck == "Y" ?  visaNumber === " "  : false||
+    // passportVisaCheck == "Y" ?  visaIssuedDate === null  : false||
+    // passportVisaCheck == "Y" ?  visaIssuedDate === ""  : false||
+    // passportVisaCheck == "Y" ?  visaIssuedDate === " "  : false||
+    // passportVisaCheck == "Y" ?  visaBeginDate === null  : false||
+    // passportVisaCheck == "Y" ?  visaBeginDate === ""  : false||
+    // passportVisaCheck == "Y" ?  visaBeginDate === " "  : false||
+    // passportVisaCheck == "Y" ?  visaExpirationDate === null  : false||
+    // passportVisaCheck == "Y" ?  visaExpirationDate === ""  : false||
+    // passportVisaCheck == "Y" ?  visaExpirationDate === " "  : false||
+    // passportVisaCheck == "Y" ?  visaStatus === null  : false||
+    // passportVisaCheck == "Y" ?  visaStatus === ""  : false||
+    // passportVisaCheck == "Y" ?  visaStatus === " "  : false||
+    // passportVisaCheck == "Y" ?  visaNotes === null  : false||
+    // passportVisaCheck == "Y" ?  visaNotes === ""  : false||
+    // passportVisaCheck == "Y" ?  visaNotes === " "  : false||
+    // rank === null ||
+    // rank === "" ||
+    // rank === " " ||
+    // grade === null ||
+    // grade === "" ||
+    // grade === " " ||
+    // guestIdentity === null ||
+    // guestIdentity === "" ||
+    // guestIdentity === " ";
     // console.log("_IsRequired ::::::::: ", _IsRequired);
+    // console.log("add by account:", account);
+    console.log(validationStatus);
     setValidationStatus(_IsRequired);
     if (_IsRequired === false) {
       setIsRequired(false);
@@ -2968,147 +3011,8 @@ export const ProfileIndividual = (props) => {
   React.useEffect(() => {
     async function handlebutton() {
       if (props.action === "add") {
-        // let _IsRequired =
-        //   nameTitle === null ||
-        //   nameTitle === "" ||
-        //   firstName === " " ||
-        //   firstName === null ||
-        //   firstName === "" ||
-        //   firstName === " " ||
-        //   lastName === null ||
-        //   lastName === "" ||
-        //   lastName === " " ||
-        //   namePrefix === null ||
-        //   namePrefix === "" ||
-        //   namePrefix === " " ||
-        //   nameSuffix === null ||
-        //   nameSuffix === "" ||
-        //   nameSuffix === " " ||
-        //   middleInitial === null ||
-        //   middleInitial === "" ||
-        //   middleInitial === " " ||
-        //   gender === null ||
-        //   gender === "" ||
-        //   gender === " " ||
-        //   religion === null ||
-        //   religion === "" ||
-        //   religion === " " ||
-        //   organization === null ||
-        //   organization === "" ||
-        //   organization === " " ||
-        //   statusProfile === null ||
-        //   statusProfile === "" ||
-        //   statusProfile === " " ||
-        //   provinceOfResidence === null ||
-        //   provinceOfResidence === "" ||
-        //   provinceOfResidence === " " ||
-        //   borderCrossingEntryPlace === null ||
-        //   borderCrossingEntryPlace === "" ||
-        //   borderCrossingEntryPlace === " " ||
-        //   borderCrossingEntryDate === null ||
-        //   borderCrossingEntryDate === "" ||
-        //   borderCrossingEntryDate === " " ||
-        //   address === null ||
-        //   address === "" ||
-        //   address === " " ||
-        //   address1 === null ||
-        //   address1 === "" ||
-        //   address1 === " " ||
-        //   address2 === null ||
-        //   address2 === "" ||
-        //   address2 === " " ||
-        //   conuty === null ||
-        //   conuty === "" ||
-        //   conuty === " " ||
-        //   city === null ||
-        //   city === "" ||
-        //   city === " " ||
-        //   stateProvince === null ||
-        //   stateProvince === "" ||
-        //   stateProvince === " " ||
-        //   postal === null ||
-        //   postal === "" ||
-        //   postal === " " ||
-        //   noPost === null ||
-        //   noPost === "" ||
-        //   noPost === " " ||
-        //   NRG === null ||
-        //   NRG === "" ||
-        //   NRG === " " ||
-        //   guestCategory === null ||
-        //   guestCategory === "" ||
-        //   guestCategory === " " ||
-        //   VVIP === null ||
-        //   VVIP === "" ||
-        //   VVIP === " " ||
-        //   birthRegion === null ||
-        //   birthRegion === "" ||
-        //   birthRegion === " " ||
-        //   birthProvince === null ||
-        //   birthProvince === "" ||
-        //   birthProvince === " " ||
-        //   guestType === null ||
-        //   guestType === "" ||
-        //   guestType === " " ||
-        //   IDCheck === null ||
-        //   IDCheck === "" ||
-        //   IDCheck === " " ||
-        //   IDType === null ||
-        //   IDType === "" ||
-        //   IDType === " " ||
-        //   IDNumber === null ||
-        //   IDNumber === "" ||
-        //   IDNumber === " " ||
-        //   nationality === null ||
-        //   nationality === "" ||
-        //   nationality === " " ||
-        //   dateOfBirth === null ||
-        //   dateOfBirth === "" ||
-        //   dateOfBirth === " " ||
-        //   IDIssuedDate === null ||
-        //   IDIssuedDate === "" ||
-        //   IDIssuedDate === " " ||
-        //   IDExpirationDate === null ||
-        //   IDExpirationDate === "" ||
-        //   IDExpirationDate === " " ||
-        //   passportVisaCheck === null ||
-        //   passportVisaCheck === "" ||
-        //   passportVisaCheck === " " ||
-        //   visaType === null ||
-        //   visaType === "" ||
-        //   visaType === " " ||
-        //   visaName === null ||
-        //   visaName === "" ||
-        //   visaName === " " ||
-        //   visaNumber === null ||
-        //   visaNumber === "" ||
-        //   visaNumber === " " ||
-        //   visaIssuedDate === null ||
-        //   visaIssuedDate === "" ||
-        //   visaIssuedDate === " " ||
-        //   visaBeginDate === null ||
-        //   visaBeginDate === "" ||
-        //   visaBeginDate === " " ||
-        //   visaExpirationDate === null ||
-        //   visaExpirationDate === "" ||
-        //   visaExpirationDate === " " ||
-        //   visaStatus === null ||
-        //   visaStatus === "" ||
-        //   visaStatus === " " ||
-        //   visaNotes === null ||
-        //   visaNotes === "" ||
-        //   visaNotes === " " ||
-        //   rank === null ||
-        //   rank === "" ||
-        //   rank === " " ||
-        //   grade === null ||
-        //   grade === "" ||
-        //   grade === " " ||
-        //   guestIdentity === null ||
-        //   guestIdentity === "" ||
-        //   guestIdentity === " ";
-        // console.log("_IsRequired", _IsRequired);
         console.log("action add", props.action);
+        console.log("validationStatus", validationStatus)
         // await props.handleRedirectToTableIndividual(false);
         if (validationStatus === false) {
           // await props.handleRedirectToTableIndividual(true);
@@ -3125,20 +3029,6 @@ export const ProfileIndividual = (props) => {
     }
     handlebutton();
   }, [props.trigger, props.action]);
-
-  // data from button for  trigger (add or delete)
-  // React.useEffect(() => {
-  //   console.log("props.editdata.nameid", props.editdata.nameid);
-  //   async function fetchdDtaforEdit() {
-  //     var individualdata = await getIndividualProfileById(
-  //       sessionStorage.getItem("auth"),
-  //       props.editdata.nameid
-  //     );
-  //     console.log("individualdata for edit :", individualdata);
-  //     setIndividualData(individualdata.content[0]);
-  //   }
-  //   fetchdDtaforEdit();
-  // }, []);
 
   return (
     <Container
@@ -3166,13 +3056,6 @@ export const ProfileIndividual = (props) => {
                 style={{ marginTop: 10, backgroundColor: themeState.paper }}
                 ref={provided.innerRef}
               >
-                {/* <Button
-                  variant="contained"
-                  color="default"
-                  onClick={() => handleData()}
-                >
-                  TestData
-                </Button> */}
                 {list.map((item, index) => (
                   <Draggable draggableId={item.id} key={item.id} index={index}>
                     {(provided, snapshot) => (
@@ -3292,177 +3175,163 @@ export const ProfileIndividual = (props) => {
                                     defaultValue={detail.select.defaultvalue}
                                     onFocus={false}
                                   />
-                                ) : // <TextField
-                                  //   className={classes.root}
-                                  //   variant="outlined"
-                                  //   label={detail.select.defaultvalue}
-                                  //   fullWidth
-                                  //   style={{
-                                  //     backgroundColor: "#EFEFEF",
-                                  //     borderColor: "white",
-                                  //   }}
-                                  //   // disabled={true}
-                                  //   value={detail.select.defaultvalue}
-                                  //   defaultValue={detail.select.defaultvalue}
-                                  //   onFocus={false}
-                                  // />
-                                  detail.select.status === "fillnolabel" ? (
-                                    <TextField
-                                      // error={handleValidation(detail.dataCheck)}
-                                      // error={
-                                      //   detail.dataCheck == null ||
-                                      //   detail.dataCheck == ""
-                                      //     ? true
-                                      //     : false
-                                      // }
-                                      // helperText={
-                                      //   detail.dataCheck == null ||
-                                      //   detail.dataCheck == ""
-                                      //     ? "This ib formation can't null"
-                                      //     : false
-                                      // }
+                                ) : detail.select.status === "fillnolabel" ? (
+                                  <TextField
+                                    // error={handleValidation(detail.dataCheck)}
+                                    // error={
+                                    //   detail.dataCheck == null ||
+                                    //   detail.dataCheck == ""
+                                    //     ? true
+                                    //     : false
+                                    // }
+                                    // helperText={
+                                    //   detail.dataCheck == null ||
+                                    //   detail.dataCheck == ""
+                                    //     ? "This ib formation can't null"
+                                    //     : false
+                                    // }
 
-                                      type={detail.datatype}
-                                      className={classes.root}
-                                      // label={detail.label}
-                                      variant="outlined"
-                                      InputProps={{
-                                        style: headerTableStyle,
-                                      }}
-                                      noWrap
-                                      InputLabelProps={{
-                                        style: { color: "#AAAAAA" },
-                                      }}
-                                      fullWidth
-                                      defaultValue={detail.select.defaultvalue}
-                                      onChange={detail.handle}
-                                    />
-                                  ) : detail.select.status === "fill" ? (
-                                    [
-                                      isRequired ? (
-                                        <TextField
-                                          error={
-                                            detail.dataCheck == null ||
-                                              detail.dataCheck === "" ||
-                                              detail.dataCheck === " "
-                                              ? true
-                                              : false
-                                          }
-                                          helperText={
-                                            detail.dataCheck == null ||
-                                              detail.dataCheck === ""
-                                              ? `${detail.label} is Required`
-                                              : false
-                                          }
-                                          // required={true}
-                                          type={detail.dataType}
-                                          className={classes.root}
-                                          label={detail.label}
-                                          variant="outlined"
-                                          InputProps={{
-                                            style: headerTableStyle,
-                                          }}
-                                          noWrap
-                                          InputLabelProps={{
-                                            style: { color: "#AAAAAA" },
-                                          }}
-                                          fullWidth
-                                          defaultValue={
-                                            detail.select.defaultvalue
-                                          }
-                                          onChange={detail.handle}
-                                        // onBlur={handleValidation(detail.dataCheck)}
-                                        />
-                                      ) : (
-                                        <TextField
-                                          type={detail.dataType}
-                                          className={classes.root}
-                                          label={detail.label}
-                                          variant="outlined"
-                                          InputProps={{
-                                            style: headerTableStyle,
-                                          }}
-                                          noWrap
-                                          InputLabelProps={{
-                                            style: { color: "#AAAAAA" },
-                                          }}
-                                          fullWidth
-                                          defaultValue={
-                                            detail.select.defaultvalue
-                                          }
-                                          onChange={detail.handle}
-                                        // onBlur={handleValidation(detail.dataCheck)}
-                                        />
-                                      ),
-                                    ]
-                                  ) : detail.select.status === "option" ? (
-                                    <TextField
-                                      className={classes.root}
-                                      label={detail.label}
-                                      variant="outlined"
-                                      fullWidth
-                                      select
-                                      defaultValue={detail.select.defaultvalue}
-                                      SelectProps={{
-                                        native: true,
-                                      }}
-                                      InputProps={{
-                                        style: headerTableStyle,
-                                      }}
-                                      // value={detail.select.defaultvalue}
-                                      onChange={detail.handle}
-                                      textOverflow="ellipsis"
-
-                                    // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
-                                    >
-                                      {detail.select.data}
-                                    </TextField>
-                                  ) : detail.select.status === "check" ? (
-                                    [
-                                      detail.select.defaultvalue === "Y" ||
-                                        detail.select.defaultvalue === true ? (
-                                        <FormControlLabel
-                                          control={
-                                            <Checkbox
-                                              defaultChecked={true}
-                                              color="primary"
-                                            />
-                                          }
-                                          label={detail.label}
-                                          labelPlacement="end"
-                                          onChange={detail.handle}
-                                        />
-                                      ) : (
-                                        <FormControlLabel
-                                          control={
-                                            <Checkbox
-                                              defaultChecked={false}
-                                              color="primary"
-                                            />
-                                          }
-                                          label={detail.label}
-                                          labelPlacement="end"
-                                          onChange={detail.handle}
-                                        />
-                                      ),
-                                    ]
-                                  ) : (
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                      <KeyboardDatePicker
+                                    type={detail.datatype}
+                                    className={classes.root}
+                                    // label={detail.label}
+                                    variant="outlined"
+                                    InputProps={{
+                                      style: headerTableStyle,
+                                    }}
+                                    noWrap
+                                    InputLabelProps={{
+                                      style: { color: "#AAAAAA" },
+                                    }}
+                                    fullWidth
+                                    defaultValue={detail.select.defaultvalue}
+                                    onChange={detail.handle}
+                                  />
+                                ) : detail.select.status === "fill" ? (
+                                  [
+                                    isRequired ? (
+                                      <TextField
+                                        error={
+                                          detail.dataCheck == null ||
+                                            detail.dataCheck === "" ||
+                                            detail.dataCheck === " "
+                                            ? true
+                                            : false
+                                        }
+                                        helperText={
+                                          detail.dataCheck == null ||
+                                            detail.dataCheck === ""
+                                            ? `${detail.label} is Required`
+                                            : false
+                                        }
+                                        // required={true}
+                                        type={detail.dataType}
                                         className={classes.root}
                                         label={detail.label}
-                                        inputVariant="outlined"
+                                        variant="outlined"
                                         InputProps={{
                                           style: headerTableStyle,
                                         }}
-                                        format="dd/MM/yyyy"
-                                        value={detail.select.data}
-                                        onChange={detail.handle}
+                                        noWrap
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" },
+                                        }}
                                         fullWidth
-                                        defaultValue={detail.select.defaultvalue}
+                                        defaultValue={
+                                          detail.select.defaultvalue
+                                        }
+                                        onChange={detail.handle}
+                                      // onBlur={handleValidation(detail.dataCheck)}
                                       />
-                                    </MuiPickersUtilsProvider>
-                                  )}
+                                    ) : (
+                                      <TextField
+                                        type={detail.dataType}
+                                        className={classes.root}
+                                        label={detail.label}
+                                        variant="outlined"
+                                        InputProps={{
+                                          style: headerTableStyle,
+                                        }}
+                                        noWrap
+                                        InputLabelProps={{
+                                          style: { color: "#AAAAAA" },
+                                        }}
+                                        fullWidth
+                                        defaultValue={
+                                          detail.select.defaultvalue
+                                        }
+                                        onChange={detail.handle}
+                                      // onBlur={handleValidation(detail.dataCheck)}
+                                      />
+                                    ),
+                                  ]
+                                ) : detail.select.status === "option" ? (
+                                  <TextField
+                                    className={classes.root}
+                                    label={detail.label}
+                                    variant="outlined"
+                                    fullWidth
+                                    select
+                                    defaultValue={detail.select.defaultvalue}
+                                    SelectProps={{
+                                      native: true,
+                                    }}
+                                    InputProps={{
+                                      style: headerTableStyle,
+                                    }}
+                                    // value={detail.select.defaultvalue}
+                                    onChange={detail.handle}
+                                    textOverflow="ellipsis"
+
+                                  // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
+                                  >
+                                    {detail.select.data}
+                                  </TextField>
+                                ) : detail.select.status === "check" ? (
+                                  [
+                                    detail.select.defaultvalue === "Y" ||
+                                      detail.select.defaultvalue === true ? (
+                                      <FormControlLabel
+                                        control={
+                                          <Checkbox
+                                            defaultChecked={true}
+                                            color="primary"
+                                          />
+                                        }
+                                        label={detail.label}
+                                        labelPlacement="end"
+                                        onChange={detail.handle}
+                                      />
+                                    ) : (
+                                      <FormControlLabel
+                                        control={
+                                          <Checkbox
+                                            defaultChecked={false}
+                                            color="primary"
+                                          />
+                                        }
+                                        label={detail.label}
+                                        labelPlacement="end"
+                                        onChange={detail.handle}
+                                      />
+                                    ),
+                                  ]
+                                ) : (
+                                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardDatePicker
+                                      className={classes.root}
+                                      label={detail.label}
+                                      inputVariant="outlined"
+                                      InputProps={{
+                                        style: headerTableStyle,
+                                      }}
+                                      format="dd/MM/yyyy"
+                                      value={detail.select.data}
+                                      onChange={detail.handle}
+                                      fullWidth
+                                      defaultValue={detail.select.defaultvalue}
+                                    />
+                                  </MuiPickersUtilsProvider>
+                                )}
                               </Grid>
                             ))}
                           </Grid>

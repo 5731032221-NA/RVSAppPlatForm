@@ -504,7 +504,8 @@ export const ProfileCompany = (props) => {
         console.log("getCommunications.contents", getCommunications.contents)
         let count = 1;
         getCommunications.contents[0].forEach((element) => {
-
+          const commuid1 = count;
+        const commuid2 = count +1;
           if (element.communication == "email") {
             getCommunicationsDatas.email = element.value
           } else if (element.communication == "mobile") {
@@ -516,7 +517,7 @@ export const ProfileCompany = (props) => {
               [count + 1]: element.value
             }))
             getcomunication.push({
-              id: count,
+              id: commuid1,
               label: "Choose a communication",
               xl: 3,
               md: 3,
@@ -537,12 +538,12 @@ export const ProfileCompany = (props) => {
               },
               handle: (e) => setCommunicationDatas(prev => ({
                 ...prev,
-                [count]: e.target.value
+                [commuid1]: e.target.value
               })),
             
             });
             getcomunication.push({
-              id: count + 1,
+              id: commuid2,
               label: "communication",
               xl: 9,
               md: 9,
@@ -554,7 +555,7 @@ export const ProfileCompany = (props) => {
               },
               handle: (e) => setCommunicationDatas(prev => ({
                 ...prev,
-                [count + 1]: e.target.value
+                [commuid2]: e.target.value
               })),
             });
             count = count + 2;
@@ -788,7 +789,7 @@ export const ProfileCompany = (props) => {
               },
               handle: (e) => setnameTwo(e.target.value),
               dataType: "string",
-              dataCheck: nameTwo,
+              dataCheck: true,
             },
             {
               id: 3,
@@ -1764,69 +1765,6 @@ export const ProfileCompany = (props) => {
   React.useEffect(async () => {
  
     if (props.action == "add") {
-      console.log(nameOne,
-        Abbreviation,
-        GuaranteeMethodCode,
-        iata,
-        StreetAddress,
-        City,
-        State,
-        Postal,
-        BStreetAddress,
-        BCity,
-        BState,
-        BPostal,
-        TaxID,
-        CreditCardNumber,
-        OutstandingAmount,
-        OutstandingAmount,
-        FloatingDepositionAmount,
-        ARNumber,
-        Industry,
-        MarketSegment,
-        SourceOfBusiness,
-        TrackCode,
-        ReasonForStay,
-        Geographic)
-        console.log(nameOne === null ,
-          Abbreviation === null ,
-          GuaranteeMethodCode === null ,
-          iata === null ,
-          StreetAddress === null ,
-          City === null ,
-          State === null ,
-          Postal === null ,
-          BStreetAddress === null ,
-          BCity === null ,
-          BState === null ,
-          BPostal === null ,
-          TaxID === null ,
-          Industry === null ,
-          MarketSegment === null ,
-          SourceOfBusiness === null ,
-          TrackCode === null ,
-          ReasonForStay === null ,
-          Geographic  === null ,
-          nameOne.trim() === "" ,
-          Abbreviation.trim() === "" ,
-          GuaranteeMethodCode.trim() === "" ,
-          iata.trim() === "" ,
-          StreetAddress.trim() === "" ,
-          City.trim() === "" ,
-          State.trim() === "" ,
-          Postal === 0 ,
-          BStreetAddress.trim() === "" ,
-          BCity.trim() === "" ,
-          BState.trim() === "" ,
-          BPostal === 0 ,
-          TaxID.trim() === "" ,
-          Industry.trim() === "" ,
-          MarketSegment.trim() === "" ,
-          SourceOfBusiness.trim() === "" ,
-          TrackCode.trim() === "" ,
-          ReasonForStay.trim() === "" ,
-          Geographic.trim() === "")
-
       let _IsRequired = nameOne === null ||
       Abbreviation === null ||
       GuaranteeMethodCode === null ||
