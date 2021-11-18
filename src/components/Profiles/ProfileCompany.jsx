@@ -647,7 +647,7 @@ export const ProfileCompany = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: communication.map((option) => (
+              data: optioncommunication.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -697,7 +697,7 @@ export const ProfileCompany = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: relation.map((option) => (
+              data: optionrelation.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
