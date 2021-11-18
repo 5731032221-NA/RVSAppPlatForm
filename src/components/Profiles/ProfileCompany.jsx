@@ -484,11 +484,13 @@ export const ProfileCompany = (props) => {
 
   
   async function updateList(){
+    let commu = JSON.parse(JSON.stringify(communicationDatas));
+    let rela = JSON.parse(JSON.stringify(relationDatas));
     let getCommunicationsDatas = {};
       let getcomunication = [];
       let getrelation = [];
       console.log("demostate");
-      if (props.editdata != null) {
+      if (props.editdata != null && Object.keys(commu).length === 0 && Object.keys(rela).length === 0) {
         console.log("props.editdata", props.editdata)
         let getCommunications = await getCompanyProfileCommunication(
           sessionStorage.getItem("auth"),
@@ -593,7 +595,7 @@ export const ProfileCompany = (props) => {
             }))
           });
           getrelation.push({
-            id: relationid,
+            id: relationid ,
             label: "Name",
             xl: 4,
             md: 4,
@@ -605,7 +607,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setRelationDatas(prev => ({
               ...prev,
-              [relationid]: element.value
+              [relationid + 1]: element.value
             })),
         
           });
@@ -629,6 +631,125 @@ export const ProfileCompany = (props) => {
         }
         );
         console.log("getrelation", getrelation)
+
+      }else{
+        let count = 3
+      console.log("commu",commu)
+      console.log("rela",rela)
+      for (var key in commu) {
+        if (key % 2 == 0) {
+          getcomunication.push({
+            id: count,
+            label: "Choose a communication",
+            xl: 3,
+            md: 3,
+            xs: 6,
+            select: {
+              status: "option",
+              data: communication.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                  selected={option.label == commu[key - 1]}
+                // defaultValue={element.communication}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) =>
+              setCommunicationDatas((prev) => ({
+                ...prev,
+                [count]: e.target.value,
+              })),
+          });
+          getcomunication.push({
+            id: count + 1,
+            label: "communication",
+            xl: 9,
+            md: 9,
+            xs: 6,
+            select: {
+              status: "fillnolabel",
+              data: "",
+              defaultvalue: commu[key],
+            },
+            handle: (e) =>
+               setCommunicationDatas((prev) => ({
+                  ...prev,
+                  [count + 1]: e.target.value,
+                })),
+          });
+          count = count + 2;
+        }
+      }
+
+      let relationid = 1;
+      for (var key in rela) {
+        if (key % 3 == 0) {
+          getrelation.push({
+            id: relationid,
+            label: "Name Type",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "option",
+              data: relation.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                  selected={option.label == rela[key - 1]}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relationid]: e.target.value,
+              })),
+          });
+          getrelation.push({
+            id: relationid + 1,
+            label: "Name",
+            xl: 4,
+            md: 4,
+            xs: 6,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: rela[key - 2],
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relationid + 1]: e.target.value,
+              })),
+          });
+          getrelation.push({
+            id: relationid + 2,
+            label: "Note",
+            xl: 6,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: rela[key],
+            },
+            handle: (e) =>
+              setRelationDatas((prev) => ({
+                ...prev,
+                [relationid + 2]: e.target.value,
+              })),
+          });
+          relationid = relationid + 3;
+        }
+      }
 
       }
 
