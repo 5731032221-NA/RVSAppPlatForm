@@ -451,7 +451,7 @@ export const ProfileCompany = (props) => {
   const [relationDatas, setRelationDatas] = React.useState({});
   const [isRequired, setIsRequired] = React.useState(false);
 
- 
+
   const [list, setList] = React.useState([]);
   React.useEffect(() => {
     async function getconfig() {
@@ -482,165 +482,171 @@ export const ProfileCompany = (props) => {
   //   }),
   // });
 
-  
-  async function updateList(){
+
+  async function updateList() {
     let commu = JSON.parse(JSON.stringify(communicationDatas));
     let rela = JSON.parse(JSON.stringify(relationDatas));
     let getCommunicationsDatas = {};
-      let getcomunication = [];
-      let getrelation = [];
-      console.log("demostate");
-      if (props.editdata != null && Object.keys(commu).length === 0 && Object.keys(rela).length === 0) {
+    let getcomunication = [];
+    let getrelation = [];
+    console.log("demostate");
+    if (props.editdata != null && Object.keys(commu).length === 0 && Object.keys(rela).length === 0) {
 
-        console.log("props.editdata", props.editdata)
-        let getCommunications = await getCompanyProfileCommunication(
-          sessionStorage.getItem("auth"),
-          props.editdata[0].id
-        );
-        let getRelations = await getCompanyProfileRelation(
-          sessionStorage.getItem("auth"),
-          props.editdata[0].id
-        );
-        console.log("getCommunications.contents", getCommunications.contents)
-        let count = 1;
-        getCommunications.contents[0].forEach((element) => {
-
-          if (element.communication == "email") {
-            getCommunicationsDatas.email = element.value
-          } else if (element.communication == "mobile") {
-            getCommunicationsDatas.mobile = element.value
-          } else {
-            setCommunicationDatas(prev => ({
-              ...prev,
-              [count]: element.communication,
-              [count + 1]: element.value
-            }))
-            getcomunication.push({
-              id: count,
-              label: "Choose a communication",
-              xl: 3,
-              md: 3,
-              xs: 6,
-              select: {
-                status: "option",
-                data: optioncommunication.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.value}
-                    value={option.value}
-                    selected={option.value == element.communication}
-                  // defaultValue={element.communication}
-                  >
-                    {option.label}
-                  </option>
-                )),
-              },
-              handle: (e) => setCommunicationDatas(prev => ({
-                ...prev,
-                [count]: e.target.value
-              })),
-            
-            });
-            getcomunication.push({
-              id: count + 1,
-              label: "communication",
-              xl: 9,
-              md: 9,
-              xs: 6,
-              select: {
-                status: "fillnolabel",
-                data: "",
-                defaultvalue: element.value
-              },
-              handle: (e) => setCommunicationDatas(prev => ({
-                ...prev,
-                [count + 1]: e.target.value
-              })),
-            });
-            count = count + 2;
-          }
-        }
-        );
-        let relationid = 1;
-        console.log(getRelations.contents[0])
-
-        getRelations.contents[0].forEach((element) => {
-          setRelationDatas(prev => ({
+      console.log("props.editdata", props.editdata)
+      let getCommunications = await getCompanyProfileCommunication(
+        sessionStorage.getItem("auth"),
+        props.editdata[0].id
+      );
+      let getRelations = await getCompanyProfileRelation(
+        sessionStorage.getItem("auth"),
+        props.editdata[0].id
+      );
+      console.log("getCommunications.contents", getCommunications.contents)
+      let count = 1;
+      getCommunications.contents[0].forEach((element) => {
+        const commuid1 = count;
+        const commuid2 = count + 1;
+        if (element.communication == "email") {
+          getCommunicationsDatas.email = element.value
+        } else if (element.communication == "mobile") {
+          getCommunicationsDatas.mobile = element.value
+        } else {
+          setCommunicationDatas(prev => ({
             ...prev,
-            [relationid + 1]: element.relation,
-            [relationid]: element.value,
-            [relationid + 2]: element.note
+            [count]: element.communication,
+            [count + 1]: element.value
           }))
-          getrelation.push({
-            id: relationid + 1,
-            label: "Name Type",
-            xl: 2,
-            md: 2,
+          getcomunication.push({
+            id: commuid1,
+            label: "Choose a communication",
+            xl: 3,
+            md: 3,
             xs: 6,
             select: {
               status: "option",
-              data: optionrelation.map((option) => (
+              data: optioncommunication.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
                   value={option.value}
-                  selected={option.value == element.relation}
+                  selected={option.value == element.communication}
+                // defaultValue={element.communication}
                 >
                   {option.label}
                 </option>
               )),
             },
-            handle: (e) => setRelationDatas(prev => ({
+            handle: (e) => setCommunicationDatas(prev => ({
               ...prev,
-              [relationid + 1]: e.target.value
-            }))
+              [commuid1]: e.target.value
+            })),
+
           });
-          getrelation.push({
-            id: relationid ,
-            label: "Name",
-            xl: 4,
-            md: 4,
+          getcomunication.push({
+            id: commuid2,
+            label: "communication",
+            xl: 9,
+            md: 9,
             xs: 6,
             select: {
-              status: "fill",
+              status: "fillnolabel",
               data: "",
               defaultvalue: element.value
             },
-            handle: (e) => setRelationDatas(prev => ({
+            handle: (e) => setCommunicationDatas(prev => ({
               ...prev,
-              [relationid]: e.target.value
+              [commuid2]: e.target.value
             })),
-        
           });
-          getrelation.push({
-            id: relationid + 2,
-            label: "Note",
-            xl: 6,
-            md: 6,
-            xs: 12,
-            select: {
-              status: "fill",
-              data: "",
-              defaultvalue: element.note
-            },
-            handle: (e) => setRelationDatas(prev => ({
-              ...prev,
-              [relationid + 2]: e.target.value
-            }))
-          });
-          relationid = relationid + 3;
+          count = count + 2;
         }
-        );
-        console.log("getrelation", getrelation)
+      }
+      );
+      let relationid = 1;
+      console.log(getRelations.contents[0])
 
-      }else{
-        let count = 3
-      console.log("commu",commu)
-      console.log("rela",rela)
+      getRelations.contents[0].forEach((element) => {
+        const relaid1 = relationid;
+        const relaid2 = relationid + 1;
+        const relaid3 = relationid + 2;
+        setRelationDatas(prev => ({
+          ...prev,
+          [relationid + 1]: element.relation,
+          [relationid]: element.value,
+          [relationid + 2]: element.note
+        }))
+        getrelation.push({
+          id: relaid2,
+          label: "Name Type",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "option",
+            data: optionrelation.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+                selected={option.value == element.relation}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => setRelationDatas(prev => ({
+            ...prev,
+            [relaid2]: e.target.value
+          }))
+        });
+        getrelation.push({
+          id: relaid1,
+          label: "Name",
+          xl: 4,
+          md: 4,
+          xs: 6,
+          select: {
+            status: "fill",
+            data: "",
+            defaultvalue: element.value
+          },
+          handle: (e) => setRelationDatas(prev => ({
+            ...prev,
+            [relaid1]: e.target.value
+          })),
+
+        });
+        getrelation.push({
+          id: relaid3,
+          label: "Note",
+          xl: 6,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+            defaultvalue: element.note
+          },
+          handle: (e) => setRelationDatas(prev => ({
+            ...prev,
+            [relaid3]: e.target.value
+          }))
+        });
+        relationid = relationid + 3;
+      }
+      );
+      console.log("getrelation", getrelation)
+
+    } else {
+      let count = 3
+      console.log("commu", commu)
+      console.log("rela", rela)
       for (var key in commu) {
         if (key % 2 == 0) {
+          const commuid1 = count;
+          const commuid2 = count + 1;
           getcomunication.push({
-            id: count,
+            id: commuid1,
             label: "Choose a communication",
             xl: 3,
             md: 3,
@@ -662,11 +668,11 @@ export const ProfileCompany = (props) => {
             handle: (e) =>
               setCommunicationDatas((prev) => ({
                 ...prev,
-                [count]: e.target.value,
+                [commuid1]: e.target.value,
               })),
           });
           getcomunication.push({
-            id: count + 1,
+            id: commuid2,
             label: "communication",
             xl: 9,
             md: 9,
@@ -677,919 +683,928 @@ export const ProfileCompany = (props) => {
               defaultvalue: commu[key],
             },
             handle: (e) =>
-               setCommunicationDatas((prev) => ({
-                  ...prev,
-                  [count + 1]: e.target.value,
-                })),
+              setCommunicationDatas((prev) => ({
+                ...prev,
+                [commuid2]: e.target.value,
+              })),
           });
           count = count + 2;
         }
       }
 
+
       let relationid = 1;
-      for (var key in rela) {
-        if (key % 3 == 0) {
-          getrelation.push({
-            id: relationid,
-            label: "Name Type",
+      console.log(getRelations.contents[0])
+
+      getRelations.contents[0].forEach((element) => {
+        const relaid1 = relationid;
+        const relaid2 = relationid + 1;
+        const relaid3 = relationid + 2;
+        setRelationDatas(prev => ({
+          ...prev,
+          [relationid + 1]: element.relation,
+          [relationid]: element.value,
+          [relationid + 2]: element.note
+        }))
+        getrelation.push({
+          id: relaid2,
+          label: "Name Type",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "option",
+            data: optionrelation.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+                selected={option.value == element.relation}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) => setRelationDatas(prev => ({
+            ...prev,
+            [relaid2]: e.target.value
+          }))
+        });
+        getrelation.push({
+          id: relaid1,
+          label: "Name",
+          xl: 4,
+          md: 4,
+          xs: 6,
+          select: {
+            status: "fill",
+            data: "",
+            defaultvalue: element.value
+          },
+          handle: (e) => setRelationDatas(prev => ({
+            ...prev,
+            [relaid1]: e.target.value
+          })),
+
+        });
+        getrelation.push({
+          id: relaid3,
+          label: "Note",
+          xl: 6,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+            defaultvalue: element.note
+          },
+          handle: (e) => setRelationDatas(prev => ({
+            ...prev,
+            [relaid3]: e.target.value
+          }))
+        });
+        relationid = relationid + 3;
+      }
+      );
+
+    }
+
+    setList([
+      {
+        id: "1",
+        title: "Company Account",
+        expend: true,
+        content: [
+          {
+            id: 1,
+            label: "Company Name1",
+            xl: 5,
+            md: 5,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: props.editdata != null ? props.editdata[0].name : "",
+            },
+            handle: (e) => setnameOne(e.target.value),
+            dataType: "string",
+            dataCheck: nameOne,
+          },
+          {
+            id: 2,
+            label: "Company Name2",
+            xl: 5,
+            md: 5,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: props.editdata != null ? props.editdata[0].name2 : "",
+            },
+            handle: (e) => setnameTwo(e.target.value),
+            dataType: "string",
+            dataCheck: true,
+          },
+          {
+            id: 3,
+            label: "Company Type",
             xl: 2,
             md: 2,
-            xs: 6,
+            xs: 12,
             select: {
               status: "option",
-              data: optionrelation.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                  selected={option.label == rela[key - 1]}
-                >
-                  {option.label}
-                </option>
-              )),
+              data: [{ label: "Government" }, { label: "Association" }].map(
+                (option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                )
+              ),
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata[0].companytypecode
+                  : "Government",
             },
-            handle: (e) =>
-              setRelationDatas((prev) => ({
-                ...prev,
-                [relationid]: e.target.value,
-              })),
-          });
-          getrelation.push({
-            id: relationid + 1,
-            label: "Name",
-            xl: 4,
-            md: 4,
+            handle: (e) => setCompanyTypeCode(e.target.value)
+          },
+          {
+            id: 4,
+            label: "Abbreviation",
+            xl: 3,
+            md: 3,
             xs: 6,
             select: {
               status: "fill",
               data: "",
-              defaultvalue: rela[key - 2],
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].abbreviation : "",
             },
-            handle: (e) =>
-              setRelationDatas((prev) => ({
-                ...prev,
-                [relationid + 1]: e.target.value,
-              })),
-          });
-          getrelation.push({
-            id: relationid + 2,
-            label: "Note",
+            handle: (e) => setAbbreviation(e.target.value),
+            dataType: "string",
+            dataCheck: Abbreviation,
+          },
+          {
+            id: 5,
+            label: "Hotel Origin",
+            xl: 4,
+            md: 4,
+            xs: 12,
+            select: {
+              status: "option",
+              data: [{ label: "SPJ1" }, { label: "SPJ2" }].map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.label}
+                  value={option.label}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].property : "SPJ1",
+            },
+            handle: (e) => setProperty(e.target.value),
+          },
+          {
+            id: 6,
+            label: "Guarantee Method",
+            xl: 4,
+            md: 4,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata[0].guaranteemethodcode
+                  : "",
+            },
+            handle: (e) => setGuaranteeMethodCode(e.target.value),
+            dataType: "string",
+            dataCheck: GuaranteeMethodCode,
+          },
+          {
+            id: 7,
+            label: "Currency",
+            xl: 3,
+            md: 3,
+            xs: 12,
+            select: {
+              status: "option",
+              data: [{ label: "THB" }, { label: "USD" }].map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.label}
+                  value={option.label}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].currencycode : "THB",
+            },
+            handle: (e) => setCurrency(e.target.value),
+          },
+          {
+            id: 8,
+            label: "Credit Rating",
+            xl: 3,
+            md: 3,
+            xs: 12,
+            select: {
+              status: "option",
+              data: optioncreditrating.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.label}
+                  value={option.label}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata[0].creditrating
+                  : optioncreditrating[0].value,
+            },
+            handle: (e) => setCreditRating(e.target.value),
+          },
+          {
+            id: 9,
+            label: "IATA",
+            xl: 3,
+            md: 3,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: props.editdata != null ? props.editdata[0].iata : "",
+            },
+            handle: (e) => setiata(e.target.value),
+            dataType: "string",
+            dataCheck: iata,
+          },
+          {
+            id: 10,
+            label: "Status",
+            xl: 3,
+            md: 3,
+            xs: 12,
+            select: {
+              status: "status",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].statuscode : " ",
+            },
+            handle: (e) => setStatus(e.target.checked),
+
+          },
+        ],
+      },
+      {
+        id: "2",
+        title: "Address",
+        expend: true,
+        content: [
+          {
+            id: 1,
+            label: "Address",
+            xl: 12,
+            md: 12,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].address : "",
+            },
+            handle: (e) => setStreetAddress(e.target.value),
+            dataType: "string",
+            dataCheck: StreetAddress,
+          },
+          {
+            id: 5,
+            label: "Country",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata[0].countrycode
+                  : "",
+            },
+            dataCheck: Chooseacountry,
+            handle: (e) => setChooseacountry(e.target.value),
+          },
+          {
+            id: 6,
+            label: "City",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: props.editdata != null ? props.editdata[0].city : "",
+            },
+            handle: (e) => setCity(e.target.value),
+            dataType: "string",
+            dataCheck: City,
+          },
+          {
+            id: 7,
+            label: "State",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].stateprovince : "",
+            },
+            handle: (e) => setState(e.target.value),
+            dataType: "string",
+            dataCheck: State,
+          },
+          {
+            id: 8,
+            label: "Postal",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].postalcode : 0,
+            },
+            handle: (e) => setPostal(e.target.value),
+            dataType: "number",
+            dataCheck: Postal,
+          },
+        ],
+      },
+      {
+        id: "3",
+        title: "Billing Address",
+        expend: true,
+        content: [
+          {
+            id: 1,
+            label: "Address",
+            xl: 12,
+            md: 12,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].billingaddress : "",
+            },
+            handle: (e) => setBStreetAddress(e.target.value),
+            dataType: "string",
+            dataCheck: BStreetAddress,
+          },
+          {
+            id: 5,
+            label: "Billing Country",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata[0].billingcountrycode
+                  : "",
+            },
+            handle: (e) => setBChooseacountry(e.target.value),
+            dataCheck: BChooseacountry
+          },
+          {
+            id: 6,
+            label: "City",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].billingcity : "",
+            },
+            handle: (e) => setBCity(e.target.value),
+            dataType: "string",
+            dataCheck: BCity,
+          },
+          {
+            id: 7,
+            label: "State",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata[0].billingstateprovince
+                  : "",
+            },
+            handle: (e) => setBState(e.target.value),
+            dataType: "string",
+            dataCheck: BState,
+          },
+          {
+            id: 8,
+            label: "Postal",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].billingpostalcode : 0,
+            },
+            handle: (e) => setBPostal(e.target.value),
+            dataType: "number",
+            dataCheck: BPostal,
+          },
+          {
+            id: 9,
+            label: "TaxID",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue: props.editdata != null ? props.editdata[0].taxid : "",
+            },
+            handle: (e) => setTaxID(e.target.value),
+            dataType: "string",
+            dataCheck: TaxID,
+          },
+          {
+            id: 10,
+            label: "TaxID2",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].taxid2 : "",
+            },
+            handle: (e) => setTaxID2(e.target.value),
+            dataType: "string",
+            dataCheck: true,
+          },
+        ],
+      },
+      {
+        id: "4",
+        title: "Communication",
+        expend: true,
+        content: [
+          ...getcomunication,
+          {
+            id: 99,
+            label: "Phone Number",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "AddComunication",
+              data: "+ More Communication",
+            },
+          },
+        ],
+      },
+      {
+        id: "5",
+        title: "Relationship (Internal)",
+        expend: true,
+        content: [
+          ...getrelation,
+          {
+            id: 99,
+            label: "Relation",
+            xl: 2,
+            md: 2,
+            xs: 6,
+            select: {
+              status: "AddRelation",
+              data: "+ More Relation",
+            },
+            // handle: (e) => handleAddComunication(e),
+          },
+        ],
+      },
+      {
+        id: "6",
+        title: "A/R Number",
+        expend: true,
+        content: [
+          // {
+          //   id: 1,
+          //   label: "IATA",
+          //   xl: 3,
+          //   md: 3,
+          //   xs: 12,
+          //   select: {
+          //     status: "fill",
+          //     data: "",
+          //   },
+          //   handle: (e) => handleData(e),
+          // },
+          {
+            id: 2,
+            label: "Credit Card Number",
+            xl: 3,
+            md: 3,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].creditcardid : "",
+            },
+            handle: (e) => setCreditCardNumber(e.target.value),
+            dataType: "number",
+            dataCheck: true,
+          },
+          {
+            id: 3,
+            label: "Outstanding Amount",
+            xl: 3,
+            md: 3,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].outstandingamout : "",
+            },
+            handle: (e) => setOutstandingAmount(e.target.value),
+            dataType: "number",
+            dataCheck: true,
+          },
+          {
+            id: 4,
+            label: "Floating Deposition Amount",
+            xl: 3,
+            md: 3,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata[0].floatingdepositamount
+                  : "",
+            },
+            handle: (e) => setFloatingDepositionAmount(e.target.value),
+            dataType: "number",
+            dataCheck: true,
+          },
+          {
+            id: 5,
+            label: "AR Number",
+            xl: 3,
+            md: 3,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].ar_number : "",
+            },
+            handle: (e) => setARNumber(e.target.value),
+            dataType: "number",
+            dataCheck: true,
+          },
+        ],
+      },
+      // {
+      //   id: "6",
+      //   title: "More Information",
+      //   expend: true,
+      //   content: [
+      //     {
+      //       id: 1,
+      //       label: "Tax ID",
+      //       xl: 3,
+      //       md: 6,
+      //       xs: 12,
+      //       select: {
+      //         status: "fill",
+      //         data: "",
+      //       },
+      //       handle: (e) => handleData(e),
+      //     },
+      //     {
+      //       id: 2,
+      //       label: "Billing Instruction",
+      //       xl: 3,
+      //       md: 6,
+      //       xs: 12,
+      //       select: {
+      //         status: "option",
+      //         data: optiondata.map((option) => (
+      //           <option
+      //             style={headerTableStyle}
+      //             key={option.value}
+      //             value={option.value}
+      //           >
+      //             {option.label}
+      //           </option>
+      //         )),
+      //       },
+      //       handle: (e) => handleData(e),
+      //     },
+      //   ],
+      // },
+
+      {
+        id: "7",
+        title: "Rate/Contract Information",
+        expend: false,
+        content: [
+          {
+            id: 1,
+            label: "Negotiated Rates Only",
+            xl: 6,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "check",
+              data: "",
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata[0].negotiatedratesonly
+                  : "",
+            },
+            handle: (e) => setnegotiatedratesonly(e.target.checked),
+          },
+          {
+            id: 2,
+            label: "Rate Contract",
+            xl: 2,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "fill",
+              data: "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].ratecontractcode : "",
+            },
+            handle: (e) => setratecontractcode(e.target.value),
+            dataType: "string",
+            dataCheck: true,
+          },
+        ],
+      },
+      {
+        id: "8",
+        title: "Sales Information",
+        expend: false,
+        content: [
+          {
+            id: 1,
+            label: "Sales User Name",
             xl: 6,
             md: 6,
             xs: 12,
             select: {
               status: "fill",
               data: "",
-              defaultvalue: rela[key],
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].salesusername : "",
             },
-            handle: (e) =>
-              setRelationDatas((prev) => ({
-                ...prev,
-                [relationid + 2]: e.target.value,
-              })),
-          });
-          relationid = relationid + 3;
-        }
-      }
-
-      }
-
-      setList([
-        {
-          id: "1",
-          title: "Company Account",
-          expend: true,
-          content: [
-            {
-              id: 1,
-              label: "Company Name1",
-              xl: 5,
-              md: 5,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue: props.editdata != null ? props.editdata[0].name : "",
-              },
-              handle: (e) => setnameOne(e.target.value),
-              dataType: "string",
-              dataCheck: nameOne,
+            handle: (e) => setSalesUserName(e.target.value),
+            dataType: "string",
+            dataCheck: true,
+          },
+          {
+            id: 2,
+            label: "Industry",
+            xl: 2,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "option",
+              data: [
+                { label: "Insurrance" },
+                { label: "Government" },
+                { label: "Educcation" },
+              ].map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.label}
+                  value={option.label}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata[0].industrycode
+                  : "Insurrance",
             },
-            {
-              id: 2,
-              label: "Company Name2",
-              xl: 5,
-              md: 5,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue: props.editdata != null ? props.editdata[0].name2 : "",
-              },
-              handle: (e) => setnameTwo(e.target.value),
-              dataType: "string",
-              dataCheck: nameTwo,
+            handle: (e) => setIndustry(e.target.value),
+          },
+          // {
+          //   id: 3,
+          //   label: "IATA",
+          //   xl: 3,
+          //   md: 6,
+          //   xs: 12,
+          //   select: {
+          //     status: "fill",
+          //     data: ""
+          //   },
+          //   handle: (e) => handleData(e),
+          // },
+          {
+            id: 4,
+            label: "Market Segment",
+            xl: 4,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "option",
+              data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.label}
+                  value={option.label}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata[0].marketsegmentcode
+                  : "Code1",
             },
-            {
-              id: 3,
-              label: "Company Type",
-              xl: 2,
-              md: 2,
-              xs: 12,
-              select: {
-                status: "option",
-                data: [{ label: "Government" }, { label: "Association" }].map(
-                  (option) => (
-                    <option
-                      style={headerTableStyle}
-                      key={option.label}
-                      value={option.label}
-                    >
-                      {option.label}
-                    </option>
-                  )
-                ),
-                defaultvalue:
-                  props.editdata != null
-                    ? props.editdata[0].companytypecode
-                    : "Government",
-              },
-              handle: (e) => setCompanyTypeCode(e.target.value)
+            handle: (e) => setMarketSegment(e.target.value),
+          },
+          {
+            id: 5,
+            label: "Source Of Business",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "option",
+              data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.label}
+                  value={option.label}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null
+                  ? props.editdata[0].sourceofbusinesscode
+                  : "Code1",
             },
-            {
-              id: 4,
-              label: "Abbreviation",
-              xl: 3,
-              md: 3,
-              xs: 6,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].abbreviation : "",
-              },
-              handle: (e) => setAbbreviation(e.target.value),
-              dataType: "string",
-              dataCheck: Abbreviation,
+            handle: (e) => setSourceOfBusiness(e.target.value),
+          },
+          {
+            id: 6,
+            label: "Track Code",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "option",
+              data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.label}
+                  value={option.label}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].trackcode : "Code1",
             },
-            {
-              id: 5,
-              label: "Hotel Origin",
-              xl: 4,
-              md: 4,
-              xs: 12,
-              select: {
-                status: "option",
-                data: [{ label: "SPJ1" }, { label: "SPJ2" }].map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.label}
-                    value={option.label}
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].property : "SPJ1",
-              },
-              handle: (e) => setProperty(e.target.value),
+            handle: (e) => setTrackCode(e.target.value),
+          },
+          {
+            id: 7,
+            label: "Reason For Stay",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "option",
+              data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.label}
+                  value={option.label}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].reasonforstaycode : "Code1",
             },
-            {
-              id: 6,
-              label: "Guarantee Method",
-              xl: 4,
-              md: 4,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null
-                    ? props.editdata[0].guaranteemethodcode
-                    : "",
-              },
-              handle: (e) => setGuaranteeMethodCode(e.target.value),
-              dataType: "string",
-              dataCheck: GuaranteeMethodCode,
+            handle: (e) => setReasonForStay(e.target.value),
+          },
+          {
+            id: 8,
+            label: "Geographic",
+            xl: 3,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "option",
+              data: [
+                { label: "SEA" },
+                { label: "EUROPE" },
+                { label: "CHINA" },
+                { label: "AFRICA" },
+              ].map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.label}
+                  value={option.label}
+                >
+                  {option.label}
+                </option>
+              )),
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].geographiccode : "SEA",
             },
-            {
-              id: 7,
-              label: "Currency",
-              xl: 3,
-              md: 3,
-              xs: 12,
-              select: {
-                status: "option",
-                data: [{ label: "THB" }, { label: "USD" }].map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.label}
-                    value={option.label}
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].currencycode : "THB",
-              },
-              handle: (e) => setCurrency(e.target.value),
-            },
-            {
-              id: 8,
-              label: "Credit Rating",
-              xl: 3,
-              md: 3,
-              xs: 12,
-              select: {
-                status: "option",
-                data: optioncreditrating.map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.label}
-                    value={option.label}
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null
-                    ? props.editdata[0].creditrating
-                    : optioncreditrating[0].value,
-              },
-              handle: (e) => setCreditRating(e.target.value),
-            },
-            {
-              id: 9,
-              label: "IATA",
-              xl: 3,
-              md: 3,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue: props.editdata != null ? props.editdata[0].iata : "",
-              },
-              handle: (e) => setiata(e.target.value),
-              dataType: "string",
-              dataCheck: iata,
-            },
-            {
-              id: 10,
-              label: "Status",
-              xl: 3,
-              md: 3,
-              xs: 12,
-              select: {
-                status: "status",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].statuscode : " ",
-              },
-              handle: (e) => setStatus(e.target.checked),
-
-            },
-          ],
-        },
-        {
-          id: "2",
-          title: "Address",
-          expend: true,
-          content: [
-            {
-              id: 1,
-              label: "Address",
-              xl: 12,
-              md: 12,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].address : "",
-              },
-              handle: (e) => setStreetAddress(e.target.value),
-              dataType: "string",
-              dataCheck: StreetAddress,
-            },
-            {
-              id: 5,
-              label: "Country",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null
-                    ? props.editdata[0].countrycode
-                    : "",
-              },
-              dataCheck: Chooseacountry,
-              handle: (e) => setChooseacountry(e.target.value),
-            },
-            {
-              id: 6,
-              label: "City",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue: props.editdata != null ? props.editdata[0].city : "",
-              },
-              handle: (e) => setCity(e.target.value),
-              dataType: "string",
-              dataCheck: City,
-            },
-            {
-              id: 7,
-              label: "State",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].stateprovince : "",
-              },
-              handle: (e) => setState(e.target.value),
-              dataType: "string",
-              dataCheck: State,
-            },
-            {
-              id: 8,
-              label: "Postal",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].postalcode : 0,
-              },
-              handle: (e) => setPostal(e.target.value),
-              dataType: "number",
-              dataCheck: Postal,
-            },
-          ],
-        },
-        {
-          id: "3",
-          title: "Billing Address",
-          expend: true,
-          content: [
-            {
-              id: 1,
-              label: "Address",
-              xl: 12,
-              md: 12,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].billingaddress : "",
-              },
-              handle: (e) => setBStreetAddress(e.target.value),
-              dataType: "string",
-              dataCheck: BStreetAddress,
-            },
-            {
-              id: 5,
-              label: "Billing Country",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null
-                    ? props.editdata[0].billingcountrycode
-                    : "",
-              },
-              handle: (e) => setBChooseacountry(e.target.value),
-              dataCheck: BChooseacountry
-            },
-            {
-              id: 6,
-              label: "City",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].billingcity : "",
-              },
-              handle: (e) => setBCity(e.target.value),
-              dataType: "string",
-              dataCheck: BCity,
-            },
-            {
-              id: 7,
-              label: "State",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null
-                    ? props.editdata[0].billingstateprovince
-                    : "",
-              },
-              handle: (e) => setBState(e.target.value),
-              dataType: "string",
-              dataCheck: BState,
-            },
-            {
-              id: 8,
-              label: "Postal",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].billingpostalcode : 0,
-              },
-              handle: (e) => setBPostal(e.target.value),
-              dataType: "number",
-              dataCheck: BPostal,
-            },
-            {
-              id: 9,
-              label: "TaxID",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue: props.editdata != null ? props.editdata[0].taxid : "",
-              },
-              handle: (e) => setTaxID(e.target.value),
-              dataType: "string",
-              dataCheck: TaxID,
-            },
-            {
-              id: 10,
-              label: "TaxID2",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].taxid2 : "",
-              },
-              handle: (e) => setTaxID2(e.target.value),
-              dataType: "string",
-              dataCheck: true,
-            },
-          ],
-        },
-        {
-          id: "4",
-          title: "Communication",
-          expend: true,
-          content: [
-            ...getcomunication,
-            {
-              id: 99,
-              label: "Phone Number",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "AddComunication",
-                data: "+ More Communication",
-              },
-            },
-          ],
-        },
-        {
-          id: "5",
-          title: "Relationship (Internal)",
-          expend: true,
-          content: [
-            ...getrelation,
-            {
-              id: 99,
-              label: "Relation",
-              xl: 2,
-              md: 2,
-              xs: 6,
-              select: {
-                status: "AddRelation",
-                data: "+ More Relation",
-              },
-              // handle: (e) => handleAddComunication(e),
-            },
-          ],
-        },
-        {
-          id: "6",
-          title: "A/R Number",
-          expend: true,
-          content: [
-            // {
-            //   id: 1,
-            //   label: "IATA",
-            //   xl: 3,
-            //   md: 3,
-            //   xs: 12,
-            //   select: {
-            //     status: "fill",
-            //     data: "",
-            //   },
-            //   handle: (e) => handleData(e),
-            // },
-            {
-              id: 2,
-              label: "Credit Card Number",
-              xl: 3,
-              md: 3,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].creditcardid : "",
-              },
-              handle: (e) => setCreditCardNumber(e.target.value),
-              dataType: "number",
-              dataCheck: true,
-            },
-            {
-              id: 3,
-              label: "Outstanding Amount",
-              xl: 3,
-              md: 3,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].outstandingamout : "",
-              },
-              handle: (e) => setOutstandingAmount(e.target.value),
-              dataType: "number",
-              dataCheck: true,
-            },
-            {
-              id: 4,
-              label: "Floating Deposition Amount",
-              xl: 3,
-              md: 3,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null
-                    ? props.editdata[0].floatingdepositamount
-                    : "",
-              },
-              handle: (e) => setFloatingDepositionAmount(e.target.value),
-              dataType: "number",
-              dataCheck: true,
-            },
-            {
-              id: 5,
-              label: "AR Number",
-              xl: 3,
-              md: 3,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].ar_number : "",
-              },
-              handle: (e) => setARNumber(e.target.value),
-              dataType: "number",
-              dataCheck: true,
-            },
-          ],
-        },
-        // {
-        //   id: "6",
-        //   title: "More Information",
-        //   expend: true,
-        //   content: [
-        //     {
-        //       id: 1,
-        //       label: "Tax ID",
-        //       xl: 3,
-        //       md: 6,
-        //       xs: 12,
-        //       select: {
-        //         status: "fill",
-        //         data: "",
-        //       },
-        //       handle: (e) => handleData(e),
-        //     },
-        //     {
-        //       id: 2,
-        //       label: "Billing Instruction",
-        //       xl: 3,
-        //       md: 6,
-        //       xs: 12,
-        //       select: {
-        //         status: "option",
-        //         data: optiondata.map((option) => (
-        //           <option
-        //             style={headerTableStyle}
-        //             key={option.value}
-        //             value={option.value}
-        //           >
-        //             {option.label}
-        //           </option>
-        //         )),
-        //       },
-        //       handle: (e) => handleData(e),
-        //     },
-        //   ],
-        // },
-
-        {
-          id: "7",
-          title: "Rate/Contract Information",
-          expend: false,
-          content: [
-            {
-              id: 1,
-              label: "Negotiated Rates Only",
-              xl: 6,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "check",
-                data: "",
-                defaultvalue:
-                  props.editdata != null
-                    ? props.editdata[0].negotiatedratesonly
-                    : "",
-              },
-              handle: (e) => setnegotiatedratesonly(e.target.checked),
-            },
-            {
-              id: 2,
-              label: "Rate Contract",
-              xl: 2,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].ratecontractcode : "",
-              },
-              handle: (e) => setratecontractcode(e.target.value),
-              dataType: "string",
-              dataCheck: true,
-            },
-          ],
-        },
-        {
-          id: "8",
-          title: "Sales Information",
-          expend: false,
-          content: [
-            {
-              id: 1,
-              label: "Sales User Name",
-              xl: 6,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "fill",
-                data: "",
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].salesusername : "",
-              },
-              handle: (e) => setSalesUserName(e.target.value),
-              dataType: "string",
-              dataCheck: true,
-            },
-            {
-              id: 2,
-              label: "Industry",
-              xl: 2,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "option",
-                data: [
-                  { label: "Insurrance" },
-                  { label: "Government" },
-                  { label: "Educcation" },
-                ].map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.label}
-                    value={option.label}
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null
-                    ? props.editdata[0].industrycode
-                    : "Insurrance",
-              },
-              handle: (e) => setIndustry(e.target.value),
-            },
-            // {
-            //   id: 3,
-            //   label: "IATA",
-            //   xl: 3,
-            //   md: 6,
-            //   xs: 12,
-            //   select: {
-            //     status: "fill",
-            //     data: ""
-            //   },
-            //   handle: (e) => handleData(e),
-            // },
-            {
-              id: 4,
-              label: "Market Segment",
-              xl: 4,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "option",
-                data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.label}
-                    value={option.label}
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null
-                    ? props.editdata[0].marketsegmentcode
-                    : "Code1",
-              },
-              handle: (e) => setMarketSegment(e.target.value),
-            },
-            {
-              id: 5,
-              label: "Source Of Business",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "option",
-                data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.label}
-                    value={option.label}
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null
-                    ? props.editdata[0].sourceofbusinesscode
-                    : "Code1",
-              },
-              handle: (e) => setSourceOfBusiness(e.target.value),
-            },
-            {
-              id: 6,
-              label: "Track Code",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "option",
-                data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.label}
-                    value={option.label}
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].trackcode : "Code1",
-              },
-              handle: (e) => setTrackCode(e.target.value),
-            },
-            {
-              id: 7,
-              label: "Reason For Stay",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "option",
-                data: [{ label: "Code1" }, { label: "Code2" }].map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.label}
-                    value={option.label}
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].reasonforstaycode : "Code1",
-              },
-              handle: (e) => setReasonForStay(e.target.value),
-            },
-            {
-              id: 8,
-              label: "Geographic",
-              xl: 3,
-              md: 6,
-              xs: 12,
-              select: {
-                status: "option",
-                data: [
-                  { label: "SEA" },
-                  { label: "EUROPE" },
-                  { label: "CHINA" },
-                  { label: "AFRICA" },
-                ].map((option) => (
-                  <option
-                    style={headerTableStyle}
-                    key={option.label}
-                    value={option.label}
-                  >
-                    {option.label}
-                  </option>
-                )),
-                defaultvalue:
-                  props.editdata != null ? props.editdata[0].geographiccode : "SEA",
-              },
-              handle: (e) => setGeographic(e.target.value),
-            },
-            // ,
-            // {
-            //   id: "1",
-            //   title: "Commission",
-            //   expend: true,
-            //   content: [
-            //     {
-            //       id: 1,
-            //       label: "Commission Flag",
-            //       xl: 3,
-            //       md: 3,
-            //       xs: 12,
-            //       select: {
-            //         status: "option",
-            //         data: [{ label: "Pay" }, { label: "Not Pay" }].map((option) => (
-            //           <option
-            //             style={headerTableStyle}
-            //             key={option.label}
-            //             value={option.label}
-            //           >
-            //             {option.label}
-            //           </option>
-            //         )),
-            //       }
-            //     },
-            //     {
-            //       id: 2,
-            //       label: "Commission Type",
-            //       xl: 3,
-            //       md: 3,
-            //       xs: 12,
-            //       select: {
-            //         status: "option",
-            //         data: [{ label: "Percent" }, { label: "Amount" }].map((option) => (
-            //           <option
-            //             style={headerTableStyle}
-            //             key={option.label}
-            //             value={option.label}
-            //           >
-            //             {option.label}
-            //           </option>
-            //         )),
-            //       },
-            //     },
-            //   ]
-            // }
-          ],
-        },
-      ]);
+            handle: (e) => setGeographic(e.target.value),
+          },
+          // ,
+          // {
+          //   id: "1",
+          //   title: "Commission",
+          //   expend: true,
+          //   content: [
+          //     {
+          //       id: 1,
+          //       label: "Commission Flag",
+          //       xl: 3,
+          //       md: 3,
+          //       xs: 12,
+          //       select: {
+          //         status: "option",
+          //         data: [{ label: "Pay" }, { label: "Not Pay" }].map((option) => (
+          //           <option
+          //             style={headerTableStyle}
+          //             key={option.label}
+          //             value={option.label}
+          //           >
+          //             {option.label}
+          //           </option>
+          //         )),
+          //       }
+          //     },
+          //     {
+          //       id: 2,
+          //       label: "Commission Type",
+          //       xl: 3,
+          //       md: 3,
+          //       xs: 12,
+          //       select: {
+          //         status: "option",
+          //         data: [{ label: "Percent" }, { label: "Amount" }].map((option) => (
+          //           <option
+          //             style={headerTableStyle}
+          //             key={option.label}
+          //             value={option.label}
+          //           >
+          //             {option.label}
+          //           </option>
+          //         )),
+          //       },
+          //     },
+          //   ]
+          // }
+        ],
+      },
+    ]);
     // }
     // getconfig();
   };
@@ -1619,260 +1634,197 @@ export const ProfileCompany = (props) => {
 
 
   const handleAddDatatoDatabase = async (e) => {
-   
+
     // props.setAction("none");
     // const checkvali = await checkvalidate();
     // if(checkvali){
     //   setIsRequired(true);
     // } else {
     //   setIsRequired(false);
-      let index = list.findIndex((x) => x.title == "Communication");
-      let communications = list[index];
-      console.log("communications:",communications);
-      // let index = list.findIndex((x) => x.title == "Communication");
-      let relations = list[index];
-      console.log("relations:",relations);
-      let req = {
-        recordtype: "T",
-        nameOne: nameOne,
-        nameTwo: nameTwo,
-        CompanyTypeCode: CompanyTypeCode,
-        Abbreviation: Abbreviation,
-        GuaranteeMethodCode: GuaranteeMethodCode,
-        Property: Property,
-        Currency: Currency,
-        CreditRating: CreditRating,
-        iata: iata,
-        Status: Status,
-        StreetAddress: StreetAddress,
-        Chooseacountry: Chooseacountry,
-        City: City,
-        State: State,
-        Postal: Postal,
-        BStreetAddress: BStreetAddress,
-        BChooseacountry: BChooseacountry,
-        BCity: BCity,
-        BState: BState,
-        BPostal: BPostal,
-        TaxID: TaxID,
-        TaxID2: TaxID2,
-        Communication: Communication,
-        Relationship: Relationship,
-        CreditCardNumber: CreditCardNumber,
-        OutstandingAmount: OutstandingAmount,
-        FloatingDepositionAmount: FloatingDepositionAmount,
-        ARNumber: ARNumber,
-        SalesUserName: SalesUserName,
-        Industry: Industry,
-        MarketSegment: MarketSegment,
-        SourceOfBusiness: SourceOfBusiness,
-        TrackCode: TrackCode,
-        ReasonForStay: ReasonForStay,
-        Geographic: Geographic,
-        negotiatedratesonly: negotiatedratesonly,
-        ratecontractcode: ratecontractcode,
-        communications: communicationDatas,
-        relations: relationDatas,
-      };
+    let index = list.findIndex((x) => x.title == "Communication");
+    let communications = list[index];
+    console.log("communications:", communications);
+    // let index = list.findIndex((x) => x.title == "Communication");
+    let relations = list[index];
+    console.log("relations:", relations);
+    let req = {
+      recordtype: "T",
+      nameOne: nameOne,
+      nameTwo: nameTwo,
+      CompanyTypeCode: CompanyTypeCode,
+      Abbreviation: Abbreviation,
+      GuaranteeMethodCode: GuaranteeMethodCode,
+      Property: Property,
+      Currency: Currency,
+      CreditRating: CreditRating,
+      iata: iata,
+      Status: Status,
+      StreetAddress: StreetAddress,
+      Chooseacountry: Chooseacountry,
+      City: City,
+      State: State,
+      Postal: Postal,
+      BStreetAddress: BStreetAddress,
+      BChooseacountry: BChooseacountry,
+      BCity: BCity,
+      BState: BState,
+      BPostal: BPostal,
+      TaxID: TaxID,
+      TaxID2: TaxID2,
+      Communication: Communication,
+      Relationship: Relationship,
+      CreditCardNumber: CreditCardNumber,
+      OutstandingAmount: OutstandingAmount,
+      FloatingDepositionAmount: FloatingDepositionAmount,
+      ARNumber: ARNumber,
+      SalesUserName: SalesUserName,
+      Industry: Industry,
+      MarketSegment: MarketSegment,
+      SourceOfBusiness: SourceOfBusiness,
+      TrackCode: TrackCode,
+      ReasonForStay: ReasonForStay,
+      Geographic: Geographic,
+      negotiatedratesonly: negotiatedratesonly,
+      ratecontractcode: ratecontractcode,
+      communications: communicationDatas,
+      relations: relationDatas,
+    };
 
-      console.log("datafrom post", req);
-      const resp = await postCompanyProfile(
-        sessionStorage.getItem("auth"),
-        req
-      );
+    console.log("datafrom post", req);
+    const resp = await postCompanyProfile(
+      sessionStorage.getItem("auth"),
+      req
+    );
 
-      if (resp.status == "2000") {
-        props.setAction("success");
-      } else {
-        props.setAction("dupic");
-        setErrorParameter(resp.msg);
-        setErrorMessage(true);
-      }
+    if (resp.status == "2000") {
+      props.setAction("success");
+    } else {
+      props.setAction("dupic");
+      setErrorParameter(resp.msg);
+      setErrorMessage(true);
+    }
 
-      // console.log("datafrom post", data);
+    // console.log("datafrom post", data);
     // }
   };
 
 
   const handleAddDataEdittoDatabase = async (e) => {
-   
+
     props.setAction("none");
 
 
-      let req = {
-        recordtype: "T",
-        nameOne: nameOne,
-        nameTwo: nameTwo,
-        CompanyTypeCode: CompanyTypeCode,
-        Abbreviation: Abbreviation,
-        GuaranteeMethodCode: GuaranteeMethodCode,
-        Property: Property,
-        Currency: Currency,
-        CreditRating: CreditRating,
-        iata: iata,
-        Status: Status,
-        StreetAddress: StreetAddress,
-        Chooseacountry: Chooseacountry,
-        City: City,
-        State: State,
-        Postal: Postal,
-        BStreetAddress: BStreetAddress,
-        BChooseacountry: BChooseacountry,
-        BCity: BCity,
-        BState: BState,
-        BPostal: BPostal,
-        TaxID: TaxID,
-        TaxID2: TaxID2,
-        Communication: Communication,
-        Relationship: Relationship,
-        CreditCardNumber: CreditCardNumber,
-        OutstandingAmount: OutstandingAmount,
-        FloatingDepositionAmount: FloatingDepositionAmount,
-        ARNumber: ARNumber,
-        SalesUserName: SalesUserName,
-        Industry: Industry,
-        MarketSegment: MarketSegment,
-        SourceOfBusiness: SourceOfBusiness,
-        TrackCode: TrackCode,
-        ReasonForStay: ReasonForStay,
-        Geographic: Geographic,
-        negotiatedratesonly: negotiatedratesonly,
-        ratecontractcode: ratecontractcode,
-        communications: communicationDatas,
-        relations: relationDatas,
-      };
-      console.log("datafrom update", req);
-   
-      const resp = await updateCompanyProfile(
-        sessionStorage.getItem("auth"),
-        props.editdata[0].id,
-        req
-      );
+    let req = {
+      recordtype: "T",
+      nameOne: nameOne,
+      nameTwo: nameTwo,
+      CompanyTypeCode: CompanyTypeCode,
+      Abbreviation: Abbreviation,
+      GuaranteeMethodCode: GuaranteeMethodCode,
+      Property: Property,
+      Currency: Currency,
+      CreditRating: CreditRating,
+      iata: iata,
+      Status: Status,
+      StreetAddress: StreetAddress,
+      Chooseacountry: Chooseacountry,
+      City: City,
+      State: State,
+      Postal: Postal,
+      BStreetAddress: BStreetAddress,
+      BChooseacountry: BChooseacountry,
+      BCity: BCity,
+      BState: BState,
+      BPostal: BPostal,
+      TaxID: TaxID,
+      TaxID2: TaxID2,
+      Communication: Communication,
+      Relationship: Relationship,
+      CreditCardNumber: CreditCardNumber,
+      OutstandingAmount: OutstandingAmount,
+      FloatingDepositionAmount: FloatingDepositionAmount,
+      ARNumber: ARNumber,
+      SalesUserName: SalesUserName,
+      Industry: Industry,
+      MarketSegment: MarketSegment,
+      SourceOfBusiness: SourceOfBusiness,
+      TrackCode: TrackCode,
+      ReasonForStay: ReasonForStay,
+      Geographic: Geographic,
+      negotiatedratesonly: negotiatedratesonly,
+      ratecontractcode: ratecontractcode,
+      communications: communicationDatas,
+      relations: relationDatas,
+    };
+    console.log("datafrom update", req);
 
-      if (resp.status == "2000") {
-        props.setAction("success");
-      } else {
-        props.setAction("dupic");
-        setErrorParameter(resp.msg);
-        setErrorMessage(true);
-      }
+    const resp = await updateCompanyProfile(
+      sessionStorage.getItem("auth"),
+      props.editdata[0].id,
+      req
+    );
 
-  
+    if (resp.status == "2000") {
+      props.setAction("success");
+    } else {
+      props.setAction("dupic");
+      setErrorParameter(resp.msg);
+      setErrorMessage(true);
+    }
+
+
   };
 
   //data from button for  trigger (add or delete)
   React.useEffect(async () => {
- 
-    if (props.action == "add") {
-      console.log(nameOne,
-        Abbreviation,
-        GuaranteeMethodCode,
-        iata,
-        StreetAddress,
-        City,
-        State,
-        Postal,
-        BStreetAddress,
-        BCity,
-        BState,
-        BPostal,
-        TaxID,
-        CreditCardNumber,
-        OutstandingAmount,
-        OutstandingAmount,
-        FloatingDepositionAmount,
-        ARNumber,
-        Industry,
-        MarketSegment,
-        SourceOfBusiness,
-        TrackCode,
-        ReasonForStay,
-        Geographic)
-        console.log(nameOne === null ,
-          Abbreviation === null ,
-          GuaranteeMethodCode === null ,
-          iata === null ,
-          StreetAddress === null ,
-          City === null ,
-          State === null ,
-          Postal === null ,
-          BStreetAddress === null ,
-          BCity === null ,
-          BState === null ,
-          BPostal === null ,
-          TaxID === null ,
-          Industry === null ,
-          MarketSegment === null ,
-          SourceOfBusiness === null ,
-          TrackCode === null ,
-          ReasonForStay === null ,
-          Geographic  === null ,
-          nameOne.trim() === "" ,
-          Abbreviation.trim() === "" ,
-          GuaranteeMethodCode.trim() === "" ,
-          iata.trim() === "" ,
-          StreetAddress.trim() === "" ,
-          City.trim() === "" ,
-          State.trim() === "" ,
-          Postal === 0 ,
-          BStreetAddress.trim() === "" ,
-          BCity.trim() === "" ,
-          BState.trim() === "" ,
-          BPostal === 0 ,
-          TaxID.trim() === "" ,
-          Industry.trim() === "" ,
-          MarketSegment.trim() === "" ,
-          SourceOfBusiness.trim() === "" ,
-          TrackCode.trim() === "" ,
-          ReasonForStay.trim() === "" ,
-          Geographic.trim() === "")
 
+    if (props.action == "add") {
       let _IsRequired = nameOne === null ||
-      Abbreviation === null ||
-      GuaranteeMethodCode === null ||
-      iata === null ||
-      StreetAddress === null ||
-      City === null ||
-      State === null ||
-      Postal === null ||
-      BStreetAddress === null ||
-      BCity === null ||
-      BState === null ||
-      BPostal === null ||
-      TaxID === null ||
-      Industry === null ||
-      MarketSegment === null ||
-      SourceOfBusiness === null ||
-      TrackCode === null ||
-      ReasonForStay === null ||
-      Geographic  === null ||
-      nameOne.trim() === "" ||
-      Abbreviation.trim() === "" ||
-      GuaranteeMethodCode.trim() === "" ||
-      iata.trim() === "" ||
-      StreetAddress.trim() === "" ||
-      City.trim() === "" ||
-      State.trim() === "" ||
-      Postal === 0 ||
-      BStreetAddress.trim() === "" ||
-      BCity.trim() === "" ||
-      BState.trim() === "" ||
-      BPostal === 0 ||
-      TaxID.trim() === "" ||
-      Industry.trim() === "" ||
-      MarketSegment.trim() === "" ||
-      SourceOfBusiness.trim() === "" ||
-      TrackCode.trim() === "" ||
-      ReasonForStay.trim() === "" ||
-      Geographic.trim() === "";
+        Abbreviation === null ||
+        GuaranteeMethodCode === null ||
+        iata === null ||
+        StreetAddress === null ||
+        City === null ||
+        State === null ||
+        Postal === null ||
+        BStreetAddress === null ||
+        BCity === null ||
+        BState === null ||
+        BPostal === null ||
+        TaxID === null ||
+        Industry === null ||
+        MarketSegment === null ||
+        SourceOfBusiness === null ||
+        TrackCode === null ||
+        ReasonForStay === null ||
+        Geographic === null ||
+        nameOne.trim() === "" ||
+        Abbreviation.trim() === "" ||
+        GuaranteeMethodCode.trim() === "" ||
+        iata.trim() === "" ||
+        StreetAddress.trim() === "" ||
+        City.trim() === "" ||
+        State.trim() === "" ||
+        Postal === 0 ||
+        BStreetAddress.trim() === "" ||
+        BCity.trim() === "" ||
+        BState.trim() === "" ||
+        BPostal === 0 ||
+        TaxID.trim() === "" ||
+        Industry.trim() === "" ||
+        MarketSegment.trim() === "" ||
+        SourceOfBusiness.trim() === "" ||
+        TrackCode.trim() === "" ||
+        ReasonForStay.trim() === "" ||
+        Geographic.trim() === "";
       console.log("action add", props.action);
-      console.log('_IsRequired',_IsRequired)
-      if(_IsRequired == false){
+      console.log('_IsRequired', _IsRequired)
+      if (_IsRequired == false) {
         setIsRequired(false);
-      await handleAddDatatoDatabase();
-      }else{
+        await handleAddDatatoDatabase();
+      } else {
         setIsRequired(true);
-        console.log("isRequired",isRequired)
+        console.log("isRequired", isRequired)
         props.setAction("none");
         updateList()
       }
@@ -1901,95 +1853,95 @@ export const ProfileCompany = (props) => {
         TrackCode,
         ReasonForStay,
         Geographic)
-        console.log(nameOne === null ,
-          Abbreviation === null ,
-          GuaranteeMethodCode === null ,
-          iata === null ,
-          StreetAddress === null ,
-          City === null ,
-          State === null ,
-          Postal === null ,
-          BStreetAddress === null ,
-          BCity === null ,
-          BState === null ,
-          BPostal === null ,
-          TaxID === null ,
-          Industry === null ,
-          MarketSegment === null ,
-          SourceOfBusiness === null ,
-          TrackCode === null ,
-          ReasonForStay === null ,
-          Geographic  === null ,
-          nameOne.trim() === "" ,
-          Abbreviation.trim() === "" ,
-          GuaranteeMethodCode.trim() === "" ,
-          iata.trim() === "" ,
-          StreetAddress.trim() === "" ,
-          City.trim() === "" ,
-          State.trim() === "" ,
-          Postal === 0 ,
-          BStreetAddress.trim() === "" ,
-          BCity.trim() === "" ,
-          BState.trim() === "" ,
-          BPostal === 0 ,
-          TaxID.trim() === "" ,
-          Industry.trim() === "" ,
-          MarketSegment.trim() === "" ,
-          SourceOfBusiness.trim() === "" ,
-          TrackCode.trim() === "" ,
-          ReasonForStay.trim() === "" ,
-          Geographic.trim() === "")
+      console.log(nameOne === null,
+        Abbreviation === null,
+        GuaranteeMethodCode === null,
+        iata === null,
+        StreetAddress === null,
+        City === null,
+        State === null,
+        Postal === null,
+        BStreetAddress === null,
+        BCity === null,
+        BState === null,
+        BPostal === null,
+        TaxID === null,
+        Industry === null,
+        MarketSegment === null,
+        SourceOfBusiness === null,
+        TrackCode === null,
+        ReasonForStay === null,
+        Geographic === null,
+        nameOne.trim() === "",
+        Abbreviation.trim() === "",
+        GuaranteeMethodCode.trim() === "",
+        iata.trim() === "",
+        StreetAddress.trim() === "",
+        City.trim() === "",
+        State.trim() === "",
+        Postal === 0,
+        BStreetAddress.trim() === "",
+        BCity.trim() === "",
+        BState.trim() === "",
+        BPostal === 0,
+        TaxID.trim() === "",
+        Industry.trim() === "",
+        MarketSegment.trim() === "",
+        SourceOfBusiness.trim() === "",
+        TrackCode.trim() === "",
+        ReasonForStay.trim() === "",
+        Geographic.trim() === "")
 
       let _IsRequired = nameOne === null ||
-      Abbreviation === null ||
-      GuaranteeMethodCode === null ||
-      iata === null ||
-      StreetAddress === null ||
-      City === null ||
-      State === null ||
-      Postal === null ||
-      BStreetAddress === null ||
-      BCity === null ||
-      BState === null ||
-      BPostal === null ||
-      TaxID === null ||
-      Industry === null ||
-      MarketSegment === null ||
-      SourceOfBusiness === null ||
-      TrackCode === null ||
-      ReasonForStay === null ||
-      Geographic  === null ||
-      nameOne.trim() === "" ||
-      Abbreviation.trim() === "" ||
-      GuaranteeMethodCode.trim() === "" ||
-      iata.trim() === "" ||
-      StreetAddress.trim() === "" ||
-      City.trim() === "" ||
-      State.trim() === "" ||
-      Postal === 0 ||
-      BStreetAddress.trim() === "" ||
-      BCity.trim() === "" ||
-      BState.trim() === "" ||
-      BPostal === 0 ||
-      TaxID.trim() === "" ||
-      Industry.trim() === "" ||
-      MarketSegment.trim() === "" ||
-      SourceOfBusiness.trim() === "" ||
-      TrackCode.trim() === "" ||
-      ReasonForStay.trim() === "" ||
-      Geographic.trim() === "";
+        Abbreviation === null ||
+        GuaranteeMethodCode === null ||
+        iata === null ||
+        StreetAddress === null ||
+        City === null ||
+        State === null ||
+        Postal === null ||
+        BStreetAddress === null ||
+        BCity === null ||
+        BState === null ||
+        BPostal === null ||
+        TaxID === null ||
+        Industry === null ||
+        MarketSegment === null ||
+        SourceOfBusiness === null ||
+        TrackCode === null ||
+        ReasonForStay === null ||
+        Geographic === null ||
+        nameOne.trim() === "" ||
+        Abbreviation.trim() === "" ||
+        GuaranteeMethodCode.trim() === "" ||
+        iata.trim() === "" ||
+        StreetAddress.trim() === "" ||
+        City.trim() === "" ||
+        State.trim() === "" ||
+        Postal === 0 ||
+        BStreetAddress.trim() === "" ||
+        BCity.trim() === "" ||
+        BState.trim() === "" ||
+        BPostal === 0 ||
+        TaxID.trim() === "" ||
+        Industry.trim() === "" ||
+        MarketSegment.trim() === "" ||
+        SourceOfBusiness.trim() === "" ||
+        TrackCode.trim() === "" ||
+        ReasonForStay.trim() === "" ||
+        Geographic.trim() === "";
       console.log("action add", props.action);
-      console.log('_IsRequired',_IsRequired)
-      if(_IsRequired == false){
-      await handleAddDataEdittoDatabase();
+      console.log('_IsRequired', _IsRequired)
+      if (_IsRequired == false) {
+        await handleAddDataEdittoDatabase();
 
-      console.log("action edit", props.action);
-    }else{
-      setIsRequired(true);
-      console.log("isRequired",isRequired)
-      props.setAction("none");
-      updateList()
-    }
+        console.log("action edit", props.action);
+      } else {
+        setIsRequired(true);
+        console.log("isRequired", isRequired)
+        props.setAction("none");
+        updateList()
+      }
 
     }
   }, [props.action]);
@@ -2417,23 +2369,23 @@ export const ProfileCompany = (props) => {
                                   //   defaultValue={detail.select.defaultvalue}
                                   //   onChange={detail.handle}
                                   // />
-                               
-                                
+
+
                                   [
                                     isRequired ? (
-                                    
+
                                       <TextField
                                         error={
                                           detail.dataCheck == null ||
-                                          detail.dataCheck === "" ||
-                                          detail.dataCheck === " "
+                                            detail.dataCheck === "" ||
+                                            detail.dataCheck === " "
                                             ? true
                                             : false
                                         }
                                         // error={detail.dataCheck}
                                         helperText={
                                           detail.dataCheck == null ||
-                                          detail.dataCheck === ""
+                                            detail.dataCheck === ""
                                             ? `${detail.label} is Required`
                                             : false
                                         }
@@ -2454,7 +2406,7 @@ export const ProfileCompany = (props) => {
                                           detail.select.defaultvalue
                                         }
                                         onChange={detail.handle}
-                                        // onBlur={handleValidation(detail.dataCheck)}
+                                      // onBlur={handleValidation(detail.dataCheck)}
                                       />
                                     ) : (
                                       <TextField
@@ -2489,7 +2441,7 @@ export const ProfileCompany = (props) => {
                                           detail.select.defaultvalue
                                         }
                                         onChange={detail.handle}
-                                        // onBlur={handleValidation(detail.dataCheck)}
+                                      // onBlur={handleValidation(detail.dataCheck)}
                                       />
                                     ),
                                   ]
