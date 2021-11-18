@@ -547,6 +547,9 @@ export const ProfileIndividual = (props) => {
       console.log("getCommunications.contents", getCommunications.contents);
       let count = 3;
       getCommunications.contents[0].forEach((element) => {
+        const commuid1 = count;
+        const commuid2 = count +1;
+
         if (element.communication == "email") {
           getCommunicationsDatas.email = element.value;
           setCommunicationDatas((prev) => ({
@@ -566,7 +569,7 @@ export const ProfileIndividual = (props) => {
             [count + 1]: element.value,
           }));
           getcomunication.push({
-            id: count,
+            id: commuid1,
             label: "Choose a communication",
             xl: 3,
             md: 3,
@@ -588,11 +591,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setCommunicationDatas((prev) => ({
                 ...prev,
-                [count]: e.target.value,
+                [commuid1]: e.target.value,
               })),
           });
           getcomunication.push({
-            id: count + 1,
+            id: commuid2,
             label: "communication",
             xl: 9,
             md: 9,
@@ -605,7 +608,7 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setCommunicationDatas((prev) => ({
                 ...prev,
-                [count + 1]: e.target.value,
+                [commuid2]: e.target.value,
               })),
           });
           count = count + 2;
@@ -616,6 +619,9 @@ export const ProfileIndividual = (props) => {
       console.log(getRelations.contents[0]);
 
       getRelations.contents[0].forEach((element) => {
+        const relaid1 = relationid;
+        const relaid2 = relationid +1;
+        const relaid3 = relationid +2;
         setRelationDatas((prev) => ({
           ...prev,
           [relationid]: element.relation,
@@ -623,7 +629,7 @@ export const ProfileIndividual = (props) => {
           [relationid + 2]: element.note,
         }));
         getrelation.push({
-          id: relationid,
+          id: relaid1,
           label: "Name Type",
           xl: 2,
           md: 2,
@@ -644,11 +650,11 @@ export const ProfileIndividual = (props) => {
           handle: (e) =>
             setRelationDatas((prev) => ({
               ...prev,
-              [relationid]: element.relation,
+              [relaid1]: element.relation,
             })),
         });
         getrelation.push({
-          id: relationid + 1,
+          id: relaid2,
           label: "Name",
           xl: 4,
           md: 4,
@@ -661,11 +667,11 @@ export const ProfileIndividual = (props) => {
           handle: (e) =>
             setRelationDatas((prev) => ({
               ...prev,
-              [relationid + 1]: e.target.value,
+              [relaid2]: e.target.value,
             })),
         });
         getrelation.push({
-          id: relationid + 2,
+          id: relaid3,
           label: "Note",
           xl: 6,
           md: 6,
@@ -678,7 +684,7 @@ export const ProfileIndividual = (props) => {
           handle: (e) =>
             setRelationDatas((prev) => ({
               ...prev,
-              [relationid + 2]: e.target.value,
+              [relaid3]: e.target.value,
             })),
         });
         relationid = relationid + 3;
@@ -713,7 +719,7 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setCommunicationDatas((prev) => ({
                 ...prev,
-                [e.target.id]: e.target.value,
+                [count]: e.target.value,
               })),
           });
           getcomunication.push({
@@ -730,7 +736,7 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
                setCommunicationDatas((prev) => ({
                   ...prev,
-                  [e.target.id]: e.target.value,
+                  [count + 1]: e.target.value,
                 })),
           });
           count = count + 2;
@@ -740,9 +746,8 @@ export const ProfileIndividual = (props) => {
       let relationid = 1;
       for (var key in rela) {
         if (key % 3 == 0) {
-          const relaid = relationid;
           getrelation.push({
-            id: relaid,
+            id: relationid,
             label: "Name Type",
             xl: 2,
             md: 2,
@@ -763,11 +768,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [e.target.id]: e.target.value,
+                [relationid]: e.target.value,
               })),
           });
           getrelation.push({
-            id: relaid + 1,
+            id: relationid + 1,
             label: "Name",
             xl: 4,
             md: 4,
@@ -780,11 +785,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [e.target.id]: e.target.value,
+                [relationid + 1]: e.target.value,
               })),
           });
           getrelation.push({
-            id: relaid + 2,
+            id: relationid + 2,
             label: "Note",
             xl: 6,
             md: 6,
@@ -797,7 +802,7 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [e.target.id]: e.target.value,
+                [relationid + 2]: e.target.value,
               })),
           });
           relationid = relationid + 3;
