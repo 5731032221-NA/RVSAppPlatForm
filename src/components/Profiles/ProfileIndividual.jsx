@@ -901,7 +901,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setNameSuffix(e.target.value),
             dataType: "string",
-            dataCheck: nameSuffix,
+            dataCheck: true,
           },
           {
             id: 5,
@@ -917,7 +917,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setMiddleInitial(e.target.value),
             dataType: "string",
-            dataCheck: middleInitial,
+            dataCheck: true,
           },
           {
             id: 2,
@@ -1268,7 +1268,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setProvinceOfResidence(e.target.value),
             dataType: "string",
-            dataCheck: provinceOfResidence,
+            dataCheck: true,
           },
           {
             id: 3,
@@ -1286,7 +1286,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setBorderCrossingEntryPlace(e.target.value),
             dataType: "string",
-            dataCheck: borderCrossingEntryPlace,
+            dataCheck: true,
           },
           {
             id: 4,
@@ -1374,7 +1374,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setAddress2(e.target.value),
             dataType: "string",
-            dataCheck: address2,
+            dataCheck: true,
           },
           {
             id: 8,
