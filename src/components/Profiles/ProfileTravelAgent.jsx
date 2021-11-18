@@ -1642,7 +1642,7 @@ export const ProfileCompany = (props) => {
     let relations = list[index];
     console.log("relations:", relations);
     let req = {
-      recordtype: "C",
+      recordtype: "T",
       nameOne: nameOne,
       nameTwo: nameTwo,
       CompanyTypeCode: CompanyTypeCode,
@@ -1709,7 +1709,7 @@ export const ProfileCompany = (props) => {
 
 
     let req = {
-      recordtype: "C",
+      recordtype: "T",
       nameOne: nameOne,
       nameTwo: nameTwo,
       CompanyTypeCode: CompanyTypeCode,
