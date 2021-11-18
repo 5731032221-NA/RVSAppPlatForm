@@ -241,6 +241,7 @@ export const ProfileTableCompany = (props) => {
         this[index].citycountry = (this[index].city?this[index].city : "-")+"/"+(this[index].countrycode?this[index].countrycode :"-");
       }, resp.content[0])
       setStatusprofile("moredata");
+      console.log("resp.content[0]:",resp.content[0]);
       setcompanyData(resp.content[0]);
     }
   }
@@ -292,8 +293,7 @@ export const ProfileTableCompany = (props) => {
   };
 
   const handleDialogDeleteOpen = async (id,name, www, city) => {
-    console.log("id:",id);
-    console.log("data : ",name, www, city);
+  
     await  setDeleteData({id:id, name: name, www: www, city: city });
     await  setDialogDelete(true);
   };
@@ -607,7 +607,9 @@ export const ProfileTableCompany = (props) => {
                       handleDialogDeleteOpen(
                         rowData.id,
                         rowData.name,
+                        rowData.www,
                         rowData.city,
+                      
                       
                       );
                     },
