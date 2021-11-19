@@ -34,7 +34,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import SearchIcon from '@material-ui/icons/Search';
-
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   getCompanyProfile,
   getCompanyProfileById,
@@ -204,6 +205,27 @@ export const ProfileTableCompany = (props) => {
   }, [maincolor]);
 
   const classes = useStyles(themeState);
+
+ 
+  const theme = useTheme();
+const smUp = useMediaQuery(theme.breakpoints.up("sm"));
+
+let customStyle = {
+  padding: theme.spacing(1, 1, 1, 0),
+  // vertical padding + font size from searchIcon
+  paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
+  transition: theme.transitions.create("width"),
+  width: "100%"
+};
+
+if (smUp) {
+  customStyle = {
+    ...customStyle,
+    width: "54ch",
+    // color: "red",
+    }
+  };
+
 
   const headerTableStyle = {
     backgroundColor: themeState.paper,
@@ -579,13 +601,14 @@ export const ProfileTableCompany = (props) => {
                     { value: companyData.length, label: "All" },
                   ],
                   headerStyle: headerTableStyle,
-                  searchFieldStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                    borderBottomColor: themeState.color,
-                    width: 530,
+                  // searchFieldStyle: {
+                  //   backgroundColor: themeState.paper,
+                  //   color: themeState.color,
+                  //   borderBottomColor: themeState.color,
+                  //   width: 530,
                   
-                  },
+                  // },
+                  searchFieldStyle: customStyle,
                 }}
                 localization={{
                   toolbar: {

@@ -1950,10 +1950,10 @@ export const ProfileCompany = (props) => {
         City.trim() === "" ||
         State.trim() === "" ||
         Postal === 0 ||
-        BStreetAddress.trim() === "" ||
-        BCity.trim() === "" ||
-        BState.trim() === "" ||
-        BPostal === 0 ||
+        // BStreetAddress.trim() === "" ||
+        // BCity.trim() === "" ||
+        // BState.trim() === "" ||
+        // BPostal === 0 ||
         TaxID.trim() === "" ||
         Industry.trim() === "" ||
         MarketSegment.trim() === "" ||
