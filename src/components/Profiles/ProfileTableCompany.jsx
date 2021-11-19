@@ -57,8 +57,11 @@ const useStyles = makeStyles((theme) => ({
 
     marginLeft: 20,
     marginRight: 20,
+      
+    
   },
   root: (themeState) => ({
+   
     "& label.MuiInputLabel-root": {
       color: themeState.color,
     },
@@ -581,6 +584,7 @@ export const ProfileTableCompany = (props) => {
                     color: themeState.color,
                     borderBottomColor: themeState.color,
                     width: 530,
+                  
                   },
                 }}
                 localization={{

@@ -81,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
         // borderColor: themeState.color,
+        // backgroundColor:"grey.500",
         borderColor: "grey.500",
         color: themeState.color,
       },
@@ -382,6 +383,9 @@ export const ProfileCompany = (props) => {
   const [Postal, setPostal] = React.useState(
     props.editdata != null ? props.editdata[0].postalcode : 0
   );
+  const [sameasaddress, setsameasaddress] = React.useState(false);
+
+  
   const [BStreetAddress, setBStreetAddress] = React.useState(
     props.editdata != null ? props.editdata[0].billingaddress : ""
   );
@@ -482,6 +486,12 @@ export const ProfileCompany = (props) => {
   //     background: "lightblue",
   //   }),
   // });
+
+  React.useEffect(async() =>{
+
+    console.log("sameasaddress:",sameasaddress);
+    await updateList();
+  },[sameasaddress])
 
 
   async function updateList() {
@@ -1054,6 +1064,19 @@ export const ProfileCompany = (props) => {
         content: [
           {
             id: 1,
+            label: "same as billing address",
+            xl: 6,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "check",
+              data: "",
+             
+            },
+            handle: (e) => setsameasaddress(e.target.checked),
+          },
+          {
+            id: 2,
             label: "Address",
             xl: 12,
             md: 12,
@@ -1067,6 +1090,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setBStreetAddress(e.target.value),
             dataType: "string",
             dataCheck: BStreetAddress,
+            disable: sameasaddress,
           },
           {
             id: 5,
@@ -1083,7 +1107,8 @@ export const ProfileCompany = (props) => {
                   : "",
             },
             handle: (e) => setBChooseacountry(e.target.value),
-            dataCheck: BChooseacountry
+            dataCheck: BChooseacountry,
+            disable: sameasaddress,
           },
           {
             id: 6,
@@ -1100,6 +1125,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setBCity(e.target.value),
             dataType: "string",
             dataCheck: BCity,
+            disable: sameasaddress,
           },
           {
             id: 7,
@@ -1118,6 +1144,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setBState(e.target.value),
             dataType: "string",
             dataCheck: BState,
+            disable: sameasaddress,
           },
           {
             id: 8,
@@ -1134,6 +1161,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setBPostal(e.target.value),
             dataType: "number",
             dataCheck: BPostal,
+            disable: sameasaddress,
           },
           {
             id: 9,
@@ -1149,6 +1177,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setTaxID(e.target.value),
             dataType: "string",
             dataCheck: TaxID,
+            disable: false,
           },
           {
             id: 10,
@@ -1165,6 +1194,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setTaxID2(e.target.value),
             dataType: "string",
             dataCheck: true,
+            disable: false,
           },
         ],
       },
@@ -1239,6 +1269,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setCreditCardNumber(e.target.value),
             dataType: "number",
             dataCheck: true,
+            disable: false,
           },
           {
             id: 3,
@@ -1255,6 +1286,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setOutstandingAmount(e.target.value),
             dataType: "number",
             dataCheck: true,
+            disable: false,
           },
           {
             id: 4,
@@ -1273,6 +1305,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setFloatingDepositionAmount(e.target.value),
             dataType: "number",
             dataCheck: true,
+            disable: false,
           },
           {
             id: 5,
@@ -1289,6 +1322,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setARNumber(e.target.value),
             dataType: "number",
             dataCheck: true,
+            disable: false,
           },
         ],
       },
@@ -1368,6 +1402,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setratecontractcode(e.target.value),
             dataType: "string",
             dataCheck: true,
+            disable: false,
           },
         ],
       },
@@ -1391,6 +1426,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setSalesUserName(e.target.value),
             dataType: "string",
             dataCheck: true,
+            disable: false,
           },
           {
             id: 2,
@@ -1801,10 +1837,10 @@ export const ProfileCompany = (props) => {
         City.trim() === "" ||
         State.trim() === "" ||
         Postal === 0 ||
-        BStreetAddress.trim() === "" ||
-        BCity.trim() === "" ||
-        BState.trim() === "" ||
-        BPostal === 0 ||
+        // BStreetAddress.trim() === "" ||
+        // BCity.trim() === "" ||
+        // BState.trim() === "" ||
+        // BPostal === 0 ||
         TaxID.trim() === "" ||
         Industry.trim() === "" ||
         MarketSegment.trim() === "" ||
@@ -1875,10 +1911,10 @@ export const ProfileCompany = (props) => {
         City.trim() === "",
         State.trim() === "",
         Postal === 0,
-        BStreetAddress.trim() === "",
-        BCity.trim() === "",
-        BState.trim() === "",
-        BPostal === 0,
+        // BStreetAddress.trim() === "",
+        // BCity.trim() === "",
+        // BState.trim() === "",
+        // BPostal === 0,
         TaxID.trim() === "",
         Industry.trim() === "",
         MarketSegment.trim() === "",
@@ -2389,9 +2425,14 @@ export const ProfileCompany = (props) => {
                                         className={classes.root}
                                         label={detail.label}
                                         variant="outlined"
-                                        InputProps={{
-                                          style: headerTableStyle,
-                                        }}
+                                        disabled={detail.disable}
+                                        style={ detail.disable?{
+                                          backgroundColor: "#EFEFEF",
+                                          borderColor: "white",
+                                        }:{}}
+                                        // InputProps={{
+                                        //   style: headerTableStyle,
+                                        // }}
                                         noWrap
                                         InputLabelProps={{
                                           style: { color: "#AAAAAA" },
@@ -2424,9 +2465,15 @@ export const ProfileCompany = (props) => {
                                         className={classes.root}
                                         label={detail.label}
                                         variant="outlined"
-                                        InputProps={{
-                                          style: headerTableStyle,
-                                        }}
+                                        disabled={detail.disable}
+                                        style={ detail.disable?{
+                                          backgroundColor: "#EFEFEF",
+                                          borderColor: "white",
+                                        }:{}}
+                                        // InputProps={{
+                                        //   style: headerTableStyle,
+                                         
+                                        // }}
                                         noWrap
                                         InputLabelProps={{
                                           style: { color: "#AAAAAA" },
