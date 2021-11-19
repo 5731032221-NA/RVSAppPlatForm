@@ -456,6 +456,7 @@ export const ProfileCompany = (props) => {
   React.useEffect(() => {
     async function getconfig() {
       updateList();
+      console.log("list:",list);
     }
     getconfig();
   }, []);
@@ -554,10 +555,13 @@ export const ProfileCompany = (props) => {
               },
               handle: (e) => setCommunicationDatas(prev => ({
                 ...prev,
-                [count + 1]: e.target.value
+                [count + 1 ]: e.target.value
               })),
             });
             count = count + 2;
+
+            console.log("communicationDatas::::",communicationDatas);
+            console.log("getcomunication:",getcomunication);
           }
         }
         );
@@ -1590,6 +1594,8 @@ export const ProfileCompany = (props) => {
           ],
         },
       ]);
+
+     
     // }
     // getconfig();
   };
