@@ -350,7 +350,7 @@ export const ProfileIndividual = (props) => {
     props.editdata != null ? props.editdata.gender : "Male."
   );
   const [religion, setReligion] = React.useState(
-    props.editdata != null ? props.editdata.religion : "Thailand"
+    props.editdata != null ? props.editdata.religion : "Buddhism"
   );
   const [statusProfile, setStatusProfile] = React.useState(
     props.editdata != null ? props.editdata.statusprofile : "Y"
@@ -551,6 +551,9 @@ export const ProfileIndividual = (props) => {
       console.log("getCommunications.contents", getCommunications.contents);
       let count = 3;
       getCommunications.contents[0].forEach((element) => {
+        const commuid1 = count;
+        const commuid2 = count + 1;
+
         if (element.communication == "email") {
           getCommunicationsDatas.email = element.value;
           setCommunicationDatas((prev) => ({
@@ -570,7 +573,7 @@ export const ProfileIndividual = (props) => {
             [count + 1]: element.value, //key number ? == value ???
           }));
           getcomunication.push({
-            id: count,
+            id: commuid1,
             label: "Choose a communication",
             xl: 3,
             md: 3,
@@ -583,7 +586,7 @@ export const ProfileIndividual = (props) => {
                   key={option.value}
                   value={option.value}
                   selected={option.label == element.communication}
-                  // defaultValue={element.communication}
+                // defaultValue={element.communication}
                 >
                   {option.label}
                 </option>
@@ -592,11 +595,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setCommunicationDatas((prev) => ({
                 ...prev,
-                [count]: e.target.value,
+                [commuid1]: e.target.value,
               })),
           });
           getcomunication.push({
-            id: count + 1,
+            id: commuid2,
             label: "communication",
             xl: 9,
             md: 9,
@@ -609,7 +612,7 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setCommunicationDatas((prev) => ({
                 ...prev,
-                [count + 1]: e.target.value,
+                [commuid2]: e.target.value,
               })),
           });
           count = count + 2;
@@ -620,6 +623,9 @@ export const ProfileIndividual = (props) => {
       console.log(getRelations.contents[0]);
 
       getRelations.contents[0].forEach((element) => {
+        const relaid1 = relationid;
+        const relaid2 = relationid + 1;
+        const relaid3 = relationid + 2;
         setRelationDatas((prev) => ({
           ...prev,
           [relationid]: element.relation,
@@ -627,7 +633,7 @@ export const ProfileIndividual = (props) => {
           [relationid + 2]: element.note,
         }));
         getrelation.push({
-          id: relationid,
+          id: relaid1,
           label: "Name Type",
           xl: 2,
           md: 2,
@@ -648,11 +654,11 @@ export const ProfileIndividual = (props) => {
           handle: (e) =>
             setRelationDatas((prev) => ({
               ...prev,
-              [relationid]: element.relation,
+              [relaid1]: element.relation,
             })),
         });
         getrelation.push({
-          id: relationid + 1,
+          id: relaid2,
           label: "Name",
           xl: 4,
           md: 4,
@@ -665,11 +671,11 @@ export const ProfileIndividual = (props) => {
           handle: (e) =>
             setRelationDatas((prev) => ({
               ...prev,
-              [relationid + 1]: e.target.value,
+              [relaid2]: e.target.value,
             })),
         });
         getrelation.push({
-          id: relationid + 2,
+          id: relaid3,
           label: "Note",
           xl: 6,
           md: 6,
@@ -682,7 +688,7 @@ export const ProfileIndividual = (props) => {
           handle: (e) =>
             setRelationDatas((prev) => ({
               ...prev,
-              [relationid + 2]: e.target.value,
+              [relaid3]: e.target.value,
             })),
         });
         relationid = relationid + 3;
@@ -694,8 +700,10 @@ export const ProfileIndividual = (props) => {
       console.log("rela", rela);
       for (var key in commu) {
         if (key % 2 == 0) {
+          const commuid1 = count;
+          const commuid2 = count + 1;
           getcomunication.push({
-            id: count,
+            id: commuid1,
             label: "Choose a communication",
             xl: 3,
             md: 3,
@@ -708,7 +716,7 @@ export const ProfileIndividual = (props) => {
                   key={option.value}
                   value={option.value}
                   selected={option.label == commu[key - 1]}
-                  // defaultValue={element.communication}
+                // defaultValue={element.communication}
                 >
                   {option.label}
                 </option>
@@ -717,11 +725,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setCommunicationDatas((prev) => ({
                 ...prev,
-                [e.target.id]: e.target.value,
+                [commuid1]: e.target.value,
               })),
           });
           getcomunication.push({
-            id: count + 1,
+            id: commuid2,
             label: "communication",
             xl: 9,
             md: 9,
@@ -734,7 +742,7 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setCommunicationDatas((prev) => ({
                 ...prev,
-                [e.target.id]: e.target.value,
+                [commuid2]: e.target.value,
               })),
           });
           count = count + 2;
@@ -744,9 +752,11 @@ export const ProfileIndividual = (props) => {
       let relationid = 1;
       for (var key in rela) {
         if (key % 3 == 0) {
-          const relaid = relationid;
+          const relaid1 = relationid;
+        const relaid2 = relationid + 1;
+        const relaid3 = relationid + 2;
           getrelation.push({
-            id: relaid,
+            id: relaid1,
             label: "Name Type",
             xl: 2,
             md: 2,
@@ -767,11 +777,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [e.target.id]: e.target.value,
+                [relaid1]: e.target.value,
               })),
           });
           getrelation.push({
-            id: relaid + 1,
+            id: relaid2,
             label: "Name",
             xl: 4,
             md: 4,
@@ -784,11 +794,11 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [e.target.id]: e.target.value,
+                [relaid2]: e.target.value,
               })),
           });
           getrelation.push({
-            id: relaid + 2,
+            id: relaid3,
             label: "Note",
             xl: 6,
             md: 6,
@@ -801,7 +811,7 @@ export const ProfileIndividual = (props) => {
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
-                [e.target.id]: e.target.value,
+                [relaid3]: e.target.value,
               })),
           });
           relationid = relationid + 3;
@@ -891,7 +901,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setNameSuffix(e.target.value),
             dataType: "string",
-            dataCheck: nameSuffix,
+            dataCheck: true,
           },
           {
             id: 5,
@@ -907,7 +917,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setMiddleInitial(e.target.value),
             dataType: "string",
-            dataCheck: middleInitial,
+            dataCheck: true,
           },
           {
             id: 2,
@@ -1055,7 +1065,7 @@ export const ProfileIndividual = (props) => {
             xs: 4,
             select: {
               status: "option",
-              data: optioncountry.map((option) => (
+              data: [{ label: "Buddhism", value: "Buddhism" }, { label: "Judaism", value: "Judaism" }, { label: "Christianity", value: "Christianity" }, { label: "Islam", value: "Islam" }, { label: "Hinduism", value: "Hinduism" }].map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -1065,7 +1075,7 @@ export const ProfileIndividual = (props) => {
                 </option>
               )),
               defaultvalue:
-                props.editdata != null ? props.editdata.religion : "Thailand",
+                props.editdata != null ? props.editdata.religion : "Buddhism",
             },
             handle: (e) => setReligion(e.target.value),
             dataType: "string",
@@ -1258,7 +1268,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setProvinceOfResidence(e.target.value),
             dataType: "string",
-            dataCheck: provinceOfResidence,
+            dataCheck: true,
           },
           {
             id: 3,
@@ -1276,7 +1286,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setBorderCrossingEntryPlace(e.target.value),
             dataType: "string",
-            dataCheck: borderCrossingEntryPlace,
+            dataCheck: true,
           },
           {
             id: 4,
@@ -1364,7 +1374,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setAddress2(e.target.value),
             dataType: "string",
-            dataCheck: address2,
+            dataCheck: true,
           },
           {
             id: 8,
@@ -1743,7 +1753,7 @@ export const ProfileIndividual = (props) => {
 
             handle: (e) => setIDType(e.target.value),
             dataType: "string",
-            dataCheck: IDType,
+            dataCheck: IDCheck == "Y" ? IDType : true,
           },
           {
             id: 4,
@@ -1759,7 +1769,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setIDNumber(e.target.value),
             dataType: "number",
-            dataCheck: IDNumber,
+            dataCheck: IDCheck == "Y" ? IDNumber : true,
           },
           // {
           //   id: 5,
@@ -1819,7 +1829,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setIDIssuedDate(new Date(e)),
             dataType: "date",
-            dataCheck: IDIssuedDate,
+            dataCheck: IDCheck == "Y" ? IDIssuedDate : true,
           },
           {
             id: 6,
@@ -1837,7 +1847,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setIDExpirationDate(new Date(e)),
             dataType: "date",
-            dataCheck: IDExpirationDate,
+            dataCheck: IDCheck == "Y" ? IDExpirationDate : true,
           },
           // {
           //   id: 7,
@@ -1902,7 +1912,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaType(e.target.value),
             dataType: "string",
-            dataCheck: visaType,
+            dataCheck: passportVisaCheck == "Y",
           },
           {
             id: 11,
@@ -1918,7 +1928,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaName(e.target.value),
             dataType: "string",
-            dataCheck: visaName,
+            dataCheck: passportVisaCheck == "Y" ? visaName : true,
           },
           {
             id: 12,
@@ -1934,7 +1944,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaNumber(e.target.value),
             dataType: "string",
-            dataCheck: visaNumber,
+            dataCheck: passportVisaCheck == "Y" ? visaNumber : true,
           },
           // {
           //   id: 15,
@@ -1974,7 +1984,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaIssuedDate(new Date(e)),
             dataType: "date",
-            dataCheck: visaIssuedDate,
+            dataCheck: passportVisaCheck == "Y" ? visaIssuedDate : true,
 
             // handle: (e) => setVisaIssuedDate(convertTimeToString(e)),
           },
@@ -1994,7 +2004,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaBeginDate(new Date(e)),
             dataType: "date",
-            dataCheck: visaBeginDate,
+            dataCheck: passportVisaCheck == "Y" ? visaBeginDate : true,
           },
           {
             id: 14,
@@ -2012,7 +2022,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaExpirationDate(new Date(e)),
             dataType: "date",
-            dataCheck: visaExpirationDate,
+            dataCheck: passportVisaCheck == "Y" ? visaExpirationDate : true,
           },
           // {
           //   id: 18,
@@ -2040,7 +2050,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaStatus(handleBoolean(e.target.checked)),
             dataType: "string",
-            dataCheck: visaStatus,
+            dataCheck: passportVisaCheck == "Y" ? visaStatus : true,
           },
           {
             id: 16,
@@ -2056,7 +2066,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setVisaNotes(e.target.value),
             dataType: "string",
-            dataCheck: visaNotes,
+            dataCheck: passportVisaCheck == "Y" ? visaNotes : true,
           },
           // ,
           // {
@@ -2164,7 +2174,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setRank(e.target.value),
             dataType: "string",
-            dataCheck: rank,
+            dataCheck: true,
           },
           {
             id: 18,
@@ -2188,7 +2198,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setGrade(e.target.value),
             dataType: "string",
-            dataCheck: grade,
+            dataCheck: true,
           },
           {
             id: 19,
@@ -2204,7 +2214,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setGuestIdentity(e.target.value),
             dataType: "string",
-            dataCheck: guestIdentity,
+            dataCheck: true,
           },
           // {
           //   id: 29,
@@ -2813,12 +2823,12 @@ export const ProfileIndividual = (props) => {
       namePrefix === null ||
       namePrefix === "" ||
       namePrefix === " " ||
-      nameSuffix === null ||
-      nameSuffix === "" ||
-      nameSuffix === " " ||
-      middleInitial === null ||
-      middleInitial === "" ||
-      middleInitial === " " ||
+      // nameSuffix === null ||
+      // nameSuffix === "" ||
+      // nameSuffix === " " ||
+      // middleInitial === null ||
+      // middleInitial === "" ||
+      // middleInitial === " " ||
       gender === null ||
       gender === "" ||
       gender === " " ||
@@ -2831,24 +2841,24 @@ export const ProfileIndividual = (props) => {
       statusProfile === null ||
       statusProfile === "" ||
       statusProfile === " " ||
-      provinceOfResidence === null ||
-      provinceOfResidence === "" ||
-      provinceOfResidence === " " ||
-      borderCrossingEntryPlace === null ||
-      borderCrossingEntryPlace === "" ||
-      borderCrossingEntryPlace === " " ||
-      borderCrossingEntryDate === null ||
-      borderCrossingEntryDate === "" ||
-      borderCrossingEntryDate === " " ||
+      // provinceOfResidence === null ||
+      // provinceOfResidence === "" ||
+      // provinceOfResidence === " " ||
+      // borderCrossingEntryPlace === null ||
+      // borderCrossingEntryPlace === "" ||
+      // borderCrossingEntryPlace === " " ||
+      // borderCrossingEntryDate === null ||
+      // borderCrossingEntryDate === "" ||
+      // borderCrossingEntryDate === " " ||
       address === null ||
       address === "" ||
       address === " " ||
       address1 === null ||
       address1 === "" ||
       address1 === " " ||
-      address2 === null ||
-      address2 === "" ||
-      address2 === " " ||
+      // address2 === null ||
+      // address2 === "" ||
+      // address2 === " " ||
       conuty === null ||
       conuty === "" ||
       conuty === " " ||
@@ -2885,62 +2895,63 @@ export const ProfileIndividual = (props) => {
       IDCheck === null ||
       IDCheck === "" ||
       IDCheck === " " ||
-      IDType === null ||
-      IDType === "" ||
-      IDType === " " ||
-      IDNumber === null ||
-      IDNumber === "" ||
-      IDNumber === " " ||
+      // IDCheck == "Y" ? IDType === null : false||
+      // IDCheck == "Y" ? IDType === ""  : false||
+      // IDCheck == "Y" ? IDType === " "  : false||
+      // IDCheck == "Y" ? IDNumber === null  : false||
+      // IDCheck == "Y" ? IDNumber === ""  : false||
+      // IDCheck == "Y" ? IDNumber === " "  : false||
       nationality === null ||
       nationality === "" ||
       nationality === " " ||
       dateOfBirth === null ||
       dateOfBirth === "" ||
       dateOfBirth === " " ||
-      IDIssuedDate === null ||
-      IDIssuedDate === "" ||
-      IDIssuedDate === " " ||
-      IDExpirationDate === null ||
-      IDExpirationDate === "" ||
-      IDExpirationDate === " " ||
+      // IDCheck == "Y" ? IDIssuedDate === null  : false||
+      // IDCheck == "Y" ? IDIssuedDate === ""  : false||
+      // IDCheck == "Y" ? IDIssuedDate === " "  : false||
+      // IDCheck == "Y" ? IDExpirationDate === null  : false||
+      // IDCheck == "Y" ? IDExpirationDate === ""  : false||
+      // IDCheck == "Y" ? IDExpirationDate === " "  : false||
       passportVisaCheck === null ||
       passportVisaCheck === "" ||
-      passportVisaCheck === " " ||
-      visaType === null ||
-      visaType === "" ||
-      visaType === " " ||
-      visaName === null ||
-      visaName === "" ||
-      visaName === " " ||
-      visaNumber === null ||
-      visaNumber === "" ||
-      visaNumber === " " ||
-      visaIssuedDate === null ||
-      visaIssuedDate === "" ||
-      visaIssuedDate === " " ||
-      visaBeginDate === null ||
-      visaBeginDate === "" ||
-      visaBeginDate === " " ||
-      visaExpirationDate === null ||
-      visaExpirationDate === "" ||
-      visaExpirationDate === " " ||
-      visaStatus === null ||
-      visaStatus === "" ||
-      visaStatus === " " ||
-      visaNotes === null ||
-      visaNotes === "" ||
-      visaNotes === " " ||
-      rank === null ||
-      rank === "" ||
-      rank === " " ||
-      grade === null ||
-      grade === "" ||
-      grade === " " ||
-      guestIdentity === null ||
-      guestIdentity === "" ||
-      guestIdentity === " ";
+      passportVisaCheck === " ";
+    // passportVisaCheck == "Y" ?  visaType === null  : false||
+    // passportVisaCheck == "Y" ?  visaType === ""  : false||
+    // passportVisaCheck == "Y" ?  visaType === " "  : false||
+    // passportVisaCheck == "Y" ?  visaName === null  : false||
+    // passportVisaCheck == "Y" ?  visaName === ""  : false||
+    // passportVisaCheck == "Y" ?  visaName === " "  : false||
+    // passportVisaCheck == "Y" ?  visaNumber === null  : false||
+    // passportVisaCheck == "Y" ?  visaNumber === ""  : false||
+    // passportVisaCheck == "Y" ?  visaNumber === " "  : false||
+    // passportVisaCheck == "Y" ?  visaIssuedDate === null  : false||
+    // passportVisaCheck == "Y" ?  visaIssuedDate === ""  : false||
+    // passportVisaCheck == "Y" ?  visaIssuedDate === " "  : false||
+    // passportVisaCheck == "Y" ?  visaBeginDate === null  : false||
+    // passportVisaCheck == "Y" ?  visaBeginDate === ""  : false||
+    // passportVisaCheck == "Y" ?  visaBeginDate === " "  : false||
+    // passportVisaCheck == "Y" ?  visaExpirationDate === null  : false||
+    // passportVisaCheck == "Y" ?  visaExpirationDate === ""  : false||
+    // passportVisaCheck == "Y" ?  visaExpirationDate === " "  : false||
+    // passportVisaCheck == "Y" ?  visaStatus === null  : false||
+    // passportVisaCheck == "Y" ?  visaStatus === ""  : false||
+    // passportVisaCheck == "Y" ?  visaStatus === " "  : false||
+    // passportVisaCheck == "Y" ?  visaNotes === null  : false||
+    // passportVisaCheck == "Y" ?  visaNotes === ""  : false||
+    // passportVisaCheck == "Y" ?  visaNotes === " "  : false||
+    // rank === null ||
+    // rank === "" ||
+    // rank === " " ||
+    // grade === null ||
+    // grade === "" ||
+    // grade === " " ||
+    // guestIdentity === null ||
+    // guestIdentity === "" ||
+    // guestIdentity === " ";
     // console.log("_IsRequired ::::::::: ", _IsRequired);
     // console.log("add by account:", account);
+    console.log(validationStatus);
     setValidationStatus(_IsRequired);
     if (_IsRequired === false) {
       setIsRequired(false);
@@ -3000,8 +3011,8 @@ export const ProfileIndividual = (props) => {
   React.useEffect(() => {
     async function handlebutton() {
       if (props.action === "add") {
-        // console.log("_IsRequired", _IsRequired);
         console.log("action add", props.action);
+        console.log("validationStatus", validationStatus)
         // await props.handleRedirectToTableIndividual(false);
         if (validationStatus === false) {
           // await props.handleRedirectToTableIndividual(true);
@@ -3201,14 +3212,14 @@ export const ProfileIndividual = (props) => {
                                       <TextField
                                         error={
                                           detail.dataCheck == null ||
-                                          detail.dataCheck === "" ||
-                                          detail.dataCheck === " "
+                                            detail.dataCheck === "" ||
+                                            detail.dataCheck === " "
                                             ? true
                                             : false
                                         }
                                         helperText={
                                           detail.dataCheck == null ||
-                                          detail.dataCheck === ""
+                                            detail.dataCheck === ""
                                             ? `${detail.label} is Required`
                                             : false
                                         }
@@ -3229,7 +3240,7 @@ export const ProfileIndividual = (props) => {
                                           detail.select.defaultvalue
                                         }
                                         onChange={detail.handle}
-                                        // onBlur={handleValidation(detail.dataCheck)}
+                                      // onBlur={handleValidation(detail.dataCheck)}
                                       />
                                     ) : (
                                       <TextField
@@ -3249,7 +3260,7 @@ export const ProfileIndividual = (props) => {
                                           detail.select.defaultvalue
                                         }
                                         onChange={detail.handle}
-                                        // onBlur={handleValidation(detail.dataCheck)}
+                                      // onBlur={handleValidation(detail.dataCheck)}
                                       />
                                     ),
                                   ]
@@ -3271,14 +3282,14 @@ export const ProfileIndividual = (props) => {
                                     onChange={detail.handle}
                                     textOverflow="ellipsis"
 
-                                    // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
+                                  // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
                                   >
                                     {detail.select.data}
                                   </TextField>
                                 ) : detail.select.status === "check" ? (
                                   [
                                     detail.select.defaultvalue === "Y" ||
-                                    detail.select.defaultvalue === true ? (
+                                      detail.select.defaultvalue === true ? (
                                       <FormControlLabel
                                         control={
                                           <Checkbox

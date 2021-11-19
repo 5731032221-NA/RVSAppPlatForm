@@ -156,7 +156,7 @@ const family = [
   },
 ];
 
-export const ProfileTableCompany = (props) => {
+export const ProfileTableTA = (props) => {
 
   const [action, setAction] = React.useState("");
   const [editData, setEditData] = React.useState(" ");
@@ -223,10 +223,18 @@ export const ProfileTableCompany = (props) => {
   const handleGetTAProfile = async () => {
     const resp = await getTAProfile(sessionStorage.getItem("auth"));
     console.log(resp.content);
+    if(resp.status == "2000"){
+
+  
     if(resp.content[0].length > 0){
+
+      resp.content[0].forEach(function(part, index) {
+        this[index].citycountry = (this[index].city?this[index].city : "-")+"/"+(this[index].countrycode?this[index].countrycode :"-");
+      }, resp.content[0])
       setStatusprofile("moredata");
       setcompanyData(resp.content[0]);
     }
+  }
    
   }
 
@@ -241,6 +249,7 @@ export const ProfileTableCompany = (props) => {
   };
   const handleNewData = () => {
     // setAction("add")
+    setEditData(null)
     setStatusprofile("add");
   };
   const handleAddData = async (companyData) => {
@@ -356,20 +365,32 @@ export const ProfileTableCompany = (props) => {
               
             </Breadcrumbs>
           </Grid>
-          {statusprofile === "add" || statusprofile === "edit"  ? (
-          <Grid item xs={6} sm={2} md={2} style={{ paddingLeft: 1200 ,textAlign: "right" }}>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "gray", color: "white" }}
-              startIcon={<ClearIcon />}
-              onClick={() => setStatusprofile("moredata")}
-            >
-              Cancel
-            </Button>
-          </Grid>
-        ) : null}
+          {/* {statusprofile === "add" || statusprofile === "edit"  ? (
+            <Grid item xs={6} sm={2} md={2} style={{ paddingLeft: 1200 ,textAlign: "right" }}>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: "gray", color: "white" }}
+                startIcon={<ClearIcon />}
+                onClick={() => setStatusprofile("moredata")}
+              >
+                Cancel
+              </Button>
+            </Grid>
+          ) : null} */}
         {statusprofile === "add" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+          <Grid  container
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="center"
+         item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+            <Button
+                variant="contained"
+                style={{ backgroundColor: "gray", color: "white" }}
+                startIcon={<ClearIcon />}
+                onClick={() => setStatusprofile("moredata")}
+              >
+                Cancel
+              </Button>
             <Button
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
@@ -380,7 +401,17 @@ export const ProfileTableCompany = (props) => {
             </Button>
           </Grid>
         ) : statusprofile === "edit" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+          <Grid container direction="row"
+          justifyContent="space-evenly"
+          alignItems="center" item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+            <Button
+                variant="contained"
+                style={{ backgroundColor: "gray", color: "white" }}
+                startIcon={<ClearIcon />}
+                onClick={() => setStatusprofile("moredata")}
+              >
+                Cancel
+              </Button>
             <Button
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
@@ -389,14 +420,14 @@ export const ProfileTableCompany = (props) => {
             >
               Save
             </Button>
-            <Button
+            {/* <Button
               variant="contained"
               style={{ backgroundColor: "red", color: "white", marginLeft: 15 }}
               startIcon={<DeleteIcon />}
               onClick={() => handleDialogDeleteOpen()}
             >
               Delete
-            </Button>
+            </Button> */}
           </Grid>
         ) : statusprofile === "moredata" || statusprofile === "none"  ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
@@ -454,7 +485,7 @@ export const ProfileTableCompany = (props) => {
                     fullWidth
                     onClick={() => handleNewData()}
                   >
-                    Create New Travel Agent Profile
+                    Create New CompanyProfile
                   </Button>
                 </Grid> */}
               </Grid>
@@ -521,7 +552,7 @@ export const ProfileTableCompany = (props) => {
                   },
                   {
                     title: "City/Country",
-                    field: "countrycode",
+                    field: "citycountry",
                     headerStyle: headerTableStyle,
                   },
                   // {
@@ -531,7 +562,7 @@ export const ProfileTableCompany = (props) => {
                   // },
                   {
                     title: "Industry",
-                    field: "industry",
+                    field: "industrycode",
                     headerStyle: headerTableStyle,
                   },
                   {
@@ -548,10 +579,11 @@ export const ProfileTableCompany = (props) => {
                   actionsColumnIndex: -1,
                   //   page: page,
                   //   pageSize: rowsPerPage,
+                  pageSize:10,
                   pageSizeOptions: [
-                    5,
                     10,
                     20,
+                    30,
                     { value: companyData.length, label: "All" },
                   ],
                   headerStyle: headerTableStyle,
@@ -559,7 +591,13 @@ export const ProfileTableCompany = (props) => {
                     backgroundColor: themeState.paper,
                     color: themeState.color,
                     borderBottomColor: themeState.color,
-                    width: 230,
+                    width: 530,
+                  },
+                }}
+                localization={{
+                  toolbar: {
+                    searchPlaceholder:
+                      "Search by Name, www, City/Country, Industry, IATA",
                   },
                 }}
                 actions={[
@@ -662,7 +700,7 @@ export const ProfileTableCompany = (props) => {
                 alignItems="center"
                 spacing={4}
               >
-                <Grid item sm={6} md={6} lg={6} xl={6}>
+                <Grid  item sm={6} md={6} lg={6} xl={6}>
                   <Button
                     fullWidth
                     onClick={handleDialogDeleteClose}
@@ -704,4 +742,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProfileTableCompany);
+)(ProfileTableTA);

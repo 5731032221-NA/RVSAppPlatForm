@@ -168,6 +168,7 @@ export const ProfileTableTA = (props) => {
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
 
+
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
       setThemeState({
@@ -217,12 +218,20 @@ export const ProfileTableTA = (props) => {
   });
 
   React.useEffect( async() => {
+    if(action == "success"){
+      await handleGetTAProfile();
+      await setStatusprofile("moredata");
+      
+    }
+  },[action])
+
+
+  React.useEffect( async() => {
    await handleGetTAProfile();
   },[])
 
   const handleGetTAProfile = async () => {
     const resp = await getTAProfile(sessionStorage.getItem("auth"));
-    console.log(resp.content);
     if(resp.status == "2000"){
 
   
@@ -232,6 +241,7 @@ export const ProfileTableTA = (props) => {
         this[index].citycountry = (this[index].city?this[index].city : "-")+"/"+(this[index].countrycode?this[index].countrycode :"-");
       }, resp.content[0])
       setStatusprofile("moredata");
+      console.log("resp.content[0]:",resp.content[0]);
       setcompanyData(resp.content[0]);
     }
   }
@@ -247,34 +257,16 @@ export const ProfileTableTA = (props) => {
   const handleStatusProfile = () => {
     setStatusprofile();
   };
-  const handleNewData = () => {
-    // setAction("add")
-    setEditData(null)
-    setStatusprofile("add");
+  const handleNewData = async() => {
+    await  setAction("none")
+    await setEditData(null)
+    await setStatusprofile("add");
   };
   const handleAddData = async (companyData) => {
-    console.log("ok");
-    setAction("add")
-
-    console.log("companyData:",companyData);
-    if(action == "success"){
-      setStatusprofile("moredata");
-      await handleGetTAProfile()
-      // setcompanyData(companyData);
-    }
-   
+    await  setAction("add")
   };
   const handleAddDataEdit = async (companyData) => {
-    console.log("ok");
-    setAction("edit")
-
-    console.log("companyData:",companyData);
-    if(action == "success"){
-      setStatusprofile("moredata");
-      await handleGetTAProfile()
-      // setcompanyData(companyData);
-    }
-   
+    await setAction("edit")  
   };
 
 
@@ -282,20 +274,18 @@ export const ProfileTableTA = (props) => {
 
   const handleEditData = async (data) => {
     const resp = await getTAProfileById(sessionStorage.getItem("auth"),data.id);
-    console.log(resp);
-    setEditData(resp.content)
-    console.log("editData:",editData);
-    setStatusprofile("edit");
+    await setEditData(resp.content)
+    await setAction("none")
+    await setStatusprofile("edit");
   };
   const handleDeleteData = async () => {
     try {
       const resp = await deleteCompanyProfileById(sessionStorage.getItem("auth"),deleteData.id);
-      console.log("resp:",resp);
       if(resp.status == "2000"){
        await handleGetTAProfile()
       }
-      setStatusprofile("moredata");
-      setDialogDelete(false);
+      await setStatusprofile("moredata");
+      await setDialogDelete(false);
     } catch (error) {
       
     }
@@ -303,13 +293,12 @@ export const ProfileTableTA = (props) => {
   };
 
   const handleDialogDeleteOpen = async (id,name, www, city) => {
-    console.log("id:",id);
-    console.log("data : ",name, www, city);
-    setDeleteData({id:id, name: name, www: www, city: city });
-    setDialogDelete(true);
+  
+    await  setDeleteData({id:id, name: name, www: www, city: city });
+    await  setDialogDelete(true);
   };
-  const handleDialogDeleteClose = () => {
-    setDialogDelete(false);
+  const handleDialogDeleteClose = async () => {
+    await setDialogDelete(false);
   };
 
   return (
@@ -618,7 +607,9 @@ export const ProfileTableTA = (props) => {
                       handleDialogDeleteOpen(
                         rowData.id,
                         rowData.name,
+                        rowData.www,
                         rowData.city,
+                      
                       
                       );
                     },
