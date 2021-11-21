@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { connect, ReactReduxContext, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { connect, useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import { blue, green, yellow } from "@material-ui/core/colors";
+import { makeStyles } from "@material-ui/core/styles";
+import { blue } from "@material-ui/core/colors";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
-import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import InstagramIcon from "@material-ui/icons/Instagram";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
-import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+// import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
+// import FacebookIcon from "@material-ui/icons/Facebook";
+// import InstagramIcon from "@material-ui/icons/Instagram";
+// import TwitterIcon from "@material-ui/icons/Twitter";
+// import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
+// import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import { optioncountry } from "../../static/country.js";
 import { optionnationality } from "../../static/nationality";
 import Switch from "@material-ui/core/Switch";
@@ -26,8 +24,6 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { getconfigurationbypropertycode } from "../../services/user.service";
 import {
@@ -492,6 +488,28 @@ export const ProfileIndividual = (props) => {
 
   const pageProperty = useSelector((state) => state.reducer.property);
 
+  // const handDateChangeBorderCrossingEntryDate = (newDate) => {
+  //   setborderCrossingEntryDate(newDate);
+  // };
+  // const handDateChangeDateOfBirth = (newDate) => {
+  //   setDateOfBirth(newDate);
+  // };
+  // const handDateChangesetIDIssuedDate = (newDate) => {
+  //   setIDIssuedDate(newDate);
+  // };
+  // const handDateChangeIDExpirationDate = (newDate) => {
+  //   IDExpirationDate(newDate);
+  // };
+  // const handDateChangeVisaIssuedDate = (newDate) => {
+  //   setVisaIssuedDate(newDate);
+  // };
+  // const handDateChangeVisaBeginDate = (newDate) => {
+  //   setVisaBeginDate(newDate);
+  // };
+  // const handDateChangeVisaExpirationDate = (newDate) => {
+  //   setVisaExpirationDate(newDate);
+  // };
+
   const [communicationDatas, setCommunicationDatas] = React.useState({});
   const [relationDatas, setRelationDatas] = React.useState({});
   async function getlist(config, field) {
@@ -586,7 +604,7 @@ export const ProfileIndividual = (props) => {
                   key={option.value}
                   value={option.value}
                   selected={option.label == element.communication}
-                // defaultValue={element.communication}
+                  // defaultValue={element.communication}
                 >
                   {option.label}
                 </option>
@@ -716,7 +734,7 @@ export const ProfileIndividual = (props) => {
                   key={option.value}
                   value={option.value}
                   selected={option.label == commu[key - 1]}
-                // defaultValue={element.communication}
+                  // defaultValue={element.communication}
                 >
                   {option.label}
                 </option>
@@ -753,8 +771,8 @@ export const ProfileIndividual = (props) => {
       for (var key in rela) {
         if (key % 3 == 0) {
           const relaid1 = relationid;
-        const relaid2 = relationid + 1;
-        const relaid3 = relationid + 2;
+          const relaid2 = relationid + 1;
+          const relaid3 = relationid + 2;
           getrelation.push({
             id: relaid1,
             label: "Name Type",
@@ -1065,7 +1083,13 @@ export const ProfileIndividual = (props) => {
             xs: 4,
             select: {
               status: "option",
-              data: [{ label: "Buddhism", value: "Buddhism" }, { label: "Judaism", value: "Judaism" }, { label: "Christianity", value: "Christianity" }, { label: "Islam", value: "Islam" }, { label: "Hinduism", value: "Hinduism" }].map((option) => (
+              data: [
+                { label: "Buddhism", value: "Buddhism" },
+                { label: "Judaism", value: "Judaism" },
+                { label: "Christianity", value: "Christianity" },
+                { label: "Islam", value: "Islam" },
+                { label: "Hinduism", value: "Hinduism" },
+              ].map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -2521,13 +2545,13 @@ export const ProfileIndividual = (props) => {
       );
       setRelationDatas((prev) => ({
         ...prev,
-        [newid + 1]: "",
-        [newid + 2]: optionrelation[0].label,
+        [newid + 1]: optionrelation[0].label,
+        [newid + 2]: "",
         [newid + 3]: "",
       }));
 
       relation.content.push({
-        id: newid + 2,
+        id: newid + 1,
         label: "Name Type",
         xl: 2,
         md: 2,
@@ -2547,12 +2571,12 @@ export const ProfileIndividual = (props) => {
         handle: (e) =>
           setRelationDatas((prev) => ({
             ...prev,
-            [newid + 2]: e.target.value,
+            [newid + 1]: e.target.value,
           })),
       });
 
       relation.content.push({
-        id: newid + 1,
+        id: newid + 2,
         label: "Name",
         xl: 4,
         md: 4,
@@ -2564,7 +2588,7 @@ export const ProfileIndividual = (props) => {
         handle: (e) =>
           setRelationDatas((prev) => ({
             ...prev,
-            [newid + 1]: e.target.value,
+            [newid + 2]: e.target.value,
           })),
       });
       relation.content.push({
@@ -3012,7 +3036,7 @@ export const ProfileIndividual = (props) => {
     async function handlebutton() {
       if (props.action === "add") {
         console.log("action add", props.action);
-        console.log("validationStatus", validationStatus)
+        console.log("validationStatus", validationStatus);
         // await props.handleRedirectToTableIndividual(false);
         if (validationStatus === false) {
           // await props.handleRedirectToTableIndividual(true);
@@ -3204,7 +3228,7 @@ export const ProfileIndividual = (props) => {
                                     }}
                                     fullWidth
                                     defaultValue={detail.select.defaultvalue}
-                                    onChange={detail.handle}
+                                    onBlur={detail.handle}
                                   />
                                 ) : detail.select.status === "fill" ? (
                                   [
@@ -3212,14 +3236,14 @@ export const ProfileIndividual = (props) => {
                                       <TextField
                                         error={
                                           detail.dataCheck == null ||
-                                            detail.dataCheck === "" ||
-                                            detail.dataCheck === " "
+                                          detail.dataCheck === "" ||
+                                          detail.dataCheck === " "
                                             ? true
                                             : false
                                         }
                                         helperText={
                                           detail.dataCheck == null ||
-                                            detail.dataCheck === ""
+                                          detail.dataCheck === ""
                                             ? `${detail.label} is Required`
                                             : false
                                         }
@@ -3239,8 +3263,8 @@ export const ProfileIndividual = (props) => {
                                         defaultValue={
                                           detail.select.defaultvalue
                                         }
-                                        onChange={detail.handle}
-                                      // onBlur={handleValidation(detail.dataCheck)}
+                                        onBlur={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
                                       />
                                     ) : (
                                       <TextField
@@ -3259,8 +3283,8 @@ export const ProfileIndividual = (props) => {
                                         defaultValue={
                                           detail.select.defaultvalue
                                         }
-                                        onChange={detail.handle}
-                                      // onBlur={handleValidation(detail.dataCheck)}
+                                        //onChange={detail.handle}
+                                        onBlur={detail.handle}
                                       />
                                     ),
                                   ]
@@ -3282,14 +3306,14 @@ export const ProfileIndividual = (props) => {
                                     onChange={detail.handle}
                                     textOverflow="ellipsis"
 
-                                  // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
+                                    // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
                                   >
                                     {detail.select.data}
                                   </TextField>
                                 ) : detail.select.status === "check" ? (
                                   [
                                     detail.select.defaultvalue === "Y" ||
-                                      detail.select.defaultvalue === true ? (
+                                    detail.select.defaultvalue === true ? (
                                       <FormControlLabel
                                         control={
                                           <Checkbox
