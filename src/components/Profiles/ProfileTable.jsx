@@ -259,6 +259,7 @@ export const ProfileTable = (props) => {
     console.log("Table page :: ", props.RedirectToTableIndividual);
     if (props.RedirectToTableIndividual) {
       await handleReloadTable();
+      await handleReloadTable();
     }
   };
 
@@ -266,6 +267,8 @@ export const ProfileTable = (props) => {
     await setTriggerButton(!triggerButton);
     await setAction("none");
     console.log("triggerButton :: ", triggerButton);
+    await props.handleRedirectToTableIndividual(false);
+
     let individualdata = await getIndividualProfileById(
       sessionStorage.getItem("auth"),
       rowData.nameid
@@ -349,6 +352,12 @@ export const ProfileTable = (props) => {
     await setIndividualData(_individualData);
     await setStatusprofile("moredata");
   };
+
+  React.useEffect(() => {
+    if (statusprofile === "moredata") {
+      handleReloadTable();
+    }
+  }, [statusprofile]);
 
   //initial data to table
   React.useEffect(() => {
@@ -668,7 +677,7 @@ export const ProfileTable = (props) => {
                   actionsColumnIndex: -1,
                   //   page: page,
                   //   pageSize: rowsPerPage,
-                  pageSize:10,
+                  pageSize: 10,
                   pageSizeOptions: [
                     10,
                     20,
