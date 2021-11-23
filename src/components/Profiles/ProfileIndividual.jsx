@@ -1274,7 +1274,7 @@ export const ProfileIndividual = (props) => {
 
             handle: (e) => setOrganization(e.target.value),
             dataType: "string",
-            dataCheck: organization,
+            dataCheck: true,
           },
           {
             id: 2,
