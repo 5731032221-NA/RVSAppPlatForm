@@ -36,10 +36,6 @@ import {
   DateRangePicker,
 } from "@material-ui/pickers";
 
-// const dataEvent = [
-//   { id: 1, title: "ROOM8050", start: "2021-09-15", end: "2021-09-17" },
-//   { id: 2, title: "ROOM8050", start: "2021-09-20", end: "2021-09-25" },
-// ];
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {

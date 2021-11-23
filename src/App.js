@@ -4,20 +4,16 @@ import Property from "./pages/Property";
 import Main from "./pages/Main";
 import UserList from "./pages/TestUserListPage";
 import ForgotPass from "./components/Forgotpass";
-// import reducer from "./middleware/reducer";
-import { createStore, applyMiddleware } from "redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
-// import thunk from "redux-thunk";
 import configureStore from "./middleware/store";
-import React, { useState, useContext } from "react";
-import useToken from "./middleware/useToken";
-import useProperty from "./middleware/useProperty";
+import React, { useState } from "react";
+import UseToken from "./middleware/useToken";
+import UseProperty from "./middleware/useProperty";
 
 import propertypermission from "./services/propertypermission.service";
 import {
   EDIT_PROPERTY,
-  EDIT_COMPONENT,
   EDIT_INDEXTAB,
   EDIT_PERMISSION,
 } from "./middleware/action";
@@ -33,36 +29,15 @@ import UserManagement from "./pages/configurations/UserManagement";
 import DeviceManager from "./pages/configurations/DeviceManager";
 import ComputerPrinter from "./pages/configurations/ComputerPrinter";
 import RoomManagement from "./pages/configurations/RoomManagement";
-import GenericNotFound from "./pages/GenericNotFound";
-import DashboardDetail from "./components/Dashboard/DashboardDetail";
 import ProfilePage from "./pages/ProfilePage";
 import ProfileTableCompany from "./components/Profiles/ProfileTableCompany";
 import ProfileTableTravelAgent from "./components/Profiles/ProfileTableTravelAgent";
 import ProfilePageTable from "./components/Profiles/ProfileTable";
 
-// import ProfilePageIndividual from "./components/ProfileIndividual";
-// import ProfilePageTravelAgent from "./components/ProfileTravelAgent";
-// import ProfilePageCompany from "./components/ProfileCompany";
-// import useAuthorization from "./middleware/useAuthorization";
-// import useLang from "./middleware/useLang";
-// import useTheme from "./middleware/useTheme";
-// import en_lang from "./static/lang/en.json";
-// import th_lang from "./static/lang/th.json";
-
-// function setToken(userToken) {
-//   sessionStorage.setItem('token', JSON.stringify(userToken));
-// }
-
-// function setHeader(tokenParsed) {
-//   sessionStorage.setItem('Authorization', tokenParsed);
-// }
-
-// import configureStore from "./middleware/configureStore"
-// const { store } = configureStore();\
 
 function App() {
-  const { token, setToken } = useToken();
-  const { property, setProperty } = useProperty();
+  const { token, setToken } = UseToken();
+  const { property, setProperty } = UseProperty();
   const [store, setStore] = useState(configureStore());
   const [selectedProperty, setSelectedProperty] = useState(null);
 
@@ -111,10 +86,6 @@ function App() {
       type: EDIT_INDEXTAB,
       payload: ind,
     });
-    // store.dispatch({
-    //     type: EDIT_COMPONENT,
-    //     payload: comp
-    // })
   }
 
   return (
@@ -127,16 +98,10 @@ function App() {
       ) : (
         <BrowserRouter>
           {" "}
-          {/* <Leftbar /> */}{" "}
           <Switch>
             <Route exact path="/signin" component={SignIn} />{" "}
             <Route exact path="/forgotpassword" component={ForgotPass} />{" "}
             <Route exact path="/userlist" component={UserList} />{" "}
-            {/* <Route
-              path="/"
-              component={Main}
-              style={{ backgroundColor: "black" }}
-            />{" "} */}
             <Main>
               <Route exact path={`/`} component={Dashboard} />{" "}
               <Route path={`/frontdesk`} component={FrontDesk} />{" "}
@@ -157,11 +122,8 @@ function App() {
                 path={`/profilepagecompany`}
                 component={ProfileTableCompany}
               />{" "}
-              {/* <Route  component={GenericNotFound} /> */}
             </Main>
-            {/* <Route component={ErrorPage} /> */}{" "}
           </Switch>{" "}
-          {/* <Header store={store} /> */}{" "}
         </BrowserRouter>
       )}
     </Provider>

@@ -1,13 +1,9 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
-  YAxis,
-  CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -64,14 +60,7 @@ export default function ArrivalBarChart() {
         height={300}
         data={data}
         barSize={20}
-        // margin={{
-        //   top: 20,
-        //   right: 30,
-        //   left: 20,
-        //   bottom: 5,
-        // }}
       >
-        {/* <CartesianGrid strokeDasharray="3 3" /> */}
         <XAxis dataKey="name" />
         <Tooltip />
         <Bar
