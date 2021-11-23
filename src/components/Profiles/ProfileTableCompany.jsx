@@ -4,7 +4,7 @@ import { nextComponent } from "../../middleware/action";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import { blue, green, yellow } from "@material-ui/core/colors";
-import ClearIcon from '@material-ui/icons/Clear';
+import ClearIcon from "@material-ui/icons/Clear";
 
 import {
   Container,
@@ -33,8 +33,9 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import SearchIcon from '@material-ui/icons/Search';
-
+import SearchIcon from "@material-ui/icons/Search";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   getCompanyProfile,
   getCompanyProfileById,
@@ -157,7 +158,6 @@ const family = [
 ];
 
 export const ProfileTableCompany = (props) => {
-
   const [action, setAction] = React.useState("");
   const [editData, setEditData] = React.useState(" ");
   const [themeState, setThemeState] = React.useState({
@@ -167,7 +167,6 @@ export const ProfileTableCompany = (props) => {
     colorlevel: "900",
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
-
 
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
@@ -202,6 +201,25 @@ export const ProfileTableCompany = (props) => {
 
   const classes = useStyles(themeState);
 
+  const theme = useTheme();
+  const smUp = useMediaQuery(theme.breakpoints.up("sm"));
+
+  let customStyle = {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+  };
+
+  if (smUp) {
+    customStyle = {
+      ...customStyle,
+      width: "54ch",
+      // color: "red",
+    };
+  }
+
   const headerTableStyle = {
     backgroundColor: themeState.paper,
     color: themeState.color,
@@ -217,38 +235,33 @@ export const ProfileTableCompany = (props) => {
     lastname: "lastname",
   });
 
-  React.useEffect( async() => {
-    if(action == "success"){
+  React.useEffect(async () => {
+    if (action == "success") {
       await handleGetCompanyProfile();
       await setStatusprofile("moredata");
-      
     }
-  },[action])
+  }, [action]);
 
-
-  React.useEffect( async() => {
-   await handleGetCompanyProfile();
-  },[])
+  React.useEffect(async () => {
+    await handleGetCompanyProfile();
+  }, []);
 
   const handleGetCompanyProfile = async () => {
     const resp = await getCompanyProfile(sessionStorage.getItem("auth"));
-    if(resp.status == "2000"){
-
-  
-    if(resp.content[0].length > 0){
-
-      resp.content[0].forEach(function(part, index) {
-        this[index].citycountry = (this[index].city?this[index].city : "-")+"/"+(this[index].countrycode?this[index].countrycode :"-");
-      }, resp.content[0])
-      setStatusprofile("moredata");
-      console.log("resp.content[0]:",resp.content[0]);
-      setcompanyData(resp.content[0]);
+    if (resp.status == "2000") {
+      if (resp.content[0].length > 0) {
+        resp.content[0].forEach(function (part, index) {
+          this[index].citycountry =
+            (this[index].city ? this[index].city : "-") +
+            "/" +
+            (this[index].countrycode ? this[index].countrycode : "-");
+        }, resp.content[0]);
+        setStatusprofile("moredata");
+        console.log("resp.content[0]:", resp.content[0]);
+        setcompanyData(resp.content[0]);
+      }
     }
-  }
-   
-  }
-
- 
+  };
 
   const handleComponentState = async (comp) => {
     console.log("setcomp", comp);
@@ -257,46 +270,47 @@ export const ProfileTableCompany = (props) => {
   const handleStatusProfile = () => {
     setStatusprofile();
   };
-  const handleNewData = async() => {
-    await  setAction("none")
-    await setEditData(null)
+  const handleNewData = async () => {
+    await setAction("none");
+    await setEditData(null);
     await setStatusprofile("add");
   };
   const handleAddData = async (companyData) => {
-    await  setAction("add")
+    await setAction("add");
   };
   const handleAddDataEdit = async (companyData) => {
-    await setAction("edit")  
+    await setAction("edit");
   };
-
-
-
 
   const handleEditData = async (data) => {
-    const resp = await getCompanyProfileById(sessionStorage.getItem("auth"),data.id);
-    await setEditData(resp.content)
-    await setAction("none")
+    const resp = await getCompanyProfileById(
+      sessionStorage.getItem("auth"),
+      data.id
+    );
+    await setEditData(resp.content);
+    await setAction("none");
     await setStatusprofile("edit");
   };
+
   const handleDeleteData = async () => {
     try {
-      const resp = await deleteCompanyProfileById(sessionStorage.getItem("auth"),deleteData.id);
-      if(resp.status == "2000"){
-       await handleGetCompanyProfile()
+      const resp = await deleteCompanyProfileById(
+        sessionStorage.getItem("auth"),
+        deleteData.id
+      );
+      if (resp.status == "2000") {
+        await handleGetCompanyProfile();
       }
       await setStatusprofile("moredata");
       await setDialogDelete(false);
-    } catch (error) {
-      
-    }
-  
+    } catch (error) {}
   };
 
-  const handleDialogDeleteOpen = async (id,name, www, city) => {
-  
-    await  setDeleteData({id:id, name: name, www: www, city: city });
-    await  setDialogDelete(true);
+  const handleDialogDeleteOpen = async (id, name, www, city) => {
+    await setDeleteData({ id: id, name: name, www: www, city: city });
+    await setDialogDelete(true);
   };
+
   const handleDialogDeleteClose = async () => {
     await setDialogDelete(false);
   };
@@ -312,49 +326,52 @@ export const ProfileTableCompany = (props) => {
       }}
     >
       <Grid container style={{ paddingLeft: 25, paddingRight: 25 }}>
-      <Grid item xs={6} sm={10} md={10} lg={10} style={{ flexGrow: 1 }}>
-            <Breadcrumbs
-              separator={
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 20,
-                    color: themeState.color,
-                  }}
-                >
-                  /
-                </Typography>
-              }
-            >
-              <Link
-                color="inherit"
-                href="#"
-                onClick={() => handleComponentState("Configuration")}
+        <Grid item xs={6} sm={10} md={10} lg={10} style={{ flexGrow: 1 }}>
+          <Breadcrumbs
+            separator={
+              <Typography
+                variant="h6"
+                style={{
+                  marginBottom: 15,
+                  fontSize: 20,
+                  color: themeState.color,
+                }}
               >
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
-                >
-                  Profiles
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={() => setStatusprofile("moredata")}>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  Company
-                </Typography>
-              </Link>
-              
-            </Breadcrumbs>
-          </Grid>
-          {/* {statusprofile === "add" || statusprofile === "edit"  ? (
+                /
+              </Typography>
+            }
+          >
+            <Link
+              color="inherit"
+              href="#"
+              onClick={() => handleComponentState("Configuration")}
+            >
+              <Typography
+                variant="h6"
+                style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
+              >
+                Profiles
+              </Typography>
+            </Link>
+            <Link
+              color="inherit"
+              href="#"
+              onClick={() => setStatusprofile("moredata")}
+            >
+              <Typography
+                variant="h6"
+                style={{
+                  marginBottom: 15,
+                  fontSize: 14,
+                  color: themeState.color,
+                }}
+              >
+                Company
+              </Typography>
+            </Link>
+          </Breadcrumbs>
+        </Grid>
+        {/* {statusprofile === "add" || statusprofile === "edit"  ? (
             <Grid item xs={6} sm={2} md={2} style={{ paddingLeft: 1200 ,textAlign: "right" }}>
               <Button
                 variant="contained"
@@ -367,19 +384,25 @@ export const ProfileTableCompany = (props) => {
             </Grid>
           ) : null} */}
         {statusprofile === "add" ? (
-          <Grid  container
-          direction="row"
-          justifyContent="space-evenly"
-          alignItems="center"
-         item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+            item
+            xs={6}
+            sm={2}
+            md={2}
+            style={{ textAlign: "right" }}
+          >
             <Button
-                variant="contained"
-                style={{ backgroundColor: "gray", color: "white" }}
-                startIcon={<ClearIcon />}
-                onClick={() => setStatusprofile("moredata")}
-              >
-                Cancel
-              </Button>
+              variant="contained"
+              style={{ backgroundColor: "gray", color: "white" }}
+              startIcon={<ClearIcon />}
+              onClick={() => setStatusprofile("moredata")}
+            >
+              Cancel
+            </Button>
             <Button
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
@@ -390,17 +413,25 @@ export const ProfileTableCompany = (props) => {
             </Button>
           </Grid>
         ) : statusprofile === "edit" ? (
-          <Grid container direction="row"
-          justifyContent="space-evenly"
-          alignItems="center" item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+            item
+            xs={6}
+            sm={2}
+            md={2}
+            style={{ textAlign: "right" }}
+          >
             <Button
-                variant="contained"
-                style={{ backgroundColor: "gray", color: "white" }}
-                startIcon={<ClearIcon />}
-                onClick={() => setStatusprofile("moredata")}
-              >
-                Cancel
-              </Button>
+              variant="contained"
+              style={{ backgroundColor: "gray", color: "white" }}
+              startIcon={<ClearIcon />}
+              onClick={() => setStatusprofile("moredata")}
+            >
+              Cancel
+            </Button>
             <Button
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
@@ -418,7 +449,7 @@ export const ProfileTableCompany = (props) => {
               Delete
             </Button> */}
           </Grid>
-        ) : statusprofile === "moredata" || statusprofile === "none"  ? (
+        ) : statusprofile === "moredata" || statusprofile === "none" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
@@ -432,7 +463,11 @@ export const ProfileTableCompany = (props) => {
         ) : null}
       </Grid>
       {statusprofile === "edit" || statusprofile === "add" ? (
-        <ProfileCompany editdata={editData} action={action} setAction={setAction} />
+        <ProfileCompany
+          editdata={editData}
+          action={action}
+          setAction={setAction}
+        />
       ) : (
         [
           companyData == null ? (
@@ -482,46 +517,50 @@ export const ProfileTableCompany = (props) => {
           ) : (
             <Container maxWidth="xl">
               <MaterialTable
-               localization={{
-                body: {
-                  emptyDataSourceMessage: <>   <Typography
-                    variant="h1"
-                    align="center"
-                    style={{ fontSize: 25, color: themeState.color }}
-                  >
-                    <ErrorOutlineOutlinedIcon
-                      style={{ fontSize: 100, color: "lightgray" }}
-                    />
-                  </Typography>
-                    <Typography
-                      align="center"
-                      variant="h2"
-                      style={{
-                        fontWeight: 400,
-                        fontSize: 30,
-                        color: "rgb(0 0 0 / 47%)",
-                        marginBottom: 20,
-                      }}
-                    >
-                      No Data Available
-                    </Typography>
-                    <Grid item>
-                      <Button
-                        startIcon={<AddOutlinedIcon />}
-                        size="large"
-                        variant="contained"
-                        color="primary"
-                        // style={{ padding: 13 }}
-                        // fullWidth
-                        // onClick={() => setCreateindividual(true)}
-                        onClick={() => handleNewData()}
-                      >
-                       New CompanyProfile
-                      </Button>
-                    </Grid>
-                  </>
-                }
-              }}
+                localization={{
+                  body: {
+                    emptyDataSourceMessage: (
+                      <>
+                        {" "}
+                        <Typography
+                          variant="h1"
+                          align="center"
+                          style={{ fontSize: 25, color: themeState.color }}
+                        >
+                          <ErrorOutlineOutlinedIcon
+                            style={{ fontSize: 100, color: "lightgray" }}
+                          />
+                        </Typography>
+                        <Typography
+                          align="center"
+                          variant="h2"
+                          style={{
+                            fontWeight: 400,
+                            fontSize: 30,
+                            color: "rgb(0 0 0 / 47%)",
+                            marginBottom: 20,
+                          }}
+                        >
+                          No Data Available
+                        </Typography>
+                        <Grid item>
+                          <Button
+                            startIcon={<AddOutlinedIcon />}
+                            size="large"
+                            variant="contained"
+                            color="primary"
+                            // style={{ padding: 13 }}
+                            // fullWidth
+                            // onClick={() => setCreateindividual(true)}
+                            onClick={() => handleNewData()}
+                          >
+                            New CompanyProfile
+                          </Button>
+                        </Grid>
+                      </>
+                    ),
+                  },
+                }}
                 style={{
                   paddingLeft: 30,
                   paddingRight: 30,
@@ -535,7 +574,12 @@ export const ProfileTableCompany = (props) => {
                     headerStyle: headerTableStyle,
                   },
                   {
-                    title: "www",
+                    title: "Abbreviation",
+                    field: "abbreviation",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "WWW",
                     field: "www",
                     headerStyle: headerTableStyle,
                   },
@@ -544,11 +588,7 @@ export const ProfileTableCompany = (props) => {
                     field: "citycountry",
                     headerStyle: headerTableStyle,
                   },
-                  // {
-                  //   title: "Next Stay",
-                  //   field: "nextstay",
-                  //   headerStyle: headerTableStyle,
-                  // },
+
                   {
                     title: "Industry",
                     field: "industrycode",
@@ -558,7 +598,7 @@ export const ProfileTableCompany = (props) => {
                     title: "IATA",
                     field: "iata",
                     headerStyle: headerTableStyle,
-                  }
+                  },
                 ]}
                 data={companyData}
                 options={{
@@ -568,7 +608,7 @@ export const ProfileTableCompany = (props) => {
                   actionsColumnIndex: -1,
                   //   page: page,
                   //   pageSize: rowsPerPage,
-                  pageSize:10,
+                  pageSize: 10,
                   pageSizeOptions: [
                     10,
                     20,
@@ -576,12 +616,14 @@ export const ProfileTableCompany = (props) => {
                     { value: companyData.length, label: "All" },
                   ],
                   headerStyle: headerTableStyle,
-                  searchFieldStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                    borderBottomColor: themeState.color,
-                    width: 530,
-                  },
+                  // searchFieldStyle: {
+                  //   backgroundColor: themeState.paper,
+                  //   color: themeState.color,
+                  //   borderBottomColor: themeState.color,
+                  //   width: 530,
+
+                  // },
+                  searchFieldStyle: customStyle,
                 }}
                 localization={{
                   toolbar: {
@@ -590,7 +632,6 @@ export const ProfileTableCompany = (props) => {
                   },
                 }}
                 actions={[
-               
                   {
                     icon: "edit",
                     iconProps: { style: { color: themeState.color } },
@@ -608,9 +649,7 @@ export const ProfileTableCompany = (props) => {
                         rowData.id,
                         rowData.name,
                         rowData.www,
-                        rowData.city,
-                      
-                      
+                        rowData.city
                       );
                     },
                   },
@@ -691,7 +730,7 @@ export const ProfileTableCompany = (props) => {
                 alignItems="center"
                 spacing={4}
               >
-                <Grid  item sm={6} md={6} lg={6} xl={6}>
+                <Grid item sm={6} md={6} lg={6} xl={6}>
                   <Button
                     fullWidth
                     onClick={handleDialogDeleteClose}

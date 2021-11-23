@@ -81,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
         // borderColor: themeState.color,
+        // backgroundColor:"grey.500",
         borderColor: "grey.500",
         color: themeState.color,
       },
@@ -382,6 +383,8 @@ export const ProfileCompany = (props) => {
   const [Postal, setPostal] = React.useState(
     props.editdata != null ? props.editdata[0].postalcode : 0
   );
+  const [sameasaddress, setsameasaddress] = React.useState(false);
+
   const [BStreetAddress, setBStreetAddress] = React.useState(
     props.editdata != null ? props.editdata[0].billingaddress : ""
   );
@@ -442,7 +445,8 @@ export const ProfileCompany = (props) => {
     props.editdata != null ? props.editdata[0].ratecontractcode : ""
   );
   const [negotiatedratesonly, setnegotiatedratesonly] = React.useState(
-    props.editdata != null ? props.editdata[0].negotiatedratesonly : false);
+    props.editdata != null ? props.editdata[0].negotiatedratesonly : false
+  );
 
   const [communicationDatas, setCommunicationDatas] = React.useState({});
 
@@ -451,11 +455,11 @@ export const ProfileCompany = (props) => {
   const [relationDatas, setRelationDatas] = React.useState({});
   const [isRequired, setIsRequired] = React.useState(false);
 
-
   const [list, setList] = React.useState([]);
   React.useEffect(() => {
     async function getconfig() {
       updateList();
+      console.log("list:", list);
     }
     getconfig();
   }, []);
@@ -482,7 +486,6 @@ export const ProfileCompany = (props) => {
   //   }),
   // });
 
-
   async function updateList() {
     let commu = JSON.parse(JSON.stringify(communicationDatas));
     let rela = JSON.parse(JSON.stringify(relationDatas));
@@ -490,9 +493,12 @@ export const ProfileCompany = (props) => {
     let getcomunication = [];
     let getrelation = [];
     console.log("demostate");
-    if (props.editdata != null && Object.keys(commu).length === 0 && Object.keys(rela).length === 0) {
-
-      console.log("props.editdata", props.editdata)
+    if (
+      props.editdata != null &&
+      Object.keys(commu).length === 0 &&
+      Object.keys(rela).length === 0
+    ) {
+      console.log("props.editdata", props.editdata);
       let getCommunications = await getCompanyProfileCommunication(
         sessionStorage.getItem("auth"),
         props.editdata[0].id
@@ -501,21 +507,21 @@ export const ProfileCompany = (props) => {
         sessionStorage.getItem("auth"),
         props.editdata[0].id
       );
-      console.log("getCommunications.contents", getCommunications.contents)
+      console.log("getCommunications.contents", getCommunications.contents);
       let count = 1;
       getCommunications.contents[0].forEach((element) => {
         const commuid1 = count;
         const commuid2 = count + 1;
         if (element.communication == "email") {
-          getCommunicationsDatas.email = element.value
+          getCommunicationsDatas.email = element.value;
         } else if (element.communication == "mobile") {
-          getCommunicationsDatas.mobile = element.value
+          getCommunicationsDatas.mobile = element.value;
         } else {
-          setCommunicationDatas(prev => ({
+          setCommunicationDatas((prev) => ({
             ...prev,
             [count]: element.communication,
-            [count + 1]: element.value
-          }))
+            [count + 1]: element.value,
+          }));
           getcomunication.push({
             id: commuid1,
             label: "Choose a communication",
@@ -530,17 +536,17 @@ export const ProfileCompany = (props) => {
                   key={option.value}
                   value={option.value}
                   selected={option.value == element.communication}
-                // defaultValue={element.communication}
+                  // defaultValue={element.communication}
                 >
                   {option.label}
                 </option>
               )),
             },
-            handle: (e) => setCommunicationDatas(prev => ({
-              ...prev,
-              [commuid1]: e.target.value
-            })),
-
+            handle: (e) =>
+              setCommunicationDatas((prev) => ({
+                ...prev,
+                [commuid1]: e.target.value,
+              })),
           });
           getcomunication.push({
             id: commuid2,
@@ -551,30 +557,30 @@ export const ProfileCompany = (props) => {
             select: {
               status: "fillnolabel",
               data: "",
-              defaultvalue: element.value
+              defaultvalue: element.value,
             },
-            handle: (e) => setCommunicationDatas(prev => ({
-              ...prev,
-              [commuid2]: e.target.value
-            })),
+            handle: (e) =>
+              setCommunicationDatas((prev) => ({
+                ...prev,
+                [commuid2]: e.target.value,
+              })),
           });
           count = count + 2;
         }
-      }
-      );
+      });
       let relationid = 1;
-      console.log(getRelations.contents[0])
+      console.log(getRelations.contents[0]);
 
       getRelations.contents[0].forEach((element) => {
         const relaid1 = relationid;
         const relaid2 = relationid + 1;
         const relaid3 = relationid + 2;
-        setRelationDatas(prev => ({
+        setRelationDatas((prev) => ({
           ...prev,
           [relationid + 1]: element.relation,
           [relationid]: element.value,
-          [relationid + 2]: element.note
-        }))
+          [relationid + 2]: element.note,
+        }));
         getrelation.push({
           id: relaid2,
           label: "Name Type",
@@ -594,10 +600,11 @@ export const ProfileCompany = (props) => {
               </option>
             )),
           },
-          handle: (e) => setRelationDatas(prev => ({
-            ...prev,
-            [relaid2]: e.target.value
-          }))
+          handle: (e) =>
+            setRelationDatas((prev) => ({
+              ...prev,
+              [relaid2]: e.target.value,
+            })),
         });
         getrelation.push({
           id: relaid1,
@@ -608,13 +615,13 @@ export const ProfileCompany = (props) => {
           select: {
             status: "fill",
             data: "",
-            defaultvalue: element.value
+            defaultvalue: element.value,
           },
-          handle: (e) => setRelationDatas(prev => ({
-            ...prev,
-            [relaid1]: e.target.value
-          })),
-
+          handle: (e) =>
+            setRelationDatas((prev) => ({
+              ...prev,
+              [relaid1]: e.target.value,
+            })),
         });
         getrelation.push({
           id: relaid3,
@@ -625,22 +632,21 @@ export const ProfileCompany = (props) => {
           select: {
             status: "fill",
             data: "",
-            defaultvalue: element.note
+            defaultvalue: element.note,
           },
-          handle: (e) => setRelationDatas(prev => ({
-            ...prev,
-            [relaid3]: e.target.value
-          }))
+          handle: (e) =>
+            setRelationDatas((prev) => ({
+              ...prev,
+              [relaid3]: e.target.value,
+            })),
         });
         relationid = relationid + 3;
-      }
-      );
-      console.log("getrelation", getrelation)
-
+      });
+      console.log("getrelation", getrelation);
     } else {
-      let count = 3
-      console.log("commu", commu)
-      console.log("rela", rela)
+      let count = 3;
+      console.log("commu", commu);
+      console.log("rela", rela);
       for (var key in commu) {
         if (key % 2 == 0) {
           const commuid1 = count;
@@ -659,7 +665,7 @@ export const ProfileCompany = (props) => {
                   key={option.value}
                   value={option.value}
                   selected={option.label == commu[key - 1]}
-                // defaultValue={element.communication}
+                  // defaultValue={element.communication}
                 >
                   {option.label}
                 </option>
@@ -760,7 +766,6 @@ export const ProfileCompany = (props) => {
           relationid = relaid3;
         }
       }
-
     }
 
     setList([
@@ -778,7 +783,8 @@ export const ProfileCompany = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: props.editdata != null ? props.editdata[0].name : "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].name : "",
             },
             handle: (e) => setnameOne(e.target.value),
             dataType: "string",
@@ -793,7 +799,8 @@ export const ProfileCompany = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: props.editdata != null ? props.editdata[0].name2 : "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].name2 : "",
             },
             handle: (e) => setnameTwo(e.target.value),
             dataType: "string",
@@ -823,7 +830,7 @@ export const ProfileCompany = (props) => {
                   ? props.editdata[0].companytypecode
                   : "Government",
             },
-            handle: (e) => setCompanyTypeCode(e.target.value)
+            handle: (e) => setCompanyTypeCode(e.target.value),
           },
           {
             id: 4,
@@ -839,7 +846,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setAbbreviation(e.target.value),
             dataType: "string",
-            dataCheck: Abbreviation,
+            dataCheck: true,
           },
           {
             id: 5,
@@ -936,11 +943,12 @@ export const ProfileCompany = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: props.editdata != null ? props.editdata[0].iata : "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].iata : "",
             },
             handle: (e) => setiata(e.target.value),
             dataType: "string",
-            dataCheck: iata,
+            dataCheck: true,
           },
           {
             id: 10,
@@ -955,7 +963,6 @@ export const ProfileCompany = (props) => {
                 props.editdata != null ? props.editdata[0].statuscode : " ",
             },
             handle: (e) => setStatus(e.target.checked),
-
           },
         ],
       },
@@ -990,9 +997,7 @@ export const ProfileCompany = (props) => {
               status: "fill",
               data: "",
               defaultvalue:
-                props.editdata != null
-                  ? props.editdata[0].countrycode
-                  : "",
+                props.editdata != null ? props.editdata[0].countrycode : "",
             },
             dataCheck: Chooseacountry,
             handle: (e) => setChooseacountry(e.target.value),
@@ -1006,11 +1011,12 @@ export const ProfileCompany = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: props.editdata != null ? props.editdata[0].city : "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].city : "",
             },
             handle: (e) => setCity(e.target.value),
             dataType: "string",
-            dataCheck: City,
+            dataCheck: true,
           },
           {
             id: 7,
@@ -1026,7 +1032,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setState(e.target.value),
             dataType: "string",
-            dataCheck: State,
+            dataCheck: true,
           },
           {
             id: 8,
@@ -1042,7 +1048,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setPostal(e.target.value),
             dataType: "number",
-            dataCheck: Postal,
+            dataCheck: true,
           },
         ],
       },
@@ -1053,19 +1059,32 @@ export const ProfileCompany = (props) => {
         content: [
           {
             id: 1,
+            label: "same as billing address",
+            xl: 6,
+            md: 6,
+            xs: 12,
+            select: {
+              status: "check",
+              data: "",
+            },
+            handle: (e) => setsameasaddress(e.target.checked),
+          },
+          {
+            id: 2,
             label: "Address",
             xl: 12,
             md: 12,
             xs: 12,
             select: {
               status: "fill",
-              data: "",
+              data: BStreetAddress,
               defaultvalue:
                 props.editdata != null ? props.editdata[0].billingaddress : "",
             },
             handle: (e) => setBStreetAddress(e.target.value),
             dataType: "string",
-            dataCheck: BStreetAddress,
+            dataCheck: sameasaddress ? true : BStreetAddress,
+            disable: sameasaddress,
           },
           {
             id: 5,
@@ -1075,14 +1094,15 @@ export const ProfileCompany = (props) => {
             xs: 12,
             select: {
               status: "fill",
-              data: "",
+              data: BChooseacountry,
               defaultvalue:
                 props.editdata != null
                   ? props.editdata[0].billingcountrycode
                   : "",
             },
             handle: (e) => setBChooseacountry(e.target.value),
-            dataCheck: BChooseacountry
+            dataCheck: sameasaddress ? true : BChooseacountry,
+            disable: sameasaddress,
           },
           {
             id: 6,
@@ -1092,13 +1112,14 @@ export const ProfileCompany = (props) => {
             xs: 12,
             select: {
               status: "fill",
-              data: "",
+              data: BCity,
               defaultvalue:
                 props.editdata != null ? props.editdata[0].billingcity : "",
             },
             handle: (e) => setBCity(e.target.value),
             dataType: "string",
-            dataCheck: BCity,
+            dataCheck: true,
+            disable: sameasaddress,
           },
           {
             id: 7,
@@ -1108,7 +1129,7 @@ export const ProfileCompany = (props) => {
             xs: 12,
             select: {
               status: "fill",
-              data: "",
+              data: BState,
               defaultvalue:
                 props.editdata != null
                   ? props.editdata[0].billingstateprovince
@@ -1116,7 +1137,8 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setBState(e.target.value),
             dataType: "string",
-            dataCheck: BState,
+            dataCheck: true,
+            disable: sameasaddress,
           },
           {
             id: 8,
@@ -1126,13 +1148,16 @@ export const ProfileCompany = (props) => {
             xs: 12,
             select: {
               status: "fill",
-              data: "",
+              data: sameasaddress ? "" : BPostal,
               defaultvalue:
-                props.editdata != null ? props.editdata[0].billingpostalcode : 0,
+                props.editdata != null
+                  ? props.editdata[0].billingpostalcode
+                  : 0,
             },
             handle: (e) => setBPostal(e.target.value),
             dataType: "number",
-            dataCheck: BPostal,
+            dataCheck: true,
+            disable: sameasaddress,
           },
           {
             id: 9,
@@ -1143,11 +1168,13 @@ export const ProfileCompany = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: props.editdata != null ? props.editdata[0].taxid : "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].taxid : "",
             },
             handle: (e) => setTaxID(e.target.value),
             dataType: "string",
-            dataCheck: TaxID,
+            dataCheck: true,
+            disable: false,
           },
           {
             id: 10,
@@ -1164,6 +1191,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setTaxID2(e.target.value),
             dataType: "string",
             dataCheck: true,
+            disable: false,
           },
         ],
       },
@@ -1238,6 +1266,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setCreditCardNumber(e.target.value),
             dataType: "number",
             dataCheck: true,
+            disable: false,
           },
           {
             id: 3,
@@ -1249,11 +1278,14 @@ export const ProfileCompany = (props) => {
               status: "fill",
               data: "",
               defaultvalue:
-                props.editdata != null ? props.editdata[0].outstandingamout : "",
+                props.editdata != null
+                  ? props.editdata[0].outstandingamout
+                  : "",
             },
             handle: (e) => setOutstandingAmount(e.target.value),
             dataType: "number",
             dataCheck: true,
+            disable: false,
           },
           {
             id: 4,
@@ -1272,6 +1304,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setFloatingDepositionAmount(e.target.value),
             dataType: "number",
             dataCheck: true,
+            disable: false,
           },
           {
             id: 5,
@@ -1288,6 +1321,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setARNumber(e.target.value),
             dataType: "number",
             dataCheck: true,
+            disable: false,
           },
         ],
       },
@@ -1362,11 +1396,14 @@ export const ProfileCompany = (props) => {
               status: "fill",
               data: "",
               defaultvalue:
-                props.editdata != null ? props.editdata[0].ratecontractcode : "",
+                props.editdata != null
+                  ? props.editdata[0].ratecontractcode
+                  : "",
             },
             handle: (e) => setratecontractcode(e.target.value),
             dataType: "string",
             dataCheck: true,
+            disable: false,
           },
         ],
       },
@@ -1390,6 +1427,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setSalesUserName(e.target.value),
             dataType: "string",
             dataCheck: true,
+            disable: false,
           },
           {
             id: 2,
@@ -1519,7 +1557,9 @@ export const ProfileCompany = (props) => {
                 </option>
               )),
               defaultvalue:
-                props.editdata != null ? props.editdata[0].reasonforstaycode : "Code1",
+                props.editdata != null
+                  ? props.editdata[0].reasonforstaycode
+                  : "Code1",
             },
             handle: (e) => setReasonForStay(e.target.value),
           },
@@ -1546,7 +1586,9 @@ export const ProfileCompany = (props) => {
                 </option>
               )),
               defaultvalue:
-                props.editdata != null ? props.editdata[0].geographiccode : "SEA",
+                props.editdata != null
+                  ? props.editdata[0].geographiccode
+                  : "SEA",
             },
             handle: (e) => setGeographic(e.target.value),
           },
@@ -1601,7 +1643,7 @@ export const ProfileCompany = (props) => {
     ]);
     // }
     // getconfig();
-  };
+  }
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -1625,10 +1667,7 @@ export const ProfileCompany = (props) => {
     }),
   });
 
-
-
   const handleAddDatatoDatabase = async (e) => {
-
     // props.setAction("none");
     // const checkvali = await checkvalidate();
     // if(checkvali){
@@ -1685,10 +1724,7 @@ export const ProfileCompany = (props) => {
     };
 
     console.log("datafrom post", req);
-    const resp = await postCompanyProfile(
-      sessionStorage.getItem("auth"),
-      req
-    );
+    const resp = await postCompanyProfile(sessionStorage.getItem("auth"), req);
 
     if (resp.status == "2000") {
       props.setAction("success");
@@ -1702,11 +1738,8 @@ export const ProfileCompany = (props) => {
     // }
   };
 
-
   const handleAddDataEdittoDatabase = async (e) => {
-
     props.setAction("none");
-
 
     let req = {
       recordtype: "C",
@@ -1765,182 +1798,164 @@ export const ProfileCompany = (props) => {
       setErrorParameter(resp.msg);
       setErrorMessage(true);
     }
-
-
   };
 
-  //data from button for  trigger (add or delete)
-  React.useEffect(async () => {
-
-    if (props.action == "add") {
-      let _IsRequired = nameOne === null ||
-        Abbreviation === null ||
-        GuaranteeMethodCode === null ||
-        iata === null ||
-        StreetAddress === null ||
-        City === null ||
-        State === null ||
-        Postal === null ||
-        BStreetAddress === null ||
-        BCity === null ||
-        BState === null ||
-        BPostal === null ||
-        TaxID === null ||
-        Industry === null ||
-        MarketSegment === null ||
-        SourceOfBusiness === null ||
-        TrackCode === null ||
-        ReasonForStay === null ||
-        Geographic === null ||
-        nameOne.trim() === "" ||
-        Abbreviation.trim() === "" ||
-        GuaranteeMethodCode.trim() === "" ||
-        iata.trim() === "" ||
-        StreetAddress.trim() === "" ||
-        City.trim() === "" ||
-        State.trim() === "" ||
-        Postal === 0 ||
-        BStreetAddress.trim() === "" ||
-        BCity.trim() === "" ||
-        BState.trim() === "" ||
-        BPostal === 0 ||
-        TaxID.trim() === "" ||
-        Industry.trim() === "" ||
-        MarketSegment.trim() === "" ||
-        SourceOfBusiness.trim() === "" ||
-        TrackCode.trim() === "" ||
-        ReasonForStay.trim() === "" ||
-        Geographic.trim() === "";
-      console.log("action add", props.action);
-      console.log('_IsRequired', _IsRequired)
-      if (_IsRequired == false) {
-        setIsRequired(false);
-        await handleAddDatatoDatabase();
-      } else {
-        setIsRequired(true);
-        console.log("isRequired", isRequired)
-        props.setAction("none");
-        updateList()
+  React.useEffect(() => {
+    async function handleSameAddress() {
+      if (sameasaddress === true) {
+        // await setBStreetAddress(null);
+        // await setBChooseacountry(null);
+        // await setBCity(null);
+        // await setBState(null);
+        // await setBPostal(null);
+        // await updateList();
       }
-    } else if (props.action == "edit") {
-      console.log(nameOne,
-        Abbreviation,
-        GuaranteeMethodCode,
-        iata,
-        StreetAddress,
-        City,
-        State,
-        Postal,
-        BStreetAddress,
-        BCity,
-        BState,
-        BPostal,
-        TaxID,
-        CreditCardNumber,
-        OutstandingAmount,
-        OutstandingAmount,
-        FloatingDepositionAmount,
-        ARNumber,
-        Industry,
-        MarketSegment,
-        SourceOfBusiness,
-        TrackCode,
-        ReasonForStay,
-        Geographic)
-      console.log(nameOne === null,
-        Abbreviation === null,
-        GuaranteeMethodCode === null,
-        iata === null,
-        StreetAddress === null,
-        City === null,
-        State === null,
-        Postal === null,
-        BStreetAddress === null,
-        BCity === null,
-        BState === null,
-        BPostal === null,
-        TaxID === null,
-        Industry === null,
-        MarketSegment === null,
-        SourceOfBusiness === null,
-        TrackCode === null,
-        ReasonForStay === null,
-        Geographic === null,
-        nameOne.trim() === "",
-        Abbreviation.trim() === "",
-        GuaranteeMethodCode.trim() === "",
-        iata.trim() === "",
-        StreetAddress.trim() === "",
-        City.trim() === "",
-        State.trim() === "",
-        Postal === 0,
-        BStreetAddress.trim() === "",
-        BCity.trim() === "",
-        BState.trim() === "",
-        BPostal === 0,
-        TaxID.trim() === "",
-        Industry.trim() === "",
-        MarketSegment.trim() === "",
-        SourceOfBusiness.trim() === "",
-        TrackCode.trim() === "",
-        ReasonForStay.trim() === "",
-        Geographic.trim() === "")
-
-      let _IsRequired = nameOne === null ||
-        Abbreviation === null ||
-        GuaranteeMethodCode === null ||
-        iata === null ||
-        StreetAddress === null ||
-        City === null ||
-        State === null ||
-        Postal === null ||
-        BStreetAddress === null ||
-        BCity === null ||
-        BState === null ||
-        BPostal === null ||
-        TaxID === null ||
-        Industry === null ||
-        MarketSegment === null ||
-        SourceOfBusiness === null ||
-        TrackCode === null ||
-        ReasonForStay === null ||
-        Geographic === null ||
-        nameOne.trim() === "" ||
-        Abbreviation.trim() === "" ||
-        GuaranteeMethodCode.trim() === "" ||
-        iata.trim() === "" ||
-        StreetAddress.trim() === "" ||
-        City.trim() === "" ||
-        State.trim() === "" ||
-        Postal === 0 ||
-        BStreetAddress.trim() === "" ||
-        BCity.trim() === "" ||
-        BState.trim() === "" ||
-        BPostal === 0 ||
-        TaxID.trim() === "" ||
-        Industry.trim() === "" ||
-        MarketSegment.trim() === "" ||
-        SourceOfBusiness.trim() === "" ||
-        TrackCode.trim() === "" ||
-        ReasonForStay.trim() === "" ||
-        Geographic.trim() === "";
-      console.log("action add", props.action);
-      console.log('_IsRequired', _IsRequired)
-      if (_IsRequired == false) {
-        await handleAddDataEdittoDatabase();
-
-        console.log("action edit", props.action);
-      } else {
-        setIsRequired(true);
-        console.log("isRequired", isRequired)
-        props.setAction("none");
-        updateList()
-      }
-
+      await updateList();
     }
-  }, [props.action]);
+    handleSameAddress();
+    console.log("sameasaddress:", sameasaddress);
+  }, [
+    sameasaddress,
 
-  const handleData = (e) => { };
+    // BStreetAddress, BChooseacountry, BCity, BState, BPostal
+  ]);
+
+  const [validationStatus, setValidationStatus] = React.useState(true);
+  React.useEffect(() => {
+    let _IsRequired =
+      nameOne === null ||
+      Abbreviation === null ||
+      GuaranteeMethodCode === null ||
+      iata === null ||
+      StreetAddress === null ||
+      City === null ||
+      State === null ||
+      Postal === null ||
+      BStreetAddress === null ||
+      // BCity === null ||
+      // BState === null ||
+      // BPostal === null ||
+      // TaxID === null ||
+      Industry === null ||
+      MarketSegment === null ||
+      SourceOfBusiness === null ||
+      TrackCode === null ||
+      ReasonForStay === null ||
+      Geographic === null ||
+      nameOne.trim() === "" ||
+      // Abbreviation.trim() === "" ||
+      GuaranteeMethodCode.trim() === "" ||
+      // iata.trim() === "" ||
+      StreetAddress.trim() === "" ||
+      // City.trim() === "" ||
+      // State.trim() === "" ||
+      Postal === 0 ||
+      // BStreetAddress.trim() === "" ||
+      // BCity.trim() === "" ||
+      // BState.trim() === "" ||
+      // BPostal === 0 ||
+      // TaxID.trim() === "" ||
+      Industry.trim() === "" ||
+      MarketSegment.trim() === "" ||
+      SourceOfBusiness.trim() === "" ||
+      TrackCode.trim() === "" ||
+      ReasonForStay.trim() === "" ||
+      Geographic.trim() === "";
+
+    setValidationStatus(_IsRequired);
+    if (_IsRequired === false) {
+      setIsRequired(false);
+      // props.handleRedirectToTableIndividual(true);
+    } else {
+      setIsRequired(true);
+      // props.handleRedirectToTableIndividual(false);
+    }
+    updateList();
+  }, [
+    nameOne,
+    Abbreviation,
+    GuaranteeMethodCode,
+    iata,
+    StreetAddress,
+    City,
+    State,
+    Postal,
+    BStreetAddress,
+    BCity,
+    BState,
+    BPostal,
+    TaxID,
+    Industry,
+    MarketSegment,
+    SourceOfBusiness,
+    TrackCode,
+    ReasonForStay,
+    Geographic,
+    nameOne,
+    GuaranteeMethodCode,
+    StreetAddress,
+    Postal,
+    Industry,
+    MarketSegment,
+    SourceOfBusiness,
+    TrackCode,
+    ReasonForStay,
+    Geographic,
+    sameasaddress,
+    BChooseacountry,
+  ]);
+
+  //data from button for  trigger (add or delete)
+  React.useEffect(() => {
+    async function handlebutton() {
+      if (props.action === "add") {
+        console.log("action add", props.action);
+        console.log("validationStatus", validationStatus);
+        // await props.handleRedirectToTableIndividual(false);
+        if (validationStatus === false) {
+          // await props.handleRedirectToTableIndividual(true);
+          await setIsRequired(false);
+          await handleAddDatatoDatabase();
+        } else {
+          setIsRequired(true);
+        }
+      } else if (props.action === "edit") {
+        if (validationStatus === false) {
+          // await props.handleRedirectToTableIndividual(true);
+          await setIsRequired(false);
+
+          await handleAddDataEdittoDatabase();
+        } else {
+          setIsRequired(true);
+        }
+        console.log("action edit", props.action);
+      }
+    }
+    handlebutton();
+  }, [props.trigger, props.action]);
+
+  // React.useEffect( () => {
+  //   if (props.action == "add") {
+  //     console.log("action add", props.action);
+  //       props.setAction("none");
+  //       // updateList();
+
+  //   } else  (props.action == "edit") {
+
+  //     if (isRequired == false) {
+  //       await handleAddDataEdittoDatabase();
+
+  //       console.log("action edit", props.action);
+  //     } else {
+  //       setIsRequired(true);
+  //       console.log("isRequired", isRequired);
+  //       props.setAction("none");
+  //       // updateList();
+  //     }
+
+  // }, [props.action,props.trigger]);
+
+  const handleData = (e) => {};
 
   const handleExpend = (id, expend) => {
     let index = list.findIndex((x) => x.id === id);
@@ -1950,16 +1965,11 @@ export const ProfileCompany = (props) => {
     else {
       let new_data = list[index];
       new_data.expend = !expend;
-      setList([
-        ...list.slice(0, index),
-        new_data,
-        ...list.slice(index + 1),
-      ]);
+      setList([...list.slice(0, index), new_data, ...list.slice(index + 1)]);
     }
   };
 
   const handleAddComunication = async (id) => {
-
     let index = list.findIndex((x) => x.id === id);
     if (index === -1) return;
     else {
@@ -2120,11 +2130,7 @@ export const ProfileCompany = (props) => {
           data: "+ More Relation",
         },
       });
-      setList([
-        ...list.slice(0, index),
-        relation,
-        ...list.slice(index + 1),
-      ]);
+      setList([...list.slice(0, index), relation, ...list.slice(index + 1)]);
 
       console.log("relationDatas:", relationDatas);
     }
@@ -2364,22 +2370,20 @@ export const ProfileCompany = (props) => {
                                   //   onChange={detail.handle}
                                   // />
 
-
                                   [
                                     isRequired ? (
-
                                       <TextField
                                         error={
                                           detail.dataCheck == null ||
-                                            detail.dataCheck === "" ||
-                                            detail.dataCheck === " "
+                                          detail.dataCheck === "" ||
+                                          detail.dataCheck === " "
                                             ? true
                                             : false
                                         }
                                         // error={detail.dataCheck}
                                         helperText={
                                           detail.dataCheck == null ||
-                                            detail.dataCheck === ""
+                                          detail.dataCheck === ""
                                             ? `${detail.label} is Required`
                                             : false
                                         }
@@ -2388,9 +2392,18 @@ export const ProfileCompany = (props) => {
                                         className={classes.root}
                                         label={detail.label}
                                         variant="outlined"
-                                        InputProps={{
-                                          style: headerTableStyle,
-                                        }}
+                                        disabled={detail.disable}
+                                        style={
+                                          detail.disable
+                                            ? {
+                                                backgroundColor: "#EFEFEF",
+                                                borderColor: "white",
+                                              }
+                                            : {}
+                                        }
+                                        // InputProps={{
+                                        //   style: headerTableStyle,
+                                        // }}
                                         noWrap
                                         InputLabelProps={{
                                           style: { color: "#AAAAAA" },
@@ -2399,33 +2412,29 @@ export const ProfileCompany = (props) => {
                                         defaultValue={
                                           detail.select.defaultvalue
                                         }
-                                        onChange={detail.handle}
-                                      // onBlur={handleValidation(detail.dataCheck)}
+                                        value={detail.data}
+                                        onBlur={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
                                       />
                                     ) : (
                                       <TextField
-                                        // error={
-                                        //   detail.dataCheck == null ||
-                                        //   detail.dataCheck === "" ||
-                                        //   detail.dataCheck === " "
-                                        //     ? true
-                                        //     : false
-                                        // }
-                                        // // error={detail.dataCheck}
-                                        // helperText={
-                                        //   detail.dataCheck == null ||
-                                        //   detail.dataCheck === ""
-                                        //     ? `${detail.label} is Required`
-                                        //     : false
-                                        // }
-                                        // required={true}
                                         type={detail.dataType}
                                         className={classes.root}
                                         label={detail.label}
                                         variant="outlined"
-                                        InputProps={{
-                                          style: headerTableStyle,
-                                        }}
+                                        disabled={detail.disable}
+                                        style={
+                                          detail.disable
+                                            ? {
+                                                backgroundColor: "#EFEFEF",
+                                                borderColor: "white",
+                                              }
+                                            : {}
+                                        }
+                                        // InputProps={{
+                                        //   style: headerTableStyle,
+
+                                        // }}
                                         noWrap
                                         InputLabelProps={{
                                           style: { color: "#AAAAAA" },
@@ -2434,8 +2443,9 @@ export const ProfileCompany = (props) => {
                                         defaultValue={
                                           detail.select.defaultvalue
                                         }
-                                        onChange={detail.handle}
-                                      // onBlur={handleValidation(detail.dataCheck)}
+                                        value={detail.data}
+                                        onBlur={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
                                       />
                                     ),
                                   ]
