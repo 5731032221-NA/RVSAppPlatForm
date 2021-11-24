@@ -745,6 +745,8 @@ export const ProfileCompany = (props) => {
                 ...prev,
                 [relaid1]: e.target.value,
               })),
+              dataType: "string",
+              dataCheck: true,
           });
           getrelation.push({
             id: relaid3,
@@ -762,6 +764,8 @@ export const ProfileCompany = (props) => {
                 ...prev,
                 [relationid + 2]: e.target.value,
               })),
+              dataType: "string",
+              dataCheck: true,
           });
           relationid = relaid3;
         }
@@ -960,7 +964,7 @@ export const ProfileCompany = (props) => {
               status: "status",
               data: "",
               defaultvalue:
-                props.editdata != null ? props.editdata[0].statuscode : " ",
+                props.editdata != null ? props.editdata[0].statuscode : Status,
             },
             handle: (e) => setStatus(e.target.checked),
           },
@@ -1821,46 +1825,98 @@ export const ProfileCompany = (props) => {
   ]);
 
   const [validationStatus, setValidationStatus] = React.useState(true);
+
   React.useEffect(() => {
-    let _IsRequired =
-      nameOne === null ||
-      Abbreviation === null ||
-      GuaranteeMethodCode === null ||
-      iata === null ||
-      StreetAddress === null ||
-      City === null ||
-      State === null ||
-      Postal === null ||
-      BStreetAddress === null ||
-      // BCity === null ||
-      // BState === null ||
-      // BPostal === null ||
-      // TaxID === null ||
-      Industry === null ||
-      MarketSegment === null ||
-      SourceOfBusiness === null ||
-      TrackCode === null ||
-      ReasonForStay === null ||
-      Geographic === null ||
-      nameOne.trim() === "" ||
-      // Abbreviation.trim() === "" ||
-      GuaranteeMethodCode.trim() === "" ||
-      // iata.trim() === "" ||
-      StreetAddress.trim() === "" ||
-      // City.trim() === "" ||
-      // State.trim() === "" ||
-      Postal === 0 ||
-      // BStreetAddress.trim() === "" ||
-      // BCity.trim() === "" ||
-      // BState.trim() === "" ||
-      // BPostal === 0 ||
-      // TaxID.trim() === "" ||
-      Industry.trim() === "" ||
-      MarketSegment.trim() === "" ||
-      SourceOfBusiness.trim() === "" ||
-      TrackCode.trim() === "" ||
-      ReasonForStay.trim() === "" ||
-      Geographic.trim() === "";
+    let _IsRequired ;
+  
+      if(!sameasaddress){
+        console.log("sameasaddress22:",sameasaddress);
+        _IsRequired =
+        nameOne === null ||
+        // Abbreviation === null ||
+        GuaranteeMethodCode === null ||
+        // iata === null ||
+        StreetAddress === null ||
+        Chooseacountry === null ||
+        // City === null ||
+        // State === null ||
+        Postal === null ||
+        BStreetAddress === null ||
+        BChooseacountry === null ||
+        // BCity === null ||
+        // BState === null ||
+        // BPostal === null ||
+        // TaxID === null ||
+        Industry === null ||
+        MarketSegment === null ||
+        SourceOfBusiness === null ||
+        TrackCode === null ||
+        ReasonForStay === null ||
+        Geographic === null ||
+        nameOne.trim() === "" ||
+        // Abbreviation.trim() === "" ||
+        GuaranteeMethodCode.trim() === "" ||
+        // iata.trim() === "" ||
+        StreetAddress.trim() === "" ||
+        Chooseacountry.trim() === "" ||
+        // City.trim() === "" ||
+        // State.trim() === "" ||
+        // Postal === 0 ||
+        BStreetAddress.trim() === "" ||
+        BChooseacountry.trim() === "" ||
+        // BCity.trim() === "" ||
+        // BState.trim() === "" ||
+        // BPostal === 0 ||
+        // TaxID.trim() === "" ||
+        Industry.trim() === "" ||
+        MarketSegment.trim() === "" ||
+        SourceOfBusiness.trim() === "" ||
+        TrackCode.trim() === "" ||
+        ReasonForStay.trim() === "" ||
+        Geographic.trim() === "";
+      }else {
+        _IsRequired =
+        nameOne === null ||
+        // Abbreviation === null ||
+        GuaranteeMethodCode === null ||
+        // iata === null ||
+        StreetAddress === null ||
+        Chooseacountry === null ||
+        // City === null ||
+        // State === null ||
+        Postal === null ||
+    
+        // BCity === null ||
+        // BState === null ||
+        // BPostal === null ||
+        // TaxID === null ||
+        Industry === null ||
+        MarketSegment === null ||
+        SourceOfBusiness === null ||
+        TrackCode === null ||
+        ReasonForStay === null ||
+        Geographic === null ||
+        nameOne.trim() === "" ||
+        // Abbreviation.trim() === "" ||
+        GuaranteeMethodCode.trim() === "" ||
+        // iata.trim() === "" ||
+   
+        // City.trim() === "" ||
+        // State.trim() === "" ||
+        // Postal === 0 ||
+        // BStreetAddress.trim() === "" ||
+        // BChooseacountry.trim() === "" ||
+        // BCity.trim() === "" ||
+        // BState.trim() === "" ||
+        // BPostal === 0 ||
+        // TaxID.trim() === "" ||
+        Industry.trim() === "" ||
+        MarketSegment.trim() === "" ||
+        SourceOfBusiness.trim() === "" ||
+        TrackCode.trim() === "" ||
+        ReasonForStay.trim() === "" ||
+        Geographic.trim() === "";
+      }
 
     setValidationStatus(_IsRequired);
     if (_IsRequired === false) {
@@ -1907,8 +1963,12 @@ export const ProfileCompany = (props) => {
 
   //data from button for  trigger (add or delete)
   React.useEffect(() => {
+    
     async function handlebutton() {
+     
+      
       if (props.action === "add") {
+        console.log("ok");
         console.log("action add", props.action);
         console.log("validationStatus", validationStatus);
         // await props.handleRedirectToTableIndividual(false);

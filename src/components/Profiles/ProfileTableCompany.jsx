@@ -159,6 +159,7 @@ const family = [
 
 export const ProfileTableCompany = (props) => {
   const [action, setAction] = React.useState("");
+  const [triggerButton, setTriggerButton] = React.useState(false);
   const [editData, setEditData] = React.useState(" ");
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
@@ -279,18 +280,22 @@ if (smUp) {
     setStatusprofile();
   };
   const handleNewData = async () => {
+    await setTriggerButton(!triggerButton);
     await setAction("none");
     await setEditData(null);
     await setStatusprofile("add");
   };
   const handleAddData = async (companyData) => {
+    await setTriggerButton(!triggerButton);
     await setAction("add");
   };
   const handleAddDataEdit = async (companyData) => {
+    await setTriggerButton(!triggerButton);
     await setAction("edit");
   };
 
   const handleEditData = async (data) => {
+    await setTriggerButton(!triggerButton);
     const resp = await getCompanyProfileById(
       sessionStorage.getItem("auth"),
       data.id
@@ -475,6 +480,7 @@ if (smUp) {
           editdata={editData}
           action={action}
           setAction={setAction}
+          trigger={triggerButton}
         />
       ) : (
         [
