@@ -39,7 +39,7 @@ const initialState = {
   configState: "Configuration",
   permission: [],
   indextTab: "",
-  redirectToTableIndividual: true,
+  redirectToTableIndividual: false,
 };
 
 const reducer = (state = initialState, action) => {

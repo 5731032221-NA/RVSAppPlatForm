@@ -42,17 +42,6 @@ function handleLogout(instance) {
 }
 
 
-// async function loginUser(credentials) {
-//   return fetch('http://'+(process.env.REACT_APP_host || "localhost")+':8083/login', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(credentials)
-//   })
-//     .then(data => data.json())
-// }
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     flex: "display",
@@ -166,9 +155,6 @@ export default function Login({ setToken }) {
 
   const handleLogin = () => {
 
-    // instance.loginRedirect(loginRequest).catch(e => {
-    //     console.error(e);
-    // });
     if (cookies["UUID"] == null) setErrorCookie(true);
       else setAdSignin(true);
     
@@ -199,7 +185,6 @@ export default function Login({ setToken }) {
         setCookie("UUID", gen_uuid, { path: '/', expires: d2 });
         setDialogAdd(false);
         window.location.reload(false);
-        // setToken(resTooken);
       } else if (_inserthardware.status == "1000") {
         setErrorMessageDu(true);
         const dupic = _inserthardware.msg + " Device Code: " + updateData.code;

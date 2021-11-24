@@ -4,9 +4,6 @@ import { bindActionCreators } from "redux";
 import * as Actions from "../../middleware/action";
 import en_lang from "../../static/lang/en.json";
 import th_lang from "../../static/lang/th.json";
-// const [SomeThingInFrontDesk, setSomeThingInFrontDesk] = useState(en_lang.SomeThingInFrontDesk)
-// const [lang, setLang] = useState('en')
-
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -104,13 +101,11 @@ const userdata = [
     img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZmFjZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     time: "8",
   },
-  //ref: https://unsplash.com/s/photos/faces
 ];
 export class DashboardPage extends Component {
   constructor(props) {
     super(props);
     this.props.getUserList();
-    // const classes = useStyles();
     this.state = {
       lang: "en",
       Dashboard: en_lang.Dashboard,
@@ -126,8 +121,6 @@ export class DashboardPage extends Component {
   }
 
   componentDidMount() {
-    // this.interval = setInterval(() => {
-    // }, 1000);
     if (this.state.lang != this.props.lang) {
       this.setState({ lang: "th" });
       if (this.props.lang == "th") {
@@ -144,18 +137,15 @@ export class DashboardPage extends Component {
         });
       }
     }
-    // console.log("this.props.themeBackground", this.props.themeBackground);
 
     if (this.state.themeBackground != this.props.themeBackground) {
-      // console.log(this.state.themeBackground, this.props.themeBackground);
       if (this.props.themeBackground === "#FFFFFF") {
         this.setState({
           themeState: {
             background: "#FFFFFF",
             color: "#000000",
             paper: "#FFFFFF",
-            colorlevel: "900",
-            // matStyle: this.classes.normalmode
+            colorlevel: "900"
           },
         });
         this.setState({ color: this.props.color });
@@ -165,14 +155,12 @@ export class DashboardPage extends Component {
             background: "#212121",
             color: "#FAFAFA",
             paper: "#424242",
-            colorlevel: "A200",
-            // matStyle: this.classes.darkmode
+            colorlevel: "A200"
           },
         });
         this.setState({ color: "#2D62ED" });
       }
       this.setState({ themeBackground: this.props.themeBackground });
-      // console.log(this.props.themeBackground);
     }
 
     if (this.state.color != this.props.color) {
@@ -184,9 +172,6 @@ export class DashboardPage extends Component {
     }
   }
 
-  // componentWillUnmount() {
-  //   clearInterval(this.interval);
-  // }
 
   componentDidUpdate() {
     if (this.state.lang != this.props.lang) {
@@ -206,15 +191,13 @@ export class DashboardPage extends Component {
       }
     }
     if (this.state.themeBackground != this.props.themeBackground) {
-      // console.log(this.state.themeBackground, this.props.themeBackground);
       if (this.props.themeBackground === "#FFFFFF") {
         this.setState({
           themeState: {
             background: "#FFFFFF",
             color: "#000000",
             paper: "#FFFFFF",
-            colorlevel: "900",
-            // matStyle: this.classes.normalmode
+            colorlevel: "900"
           },
         });
         this.setState({ color: this.props.color });
@@ -224,8 +207,7 @@ export class DashboardPage extends Component {
             background: "#212121",
             color: "#FAFAFA",
             paper: "#424242",
-            colorlevel: "800",
-            // matStyle: this.classes.darkmode
+            colorlevel: "800"
           },
         });
         this.setState({ color: "#2D62ED" });
@@ -235,10 +217,8 @@ export class DashboardPage extends Component {
 
     if (this.state.color != this.props.color) {
       if (this.props.themeBackground === "#FFFFFF") {
-        // console.log("data color", this.props.color);
         this.setState({ color: this.props.color });
       } else {
-        // this.setState({ color: this.props.defaultColor });
       }
     }
   }
@@ -267,11 +247,6 @@ export class DashboardPage extends Component {
             spacing={4}
             justifyContent="center"
             alignItems="start"
-            // style={this.state.themeBackground}
-            // style={{body: '#363537',
-            // text: '#FAFAFA',
-            // toggleBorder: '#6B8096',
-            // gradient: 'linear-gradient(#091236, #1E215D)',}}
           >
             <Grid container spacing={3} xs={12} md={12} lg={9} xl={9}>
               <Grid
@@ -477,7 +452,7 @@ export class DashboardPage extends Component {
                     <Grid
                       container
                       style={{ marginBottom: 20, marginLeft: 20 }}
-                      // background="black"
+                    // background="black"
                     >
                       <Typography variant="h6" component="h6">
                         Website Audience Metrics
@@ -894,7 +869,6 @@ export class DashboardPage extends Component {
 }
 
 const mapStateToProps = (state) => {
-  // console.log("mapStateToProps");
   return {
     lang: state.reducer.lang,
     color: state.reducer.color,

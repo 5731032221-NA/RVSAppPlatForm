@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { connect, ReactReduxContext, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { connect, useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import { blue, green, yellow } from "@material-ui/core/colors";
+import { makeStyles } from "@material-ui/core/styles";
+import { blue } from "@material-ui/core/colors";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
-import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import InstagramIcon from "@material-ui/icons/Instagram";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
-import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+// import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
+// import FacebookIcon from "@material-ui/icons/Facebook";
+// import InstagramIcon from "@material-ui/icons/Instagram";
+// import TwitterIcon from "@material-ui/icons/Twitter";
+// import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
+// import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import { optioncountry } from "../../static/country.js";
 import { optionnationality } from "../../static/nationality";
 import Switch from "@material-ui/core/Switch";
@@ -26,8 +24,6 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { getconfigurationbypropertycode } from "../../services/user.service";
 import {
@@ -179,15 +175,15 @@ const optiondata2 = [
 // ];
 
 const addressType = [
-  { label: "Organisation", value: "Organisation" },
-  {
-    label: "Home",
-    value: "Home",
-  },
   {
     label: "Resident",
     value: "Resident",
   },
+  {
+    label: "Home",
+    value: "Home",
+  },
+  { label: "Organisation", value: "Organisation" },
 ];
 // const optionrelation = [
 //   {
@@ -371,7 +367,7 @@ export const ProfileIndividual = (props) => {
       : new Date("2021-09-13T21:11:54")
   );
   const [address, setAddress] = React.useState(
-    props.editdata != null ? props.editdata.address : "organization"
+    props.editdata != null ? props.editdata.address : "Resident"
   );
   const [address1, setAddress1] = React.useState(
     props.editdata != null ? props.editdata.address1 : ""
@@ -492,6 +488,28 @@ export const ProfileIndividual = (props) => {
 
   const pageProperty = useSelector((state) => state.reducer.property);
 
+  const handDateChangeBorderCrossingEntryDate = (newDate) => {
+    setborderCrossingEntryDate(newDate);
+  };
+  const handDateChangeDateOfBirth = (newDate) => {
+    setDateOfBirth(newDate);
+  };
+  const handDateChangesetIDIssuedDate = (newDate) => {
+    setIDIssuedDate(newDate);
+  };
+  const handDateChangeIDExpirationDate = (newDate) => {
+    setIDExpirationDate(newDate);
+  };
+  const handDateChangeVisaIssuedDate = (newDate) => {
+    setVisaIssuedDate(newDate);
+  };
+  const handDateChangeVisaBeginDate = (newDate) => {
+    setVisaBeginDate(newDate);
+  };
+  const handDateChangeVisaExpirationDate = (newDate) => {
+    setVisaExpirationDate(newDate);
+  };
+
   const [communicationDatas, setCommunicationDatas] = React.useState({});
   const [relationDatas, setRelationDatas] = React.useState({});
   async function getlist(config, field) {
@@ -586,7 +604,7 @@ export const ProfileIndividual = (props) => {
                   key={option.value}
                   value={option.value}
                   selected={option.label == element.communication}
-                // defaultValue={element.communication}
+                  // defaultValue={element.communication}
                 >
                   {option.label}
                 </option>
@@ -716,7 +734,7 @@ export const ProfileIndividual = (props) => {
                   key={option.value}
                   value={option.value}
                   selected={option.label == commu[key - 1]}
-                // defaultValue={element.communication}
+                  // defaultValue={element.communication}
                 >
                   {option.label}
                 </option>
@@ -753,8 +771,8 @@ export const ProfileIndividual = (props) => {
       for (var key in rela) {
         if (key % 3 == 0) {
           const relaid1 = relationid;
-        const relaid2 = relationid + 1;
-        const relaid3 = relationid + 2;
+          const relaid2 = relationid + 1;
+          const relaid3 = relationid + 2;
           getrelation.push({
             id: relaid1,
             label: "Name Type",
@@ -1065,7 +1083,13 @@ export const ProfileIndividual = (props) => {
             xs: 4,
             select: {
               status: "option",
-              data: [{ label: "Buddhism", value: "Buddhism" }, { label: "Judaism", value: "Judaism" }, { label: "Christianity", value: "Christianity" }, { label: "Islam", value: "Islam" }, { label: "Hinduism", value: "Hinduism" }].map((option) => (
+              data: [
+                { label: "Buddhism", value: "Buddhism" },
+                { label: "Judaism", value: "Judaism" },
+                { label: "Christianity", value: "Christianity" },
+                { label: "Islam", value: "Islam" },
+                { label: "Hinduism", value: "Hinduism" },
+              ].map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -1157,7 +1181,7 @@ export const ProfileIndividual = (props) => {
                   ? props.editdata.dateofbirth
                   : new Date("2021-09-13T21:11:54"),
             },
-            handle: (e) => setDateOfBirth(convertTimeToString(e)),
+            handle: (e) => handDateChangeDateOfBirth(e),
             dataType: "date",
             dataCheck: dateOfBirth,
           },
@@ -1250,7 +1274,7 @@ export const ProfileIndividual = (props) => {
 
             handle: (e) => setOrganization(e.target.value),
             dataType: "string",
-            dataCheck: organization,
+            dataCheck: true,
           },
           {
             id: 2,
@@ -1302,7 +1326,7 @@ export const ProfileIndividual = (props) => {
                   ? props.editdata.bordercrossingentrydate
                   : new Date("2021-09-13T21:11:54"),
             },
-            handle: (e) => setborderCrossingEntryDate(new Date(e)),
+            handle: (e) => handDateChangeBorderCrossingEntryDate(e),
             dataType: "date",
             dataCheck: borderCrossingEntryDate,
           },
@@ -1336,9 +1360,7 @@ export const ProfileIndividual = (props) => {
                 </option>
               )),
               defaultvalue:
-                props.editdata != null
-                  ? props.editdata.address
-                  : "organization",
+                props.editdata != null ? props.editdata.address : "Resident",
             },
             handle: (e) => setAddress(e.target.value),
             dataType: "string",
@@ -1404,7 +1426,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setCity(e.target.value),
             dataType: "string",
-            dataCheck: city,
+            dataCheck: true,
           },
           {
             id: 10,
@@ -1420,7 +1442,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setStateprovince(e.target.value),
             dataType: "string",
-            dataCheck: stateProvince,
+            dataCheck: true,
           },
           {
             id: 11,
@@ -1435,7 +1457,7 @@ export const ProfileIndividual = (props) => {
             },
             handle: (e) => setPostal(e.target.value),
             dataType: "number",
-            dataCheck: postal,
+            dataCheck: true,
           },
           {
             id: 12,
@@ -1827,7 +1849,7 @@ export const ProfileIndividual = (props) => {
                   ? props.editdata.idissuedDate
                   : new Date("2021-09-13T21:11:54"),
             },
-            handle: (e) => setIDIssuedDate(new Date(e)),
+            handle: (e) => handDateChangesetIDIssuedDate(e),
             dataType: "date",
             dataCheck: IDCheck == "Y" ? IDIssuedDate : true,
           },
@@ -1845,7 +1867,7 @@ export const ProfileIndividual = (props) => {
                   ? props.editdata.idexpirationDate
                   : new Date("2021-09-13T21:11:54"),
             },
-            handle: (e) => setIDExpirationDate(new Date(e)),
+            handle: (e) => handDateChangeIDExpirationDate(e),
             dataType: "date",
             dataCheck: IDCheck == "Y" ? IDExpirationDate : true,
           },
@@ -1982,7 +2004,7 @@ export const ProfileIndividual = (props) => {
                   ? props.editdata.visaissueddate
                   : new Date("2021-09-13T21:11:54"),
             },
-            handle: (e) => setVisaIssuedDate(new Date(e)),
+            handle: (e) => handDateChangeVisaIssuedDate(e),
             dataType: "date",
             dataCheck: passportVisaCheck == "Y" ? visaIssuedDate : true,
 
@@ -2002,7 +2024,7 @@ export const ProfileIndividual = (props) => {
                   ? props.editdata.visabegindate
                   : new Date("2021-09-13T21:11:54"),
             },
-            handle: (e) => setVisaBeginDate(new Date(e)),
+            handle: (e) => handDateChangeVisaBeginDate(e),
             dataType: "date",
             dataCheck: passportVisaCheck == "Y" ? visaBeginDate : true,
           },
@@ -2020,7 +2042,7 @@ export const ProfileIndividual = (props) => {
                   ? props.editdata.visaexpirationdate
                   : new Date("2021-09-13T21:11:54"),
             },
-            handle: (e) => setVisaExpirationDate(new Date(e)),
+            handle: (e) => handDateChangeVisaExpirationDate(e),
             dataType: "date",
             dataCheck: passportVisaCheck == "Y" ? visaExpirationDate : true,
           },
@@ -2320,9 +2342,9 @@ export const ProfileIndividual = (props) => {
           select: {
             status: "option",
             data: [
-              { label: "Organisation" },
-              { label: "Home" },
               { label: "Resident" },
+              { label: "Home" },
+              { label: "Organisation" },
             ].map((option) => (
               <option
                 style={headerTableStyle}
@@ -2434,6 +2456,60 @@ export const ProfileIndividual = (props) => {
     }
   };
 
+  React.useEffect(() => {
+    // handle change state
+    updatelist();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    IDCheck,
+    IDExpirationDate,
+    IDIssuedDate,
+    IDNumber,
+    IDType,
+    NRG,
+    VVIP,
+    address,
+    address1,
+    address2,
+    birthProvince,
+    birthRegion,
+    borderCrossingEntryDate,
+    borderCrossingEntryPlace,
+    city,
+    conuty,
+    dateOfBirth,
+    firstName,
+    gender,
+    grade,
+    guestCategory,
+    guestIdentity,
+    guestType,
+    lastName,
+    middleInitial,
+    namePrefix,
+    nameSuffix,
+    nameTitle,
+    nationality,
+    noPost,
+    organization,
+    passportVisaCheck,
+    postal,
+    props,
+    provinceOfResidence,
+    rank,
+    religion,
+    stateProvince,
+    statusProfile,
+    visaBeginDate,
+    visaExpirationDate,
+    visaIssuedDate,
+    visaName,
+    visaNotes,
+    visaNumber,
+    visaStatus,
+    visaType,
+  ]);
+
   const handleAddComunication = async (id) => {
     console.log("handleAddComunication", id);
     let index = list.findIndex((x) => x.id === id);
@@ -2521,13 +2597,13 @@ export const ProfileIndividual = (props) => {
       );
       setRelationDatas((prev) => ({
         ...prev,
-        [newid + 1]: "",
-        [newid + 2]: optionrelation[0].label,
+        [newid + 1]: optionrelation[0].label,
+        [newid + 2]: "",
         [newid + 3]: "",
       }));
 
       relation.content.push({
-        id: newid + 2,
+        id: newid + 1,
         label: "Name Type",
         xl: 2,
         md: 2,
@@ -2547,12 +2623,12 @@ export const ProfileIndividual = (props) => {
         handle: (e) =>
           setRelationDatas((prev) => ({
             ...prev,
-            [newid + 2]: e.target.value,
+            [newid + 1]: e.target.value,
           })),
       });
 
       relation.content.push({
-        id: newid + 1,
+        id: newid + 2,
         label: "Name",
         xl: 4,
         md: 4,
@@ -2564,8 +2640,9 @@ export const ProfileIndividual = (props) => {
         handle: (e) =>
           setRelationDatas((prev) => ({
             ...prev,
-            [newid + 1]: e.target.value,
+            [newid + 2]: e.target.value,
           })),
+        dataCheck: true,
       });
       relation.content.push({
         id: newid + 3,
@@ -2582,6 +2659,7 @@ export const ProfileIndividual = (props) => {
             ...prev,
             [newid + 3]: e.target.value,
           })),
+        dataCheck: true,
       });
       relation.content.push({
         id: 99,
@@ -2820,9 +2898,9 @@ export const ProfileIndividual = (props) => {
       lastName === null ||
       lastName === "" ||
       lastName === " " ||
-      namePrefix === null ||
-      namePrefix === "" ||
-      namePrefix === " " ||
+      // namePrefix === null ||
+      // namePrefix === "" ||
+      // namePrefix === " " ||
       // nameSuffix === null ||
       // nameSuffix === "" ||
       // nameSuffix === " " ||
@@ -2835,9 +2913,9 @@ export const ProfileIndividual = (props) => {
       religion === null ||
       religion === "" ||
       religion === " " ||
-      organization === null ||
-      organization === "" ||
-      organization === " " ||
+      // organization === null ||
+      // organization === "" ||
+      // organization === " " ||
       statusProfile === null ||
       statusProfile === "" ||
       statusProfile === " " ||
@@ -2862,15 +2940,15 @@ export const ProfileIndividual = (props) => {
       conuty === null ||
       conuty === "" ||
       conuty === " " ||
-      city === null ||
-      city === "" ||
-      city === " " ||
-      stateProvince === null ||
-      stateProvince === "" ||
-      stateProvince === " " ||
-      postal === null ||
-      postal === "" ||
-      postal === " " ||
+      // city === null ||
+      // city === "" ||
+      // city === " " ||
+      // stateProvince === null ||
+      // stateProvince === "" ||
+      // stateProvince === " " ||
+      // postal === null ||
+      // postal === "" ||
+      // postal === " " ||
       noPost === null ||
       noPost === "" ||
       noPost === " " ||
@@ -2956,7 +3034,10 @@ export const ProfileIndividual = (props) => {
     if (_IsRequired === false) {
       setIsRequired(false);
       props.handleRedirectToTableIndividual(true);
+    } else {
+      props.handleRedirectToTableIndividual(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     IDCheck,
     IDExpirationDate,
@@ -3012,7 +3093,7 @@ export const ProfileIndividual = (props) => {
     async function handlebutton() {
       if (props.action === "add") {
         console.log("action add", props.action);
-        console.log("validationStatus", validationStatus)
+        console.log("validationStatus", validationStatus);
         // await props.handleRedirectToTableIndividual(false);
         if (validationStatus === false) {
           // await props.handleRedirectToTableIndividual(true);
@@ -3022,8 +3103,14 @@ export const ProfileIndividual = (props) => {
           setIsRequired(true);
         }
       } else if (props.action === "edit") {
-        await handleEditDatatoDatabase();
-        await props.handleRedirectToTableIndividual(true);
+        if (validationStatus === false) {
+          // await props.handleRedirectToTableIndividual(true);
+          await setIsRequired(false);
+
+          await handleEditDatatoDatabase();
+        } else {
+          setIsRequired(true);
+        }
         console.log("action edit", props.action);
       }
     }
@@ -3048,6 +3135,7 @@ export const ProfileIndividual = (props) => {
                 padding: 20,
                 color: themeState.color,
                 backgroundColor: themeState.paper,
+                minHeight: 750, //blank paper while loading data
               }}
             >
               <Container
@@ -3204,7 +3292,7 @@ export const ProfileIndividual = (props) => {
                                     }}
                                     fullWidth
                                     defaultValue={detail.select.defaultvalue}
-                                    onChange={detail.handle}
+                                    onBlur={detail.handle}
                                   />
                                 ) : detail.select.status === "fill" ? (
                                   [
@@ -3212,14 +3300,14 @@ export const ProfileIndividual = (props) => {
                                       <TextField
                                         error={
                                           detail.dataCheck == null ||
-                                            detail.dataCheck === "" ||
-                                            detail.dataCheck === " "
+                                          detail.dataCheck === "" ||
+                                          detail.dataCheck === " "
                                             ? true
                                             : false
                                         }
                                         helperText={
                                           detail.dataCheck == null ||
-                                            detail.dataCheck === ""
+                                          detail.dataCheck === ""
                                             ? `${detail.label} is Required`
                                             : false
                                         }
@@ -3239,8 +3327,8 @@ export const ProfileIndividual = (props) => {
                                         defaultValue={
                                           detail.select.defaultvalue
                                         }
-                                        onChange={detail.handle}
-                                      // onBlur={handleValidation(detail.dataCheck)}
+                                        onBlur={detail.handle}
+                                        // onBlur={handleValidation(detail.dataCheck)}
                                       />
                                     ) : (
                                       <TextField
@@ -3259,8 +3347,8 @@ export const ProfileIndividual = (props) => {
                                         defaultValue={
                                           detail.select.defaultvalue
                                         }
-                                        onChange={detail.handle}
-                                      // onBlur={handleValidation(detail.dataCheck)}
+                                        //onChange={detail.handle}
+                                        onBlur={detail.handle}
                                       />
                                     ),
                                   ]
@@ -3282,14 +3370,14 @@ export const ProfileIndividual = (props) => {
                                     onChange={detail.handle}
                                     textOverflow="ellipsis"
 
-                                  // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
+                                    // InputLabelProps={{style: {overflow: "hidden", textOverflow: "ellipsis", width: '3rem',whiteSpace:"nowrap"}}}
                                   >
                                     {detail.select.data}
                                   </TextField>
                                 ) : detail.select.status === "check" ? (
                                   [
                                     detail.select.defaultvalue === "Y" ||
-                                      detail.select.defaultvalue === true ? (
+                                    detail.select.defaultvalue === true ? (
                                       <FormControlLabel
                                         control={
                                           <Checkbox
