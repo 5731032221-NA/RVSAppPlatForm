@@ -73,6 +73,7 @@ function createData(
   description,
   count,
   applyproperty,
+  applyGroup,
   status
 ) {
   return {
@@ -82,6 +83,7 @@ function createData(
     description,
     count,
     applyproperty,
+    applyGroup,
     status,
   };
 }
@@ -643,6 +645,7 @@ export default function RoleManagement() {
           element.description,
           element.count,
           element.applyproperty,
+          element.applygroup,
           element.status
         )
       )
@@ -790,6 +793,7 @@ export default function RoleManagement() {
               element.description,
               element.count,
               element.applyproperty,
+              element.applygroup,
               element.status
             )
           )
@@ -1024,6 +1028,7 @@ export default function RoleManagement() {
               element.description,
               element.count,
               element.applyproperty,
+              element.applygroup,
               element.status
             )
           )
@@ -1082,6 +1087,7 @@ export default function RoleManagement() {
           element.description,
           element.count,
           element.applyproperty,
+          element.applygroup,
           element.status
         )
       )
@@ -2352,6 +2358,7 @@ export default function RoleManagement() {
                       rowData.rolename,
                       rowData.description,
                       rowData.applyproperty,
+                      rowData.applyGroup,
                       rowData.status
                     );
                   },
