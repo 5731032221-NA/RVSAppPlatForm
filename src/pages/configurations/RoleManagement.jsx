@@ -854,7 +854,6 @@ export default function RoleManagement() {
       },
     ];
     groupData.content[groupData.content.length - 1]
-      .split(",")
       .forEach((element) => {
         if (tempGroup.filter((x) => x.label === element).length == 0) {
           tempGroup.push({
