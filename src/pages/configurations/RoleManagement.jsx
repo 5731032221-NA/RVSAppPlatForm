@@ -59,8 +59,8 @@ import {
   deleterolebycode,
   rolepermissionbyrole,
   getusercomponentpermision,
+  getGroup
 } from "../../services/user.service";
-// from "../services/roleManagement.service";
 import TablePagination from "@material-ui/core/TablePagination";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import { useHistory } from "react-router-dom";
@@ -85,12 +85,6 @@ function createData(
     status,
   };
 }
-
-// const rows = [
-//   createData(0, "CASHIER", "Cashier", "All Shifts Cashier", "5", "Active"),
-//   createData(1, "Reception", "Receptionist", "All Shifts", "4", "Inactive"),
-//   createData(2, "ACCOUNT", "Accountant", "All Accountant", "6", "Active"),
-// ];
 
 function preventDefault(event) {
   event.preventDefault();
@@ -611,15 +605,17 @@ export default function RoleManagement() {
   const [editDescription, setEditDescription] = useState([]);
   const [editStatus, setEditStatus] = useState([]);
   const [allProperty, setAllProperty] = useState([]);
+  const [allGroup, setAllGroup] = useState([]);
 
   const [pageData, setPageData] = React.useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [ChipPropertyDialog, setChipPropertyDialog] = React.useState([]);
+  const [chipGroupDialog, setChipGroupDialog] = React.useState([]);
 
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
-  
+
   const [errorMessageDu, setErrorMessageDu] = useState(false);
   const [errorParameterDu, setErrorParameterDu] = useState(null);
 
@@ -635,13 +631,9 @@ export default function RoleManagement() {
       U: usercomponentpermission.content[0].permissionupdate,
       D: usercomponentpermission.content[0].permissiondelete,
     });
-    // macaddress.all().then(function (all) {
-    //   console.log(JSON.stringify(all, null, 2));
-    // });
     let data = await listrole(sessionStorage.getItem("auth"));
     console.log("listrole", listrole);
     let userdata = [];
-    // let i = 0;
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
         createData(
@@ -662,6 +654,7 @@ export default function RoleManagement() {
   }, []);
 
   const handleDialogAddRole = async () => {
+    let groupData = await getGroup(sessionStorage.getItem("auth"));
     let propertydata = await listallproperty(sessionStorage.getItem("auth"));
     console.log("propertydata", propertydata);
     let tempproperty = [
@@ -680,12 +673,27 @@ export default function RoleManagement() {
           });
         }
       });
+
+    let groupProperty = [
+      {
+        key: "*ALL",
+        label: "*ALL",
+      },
+    ];
+    groupData.content[groupData.content.length - 1]
+      .forEach((element) => {
+        if (groupProperty.filter((x) => x.label === element).length == 0) {
+          groupProperty.push({
+            key: element,
+            label: element,
+          });
+        }
+      });
     console.log("tempproperty", tempproperty);
-    // console.log(defaultdata.val());
-    // let _data = defaultdata.val();
     setData(JSON.parse(JSON.stringify(defaultdata)));
     setChipPropertyDialog([]);
     setAllProperty(tempproperty);
+    setAllGroup(groupProperty);
     setRoleCode(null);
     setRoleName(null);
     setDescriptionsRole(null);
@@ -784,9 +792,9 @@ export default function RoleManagement() {
         updatePageData(userdata, page, rowsPerPage);
 
         setDialogAddRole(false);
-      }else if(insert.status == "1000"){
+      } else if (insert.status == "1000") {
         setErrorMessageDu(true);
-        const dupic = insert.msg +" Role Code: "+ rolecode;
+        const dupic = insert.msg + " Role Code: " + rolecode;
         setErrorParameterDu(dupic);
       }
     }
@@ -825,8 +833,44 @@ export default function RoleManagement() {
     rolename,
     description,
     applyproperty,
+    applyGroup,
     status
   ) => {
+    let groupData = await getGroup(sessionStorage.getItem("auth"));
+    let tempGroup = [
+      {
+        key: "*ALL",
+        label: "*ALL",
+      },
+    ];
+    groupData.content[groupData.content.length - 1]
+      .split(",")
+      .forEach((element) => {
+        if (tempGroup.filter((x) => x.label === element).length == 0) {
+          tempGroup.push({
+            key: element,
+            label: element,
+          });
+        }
+      });
+
+    if (applyGroup.indexOf("*ALL") < 0) {
+      let groups = [];
+      applyGroup.split(",").forEach((element) => {
+        if (groups.filter((x) => x.label === element).length == 0) {
+          groups.push({ key: element, label: element });
+        }
+      });
+      setChipGroupDialog((chips) => groups);
+    } else {
+      setChipGroupDialog((chips) => [{ key: "*ALL", label: "*ALL" }]);
+    }
+
+
+    // console.log(defaultdata.val());
+    // let _data = defaultdata.val();
+    setAllGroup(tempGroup);
+
     let propertydata = await listallproperty(sessionStorage.getItem("auth"));
     console.log("propertydata", propertydata);
     let tempproperty = [
@@ -858,6 +902,7 @@ export default function RoleManagement() {
     } else {
       setChipPropertyDialog((chips) => [{ key: "*ALL", label: "*ALL" }]);
     }
+
 
     // console.log(defaultdata.val());
     // let _data = defaultdata.val();
@@ -971,9 +1016,9 @@ export default function RoleManagement() {
         updatePageData(userdata, page, rowsPerPage);
         setErrorMessage(false);
         setDialogEditRole(false);
-      }else if(roleupdate.status == "1000"){
+      } else if (roleupdate.status == "1000") {
         setErrorMessageDu(true);
-        const dupic = roleupdate.msg +" Role Code: "+ rolecode;
+        const dupic = roleupdate.msg + " Role Code: " + rolecode;
         setErrorParameterDu(dupic);
       }
     }
@@ -1443,6 +1488,46 @@ export default function RoleManagement() {
     );
   };
 
+
+  const handleSelectGroup = (event) => {
+    if (event.target.value == "*ALL")
+      setChipGroupDialog([
+        { key: event.target.value, label: event.target.value },
+      ]);
+    else {
+      const temp = new Set();
+
+      if (chipGroupDialog.length) {
+        for (var i in chipGroupDialog) {
+          if (chipGroupDialog[i].label == "*ALL")
+            setChipPropertyDialog((chips) =>
+              chips.filter((chips) => chips.key !== "*ALL")
+            );
+          // setChipPropertyDialog(prevState => prevState.filter((_, index) => index !== i))
+          temp.add(chipGroupDialog[i].label);
+        }
+        if (temp.has(event.target.value)) {
+          // console.log("had value");
+        } else {
+          setChipGroupDialog((chips) => [
+            ...chips,
+            { key: event.target.value, label: event.target.value },
+          ]);
+        }
+      } else {
+        setChipGroupDialog((chips) => [
+          ...chips,
+          { key: event.target.value, label: event.target.value },
+        ]);
+      }
+    }
+  };
+  const handleDeleteGroup = (chipToDelete) => () => {
+    setChipGroupDialog((chips) =>
+      chips.filter((chips) => chips.key !== chipToDelete.key)
+    );
+  };
+
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -1498,9 +1583,9 @@ export default function RoleManagement() {
                 <Grid container direction="row" alignItems="center">
                   <Grid item style={{ flexGrow: 1 }}>
                     {nodes.edited_create ||
-                    nodes.edited_read ||
-                    nodes.edited_update ||
-                    nodes.edited_delete ? (
+                      nodes.edited_read ||
+                      nodes.edited_update ||
+                      nodes.edited_delete ? (
                       <Typography
                         variant="h6"
                         color="initial"
@@ -1862,27 +1947,27 @@ export default function RoleManagement() {
                         );
                       else return item.edited_create === true;
                     }) ||
-                    nodes.children.some((item) => {
-                      if (item.permision == false)
-                        return item.children.some(
-                          (childitem) => childitem.edited_read === true
-                        );
-                      else return item.edited_read === true;
-                    }) ||
-                    nodes.children.some((item) => {
-                      if (item.permision == false)
-                        return item.children.some(
-                          (childitem) => childitem.edited_update === true
-                        );
-                      else return item.edited_update === true;
-                    }) ||
-                    nodes.children.some((item) => {
-                      if (item.permision == false)
-                        return item.children.some(
-                          (childitem) => childitem.edited_delete === true
-                        );
-                      else return item.edited_delete === true;
-                    }) ? (
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.edited_read === true
+                          );
+                        else return item.edited_read === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.edited_update === true
+                          );
+                        else return item.edited_update === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.edited_delete === true
+                          );
+                        else return item.edited_delete === true;
+                      }) ? (
                       <Typography
                         variant="h6"
                         color="initial"
@@ -1928,7 +2013,7 @@ export default function RoleManagement() {
       <React.Fragment>
         <Grid
           container
-          style={{ padding: 20,marginTop:22, backgroundColor: themeState.paper }}
+          style={{ padding: 20, marginTop: 22, backgroundColor: themeState.paper }}
         >
           <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
@@ -2109,42 +2194,46 @@ export default function RoleManagement() {
         <div style={{ maxWidth: "100%" }}>
           {CRUD.R ? (
             <MaterialTable
-            localization={{ body:{ emptyDataSourceMessage: <>   <Typography
-              variant="h1"
-              align="center"
-              style={{ fontSize: 25, color: themeState.color }}
-            >
-              <ErrorOutlineOutlinedIcon
-                style={{ fontSize: 170, color: "lightgray" }}
-              />
-            </Typography>
-            <Typography
-              align="center"
-              variant="h2"
-              style={{
-                fontWeight: 400,
-                fontSize: 30,
-                color: "rgb(0 0 0 / 47%)",
-                marginBottom: 20,
-              }}
-            >
-              No Data Available
-            </Typography>
-            <Grid item>
-                  <Button
-                    startIcon={<AddOutlinedIcon />}
-                    size="large"
-                    variant="contained"
-                    color="primary"
-                    // style={{ padding: 13 }}
-                    // fullWidth
-                    // onClick={() => setCreateindividual(true)}
-                    onClick={handleDialogAddRole}
+              localization={{
+                body: {
+                  emptyDataSourceMessage: <>   <Typography
+                    variant="h1"
+                    align="center"
+                    style={{ fontSize: 25, color: themeState.color }}
                   >
-                    New Role
-                  </Button>
-               </Grid>
-             </> }}}
+                    <ErrorOutlineOutlinedIcon
+                      style={{ fontSize: 170, color: "lightgray" }}
+                    />
+                  </Typography>
+                    <Typography
+                      align="center"
+                      variant="h2"
+                      style={{
+                        fontWeight: 400,
+                        fontSize: 30,
+                        color: "rgb(0 0 0 / 47%)",
+                        marginBottom: 20,
+                      }}
+                    >
+                      No Data Available
+                    </Typography>
+                    <Grid item>
+                      <Button
+                        startIcon={<AddOutlinedIcon />}
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        // style={{ padding: 13 }}
+                        // fullWidth
+                        // onClick={() => setCreateindividual(true)}
+                        onClick={handleDialogAddRole}
+                      >
+                        New Role
+                      </Button>
+                    </Grid>
+                  </>
+                }
+              }}
               style={{
                 paddingLeft: 30,
                 paddingRight: 30,
@@ -2292,7 +2381,7 @@ export default function RoleManagement() {
               //   ),
               // }}
               onChangePage={(page) => console.log("page")}
-              // onChangePage={(event, page) => console.log(event, page)}
+            // onChangePage={(event, page) => console.log(event, page)}
             />
           ) : null}
         </div>
@@ -2367,6 +2456,47 @@ export default function RoleManagement() {
                       selectSelectProps={{
                         native: true,
                       }}
+                      label="AD Group"
+                      select
+                      value={userValues}
+                      onChange={(event) => handleSelectGroup(event)}
+                    >
+                      {allGroup.map((option) => (
+                        <MenuItem
+                          key={option.key}
+                          value={option.label}
+                          className={classes.root}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    {ChipPropertyDialog.map((data, index) => {
+                      return (
+                        <Chip
+                          style={{ marginTop: 10 }}
+                          key={data.key + index}
+                          label={data.label}
+                          onDelete={handleDeleteGroup(data)}
+                        />
+                      );
+                    })}
+                  </Grid>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    style={{ paddingTop: 10 }}
+                  >
+                    <TextField
+                      fullWidth
+                      className={classes.root}
+                      variant="outlined"
+                      selectSelectProps={{
+                        native: true,
+                      }}
                       label="Property"
                       select
                       value={userValues}
@@ -2418,8 +2548,8 @@ export default function RoleManagement() {
                     md={12}
                     lg={12}
                     xl={12}
-                    // spacing={2}
-                    // style={{ paddingTop: 10 }}
+                  // spacing={2}
+                  // style={{ paddingTop: 10 }}
                   >
                     <FormControlLabel
                       style={{ paddingTop: 15 }}
@@ -2492,10 +2622,10 @@ export default function RoleManagement() {
                           }}
                         />
                       }
-                      // expanded={expanded}
-                      // selected={selected}
-                      // onNodeToggle={handleToggle}
-                      // onNodeSelect={handleSelect}
+                    // expanded={expanded}
+                    // selected={selected}
+                    // onNodeToggle={handleToggle}
+                    // onNodeSelect={handleSelect}
                     >
                       {data.map((node) => renderTree(node))}
                     </TreeView>
@@ -2514,7 +2644,7 @@ export default function RoleManagement() {
                     {errorParameter} is required
                   </div>
                 ) : null}
-                 {errorMessageDu ? (
+                {errorMessageDu ? (
                   <div
                     style={{
                       background: "#ff0033",
@@ -2524,7 +2654,7 @@ export default function RoleManagement() {
                       paddingTop: 5,
                     }}
                   >
-                    {errorParameterDu} 
+                    {errorParameterDu}
                   </div>
                 ) : null}
               </DialogContent>
@@ -2686,8 +2816,8 @@ export default function RoleManagement() {
                     md={12}
                     lg={12}
                     xl={12}
-                    // spacing={2}
-                    // style={{ paddingTop: 10 }}
+                  // spacing={2}
+                  // style={{ paddingTop: 10 }}
                   >
                     <FormControlLabel
                       style={{ paddingTop: 15 }}
@@ -2775,10 +2905,10 @@ export default function RoleManagement() {
                           }}
                         />
                       }
-                      // expanded={expanded}
-                      // selected={selected}
-                      // onNodeToggle={handleToggle}
-                      // onNodeSelect={handleSelect}
+                    // expanded={expanded}
+                    // selected={selected}
+                    // onNodeToggle={handleToggle}
+                    // onNodeSelect={handleSelect}
                     >
                       {data.map((node) => renderTree(node))}
                     </TreeView>
@@ -2797,7 +2927,7 @@ export default function RoleManagement() {
                     {errorParameter} is required
                   </div>
                 ) : null}
-                 {errorMessageDu ? (
+                {errorMessageDu ? (
                   <div
                     style={{
                       background: "#ff0033",
@@ -2807,7 +2937,7 @@ export default function RoleManagement() {
                       paddingTop: 5,
                     }}
                   >
-                    {errorParameterDu} 
+                    {errorParameterDu}
                   </div>
                 ) : null}
               </DialogContent>
