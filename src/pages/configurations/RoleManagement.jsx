@@ -2808,7 +2808,7 @@ export default function RoleManagement() {
                           style={{ marginTop: 10 }}
                           key={data.key + index}
                           label={data.label}
-                          onDelete={handleDeleteProperty(data)}
+                          onDelete={handleDeleteGroup(data)}
                         />
                       );
                     })}
