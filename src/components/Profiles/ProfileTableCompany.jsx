@@ -211,7 +211,7 @@ export const ProfileTableCompany = (props) => {
 const smUp = useMediaQuery(theme.breakpoints.up("sm"));
 
 let customStyle = {
-  padding: theme.spacing(1, 1, 1, 0),
+  padding: theme.spacing(0, 0, 0, 0),
   // vertical padding + font size from searchIcon
   paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
   transition: theme.transitions.create("width"),
