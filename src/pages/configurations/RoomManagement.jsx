@@ -52,7 +52,7 @@ import {
 } from "../../services/roomMaster.service";
 import {
   listallproperty,
-  getconfigurationbypropertycode,
+  getConfigurationByPropertyCode,
   getusercomponentpermision,
 } from "../../services/user.service";
 
@@ -278,7 +278,7 @@ export default function RoomManagement() {
   // };
 
   const handlePropertyDialog = async (event) => {
-    let getconfigdata = await getconfigurationbypropertycode(
+    let getconfigdata = await getConfigurationByPropertyCode(
       sessionStorage.getItem("auth"),
       event.target.value
     );
@@ -361,7 +361,7 @@ export default function RoomManagement() {
           });
         }
       });
-    let getconfigdata = await getconfigurationbypropertycode(
+    let getconfigdata = await getConfigurationByPropertyCode(
       sessionStorage.getItem("auth"),
       pageProperty
     );
@@ -437,7 +437,7 @@ export default function RoomManagement() {
     );
     console.log("dataRoombyid", dataRoombyid);
 
-    let getconfigdata = await getconfigurationbypropertycode(
+    let getconfigdata = await getConfigurationByPropertyCode(
       sessionStorage.getItem("auth"),
       dataRoombyid.content[0].propertycode
     );

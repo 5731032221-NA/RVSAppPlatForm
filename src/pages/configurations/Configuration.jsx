@@ -43,7 +43,7 @@ import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import { useHistory } from "react-router-dom";
 import {
   updateconfiguration,
-  getconfigurationbypropertycode,
+  getConfigurationByPropertyCode,
 } from "../../services/user.service";
 const useStyles = makeStyles({
   root: (themeState) => ({
@@ -381,7 +381,7 @@ export default function Configuration() {
 
   React.useEffect(async () => {
     console.log("useEffect");
-    let configdata = await getconfigurationbypropertycode(
+    let configdata = await getConfigurationByPropertyCode(
       sessionStorage.getItem("auth"),
       updateproperty
     );

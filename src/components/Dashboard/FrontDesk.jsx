@@ -1,33 +1,28 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../../middleware/action";
 import en_lang from "../../static/lang/en.json";
 import th_lang from "../../static/lang/th.json";
-// const [SomeThingInFrontDesk, setSomeThingInFrontDesk] = useState(en_lang.SomeThingInFrontDesk)
-// const [lang, setLang] = useState('en')
+import PieChartComponent from "./PieChartComponent";
+import ArrivalBarChart from "./ArrivalBarChart";
+import InHouseBarChart from "./InHouseBarChart";
+import TodayPickupBarChart from "./TodayPickupBarChart";
+
+import { getWeather, forecastWeather } from "../../services/weather.service";
 
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import WorkIcon from "@material-ui/icons/Work";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-import TestGraph from "./TestGraph";
-import Radialbarchart from "./Radialbarchart";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import ArrivalBarChart from "./ArrivalBarChart";
-import InHouseBarChart from "./InHouseBarChart";
-import TodayPickupBarChart from "./TodayPickupBarChart";
-import { getweather, forecastweather } from "../../services/weather.service";
 import { blue } from "@material-ui/core/colors";
 
 export class FrontDesk extends Component {
   constructor(props) {
     super(props);
-    this.props.getUserList();
     this.state = {
       lang: "en",
       Dashboard: en_lang.Dashboard,
@@ -39,18 +34,17 @@ export class FrontDesk extends Component {
         paper: "#FFFFFF",
         colorlevel: "900",
       },
-      weatherdata: {
+      weatherData: {
         city: "city",
         icon: "icon",
         temperature: "temp",
         des: "des",
       },
-      forcast: [],
+      forecast: [],
     };
   }
 
   async componentDidMount() {
-    // this.interval = setInterval(() => {}, 1000);
     if (this.state.lang != this.props.lang) {
       this.setState({ lang: "th" });
       if (this.props.lang == "th") {
@@ -69,8 +63,6 @@ export class FrontDesk extends Component {
     }
 
     if (this.state.themeBackground != this.props.themeBackground) {
-      // console.log(this.state.themeBackground, this.props.themeBackground);
-
       if (this.props.themeBackground === "#FFFFFF") {
         this.setState({
           themeState: {
@@ -102,9 +94,9 @@ export class FrontDesk extends Component {
         this.setState({ color: this.props.defaultColor });
       }
     }
-    const item = await getweather();
+    const item = await getWeather();
     this.setState({
-      weatherdata: {
+      weatherData: {
         day: new Date(item.dt * 1000).toLocaleString("en-us", {
           weekday: "short",
         }),
@@ -115,33 +107,25 @@ export class FrontDesk extends Component {
         temperature: Math.floor(item.main.temp),
       },
     });
-    console.log("weatherdata", this.state.weatherdata);
+    console.log("weatherData", this.state.weatherData);
 
-    const forcastdata = await forecastweather();
+    const forecastdata = await forecastWeather();
     let forecasttemp = [];
-    console.log("forcastdata", forcastdata.daily);
+    console.log("forecastdata", forecastdata.daily);
 
-    for (let i = 0; i < forcastdata.daily.length - 1; i++) {
+    for (let i = 0; i < forecastdata.daily.length - 1; i++) {
       forecasttemp.push({
-        day: new Date(forcastdata.daily[i].dt * 1000).toLocaleString("en-us", {
+        day: new Date(forecastdata.daily[i].dt * 1000).toLocaleString("en-us", {
           weekday: "long",
         }),
-        icon: forcastdata.daily[i].weather[0].icon,
-        maxtemp: forcastdata.daily[i].temp.max,
-        mintemp: forcastdata.daily[i].temp.min,
+        icon: forecastdata.daily[i].weather[0].icon,
+        maxtemp: forecastdata.daily[i].temp.max,
+        mintemp: forecastdata.daily[i].temp.min,
       });
     }
-    console.log("forecasttemp", forecasttemp);
-    this.setState({ forcast: forecasttemp });
+    console.log("forecastTemp", forecasttemp);
+    this.setState({ forecast: forecasttemp });
   }
-
-  // componentWillUnmount() {
-  //   clearInterval(this.interval);
-  // }
-  // Test = () => {
-  //   console.log("weatherdata", this.state.weatherdata);
-  //   console.log("forcast", this.state.forcast);
-  // };
 
   componentDidUpdate() {
     if (this.state.lang != this.props.lang) {
@@ -161,7 +145,6 @@ export class FrontDesk extends Component {
       }
     }
     if (this.state.themeBackground != this.props.themeBackground) {
-      // console.log(this.state.themeBackground, this.props.themeBackground);
       if (this.props.themeBackground === "#FFFFFF") {
         this.setState({
           themeState: {
@@ -192,7 +175,7 @@ export class FrontDesk extends Component {
       if (this.props.themeBackground === "#FFFFFF") {
         this.setState({ color: this.props.color });
       } else {
-        console.log("TTTTTTTTTTTTT", this.props.defaultColor);
+        // console.log("TTTTTTTTTTTTT", this.props.defaultColor);
         // this.setState({ color: this.props.defaultColor });
       }
     }
@@ -207,13 +190,6 @@ export class FrontDesk extends Component {
         }}
       >
         <Container maxWidth="xl">
-          {/* <h3 style={{ color: "blue" }}>{this.state.Dashboard}</h3>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={12} lg={9} xl={9}>
-              <Grid item spacing={1} xs={12} md={12} lg={12} xl={12}>
-                <Paper elevation={3} style={{ minHeight: 300 }}>
-                  Gride layout 12 */}
-
           <h3 style={{ color: this.state.color, marginBottom: 30 }}>
             FrontDesk
           </h3>
@@ -363,7 +339,6 @@ export class FrontDesk extends Component {
                       </Grid>
                       <Grid item xs={12} md={6} lg={6} xl={6}>
                         <Paper
-                          // variant="outlined"
                           elevation={0}
                           style={{
                             color: this.state.themeState.color,
@@ -374,7 +349,7 @@ export class FrontDesk extends Component {
                             marginBottom: 20,
                           }}
                         >
-                          <Radialbarchart />
+                          <PieChartComponent />
                         </Paper>
                       </Grid>
                     </Grid>
@@ -555,7 +530,6 @@ export class FrontDesk extends Component {
                       </Grid>
                       <Grid item xs={12} md={8} lg={8} xl={8}>
                         <Paper
-                          // variant="outlined"
                           elevation={0}
                           style={{
                             color: this.state.themeState.color,
@@ -1317,7 +1291,7 @@ export class FrontDesk extends Component {
                     <Grid item style={{ flexGrow: 1 }}>
                       <Typography variant="h3" component="h1">
                         {/* Weather content */}
-                        {this.state.weatherdata.city}
+                        {this.state.weatherData.city}
                       </Typography>
                       <Typography
                         variant="subtitle1"
@@ -1325,12 +1299,12 @@ export class FrontDesk extends Component {
                         style={{ fontSize: 20 }}
                       >
                         {/* Weather content */}
-                        {this.state.weatherdata.day},
-                        {this.state.weatherdata.date}
+                        {this.state.weatherData.day},
+                        {this.state.weatherData.date}
                       </Typography>
                       <Grid item style={{ padding: 20, color: "#FFFFFF" }}>
                         <Typography variant="h1" component="h1">
-                          {this.state.weatherdata.temperature}&deg;
+                          {this.state.weatherData.temperature}&deg;
                           <span style={{ fontSize: 70 }}>C</span>
                         </Typography>
                       </Grid>
@@ -1347,14 +1321,14 @@ export class FrontDesk extends Component {
                           component="h1"
                           style={{ fontSize: 30 }}
                         >
-                          {this.state.weatherdata.des}
+                          {this.state.weatherData.des}
                         </Typography>
                       </Grid>
                     </Grid>
 
                     <Grid item>
                       <img
-                        src={`http://openweathermap.org/img/wn/${this.state.weatherdata.icon}@2x.png`}
+                        src={`http://openweathermap.org/img/wn/${this.state.weatherData.icon}@2x.png`}
                         alt="weatherIMG"
                       />
                     </Grid>
@@ -1372,7 +1346,7 @@ export class FrontDesk extends Component {
                     backgroundColor: this.state.themeState.paper,
                   }}
                 >
-                  {this.state.forcast.map((weatherforcast, i) => (
+                  {this.state.forecast.map((weatherforecast, i) => (
                     <Grid
                       key={i}
                       container
@@ -1385,22 +1359,22 @@ export class FrontDesk extends Component {
                       >
                         <Grid item>
                           <Typography variant="h6" component="h6">
-                            {weatherforcast.day}
+                            {weatherforecast.day}
                           </Typography>
                         </Grid>
                         <Grid item>
                           <img
                             width="80"
                             height="80"
-                            src={`http://openweathermap.org/img/wn/${weatherforcast.icon}@2x.png`}
+                            src={`http://openweathermap.org/img/wn/${weatherforecast.icon}@2x.png`}
                             alt="weatherIMG"
                           />
                         </Grid>
                         <Grid item>
                           <Typography variant="h6" component="h6">
                             {/* min/max */}
-                            {Math.floor(weatherforcast.mintemp)}&deg;C/
-                            {Math.floor(weatherforcast.maxtemp)}&deg;C
+                            {Math.floor(weatherforecast.mintemp)}&deg;C/
+                            {Math.floor(weatherforecast.maxtemp)}&deg;C
                           </Typography>
                         </Grid>
                       </Grid>
@@ -1417,7 +1391,6 @@ export class FrontDesk extends Component {
 }
 
 const mapStateToProps = (state) => {
-  // console.log("mapStateToProps");
   return {
     lang: state.reducer.lang,
     color: state.reducer.color,

@@ -59,7 +59,6 @@ export default function Property({ setToken, setProperty }) {
   const [selectedProperty, setSelectedProperty] = useState(JSON.parse(sessionStorage.getItem("grantproperty"))[0].propertycode);
   const [cookies, setCookie] = useCookies(['name']);
 
-  const { store } = useContext(ReactReduxContext);
   const pageProperty = useSelector((state) => state.reducer.property);
   const [data, setData] = React.useState([]);
 

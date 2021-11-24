@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 const data = [
   {
@@ -63,11 +53,10 @@ const data = [
   },
 ];
 
-export default function ArrivalBarChart() {
+export default function InHouseBarChart() {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart width={500} height={300} data={data} barSize={27}>
-        {/* <CartesianGrid strokeDasharray="3 3" /> */}
         <XAxis dataKey="name" />
         <Tooltip />
         <Bar dataKey="Income" stackId="a" fill="#2D62ED" radius={3} />

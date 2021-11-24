@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BarChart,
-  Bar,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, Tooltip, ResponsiveContainer } from "recharts";
 
 const data = [
   {
@@ -44,14 +39,10 @@ const data = [
   },
 ];
 
-export default function Barchart() {
+export default function BarChartDashboard() {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <BarChart
-        width={500}
-        height={300}
-        data={data}
-      >
+      <BarChart width={500} height={300} data={data}>
         <Tooltip />
         <Bar
           dataKey="pv"

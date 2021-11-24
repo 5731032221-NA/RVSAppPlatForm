@@ -25,7 +25,7 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import { getconfigurationbypropertycode } from "../../services/user.service";
+import { getConfigurationByPropertyCode } from "../../services/user.service";
 import {
   getIndividualProfileCommunication,
   getIndividualProfileRelation,
@@ -538,7 +538,7 @@ export const ProfileIndividual = (props) => {
     let getcomunication = [];
     let getrelation = [];
     console.log("demostate");
-    let getconfigdata = await getconfigurationbypropertycode(
+    let getconfigdata = await getConfigurationByPropertyCode(
       sessionStorage.getItem("auth"),
       pageProperty
     );

@@ -26,7 +26,7 @@ module.exports = {
       },
     }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
-  getconfigurationbypropertycode: async function (accessToken,propertycode) {
+  getConfigurationByPropertyCode: async function (accessToken,propertycode) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/configurationbypropertycode/${propertycode}`, {
       method: "GET",
       headers: {

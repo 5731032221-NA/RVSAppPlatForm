@@ -20,7 +20,7 @@ import {
   Breadcrumbs,
   Link,
 } from "@material-ui/core";
-import ProfileTable from "../components/Profiles/ProfileTable";
+import ProfileTableIndividual from "../components/Profiles/ProfileTableIndividual";
 import ProfileIndividual from "../components/Profiles/ProfileIndividual";
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -200,7 +200,7 @@ export const ProfilePage = (props) => {
       </Grid> */}
 
       {switchPage === "tableprofile" ? (
-        <ProfileTable />
+        <ProfileTableIndividual />
       ) : switchPage === "individual" ? (
         <ProfileIndividual />
       ) : null}

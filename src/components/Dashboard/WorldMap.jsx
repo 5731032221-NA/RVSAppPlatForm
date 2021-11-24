@@ -9,10 +9,8 @@ import {
   ZoomableGroup,
   Graticule,
 } from "react-simple-maps";
-import mapdata from "./map.csv";
+import mapData from "../../assets/map.csv";
 import Container from "@material-ui/core/Container";
-
-// import "./styles.css";
 
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
@@ -24,7 +22,7 @@ const colorScale = scaleLinear()
 export default function WorldMap() {
   const [data, setData] = useState([]);
   useEffect(() => {
-    csv(mapdata).then((data) => {
+    csv(mapData).then((data) => {
       setData(data);
     });
   }, []);
@@ -58,17 +56,6 @@ export default function WorldMap() {
           )}
         </ZoomableGroup>
       </ComposableMap>
-      {/* <ComposableMap height={500}>
-        <ZoomableGroup zoom={1}>
-          <Geographies geography={geoUrl}>
-            {({ geographies }) =>
-              geographies.map((geo) => (
-                <Geography fill="#34ACFF" key={geo.rsmKey} geography={geo} />
-              ))
-            }
-          </Geographies>
-        </ZoomableGroup>
-      </ComposableMap> */}
     </Container>
   );
 }

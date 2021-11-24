@@ -4,52 +4,34 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import InstagramIcon from "@material-ui/icons/Instagram";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import Switch from "@material-ui/core/Switch";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import { blue, green, yellow } from "@material-ui/core/colors";
+import { makeStyles } from "@material-ui/core/styles";
+import { blue } from "@material-ui/core/colors";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import { optioncountry } from "../../static/country.js";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Breadcrumbs, Link } from "@material-ui/core";
-import { getconfigurationbypropertycode } from "../../services/user.service";
+import { getConfigurationByPropertyCode } from "../../services/user.service";
 import { nextComponent } from "../../middleware/action";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   getCompanyProfileCommunication,
   getCompanyProfileRelation,
-  getCompanyProfile,
-  getCompanyProfileById,
+  // getCompanyProfile,
+  // getCompanyProfileById,
   postCompanyProfile,
   updateCompanyProfile,
-  deleteCompanyProfileById,
+  // deleteCompanyProfileById,
 } from "../../services/companyprofile.service";
 import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
-  DateRangePicker,
 } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
@@ -80,8 +62,6 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        // borderColor: themeState.color,
-        // backgroundColor:"grey.500",
         borderColor: "grey.500",
         color: themeState.color,
       },
@@ -107,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 
-const optiondata = [
+const optionData = [
   {
     value: "1",
     label: "Option1",
@@ -121,7 +101,7 @@ const optiondata = [
     label: "Option3",
   },
 ];
-const optiondata2 = [
+const optionData2 = [
   {
     value: "10",
     label: "Option10",
@@ -140,7 +120,7 @@ const optiondata2 = [
   },
 ];
 
-const optioncurrency = [
+const optionCurrency = [
   {
     value: "1",
     label: "Baht ฿",
@@ -151,7 +131,7 @@ const optioncurrency = [
   },
 ];
 
-const optioncreditrating = [
+const optionCreditRating = [
   {
     value: "1",
     label: "5",
@@ -174,7 +154,7 @@ const optioncreditrating = [
   },
 ];
 
-const optionrelation = [
+const optionRelation = [
   {
     value: "employer",
     label: "employer",
@@ -193,15 +173,11 @@ const optionrelation = [
   },
 ];
 
-const optioncommunication = [
+const optionCommunication = [
   {
     value: "Telephone",
     label: "Telephone Number",
   },
-  // {
-  //   value: "Mobile",
-  //   label: "Mobile Number",
-  // },
   {
     value: "Email",
     label: "Email Address",
@@ -233,13 +209,14 @@ const optioncommunication = [
 ];
 
 export const ProfileCompany = (props) => {
-  const { store } = useContext(ReactReduxContext);
-  const [action, setAction] = React.useState(props.action);
+  // const { store } = useContext(ReactReduxContext);
+  // const [action, setAction] = React.useState(props.action);
 
   // React.useEffect(async( ) => {
   //  console.log("props.action:",props.action);
   //              await handleAddDatatoDatabase();
   // },[props.action])
+
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -284,35 +261,40 @@ export const ProfileCompany = (props) => {
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
+
   // const [isRequired, setIsRequired] = React.useState(false);
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
   const pageProperty = useSelector((state) => state.reducer.property);
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
-  React.useEffect(async () => {
+
+  React.useEffect(() => {
     setSmallwidth(window.innerWidth < 1000);
 
-    let getconfigdata = await getconfigurationbypropertycode(
-      sessionStorage.getItem("auth"),
-      pageProperty
-    );
-    console.log("getconfigdata:", getconfigdata);
-    let configdata = getconfigdata.content[getconfigdata.content.length - 1];
-    let optionTitle = await getlist(configdata, "PCINDTT");
-    // let optionDocumentType = await getlist(configdata,"");
-    console.log("optionTitle:", optionTitle);
-    let optiongender = await getlist(configdata, "PCINDGD");
-    console.log("optiongender:", optiongender);
-    let relation = await getlist(configdata, "PCINDRL");
-    console.log("relation:", relation);
-    let communication = await getlist(configdata, "PCINDCM");
-    console.log("communication:", communication);
-    // let optionDocumentType = await getlist(configdata,"");
+    async function handleInitialData() {
+      let getConfigData = await getConfigurationByPropertyCode(
+        sessionStorage.getItem("auth"),
+        pageProperty
+      );
+      console.log("getConfigData:", getConfigData);
+      let configData = getConfigData.content[getConfigData.content.length - 1];
+      let optionTitle = await getList(configData, "PCINDTT");
+      // let optionDocumentType = await getList(configData,"");
+      console.log("optionTitle:", optionTitle);
+      let optionGender = await getList(configData, "PCINDGD");
+      console.log("optionGender:", optionGender);
+      let relation = await getList(configData, "PCINDRL");
+      console.log("relation:", relation);
+      let communication = await getList(configData, "PCINDCM");
+      console.log("communication:", communication);
+      // let optionDocumentType = await getList(configData,"");
 
-    console.log("propseditData:", props.editdata);
+      console.log("propseditData:", props.editdata);
+    }
+    handleInitialData();
   }, []);
 
-  async function getlist(config, field) {
+  async function getList(config, field) {
     for (var i = 0; i < config.length; i++) {
       var obj = config[i];
       if (obj.code === field) {
@@ -325,65 +307,60 @@ export const ProfileCompany = (props) => {
         );
         return list;
       } else if (obj.children) {
-        let _getlist = await getlist(obj.children, field);
-        if (_getlist) return _getlist;
+        let getListData = await getList(obj.children, field);
+        if (getListData) return getListData;
       }
     }
   }
 
-  const handleComponentState = async (comp) => {
-    console.log("setcomp", comp);
-    props.nextComponent(comp);
-  };
-
-  const [nameOne, setnameOne] = useState(
+  const [nameOne, setNameOne] = useState(
     props.editdata != null ? props.editdata[0].name : ""
   );
-  const [nameTwo, setnameTwo] = React.useState(
+  const [nameTwo, setNameTwo] = React.useState(
     props.editdata != null ? props.editdata[0].name2 : ""
   );
-  const [CompanyTypeCode, setCompanyTypeCode] = React.useState(
+  const [companyTypeCode, setCompanyTypeCode] = React.useState(
     props.editdata != null ? props.editdata[0].companytypecode : "Government"
   );
-  const [Abbreviation, setAbbreviation] = React.useState(
+  const [abbreviation, setAbbreviation] = React.useState(
     props.editdata != null ? props.editdata[0].abbreviation : ""
   );
-  const [GuaranteeMethodCode, setGuaranteeMethodCode] = React.useState(
+  const [guaranteeMethodCode, setGuaranteeMethodCode] = React.useState(
     props.editdata != null ? props.editdata[0].guaranteemethodcode : ""
   );
-  const [Property, setProperty] = React.useState(
+  const [property, setProperty] = React.useState(
     props.editdata != null ? props.editdata[0].property : "SPJ1"
   );
-  const [Currency, setCurrency] = React.useState(
+  const [currency, setCurrency] = React.useState(
     props.editdata != null ? props.editdata[0].currencycode : "THB"
   );
-  const [CreditRating, setCreditRating] = React.useState(
+  const [creditRating, setCreditRating] = React.useState(
     props.editdata != null
       ? props.editdata[0].creditrating
-      : optioncreditrating[0].value
+      : optionCreditRating[0].value
   );
-  const [iata, setiata] = React.useState(
+  const [IATA, setIATA] = React.useState(
     props.editdata != null ? props.editdata[0].iata : ""
   );
-  const [Status, setStatus] = React.useState(
+  const [status, setStatus] = React.useState(
     props.editdata != null ? props.editdata[0].statuscode : true
   );
-  const [StreetAddress, setStreetAddress] = React.useState(
+  const [streetAddress, setStreetAddress] = React.useState(
     props.editdata != null ? props.editdata[0].address : ""
   );
-  const [Chooseacountry, setChooseacountry] = React.useState(
+  const [chooseCountry, setChooseCountry] = React.useState(
     props.editdata != null ? props.editdata[0].countrycode : ""
   );
-  const [City, setCity] = React.useState(
+  const [city, setCity] = React.useState(
     props.editdata != null ? props.editdata[0].city : ""
   );
-  const [State, setState] = React.useState(
+  const [stateProvince, setStateProvince] = React.useState(
     props.editdata != null ? props.editdata[0].stateprovince : ""
   );
-  const [Postal, setPostal] = React.useState(
+  const [postal, setPostal] = React.useState(
     props.editdata != null ? props.editdata[0].postalcode : 0
   );
-  const [sameasaddress, setsameasaddress] = React.useState(false);
+  const [sameAsAddress, setSameAsAddress] = React.useState(false);
 
   const [BStreetAddress, setBStreetAddress] = React.useState(
     props.editdata != null ? props.editdata[0].billingaddress : ""
@@ -407,92 +384,70 @@ export const ProfileCompany = (props) => {
     props.editdata != null ? props.editdata[0].taxid2 : ""
   );
 
-  const [CreditCardNumber, setCreditCardNumber] = React.useState(
+  const [creditCardNumber, setCreditCardNumber] = React.useState(
     props.editdata != null ? props.editdata[0].creditcardid : 0
   );
-  const [OutstandingAmount, setOutstandingAmount] = React.useState(
+  const [outstandingAmount, setOutstandingAmount] = React.useState(
     props.editdata != null ? props.editdata[0].outstandingamout : 0
   );
-  const [FloatingDepositionAmount, setFloatingDepositionAmount] =
+  const [floatingDepositionAmount, setFloatingDepositionAmount] =
     React.useState(
       props.editdata != null ? props.editdata[0].floatingdepositamount : 0
     );
   const [ARNumber, setARNumber] = React.useState(
     props.editdata != null ? props.editdata[0].ar_number : 0
   );
-  const [SalesUserName, setSalesUserName] = React.useState(
+  const [salesUserName, setSalesUserName] = React.useState(
     props.editdata != null ? props.editdata[0].salesusername : ""
   );
-  const [Industry, setIndustry] = React.useState(
+  const [industry, setIndustry] = React.useState(
     props.editdata != null ? props.editdata[0].industrycode : "Insurrance"
   );
-  const [MarketSegment, setMarketSegment] = React.useState(
+  const [marketSegment, setMarketSegment] = React.useState(
     props.editdata != null ? props.editdata[0].marketsegmentcode : "Code1"
   );
-  const [SourceOfBusiness, setSourceOfBusiness] = React.useState(
+  const [sourceOfBusiness, setSourceOfBusiness] = React.useState(
     props.editdata != null ? props.editdata[0].sourceofbusinesscode : "Code1"
   );
-  const [TrackCode, setTrackCode] = React.useState(
+  const [trackCode, setTrackCode] = React.useState(
     props.editdata != null ? props.editdata[0].trackcode : "Code1"
   );
-  const [ReasonForStay, setReasonForStay] = React.useState(
+  const [reasonForStay, setReasonForStay] = React.useState(
     props.editdata != null ? props.editdata[0].reasonforstaycode : "Code1"
   );
-  const [Geographic, setGeographic] = React.useState(
+  const [geographic, setGeographic] = React.useState(
     props.editdata != null ? props.editdata[0].geographiccode : "SEA"
   );
-  const [ratecontractcode, setratecontractcode] = React.useState(
+  const [rateContractCode, setRateContractCode] = React.useState(
     props.editdata != null ? props.editdata[0].ratecontractcode : ""
   );
-  const [negotiatedratesonly, setnegotiatedratesonly] = React.useState(
+  const [negotiatedRateOnly, setNegotiatedRatesOnly] = React.useState(
     props.editdata != null ? props.editdata[0].negotiatedratesonly : false
   );
 
   const [communicationDatas, setCommunicationDatas] = React.useState({});
 
-  const [Communication, setCommunication] = React.useState("");
-  const [Relationship, setRelationship] = React.useState("");
+  const [communication, setCommunication] = React.useState("");
+  const [relationship, setRelationship] = React.useState("");
   const [relationDatas, setRelationDatas] = React.useState({});
   const [isRequired, setIsRequired] = React.useState(false);
 
   const [list, setList] = React.useState([]);
   React.useEffect(() => {
-    async function getconfig() {
+    async function getConfig() {
       updateList();
       console.log("list:", list);
     }
-    getconfig();
+    getConfig();
   }, []);
-  // const reorder = (list, startIndex, endIndex) => {
-  //   const result = Array.from(list);
-  //   const [removed] = result.splice(startIndex, 1);
-  //   result.splice(endIndex, 0, removed);
-
-  //   return result;
-  // };
-  // const onEnd = (result) => {
-  //   if (!result.destination) {
-  //     return;
-  //   }
-  //   setList(reorder(list, result.source.index, result.destination.index));
-  //   console.log(result);
-  // };
-  // const getItemStyle = (isDragging, draggableStyle) => ({
-  //   // styles we need to apply on draggables
-  //   ...draggableStyle,
-
-  //   ...(isDragging && {
-  //     background: "lightblue",
-  //   }),
-  // });
 
   async function updateList() {
     let commu = JSON.parse(JSON.stringify(communicationDatas));
     let rela = JSON.parse(JSON.stringify(relationDatas));
     let getCommunicationsDatas = {};
-    let getcomunication = [];
-    let getrelation = [];
-    console.log("demostate");
+    let getComunication = [];
+    let getRelation = [];
+    console.log("demoState");
     if (
       props.editdata != null &&
       Object.keys(commu).length === 0 &&
@@ -522,7 +477,7 @@ export const ProfileCompany = (props) => {
             [count]: element.communication,
             [count + 1]: element.value,
           }));
-          getcomunication.push({
+          getComunication.push({
             id: commuid1,
             label: "Choose a communication",
             xl: 3,
@@ -530,7 +485,7 @@ export const ProfileCompany = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: optioncommunication.map((option) => (
+              data: optionCommunication.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -548,7 +503,7 @@ export const ProfileCompany = (props) => {
                 [commuid1]: e.target.value,
               })),
           });
-          getcomunication.push({
+          getComunication.push({
             id: commuid2,
             label: "communication",
             xl: 9,
@@ -581,7 +536,7 @@ export const ProfileCompany = (props) => {
           [relationid]: element.value,
           [relationid + 2]: element.note,
         }));
-        getrelation.push({
+        getRelation.push({
           id: relaid2,
           label: "Name Type",
           xl: 2,
@@ -589,7 +544,7 @@ export const ProfileCompany = (props) => {
           xs: 6,
           select: {
             status: "option",
-            data: optionrelation.map((option) => (
+            data: optionRelation.map((option) => (
               <option
                 style={headerTableStyle}
                 key={option.value}
@@ -606,7 +561,7 @@ export const ProfileCompany = (props) => {
               [relaid2]: e.target.value,
             })),
         });
-        getrelation.push({
+        getRelation.push({
           id: relaid1,
           label: "Name",
           xl: 4,
@@ -623,7 +578,7 @@ export const ProfileCompany = (props) => {
               [relaid1]: e.target.value,
             })),
         });
-        getrelation.push({
+        getRelation.push({
           id: relaid3,
           label: "Note",
           xl: 6,
@@ -642,7 +597,7 @@ export const ProfileCompany = (props) => {
         });
         relationid = relationid + 3;
       });
-      console.log("getrelation", getrelation);
+      console.log("getRelation", getRelation);
     } else {
       let count = 3;
       console.log("commu", commu);
@@ -651,7 +606,7 @@ export const ProfileCompany = (props) => {
         if (key % 2 == 0) {
           const commuid1 = count;
           const commuid2 = count + 1;
-          getcomunication.push({
+          getComunication.push({
             id: commuid1,
             label: "Choose a communication",
             xl: 3,
@@ -659,7 +614,7 @@ export const ProfileCompany = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: optioncommunication.map((option) => (
+              data: optionCommunication.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -677,7 +632,7 @@ export const ProfileCompany = (props) => {
                 [commuid1]: e.target.value,
               })),
           });
-          getcomunication.push({
+          getComunication.push({
             id: commuid2,
             label: "communication",
             xl: 9,
@@ -704,7 +659,7 @@ export const ProfileCompany = (props) => {
           const relaid1 = relationid;
           const relaid2 = relationid + 1;
           const relaid3 = relationid + 2;
-          getrelation.push({
+          getRelation.push({
             id: relaid2,
             label: "Name Type",
             xl: 2,
@@ -712,7 +667,7 @@ export const ProfileCompany = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: optionrelation.map((option) => (
+              data: optionRelation.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -729,7 +684,7 @@ export const ProfileCompany = (props) => {
                 [relaid2]: e.target.value,
               })),
           });
-          getrelation.push({
+          getRelation.push({
             id: relaid1,
             label: "Name",
             xl: 4,
@@ -745,10 +700,10 @@ export const ProfileCompany = (props) => {
                 ...prev,
                 [relaid1]: e.target.value,
               })),
-              dataType: "string",
-              dataCheck: true,
+            dataType: "string",
+            dataCheck: true,
           });
-          getrelation.push({
+          getRelation.push({
             id: relaid3,
             label: "Note",
             xl: 6,
@@ -764,8 +719,8 @@ export const ProfileCompany = (props) => {
                 ...prev,
                 [relationid + 2]: e.target.value,
               })),
-              dataType: "string",
-              dataCheck: true,
+            dataType: "string",
+            dataCheck: true,
           });
           relationid = relaid3;
         }
@@ -790,7 +745,7 @@ export const ProfileCompany = (props) => {
               defaultvalue:
                 props.editdata != null ? props.editdata[0].name : "",
             },
-            handle: (e) => setnameOne(e.target.value),
+            handle: (e) => setNameOne(e.target.value),
             dataType: "string",
             dataCheck: nameOne,
           },
@@ -806,7 +761,7 @@ export const ProfileCompany = (props) => {
               defaultvalue:
                 props.editdata != null ? props.editdata[0].name2 : "",
             },
-            handle: (e) => setnameTwo(e.target.value),
+            handle: (e) => setNameTwo(e.target.value),
             dataType: "string",
             dataCheck: true,
           },
@@ -890,7 +845,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setGuaranteeMethodCode(e.target.value),
             dataType: "string",
-            dataCheck: GuaranteeMethodCode,
+            dataCheck: guaranteeMethodCode,
           },
           {
             id: 7,
@@ -922,7 +877,7 @@ export const ProfileCompany = (props) => {
             xs: 12,
             select: {
               status: "option",
-              data: optioncreditrating.map((option) => (
+              data: optionCreditRating.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.label}
@@ -934,7 +889,7 @@ export const ProfileCompany = (props) => {
               defaultvalue:
                 props.editdata != null
                   ? props.editdata[0].creditrating
-                  : optioncreditrating[0].value,
+                  : optionCreditRating[0].value,
             },
             handle: (e) => setCreditRating(e.target.value),
           },
@@ -950,7 +905,7 @@ export const ProfileCompany = (props) => {
               defaultvalue:
                 props.editdata != null ? props.editdata[0].iata : "",
             },
-            handle: (e) => setiata(e.target.value),
+            handle: (e) => setIATA(e.target.value),
             dataType: "string",
             dataCheck: true,
           },
@@ -964,7 +919,7 @@ export const ProfileCompany = (props) => {
               status: "status",
               data: "",
               defaultvalue:
-                props.editdata != null ? props.editdata[0].statuscode : Status,
+                props.editdata != null ? props.editdata[0].statuscode : status,
             },
             handle: (e) => setStatus(e.target.checked),
           },
@@ -989,7 +944,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setStreetAddress(e.target.value),
             dataType: "string",
-            dataCheck: StreetAddress,
+            dataCheck: streetAddress,
           },
           {
             id: 5,
@@ -1003,8 +958,8 @@ export const ProfileCompany = (props) => {
               defaultvalue:
                 props.editdata != null ? props.editdata[0].countrycode : "",
             },
-            dataCheck: Chooseacountry,
-            handle: (e) => setChooseacountry(e.target.value),
+            dataCheck: chooseCountry,
+            handle: (e) => setChooseCountry(e.target.value),
           },
           {
             id: 6,
@@ -1034,7 +989,7 @@ export const ProfileCompany = (props) => {
               defaultvalue:
                 props.editdata != null ? props.editdata[0].stateprovince : "",
             },
-            handle: (e) => setState(e.target.value),
+            handle: (e) => setStateProvince(e.target.value),
             dataType: "string",
             dataCheck: true,
           },
@@ -1071,7 +1026,7 @@ export const ProfileCompany = (props) => {
               status: "check",
               data: "",
             },
-            handle: (e) => setsameasaddress(e.target.checked),
+            handle: (e) => setSameAsAddress(e.target.checked),
           },
           {
             id: 2,
@@ -1087,8 +1042,8 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setBStreetAddress(e.target.value),
             dataType: "string",
-            dataCheck: sameasaddress ? true : BStreetAddress,
-            disable: sameasaddress,
+            dataCheck: sameAsAddress ? true : BStreetAddress,
+            disable: sameAsAddress,
           },
           {
             id: 5,
@@ -1105,8 +1060,8 @@ export const ProfileCompany = (props) => {
                   : "",
             },
             handle: (e) => setBChooseacountry(e.target.value),
-            dataCheck: sameasaddress ? true : BChooseacountry,
-            disable: sameasaddress,
+            dataCheck: sameAsAddress ? true : BChooseacountry,
+            disable: sameAsAddress,
           },
           {
             id: 6,
@@ -1123,7 +1078,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setBCity(e.target.value),
             dataType: "string",
             dataCheck: true,
-            disable: sameasaddress,
+            disable: sameAsAddress,
           },
           {
             id: 7,
@@ -1142,7 +1097,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setBState(e.target.value),
             dataType: "string",
             dataCheck: true,
-            disable: sameasaddress,
+            disable: sameAsAddress,
           },
           {
             id: 8,
@@ -1152,7 +1107,7 @@ export const ProfileCompany = (props) => {
             xs: 12,
             select: {
               status: "fill",
-              data: sameasaddress ? "" : BPostal,
+              data: sameAsAddress ? "" : BPostal,
               defaultvalue:
                 props.editdata != null
                   ? props.editdata[0].billingpostalcode
@@ -1161,7 +1116,7 @@ export const ProfileCompany = (props) => {
             handle: (e) => setBPostal(e.target.value),
             dataType: "number",
             dataCheck: true,
-            disable: sameasaddress,
+            disable: sameAsAddress,
           },
           {
             id: 9,
@@ -1204,7 +1159,7 @@ export const ProfileCompany = (props) => {
         title: "Communication",
         expend: true,
         content: [
-          ...getcomunication,
+          ...getComunication,
           {
             id: 99,
             label: "Phone Number",
@@ -1223,7 +1178,7 @@ export const ProfileCompany = (props) => {
         title: "Relationship (Internal)",
         expend: true,
         content: [
-          ...getrelation,
+          ...getRelation,
           {
             id: 99,
             label: "Relation",
@@ -1354,7 +1309,7 @@ export const ProfileCompany = (props) => {
       //       xs: 12,
       //       select: {
       //         status: "option",
-      //         data: optiondata.map((option) => (
+      //         data: optionData.map((option) => (
       //           <option
       //             style={headerTableStyle}
       //             key={option.value}
@@ -1388,7 +1343,7 @@ export const ProfileCompany = (props) => {
                   ? props.editdata[0].negotiatedratesonly
                   : "",
             },
-            handle: (e) => setnegotiatedratesonly(e.target.checked),
+            handle: (e) => setNegotiatedRatesOnly(e.target.checked),
           },
           {
             id: 2,
@@ -1404,7 +1359,7 @@ export const ProfileCompany = (props) => {
                   ? props.editdata[0].ratecontractcode
                   : "",
             },
-            handle: (e) => setratecontractcode(e.target.value),
+            handle: (e) => setRateContractCode(e.target.value),
             dataType: "string",
             dataCheck: true,
             disable: false,
@@ -1688,19 +1643,19 @@ export const ProfileCompany = (props) => {
       recordtype: "C",
       nameOne: nameOne,
       nameTwo: nameTwo,
-      CompanyTypeCode: CompanyTypeCode,
-      Abbreviation: Abbreviation,
-      GuaranteeMethodCode: GuaranteeMethodCode,
-      Property: Property,
-      Currency: Currency,
-      CreditRating: CreditRating,
-      iata: iata,
-      Status: Status,
-      StreetAddress: StreetAddress,
-      Chooseacountry: Chooseacountry,
-      City: City,
-      State: State,
-      Postal: Postal,
+      companyTypeCode: companyTypeCode,
+      abbreviation: abbreviation,
+      guaranteeMethodCode: guaranteeMethodCode,
+      property: property,
+      currency: currency,
+      creditRating: creditRating,
+      IATA: IATA,
+      status: status,
+      streetAddress: streetAddress,
+      chooseCountry: chooseCountry,
+      city: city,
+      stateProvince: stateProvince,
+      postal: postal,
       BStreetAddress: BStreetAddress,
       BChooseacountry: BChooseacountry,
       BCity: BCity,
@@ -1708,21 +1663,21 @@ export const ProfileCompany = (props) => {
       BPostal: BPostal,
       TaxID: TaxID,
       TaxID2: TaxID2,
-      Communication: Communication,
-      Relationship: Relationship,
-      CreditCardNumber: CreditCardNumber,
-      OutstandingAmount: OutstandingAmount,
-      FloatingDepositionAmount: FloatingDepositionAmount,
+      communication: communication,
+      relationship: relationship,
+      creditCardNumber: creditCardNumber,
+      outstandingAmount: outstandingAmount,
+      floatingDepositionAmount: floatingDepositionAmount,
       ARNumber: ARNumber,
-      SalesUserName: SalesUserName,
-      Industry: Industry,
-      MarketSegment: MarketSegment,
-      SourceOfBusiness: SourceOfBusiness,
-      TrackCode: TrackCode,
-      ReasonForStay: ReasonForStay,
-      Geographic: Geographic,
-      negotiatedratesonly: negotiatedratesonly,
-      ratecontractcode: ratecontractcode,
+      salesUserName: salesUserName,
+      industry: industry,
+      marketSegment: marketSegment,
+      sourceOfBusiness: sourceOfBusiness,
+      trackCode: trackCode,
+      reasonForStay: reasonForStay,
+      geographic: geographic,
+      negotiatedRateOnly: negotiatedRateOnly,
+      rateContractCode: rateContractCode,
       communications: communicationDatas,
       relations: relationDatas,
     };
@@ -1749,19 +1704,19 @@ export const ProfileCompany = (props) => {
       recordtype: "C",
       nameOne: nameOne,
       nameTwo: nameTwo,
-      CompanyTypeCode: CompanyTypeCode,
-      Abbreviation: Abbreviation,
-      GuaranteeMethodCode: GuaranteeMethodCode,
-      Property: Property,
-      Currency: Currency,
-      CreditRating: CreditRating,
-      iata: iata,
-      Status: Status,
-      StreetAddress: StreetAddress,
-      Chooseacountry: Chooseacountry,
-      City: City,
-      State: State,
-      Postal: Postal,
+      companyTypeCode: companyTypeCode,
+      abbreviation: abbreviation,
+      guaranteeMethodCode: guaranteeMethodCode,
+      property: property,
+      currency: currency,
+      creditRating: creditRating,
+      IATA: IATA,
+      status: status,
+      streetAddress: streetAddress,
+      chooseCountry: chooseCountry,
+      city: city,
+      stateProvince: stateProvince,
+      postal: postal,
       BStreetAddress: BStreetAddress,
       BChooseacountry: BChooseacountry,
       BCity: BCity,
@@ -1769,21 +1724,21 @@ export const ProfileCompany = (props) => {
       BPostal: BPostal,
       TaxID: TaxID,
       TaxID2: TaxID2,
-      Communication: Communication,
-      Relationship: Relationship,
-      CreditCardNumber: CreditCardNumber,
-      OutstandingAmount: OutstandingAmount,
-      FloatingDepositionAmount: FloatingDepositionAmount,
+      communication: communication,
+      relationship: relationship,
+      creditCardNumber: creditCardNumber,
+      outstandingAmount: outstandingAmount,
+      floatingDepositionAmount: floatingDepositionAmount,
       ARNumber: ARNumber,
-      SalesUserName: SalesUserName,
-      Industry: Industry,
-      MarketSegment: MarketSegment,
-      SourceOfBusiness: SourceOfBusiness,
-      TrackCode: TrackCode,
-      ReasonForStay: ReasonForStay,
-      Geographic: Geographic,
-      negotiatedratesonly: negotiatedratesonly,
-      ratecontractcode: ratecontractcode,
+      salesUserName: salesUserName,
+      industry: industry,
+      marketSegment: marketSegment,
+      sourceOfBusiness: sourceOfBusiness,
+      trackCode: trackCode,
+      reasonForStay: reasonForStay,
+      geographic: geographic,
+      negotiatedRateOnly: negotiatedRateOnly,
+      rateContractCode: rateContractCode,
       communications: communicationDatas,
       relations: relationDatas,
     };
@@ -1806,7 +1761,7 @@ export const ProfileCompany = (props) => {
 
   React.useEffect(() => {
     async function handleSameAddress() {
-      if (sameasaddress === true) {
+      if (sameAsAddress === true) {
         // await setBStreetAddress(null);
         // await setBChooseacountry(null);
         // await setBCity(null);
@@ -1817,9 +1772,9 @@ export const ProfileCompany = (props) => {
       await updateList();
     }
     handleSameAddress();
-    console.log("sameasaddress:", sameasaddress);
+    console.log("sameAsAddress:", sameAsAddress);
   }, [
-    sameasaddress,
+    sameAsAddress,
 
     // BStreetAddress, BChooseacountry, BCity, BState, BPostal
   ]);
@@ -1827,96 +1782,75 @@ export const ProfileCompany = (props) => {
   const [validationStatus, setValidationStatus] = React.useState(true);
 
   React.useEffect(() => {
-    let _IsRequired ;
-  
-      if(!sameasaddress){
-        console.log("sameasaddress22:",sameasaddress);
-        _IsRequired =
+    let _IsRequired;
+
+    if (!sameAsAddress) {
+      console.log("sameAsAddress22:", sameAsAddress);
+      _IsRequired =
         nameOne === null ||
-        // Abbreviation === null ||
-        GuaranteeMethodCode === null ||
-        // iata === null ||
-        StreetAddress === null ||
-        Chooseacountry === null ||
-        // City === null ||
-        // State === null ||
-        Postal === null ||
+        // abbreviation === null ||
+        guaranteeMethodCode === null ||
+        // IATA === null ||
+        streetAddress === null ||
+        chooseCountry === null ||
+        // city === null ||
+        // stateProvince === null ||
+        postal === null ||
         BStreetAddress === null ||
         BChooseacountry === null ||
         // BCity === null ||
         // BState === null ||
         // BPostal === null ||
         // TaxID === null ||
-        Industry === null ||
-        MarketSegment === null ||
-        SourceOfBusiness === null ||
-        TrackCode === null ||
-        ReasonForStay === null ||
-        Geographic === null ||
+        industry === null ||
+        marketSegment === null ||
+        sourceOfBusiness === null ||
+        trackCode === null ||
+        reasonForStay === null ||
+        geographic === null ||
         nameOne.trim() === "" ||
-        // Abbreviation.trim() === "" ||
-        GuaranteeMethodCode.trim() === "" ||
-        // iata.trim() === "" ||
-        StreetAddress.trim() === "" ||
-        Chooseacountry.trim() === "" ||
-        // City.trim() === "" ||
-        // State.trim() === "" ||
-        // Postal === 0 ||
+        // abbreviation.trim() === "" ||
+        guaranteeMethodCode.trim() === "" ||
+        // IATA.trim() === "" ||
+        streetAddress.trim() === "" ||
+        chooseCountry.trim() === "" ||
+        // city.trim() === "" ||
+        // stateProvince.trim() === "" ||
+        // postal === 0 ||
         BStreetAddress.trim() === "" ||
         BChooseacountry.trim() === "" ||
         // BCity.trim() === "" ||
         // BState.trim() === "" ||
         // BPostal === 0 ||
         // TaxID.trim() === "" ||
-        Industry.trim() === "" ||
-        MarketSegment.trim() === "" ||
-        SourceOfBusiness.trim() === "" ||
-        TrackCode.trim() === "" ||
-        ReasonForStay.trim() === "" ||
-        Geographic.trim() === "";
-      }else {
-        _IsRequired =
+        industry.trim() === "" ||
+        marketSegment.trim() === "" ||
+        sourceOfBusiness.trim() === "" ||
+        trackCode.trim() === "" ||
+        reasonForStay.trim() === "" ||
+        geographic.trim() === "";
+    } else {
+      _IsRequired =
         nameOne === null ||
-        // Abbreviation === null ||
-        GuaranteeMethodCode === null ||
-        // iata === null ||
-        StreetAddress === null ||
-        Chooseacountry === null ||
-        // City === null ||
-        // State === null ||
-        Postal === null ||
-    
-        // BCity === null ||
-        // BState === null ||
-        // BPostal === null ||
-        // TaxID === null ||
-        Industry === null ||
-        MarketSegment === null ||
-        SourceOfBusiness === null ||
-        TrackCode === null ||
-        ReasonForStay === null ||
-        Geographic === null ||
+        guaranteeMethodCode === null ||
+        streetAddress === null ||
+        chooseCountry === null ||
+        postal === null ||
+        industry === null ||
+        marketSegment === null ||
+        sourceOfBusiness === null ||
+        trackCode === null ||
+        reasonForStay === null ||
+        geographic === null ||
         nameOne.trim() === "" ||
-        // Abbreviation.trim() === "" ||
-        GuaranteeMethodCode.trim() === "" ||
-        // iata.trim() === "" ||
-   
-        // City.trim() === "" ||
-        // State.trim() === "" ||
-        // Postal === 0 ||
-        // BStreetAddress.trim() === "" ||
-        // BChooseacountry.trim() === "" ||
-        // BCity.trim() === "" ||
-        // BState.trim() === "" ||
-        // BPostal === 0 ||
-        // TaxID.trim() === "" ||
-        Industry.trim() === "" ||
-        MarketSegment.trim() === "" ||
-        SourceOfBusiness.trim() === "" ||
-        TrackCode.trim() === "" ||
-        ReasonForStay.trim() === "" ||
-        Geographic.trim() === "";
-      }
+        guaranteeMethodCode.trim() === "" ||
+        industry.trim() === "" ||
+        marketSegment.trim() === "" ||
+        sourceOfBusiness.trim() === "" ||
+        trackCode.trim() === "" ||
+        reasonForStay.trim() === "" ||
+        geographic.trim() === "";
+    }
 
     setValidationStatus(_IsRequired);
     if (_IsRequired === false) {
@@ -1929,44 +1863,37 @@ export const ProfileCompany = (props) => {
     updateList();
   }, [
     nameOne,
-    Abbreviation,
-    GuaranteeMethodCode,
-    iata,
-    StreetAddress,
-    City,
-    State,
-    Postal,
+    abbreviation,
+    guaranteeMethodCode,
+    IATA,
+    streetAddress,
+    city,
+    stateProvince,
+    postal,
     BStreetAddress,
     BCity,
     BState,
     BPostal,
     TaxID,
-    Industry,
-    MarketSegment,
-    SourceOfBusiness,
-    TrackCode,
-    ReasonForStay,
-    Geographic,
+    industry,
+    marketSegment,
+    sourceOfBusiness,
+    trackCode,
+    reasonForStay,
+    geographic,
     nameOne,
-    GuaranteeMethodCode,
-    StreetAddress,
-    Postal,
-    Industry,
-    MarketSegment,
-    SourceOfBusiness,
-    TrackCode,
-    ReasonForStay,
-    Geographic,
-    sameasaddress,
+    guaranteeMethodCode,
+    streetAddress,
+    postal,
+    industry,
+    marketSegment,
+    sameAsAddress,
     BChooseacountry,
   ]);
 
   //data from button for  trigger (add or delete)
   React.useEffect(() => {
-    
     async function handlebutton() {
-     
-      
       if (props.action === "add") {
         console.log("ok");
         console.log("action add", props.action);
@@ -2041,7 +1968,7 @@ export const ProfileCompany = (props) => {
       );
       setCommunicationDatas((prev) => ({
         ...prev,
-        [newid + 1]: optioncommunication[0].label,
+        [newid + 1]: optionCommunication[0].label,
       }));
       console.log("communicationDatas:", communicationDatas);
       comunication.content.push({
@@ -2052,7 +1979,7 @@ export const ProfileCompany = (props) => {
         xs: 6,
         select: {
           status: "option",
-          data: optioncommunication.map((option) => (
+          data: optionCommunication.map((option) => (
             <option
               style={headerTableStyle}
               key={option.value}
@@ -2118,7 +2045,7 @@ export const ProfileCompany = (props) => {
       setRelationDatas((prev) => ({
         ...prev,
         [newid + 1]: "",
-        [newid + 2]: optionrelation[0].label,
+        [newid + 2]: optionRelation[0].label,
         [newid + 3]: "",
       }));
 
@@ -2130,7 +2057,7 @@ export const ProfileCompany = (props) => {
         xs: 6,
         select: {
           status: "option",
-          data: optionrelation.map((option) => (
+          data: optionRelation.map((option) => (
             <option
               style={headerTableStyle}
               key={option.value}
@@ -2415,21 +2342,6 @@ export const ProfileCompany = (props) => {
                                     onFocus={false}
                                   />
                                 ) : detail.select.status === "fill" ? (
-                                  // <TextField
-                                  //   className={classes.root}
-                                  //   label={detail.label}
-                                  //   variant="outlined"
-                                  //   InputProps={{
-                                  //     style: headerTableStyle,
-                                  //   }}
-                                  //   InputLabelProps={{
-                                  //     style: { color: "#AAAAAA" },
-                                  //   }}
-                                  //   fullWidth
-                                  //   defaultValue={detail.select.defaultvalue}
-                                  //   onChange={detail.handle}
-                                  // />
-
                                   [
                                     isRequired ? (
                                       <TextField

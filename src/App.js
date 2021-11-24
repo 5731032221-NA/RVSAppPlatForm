@@ -32,7 +32,7 @@ import RoomManagement from "./pages/configurations/RoomManagement";
 import ProfilePage from "./pages/ProfilePage";
 import ProfileTableCompany from "./components/Profiles/ProfileTableCompany";
 import ProfileTableTravelAgent from "./components/Profiles/ProfileTableTravelAgent";
-import ProfilePageTable from "./components/Profiles/ProfileTable";
+import ProfileTableIndividual from "./components/Profiles/ProfileTableIndividual";
 
 
 function App() {
@@ -113,7 +113,7 @@ function App() {
               <Route path={`/Computer-printer`} component={ComputerPrinter} />{" "}
               <Route path={`/Room-Management`} component={RoomManagement} />{" "}
               <Route path={`/profile`} component={ProfilePage} />{" "}
-              <Route path={`/profileindividual`} component={ProfilePageTable} />{" "}
+              <Route path={`/profileindividual`} component={ProfileTableIndividual} />{" "}
               <Route
                 path={`/profiletravelagent`}
                 component={ProfileTableTravelAgent}

@@ -154,7 +154,7 @@ const family = [
   },
 ];
 
-export const ProfileTable = (props) => {
+export const ProfileTableIndividual = (props) => {
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -846,4 +846,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileTable);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProfileTableIndividual);

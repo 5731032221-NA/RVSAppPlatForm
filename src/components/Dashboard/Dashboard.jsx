@@ -1,9 +1,14 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../../middleware/action";
 import en_lang from "../../static/lang/en.json";
 import th_lang from "../../static/lang/th.json";
+import SalesLineGraph from "./SalesLineGraph";
+import NetProfitRadarChart from "./NetProfitRadarChart";
+import BarChartDashboard from "./BarChartDashboard";
+import WorldMap from "./WorldMap";
+
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -13,22 +18,12 @@ import Avatar from "@material-ui/core/Avatar";
 import RemoveIcon from "@material-ui/icons/Remove";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import LayersIcon from "@material-ui/icons/Layers";
-
 import Button from "@material-ui/core/Button";
-import TestGraph from "./TestGraph";
 import Divider from "@material-ui/core/Divider";
-
-import ButtomBar from "../../layouts/ButtomBar";
-import TestGraph2 from "./TestGraph2";
 import GaugeChart from "react-gauge-chart";
-
-import Barchart from "./Barchart";
-import WorldMap from "./WorldMap";
-import Piechart from "./Piechart";
-import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 
-const userdata = [
+const userData = [
   {
     id: 1,
     firstname: "Ray",
@@ -102,10 +97,10 @@ const userdata = [
     time: "8",
   },
 ];
+
 export class DashboardPage extends Component {
   constructor(props) {
     super(props);
-    this.props.getUserList();
     this.state = {
       lang: "en",
       Dashboard: en_lang.Dashboard,
@@ -145,7 +140,7 @@ export class DashboardPage extends Component {
             background: "#FFFFFF",
             color: "#000000",
             paper: "#FFFFFF",
-            colorlevel: "900"
+            colorlevel: "900",
           },
         });
         this.setState({ color: this.props.color });
@@ -155,7 +150,7 @@ export class DashboardPage extends Component {
             background: "#212121",
             color: "#FAFAFA",
             paper: "#424242",
-            colorlevel: "A200"
+            colorlevel: "A200",
           },
         });
         this.setState({ color: "#2D62ED" });
@@ -171,7 +166,6 @@ export class DashboardPage extends Component {
       }
     }
   }
-
 
   componentDidUpdate() {
     if (this.state.lang != this.props.lang) {
@@ -197,7 +191,7 @@ export class DashboardPage extends Component {
             background: "#FFFFFF",
             color: "#000000",
             paper: "#FFFFFF",
-            colorlevel: "900"
+            colorlevel: "900",
           },
         });
         this.setState({ color: this.props.color });
@@ -207,7 +201,7 @@ export class DashboardPage extends Component {
             background: "#212121",
             color: "#FAFAFA",
             paper: "#424242",
-            colorlevel: "800"
+            colorlevel: "800",
           },
         });
         this.setState({ color: "#2D62ED" });
@@ -421,7 +415,7 @@ export class DashboardPage extends Component {
                         }}
                         elevation={0}
                       >
-                        <TestGraph />
+                        <SalesLineGraph />
                       </Paper>
                     </Grid>
                   </Grid>
@@ -452,7 +446,7 @@ export class DashboardPage extends Component {
                     <Grid
                       container
                       style={{ marginBottom: 20, marginLeft: 20 }}
-                    // background="black"
+                      // background="black"
                     >
                       <Typography variant="h6" component="h6">
                         Website Audience Metrics
@@ -540,7 +534,7 @@ export class DashboardPage extends Component {
                             marginBottom: 20,
                           }}
                         >
-                          <Barchart />
+                          <BarChartDashboard />
                         </Paper>
                       </Grid>
                     </Grid>
@@ -740,7 +734,9 @@ export class DashboardPage extends Component {
                           height: 275,
                         }}
                       >
-                        <TestGraph2 themeState={this.state.themeState} />
+                        <NetProfitRadarChart
+                          themeState={this.state.themeState}
+                        />
                       </Paper>
                     </Grid>
                   </Grid>
@@ -817,7 +813,7 @@ export class DashboardPage extends Component {
                         Top Performance
                       </Typography>
                     </Grid>
-                    {userdata.map((itemdata) => (
+                    {userData.map((itemdata) => (
                       <Grid
                         style={{ paddingBottom: 20 }}
                         key={itemdata.id}

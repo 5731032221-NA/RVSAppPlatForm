@@ -30,7 +30,7 @@ import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import { optioncountry } from "../../static/country.js";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Breadcrumbs, Link } from "@material-ui/core";
-import { getconfigurationbypropertycode } from "../../services/user.service";
+import { getConfigurationByPropertyCode } from "../../services/user.service";
 import { nextComponent } from "../../middleware/action";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -291,7 +291,7 @@ export const ProfileCompany = (props) => {
   React.useEffect(async () => {
     setSmallwidth(window.innerWidth < 1000);
 
-    let getconfigdata = await getconfigurationbypropertycode(
+    let getconfigdata = await getConfigurationByPropertyCode(
       sessionStorage.getItem("auth"),
       pageProperty
     );
