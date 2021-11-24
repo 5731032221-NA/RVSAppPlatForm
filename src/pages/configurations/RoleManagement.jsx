@@ -692,6 +692,7 @@ export default function RoleManagement() {
     console.log("tempproperty", tempproperty);
     setData(JSON.parse(JSON.stringify(defaultdata)));
     setChipPropertyDialog([]);
+    setChipGroupDialog([]);
     setAllProperty(tempproperty);
     setAllGroup(groupProperty);
     setRoleCode(null);
@@ -761,12 +762,20 @@ export default function RoleManagement() {
         }
       }
       const tempArray = Array.from(temp).join(",");
+      const groups = new Set();
+      if (chipGroupDialog.length) {
+        for (var i in chipGroupDialog) {
+          groups.add(chipGroupDialog[i].key);
+        }
+      }
+      const groupArray = Array.from(groups).join(",");
       let insert = await postrole(sessionStorage.getItem("auth"), {
         rolecode: rolecode,
         rolename: rolename,
         description: description,
         status: status,
         applyproperty: tempArray,
+        applyGroup: groupArray,
         permission: perm,
       });
       if (insert.status == "2000") {
@@ -802,6 +811,7 @@ export default function RoleManagement() {
 
   const handleDialogAddRoleClose = () => {
     setChipPropertyDialog([]);
+    setChipGroupDialog([]);
     setDialogAddRole(false);
   };
 
@@ -983,6 +993,13 @@ export default function RoleManagement() {
         }
       }
       const tempArray = Array.from(temp).join(",");
+      const groups = new Set();
+      if (chipGroupDialog.length) {
+        for (var i in chipGroupDialog) {
+          groups.add(chipGroupDialog[i].key);
+        }
+      }
+      const groupArray = Array.from(groups).join(",");
       const roleupdate = await updaterole(sessionStorage.getItem("auth"), {
         oldrolecode: oldrolecode,
         rolecode: rolecode,
@@ -990,6 +1007,7 @@ export default function RoleManagement() {
         description: description,
         status: status,
         applyproperty: tempArray,
+        applyGroup: groupArray,
         permission: perm,
       });
       console.log("roleupdate func:", roleupdate);
@@ -1500,7 +1518,7 @@ export default function RoleManagement() {
       if (chipGroupDialog.length) {
         for (var i in chipGroupDialog) {
           if (chipGroupDialog[i].label == "*ALL")
-            setChipPropertyDialog((chips) =>
+            setChipGroupDialog((chips) =>
               chips.filter((chips) => chips.key !== "*ALL")
             );
           // setChipPropertyDialog(prevState => prevState.filter((_, index) => index !== i))
@@ -2472,7 +2490,7 @@ export default function RoleManagement() {
                         </MenuItem>
                       ))}
                     </TextField>
-                    {ChipPropertyDialog.map((data, index) => {
+                    {chipGroupDialog.map((data, index) => {
                       return (
                         <Chip
                           style={{ marginTop: 10 }}
@@ -2745,6 +2763,49 @@ export default function RoleManagement() {
                         onChange={(e) => setRoleName(e.target.value)}
                       ></TextField>
                     </Grid>
+                  </Grid>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    style={{ paddingTop: 10 }}
+                  >
+                    <TextField
+                      fullWidth
+                      className={classes.root}
+                      variant="outlined"
+                      selectSelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      label="AD Group"
+                      select
+                      onChange={(event) => handleSelectGroup(event)}
+                    >
+                      {allGroup.map((option) => (
+                        <MenuItem
+                          key={option.key}
+                          value={option.label}
+                          className={classes.root}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    {chipGroupDialog.map((data, index) => {
+                      return (
+                        <Chip
+                          style={{ marginTop: 10 }}
+                          key={data.key + index}
+                          label={data.label}
+                          onDelete={handleDeleteProperty(data)}
+                        />
+                      );
+                    })}
                   </Grid>
                   <Grid
                     container
