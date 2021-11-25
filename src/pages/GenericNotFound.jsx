@@ -7,5 +7,4 @@ function GenericNotFound() {
         </div>
     )
 }
-
 export default GenericNotFound

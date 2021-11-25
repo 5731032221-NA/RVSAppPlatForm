@@ -1,75 +1,45 @@
 import React, { useState, useContext } from "react";
+import { blue } from "@material-ui/core/colors";
 import { ReactReduxContext, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import MaterialTable from "material-table";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import {
-  Container,
-  Grid,
-  Paper,
-  Typography,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Breadcrumbs,
-  Link,
-  TextField,
-  Divider,
-  Chip,
-} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import EditRoundedIcon from "@material-ui/icons/EditRounded";
-import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
-import { blue } from "@material-ui/core/colors";
-import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
-import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
-import FirstPageRoundedIcon from "@material-ui/icons/FirstPageRounded";
-import LastPageRoundedIcon from "@material-ui/icons/LastPageRounded";
-
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import TreeItem from "@material-ui/lab/TreeItem";
-import TreeView from "@material-ui/lab/TreeView";
-import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import UpdateIcon from "@material-ui/icons/Update";
 import {
-  updatecomputerprinter,
-  listcomputerprinter,
-  listregisterdhardware,
-  insertcomputerprinter,
-  deletecomputerprinter,
+  Container,
+  Grid,
+  Typography,
+  Button,
+  Breadcrumbs,
+  Link,
+  TextField,
+} from "@material-ui/core";
+import {
+  updateComputerPrinter,
+  listComputerPrinter,
+  listRegisterHardware,
+  insertComputerPrinter,
+  deleteComputerPrinter,
 } from "../../services/device.service";
 import {
-  getusernamebyproperty,
-  listallproperty,
+  getUserNameByProperty,
+  listAllProperty,
 } from "../../services/user.service";
-
 import {
-  insertconfigmaster,
-  listconfigmaster,
-  updateconfigmaster,
-  deleteconfigmaster,
+  listConfigMaster,
+  // insertConfigMaster,
+  // updateConfigMaster,
+  // deleteConfigMaster,
 } from "../../services/configmaster.service";
 
-import TablePagination from "@material-ui/core/TablePagination";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import { useHistory } from "react-router-dom";
+
 // Generate Order Data
 function createData(
   id,
@@ -142,47 +112,22 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: themeState.paper,
     },
   }),
-
-  //   roottable: {
-  //     backgroundColor: "blue",
-  //     color: "green",
-  //   },
-  //   toolbar: {
-  //     backgroundColor: "white",
-  //   },
-  //   caption: {
-  //     color: "red",
-  //     fontSize: "20px",
-  //   },
-  //   selectIcon: {
-  //     color: "green",
-  //   },
-  //   select: {
-  //     color: "green",
-  //     fontSize: "20px",
-  //   },
-  //   actions: {
-  //     color: "blue",
-  //   },
 }));
+
 export default function ComputerPrinter() {
   const history = useHistory();
   const { store } = useContext(ReactReduxContext);
   const pageProperty = useSelector((state) => state.reducer.property);
-  const [data, setData] = React.useState([]);
-
+  // const [data, setData] = React.useState([]);
   const [dialogAdd, setDialogAdd] = React.useState(false);
   const [dialogEdit, setDialogEdit] = React.useState(false);
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [rows, setRows] = useState([]);
-
   const [pageData, setPageData] = React.useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
   const [errorMessageDu, setErrorMessageDu] = useState(false);
   const [errorParameterDu, setErrorParameterDu] = useState(null);
-
   const [usernames, setUsernames] = useState([
     {
       value: "",
@@ -228,14 +173,12 @@ export default function ComputerPrinter() {
       label: "",
     },
   ]);
-
   const [updateData, setUpdateData] = useState({});
-
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
 
   React.useEffect(async () => {
-    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    let propertydata = await listAllProperty(sessionStorage.getItem("auth"));
     let tempproperty = [];
     propertydata.content[propertydata.content.length - 1]
       .split(",")
@@ -248,7 +191,7 @@ export default function ComputerPrinter() {
         // }
       });
     setProperties(tempproperty);
-    let data = await listcomputerprinter(sessionStorage.getItem("auth"));
+    let data = await listComputerPrinter(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
@@ -270,7 +213,7 @@ export default function ComputerPrinter() {
   }, []);
 
   const handleChangeProperty = async (selectProperty) => {
-    let _userdata = await getusernamebyproperty(
+    let _userdata = await getUserNameByProperty(
       sessionStorage.getItem("auth"),
       selectProperty
     );
@@ -310,7 +253,7 @@ export default function ComputerPrinter() {
   };
 
   const handleDialogAdd = async () => {
-    let _userdata = await getusernamebyproperty(
+    let _userdata = await getUserNameByProperty(
       sessionStorage.getItem("auth"),
       pageProperty
     );
@@ -325,7 +268,7 @@ export default function ComputerPrinter() {
           }
         });
     }
-    let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+    let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
     let _computers = [];
     let _listprinters = [];
     _data.content[_data.content.length - 1].forEach((element) => {
@@ -346,7 +289,7 @@ export default function ComputerPrinter() {
       }
     });
 
-    let _dataconfigmaster = await listconfigmaster(
+    let _dataconfigmaster = await listConfigMaster(
       sessionStorage.getItem("auth")
     );
     let _actions = [];
@@ -388,14 +331,22 @@ export default function ComputerPrinter() {
         }
       }
     );
-console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_computers,_listprinters,_actions,_trays,_remarks);
+    console.log(
+      "_users,_computers,_listprinters,_actions,_trays,_remarks:",
+      _users,
+      _computers,
+      _listprinters,
+      _actions,
+      _trays,
+      _remarks
+    );
     setUsernames(_users);
     setComputers(_computers);
     setPrintersCode(_listprinters);
     setActions(_actions);
     setTrays(_trays);
     setRemarks(_remarks);
-      setUpdateData({
+    setUpdateData({
       propertycode: pageProperty,
       computercode: _computers[0].value,
       devicecode: _listprinters[0].value,
@@ -416,7 +367,7 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
     let _rowData = JSON.parse(JSON.stringify(rowData));
     _rowData.tableData = undefined;
     console.log("handleDialogEdit", _rowData);
-    let _userdata = await getusernamebyproperty(
+    let _userdata = await getUserNameByProperty(
       sessionStorage.getItem("auth"),
       rowData.propertycode
     );
@@ -431,7 +382,7 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
           }
         });
     }
-    let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+    let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
     let _computers = [];
     let _listprinters = [];
     _data.content[_data.content.length - 1].forEach((element) => {
@@ -452,7 +403,7 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
       }
     });
 
-    let _dataconfigmaster = await listconfigmaster(
+    let _dataconfigmaster = await listConfigMaster(
       sessionStorage.getItem("auth")
     );
 
@@ -518,12 +469,12 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
   const handleInsert = async () => {
     console.log(updateData);
     setErrorMessageDu(false);
-    let _insertcomputerprinter = await insertcomputerprinter(
+    let _insertComputerPrinter = await insertComputerPrinter(
       sessionStorage.getItem("auth"),
       updateData
     );
-    if (_insertcomputerprinter.status == "2000") {
-      let data = await listcomputerprinter(sessionStorage.getItem("auth"));
+    if (_insertComputerPrinter.status == "2000") {
+      let data = await listComputerPrinter(sessionStorage.getItem("auth"));
       let userdata = [];
       data.content[data.content.length - 1].forEach((element) =>
         userdata.push(
@@ -543,23 +494,22 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
       setRows(userdata);
       updatePageData(userdata, page, rowsPerPage);
       setDialogAdd(false);
-    }else if(_insertcomputerprinter.status == "1000"){
+    } else if (_insertComputerPrinter.status == "1000") {
       setErrorMessageDu(true);
-      setErrorParameterDu(_insertcomputerprinter.msg);
-
+      setErrorParameterDu(_insertComputerPrinter.msg);
     }
   };
 
   const handleEdit = async (id) => {
     console.log(id, "handleEdit", updateData);
-    let _updatecomputerprinter = await updatecomputerprinter(
+    let _updateComputerPrinter = await updateComputerPrinter(
       sessionStorage.getItem("auth"),
       id,
       updateData
     );
     setErrorMessageDu(false);
-    if (_updatecomputerprinter.status == "2000") {
-      let data = await listcomputerprinter(sessionStorage.getItem("auth"));
+    if (_updateComputerPrinter.status == "2000") {
+      let data = await listComputerPrinter(sessionStorage.getItem("auth"));
       let userdata = [];
       data.content[data.content.length - 1].forEach((element) =>
         userdata.push(
@@ -579,20 +529,19 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
       setRows(userdata);
       updatePageData(userdata, page, rowsPerPage);
       setDialogEdit(false);
-    }else if(_updatecomputerprinter.status == "1000"){
+    } else if (_updateComputerPrinter.status == "1000") {
       setErrorMessageDu(true);
-      setErrorParameterDu(_updatecomputerprinter.msg);
-
+      setErrorParameterDu(_updateComputerPrinter.msg);
     }
   };
 
   const handleDelete = async (id) => {
-    let _deletecomputerprinter = await deletecomputerprinter(
+    let _deleteComputerPrinter = await deleteComputerPrinter(
       sessionStorage.getItem("auth"),
       id
     );
-    if (_deletecomputerprinter.status == "2000") {
-      let data = await listcomputerprinter(sessionStorage.getItem("auth"));
+    if (_deleteComputerPrinter.status == "2000") {
+      let data = await listComputerPrinter(sessionStorage.getItem("auth"));
       let userdata = [];
       data.content[data.content.length - 1].forEach((element) =>
         userdata.push(
@@ -623,16 +572,16 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
     setPageData(data);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-    updatePageData(rows, newPage, rowsPerPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  //   updatePageData(rows, newPage, rowsPerPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
-    setPage(0);
-    updatePageData(rows, 0, event.target.value);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(event.target.value);
+  //   setPage(0);
+  //   updatePageData(rows, 0, event.target.value);
+  // };
 
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
@@ -678,12 +627,11 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
-  
 
   return (
     <Container maxWidth="xl" style={themeState}>
       <React.Fragment>
-        <Grid container style={{ padding: 20,marginTop: 22 }}>
+        <Grid container style={{ padding: 20, marginTop: 22 }}>
           <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
@@ -770,42 +718,47 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
 
         <div style={{ maxWidth: "100%" }}>
           <MaterialTable
-         localization={{ body:{ emptyDataSourceMessage: <>   <Typography
-          variant="h1"
-          align="center"
-          style={{ fontSize: 25, color: themeState.color }}
-        >
-          <ErrorOutlineOutlinedIcon
-            style={{ fontSize: 170, color: "lightgray" }}
-          />
-        </Typography>
-        <Typography
-          align="center"
-          variant="h2"
-          style={{
-            fontWeight: 400,
-            fontSize: 30,
-            color: "rgb(0 0 0 / 47%)",
-            marginBottom: 20,
-          }}
-        >
-          No Data Available
-        </Typography>
-        <Grid item>
-              <Button
-                startIcon={<AddOutlinedIcon />}
-                size="large"
-                variant="contained"
-                color="primary"
-                // style={{ padding: 13 }}
-                // fullWidth
-                // onClick={() => setCreateindividual(true)}
-                onClick={handleDialogAdd}
-              >
-                New Setting
-              </Button>
-           </Grid>
-         </> }}}
+            localization={{
+              body: {
+                emptyDataSourceMessage: (
+                  <>
+                    {" "}
+                    <Typography
+                      variant="h1"
+                      align="center"
+                      style={{ fontSize: 25, color: themeState.color }}
+                    >
+                      <ErrorOutlineOutlinedIcon
+                        style={{ fontSize: 170, color: "lightgray" }}
+                      />
+                    </Typography>
+                    <Typography
+                      align="center"
+                      variant="h2"
+                      style={{
+                        fontWeight: 400,
+                        fontSize: 30,
+                        color: "rgb(0 0 0 / 47%)",
+                        marginBottom: 20,
+                      }}
+                    >
+                      No Data Available
+                    </Typography>
+                    <Grid item>
+                      <Button
+                        startIcon={<AddOutlinedIcon />}
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        onClick={handleDialogAdd}
+                      >
+                        New Setting
+                      </Button>
+                    </Grid>
+                  </>
+                ),
+              },
+            }}
             style={{
               paddingLeft: 30,
               paddingRight: 30,
@@ -815,7 +768,8 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
             title={
               <Grid>
                 <Typography
-                  variant="h6" noWrap
+                  variant="h6"
+                  noWrap
                   style={{ fontSize: 25, color: themeState.color }}
                 >
                   Computer-printer
@@ -865,13 +819,8 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
               },
             ]}
             data={rows}
-            // totalCount={rows.length}
-            // page={page}
-
-            
             options={{
               actionsColumnIndex: -1,
-              // filtering: true,
               search: true,
               searchFieldAlignment: "left",
               page: page,
@@ -907,37 +856,10 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
                 },
               },
             ]}
-            // components={{
-            //   Pagination: (page, rowsPerPage, rows) => (
-            //     console.log("Pagination data", page, rowsPerPage, rows),
-            //     (
-            //       <TablePagination
-            //         rowsPerPageOptions={[5, 10, 25]}
-            //         component="div"
-            //         count={rows.length}
-            //         page={page}
-            //         //   colSpan={props.colSpan}
-            //         // count={rows.length}
-
-            //         rowsPerPage={rowsPerPage}
-            //         onChangePage={handleChangePage}
-            //         onChangeRowsPerPage={handleChangeRowsPerPage}
-            //         classes={{
-            //           root: classes.roottable,
-            //           toolbar: classes.toolbar,
-            //           caption: classes.caption,
-            //           selectIcon: classes.selectIcon,
-            //           select: classes.select,
-            //           actions: classes.actions,
-            //         }}
-            //       />
-            //     )
-            //   ),
-            // }}
             onChangePage={(page) => console.log("page")}
-            // onChangePage={(event, page) => console.log(event, page)}
           />
         </div>
+
         {/* ==================== Dialog New Device========================= */}
         <Dialog
           fullWidth="true"
@@ -1222,7 +1144,7 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
                     {errorParameter} is required
                   </div>
                 ) : null}
-                 {errorMessageDu ? (
+                {errorMessageDu ? (
                   <div style={{ marginTop: 15 }}>
                     <div
                       style={{
@@ -1233,7 +1155,7 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
                         paddingTop: 5,
                       }}
                     >
-                      {errorParameterDu} 
+                      {errorParameterDu}
                     </div>
                   </div>
                 ) : null}
@@ -1550,7 +1472,7 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
                   </div>
                 ) : null}
 
-                 {errorMessageDu ? (
+                {errorMessageDu ? (
                   <div
                     style={{
                       background: "#ff0033",
@@ -1558,10 +1480,10 @@ console.log("_users,_computers,_listprinters,_actions,_trays,_remarks:",_users,_
                       color: "white",
                       height: "30px",
                       paddingTop: 5,
-                      marginTop:5,
+                      marginTop: 5,
                     }}
                   >
-                    {errorParameterDu} 
+                    {errorParameterDu}
                   </div>
                 ) : null}
               </DialogContent>

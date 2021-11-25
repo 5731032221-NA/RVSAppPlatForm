@@ -2,8 +2,6 @@ import "./assets/App.css";
 import SignIn from "./pages/SignIn";
 import Property from "./pages/Property";
 import Main from "./pages/Main";
-import UserList from "./pages/TestUserListPage";
-import ForgotPass from "./components/Forgotpass";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import configureStore from "./middleware/store";
@@ -29,11 +27,9 @@ import UserManagement from "./pages/configurations/UserManagement";
 import DeviceManager from "./pages/configurations/DeviceManager";
 import ComputerPrinter from "./pages/configurations/ComputerPrinter";
 import RoomManagement from "./pages/configurations/RoomManagement";
-import ProfilePage from "./pages/ProfilePage";
 import ProfileTableCompany from "./components/Profiles/ProfileTableCompany";
 import ProfileTableTravelAgent from "./components/Profiles/ProfileTableTravelAgent";
 import ProfileTableIndividual from "./components/Profiles/ProfileTableIndividual";
-
 
 function App() {
   const { token, setToken } = UseToken();
@@ -100,8 +96,6 @@ function App() {
           {" "}
           <Switch>
             <Route exact path="/signin" component={SignIn} />{" "}
-            <Route exact path="/forgotpassword" component={ForgotPass} />{" "}
-            <Route exact path="/userlist" component={UserList} />{" "}
             <Main>
               <Route exact path={`/`} component={Dashboard} />{" "}
               <Route path={`/frontdesk`} component={FrontDesk} />{" "}
@@ -112,8 +106,10 @@ function App() {
               <Route path={`/Device-Manager`} component={DeviceManager} />{" "}
               <Route path={`/Computer-printer`} component={ComputerPrinter} />{" "}
               <Route path={`/Room-Management`} component={RoomManagement} />{" "}
-              <Route path={`/profile`} component={ProfilePage} />{" "}
-              <Route path={`/profileindividual`} component={ProfileTableIndividual} />{" "}
+              <Route
+                path={`/profileindividual`}
+                component={ProfileTableIndividual}
+              />{" "}
               <Route
                 path={`/profiletravelagent`}
                 component={ProfileTableTravelAgent}

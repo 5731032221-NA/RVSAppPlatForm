@@ -19,7 +19,7 @@ module.exports = {
       body: JSON.stringify(req),
     }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
-  getrolebyid: async function (accessToken, id) {
+  getRoleByID: async function (accessToken, id) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/listrole/${id}`, {
       method: "GET",
       headers: {
@@ -38,7 +38,7 @@ module.exports = {
       body: JSON.stringify(req),
     }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
-  deleterolebyid: async function (accessToken, id) {
+  deleteRoleByID: async function (accessToken, id) {
     return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/listrole/${id}`, {
       method: "DELETE",
       headers: {

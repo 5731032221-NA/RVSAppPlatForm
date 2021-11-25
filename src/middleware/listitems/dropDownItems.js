@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
+import { ReactReduxContext, useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import List from "@material-ui/core/List";
-
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -21,13 +22,11 @@ import Divider from "@material-ui/core/Divider";
 import Collapse from "@material-ui/core/Collapse";
 
 import { EDIT_COMPONENT, EDIT_CONFIGSTATE } from "../action";
-import { useHistory } from "react-router-dom";
-
 import translate_th from "../../static/lang/th.json";
 import translate_en from "../../static/lang/en.json";
-
-import { ReactReduxContext, useSelector, useDispatch } from "react-redux";
 import { indexTab } from "../action";
+
+
 export default function MainListItems() {
   const history = useHistory();
   const { store } = useContext(ReactReduxContext);
@@ -158,7 +157,7 @@ export default function MainListItems() {
     handleComponentState("Configuration");
     setSelectedIndex(9);
   }
-  function handleOpenProfileIndivisual(event,inx) {
+  function handleOpenProfileIndivisual(event, inx) {
     // store.dispatch({
     //   type: EDIT_CONFIGSTATE,
     //   payload: "ProfilePageIndividual",
@@ -166,7 +165,7 @@ export default function MainListItems() {
     handleComponentState("profileindividual");
     setSelectedIndex(inx);
   }
-  function handleOpenProfileTravelAgent(event,inx) {
+  function handleOpenProfileTravelAgent(event, inx) {
     // store.dispatch({
     //   type: EDIT_CONFIGSTATE,
     //   payload: "profiletravelagent",
@@ -175,7 +174,7 @@ export default function MainListItems() {
     setSelectedIndex(inx);
   }
 
-  function handleOpenProfileCompany(event,inx) {
+  function handleOpenProfileCompany(event, inx) {
     // store.dispatch({
     //   type: EDIT_CONFIGSTATE,
     //   payload: "profilepagecompany",
@@ -417,7 +416,6 @@ export default function MainListItems() {
               {comps.includes("PF-ID") || comps.includes("*ALL") ? (
                 <ListItem
                   button
-                  
                   selected={selectedIndex === 41}
                   onClick={(event) => handleOpenProfileIndivisual(event, 41)}
                 >

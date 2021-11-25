@@ -16,7 +16,7 @@ import Divider from "@material-ui/core/Divider";
 import { FormControl, FormLabel, Select, MenuItem } from '@material-ui/core';
 import menus from "../services/menus.service";
 import propertypermission from "../services/propertypermission.service";
-import {getasset} from "../services/assest.service";
+import {getAsset} from "../services/assest.service";
 import propertyrole from "../services/propertyrole.service"
 import { useCookies } from 'react-cookie';
 // import {
@@ -81,7 +81,7 @@ export default function Property({ setToken, setProperty }) {
     const [file,  setFile] = useState("");
 
   const getLogo  = async() => {
-    const resp = await getasset();
+    const resp = await getAsset();
     setFile(resp.content[0].asset);
     // console.log(resp);
     

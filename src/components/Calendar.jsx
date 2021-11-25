@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { ReactReduxContext, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import FullCalendar, { formatDate } from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -14,26 +14,18 @@ import DateFnsUtils from "@date-io/date-fns";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { blue } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-  DateRangePicker,
-} from "@material-ui/pickers";
+import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+// import DialogContentText from "@material-ui/core/DialogContentText";
 
 import {
-  getreservationroom,
-  postreservationroom,
-  getreservationroombyid,
-  updatereservationroom,
-  deletereservationroom,
+  getReservationRoom,
+  // postReservationRoom,
+  // getReservationRoomByID,
+  updateReservationRoom,
+  deleteReservationRoom,
 } from "../services/reservationRoom.service";
 
 const useStyles = makeStyles((theme) => ({
@@ -137,7 +129,7 @@ const Calendar = (props) => {
   };
 
   const handleDialogReservationChangeClose = async () => {
-    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    const data = await getReservationRoom(sessionStorage.getItem("auth"));
     console.log("data", data);
     let datedata = [];
     data.content[data.content.length - 1].forEach((element) =>
@@ -153,13 +145,13 @@ const Calendar = (props) => {
   };
 
   const handleDialogReservationDelete = async (roomno) => {
-    const deletedate = await deletereservationroom(
+    const deletedate = await deleteReservationRoom(
       sessionStorage.getItem("auth"),
       roomno
     );
     console.log("deletedate", deletedate);
 
-    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    const data = await getReservationRoom(sessionStorage.getItem("auth"));
     console.log("data", data);
     let datedata = [];
     data.content[data.content.length - 1].forEach((element) =>
@@ -177,7 +169,7 @@ const Calendar = (props) => {
 
   const handleDialogReservationSave = async () => {
     const roomno = roomNum;
-    const updatedata = await updatereservationroom(
+    const updatedata = await updateReservationRoom(
       sessionStorage.getItem("auth"),
       roomno,
       {
@@ -188,7 +180,7 @@ const Calendar = (props) => {
       }
     );
     console.log("updatedata", updatedata);
-    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    const data = await getReservationRoom(sessionStorage.getItem("auth"));
     console.log("data", data);
     let datedata = [];
     data.content[data.content.length - 1].forEach((element) =>
@@ -232,7 +224,7 @@ const Calendar = (props) => {
   const handleChangeDnDSave = async (newDate) => {
     // console.log("newDate", newDate);
     const roomno = newDate.id;
-    const updatedata = await updatereservationroom(
+    const updatedata = await updateReservationRoom(
       sessionStorage.getItem("auth"),
       roomno,
       {
@@ -243,7 +235,7 @@ const Calendar = (props) => {
       }
     );
     console.log("updatedata", updatedata);
-    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    const data = await getReservationRoom(sessionStorage.getItem("auth"));
     console.log("data", data);
     let datedata = [];
     data.content[data.content.length - 1].forEach((element) =>
@@ -259,11 +251,11 @@ const Calendar = (props) => {
     setDialogReservationChange(false);
   };
 
-  const printdatadrop = (data) => {
-    console.log("printdatadrop", data);
+  const printDropData = (data) => {
+    console.log("printDropData", data);
   };
-  const printdataselect = (data) => {
-    console.log("printdataselect", data);
+  const printSelectData = (data) => {
+    console.log("printSelectData", data);
   };
 
   const [themeState, setThemeState] = React.useState({
@@ -337,8 +329,8 @@ const Calendar = (props) => {
           draggable={true}
           startEditable={true}
           // ------------------
-          select={printdataselect}
-          drop={printdatadrop}
+          select={printSelectData}
+          drop={printDropData}
           eventChange={handleChangeDnD}
           eventClick={handleClick}
           rerenderDelay
@@ -369,58 +361,6 @@ const Calendar = (props) => {
 
         <DialogContent style={headerTableStyle}>
           <Container maxWidth="xl" disableGutters>
-            {/* <Grid
-              container
-              spacing={2}
-              style={{
-                paddingTop: 10,
-                // backgroundColor: "#DEDFE0",
-                borderRadius: 6,
-              }}
-            >
-              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                <Typography variant="h6" color="initial">
-                  Customer Information
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                <TextField
-                  // autoFocus
-                  label="First Name"
-                  variant="outlined"
-                  fullWidth
-                  onChange={""}
-                />
-              </Grid>
-              <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                <TextField
-                  // autoFocus
-                  label="Last Name"
-                  variant="outlined"
-                  fullWidth
-                  onChange={""}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                <TextField
-                  // autoFocus
-                  label="Phone Number"
-                  variant="outlined"
-                  fullWidth
-                  onChange={""}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                <TextField
-                  // autoFocus
-                  label="Email"
-                  variant="outlined"
-                  fullWidth
-                  onChange={""}
-                />
-              </Grid>
-            </Grid> */}
-
             <Grid container spacing={2} style={{ paddingTop: 20 }}>
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <Typography variant="h6" color="initial">

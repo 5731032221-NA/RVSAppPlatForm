@@ -1,31 +1,19 @@
 import React from "react";
-import { connect, ReactReduxContext, useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { nextComponent } from "../../middleware/action";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
-import { blue, green, yellow } from "@material-ui/core/colors";
+import { blue } from "@material-ui/core/colors";
 import {
   Container,
   Grid,
-  Paper,
   Typography,
-  Divider,
-  TextField,
-  InputAdornment,
   Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Chip,
   Breadcrumbs,
   Link,
 } from "@material-ui/core";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import ProfileIndividual from "./ProfileIndividual";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import ClearIcon from "@material-ui/icons/Clear";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
@@ -34,11 +22,10 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+import ProfileIndividual from "./ProfileIndividual";
 import {
   getIndividualProfile,
   getIndividualProfileById,
-  postIndividualProfile,
-  updateIndividualProfile,
   deleteIndividualProfileById,
 } from "../../services/individualprofile.service";
 import * as actions from "../../middleware/action";
@@ -118,41 +105,7 @@ function createData(
   };
 }
 
-const rows = [
-  // createData(
-  //   "Somchai",
-  //   "Wongnut",
-  //   "Mr.",
-  //   "Male",
-  //   "1100700222876",
-  //   "Thai",
-  //   "30/10/2020",
-  //   "5",
-  //   "Check-Out"
-  // ),
-  // createData(
-  //   "Sommul",
-  //   "Liu",
-  //   "Ms.",
-  //   "Female",
-  //   "C00102188",
-  //   "China",
-  //   "10/12/2020",
-  //   "2",
-  //   "Check-In"
-  // ),
-  // createData("YongAPI", " ", "Joy", "DOS", "A", 3),
-  // createData("TH Chamber", " ", "Joy", "Secretary", "A", 4),
-  // createData("MSC", "SIG/DTS", "P'Pui", "VP", "I-24/09/21", " "),
-  // createData("MSC", "SIG/BIG", "P'Pui", "VP", "A", " "),
-];
-
-const family = [
-  {
-    fullname: "Joy,Chat",
-    status: "sprouse",
-  },
-];
+const rows = [];
 
 export const ProfileTableIndividual = (props) => {
   const [themeState, setThemeState] = React.useState({
@@ -201,11 +154,10 @@ export const ProfileTableIndividual = (props) => {
     color: themeState.color,
   };
 
-  // const [individualData, setIndividualData] = React.useState(rows);
   const [triggerButton, setTriggerButton] = React.useState(false);
   const [action, setAction] = React.useState("");
   const [individualData, setIndividualData] = React.useState(null);
-  const [statusprofile, setStatusprofile] = React.useState("none");
+  const [statusProfile, setStatusProfile] = React.useState("none");
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [deleteData, setDeleteData] = React.useState({
     nameid: "nameid",
@@ -220,17 +172,13 @@ export const ProfileTableIndividual = (props) => {
     props.nextComponent(comp);
   };
 
-  // const handleStatusProfile = () => {
-  //   setStatusprofile();
-  // };
-
   const handleNewData = async () => {
     await setTriggerButton(!triggerButton);
     await setAction("none");
     console.log("triggerButton :: ", triggerButton);
     await props.handleRedirectToTableIndividual(false);
     await setEditData(null);
-    await setStatusprofile("add");
+    await setStatusProfile("add");
   };
 
   //save button on **add component
@@ -240,7 +188,7 @@ export const ProfileTableIndividual = (props) => {
     await setEditData(null);
     console.log("triggerButton :: ", triggerButton);
 
-    // await setStatusprofile("moredata");
+    // await setStatusProfile("moredata");
     console.log("Table page :: ", props.RedirectToTableIndividual);
     if (props.RedirectToTableIndividual) {
       await handleReloadTable();
@@ -254,7 +202,7 @@ export const ProfileTableIndividual = (props) => {
     console.log("triggerButton :: ", triggerButton);
     await setAction("edit");
     await setEditData(null);
-    // await setStatusprofile("moredata");
+    // await setStatusProfile("moredata");
     // =========****
     console.log("Table page :: ", props.RedirectToTableIndividual);
     if (props.RedirectToTableIndividual) {
@@ -283,7 +231,7 @@ export const ProfileTableIndividual = (props) => {
       rowData.firstname,
       rowData.lastname
     );
-    await setStatusprofile("edit");
+    await setStatusProfile("edit");
     console.log("test Edit");
   };
 
@@ -350,14 +298,14 @@ export const ProfileTableIndividual = (props) => {
     }
     console.log("individualData", _individualData);
     await setIndividualData(_individualData);
-    await setStatusprofile("moredata");
+    await setStatusProfile("moredata");
   };
 
   React.useEffect(() => {
-    if (statusprofile === "moredata") {
+    if (statusProfile === "moredata") {
       handleReloadTable();
     }
-  }, [statusprofile]);
+  }, [statusProfile]);
 
   //initial data to table
   React.useEffect(() => {
@@ -391,7 +339,7 @@ export const ProfileTableIndividual = (props) => {
       setIndividualData(_individualData);
     }
     fetchData();
-    setStatusprofile("moredata");
+    setStatusProfile("moredata");
   }, []);
 
   return (
@@ -405,7 +353,6 @@ export const ProfileTableIndividual = (props) => {
       }}
     >
       <Grid container style={{ paddingLeft: 30, paddingRight: 30 }}>
-        {/* <Grid item xs={6} sm={10} md={10} style={{ flexGrow: 1 }}> */}
         <Grid item style={{ flexGrow: 1 }}>
           <Breadcrumbs
             separator={
@@ -436,7 +383,7 @@ export const ProfileTableIndividual = (props) => {
             <Link
               color="inherit"
               href="#"
-              onClick={() => setStatusprofile("moredata")}
+              onClick={() => setStatusProfile("moredata")}
             >
               <Typography
                 variant="h6"
@@ -452,7 +399,7 @@ export const ProfileTableIndividual = (props) => {
           </Breadcrumbs>
         </Grid>
 
-        {statusprofile === "add" ? (
+        {statusProfile === "add" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
@@ -462,7 +409,7 @@ export const ProfileTableIndividual = (props) => {
                 marginRight: 10,
               }}
               startIcon={<ClearIcon />}
-              onClick={() => setStatusprofile("moredata")}
+              onClick={() => setStatusProfile("moredata")}
             >
               Cancel
             </Button>
@@ -475,7 +422,7 @@ export const ProfileTableIndividual = (props) => {
               Save
             </Button>
           </Grid>
-        ) : statusprofile === "edit" ? (
+        ) : statusProfile === "edit" ? (
           <Grid item xs={6} sm={3} md={3} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
@@ -485,7 +432,7 @@ export const ProfileTableIndividual = (props) => {
                 marginRight: 10,
               }}
               startIcon={<ClearIcon />}
-              onClick={() => setStatusprofile("moredata")}
+              onClick={() => setStatusProfile("moredata")}
             >
               Cancel
             </Button>
@@ -502,16 +449,8 @@ export const ProfileTableIndividual = (props) => {
             >
               Save
             </Button>
-            {/* <Button
-              variant="contained"
-              style={{ backgroundColor: "red", color: "white" }}
-              startIcon={<DeleteIcon />}
-              onClick={() => setDialogDelete(true)}
-            >
-              Delete
-            </Button> */}
           </Grid>
-        ) : statusprofile === "moredata" ? (
+        ) : statusProfile === "moredata" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
@@ -524,7 +463,7 @@ export const ProfileTableIndividual = (props) => {
           </Grid>
         ) : null}
       </Grid>
-      {statusprofile === "edit" || statusprofile === "add" ? (
+      {statusProfile === "edit" || statusProfile === "add" ? (
         <ProfileIndividual
           editdata={editData}
           action={action}
@@ -616,11 +555,6 @@ export const ProfileTableIndividual = (props) => {
                     field: "countrycode",
                     headerStyle: headerTableStyle,
                   },
-                  // {
-                  //   title: "Next Stay",
-                  //   field: "nextstay",
-                  //   headerStyle: headerTableStyle,
-                  // },
                   {
                     title: "Last Stay",
                     field: "laststay",
@@ -675,8 +609,6 @@ export const ProfileTableIndividual = (props) => {
                   showTitle: false,
                   search: true,
                   actionsColumnIndex: -1,
-                  //   page: page,
-                  //   pageSize: rowsPerPage,
                   pageSize: 10,
                   pageSizeOptions: [
                     10,
@@ -811,11 +743,8 @@ export const ProfileTableIndividual = (props) => {
                 <Grid item sm={6} md={6} lg={6} xl={6}>
                   <Button
                     fullWidth
-                    // onClick={() => handleDelete(updateData.id)}
-
                     onClick={() => handleConfirmDeleteData()}
                     variant="contained"
-                    // color="primary"
                     style={{ backgroundColor: "red", color: "white" }}
                   >
                     Delete

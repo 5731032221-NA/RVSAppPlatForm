@@ -1,5 +1,5 @@
 module.exports = {
-    getasset: async function () {
+    getAsset: async function () {
       return fetch(
         `http://${(process.env.REACT_APP_host || "localhost")}:8000/auth/asset`,
         {
@@ -18,7 +18,7 @@ module.exports = {
 
     },
 
-    updateasset: async function (accessToken,data) {
+    updateAsset: async function (accessToken,data) {
         return fetch(
           `http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/asset`,
           {

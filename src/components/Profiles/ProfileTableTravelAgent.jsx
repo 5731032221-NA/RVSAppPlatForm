@@ -1,45 +1,31 @@
 import React from "react";
-import { connect, ReactReduxContext, useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { nextComponent } from "../../middleware/action";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
-import { blue, green, yellow } from "@material-ui/core/colors";
-import ClearIcon from '@material-ui/icons/Clear';
-
-import {
-  Container,
-  Grid,
-  Paper,
-  Typography,
-  Divider,
-  TextField,
-  InputAdornment,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Chip,
-  Breadcrumbs,
-  Link,
-} from "@material-ui/core";
+import { blue } from "@material-ui/core/colors";
+import ClearIcon from "@material-ui/icons/Clear";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import ProfileTravelAgent from "./ProfileTravelAgent";
-import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import SearchIcon from '@material-ui/icons/Search';
+import {
+  Container,
+  Grid,
+  Typography,
+  Button,
+  Breadcrumbs,
+  Link,
+} from "@material-ui/core";
 
 import {
   getTAProfile,
   getTAProfileById,
-  postCompanyProfile,
-  updateCompanyProfile,
   deleteCompanyProfileById,
 } from "../../services/companyprofile.service";
 
@@ -92,72 +78,7 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 
-function createData(
-  firstname,
-  lastname,
-  title,
-  sex,
-  idcardandpass,
-  nationality,
-  nextstay,
-  laststay,
-  score,
-  status
-) {
-  return {
-    firstname,
-    lastname,
-    title,
-    sex,
-    idcardandpass,
-    nationality,
-    nextstay,
-    laststay,
-    score,
-    status,
-  };
-}
-
-const rows = [
-  createData(
-    "Somchai",
-    "Wongnut",
-    "Mr.",
-    "Male",
-    "1100700222876",
-    "Thai",
-    "12/11/2021",
-    "30/10/2020",
-    "5",
-    "Check-Out"
-  ),
-  createData(
-    "Sommul",
-    "Liu",
-    "Mr.",
-    "Male",
-    "C00102188",
-    "China",
-    "22/11/2021",
-    "10/12/2020",
-    "2",
-    "Check-In"
-  ),
-  // createData("YongAPI", " ", "Joy", "DOS", "A", 3),
-  // createData("TH Chamber", " ", "Joy", "Secretary", "A", 4),
-  // createData("MSC", "SIG/DTS", "P'Pui", "VP", "I-24/09/21", " "),
-  // createData("MSC", "SIG/BIG", "P'Pui", "VP", "A", " "),
-];
-
-const family = [
-  {
-    fullname: "Joy,Chat",
-    status: "sprouse",
-  },
-];
-
 export const ProfileTableTA = (props) => {
-
   const [action, setAction] = React.useState("");
   const [editData, setEditData] = React.useState(" ");
   const [themeState, setThemeState] = React.useState({
@@ -167,7 +88,6 @@ export const ProfileTableTA = (props) => {
     colorlevel: "900",
   });
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
-
 
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
@@ -207,9 +127,8 @@ export const ProfileTableTA = (props) => {
     color: themeState.color,
   };
 
-  const [companyData, setcompanyData] = React.useState([]);
-  // const [companyData, setcompanyData] = React.useState(null);
-  const [statusprofile, setStatusprofile] = React.useState("none");
+  const [companyData, setCompanyData] = React.useState([]);
+  const [statusProfile, setStatusProfile] = React.useState("none");
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [deleteData, setDeleteData] = React.useState({
     title: "title",
@@ -217,85 +136,77 @@ export const ProfileTableTA = (props) => {
     lastname: "lastname",
   });
 
-  React.useEffect( async() => {
-    if(action == "success"){
+  React.useEffect(async () => {
+    if (action == "success") {
       await handleGetTAProfile();
-      await setStatusprofile("moredata");
-      
+      await setStatusProfile("moredata");
     }
-  },[action])
+  }, [action]);
 
-
-  React.useEffect( async() => {
-   await handleGetTAProfile();
-  },[])
+  React.useEffect(async () => {
+    await handleGetTAProfile();
+  }, []);
 
   const handleGetTAProfile = async () => {
     const resp = await getTAProfile(sessionStorage.getItem("auth"));
-    if(resp.status == "2000"){
-
-  
-    if(resp.content[0].length > 0){
-
-      resp.content[0].forEach(function(part, index) {
-        this[index].citycountry = (this[index].city?this[index].city : "-")+"/"+(this[index].countrycode?this[index].countrycode :"-");
-      }, resp.content[0])
-      setStatusprofile("moredata");
-      console.log("resp.content[0]:",resp.content[0]);
-      setcompanyData(resp.content[0]);
+    if (resp.status == "2000") {
+      if (resp.content[0].length > 0) {
+        resp.content[0].forEach(function (part, index) {
+          this[index].citycountry =
+            (this[index].city ? this[index].city : "-") +
+            "/" +
+            (this[index].countrycode ? this[index].countrycode : "-");
+        }, resp.content[0]);
+        setStatusProfile("moredata");
+        console.log("resp.content[0]:", resp.content[0]);
+        setCompanyData(resp.content[0]);
+      }
     }
-  }
-   
-  }
-
- 
+  };
 
   const handleComponentState = async (comp) => {
     console.log("setcomp", comp);
     props.nextComponent(comp);
   };
-  const handleStatusProfile = () => {
-    setStatusprofile();
-  };
-  const handleNewData = async() => {
-    await  setAction("none")
-    await setEditData(null)
-    await setStatusprofile("add");
+
+  const handleNewData = async () => {
+    await setAction("none");
+    await setEditData(null);
+    await setStatusProfile("add");
   };
   const handleAddData = async (companyData) => {
-    await  setAction("add")
+    await setAction("add");
   };
   const handleAddDataEdit = async (companyData) => {
-    await setAction("edit")  
+    await setAction("edit");
   };
 
-
-
-
   const handleEditData = async (data) => {
-    const resp = await getTAProfileById(sessionStorage.getItem("auth"),data.id);
-    await setEditData(resp.content)
-    await setAction("none")
-    await setStatusprofile("edit");
+    const resp = await getTAProfileById(
+      sessionStorage.getItem("auth"),
+      data.id
+    );
+    await setEditData(resp.content);
+    await setAction("none");
+    await setStatusProfile("edit");
   };
   const handleDeleteData = async () => {
     try {
-      const resp = await deleteCompanyProfileById(sessionStorage.getItem("auth"),deleteData.id);
-      if(resp.status == "2000"){
-       await handleGetTAProfile()
+      const resp = await deleteCompanyProfileById(
+        sessionStorage.getItem("auth"),
+        deleteData.id
+      );
+      if (resp.status == "2000") {
+        await handleGetTAProfile();
       }
-      await setStatusprofile("moredata");
+      await setStatusProfile("moredata");
       await setDialogDelete(false);
-    } catch (error) {
-      
-    }
-  
+    } catch (error) {}
   };
 
-  const handleDialogDeleteOpen = async (id,name, www, city) => {
-  
-    await  setDeleteData({id:id, name: name, www: www, city: city });
-    await  setDialogDelete(true);
+  const handleDialogDeleteOpen = async (id, name, www, city) => {
+    await setDeleteData({ id: id, name: name, www: www, city: city });
+    await setDialogDelete(true);
   };
   const handleDialogDeleteClose = async () => {
     await setDialogDelete(false);
@@ -312,74 +223,72 @@ export const ProfileTableTA = (props) => {
       }}
     >
       <Grid container style={{ paddingLeft: 25, paddingRight: 25 }}>
-      <Grid item xs={6} sm={10} md={10} lg={10} style={{ flexGrow: 1 }}>
-            <Breadcrumbs
-              separator={
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 20,
-                    color: themeState.color,
-                  }}
-                >
-                  /
-                </Typography>
-              }
+        <Grid item xs={6} sm={10} md={10} lg={10} style={{ flexGrow: 1 }}>
+          <Breadcrumbs
+            separator={
+              <Typography
+                variant="h6"
+                style={{
+                  marginBottom: 15,
+                  fontSize: 20,
+                  color: themeState.color,
+                }}
+              >
+                /
+              </Typography>
+            }
+          >
+            <Link
+              color="inherit"
+              href="#"
+              onClick={() => handleComponentState("Configuration")}
             >
-              <Link
-                color="inherit"
-                href="#"
-                onClick={() => handleComponentState("Configuration")}
+              <Typography
+                variant="h6"
+                style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
               >
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
-                >
-                  Profiles
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={() => setStatusprofile("moredata")}>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  Travel Agent
-                </Typography>
-              </Link>
-              
-            </Breadcrumbs>
-          </Grid>
-          {/* {statusprofile === "add" || statusprofile === "edit"  ? (
-            <Grid item xs={6} sm={2} md={2} style={{ paddingLeft: 1200 ,textAlign: "right" }}>
-              <Button
-                variant="contained"
-                style={{ backgroundColor: "gray", color: "white" }}
-                startIcon={<ClearIcon />}
-                onClick={() => setStatusprofile("moredata")}
+                Profiles
+              </Typography>
+            </Link>
+            <Link
+              color="inherit"
+              href="#"
+              onClick={() => setStatusProfile("moredata")}
+            >
+              <Typography
+                variant="h6"
+                style={{
+                  marginBottom: 15,
+                  fontSize: 14,
+                  color: themeState.color,
+                }}
               >
-                Cancel
-              </Button>
-            </Grid>
-          ) : null} */}
-        {statusprofile === "add" ? (
-          <Grid  container
-          direction="row"
-          justifyContent="space-evenly"
-          alignItems="center"
-         item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+                Travel Agent
+              </Typography>
+            </Link>
+          </Breadcrumbs>
+        </Grid>
+
+        {statusProfile === "add" ? (
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+            item
+            xs={6}
+            sm={2}
+            md={2}
+            style={{ textAlign: "right" }}
+          >
             <Button
-                variant="contained"
-                style={{ backgroundColor: "gray", color: "white" }}
-                startIcon={<ClearIcon />}
-                onClick={() => setStatusprofile("moredata")}
-              >
-                Cancel
-              </Button>
+              variant="contained"
+              style={{ backgroundColor: "gray", color: "white" }}
+              startIcon={<ClearIcon />}
+              onClick={() => setStatusProfile("moredata")}
+            >
+              Cancel
+            </Button>
             <Button
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
@@ -389,18 +298,26 @@ export const ProfileTableTA = (props) => {
               Save
             </Button>
           </Grid>
-        ) : statusprofile === "edit" ? (
-          <Grid container direction="row"
-          justifyContent="space-evenly"
-          alignItems="center" item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+        ) : statusProfile === "edit" ? (
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+            item
+            xs={6}
+            sm={2}
+            md={2}
+            style={{ textAlign: "right" }}
+          >
             <Button
-                variant="contained"
-                style={{ backgroundColor: "gray", color: "white" }}
-                startIcon={<ClearIcon />}
-                onClick={() => setStatusprofile("moredata")}
-              >
-                Cancel
-              </Button>
+              variant="contained"
+              style={{ backgroundColor: "gray", color: "white" }}
+              startIcon={<ClearIcon />}
+              onClick={() => setStatusProfile("moredata")}
+            >
+              Cancel
+            </Button>
             <Button
               variant="contained"
               style={{ backgroundColor: mainColor, color: "white" }}
@@ -409,16 +326,8 @@ export const ProfileTableTA = (props) => {
             >
               Save
             </Button>
-            {/* <Button
-              variant="contained"
-              style={{ backgroundColor: "red", color: "white", marginLeft: 15 }}
-              startIcon={<DeleteIcon />}
-              onClick={() => handleDialogDeleteOpen()}
-            >
-              Delete
-            </Button> */}
           </Grid>
-        ) : statusprofile === "moredata" || statusprofile === "none"  ? (
+        ) : statusProfile === "moredata" || statusProfile === "none" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
@@ -431,8 +340,12 @@ export const ProfileTableTA = (props) => {
           </Grid>
         ) : null}
       </Grid>
-      {statusprofile === "edit" || statusprofile === "add" ? (
-        <ProfileTravelAgent editdata={editData} action={action} setAction={setAction} />
+      {statusProfile === "edit" || statusProfile === "add" ? (
+        <ProfileTravelAgent
+          editdata={editData}
+          action={action}
+          setAction={setAction}
+        />
       ) : (
         [
           companyData == null ? (
@@ -465,63 +378,56 @@ export const ProfileTableTA = (props) => {
                 >
                   No Data Available
                 </Typography>
-                {/* <Grid item>
-                  <Button
-                    startIcon={<AddOutlinedIcon />}
-                    size="large"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    onClick={() => handleNewData()}
-                  >
-                    Create New CompanyProfile
-                  </Button>
-                </Grid> */}
               </Grid>
             </Grid>
           ) : (
             <Container maxWidth="xl">
               <MaterialTable
-               localization={{
-                body: {
-                  emptyDataSourceMessage: <>   <Typography
-                    variant="h1"
-                    align="center"
-                    style={{ fontSize: 25, color: themeState.color }}
-                  >
-                    <ErrorOutlineOutlinedIcon
-                      style={{ fontSize: 100, color: "lightgray" }}
-                    />
-                  </Typography>
-                    <Typography
-                      align="center"
-                      variant="h2"
-                      style={{
-                        fontWeight: 400,
-                        fontSize: 30,
-                        color: "rgb(0 0 0 / 47%)",
-                        marginBottom: 20,
-                      }}
-                    >
-                      No Data Available
-                    </Typography>
-                    <Grid item>
-                      <Button
-                        startIcon={<AddOutlinedIcon />}
-                        size="large"
-                        variant="contained"
-                        color="primary"
-                        // style={{ padding: 13 }}
-                        // fullWidth
-                        // onClick={() => setCreateindividual(true)}
-                        onClick={() => handleNewData()}
-                      >
-                       New Travel Agent Profile
-                      </Button>
-                    </Grid>
-                  </>
-                }
-              }}
+                localization={{
+                  toolbar: {
+                    searchPlaceholder:
+                      "Search by Name, www, City/Country, Industry, IATA",
+                  },
+                  body: {
+                    emptyDataSourceMessage: (
+                      <>
+                        {" "}
+                        <Typography
+                          variant="h1"
+                          align="center"
+                          style={{ fontSize: 25, color: themeState.color }}
+                        >
+                          <ErrorOutlineOutlinedIcon
+                            style={{ fontSize: 100, color: "lightgray" }}
+                          />
+                        </Typography>
+                        <Typography
+                          align="center"
+                          variant="h2"
+                          style={{
+                            fontWeight: 400,
+                            fontSize: 30,
+                            color: "rgb(0 0 0 / 47%)",
+                            marginBottom: 20,
+                          }}
+                        >
+                          No Data Available
+                        </Typography>
+                        <Grid item>
+                          <Button
+                            startIcon={<AddOutlinedIcon />}
+                            size="large"
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleNewData()}
+                          >
+                            New Travel Agent Profile
+                          </Button>
+                        </Grid>
+                      </>
+                    ),
+                  },
+                }}
                 style={{
                   paddingLeft: 30,
                   paddingRight: 30,
@@ -544,11 +450,6 @@ export const ProfileTableTA = (props) => {
                     field: "citycountry",
                     headerStyle: headerTableStyle,
                   },
-                  // {
-                  //   title: "Next Stay",
-                  //   field: "nextstay",
-                  //   headerStyle: headerTableStyle,
-                  // },
                   {
                     title: "Industry",
                     field: "industrycode",
@@ -558,7 +459,7 @@ export const ProfileTableTA = (props) => {
                     title: "IATA",
                     field: "iata",
                     headerStyle: headerTableStyle,
-                  }
+                  },
                 ]}
                 data={companyData}
                 options={{
@@ -566,9 +467,7 @@ export const ProfileTableTA = (props) => {
                   showTitle: false,
                   search: true,
                   actionsColumnIndex: -1,
-                  //   page: page,
-                  //   pageSize: rowsPerPage,
-                  pageSize:10,
+                  pageSize: 10,
                   pageSizeOptions: [
                     10,
                     20,
@@ -583,14 +482,7 @@ export const ProfileTableTA = (props) => {
                     width: 530,
                   },
                 }}
-                localization={{
-                  toolbar: {
-                    searchPlaceholder:
-                      "Search by Name, www, City/Country, Industry, IATA",
-                  },
-                }}
                 actions={[
-               
                   {
                     icon: "edit",
                     iconProps: { style: { color: themeState.color } },
@@ -608,9 +500,7 @@ export const ProfileTableTA = (props) => {
                         rowData.id,
                         rowData.name,
                         rowData.www,
-                        rowData.city,
-                      
-                      
+                        rowData.city
                       );
                     },
                   },
@@ -691,7 +581,7 @@ export const ProfileTableTA = (props) => {
                 alignItems="center"
                 spacing={4}
               >
-                <Grid  item sm={6} md={6} lg={6} xl={6}>
+                <Grid item sm={6} md={6} lg={6} xl={6}>
                   <Button
                     fullWidth
                     onClick={handleDialogDeleteClose}
@@ -704,10 +594,8 @@ export const ProfileTableTA = (props) => {
                 <Grid item sm={6} md={6} lg={6} xl={6}>
                   <Button
                     fullWidth
-                    // onClick={() => handleDelete(updateData.id)}
                     onClick={() => handleDeleteData()}
                     variant="contained"
-                    // color="primary"
                     style={{ backgroundColor: "red", color: "white" }}
                   >
                     Delete
@@ -730,7 +618,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProfileTableTA);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileTableTA);

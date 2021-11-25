@@ -1,46 +1,36 @@
 import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import { ReactReduxContext, useSelector } from "react-redux";
-import MaterialTable, { MTablePagination } from "material-table";
+import { blue } from "@material-ui/core/colors";
+import MaterialTable from "material-table";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import {
-  Container,
-  Grid,
-  Paper,
-  Typography,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Breadcrumbs,
-  Link,
-  TextField,
-  Divider,
-  Chip,
-} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import EditRoundedIcon from "@material-ui/icons/EditRounded";
-import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
-import { blue } from "@material-ui/core/colors";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
 import {
-  listregisterdhardware,
-  inserthardware,
-  deletehardware,
-  updatehardware,
-} from "../../services/device.service";
-import { listallproperty } from "../../services/user.service";
-// from "../services/roleManagement.service";
-import TablePagination from "@material-ui/core/TablePagination";
+  Container,
+  Grid,
+  Typography,
+  Button,
+  Breadcrumbs,
+  Link,
+  TextField,
+} from "@material-ui/core";
+
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
-import { useHistory } from "react-router-dom";
+import { listAllProperty } from "../../services/user.service";
+import {
+  listRegisterHardware,
+  insertHardware,
+  deleteHardware,
+  updateHardware,
+} from "../../services/device.service";
+// from "../services/roleManagement.service";
+
 // Generate Order Data
 function createData(id, propertycode, code, type, name, macaddress, ip) {
   return {
@@ -106,17 +96,14 @@ export default function DeviceManager() {
   const history = useHistory();
   const { store } = useContext(ReactReduxContext);
   const pageProperty = useSelector((state) => state.reducer.property);
-  const [data, setData] = React.useState([]);
-
+  // const [data, setData] = React.useState([]);
   const [dialogAdd, setDialogAdd] = React.useState(false);
   const [dialogEdit, setDialogEdit] = React.useState(false);
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [rows, setRows] = useState([]);
-
   const [pageData, setPageData] = React.useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
   const [properties, setProperty] = React.useState([]);
   const [deviceTypes, setDeviceType] = useState([
     {
@@ -128,12 +115,9 @@ export default function DeviceManager() {
       label: "PRINT",
     },
   ]);
-
   const [updateData, setUpdateData] = useState({});
-
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
-
   const [errorMessageDu, setErrorMessageDu] = useState(false);
   const [errorParameterDu, setErrorParameterDu] = useState(null);
 
@@ -141,7 +125,7 @@ export default function DeviceManager() {
     // macaddress.all().then(function (all) {
     //   console.log(JSON.stringify(all, null, 2));
     // });
-    let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+    let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
     let devicedata = [];
     // let i = 0;
     _data.content[_data.content.length - 1].forEach((element) =>
@@ -185,7 +169,7 @@ export default function DeviceManager() {
   };
 
   const handleDialogAdd = async () => {
-    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    let propertydata = await listAllProperty(sessionStorage.getItem("auth"));
     let tempproperty = [];
     propertydata.content[propertydata.content.length - 1]
       .split(",")
@@ -213,7 +197,7 @@ export default function DeviceManager() {
     let _rowData = JSON.parse(JSON.stringify(rowData));
     _rowData.tableData = undefined;
     console.log("handleDialogEdit", _rowData);
-    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    let propertydata = await listAllProperty(sessionStorage.getItem("auth"));
     let tempproperty = [];
     propertydata.content[propertydata.content.length - 1]
       .split(",")
@@ -248,12 +232,12 @@ export default function DeviceManager() {
       setErrorParameter("Device Name");
     } else {
       setErrorMessage(false);
-      let _inserthardware = await inserthardware(
+      let _insertHardware = await insertHardware(
         sessionStorage.getItem("auth"),
         updateData
       );
-      if (_inserthardware.status == "2000") {
-        let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+      if (_insertHardware.status == "2000") {
+        let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
         let devicedata = [];
         // let i = 0;
         _data.content[_data.content.length - 1].forEach((element) =>
@@ -272,21 +256,21 @@ export default function DeviceManager() {
         setRows(devicedata);
         updatePageData(devicedata, page, rowsPerPage);
         setDialogAdd(false);
-      }else if(_inserthardware.status == "1000"){
+      } else if (_insertHardware.status == "1000") {
         setErrorMessageDu(true);
-        const dupic = _inserthardware.msg +" Device Code: "+ updateData.code;
-        setErrorParameterDu(dupic)
+        const dupic = _insertHardware.msg + " Device Code: " + updateData.code;
+        setErrorParameterDu(dupic);
       }
     }
   };
 
   const handleDelete = async (id) => {
-    let _deletehardware = await deletehardware(
+    let _deleteHardware = await deleteHardware(
       sessionStorage.getItem("auth"),
       id
     );
-    if (_deletehardware.status == "2000") {
-      let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+    if (_deleteHardware.status == "2000") {
+      let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
       let devicedata = [];
       // let i = 0;
       _data.content[_data.content.length - 1].forEach((element) =>
@@ -318,37 +302,37 @@ export default function DeviceManager() {
       setErrorParameter("Device Name");
     } else {
       setErrorMessage(false);
-    let _updatehardware = await updatehardware(
-      sessionStorage.getItem("auth"),
-      id,
-      updateData
-    );
-    if (_updatehardware.status == "2000") {
-      let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
-      let devicedata = [];
-      // let i = 0;
-      _data.content[_data.content.length - 1].forEach((element) =>
-        devicedata.push(
-          createData(
-            element.id,
-            element.propertycode,
-            element.code,
-            element.type,
-            element.name,
-            element.macaddress,
-            element.ip
-          )
-        )
+      let _updateHardware = await updateHardware(
+        sessionStorage.getItem("auth"),
+        id,
+        updateData
       );
-      setRows(devicedata);
-      updatePageData(devicedata, page, rowsPerPage);
-      setDialogEdit(false);
-    }else if(_updatehardware.status == "1000"){
-      setErrorMessageDu(true);
-      const dupic = _updatehardware.msg +" Device Code: "+ updateData.code;
-      setErrorParameterDu(dupic)
+      if (_updateHardware.status == "2000") {
+        let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
+        let devicedata = [];
+        // let i = 0;
+        _data.content[_data.content.length - 1].forEach((element) =>
+          devicedata.push(
+            createData(
+              element.id,
+              element.propertycode,
+              element.code,
+              element.type,
+              element.name,
+              element.macaddress,
+              element.ip
+            )
+          )
+        );
+        setRows(devicedata);
+        updatePageData(devicedata, page, rowsPerPage);
+        setDialogEdit(false);
+      } else if (_updateHardware.status == "1000") {
+        setErrorMessageDu(true);
+        const dupic = _updateHardware.msg + " Device Code: " + updateData.code;
+        setErrorParameterDu(dupic);
+      }
     }
-  }
   };
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
@@ -359,16 +343,16 @@ export default function DeviceManager() {
     setPageData(data);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-    updatePageData(rows, newPage, rowsPerPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  //   updatePageData(rows, newPage, rowsPerPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
-    setPage(0);
-    updatePageData(rows, 0, event.target.value);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(event.target.value);
+  //   setPage(0);
+  //   updatePageData(rows, 0, event.target.value);
+  // };
 
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
@@ -418,13 +402,7 @@ export default function DeviceManager() {
   return (
     <Container maxWidth="xl" style={themeState}>
       <React.Fragment>
-        <Grid
-          container
-          //   direction="row"
-          //   justifyContent="flex-start"
-          //   alignItems="center"
-          style={{ padding: 20 }}
-        >
+        <Grid container style={{ padding: 20 }}>
           <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
               separator={
@@ -511,42 +489,47 @@ export default function DeviceManager() {
 
         <div style={{ maxWidth: "100%" }}>
           <MaterialTable
-           localization={{ body:{ emptyDataSourceMessage: <>   <Typography
-            variant="h1"
-            align="center"
-            style={{ fontSize: 25, color: themeState.color }}
-          >
-            <ErrorOutlineOutlinedIcon
-              style={{ fontSize: 170, color: "lightgray" }}
-            />
-          </Typography>
-          <Typography
-            align="center"
-            variant="h2"
-            style={{
-              fontWeight: 400,
-              fontSize: 30,
-              color: "rgb(0 0 0 / 47%)",
-              marginBottom: 20,
+            localization={{
+              body: {
+                emptyDataSourceMessage: (
+                  <>
+                    {" "}
+                    <Typography
+                      variant="h1"
+                      align="center"
+                      style={{ fontSize: 25, color: themeState.color }}
+                    >
+                      <ErrorOutlineOutlinedIcon
+                        style={{ fontSize: 170, color: "lightgray" }}
+                      />
+                    </Typography>
+                    <Typography
+                      align="center"
+                      variant="h2"
+                      style={{
+                        fontWeight: 400,
+                        fontSize: 30,
+                        color: "rgb(0 0 0 / 47%)",
+                        marginBottom: 20,
+                      }}
+                    >
+                      No Data Available
+                    </Typography>
+                    <Grid item>
+                      <Button
+                        startIcon={<AddOutlinedIcon />}
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        onClick={handleDialogAdd}
+                      >
+                        New Device
+                      </Button>
+                    </Grid>
+                  </>
+                ),
+              },
             }}
-          >
-            No Data Available
-          </Typography>
-          <Grid item>
-                <Button
-                  startIcon={<AddOutlinedIcon />}
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                  // style={{ padding: 13 }}
-                  // fullWidth
-                  // onClick={() => setCreateindividual(true)}
-                  onClick={handleDialogAdd}
-                >
-                  New Device
-                </Button>
-             </Grid>
-           </> }}}
             style={{
               paddingLeft: 30,
               paddingRight: 30,
@@ -556,7 +539,8 @@ export default function DeviceManager() {
             title={
               <Grid>
                 <Typography
-                  variant="h6" noWrap
+                  variant="h6"
+                  noWrap
                   style={{ fontSize: 25, color: themeState.color }}
                 >
                   Device Manager
@@ -591,11 +575,8 @@ export default function DeviceManager() {
               },
             ]}
             data={rows}
-            // totalCount={rows.length}
-            // page={page}
             options={{
               actionsColumnIndex: -1,
-              // filtering: true,
               searchFieldAlignment: "left",
               page: page,
               pageSize: rowsPerPage,
@@ -632,15 +613,6 @@ export default function DeviceManager() {
               },
             ]}
             onChangePage={(page) => console.log("page")}
-            // onChangePage={(event, page) => console.log(event, page)}
-
-            // components={{
-            //   Pagination: (props) => (
-            //     <div style={{ backgroundColor: "#FFF000", color: "red" }}>
-            //       <MTablePagination {...props} />
-            //     </div>
-            //   ),
-            // }}
           />
         </div>
 
@@ -809,7 +781,7 @@ export default function DeviceManager() {
                         paddingTop: 5,
                       }}
                     >
-                      {errorParameterDu} 
+                      {errorParameterDu}
                     </div>
                   </div>
                 ) : null}
@@ -1015,7 +987,7 @@ export default function DeviceManager() {
                       {errorParameter} is required
                     </div>
                   ) : null}
-                   {errorMessageDu ? (
+                  {errorMessageDu ? (
                     <div
                       style={{
                         background: "#ff0033",
@@ -1025,7 +997,7 @@ export default function DeviceManager() {
                         paddingTop: 5,
                       }}
                     >
-                      {errorParameterDu} 
+                      {errorParameterDu}
                     </div>
                   ) : null}
                 </div>

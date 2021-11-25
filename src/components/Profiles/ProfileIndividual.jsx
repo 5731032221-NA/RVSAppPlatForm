@@ -8,14 +8,6 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-// import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
-// import FacebookIcon from "@material-ui/icons/Facebook";
-// import InstagramIcon from "@material-ui/icons/Instagram";
-// import TwitterIcon from "@material-ui/icons/Twitter";
-// import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
-// import WhatsAppIcon from "@material-ui/icons/WhatsApp";
-import { optioncountry } from "../../static/country.js";
-import { optionnationality } from "../../static/nationality";
 import Switch from "@material-ui/core/Switch";
 import DateFnsUtils from "@date-io/date-fns";
 import Accordion from "@material-ui/core/Accordion";
@@ -25,26 +17,21 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+
+import * as actions from "../../middleware/action";
 import { getConfigurationByPropertyCode } from "../../services/user.service";
 import {
   getIndividualProfileCommunication,
   getIndividualProfileRelation,
-  getIndividualProfile,
-  getIndividualProfileById,
   postIndividualProfile,
   updateIndividualProfile,
-  deleteIndividualProfileById,
 } from "../../services/individualprofile.service";
 import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
-  DateRangePicker,
 } from "@material-ui/pickers";
-import * as actions from "../../middleware/action";
+import { optionnationality } from "../../static/nationality";
+// import { optioncountry } from "../../static/country.js";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -74,7 +61,6 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        // borderColor: themeState.color,
         borderColor: "grey.500",
         color: themeState.color,
       },
@@ -96,33 +82,7 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 
-var optionTitle = [
-  {
-    value: "Mr.",
-    label: "Mr.",
-  },
-  {
-    value: "Mrs.",
-    label: "Mrs.",
-  },
-  {
-    value: "Ms.",
-    label: "Ms.",
-  },
-];
-
-const optionDocumentType = [
-  {
-    value: "1",
-    label: "ID Card",
-  },
-  {
-    value: "2",
-    label: "Passport",
-  },
-];
-
-const optiondata = [
+const optionData = [
   {
     value: "Option1",
     label: "Option1",
@@ -136,7 +96,7 @@ const optiondata = [
     label: "Option3",
   },
 ];
-const optiondata2 = [
+const optionData2 = [
   {
     value: "Male",
     label: "Male",
@@ -146,33 +106,6 @@ const optiondata2 = [
     label: "Female",
   },
 ];
-
-// const optioncommunication = [
-//   {
-//     value: "Telephone",
-//     label: "Telephone Number",
-//   },
-//   {
-//     value: "Mobile",
-//     label: "Mobile Number",
-//   },
-//   {
-//     value: "Email",
-//     label: "Email Address",
-//   },
-//   {
-//     value: "Twitter",
-//     label: "Twitter",
-//   },
-//   {
-//     value: "Instagram",
-//     label: "Instagram",
-//   },
-//   {
-//     value: "Facebook",
-//     label: "Facebook",
-//   },
-// ];
 
 const addressType = [
   {
@@ -185,24 +118,6 @@ const addressType = [
   },
   { label: "Organisation", value: "Organisation" },
 ];
-// const optionrelation = [
-//   {
-//     value: "Family",
-//     label: "Family",
-//   },
-//   {
-//     value: "Sprouse",
-//     label: "Sprouse",
-//   },
-//   {
-//     value: "Colleague",
-//     label: "Colleague",
-//   },
-//   {
-//     value: "ReportTo",
-//     label: "Report To",
-//   },
-// ];
 
 export const ProfileIndividual = (props) => {
   const [themeState, setThemeState] = React.useState({
@@ -213,23 +128,9 @@ export const ProfileIndividual = (props) => {
   });
 
   const [optionrelation, setOptionrelation] = React.useState([]);
-  const [optioncommunication, setOptioncommunication] = React.useState([]);
+  const [optionCommunication, setOptionCommunication] = React.useState([]);
   const themeBackground = useSelector((state) => state.reducer.themeBackground);
 
-  const [optionCity, setOptionCity] = React.useState([
-    {
-      value: "1",
-      label: "Option1",
-    },
-    {
-      value: "2",
-      label: "Option2",
-    },
-    {
-      value: "3",
-      label: "Option3",
-    },
-  ]);
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
       setThemeState({
@@ -263,7 +164,8 @@ export const ProfileIndividual = (props) => {
   }, [maincolor]);
 
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
-  React.useEffect(async () => {
+
+  React.useEffect(() => {
     setSmallwidth(window.innerWidth < 1000);
     // if(props.editdata != null) {
     // let getCommunications = await getIndividualProfileCommunication(
@@ -296,7 +198,6 @@ export const ProfileIndividual = (props) => {
     color: themeState.color,
   };
 
-  // const [demoData, setDemoData] = useState([]);
   const [list, setList] = React.useState([]);
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -320,7 +221,7 @@ export const ProfileIndividual = (props) => {
       background: "lightblue",
     }),
   });
-  const [account, setaccount] = useState(sessionStorage.getItem("username"));
+  const [account, setAccount] = useState(sessionStorage.getItem("username"));
   const [nameID, setNameID] = React.useState(
     props.editdata != null ? props.editdata.nameid : "Mr."
   );
@@ -361,7 +262,7 @@ export const ProfileIndividual = (props) => {
     React.useState(
       props.editdata != null ? props.editdata.bordercrossingentryplace : ""
     );
-  const [borderCrossingEntryDate, setborderCrossingEntryDate] = React.useState(
+  const [borderCrossingEntryDate, setBorderCrossingEntryDate] = React.useState(
     props.editdata != null
       ? props.editdata.bordercrossingentrydate
       : new Date("2021-09-13T21:11:54")
@@ -481,15 +382,11 @@ export const ProfileIndividual = (props) => {
   const [guestIdentity, setGuestIdentity] = React.useState(
     props.editdata != null ? props.editdata.guestidentity : ""
   );
-
   const [isRequired, setIsRequired] = React.useState(false);
-
-  // const [individualData, setIndividualData] = React.useState("");
-
   const pageProperty = useSelector((state) => state.reducer.property);
 
   const handDateChangeBorderCrossingEntryDate = (newDate) => {
-    setborderCrossingEntryDate(newDate);
+    setBorderCrossingEntryDate(newDate);
   };
   const handDateChangeDateOfBirth = (newDate) => {
     setDateOfBirth(newDate);
@@ -512,7 +409,7 @@ export const ProfileIndividual = (props) => {
 
   const [communicationDatas, setCommunicationDatas] = React.useState({});
   const [relationDatas, setRelationDatas] = React.useState({});
-  async function getlist(config, field) {
+  async function getList(config, field) {
     for (var i = 0; i < config.length; i++) {
       var obj = config[i];
       if (obj.code === field) {
@@ -525,33 +422,33 @@ export const ProfileIndividual = (props) => {
         );
         return list;
       } else if (obj.children) {
-        let _getlist = await getlist(obj.children, field);
-        if (_getlist) return _getlist;
+        let getListData = await getList(obj.children, field);
+        if (getListData) return getListData;
       }
     }
   }
 
-  async function updatelist() {
+  async function updateList() {
     let commu = JSON.parse(JSON.stringify(communicationDatas));
     let rela = JSON.parse(JSON.stringify(relationDatas));
     let getCommunicationsDatas = {};
-    let getcomunication = [];
-    let getrelation = [];
+    let getCommunication = [];
+    let getRelation = [];
     console.log("demostate");
-    let getconfigdata = await getConfigurationByPropertyCode(
+    let getConfigData = await getConfigurationByPropertyCode(
       sessionStorage.getItem("auth"),
       pageProperty
     );
-    console.log("getconfigdata:", getconfigdata);
-    let configdata = getconfigdata.content[getconfigdata.content.length - 1];
-    let optionTitle = await getlist(configdata, "PCINDTT");
-    // let optionDocumentType = await getlist(configdata,"");
-    let optiongender = await getlist(configdata, "PCINDGD");
-    let relation = await getlist(configdata, "PCINDRL");
-    let communication = await getlist(configdata, "PCINDCM");
-    // let optionDocumentType = await getlist(configdata,"");
+    console.log("getConfigData:", getConfigData);
+    let configData = getConfigData.content[getConfigData.content.length - 1];
+    let optionTitle = await getList(configData, "PCINDTT");
+    // let optionDocumentType = await getList(configData,"");
+    let optionGender = await getList(configData, "PCINDGD");
+    let relation = await getList(configData, "PCINDRL");
+    let communication = await getList(configData, "PCINDCM");
+    // let optionDocumentType = await getList(configData,"");
     setOptionrelation(relation);
-    setOptioncommunication(communication);
+    setOptionCommunication(communication);
     // console.log("old data",props.editdata != null , Object.keys(communicationDatas).length === 0 , Object.keys(rela).length === 0,commu,rela,props.editdata)
     if (
       props.editdata != null &&
@@ -588,9 +485,9 @@ export const ProfileIndividual = (props) => {
           setCommunicationDatas((prev) => ({
             ...prev,
             [count]: element.communication,
-            [count + 1]: element.value, //key number ? == value ???
+            [count + 1]: element.value,
           }));
-          getcomunication.push({
+          getCommunication.push({
             id: commuid1,
             label: "Choose a communication",
             xl: 3,
@@ -616,7 +513,7 @@ export const ProfileIndividual = (props) => {
                 [commuid1]: e.target.value,
               })),
           });
-          getcomunication.push({
+          getCommunication.push({
             id: commuid2,
             label: "communication",
             xl: 9,
@@ -650,7 +547,7 @@ export const ProfileIndividual = (props) => {
           [relationid + 1]: element.value,
           [relationid + 2]: element.note,
         }));
-        getrelation.push({
+        getRelation.push({
           id: relaid1,
           label: "Name Type",
           xl: 2,
@@ -675,7 +572,7 @@ export const ProfileIndividual = (props) => {
               [relaid1]: element.relation,
             })),
         });
-        getrelation.push({
+        getRelation.push({
           id: relaid2,
           label: "Name",
           xl: 4,
@@ -692,7 +589,7 @@ export const ProfileIndividual = (props) => {
               [relaid2]: e.target.value,
             })),
         });
-        getrelation.push({
+        getRelation.push({
           id: relaid3,
           label: "Note",
           xl: 6,
@@ -711,7 +608,7 @@ export const ProfileIndividual = (props) => {
         });
         relationid = relationid + 3;
       });
-      console.log("getrelation", getrelation);
+      console.log("getRelation", getRelation);
     } else {
       let count = 3;
       console.log("commu", commu);
@@ -720,7 +617,7 @@ export const ProfileIndividual = (props) => {
         if (key % 2 == 0) {
           const commuid1 = count;
           const commuid2 = count + 1;
-          getcomunication.push({
+          getCommunication.push({
             id: commuid1,
             label: "Choose a communication",
             xl: 3,
@@ -728,6 +625,7 @@ export const ProfileIndividual = (props) => {
             xs: 6,
             select: {
               status: "option",
+              // eslint-disable-next-line no-loop-func
               data: communication.map((option) => (
                 <option
                   style={headerTableStyle}
@@ -746,7 +644,7 @@ export const ProfileIndividual = (props) => {
                 [commuid1]: e.target.value,
               })),
           });
-          getcomunication.push({
+          getCommunication.push({
             id: commuid2,
             label: "communication",
             xl: 9,
@@ -773,7 +671,7 @@ export const ProfileIndividual = (props) => {
           const relaid1 = relationid;
           const relaid2 = relationid + 1;
           const relaid3 = relationid + 2;
-          getrelation.push({
+          getRelation.push({
             id: relaid1,
             label: "Name Type",
             xl: 2,
@@ -781,6 +679,7 @@ export const ProfileIndividual = (props) => {
             xs: 6,
             select: {
               status: "option",
+              // eslint-disable-next-line no-loop-func
               data: relation.map((option) => (
                 <option
                   style={headerTableStyle}
@@ -798,7 +697,7 @@ export const ProfileIndividual = (props) => {
                 [relaid1]: e.target.value,
               })),
           });
-          getrelation.push({
+          getRelation.push({
             id: relaid2,
             label: "Name",
             xl: 4,
@@ -815,7 +714,7 @@ export const ProfileIndividual = (props) => {
                 [relaid2]: e.target.value,
               })),
           });
-          getrelation.push({
+          getRelation.push({
             id: relaid3,
             label: "Note",
             xl: 6,
@@ -961,7 +860,7 @@ export const ProfileIndividual = (props) => {
             xs: 4,
             select: {
               status: "option",
-              data: optiongender.map((option) => (
+              data: optionGender.map((option) => (
                 <option
                   // defaultValue={props.editdata != null ? props.editdata.sex : ""}
                   style={headerTableStyle}
@@ -978,103 +877,6 @@ export const ProfileIndividual = (props) => {
             dataType: "string",
             dataCheck: gender,
           },
-
-          // {
-          //   id: 7,
-          //   label: "Choose a Document Type*",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 12,
-          //   select: {
-          //     status: "option",
-          //     data: optionDocumentType.map((option) => (
-          //       <option
-          //         style={headerTableStyle}
-          //         key={option.value}
-          //         value={option.value}
-          //         noWrap
-          //       >
-          //         {option.label}
-          //       </option>
-          //     )),
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
-          // {
-          //   id: 8,
-          //   label: "ID Number",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 12,
-          //   select: {
-          //     status: "fill",
-          //     data:
-          //       props.editdata != null ? props.editdata.idcardandpass : "",
-          //   },
-          //   handle: (e) => setIDNumber(e.target.value),
-          // },
-          // {
-          //   id: 9,
-          //   label: "Nationality*",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 12,
-          //   select: {
-          //     status: "option",
-          //     data: optionnationality.map((option) => (
-          //       <option
-          //         style={headerTableStyle}
-          //         key={option.value}
-          //         value={option.value}
-          //       >
-          //         {option.label}
-          //       </option>
-          //     )),
-          //     defaultvalue:
-          //       props.editdata != null ? props.editdata.gender : "",
-          //   },
-          //   handle: (e) => setNationality(e.target.value),
-          // },
-          // {
-          //   id: 10,
-          //   label: "Birth country",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "option",
-          //     data: optioncountry.map((option) => (
-          //       <option
-          //         style={headerTableStyle}
-          //         key={option.value}
-          //         value={option.value}
-          //       >
-          //         {option.label}
-          //       </option>
-          //     )),
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
-          // {
-          //   id: 11,
-          //   label: "Birth City",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "option",
-          //     data: optioncountry.map((option) => (
-          //       <option
-          //         style={headerTableStyle}
-          //         key={option.value}
-          //         value={option.value}
-          //       >
-          //         {option.label}
-          //       </option>
-          //     )),
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
           {
             id: 7,
             label: "Religion",
@@ -1105,44 +907,6 @@ export const ProfileIndividual = (props) => {
             dataType: "string",
             dataCheck: religion,
           },
-
-          // {
-          //   id: 13,
-          //   label: "Date of Birth",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 12,
-          //   select: {
-          //     status: "datetime",
-          //     data: "",
-          //   },
-          //   handle: " ",
-          // },
-
-          // {
-          //   id: 7,
-          //   label: "Issue Date",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 12,
-          //   select: {
-          //     status: "datetime",
-          //     data: "",
-          //   },
-          //   handle: " ",
-          // },
-          // {
-          //   id: 8,
-          //   label: "Expiry Date",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 12,
-          //   select: {
-          //     status: "datetime",
-          //     data: "",
-          //   },
-          //   handle: " ",
-          // },
           {
             id: 8,
             label: "Nationality*",
@@ -1194,7 +958,7 @@ export const ProfileIndividual = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: optiondata.map((option) => (
+              data: optionData.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -1218,7 +982,7 @@ export const ProfileIndividual = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: optiondata.map((option) => (
+              data: optionData.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -1330,18 +1094,6 @@ export const ProfileIndividual = (props) => {
             dataType: "date",
             dataCheck: borderCrossingEntryDate,
           },
-          // {
-          //   id: 0,
-          //   label: "",
-          //   xl: 4,
-          //   md: 4,
-          //   xs: 4,
-          //   select: {
-          //     status: "offset",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
           {
             id: 5,
             label: "Address",
@@ -1471,17 +1223,6 @@ export const ProfileIndividual = (props) => {
             },
             // handle: (e) => handleData(e),
           },
-          // {
-          //   id: 99,
-          //   label: "AddAddress",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "AddAddress",
-          //     data: "+ More Address",
-          //   },
-          // },
         ],
       },
       {
@@ -1553,7 +1294,7 @@ export const ProfileIndividual = (props) => {
             dataType: "number",
             dataCheck: communicationDatas,
           },
-          ...getcomunication,
+          ...getCommunication,
           {
             id: 99,
             label: "Phone Number",
@@ -1561,10 +1302,10 @@ export const ProfileIndividual = (props) => {
             md: 2,
             xs: 6,
             select: {
-              status: "AddComunication",
+              status: "AddCommunication",
               data: "+ More Communication",
             },
-            // handle: (e) => handleAddComunication(e),
+            // handle: (e) => handleAddCommunication(e),
           },
         ],
       },
@@ -1573,7 +1314,7 @@ export const ProfileIndividual = (props) => {
         title: "Relation",
         expend: true,
         content: [
-          ...getrelation,
+          ...getRelation,
           {
             id: 99,
             label: "Relation",
@@ -1584,7 +1325,7 @@ export const ProfileIndividual = (props) => {
               status: "AddRelation",
               data: "+ More Relation",
             },
-            // handle: (e) => handleAddComunication(e),
+            // handle: (e) => handleAddCommunication(e),
           },
         ],
       },
@@ -1675,7 +1416,7 @@ export const ProfileIndividual = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: optiondata.map((option) => (
+              data: optionData.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -1760,7 +1501,7 @@ export const ProfileIndividual = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: optiondata.map((option) => (
+              data: optionData.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -1793,48 +1534,6 @@ export const ProfileIndividual = (props) => {
             dataType: "number",
             dataCheck: IDCheck == "Y" ? IDNumber : true,
           },
-          // {
-          //   id: 5,
-          //   label: "Nationality*",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "option",
-          //     data: optionnationality.map((option) => (
-          //       <option
-          //         style={headerTableStyle}
-          //         key={option.value}
-          //         value={option.value}
-          //       >
-          //         {option.label}
-          //       </option>
-          //     )),
-          //     defaultvalue:
-          //       props.editdata != null ? props.editdata.nationality : "Thai",
-          //   },
-          //   handle: (e) => setNationality(e.target.value),
-          //   dataType: "string",
-          //   dataCheck: nationality,
-          // },
-          // {
-          //   id: 6,
-          //   label: "Date of Birth",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "datetime",
-          //     data: dateOfBirth,
-          //     defaultvalue:
-          //       props.editdata != null
-          //         ? props.editdata.dateofbirth
-          //         : new Date("2021-09-13T21:11:54"),
-          //   },
-          //   handle: (e) => setDateOfBirth(convertTimeToString(e)),
-          //   dataType: "date",
-          //   dataCheck: dateOfBirth,
-          // },
           {
             id: 5,
             label: "ID Issue Date",
@@ -1871,17 +1570,6 @@ export const ProfileIndividual = (props) => {
             dataType: "date",
             dataCheck: IDCheck == "Y" ? IDExpirationDate : true,
           },
-          // {
-          //   id: 7,
-          //   label: "offset",
-          //   xl: 8,
-          //   md: 8,
-          //   xs: 0,
-          //   select: {
-          //     status: "offset",
-          //     data: "",
-          //   },
-          // },
           {
             id: 8,
             label: "Passport Visa Check",
@@ -1968,28 +1656,6 @@ export const ProfileIndividual = (props) => {
             dataType: "string",
             dataCheck: passportVisaCheck == "Y" ? visaNumber : true,
           },
-          // {
-          //   id: 15,
-          //   label: "Issuing Country",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     select: {
-          //       status: "option",
-          //       data: optiondata.map((option) => (
-          //         <option
-          //           style={headerTableStyle}
-          //           key={option.value}
-          //           value={option.value}
-          //         >
-          //           {option.label}
-          //         </option>
-          //       )),
-          //     },
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
           {
             id: 12,
             label: "Visa Issued Date",
@@ -2046,18 +1712,6 @@ export const ProfileIndividual = (props) => {
             dataType: "date",
             dataCheck: passportVisaCheck == "Y" ? visaExpirationDate : true,
           },
-          // {
-          //   id: 18,
-          //   label: "Visa Name",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "fill",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
           {
             id: 15,
             label: "Visa Status",
@@ -2090,90 +1744,6 @@ export const ProfileIndividual = (props) => {
             dataType: "string",
             dataCheck: passportVisaCheck == "Y" ? visaNotes : true,
           },
-          // ,
-          // {
-          //   id: 20,
-          //   label: "Visa Number",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "fill",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
-          // {
-          //   id: 21,
-          //   label: "Visa Type",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     select: {
-          //       status: "option",
-          //       data: optiondata.map((option) => (
-          //         <option
-          //           style={headerTableStyle}
-          //           key={option.value}
-          //           value={option.value}
-          //         >
-          //           {option.label}
-          //         </option>
-          //       )),
-          //     },
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
-          // {
-          //   id: 22,
-          //   label: "Visa Status",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "status",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
-          // {
-          //   id: 23,
-          //   label: "Visa Issue Date",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "date",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
-          // {
-          //   id: 24,
-          //   label: "Visa Begin Date",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "date",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
-
-          // {
-          //   id: 25,
-          //   label: "Visa Expiration Date",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "date",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
           {
             id: 17,
             label: "Rank",
@@ -2182,7 +1752,7 @@ export const ProfileIndividual = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: optiondata.map((option) => (
+              data: optionData.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -2206,7 +1776,7 @@ export const ProfileIndividual = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: optiondata.map((option) => (
+              data: optionData.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -2238,76 +1808,16 @@ export const ProfileIndividual = (props) => {
             dataType: "string",
             dataCheck: true,
           },
-          // {
-          //   id: 29,
-          //   label: "Passport Type",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "fill",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
-          // {
-          //   id: 30,
-          //   label: "Passport Nationality",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "fill",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
-          // {
-          //   id: 31,
-          //   label: "Passport Number",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "fill",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
-          // {
-          //   id: 32,
-          //   label: "Passport Scan Name",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "fill",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
-          // {
-          //   id: 33,
-          //   label: "Passport Scan Date",
-          //   xl: 2,
-          //   md: 2,
-          //   xs: 6,
-          //   select: {
-          //     status: "fill",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
         ],
       },
     ]);
   }
 
   React.useEffect(() => {
-    async function getconfig() {
-      updatelist();
+    async function getConfig() {
+      updateList();
     }
-    getconfig();
+    getConfig();
   }, [props.trigger]);
 
   const handleExpend = (id, expend) => {
@@ -2458,7 +1968,7 @@ export const ProfileIndividual = (props) => {
 
   React.useEffect(() => {
     // handle change state
-    updatelist();
+    updateList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     IDCheck,
@@ -2510,23 +2020,23 @@ export const ProfileIndividual = (props) => {
     visaType,
   ]);
 
-  const handleAddComunication = async (id) => {
-    console.log("handleAddComunication", id);
+  const handleAddCommunication = async (id) => {
+    console.log("handleAddCommunication", id);
     let index = list.findIndex((x) => x.id === id);
     if (index === -1) return;
     else {
-      let comunication = list[index];
-      delete comunication.content[comunication.content.length - 1];
-      let newid = await comunication.content.reduce(
+      let communication = list[index];
+      delete communication.content[communication.content.length - 1];
+      let newid = await communication.content.reduce(
         (acc, shot) => (acc = acc > shot.id ? acc : shot.id),
         0
       );
-      console.log("optioncommunication2", optioncommunication);
+      console.log("optionCommunication2", optionCommunication);
       setCommunicationDatas((prev) => ({
         ...prev,
         [newid + 1]: "Telephone Number",
       }));
-      comunication.content.push({
+      communication.content.push({
         id: newid + 1,
         label: "Choose a communication",
         xl: 3,
@@ -2534,7 +2044,7 @@ export const ProfileIndividual = (props) => {
         xs: 6,
         select: {
           status: "option",
-          data: optioncommunication.map((option) => (
+          data: optionCommunication.map((option) => (
             <option
               style={headerTableStyle}
               key={option.value}
@@ -2550,7 +2060,7 @@ export const ProfileIndividual = (props) => {
             [newid + 1]: e.target.value,
           })),
       });
-      comunication.content.push({
+      communication.content.push({
         id: newid + 2,
         label: "communication",
         xl: 9,
@@ -2566,20 +2076,20 @@ export const ProfileIndividual = (props) => {
             [newid + 2]: e.target.value,
           })),
       });
-      comunication.content.push({
+      communication.content.push({
         id: 99,
-        label: "AddComunication",
+        label: "AddCommunication",
         xl: 2,
         md: 2,
         xs: 2,
         select: {
-          status: "AddComunication",
+          status: "AddCommunication",
           data: "+ More Communication",
         },
       });
       setList([
         ...list.slice(0, index),
-        comunication,
+        communication,
         ...list.slice(index + 1),
       ]);
     }
@@ -2756,8 +2266,8 @@ export const ProfileIndividual = (props) => {
     );
   };
 
-  const handleAddDatatoDatabase = async (e) => {
-    console.log("handleAddDatatoDatabase");
+  const handleAddDataToDatabase = async (e) => {
+    console.log("handleAddDataToDatabase");
     // let index = list.findIndex((x) => x.title == "Communication");
     // let communications = list[index];
     // delete communications.content[communications.content.length - 1];
@@ -2822,7 +2332,7 @@ export const ProfileIndividual = (props) => {
     console.log("datafrom post", data);
   };
 
-  const handleEditDatatoDatabase = async (e) => {
+  const handleEditDataToDatabase = async (e) => {
     let id = nameID;
 
     let req = {
@@ -2898,57 +2408,24 @@ export const ProfileIndividual = (props) => {
       lastName === null ||
       lastName === "" ||
       lastName === " " ||
-      // namePrefix === null ||
-      // namePrefix === "" ||
-      // namePrefix === " " ||
-      // nameSuffix === null ||
-      // nameSuffix === "" ||
-      // nameSuffix === " " ||
-      // middleInitial === null ||
-      // middleInitial === "" ||
-      // middleInitial === " " ||
       gender === null ||
       gender === "" ||
       gender === " " ||
       religion === null ||
       religion === "" ||
       religion === " " ||
-      // organization === null ||
-      // organization === "" ||
-      // organization === " " ||
       statusProfile === null ||
       statusProfile === "" ||
       statusProfile === " " ||
-      // provinceOfResidence === null ||
-      // provinceOfResidence === "" ||
-      // provinceOfResidence === " " ||
-      // borderCrossingEntryPlace === null ||
-      // borderCrossingEntryPlace === "" ||
-      // borderCrossingEntryPlace === " " ||
-      // borderCrossingEntryDate === null ||
-      // borderCrossingEntryDate === "" ||
-      // borderCrossingEntryDate === " " ||
       address === null ||
       address === "" ||
       address === " " ||
       address1 === null ||
       address1 === "" ||
       address1 === " " ||
-      // address2 === null ||
-      // address2 === "" ||
-      // address2 === " " ||
       conuty === null ||
       conuty === "" ||
       conuty === " " ||
-      // city === null ||
-      // city === "" ||
-      // city === " " ||
-      // stateProvince === null ||
-      // stateProvince === "" ||
-      // stateProvince === " " ||
-      // postal === null ||
-      // postal === "" ||
-      // postal === " " ||
       noPost === null ||
       noPost === "" ||
       noPost === " " ||
@@ -2973,61 +2450,17 @@ export const ProfileIndividual = (props) => {
       IDCheck === null ||
       IDCheck === "" ||
       IDCheck === " " ||
-      // IDCheck == "Y" ? IDType === null : false||
-      // IDCheck == "Y" ? IDType === ""  : false||
-      // IDCheck == "Y" ? IDType === " "  : false||
-      // IDCheck == "Y" ? IDNumber === null  : false||
-      // IDCheck == "Y" ? IDNumber === ""  : false||
-      // IDCheck == "Y" ? IDNumber === " "  : false||
       nationality === null ||
       nationality === "" ||
       nationality === " " ||
       dateOfBirth === null ||
       dateOfBirth === "" ||
       dateOfBirth === " " ||
-      // IDCheck == "Y" ? IDIssuedDate === null  : false||
-      // IDCheck == "Y" ? IDIssuedDate === ""  : false||
-      // IDCheck == "Y" ? IDIssuedDate === " "  : false||
-      // IDCheck == "Y" ? IDExpirationDate === null  : false||
-      // IDCheck == "Y" ? IDExpirationDate === ""  : false||
-      // IDCheck == "Y" ? IDExpirationDate === " "  : false||
       passportVisaCheck === null ||
       passportVisaCheck === "" ||
       passportVisaCheck === " ";
-    // passportVisaCheck == "Y" ?  visaType === null  : false||
-    // passportVisaCheck == "Y" ?  visaType === ""  : false||
-    // passportVisaCheck == "Y" ?  visaType === " "  : false||
-    // passportVisaCheck == "Y" ?  visaName === null  : false||
-    // passportVisaCheck == "Y" ?  visaName === ""  : false||
-    // passportVisaCheck == "Y" ?  visaName === " "  : false||
-    // passportVisaCheck == "Y" ?  visaNumber === null  : false||
-    // passportVisaCheck == "Y" ?  visaNumber === ""  : false||
-    // passportVisaCheck == "Y" ?  visaNumber === " "  : false||
-    // passportVisaCheck == "Y" ?  visaIssuedDate === null  : false||
-    // passportVisaCheck == "Y" ?  visaIssuedDate === ""  : false||
-    // passportVisaCheck == "Y" ?  visaIssuedDate === " "  : false||
-    // passportVisaCheck == "Y" ?  visaBeginDate === null  : false||
-    // passportVisaCheck == "Y" ?  visaBeginDate === ""  : false||
-    // passportVisaCheck == "Y" ?  visaBeginDate === " "  : false||
-    // passportVisaCheck == "Y" ?  visaExpirationDate === null  : false||
-    // passportVisaCheck == "Y" ?  visaExpirationDate === ""  : false||
-    // passportVisaCheck == "Y" ?  visaExpirationDate === " "  : false||
-    // passportVisaCheck == "Y" ?  visaStatus === null  : false||
-    // passportVisaCheck == "Y" ?  visaStatus === ""  : false||
-    // passportVisaCheck == "Y" ?  visaStatus === " "  : false||
-    // passportVisaCheck == "Y" ?  visaNotes === null  : false||
-    // passportVisaCheck == "Y" ?  visaNotes === ""  : false||
-    // passportVisaCheck == "Y" ?  visaNotes === " "  : false||
-    // rank === null ||
-    // rank === "" ||
-    // rank === " " ||
-    // grade === null ||
-    // grade === "" ||
-    // grade === " " ||
-    // guestIdentity === null ||
-    // guestIdentity === "" ||
-    // guestIdentity === " ";
-    // console.log("_IsRequired ::::::::: ", _IsRequired);
+
+    // console.log("_IsRequired :: ", _IsRequired);
     // console.log("add by account:", account);
     console.log(validationStatus);
     setValidationStatus(_IsRequired);
@@ -3094,20 +2527,17 @@ export const ProfileIndividual = (props) => {
       if (props.action === "add") {
         console.log("action add", props.action);
         console.log("validationStatus", validationStatus);
-        // await props.handleRedirectToTableIndividual(false);
         if (validationStatus === false) {
-          // await props.handleRedirectToTableIndividual(true);
           await setIsRequired(false);
-          await handleAddDatatoDatabase();
+          await handleAddDataToDatabase();
         } else {
           setIsRequired(true);
         }
       } else if (props.action === "edit") {
         if (validationStatus === false) {
-          // await props.handleRedirectToTableIndividual(true);
           await setIsRequired(false);
 
-          await handleEditDatatoDatabase();
+          await handleEditDataToDatabase();
         } else {
           setIsRequired(true);
         }
@@ -3233,7 +2663,7 @@ export const ProfileIndividual = (props) => {
                                     {detail.select.data}
                                   </Button>
                                 ) : detail.select.status ===
-                                  "AddComunication" ? (
+                                  "AddCommunication" ? (
                                   <Button
                                     className={classes.root}
                                     variant="outlined"
@@ -3244,7 +2674,7 @@ export const ProfileIndividual = (props) => {
                                     }}
                                     value={detail.select.data}
                                     onClick={() =>
-                                      handleAddComunication(item.id)
+                                      handleAddCommunication(item.id)
                                     }
                                   >
                                     {detail.select.data}
@@ -3265,20 +2695,6 @@ export const ProfileIndividual = (props) => {
                                   />
                                 ) : detail.select.status === "fillnolabel" ? (
                                   <TextField
-                                    // error={handleValidation(detail.dataCheck)}
-                                    // error={
-                                    //   detail.dataCheck == null ||
-                                    //   detail.dataCheck == ""
-                                    //     ? true
-                                    //     : false
-                                    // }
-                                    // helperText={
-                                    //   detail.dataCheck == null ||
-                                    //   detail.dataCheck == ""
-                                    //     ? "This ib formation can't null"
-                                    //     : false
-                                    // }
-
                                     type={detail.datatype}
                                     className={classes.root}
                                     // label={detail.label}
@@ -3311,7 +2727,6 @@ export const ProfileIndividual = (props) => {
                                             ? `${detail.label} is Required`
                                             : false
                                         }
-                                        // required={true}
                                         type={detail.dataType}
                                         className={classes.root}
                                         label={detail.label}
@@ -3328,7 +2743,6 @@ export const ProfileIndividual = (props) => {
                                           detail.select.defaultvalue
                                         }
                                         onBlur={detail.handle}
-                                        // onBlur={handleValidation(detail.dataCheck)}
                                       />
                                     ) : (
                                       <TextField

@@ -1,46 +1,33 @@
 import React from "react";
-import { connect, ReactReduxContext, useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { nextComponent } from "../../middleware/action";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
-import { blue, green, yellow } from "@material-ui/core/colors";
+import { blue } from "@material-ui/core/colors";
 import ClearIcon from "@material-ui/icons/Clear";
-
 import {
   Container,
   Grid,
-  Paper,
   Typography,
-  Divider,
-  TextField,
-  InputAdornment,
   Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Chip,
   Breadcrumbs,
   Link,
 } from "@material-ui/core";
+
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import ProfileCompany from "./ProfileCompany";
-import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import SearchIcon from "@material-ui/icons/Search";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   getCompanyProfile,
   getCompanyProfileById,
-  postCompanyProfile,
-  updateCompanyProfile,
   deleteCompanyProfileById,
 } from "../../services/companyprofile.service";
 
@@ -93,70 +80,6 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 
-function createData(
-  firstname,
-  lastname,
-  title,
-  sex,
-  idcardandpass,
-  nationality,
-  nextstay,
-  laststay,
-  score,
-  status
-) {
-  return {
-    firstname,
-    lastname,
-    title,
-    sex,
-    idcardandpass,
-    nationality,
-    nextstay,
-    laststay,
-    score,
-    status,
-  };
-}
-
-const rows = [
-  createData(
-    "Somchai",
-    "Wongnut",
-    "Mr.",
-    "Male",
-    "1100700222876",
-    "Thai",
-    "12/11/2021",
-    "30/10/2020",
-    "5",
-    "Check-Out"
-  ),
-  createData(
-    "Sommul",
-    "Liu",
-    "Mr.",
-    "Male",
-    "C00102188",
-    "China",
-    "22/11/2021",
-    "10/12/2020",
-    "2",
-    "Check-In"
-  ),
-  // createData("YongAPI", " ", "Joy", "DOS", "A", 3),
-  // createData("TH Chamber", " ", "Joy", "Secretary", "A", 4),
-  // createData("MSC", "SIG/DTS", "P'Pui", "VP", "I-24/09/21", " "),
-  // createData("MSC", "SIG/BIG", "P'Pui", "VP", "A", " "),
-];
-
-const family = [
-  {
-    fullname: "Joy,Chat",
-    status: "sprouse",
-  },
-];
-
 export const ProfileTableCompany = (props) => {
   const [action, setAction] = React.useState("");
   const [triggerButton, setTriggerButton] = React.useState(false);
@@ -203,40 +126,31 @@ export const ProfileTableCompany = (props) => {
   const classes = useStyles(themeState);
 
   const theme = useTheme();
-const smUp = useMediaQuery(theme.breakpoints.up("sm"));
+  const smUp = useMediaQuery(theme.breakpoints.up("sm"));
 
-let customStyle = {
-  padding: theme.spacing(0, 0, 0, 0),
-  // vertical padding + font size from searchIcon
-  paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
-  transition: theme.transitions.create("width"),
-  width: "100%"
-};
-
-if (smUp) {
-  customStyle = {
-    ...customStyle,
-    width: "54ch",
-    // color: "red",
-    }
+  let customStyle = {
+    padding: theme.spacing(0, 0, 0, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
   };
 
-  // if (smUp) {
-  //   customStyle = {
-  //     ...customStyle,
-  //     width: "54ch",
-  //     // color: "red",
-  //   };
-  // }
+  if (smUp) {
+    customStyle = {
+      ...customStyle,
+      width: "54ch",
+      // color: "red",
+    };
+  }
 
   const headerTableStyle = {
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
 
-  const [companyData, setcompanyData] = React.useState([]);
-  // const [companyData, setcompanyData] = React.useState(null);
-  const [statusprofile, setStatusprofile] = React.useState("none");
+  const [companyData, setCompanyData] = React.useState([]);
+  const [statusProfile, setStatusProfile] = React.useState("none");
   const [dialogDelete, setDialogDelete] = React.useState(false);
   const [deleteData, setDeleteData] = React.useState({
     title: "title",
@@ -247,7 +161,7 @@ if (smUp) {
   React.useEffect(async () => {
     if (action == "success") {
       await handleGetCompanyProfile();
-      await setStatusprofile("moredata");
+      await setStatusProfile("moredata");
     }
   }, [action]);
 
@@ -265,9 +179,9 @@ if (smUp) {
             "/" +
             (this[index].countrycode ? this[index].countrycode : "-");
         }, resp.content[0]);
-        setStatusprofile("moredata");
+        setStatusProfile("moredata");
         console.log("resp.content[0]:", resp.content[0]);
-        setcompanyData(resp.content[0]);
+        setCompanyData(resp.content[0]);
       }
     }
   };
@@ -276,14 +190,12 @@ if (smUp) {
     console.log("setcomp", comp);
     props.nextComponent(comp);
   };
-  const handleStatusProfile = () => {
-    setStatusprofile();
-  };
+
   const handleNewData = async () => {
     await setTriggerButton(!triggerButton);
     await setAction("none");
     await setEditData(null);
-    await setStatusprofile("add");
+    await setStatusProfile("add");
   };
   const handleAddData = async (companyData) => {
     await setTriggerButton(!triggerButton);
@@ -302,7 +214,7 @@ if (smUp) {
     );
     await setEditData(resp.content);
     await setAction("none");
-    await setStatusprofile("edit");
+    await setStatusProfile("edit");
   };
 
   const handleDeleteData = async () => {
@@ -314,7 +226,7 @@ if (smUp) {
       if (resp.status == "2000") {
         await handleGetCompanyProfile();
       }
-      await setStatusprofile("moredata");
+      await setStatusProfile("moredata");
       await setDialogDelete(false);
     } catch (error) {}
   };
@@ -369,7 +281,7 @@ if (smUp) {
             <Link
               color="inherit"
               href="#"
-              onClick={() => setStatusprofile("moredata")}
+              onClick={() => setStatusProfile("moredata")}
             >
               <Typography
                 variant="h6"
@@ -384,19 +296,7 @@ if (smUp) {
             </Link>
           </Breadcrumbs>
         </Grid>
-        {/* {statusprofile === "add" || statusprofile === "edit"  ? (
-            <Grid item xs={6} sm={2} md={2} style={{ paddingLeft: 1200 ,textAlign: "right" }}>
-              <Button
-                variant="contained"
-                style={{ backgroundColor: "gray", color: "white" }}
-                startIcon={<ClearIcon />}
-                onClick={() => setStatusprofile("moredata")}
-              >
-                Cancel
-              </Button>
-            </Grid>
-          ) : null} */}
-        {statusprofile === "add" ? (
+        {statusProfile === "add" ? (
           <Grid
             container
             direction="row"
@@ -412,7 +312,7 @@ if (smUp) {
               variant="contained"
               style={{ backgroundColor: "gray", color: "white" }}
               startIcon={<ClearIcon />}
-              onClick={() => setStatusprofile("moredata")}
+              onClick={() => setStatusProfile("moredata")}
             >
               Cancel
             </Button>
@@ -425,7 +325,7 @@ if (smUp) {
               Save
             </Button>
           </Grid>
-        ) : statusprofile === "edit" ? (
+        ) : statusProfile === "edit" ? (
           <Grid
             container
             direction="row"
@@ -441,7 +341,7 @@ if (smUp) {
               variant="contained"
               style={{ backgroundColor: "gray", color: "white" }}
               startIcon={<ClearIcon />}
-              onClick={() => setStatusprofile("moredata")}
+              onClick={() => setStatusProfile("moredata")}
             >
               Cancel
             </Button>
@@ -453,16 +353,8 @@ if (smUp) {
             >
               Save
             </Button>
-            {/* <Button
-              variant="contained"
-              style={{ backgroundColor: "red", color: "white", marginLeft: 15 }}
-              startIcon={<DeleteIcon />}
-              onClick={() => handleDialogDeleteOpen()}
-            >
-              Delete
-            </Button> */}
           </Grid>
-        ) : statusprofile === "moredata" || statusprofile === "none" ? (
+        ) : statusProfile === "moredata" || statusProfile === "none" ? (
           <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
@@ -475,7 +367,7 @@ if (smUp) {
           </Grid>
         ) : null}
       </Grid>
-      {statusprofile === "edit" || statusprofile === "add" ? (
+      {statusProfile === "edit" || statusProfile === "add" ? (
         <ProfileCompany
           editdata={editData}
           action={action}
@@ -514,24 +406,16 @@ if (smUp) {
                 >
                   No Data Available
                 </Typography>
-                {/* <Grid item>
-                  <Button
-                    startIcon={<AddOutlinedIcon />}
-                    size="large"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    onClick={() => handleNewData()}
-                  >
-                    Create New CompanyProfile
-                  </Button>
-                </Grid> */}
               </Grid>
             </Grid>
           ) : (
             <Container maxWidth="xl">
               <MaterialTable
                 localization={{
+                  toolbar: {
+                    searchPlaceholder:
+                      "Search by Name, www, City/Country, Industry, IATA",
+                  },
                   body: {
                     emptyDataSourceMessage: (
                       <>
@@ -563,9 +447,6 @@ if (smUp) {
                             size="large"
                             variant="contained"
                             color="primary"
-                            // style={{ padding: 13 }}
-                            // fullWidth
-                            // onClick={() => setCreateindividual(true)}
                             onClick={() => handleNewData()}
                           >
                             New CompanyProfile
@@ -620,8 +501,6 @@ if (smUp) {
                   showTitle: false,
                   search: true,
                   actionsColumnIndex: -1,
-                  //   page: page,
-                  //   pageSize: rowsPerPage,
                   pageSize: 10,
                   pageSizeOptions: [
                     10,
@@ -630,20 +509,7 @@ if (smUp) {
                     { value: companyData.length, label: "All" },
                   ],
                   headerStyle: headerTableStyle,
-                  // searchFieldStyle: {
-                  //   backgroundColor: themeState.paper,
-                  //   color: themeState.color,
-                  //   borderBottomColor: themeState.color,
-                  //   width: 530,
-
-                  // },
                   searchFieldStyle: customStyle,
-                }}
-                localization={{
-                  toolbar: {
-                    searchPlaceholder:
-                      "Search by Name, www, City/Country, Industry, IATA",
-                  },
                 }}
                 actions={[
                   {

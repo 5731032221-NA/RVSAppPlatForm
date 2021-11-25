@@ -1,41 +1,12 @@
 import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { ReactReduxContext, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import { blue } from "@material-ui/core/colors";
 import MaterialTable from "material-table";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import { blue } from "@material-ui/core/colors";
-import {
-  Container,
-  Grid,
-  Paper,
-  Typography,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Breadcrumbs,
-  Link,
-  TextField,
-  Divider,
-  Chip,
-} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import EditRoundedIcon from "@material-ui/icons/EditRounded";
-import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
-
-import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
-import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
-import FirstPageRoundedIcon from "@material-ui/icons/FirstPageRounded";
-import LastPageRoundedIcon from "@material-ui/icons/LastPageRounded";
-
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -46,24 +17,35 @@ import Checkbox from "@material-ui/core/Checkbox";
 import TreeItem from "@material-ui/lab/TreeItem";
 import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import UpdateIcon from "@material-ui/icons/Update";
 import {
-  listrole,
-  getrolebyid,
-  updaterole,
-  postrole,
-  deleterolebyid,
-  listallproperty,
-  deleterolebycode,
-  rolepermissionbyrole,
-  getusercomponentpermision,
-} from "../../services/user.service";
-// from "../services/roleManagement.service";
-import TablePagination from "@material-ui/core/TablePagination";
+  Container,
+  Grid,
+  Typography,
+  Button,
+  MenuItem,
+  Breadcrumbs,
+  Link,
+  TextField,
+  Divider,
+  Chip,
+} from "@material-ui/core";
+
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
-import { useHistory } from "react-router-dom";
+import {
+  listRole,
+  updateRole,
+  postRole,
+  listAllProperty,
+  deleteRoleByCode,
+  rolePermissionByRole,
+  getUserComponentPermision,
+} from "../../services/user.service";
+
+import {
+  deleteRoleByID,
+  getRoleByID,
+} from "../../services/roleManagement.service";
 
 // Generate Order Data
 function createData(
@@ -84,16 +66,6 @@ function createData(
     applyproperty,
     status,
   };
-}
-
-// const rows = [
-//   createData(0, "CASHIER", "Cashier", "All Shifts Cashier", "5", "Active"),
-//   createData(1, "Reception", "Receptionist", "All Shifts", "4", "Inactive"),
-//   createData(2, "ACCOUNT", "Accountant", "All Accountant", "6", "Active"),
-// ];
-
-function preventDefault(event) {
-  event.preventDefault();
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -593,25 +565,17 @@ export default function RoleManagement() {
   const { store } = useContext(ReactReduxContext);
   const [data, setData] = React.useState([]);
 
+  const [rows, setRows] = useState([]);
   const [dialogAddRole, setDialogAddRole] = React.useState(false);
   const [dialogEditRole, setDialogEditRole] = React.useState(false);
   const [dialogDeleteRole, setDialogDeleteRole] = React.useState(false);
-
   const [status, setStatus] = React.useState(null);
   const [selectUser, setSelectUser] = React.useState(null);
-  const [roleID, setRoleID] = React.useState(null);
   const [roleCode, setRoleCode] = React.useState(null);
-  const [oldrolecode, setOldRoleCode] = React.useState(null);
+  const [oldRoleCode, setOldRoleCode] = React.useState(null);
   const [roleName, setRoleName] = React.useState(null);
   const [descriptionsRole, setDescriptionsRole] = React.useState(null);
-  const [rows, setRows] = useState([]);
-
-  const [editRolecode, setEditRolecode] = useState([]);
-  const [editRolename, setEditRolename] = useState([]);
-  const [editDescription, setEditDescription] = useState([]);
-  const [editStatus, setEditStatus] = useState([]);
   const [allProperty, setAllProperty] = useState([]);
-
   const [pageData, setPageData] = React.useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -619,12 +583,19 @@ export default function RoleManagement() {
 
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
-  
+
   const [errorMessageDu, setErrorMessageDu] = useState(false);
   const [errorParameterDu, setErrorParameterDu] = useState(null);
 
+  // == never used var ==
+  const [roleID, setRoleID] = React.useState(null);
+  const [editRolecode, setEditRolecode] = useState([]);
+  const [editRolename, setEditRolename] = useState([]);
+  const [editDescription, setEditDescription] = useState([]);
+  const [editStatus, setEditStatus] = useState([]);
+
   React.useEffect(async () => {
-    let usercomponentpermission = await getusercomponentpermision(
+    let usercomponentpermission = await getUserComponentPermision(
       sessionStorage.getItem("auth"),
       sessionStorage.getItem("username"),
       "CF-RM"
@@ -638,8 +609,8 @@ export default function RoleManagement() {
     // macaddress.all().then(function (all) {
     //   console.log(JSON.stringify(all, null, 2));
     // });
-    let data = await listrole(sessionStorage.getItem("auth"));
-    console.log("listrole", listrole);
+    let data = await listRole(sessionStorage.getItem("auth"));
+    console.log("listRole", listRole);
     let userdata = [];
     // let i = 0;
     data.content[data.content.length - 1].forEach((element) =>
@@ -662,7 +633,7 @@ export default function RoleManagement() {
   }, []);
 
   const handleDialogAddRole = async () => {
-    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    let propertydata = await listAllProperty(sessionStorage.getItem("auth"));
     console.log("propertydata", propertydata);
     let tempproperty = [
       {
@@ -695,7 +666,7 @@ export default function RoleManagement() {
     setDialogAddRole(true);
   };
 
-  const propertylist = async (array, rolecode) => {
+  const propertyList = async (array, rolecode) => {
     let list = [];
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
@@ -715,8 +686,8 @@ export default function RoleManagement() {
         });
       }
       if (obj.children) {
-        // list = [...list, ...propertylist(obj.children)];
-        let append = await propertylist(obj.children, rolecode);
+        // list = [...list, ...propertyList(obj.children)];
+        let append = await propertyList(obj.children, rolecode);
         if (append.length > 0) list = list.concat(append);
       }
     }
@@ -745,7 +716,7 @@ export default function RoleManagement() {
     } else {
       setErrorMessage(false);
 
-      let perm = await propertylist(data, rolecode);
+      let perm = await propertyList(data, rolecode);
       const temp = new Set();
       if (ChipPropertyDialog.length) {
         for (var i in ChipPropertyDialog) {
@@ -753,7 +724,7 @@ export default function RoleManagement() {
         }
       }
       const tempArray = Array.from(temp).join(",");
-      let insert = await postrole(sessionStorage.getItem("auth"), {
+      let insert = await postRole(sessionStorage.getItem("auth"), {
         rolecode: rolecode,
         rolename: rolename,
         description: description,
@@ -762,7 +733,7 @@ export default function RoleManagement() {
         permission: perm,
       });
       if (insert.status == "2000") {
-        let roledata = await listrole(sessionStorage.getItem("auth"));
+        let roledata = await listRole(sessionStorage.getItem("auth"));
         let userdata = [];
         roledata.content[roledata.content.length - 1].forEach((element) =>
           userdata.push(
@@ -784,9 +755,9 @@ export default function RoleManagement() {
         updatePageData(userdata, page, rowsPerPage);
 
         setDialogAddRole(false);
-      }else if(insert.status == "1000"){
+      } else if (insert.status == "1000") {
         setErrorMessageDu(true);
-        const dupic = insert.msg +" Role Code: "+ rolecode;
+        const dupic = insert.msg + " Role Code: " + rolecode;
         setErrorParameterDu(dupic);
       }
     }
@@ -797,7 +768,7 @@ export default function RoleManagement() {
     setDialogAddRole(false);
   };
 
-  const rolepermission = async (array, permission) => {
+  const rolePermission = async (array, permission) => {
     let list = [];
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
@@ -813,8 +784,8 @@ export default function RoleManagement() {
         obj.edited_delete = !!parseInt(permission[obj.code].permissiondelete);
       }
       if (obj.children) {
-        // list = [...list, ...propertylist(obj.children)];
-        rolepermission(obj.children, permission);
+        // list = [...list, ...propertyList(obj.children)];
+        rolePermission(obj.children, permission);
       }
     }
     return list;
@@ -827,7 +798,7 @@ export default function RoleManagement() {
     applyproperty,
     status
   ) => {
-    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    let propertydata = await listAllProperty(sessionStorage.getItem("auth"));
     console.log("propertydata", propertydata);
     let tempproperty = [
       {
@@ -858,17 +829,14 @@ export default function RoleManagement() {
     } else {
       setChipPropertyDialog((chips) => [{ key: "*ALL", label: "*ALL" }]);
     }
-
-    // console.log(defaultdata.val());
-    // let _data = defaultdata.val();
     setAllProperty(tempproperty);
 
-    let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), {
+    let roleper = await rolePermissionByRole(sessionStorage.getItem("auth"), {
       roles: [rolecode],
     });
     console.log("roleper", roleper);
     let _data = JSON.parse(JSON.stringify(defaultdata));
-    rolepermission(_data, roleper.content[roleper.content.length - 1]);
+    rolePermission(_data, roleper.content[roleper.content.length - 1]);
     setData(_data);
     setData((prevState) => [...prevState]);
     // const databyid = await getuserbyid(
@@ -887,20 +855,6 @@ export default function RoleManagement() {
     setErrorMessageDu(false);
     setDialogEditRole(true);
   };
-  // const handleDialogEditRole = async (id) => {
-  //   console.log("idForEdit", id);
-  //   const rolebyid = await getrolebyid(sessionStorage.getItem("auth"), id);
-  //   setRoleID(rolebyid.content[rolebyid.content.length - 1].code);
-  //   setRoleCode(rolebyid.content[rolebyid.content.length - 1].rolecode);
-  //   setRoleName(rolebyid.content[rolebyid.content.length - 1].rolename);
-  //   setDescriptionsRole(
-  //     rolebyid.content[rolebyid.content.length - 1].description
-  //   );
-  //   setStatus(rolebyid.content[rolebyid.content.length - 1].status);
-  //   console.log("rolebyid", rolebyid);
-
-  //   setDialogEditRole(true);
-  // };
 
   const handleDialogEditRoleSave = async (
     rolecode,
@@ -930,7 +884,7 @@ export default function RoleManagement() {
       setErrorParameter("Description");
     } else {
       setErrorMessage(false);
-      let perm = await propertylist(data, rolecode);
+      let perm = await propertyList(data, rolecode);
       const temp = new Set();
       if (ChipPropertyDialog.length) {
         for (var i in ChipPropertyDialog) {
@@ -938,8 +892,8 @@ export default function RoleManagement() {
         }
       }
       const tempArray = Array.from(temp).join(",");
-      const roleupdate = await updaterole(sessionStorage.getItem("auth"), {
-        oldrolecode: oldrolecode,
+      const roleupdate = await updateRole(sessionStorage.getItem("auth"), {
+        oldrolecode: oldRoleCode,
         rolecode: rolecode,
         rolename: rolename,
         description: description,
@@ -949,8 +903,8 @@ export default function RoleManagement() {
       });
       console.log("roleupdate func:", roleupdate);
       if (roleupdate.status == "2000") {
-        let _data = await listrole(sessionStorage.getItem("auth"));
-        console.log("listrole", listrole);
+        let _data = await listRole(sessionStorage.getItem("auth"));
+        console.log("listRole", listRole);
         let userdata = [];
         // let i = 0;
         _data.content[_data.content.length - 1].forEach((element) =>
@@ -971,9 +925,9 @@ export default function RoleManagement() {
         updatePageData(userdata, page, rowsPerPage);
         setErrorMessage(false);
         setDialogEditRole(false);
-      }else if(roleupdate.status == "1000"){
+      } else if (roleupdate.status == "1000") {
         setErrorMessageDu(true);
-        const dupic = roleupdate.msg +" Role Code: "+ rolecode;
+        const dupic = roleupdate.msg + " Role Code: " + rolecode;
         setErrorParameterDu(dupic);
       }
     }
@@ -989,7 +943,7 @@ export default function RoleManagement() {
     description
   ) => {
     // console.log("idForDelete", id);
-    // const rolebyid = await getrolebyid(sessionStorage.getItem("auth"), id);
+    // const rolebyid = await getRoleByID(sessionStorage.getItem("auth"), id);
     // setRoleID(rolebyid.content[rolebyid.content.length - 1].code);
     setRoleCode(rolecode);
     setRoleName(rolename);
@@ -1000,15 +954,14 @@ export default function RoleManagement() {
 
   const handleDialogDelete = async (code) => {
     // console.log("id for delete", id);
-
-    const roleDelete = await deleterolebycode(
+    const roleDelete = await deleteRoleByCode(
       sessionStorage.getItem("auth"),
       code
     );
     console.log("roleuDelete func:", roleDelete);
 
-    let data = await listrole(sessionStorage.getItem("auth"));
-    console.log("listrole", listrole);
+    let data = await listRole(sessionStorage.getItem("auth"));
+    console.log("listRole", listRole);
     let userdata = [];
     // let i = 0;
     data.content[data.content.length - 1].forEach((element) =>
@@ -1035,9 +988,9 @@ export default function RoleManagement() {
   const handleDialogEditRoleClose = () => {
     setDialogEditRole(false);
   };
-  const handleSelectUser = (event) => {
-    setSelectUser(event.target.value);
-  };
+  // const handleSelectUser = (event) => {
+  //   setSelectUser(event.target.value);
+  // };
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
     let data = [];
@@ -1047,16 +1000,16 @@ export default function RoleManagement() {
     setPageData(data);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-    updatePageData(rows, newPage, rowsPerPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  //   updatePageData(rows, newPage, rowsPerPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
-    setPage(0);
-    updatePageData(rows, 0, event.target.value);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(event.target.value);
+  //   setPage(0);
+  //   updatePageData(rows, 0, event.target.value);
+  // };
 
   const editing_create = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
@@ -1377,31 +1330,6 @@ export default function RoleManagement() {
     ]
     // }
   );
-  // const demoUser = [
-  //   {
-  //     key: "1",
-  //     label: "Admin",
-  //   },
-  //   {
-  //     key: "2",
-  //     label: "User1",
-  //   },
-  //   {
-  //     key: "3",
-  //     label: "User1",
-  //   },
-  // ];
-
-  // const attribute = [
-  //   {
-  //     key: "1",
-  //     label: "Novotel Pattaya",
-  //   },
-  //   {
-  //     key: "2",
-  //     label: "Novotel Rayong",
-  //   },
-  // ];
 
   const userValues = "";
   const handleSelectProperty = (event) => {
@@ -1928,7 +1856,11 @@ export default function RoleManagement() {
       <React.Fragment>
         <Grid
           container
-          style={{ padding: 20,marginTop:22, backgroundColor: themeState.paper }}
+          style={{
+            padding: 20,
+            marginTop: 22,
+            backgroundColor: themeState.paper,
+          }}
         >
           <Grid item style={{ flexGrow: 1 }}>
             <Breadcrumbs
@@ -2006,145 +1938,50 @@ export default function RoleManagement() {
           ) : null}
         </Grid>
 
-        {/* <Grid container>
-         
-          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-            <Paper square style={{ minHeight: "100%" }}>
-              <Grid container style={{ padding: 30 }}>
-                <Grid container> */}
-        {/* <Table size="small">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Role Code</TableCell>
-                        <TableCell>Role Name</TableCell>
-                        <TableCell>Description</TableCell>
-                        <TableCell>#User</TableCell>
-                        <TableCell align="center">Status</TableCell>
-                        <TableCell align="center">Action</TableCell>
-                         </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {pageData.map((row) => (
-                        <TableRow key={row.code}>
-                          <TableCell>{row.rolecode}</TableCell>
-                          <TableCell>{row.rolename}</TableCell>
-                          <TableCell>{row.description}</TableCell>
-                          <TableCell>{row.count}</TableCell>
-                          {`${row.status}` === "Active" ||
-                            `${row.status}` === "active" ? (
-                            <TableCell align="center">
-                              <Button
-                                variant="contained"
-                                style={{
-                                  borderRadius: 20,
-                                  backgroundColor: "#2D62ED",
-                                  color: "white",
-                                }}
-                              >
-                                {row.status}
-                              </Button>
-                            </TableCell>
-                          ) : (
-                            <TableCell align="center">
-                              <Button
-                                variant="contained"
-                                style={{
-                                  borderRadius: 20,
-                                  backgroundColor: "#DEDFE0",
-                                  color: "black",
-                                }}
-                              >
-                                {row.status}
-                              </Button>
-                            </TableCell>
-                          )}
-                          <TableCell align="center">
-                            <IconButton
-                              onClick={() => handleDialogEditRole(row.rolecode, row.rolename, row.description, row.applyproperty, row.status)}
-                            >
-                              <EditRoundedIcon />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => handleDialogDeleteRoleOpen(row.rolecode, row.rolename, row.description)}
-                            >
-                              <DeleteRoundedIcon />
-                            </IconButton>
-                          </TableCell>
-                        
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    spacing={3}
-                    style={{ marginTop: 15 }}
-                  >
-                    <Grid item style={{ flexGrow: 1 }}>
-                      <Typography variant="title1" color="initial">
-                        item {page * rowsPerPage + 1}-
-                        {(page + 1) * rowsPerPage > rows.length
-                          ? rows.length
-                          : (page + 1) * rowsPerPage}{" "}
-                        of {rows.length} Total
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={rows.length}
-                        page={page}
-                        // onPageChange={handleChangePage}
-                        rowsPerPage={rowsPerPage}
-                        onChangePage={handleChangePage}
-                        onChangeRowsPerPage={handleChangeRowsPerPage}
-                      // onRowsPerPageChange={handleChangeRowsPerPage}
-                      />
-                    </Grid>
-                  </Grid> */}
         <div style={{ maxWidth: "100%" }}>
           {CRUD.R ? (
             <MaterialTable
-            localization={{ body:{ emptyDataSourceMessage: <>   <Typography
-              variant="h1"
-              align="center"
-              style={{ fontSize: 25, color: themeState.color }}
-            >
-              <ErrorOutlineOutlinedIcon
-                style={{ fontSize: 170, color: "lightgray" }}
-              />
-            </Typography>
-            <Typography
-              align="center"
-              variant="h2"
-              style={{
-                fontWeight: 400,
-                fontSize: 30,
-                color: "rgb(0 0 0 / 47%)",
-                marginBottom: 20,
+              localization={{
+                body: {
+                  emptyDataSourceMessage: (
+                    <>
+                      {" "}
+                      <Typography
+                        variant="h1"
+                        align="center"
+                        style={{ fontSize: 25, color: themeState.color }}
+                      >
+                        <ErrorOutlineOutlinedIcon
+                          style={{ fontSize: 170, color: "lightgray" }}
+                        />
+                      </Typography>
+                      <Typography
+                        align="center"
+                        variant="h2"
+                        style={{
+                          fontWeight: 400,
+                          fontSize: 30,
+                          color: "rgb(0 0 0 / 47%)",
+                          marginBottom: 20,
+                        }}
+                      >
+                        No Data Available
+                      </Typography>
+                      <Grid item>
+                        <Button
+                          startIcon={<AddOutlinedIcon />}
+                          size="large"
+                          variant="contained"
+                          color="primary"
+                          onClick={handleDialogAddRole}
+                        >
+                          New Role
+                        </Button>
+                      </Grid>
+                    </>
+                  ),
+                },
               }}
-            >
-              No Data Available
-            </Typography>
-            <Grid item>
-                  <Button
-                    startIcon={<AddOutlinedIcon />}
-                    size="large"
-                    variant="contained"
-                    color="primary"
-                    // style={{ padding: 13 }}
-                    // fullWidth
-                    // onClick={() => setCreateindividual(true)}
-                    onClick={handleDialogAddRole}
-                  >
-                    New Role
-                  </Button>
-               </Grid>
-             </> }}}
               style={{
                 paddingLeft: 30,
                 paddingRight: 30,
@@ -2217,11 +2054,8 @@ export default function RoleManagement() {
                 },
               ]}
               data={rows}
-              // totalCount={rows.length}
-              // page={page}
               options={{
                 actionsColumnIndex: -1,
-                // filtering: true,
                 searchFieldAlignment: "left",
                 page: page,
                 pageSize: rowsPerPage,
@@ -2264,44 +2098,10 @@ export default function RoleManagement() {
                   },
                 },
               ]}
-              // components={{
-              //   Pagination: (page, rowsPerPage, rows) => (
-              //     console.log("Pagination data", page, rowsPerPage, rows),
-              //     (
-              //       <TablePagination
-              //         rowsPerPageOptions={[5, 10, 25]}
-              //         component="div"
-              //         // count={rows.length}
-              //         page={page}
-              //         //   colSpan={props.colSpan}
-              //         // count={rows.length}
-
-              //         rowsPerPage={rowsPerPage}
-              //         onChangePage={handleChangePage}
-              //         onChangeRowsPerPage={handleChangeRowsPerPage}
-              //         classes={{
-              //           root: classes.roottable,
-              //           toolbar: classes.toolbar,
-              //           caption: classes.caption,
-              //           selectIcon: classes.selectIcon,
-              //           select: classes.select,
-              //           actions: classes.actions,
-              //         }}
-              //       />
-              //     )
-              //   ),
-              // }}
               onChangePage={(page) => console.log("page")}
-              // onChangePage={(event, page) => console.log(event, page)}
             />
           ) : null}
         </div>
-        {/* 
-                </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
-        </Grid> */}
 
         {/* ==================== Dialog New Role ========================= */}
         <Dialog
@@ -2411,16 +2211,7 @@ export default function RoleManagement() {
                       onChange={(e) => setDescriptionsRole(e.target.value)}
                     />
                   </Grid>
-                  <Grid
-                    container
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    // spacing={2}
-                    // style={{ paddingTop: 10 }}
-                  >
+                  <Grid container xs={12} sm={12} md={12} lg={12} xl={12}>
                     <FormControlLabel
                       style={{ paddingTop: 15 }}
                       value="Status"
@@ -2514,7 +2305,7 @@ export default function RoleManagement() {
                     {errorParameter} is required
                   </div>
                 ) : null}
-                 {errorMessageDu ? (
+                {errorMessageDu ? (
                   <div
                     style={{
                       background: "#ff0033",
@@ -2524,7 +2315,7 @@ export default function RoleManagement() {
                       paddingTop: 5,
                     }}
                   >
-                    {errorParameterDu} 
+                    {errorParameterDu}
                   </div>
                 ) : null}
               </DialogContent>
@@ -2797,7 +2588,7 @@ export default function RoleManagement() {
                     {errorParameter} is required
                   </div>
                 ) : null}
-                 {errorMessageDu ? (
+                {errorMessageDu ? (
                   <div
                     style={{
                       background: "#ff0033",
@@ -2807,7 +2598,7 @@ export default function RoleManagement() {
                       paddingTop: 5,
                     }}
                   >
-                    {errorParameterDu} 
+                    {errorParameterDu}
                   </div>
                 ) : null}
               </DialogContent>

@@ -6,18 +6,31 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Container, Grid, Typography, TextField } from "@material-ui/core";
-// import ImageIcon from "@material-ui/icons/Image";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import DraftsOutlinedIcon from "@material-ui/icons/DraftsOutlined";
-import FlagIcon from "@material-ui/icons/Flag";
 import Switch from "@material-ui/core/Switch";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import EditIcon from '@material-ui/icons/Edit';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import EditIcon from "@material-ui/icons/Edit";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Paper from "@material-ui/core/Paper";
+
+import { ReactReduxContext, useSelector } from "react-redux";
+import { EDIT_LANG } from "../middleware/action";
+import { EDIT_COLOR } from "../middleware/action";
+import { EDIT_DARKMODE } from "../middleware/action";
+import { EDIT_COMPONENT } from "../middleware/action";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import {
   purple,
   green,
@@ -26,25 +39,9 @@ import {
   yellow,
   blue,
 } from "@material-ui/core/colors";
-import { ReactReduxContext, useSelector } from "react-redux";
-import { EDIT_LANG } from "../middleware/action";
-import { EDIT_COLOR } from "../middleware/action";
-import { EDIT_DARKMODE } from "../middleware/action";
-import { EDIT_COMPONENT } from "../middleware/action";
 
+import { getAsset, updateAsset } from "../services/assest.service";
 
-
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
-import { useHistory } from "react-router-dom";
-
-import Paper from '@material-ui/core/Paper';
-import {getasset,updateasset} from "../services/assest.service";
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -103,11 +100,11 @@ const useStyles = makeStyles({
     height: 20,
   },
   logo: {
-     width: "100%",
-     height: "100%" 
+    width: "100%",
+    height: "100%",
   },
   input: {
-    display: 'none',
+    display: "none",
   },
   root: (themeState) => ({
     "& label.MuiInputLabel-root": {
@@ -178,61 +175,52 @@ export default function RighBar() {
   ]);
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const [file, setFile] = useState("");
+  const [fileName, setFileName] = useState("");
 
-  const [file,  setFile] = useState("");
-  const [filename,  setFilename] = useState("")
-     
-
-  const handleChange = async(e) =>{
- 
-    if(e.target.files[0] !== undefined){
-      setFilename(e.target.files[0].name)
-      const base64 = await convertBase64(e.target.files[0])
-      setFile(base64)
+  const handleChange = async (e) => {
+    if (e.target.files[0] !== undefined) {
+      setFileName(e.target.files[0].name);
+      const base64 = await convertBase64(e.target.files[0]);
+      setFile(base64);
     }
-  
-  }
+  };
 
-  const handlesaveLogo  = async() => {
-    if(filename){
-      let datacha ={
-        asset:file,
-        name: filename
+  const handleSaveLogo = async () => {
+    if (fileName) {
+      let datacha = {
+        asset: file,
+        name: fileName,
+      };
+      const resp = await updateAsset(sessionStorage.getItem("auth"), datacha);
+      if (resp.status == "2000") {
+        getLogo();
+        setOpen(false);
       }
-      const resp = await updateasset(sessionStorage.getItem("auth"),datacha)
-       if(resp.status == "2000"){
-         getLogo();
-         setOpen(false);
-
-       }
-
     }
-   
-  }
-  const getLogo  = async() => {
-    const resp = await getasset();
+  };
+  const getLogo = async () => {
+    const resp = await getAsset();
     setFile(resp.content[0].asset);
-    
-  }
-
+  };
 
   React.useEffect(() => {
     getLogo();
-  },[])
+  }, []);
 
- const convertBase64 = (file) => {
+  const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
-      fileReader.readAsDataURL(file)
+      fileReader.readAsDataURL(file);
       fileReader.onload = () => {
         resolve(fileReader.result);
-      }
+      };
       fileReader.onerror = (error) => {
         reject(error);
-      }
-    })
-  }
+      };
+    });
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -242,14 +230,7 @@ export default function RighBar() {
     setOpen(false);
   };
 
-
-
-
-
-
-
-
-  function handlelanguage(language) {
+  function handleLanguage(language) {
     // setOpenSystemsTools(!openSystemTools)
     store.dispatch({
       type: EDIT_LANG,
@@ -260,14 +241,14 @@ export default function RighBar() {
   //active lang
   const langa = useSelector((state) => state.reducer.lang);
 
-  // function handlelanguageEN() {
+  // function handleLanguageEN() {
   //   // setOpenSystemsTools(!openSystemTools)
   //   store.dispatch({
   //     type: EDIT_LANG,
   //     payload: "en",
   //   });
   // }
-  // function handlelanguageTH() {
+  // function handleLanguageTH() {
   //   store.dispatch({
   //     type: EDIT_LANG,
   //     payload: "th",
@@ -336,11 +317,10 @@ export default function RighBar() {
   }
 
   function handleLogOut() {
-
     sessionStorage.removeItem("curent_component");
     sessionStorage.removeItem("property");
-    sessionStorage.removeItem('token');
-   
+    sessionStorage.removeItem("token");
+
     history.replace(`/`);
     history.go(0);
     // window.location.reload("/");
@@ -414,12 +394,8 @@ export default function RighBar() {
     }
   }, [maincolor]);
 
-
-  
-
   return (
     <Container className={classes.Container}>
-      {/* <div> */}
       <Grid container>
         <Grid container spacing={2}>
           <Grid container justifyContent="start" style={{ marginLeft: 90 }}>
@@ -536,7 +512,7 @@ export default function RighBar() {
             },
           }}
           defaultValue={langa}
-          onChange={(e) => handlelanguage(e.target.value)}
+          onChange={(e) => handleLanguage(e.target.value)}
         >
           {languages.map((option) => (
             <option
@@ -551,23 +527,6 @@ export default function RighBar() {
             </option>
           ))}
         </TextField>
-        {/* <List>
-          <Divider variant="inset" />
-          <Grid container spacing={1}>
-            <ListItem button onClick={handlelanguageEN}>
-              <ListItemAvatar>
-                <FlagIcon style={{ color: "gray" }} />
-              </ListItemAvatar>
-              <ListItemText primary="English" />
-            </ListItem>
-            <ListItem button onClick={handlelanguageTH}>
-              <ListItemAvatar>
-                <FlagIcon style={{ color: "gray" }} />
-              </ListItemAvatar>
-              <ListItemText primary="ไทย" />
-            </ListItem>
-          </Grid>
-        </List> */}
       </Grid>
 
       <Grid container style={{ marginTop: 30 }}>
@@ -815,33 +774,48 @@ export default function RighBar() {
       </Grid>
       <Divider />
 
-
-
-    {/* logo ======== logo */}
+      {/* logo ======== logo */}
       <Dialog
         fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
-       
       >
-        <DialogTitle id="responsive-dialog-title" style={{ backgroundColor: "#2D62ED", color: "white"}}>{"Setting Edit Logo"}</DialogTitle>
-        <DialogContent >
-          <DialogContentText >
-            <Paper  border={2} elevation={2}  >  { file ? <img src={file} className={classes.logo} alt="logo"  /> : <img src="loginlogo.png" className={classes.logo} alt="logo"  />  } </Paper>
+        <DialogTitle
+          id="responsive-dialog-title"
+          style={{ backgroundColor: "#2D62ED", color: "white" }}
+        >
+          {"Setting Edit Logo"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Paper border={2} elevation={2}>
+              {" "}
+              {file ? (
+                <img src={file} className={classes.logo} alt="logo" />
+              ) : (
+                <img src="loginlogo.png" className={classes.logo} alt="logo" />
+              )}{" "}
+            </Paper>
             <input
-        accept="image/*"
-        className={classes.input}
-        id="contained-button-file"
-        multiple
-        type="file"
-        onChange={handleChange}
-      />
-       <label htmlFor="contained-button-file" >
-        <Button variant="contained"  color="primary" component="span" style={{ marginTop: 20}}>
-         <PhotoCamera />Upload
-        </Button>
-      </label>
+              accept="image/*"
+              className={classes.input}
+              id="contained-button-file"
+              multiple
+              type="file"
+              onChange={handleChange}
+            />
+            <label htmlFor="contained-button-file">
+              <Button
+                variant="contained"
+                color="primary"
+                component="span"
+                style={{ marginTop: 20 }}
+              >
+                <PhotoCamera />
+                Upload
+              </Button>
+            </label>
           </DialogContentText>
         </DialogContent>
         <Divider />
@@ -849,12 +823,11 @@ export default function RighBar() {
           <Button autoFocus onClick={handleClose} color="primary">
             close
           </Button>
-          <Button  variant="contained" color="primary" onClick={handlesaveLogo}>
+          <Button variant="contained" color="primary" onClick={handleSaveLogo}>
             save
           </Button>
         </DialogActions>
       </Dialog>
-      {/* </div> */}
     </Container>
   );
 }

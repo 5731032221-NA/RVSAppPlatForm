@@ -4,53 +4,34 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import InstagramIcon from "@material-ui/icons/Instagram";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import Switch from "@material-ui/core/Switch";
 import { connect, ReactReduxContext, useSelector } from "react-redux";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import { blue, green, yellow } from "@material-ui/core/colors";
+import { makeStyles } from "@material-ui/core/styles";
+import { blue } from "@material-ui/core/colors";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import { optioncountry } from "../../static/country.js";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Breadcrumbs, Link } from "@material-ui/core";
+import DateFnsUtils from "@date-io/date-fns";
 import { getConfigurationByPropertyCode } from "../../services/user.service";
 import { nextComponent } from "../../middleware/action";
-import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+
 import {
   getCompanyProfileCommunication,
   getCompanyProfileRelation,
-  getCompanyProfile,
-  getCompanyProfileById,
   postCompanyProfile,
   updateCompanyProfile,
-  deleteCompanyProfileById,
 } from "../../services/companyprofile.service";
-import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-  DateRangePicker,
-} from "@material-ui/pickers";
+// import { optioncountry } from "../../static/country.js";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -80,7 +61,6 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        // borderColor: themeState.color,
         borderColor: "grey.500",
         color: themeState.color,
       },
@@ -106,51 +86,7 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 
-const optiondata = [
-  {
-    value: "1",
-    label: "Option1",
-  },
-  {
-    value: "2",
-    label: "Option2",
-  },
-  {
-    value: "3",
-    label: "Option3",
-  },
-];
-const optiondata2 = [
-  {
-    value: "10",
-    label: "Option10",
-  },
-  {
-    value: "20",
-    label: "Option20",
-  },
-  {
-    value: "30",
-    label: "Option30",
-  },
-  {
-    value: "40",
-    label: "Option40",
-  },
-];
-
-const optioncurrency = [
-  {
-    value: "1",
-    label: "Baht ฿",
-  },
-  {
-    value: "2",
-    label: "Dollar $",
-  },
-];
-
-const optioncreditrating = [
+const optionCreditRating = [
   {
     value: "1",
     label: "5",
@@ -173,7 +109,7 @@ const optioncreditrating = [
   },
 ];
 
-const optionrelation = [
+const optionRelation = [
   {
     value: "employer",
     label: "employer",
@@ -192,15 +128,11 @@ const optionrelation = [
   },
 ];
 
-const optioncommunication = [
+const optionCommunication = [
   {
     value: "Telephone",
     label: "Telephone Number",
   },
-  // {
-  //   value: "Mobile",
-  //   label: "Mobile Number",
-  // },
   {
     value: "Email",
     label: "Email Address",
@@ -232,13 +164,6 @@ const optioncommunication = [
 ];
 
 export const ProfileCompany = (props) => {
-  const { store } = useContext(ReactReduxContext);
-  const [action, setAction] = React.useState(props.action);
-
-  // React.useEffect(async( ) => {
-  //  console.log("props.action:",props.action);
-  //              await handleAddDatatoDatabase();
-  // },[props.action])
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -283,35 +208,38 @@ export const ProfileCompany = (props) => {
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
+
   // const [isRequired, setIsRequired] = React.useState(false);
   const [smallwidth, setSmallwidth] = React.useState(window.innerWidth < 1000);
   const pageProperty = useSelector((state) => state.reducer.property);
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
-  React.useEffect(async () => {
+  React.useEffect(() => {
     setSmallwidth(window.innerWidth < 1000);
+    async function getInitialConfig() {
+      let getConfigData = await getConfigurationByPropertyCode(
+        sessionStorage.getItem("auth"),
+        pageProperty
+      );
+      console.log("getConfigData:", getConfigData);
+      let configData = getConfigData.content[getConfigData.content.length - 1];
+      let optionTitle = await getList(configData, "PCINDTT");
+      // let optionDocumentType = await getList(configData,"");
+      console.log("optionTitle:", optionTitle);
+      let optionGender = await getList(configData, "PCINDGD");
+      console.log("optionGender:", optionGender);
+      let relation = await getList(configData, "PCINDRL");
+      console.log("relation:", relation);
+      let communication = await getList(configData, "PCINDCM");
+      console.log("communication:", communication);
+      // let optionDocumentType = await getList(configData,"");
 
-    let getconfigdata = await getConfigurationByPropertyCode(
-      sessionStorage.getItem("auth"),
-      pageProperty
-    );
-    console.log("getconfigdata:", getconfigdata);
-    let configdata = getconfigdata.content[getconfigdata.content.length - 1];
-    let optionTitle = await getlist(configdata, "PCINDTT");
-    // let optionDocumentType = await getlist(configdata,"");
-    console.log("optionTitle:", optionTitle);
-    let optiongender = await getlist(configdata, "PCINDGD");
-    console.log("optiongender:", optiongender);
-    let relation = await getlist(configdata, "PCINDRL");
-    console.log("relation:", relation);
-    let communication = await getlist(configdata, "PCINDCM");
-    console.log("communication:", communication);
-    // let optionDocumentType = await getlist(configdata,"");
-
-    console.log("propseditData:", props.editdata);
+      console.log("propseditData:", props.editdata);
+    }
+    getInitialConfig();
   }, []);
 
-  async function getlist(config, field) {
+  async function getList(config, field) {
     for (var i = 0; i < config.length; i++) {
       var obj = config[i];
       if (obj.code === field) {
@@ -324,175 +252,148 @@ export const ProfileCompany = (props) => {
         );
         return list;
       } else if (obj.children) {
-        let _getlist = await getlist(obj.children, field);
-        if (_getlist) return _getlist;
+        let getListData = await getList(obj.children, field);
+        if (getListData) return getListData;
       }
     }
   }
 
-  const handleComponentState = async (comp) => {
-    console.log("setcomp", comp);
-    props.nextComponent(comp);
-  };
-
-  const [nameOne, setnameOne] = useState(
+  const [nameOne, setNameOne] = useState(
     props.editdata != null ? props.editdata[0].name : ""
   );
-  const [nameTwo, setnameTwo] = React.useState(
+  const [nameTwo, setNameTwo] = React.useState(
     props.editdata != null ? props.editdata[0].name2 : ""
   );
-  const [CompanyTypeCode, setCompanyTypeCode] = React.useState(
+  const [companyTypeCode, setCompanyTypeCode] = React.useState(
     props.editdata != null ? props.editdata[0].companytypecode : "Government"
   );
-  const [Abbreviation, setAbbreviation] = React.useState(
+  const [abbreviation, setAbbreviation] = React.useState(
     props.editdata != null ? props.editdata[0].abbreviation : ""
   );
-  const [GuaranteeMethodCode, setGuaranteeMethodCode] = React.useState(
+  const [guaranteeMethodCode, setGuaranteeMethodCode] = React.useState(
     props.editdata != null ? props.editdata[0].guaranteemethodcode : ""
   );
-  const [Property, setProperty] = React.useState(
+  const [property, setProperty] = React.useState(
     props.editdata != null ? props.editdata[0].property : "SPJ1"
   );
-  const [Currency, setCurrency] = React.useState(
+  const [currency, setCurrency] = React.useState(
     props.editdata != null ? props.editdata[0].currencycode : "THB"
   );
-  const [CreditRating, setCreditRating] = React.useState(
+  const [creditRating, setCreditRating] = React.useState(
     props.editdata != null
       ? props.editdata[0].creditrating
-      : optioncreditrating[0].value
+      : optionCreditRating[0].value
   );
-  const [iata, setiata] = React.useState(
+  const [IATA, setIATA] = React.useState(
     props.editdata != null ? props.editdata[0].iata : ""
   );
-  const [Status, setStatus] = React.useState(
+  const [status, setStatus] = React.useState(
     props.editdata != null ? props.editdata[0].statuscode : true
   );
-  const [StreetAddress, setStreetAddress] = React.useState(
+  const [streetAddress, setStreetAddress] = React.useState(
     props.editdata != null ? props.editdata[0].address : ""
   );
-  const [Chooseacountry, setChooseacountry] = React.useState(
+  const [chooseCountry, setChooseCountry] = React.useState(
     props.editdata != null ? props.editdata[0].countrycode : ""
   );
-  const [City, setCity] = React.useState(
+  const [city, setCity] = React.useState(
     props.editdata != null ? props.editdata[0].city : ""
   );
-  const [State, setState] = React.useState(
+  const [stateProvince, setStateProvince] = React.useState(
     props.editdata != null ? props.editdata[0].stateprovince : ""
   );
-  const [Postal, setPostal] = React.useState(
+  const [postal, setPostal] = React.useState(
     props.editdata != null ? props.editdata[0].postalcode : 0
   );
-  const [BStreetAddress, setBStreetAddress] = React.useState(
+  const [billingStreetAddress, setBillingStreetAddress] = React.useState(
     props.editdata != null ? props.editdata[0].billingaddress : ""
   );
-  const [BChooseacountry, setBChooseacountry] = React.useState(
+  const [billingChooseacountry, setBillingChooseacountry] = React.useState(
     props.editdata != null ? props.editdata[0].billingcountrycode : ""
   );
-  const [BCity, setBCity] = React.useState(
+  const [billingCity, setBillingCity] = React.useState(
     props.editdata != null ? props.editdata[0].billingcity : ""
   );
-  const [BState, setBState] = React.useState(
+  const [billingStateProvince, setBillingStateProvince] = React.useState(
     props.editdata != null ? props.editdata[0].billingstateprovince : ""
   );
-  const [BPostal, setBPostal] = React.useState(
+  const [billingPostal, setBillingPostal] = React.useState(
     props.editdata != null ? props.editdata[0].billingpostalcode : 0
   );
-  const [TaxID, setTaxID] = React.useState(
+  const [taxID, setTaxID] = React.useState(
     props.editdata != null ? props.editdata[0].taxid : ""
   );
-  const [TaxID2, setTaxID2] = React.useState(
+  const [taxID2, setTaxID2] = React.useState(
     props.editdata != null ? props.editdata[0].taxid2 : ""
   );
-
-  const [CreditCardNumber, setCreditCardNumber] = React.useState(
+  const [creditCardNumber, setCreditCardNumber] = React.useState(
     props.editdata != null ? props.editdata[0].creditcardid : 0
   );
-  const [OutstandingAmount, setOutstandingAmount] = React.useState(
+  const [outstandingAmount, setOutstandingAmount] = React.useState(
     props.editdata != null ? props.editdata[0].outstandingamout : 0
   );
-  const [FloatingDepositionAmount, setFloatingDepositionAmount] =
+  const [floatingDepositionAmount, setFloatingDepositionAmount] =
     React.useState(
       props.editdata != null ? props.editdata[0].floatingdepositamount : 0
     );
   const [ARNumber, setARNumber] = React.useState(
     props.editdata != null ? props.editdata[0].ar_number : 0
   );
-  const [SalesUserName, setSalesUserName] = React.useState(
+  const [salesUserName, setSalesUserName] = React.useState(
     props.editdata != null ? props.editdata[0].salesusername : ""
   );
-  const [Industry, setIndustry] = React.useState(
+  const [industry, setIndustry] = React.useState(
     props.editdata != null ? props.editdata[0].industrycode : "Insurrance"
   );
-  const [MarketSegment, setMarketSegment] = React.useState(
+  const [marketSegment, setMarketSegment] = React.useState(
     props.editdata != null ? props.editdata[0].marketsegmentcode : "Code1"
   );
-  const [SourceOfBusiness, setSourceOfBusiness] = React.useState(
+  const [sourceOfBusiness, setSourceOfBusiness] = React.useState(
     props.editdata != null ? props.editdata[0].sourceofbusinesscode : "Code1"
   );
-  const [TrackCode, setTrackCode] = React.useState(
+  const [trackCode, setTrackCode] = React.useState(
     props.editdata != null ? props.editdata[0].trackcode : "Code1"
   );
-  const [ReasonForStay, setReasonForStay] = React.useState(
+  const [reasonForStay, setReasonForStay] = React.useState(
     props.editdata != null ? props.editdata[0].reasonforstaycode : "Code1"
   );
-  const [Geographic, setGeographic] = React.useState(
+  const [geographic, setGeographic] = React.useState(
     props.editdata != null ? props.editdata[0].geographiccode : "SEA"
   );
-  const [ratecontractcode, setratecontractcode] = React.useState(
+  const [rateContractCode, setRateContractCode] = React.useState(
     props.editdata != null ? props.editdata[0].ratecontractcode : ""
   );
-  const [negotiatedratesonly, setnegotiatedratesonly] = React.useState(
-    props.editdata != null ? props.editdata[0].negotiatedratesonly : false);
+  const [negotiatedRatesOnly, setNegotiatedRatesOnly] = React.useState(
+    props.editdata != null ? props.editdata[0].negotiatedratesonly : false
+  );
 
   const [communicationDatas, setCommunicationDatas] = React.useState({});
-
   const [Communication, setCommunication] = React.useState("");
   const [Relationship, setRelationship] = React.useState("");
   const [relationDatas, setRelationDatas] = React.useState({});
   const [isRequired, setIsRequired] = React.useState(false);
 
-
   const [list, setList] = React.useState([]);
   React.useEffect(() => {
-    async function getconfig() {
+    async function getConfig() {
       updateList();
     }
-    getconfig();
+    getConfig();
   }, []);
-  // const reorder = (list, startIndex, endIndex) => {
-  //   const result = Array.from(list);
-  //   const [removed] = result.splice(startIndex, 1);
-  //   result.splice(endIndex, 0, removed);
-
-  //   return result;
-  // };
-  // const onEnd = (result) => {
-  //   if (!result.destination) {
-  //     return;
-  //   }
-  //   setList(reorder(list, result.source.index, result.destination.index));
-  //   console.log(result);
-  // };
-  // const getItemStyle = (isDragging, draggableStyle) => ({
-  //   // styles we need to apply on draggables
-  //   ...draggableStyle,
-
-  //   ...(isDragging && {
-  //     background: "lightblue",
-  //   }),
-  // });
-
 
   async function updateList() {
     let commu = JSON.parse(JSON.stringify(communicationDatas));
     let rela = JSON.parse(JSON.stringify(relationDatas));
     let getCommunicationsDatas = {};
-    let getcomunication = [];
-    let getrelation = [];
-    console.log("demostate");
-    if (props.editdata != null && Object.keys(commu).length === 0 && Object.keys(rela).length === 0) {
-
-      console.log("props.editdata", props.editdata)
+    let getComunication = [];
+    let getRelation = [];
+    console.log("demoState");
+    if (
+      props.editdata != null &&
+      Object.keys(commu).length === 0 &&
+      Object.keys(rela).length === 0
+    ) {
+      console.log("props.editdata", props.editdata);
       let getCommunications = await getCompanyProfileCommunication(
         sessionStorage.getItem("auth"),
         props.editdata[0].id
@@ -501,22 +402,22 @@ export const ProfileCompany = (props) => {
         sessionStorage.getItem("auth"),
         props.editdata[0].id
       );
-      console.log("getCommunications.contents", getCommunications.contents)
+      console.log("getCommunications.contents", getCommunications.contents);
       let count = 1;
       getCommunications.contents[0].forEach((element) => {
         const commuid1 = count;
         const commuid2 = count + 1;
         if (element.communication == "email") {
-          getCommunicationsDatas.email = element.value
+          getCommunicationsDatas.email = element.value;
         } else if (element.communication == "mobile") {
-          getCommunicationsDatas.mobile = element.value
+          getCommunicationsDatas.mobile = element.value;
         } else {
-          setCommunicationDatas(prev => ({
+          setCommunicationDatas((prev) => ({
             ...prev,
             [count]: element.communication,
-            [count + 1]: element.value
-          }))
-          getcomunication.push({
+            [count + 1]: element.value,
+          }));
+          getComunication.push({
             id: commuid1,
             label: "Choose a communication",
             xl: 3,
@@ -524,142 +425,13 @@ export const ProfileCompany = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: optioncommunication.map((option) => (
+              data: optionCommunication.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
                   value={option.value}
                   selected={option.value == element.communication}
-                // defaultValue={element.communication}
-                >
-                  {option.label}
-                </option>
-              )),
-            },
-            handle: (e) => setCommunicationDatas(prev => ({
-              ...prev,
-              [commuid1]: e.target.value
-            })),
-
-          });
-          getcomunication.push({
-            id: commuid2,
-            label: "communication",
-            xl: 9,
-            md: 9,
-            xs: 6,
-            select: {
-              status: "fillnolabel",
-              data: "",
-              defaultvalue: element.value
-            },
-            handle: (e) => setCommunicationDatas(prev => ({
-              ...prev,
-              [commuid2]: e.target.value
-            })),
-          });
-          count = count + 2;
-        }
-      }
-      );
-      let relationid = 1;
-      console.log(getRelations.contents[0])
-
-      getRelations.contents[0].forEach((element) => {
-        const relaid1 = relationid;
-        const relaid2 = relationid + 1;
-        const relaid3 = relationid + 2;
-        setRelationDatas(prev => ({
-          ...prev,
-          [relationid + 1]: element.relation,
-          [relationid]: element.value,
-          [relationid + 2]: element.note
-        }))
-        getrelation.push({
-          id: relaid2,
-          label: "Name Type",
-          xl: 2,
-          md: 2,
-          xs: 6,
-          select: {
-            status: "option",
-            data: optionrelation.map((option) => (
-              <option
-                style={headerTableStyle}
-                key={option.value}
-                value={option.value}
-                selected={option.value == element.relation}
-              >
-                {option.label}
-              </option>
-            )),
-          },
-          handle: (e) => setRelationDatas(prev => ({
-            ...prev,
-            [relaid2]: e.target.value
-          }))
-        });
-        getrelation.push({
-          id: relaid1,
-          label: "Name",
-          xl: 4,
-          md: 4,
-          xs: 6,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue: element.value
-          },
-          handle: (e) => setRelationDatas(prev => ({
-            ...prev,
-            [relaid1]: e.target.value
-          })),
-
-        });
-        getrelation.push({
-          id: relaid3,
-          label: "Note",
-          xl: 6,
-          md: 6,
-          xs: 12,
-          select: {
-            status: "fill",
-            data: "",
-            defaultvalue: element.note
-          },
-          handle: (e) => setRelationDatas(prev => ({
-            ...prev,
-            [relaid3]: e.target.value
-          }))
-        });
-        relationid = relationid + 3;
-      }
-      );
-      console.log("getrelation", getrelation)
-
-    } else {
-      let count = 3
-      console.log("commu", commu)
-      console.log("rela", rela)
-      for (var key in commu) {
-        if (key % 2 == 0) {
-          const commuid1 = count;
-          const commuid2 = count + 1;
-          getcomunication.push({
-            id: commuid1,
-            label: "Choose a communication",
-            xl: 3,
-            md: 3,
-            xs: 6,
-            select: {
-              status: "option",
-              data: optioncommunication.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                  selected={option.label == commu[key - 1]}
-                // defaultValue={element.communication}
+                  // defaultValue={element.communication}
                 >
                   {option.label}
                 </option>
@@ -671,7 +443,136 @@ export const ProfileCompany = (props) => {
                 [commuid1]: e.target.value,
               })),
           });
-          getcomunication.push({
+          getComunication.push({
+            id: commuid2,
+            label: "communication",
+            xl: 9,
+            md: 9,
+            xs: 6,
+            select: {
+              status: "fillnolabel",
+              data: "",
+              defaultvalue: element.value,
+            },
+            handle: (e) =>
+              setCommunicationDatas((prev) => ({
+                ...prev,
+                [commuid2]: e.target.value,
+              })),
+          });
+          count = count + 2;
+        }
+      });
+      let relationid = 1;
+      console.log(getRelations.contents[0]);
+
+      getRelations.contents[0].forEach((element) => {
+        const relaid1 = relationid;
+        const relaid2 = relationid + 1;
+        const relaid3 = relationid + 2;
+        setRelationDatas((prev) => ({
+          ...prev,
+          [relationid + 1]: element.relation,
+          [relationid]: element.value,
+          [relationid + 2]: element.note,
+        }));
+        getRelation.push({
+          id: relaid2,
+          label: "Name Type",
+          xl: 2,
+          md: 2,
+          xs: 6,
+          select: {
+            status: "option",
+            data: optionRelation.map((option) => (
+              <option
+                style={headerTableStyle}
+                key={option.value}
+                value={option.value}
+                selected={option.value == element.relation}
+              >
+                {option.label}
+              </option>
+            )),
+          },
+          handle: (e) =>
+            setRelationDatas((prev) => ({
+              ...prev,
+              [relaid2]: e.target.value,
+            })),
+        });
+        getRelation.push({
+          id: relaid1,
+          label: "Name",
+          xl: 4,
+          md: 4,
+          xs: 6,
+          select: {
+            status: "fill",
+            data: "",
+            defaultvalue: element.value,
+          },
+          handle: (e) =>
+            setRelationDatas((prev) => ({
+              ...prev,
+              [relaid1]: e.target.value,
+            })),
+        });
+        getRelation.push({
+          id: relaid3,
+          label: "Note",
+          xl: 6,
+          md: 6,
+          xs: 12,
+          select: {
+            status: "fill",
+            data: "",
+            defaultvalue: element.note,
+          },
+          handle: (e) =>
+            setRelationDatas((prev) => ({
+              ...prev,
+              [relaid3]: e.target.value,
+            })),
+        });
+        relationid = relationid + 3;
+      });
+      console.log("getRelation", getRelation);
+    } else {
+      let count = 3;
+      console.log("commu", commu);
+      console.log("rela", rela);
+      for (var key in commu) {
+        if (key % 2 == 0) {
+          const commuid1 = count;
+          const commuid2 = count + 1;
+          getComunication.push({
+            id: commuid1,
+            label: "Choose a communication",
+            xl: 3,
+            md: 3,
+            xs: 6,
+            select: {
+              status: "option",
+              // eslint-disable-next-line no-loop-func
+              data: optionCommunication.map((option) => (
+                <option
+                  style={headerTableStyle}
+                  key={option.value}
+                  value={option.value}
+                  selected={option.label == commu[key - 1]}
+                >
+                  {option.label}
+                </option>
+              )),
+            },
+            handle: (e) =>
+              setCommunicationDatas((prev) => ({
+                ...prev,
+                [commuid1]: e.target.value,
+              })),
+          });
+          getComunication.push({
             id: commuid2,
             label: "communication",
             xl: 9,
@@ -698,7 +599,7 @@ export const ProfileCompany = (props) => {
           const relaid1 = relationid;
           const relaid2 = relationid + 1;
           const relaid3 = relationid + 2;
-          getrelation.push({
+          getRelation.push({
             id: relaid2,
             label: "Name Type",
             xl: 2,
@@ -706,7 +607,8 @@ export const ProfileCompany = (props) => {
             xs: 6,
             select: {
               status: "option",
-              data: optionrelation.map((option) => (
+              // eslint-disable-next-line no-loop-func
+              data: optionRelation.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.value}
@@ -723,7 +625,7 @@ export const ProfileCompany = (props) => {
                 [relaid2]: e.target.value,
               })),
           });
-          getrelation.push({
+          getRelation.push({
             id: relaid1,
             label: "Name",
             xl: 4,
@@ -740,7 +642,7 @@ export const ProfileCompany = (props) => {
                 [relaid1]: e.target.value,
               })),
           });
-          getrelation.push({
+          getRelation.push({
             id: relaid3,
             label: "Note",
             xl: 6,
@@ -751,6 +653,7 @@ export const ProfileCompany = (props) => {
               data: "",
               defaultvalue: rela[key],
             },
+            // eslint-disable-next-line no-loop-func
             handle: (e) =>
               setRelationDatas((prev) => ({
                 ...prev,
@@ -760,7 +663,6 @@ export const ProfileCompany = (props) => {
           relationid = relaid3;
         }
       }
-
     }
 
     setList([
@@ -778,9 +680,10 @@ export const ProfileCompany = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: props.editdata != null ? props.editdata[0].name : "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].name : "",
             },
-            handle: (e) => setnameOne(e.target.value),
+            handle: (e) => setNameOne(e.target.value),
             dataType: "string",
             dataCheck: nameOne,
           },
@@ -793,9 +696,10 @@ export const ProfileCompany = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: props.editdata != null ? props.editdata[0].name2 : "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].name2 : "",
             },
-            handle: (e) => setnameTwo(e.target.value),
+            handle: (e) => setNameTwo(e.target.value),
             dataType: "string",
             dataCheck: true,
           },
@@ -823,7 +727,7 @@ export const ProfileCompany = (props) => {
                   ? props.editdata[0].companytypecode
                   : "Government",
             },
-            handle: (e) => setCompanyTypeCode(e.target.value)
+            handle: (e) => setCompanyTypeCode(e.target.value),
           },
           {
             id: 4,
@@ -839,7 +743,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setAbbreviation(e.target.value),
             dataType: "string",
-            dataCheck: Abbreviation,
+            dataCheck: abbreviation,
           },
           {
             id: 5,
@@ -879,7 +783,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setGuaranteeMethodCode(e.target.value),
             dataType: "string",
-            dataCheck: GuaranteeMethodCode,
+            dataCheck: guaranteeMethodCode,
           },
           {
             id: 7,
@@ -911,7 +815,7 @@ export const ProfileCompany = (props) => {
             xs: 12,
             select: {
               status: "option",
-              data: optioncreditrating.map((option) => (
+              data: optionCreditRating.map((option) => (
                 <option
                   style={headerTableStyle}
                   key={option.label}
@@ -923,7 +827,7 @@ export const ProfileCompany = (props) => {
               defaultvalue:
                 props.editdata != null
                   ? props.editdata[0].creditrating
-                  : optioncreditrating[0].value,
+                  : optionCreditRating[0].value,
             },
             handle: (e) => setCreditRating(e.target.value),
           },
@@ -936,11 +840,12 @@ export const ProfileCompany = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: props.editdata != null ? props.editdata[0].iata : "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].iata : "",
             },
-            handle: (e) => setiata(e.target.value),
+            handle: (e) => setIATA(e.target.value),
             dataType: "string",
-            dataCheck: iata,
+            dataCheck: IATA,
           },
           {
             id: 10,
@@ -955,7 +860,6 @@ export const ProfileCompany = (props) => {
                 props.editdata != null ? props.editdata[0].statuscode : " ",
             },
             handle: (e) => setStatus(e.target.checked),
-
           },
         ],
       },
@@ -978,7 +882,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setStreetAddress(e.target.value),
             dataType: "string",
-            dataCheck: StreetAddress,
+            dataCheck: streetAddress,
           },
           {
             id: 5,
@@ -990,12 +894,10 @@ export const ProfileCompany = (props) => {
               status: "fill",
               data: "",
               defaultvalue:
-                props.editdata != null
-                  ? props.editdata[0].countrycode
-                  : "",
+                props.editdata != null ? props.editdata[0].countrycode : "",
             },
-            dataCheck: Chooseacountry,
-            handle: (e) => setChooseacountry(e.target.value),
+            dataCheck: chooseCountry,
+            handle: (e) => setChooseCountry(e.target.value),
           },
           {
             id: 6,
@@ -1006,11 +908,12 @@ export const ProfileCompany = (props) => {
             select: {
               status: "fill",
               data: "",
-              defaultvalue: props.editdata != null ? props.editdata[0].city : "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].city : "",
             },
             handle: (e) => setCity(e.target.value),
             dataType: "string",
-            dataCheck: City,
+            dataCheck: city,
           },
           {
             id: 7,
@@ -1024,9 +927,9 @@ export const ProfileCompany = (props) => {
               defaultvalue:
                 props.editdata != null ? props.editdata[0].stateprovince : "",
             },
-            handle: (e) => setState(e.target.value),
+            handle: (e) => setStateProvince(e.target.value),
             dataType: "string",
-            dataCheck: State,
+            dataCheck: stateProvince,
           },
           {
             id: 8,
@@ -1042,7 +945,7 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setPostal(e.target.value),
             dataType: "number",
-            dataCheck: Postal,
+            dataCheck: postal,
           },
         ],
       },
@@ -1063,9 +966,9 @@ export const ProfileCompany = (props) => {
               defaultvalue:
                 props.editdata != null ? props.editdata[0].billingaddress : "",
             },
-            handle: (e) => setBStreetAddress(e.target.value),
+            handle: (e) => setBillingStreetAddress(e.target.value),
             dataType: "string",
-            dataCheck: BStreetAddress,
+            dataCheck: billingStreetAddress,
           },
           {
             id: 5,
@@ -1081,8 +984,8 @@ export const ProfileCompany = (props) => {
                   ? props.editdata[0].billingcountrycode
                   : "",
             },
-            handle: (e) => setBChooseacountry(e.target.value),
-            dataCheck: BChooseacountry
+            handle: (e) => setBillingChooseacountry(e.target.value),
+            dataCheck: billingChooseacountry,
           },
           {
             id: 6,
@@ -1096,9 +999,9 @@ export const ProfileCompany = (props) => {
               defaultvalue:
                 props.editdata != null ? props.editdata[0].billingcity : "",
             },
-            handle: (e) => setBCity(e.target.value),
+            handle: (e) => setBillingCity(e.target.value),
             dataType: "string",
-            dataCheck: BCity,
+            dataCheck: billingCity,
           },
           {
             id: 7,
@@ -1114,9 +1017,9 @@ export const ProfileCompany = (props) => {
                   ? props.editdata[0].billingstateprovince
                   : "",
             },
-            handle: (e) => setBState(e.target.value),
+            handle: (e) => setBillingStateProvince(e.target.value),
             dataType: "string",
-            dataCheck: BState,
+            dataCheck: billingStateProvince,
           },
           {
             id: 8,
@@ -1128,30 +1031,33 @@ export const ProfileCompany = (props) => {
               status: "fill",
               data: "",
               defaultvalue:
-                props.editdata != null ? props.editdata[0].billingpostalcode : 0,
+                props.editdata != null
+                  ? props.editdata[0].billingpostalcode
+                  : 0,
             },
-            handle: (e) => setBPostal(e.target.value),
+            handle: (e) => setBillingPostal(e.target.value),
             dataType: "number",
-            dataCheck: BPostal,
+            dataCheck: billingPostal,
           },
           {
             id: 9,
-            label: "TaxID",
+            label: "Tax ID",
             xl: 3,
             md: 6,
             xs: 12,
             select: {
               status: "fill",
               data: "",
-              defaultvalue: props.editdata != null ? props.editdata[0].taxid : "",
+              defaultvalue:
+                props.editdata != null ? props.editdata[0].taxid : "",
             },
             handle: (e) => setTaxID(e.target.value),
             dataType: "string",
-            dataCheck: TaxID,
+            dataCheck: taxID,
           },
           {
             id: 10,
-            label: "TaxID2",
+            label: "Tax ID2",
             xl: 3,
             md: 6,
             xs: 12,
@@ -1172,7 +1078,7 @@ export const ProfileCompany = (props) => {
         title: "Communication",
         expend: true,
         content: [
-          ...getcomunication,
+          ...getComunication,
           {
             id: 99,
             label: "Phone Number",
@@ -1191,7 +1097,7 @@ export const ProfileCompany = (props) => {
         title: "Relationship (Internal)",
         expend: true,
         content: [
-          ...getrelation,
+          ...getRelation,
           {
             id: 99,
             label: "Relation",
@@ -1202,7 +1108,7 @@ export const ProfileCompany = (props) => {
               status: "AddRelation",
               data: "+ More Relation",
             },
-            // handle: (e) => handleAddComunication(e),
+            // handle: (e) => handleAddCommunication(e),
           },
         ],
       },
@@ -1211,18 +1117,6 @@ export const ProfileCompany = (props) => {
         title: "A/R Number",
         expend: true,
         content: [
-          // {
-          //   id: 1,
-          //   label: "IATA",
-          //   xl: 3,
-          //   md: 3,
-          //   xs: 12,
-          //   select: {
-          //     status: "fill",
-          //     data: "",
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
           {
             id: 2,
             label: "Credit Card Number",
@@ -1249,7 +1143,9 @@ export const ProfileCompany = (props) => {
               status: "fill",
               data: "",
               defaultvalue:
-                props.editdata != null ? props.editdata[0].outstandingamout : "",
+                props.editdata != null
+                  ? props.editdata[0].outstandingamout
+                  : "",
             },
             handle: (e) => setOutstandingAmount(e.target.value),
             dataType: "number",
@@ -1291,45 +1187,6 @@ export const ProfileCompany = (props) => {
           },
         ],
       },
-      // {
-      //   id: "6",
-      //   title: "More Information",
-      //   expend: true,
-      //   content: [
-      //     {
-      //       id: 1,
-      //       label: "Tax ID",
-      //       xl: 3,
-      //       md: 6,
-      //       xs: 12,
-      //       select: {
-      //         status: "fill",
-      //         data: "",
-      //       },
-      //       handle: (e) => handleData(e),
-      //     },
-      //     {
-      //       id: 2,
-      //       label: "Billing Instruction",
-      //       xl: 3,
-      //       md: 6,
-      //       xs: 12,
-      //       select: {
-      //         status: "option",
-      //         data: optiondata.map((option) => (
-      //           <option
-      //             style={headerTableStyle}
-      //             key={option.value}
-      //             value={option.value}
-      //           >
-      //             {option.label}
-      //           </option>
-      //         )),
-      //       },
-      //       handle: (e) => handleData(e),
-      //     },
-      //   ],
-      // },
 
       {
         id: "7",
@@ -1350,7 +1207,7 @@ export const ProfileCompany = (props) => {
                   ? props.editdata[0].negotiatedratesonly
                   : "",
             },
-            handle: (e) => setnegotiatedratesonly(e.target.checked),
+            handle: (e) => setNegotiatedRatesOnly(e.target.checked),
           },
           {
             id: 2,
@@ -1362,9 +1219,11 @@ export const ProfileCompany = (props) => {
               status: "fill",
               data: "",
               defaultvalue:
-                props.editdata != null ? props.editdata[0].ratecontractcode : "",
+                props.editdata != null
+                  ? props.editdata[0].ratecontractcode
+                  : "",
             },
-            handle: (e) => setratecontractcode(e.target.value),
+            handle: (e) => setRateContractCode(e.target.value),
             dataType: "string",
             dataCheck: true,
           },
@@ -1419,18 +1278,6 @@ export const ProfileCompany = (props) => {
             },
             handle: (e) => setIndustry(e.target.value),
           },
-          // {
-          //   id: 3,
-          //   label: "IATA",
-          //   xl: 3,
-          //   md: 6,
-          //   xs: 12,
-          //   select: {
-          //     status: "fill",
-          //     data: ""
-          //   },
-          //   handle: (e) => handleData(e),
-          // },
           {
             id: 4,
             label: "Market Segment",
@@ -1519,7 +1366,9 @@ export const ProfileCompany = (props) => {
                 </option>
               )),
               defaultvalue:
-                props.editdata != null ? props.editdata[0].reasonforstaycode : "Code1",
+                props.editdata != null
+                  ? props.editdata[0].reasonforstaycode
+                  : "Code1",
             },
             handle: (e) => setReasonForStay(e.target.value),
           },
@@ -1546,62 +1395,18 @@ export const ProfileCompany = (props) => {
                 </option>
               )),
               defaultvalue:
-                props.editdata != null ? props.editdata[0].geographiccode : "SEA",
+                props.editdata != null
+                  ? props.editdata[0].geographiccode
+                  : "SEA",
             },
             handle: (e) => setGeographic(e.target.value),
           },
-          // ,
-          // {
-          //   id: "1",
-          //   title: "Commission",
-          //   expend: true,
-          //   content: [
-          //     {
-          //       id: 1,
-          //       label: "Commission Flag",
-          //       xl: 3,
-          //       md: 3,
-          //       xs: 12,
-          //       select: {
-          //         status: "option",
-          //         data: [{ label: "Pay" }, { label: "Not Pay" }].map((option) => (
-          //           <option
-          //             style={headerTableStyle}
-          //             key={option.label}
-          //             value={option.label}
-          //           >
-          //             {option.label}
-          //           </option>
-          //         )),
-          //       }
-          //     },
-          //     {
-          //       id: 2,
-          //       label: "Commission Type",
-          //       xl: 3,
-          //       md: 3,
-          //       xs: 12,
-          //       select: {
-          //         status: "option",
-          //         data: [{ label: "Percent" }, { label: "Amount" }].map((option) => (
-          //           <option
-          //             style={headerTableStyle}
-          //             key={option.label}
-          //             value={option.label}
-          //           >
-          //             {option.label}
-          //           </option>
-          //         )),
-          //       },
-          //     },
-          //   ]
-          // }
         ],
       },
     ]);
     // }
-    // getconfig();
-  };
+    // getConfig();
+  }
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -1625,16 +1430,7 @@ export const ProfileCompany = (props) => {
     }),
   });
 
-
-
-  const handleAddDatatoDatabase = async (e) => {
-
-    // props.setAction("none");
-    // const checkvali = await checkvalidate();
-    // if(checkvali){
-    //   setIsRequired(true);
-    // } else {
-    //   setIsRequired(false);
+  const handleAddDataToDatabase = async (e) => {
     let index = list.findIndex((x) => x.title == "Communication");
     let communications = list[index];
     console.log("communications:", communications);
@@ -1645,50 +1441,47 @@ export const ProfileCompany = (props) => {
       recordtype: "T",
       nameOne: nameOne,
       nameTwo: nameTwo,
-      CompanyTypeCode: CompanyTypeCode,
-      Abbreviation: Abbreviation,
-      GuaranteeMethodCode: GuaranteeMethodCode,
-      Property: Property,
-      Currency: Currency,
-      CreditRating: CreditRating,
-      iata: iata,
-      Status: Status,
-      StreetAddress: StreetAddress,
-      Chooseacountry: Chooseacountry,
-      City: City,
-      State: State,
-      Postal: Postal,
-      BStreetAddress: BStreetAddress,
-      BChooseacountry: BChooseacountry,
-      BCity: BCity,
-      BState: BState,
-      BPostal: BPostal,
-      TaxID: TaxID,
-      TaxID2: TaxID2,
+      companyTypeCode: companyTypeCode,
+      abbreviation: abbreviation,
+      guaranteeMethodCode: guaranteeMethodCode,
+      property: property,
+      currency: currency,
+      creditRating: creditRating,
+      IATA: IATA,
+      status: status,
+      streetAddress: streetAddress,
+      chooseCountry: chooseCountry,
+      city: city,
+      stateProvince: stateProvince,
+      postal: postal,
+      billingStreetAddress: billingStreetAddress,
+      billingChooseacountry: billingChooseacountry,
+      billingCity: billingCity,
+      billingStateProvince: billingStateProvince,
+      billingPostal: billingPostal,
+      taxID: taxID,
+      taxID2: taxID2,
       Communication: Communication,
       Relationship: Relationship,
-      CreditCardNumber: CreditCardNumber,
-      OutstandingAmount: OutstandingAmount,
-      FloatingDepositionAmount: FloatingDepositionAmount,
+      creditCardNumber: creditCardNumber,
+      outstandingAmount: outstandingAmount,
+      floatingDepositionAmount: floatingDepositionAmount,
       ARNumber: ARNumber,
-      SalesUserName: SalesUserName,
-      Industry: Industry,
-      MarketSegment: MarketSegment,
-      SourceOfBusiness: SourceOfBusiness,
-      TrackCode: TrackCode,
-      ReasonForStay: ReasonForStay,
-      Geographic: Geographic,
-      negotiatedratesonly: negotiatedratesonly,
-      ratecontractcode: ratecontractcode,
+      salesUserName: salesUserName,
+      industry: industry,
+      marketSegment: marketSegment,
+      sourceOfBusiness: sourceOfBusiness,
+      trackCode: trackCode,
+      reasonForStay: reasonForStay,
+      geographic: geographic,
+      negotiatedRatesOnly: negotiatedRatesOnly,
+      rateContractCode: rateContractCode,
       communications: communicationDatas,
       relations: relationDatas,
     };
 
     console.log("datafrom post", req);
-    const resp = await postCompanyProfile(
-      sessionStorage.getItem("auth"),
-      req
-    );
+    const resp = await postCompanyProfile(sessionStorage.getItem("auth"), req);
 
     if (resp.status == "2000") {
       props.setAction("success");
@@ -1697,56 +1490,50 @@ export const ProfileCompany = (props) => {
       setErrorParameter(resp.msg);
       setErrorMessage(true);
     }
-
-    // console.log("datafrom post", data);
-    // }
   };
 
-
-  const handleAddDataEdittoDatabase = async (e) => {
-
+  const handleAddDataEditToDatabase = async (e) => {
     props.setAction("none");
-
 
     let req = {
       recordtype: "T",
       nameOne: nameOne,
       nameTwo: nameTwo,
-      CompanyTypeCode: CompanyTypeCode,
-      Abbreviation: Abbreviation,
-      GuaranteeMethodCode: GuaranteeMethodCode,
-      Property: Property,
-      Currency: Currency,
-      CreditRating: CreditRating,
-      iata: iata,
-      Status: Status,
-      StreetAddress: StreetAddress,
-      Chooseacountry: Chooseacountry,
-      City: City,
-      State: State,
-      Postal: Postal,
-      BStreetAddress: BStreetAddress,
-      BChooseacountry: BChooseacountry,
-      BCity: BCity,
-      BState: BState,
-      BPostal: BPostal,
-      TaxID: TaxID,
-      TaxID2: TaxID2,
+      companyTypeCode: companyTypeCode,
+      abbreviation: abbreviation,
+      guaranteeMethodCode: guaranteeMethodCode,
+      property: property,
+      currency: currency,
+      creditRating: creditRating,
+      IATA: IATA,
+      status: status,
+      streetAddress: streetAddress,
+      chooseCountry: chooseCountry,
+      city: city,
+      stateProvince: stateProvince,
+      postal: postal,
+      billingStreetAddress: billingStreetAddress,
+      billingChooseacountry: billingChooseacountry,
+      billingCity: billingCity,
+      billingStateProvince: billingStateProvince,
+      billingPostal: billingPostal,
+      taxID: taxID,
+      taxID2: taxID2,
       Communication: Communication,
       Relationship: Relationship,
-      CreditCardNumber: CreditCardNumber,
-      OutstandingAmount: OutstandingAmount,
-      FloatingDepositionAmount: FloatingDepositionAmount,
+      creditCardNumber: creditCardNumber,
+      outstandingAmount: outstandingAmount,
+      floatingDepositionAmount: floatingDepositionAmount,
       ARNumber: ARNumber,
-      SalesUserName: SalesUserName,
-      Industry: Industry,
-      MarketSegment: MarketSegment,
-      SourceOfBusiness: SourceOfBusiness,
-      TrackCode: TrackCode,
-      ReasonForStay: ReasonForStay,
-      Geographic: Geographic,
-      negotiatedratesonly: negotiatedratesonly,
-      ratecontractcode: ratecontractcode,
+      salesUserName: salesUserName,
+      industry: industry,
+      marketSegment: marketSegment,
+      sourceOfBusiness: sourceOfBusiness,
+      trackCode: trackCode,
+      reasonForStay: reasonForStay,
+      geographic: geographic,
+      negotiatedRatesOnly: negotiatedRatesOnly,
+      rateContractCode: rateContractCode,
       communications: communicationDatas,
       relations: relationDatas,
     };
@@ -1765,182 +1552,181 @@ export const ProfileCompany = (props) => {
       setErrorParameter(resp.msg);
       setErrorMessage(true);
     }
-
-
   };
 
   //data from button for  trigger (add or delete)
   React.useEffect(async () => {
-
     if (props.action == "add") {
-      let _IsRequired = nameOne === null ||
-        Abbreviation === null ||
-        GuaranteeMethodCode === null ||
-        iata === null ||
-        StreetAddress === null ||
-        City === null ||
-        State === null ||
-        Postal === null ||
-        BStreetAddress === null ||
-        BCity === null ||
-        BState === null ||
-        BPostal === null ||
-        TaxID === null ||
-        Industry === null ||
-        MarketSegment === null ||
-        SourceOfBusiness === null ||
-        TrackCode === null ||
-        ReasonForStay === null ||
-        Geographic === null ||
+      let _IsRequired =
+        nameOne === null ||
+        abbreviation === null ||
+        guaranteeMethodCode === null ||
+        IATA === null ||
+        streetAddress === null ||
+        city === null ||
+        stateProvince === null ||
+        postal === null ||
+        billingStreetAddress === null ||
+        billingCity === null ||
+        billingStateProvince === null ||
+        billingPostal === null ||
+        taxID === null ||
+        industry === null ||
+        marketSegment === null ||
+        sourceOfBusiness === null ||
+        trackCode === null ||
+        reasonForStay === null ||
+        geographic === null ||
         nameOne.trim() === "" ||
-        Abbreviation.trim() === "" ||
-        GuaranteeMethodCode.trim() === "" ||
-        iata.trim() === "" ||
-        StreetAddress.trim() === "" ||
-        City.trim() === "" ||
-        State.trim() === "" ||
-        Postal === 0 ||
-        BStreetAddress.trim() === "" ||
-        BCity.trim() === "" ||
-        BState.trim() === "" ||
-        BPostal === 0 ||
-        TaxID.trim() === "" ||
-        Industry.trim() === "" ||
-        MarketSegment.trim() === "" ||
-        SourceOfBusiness.trim() === "" ||
-        TrackCode.trim() === "" ||
-        ReasonForStay.trim() === "" ||
-        Geographic.trim() === "";
+        abbreviation.trim() === "" ||
+        guaranteeMethodCode.trim() === "" ||
+        IATA.trim() === "" ||
+        streetAddress.trim() === "" ||
+        city.trim() === "" ||
+        stateProvince.trim() === "" ||
+        postal === 0 ||
+        billingStreetAddress.trim() === "" ||
+        billingCity.trim() === "" ||
+        billingStateProvince.trim() === "" ||
+        billingPostal === 0 ||
+        taxID.trim() === "" ||
+        industry.trim() === "" ||
+        marketSegment.trim() === "" ||
+        sourceOfBusiness.trim() === "" ||
+        trackCode.trim() === "" ||
+        reasonForStay.trim() === "" ||
+        geographic.trim() === "";
       console.log("action add", props.action);
-      console.log('_IsRequired', _IsRequired)
+      console.log("_IsRequired", _IsRequired);
       if (_IsRequired == false) {
         setIsRequired(false);
-        await handleAddDatatoDatabase();
+        await handleAddDataToDatabase();
       } else {
         setIsRequired(true);
-        console.log("isRequired", isRequired)
+        console.log("isRequired", isRequired);
         props.setAction("none");
-        updateList()
+        updateList();
       }
     } else if (props.action == "edit") {
-      console.log(nameOne,
-        Abbreviation,
-        GuaranteeMethodCode,
-        iata,
-        StreetAddress,
-        City,
-        State,
-        Postal,
-        BStreetAddress,
-        BCity,
-        BState,
-        BPostal,
-        TaxID,
-        CreditCardNumber,
-        OutstandingAmount,
-        OutstandingAmount,
-        FloatingDepositionAmount,
+      console.log(
+        nameOne,
+        abbreviation,
+        guaranteeMethodCode,
+        IATA,
+        streetAddress,
+        city,
+        stateProvince,
+        postal,
+        billingStreetAddress,
+        billingCity,
+        billingStateProvince,
+        billingPostal,
+        taxID,
+        creditCardNumber,
+        outstandingAmount,
+        floatingDepositionAmount,
         ARNumber,
-        Industry,
-        MarketSegment,
-        SourceOfBusiness,
-        TrackCode,
-        ReasonForStay,
-        Geographic)
-      console.log(nameOne === null,
-        Abbreviation === null,
-        GuaranteeMethodCode === null,
-        iata === null,
-        StreetAddress === null,
-        City === null,
-        State === null,
-        Postal === null,
-        BStreetAddress === null,
-        BCity === null,
-        BState === null,
-        BPostal === null,
-        TaxID === null,
-        Industry === null,
-        MarketSegment === null,
-        SourceOfBusiness === null,
-        TrackCode === null,
-        ReasonForStay === null,
-        Geographic === null,
+        industry,
+        marketSegment,
+        sourceOfBusiness,
+        trackCode,
+        reasonForStay,
+        geographic
+      );
+      console.log(
+        nameOne === null,
+        abbreviation === null,
+        guaranteeMethodCode === null,
+        IATA === null,
+        streetAddress === null,
+        city === null,
+        stateProvince === null,
+        postal === null,
+        billingStreetAddress === null,
+        billingCity === null,
+        billingStateProvince === null,
+        billingPostal === null,
+        taxID === null,
+        industry === null,
+        marketSegment === null,
+        sourceOfBusiness === null,
+        trackCode === null,
+        reasonForStay === null,
+        geographic === null,
         nameOne.trim() === "",
-        Abbreviation.trim() === "",
-        GuaranteeMethodCode.trim() === "",
-        iata.trim() === "",
-        StreetAddress.trim() === "",
-        City.trim() === "",
-        State.trim() === "",
-        Postal === 0,
-        BStreetAddress.trim() === "",
-        BCity.trim() === "",
-        BState.trim() === "",
-        BPostal === 0,
-        TaxID.trim() === "",
-        Industry.trim() === "",
-        MarketSegment.trim() === "",
-        SourceOfBusiness.trim() === "",
-        TrackCode.trim() === "",
-        ReasonForStay.trim() === "",
-        Geographic.trim() === "")
+        abbreviation.trim() === "",
+        guaranteeMethodCode.trim() === "",
+        IATA.trim() === "",
+        streetAddress.trim() === "",
+        city.trim() === "",
+        stateProvince.trim() === "",
+        postal === 0,
+        billingStreetAddress.trim() === "",
+        billingCity.trim() === "",
+        billingStateProvince.trim() === "",
+        billingPostal === 0,
+        taxID.trim() === "",
+        industry.trim() === "",
+        marketSegment.trim() === "",
+        sourceOfBusiness.trim() === "",
+        trackCode.trim() === "",
+        reasonForStay.trim() === "",
+        geographic.trim() === ""
+      );
 
-      let _IsRequired = nameOne === null ||
-        Abbreviation === null ||
-        GuaranteeMethodCode === null ||
-        iata === null ||
-        StreetAddress === null ||
-        City === null ||
-        State === null ||
-        Postal === null ||
-        BStreetAddress === null ||
-        BCity === null ||
-        BState === null ||
-        BPostal === null ||
-        TaxID === null ||
-        Industry === null ||
-        MarketSegment === null ||
-        SourceOfBusiness === null ||
-        TrackCode === null ||
-        ReasonForStay === null ||
-        Geographic === null ||
+      let _IsRequired =
+        nameOne === null ||
+        abbreviation === null ||
+        guaranteeMethodCode === null ||
+        IATA === null ||
+        streetAddress === null ||
+        city === null ||
+        stateProvince === null ||
+        postal === null ||
+        billingStreetAddress === null ||
+        billingCity === null ||
+        billingStateProvince === null ||
+        billingPostal === null ||
+        taxID === null ||
+        industry === null ||
+        marketSegment === null ||
+        sourceOfBusiness === null ||
+        trackCode === null ||
+        reasonForStay === null ||
+        geographic === null ||
         nameOne.trim() === "" ||
-        Abbreviation.trim() === "" ||
-        GuaranteeMethodCode.trim() === "" ||
-        iata.trim() === "" ||
-        StreetAddress.trim() === "" ||
-        City.trim() === "" ||
-        State.trim() === "" ||
-        Postal === 0 ||
-        BStreetAddress.trim() === "" ||
-        BCity.trim() === "" ||
-        BState.trim() === "" ||
-        BPostal === 0 ||
-        TaxID.trim() === "" ||
-        Industry.trim() === "" ||
-        MarketSegment.trim() === "" ||
-        SourceOfBusiness.trim() === "" ||
-        TrackCode.trim() === "" ||
-        ReasonForStay.trim() === "" ||
-        Geographic.trim() === "";
+        abbreviation.trim() === "" ||
+        guaranteeMethodCode.trim() === "" ||
+        IATA.trim() === "" ||
+        streetAddress.trim() === "" ||
+        city.trim() === "" ||
+        stateProvince.trim() === "" ||
+        postal === 0 ||
+        billingStreetAddress.trim() === "" ||
+        billingCity.trim() === "" ||
+        billingStateProvince.trim() === "" ||
+        billingPostal === 0 ||
+        taxID.trim() === "" ||
+        industry.trim() === "" ||
+        marketSegment.trim() === "" ||
+        sourceOfBusiness.trim() === "" ||
+        trackCode.trim() === "" ||
+        reasonForStay.trim() === "" ||
+        geographic.trim() === "";
       console.log("action add", props.action);
-      console.log('_IsRequired', _IsRequired)
+      console.log("_IsRequired", _IsRequired);
       if (_IsRequired == false) {
-        await handleAddDataEdittoDatabase();
+        await handleAddDataEditToDatabase();
 
         console.log("action edit", props.action);
       } else {
         setIsRequired(true);
-        console.log("isRequired", isRequired)
+        console.log("isRequired", isRequired);
         props.setAction("none");
-        updateList()
+        updateList();
       }
-
     }
   }, [props.action]);
-
-  const handleData = (e) => { };
 
   const handleExpend = (id, expend) => {
     let index = list.findIndex((x) => x.id === id);
@@ -1950,16 +1736,11 @@ export const ProfileCompany = (props) => {
     else {
       let new_data = list[index];
       new_data.expend = !expend;
-      setList([
-        ...list.slice(0, index),
-        new_data,
-        ...list.slice(index + 1),
-      ]);
+      setList([...list.slice(0, index), new_data, ...list.slice(index + 1)]);
     }
   };
 
-  const handleAddComunication = async (id) => {
-
+  const handleAddCommunication = async (id) => {
     let index = list.findIndex((x) => x.id === id);
     if (index === -1) return;
     else {
@@ -1971,7 +1752,7 @@ export const ProfileCompany = (props) => {
       );
       setCommunicationDatas((prev) => ({
         ...prev,
-        [newid + 1]: optioncommunication[0].label,
+        [newid + 1]: optionCommunication[0].label,
       }));
       console.log("communicationDatas:", communicationDatas);
       comunication.content.push({
@@ -1982,7 +1763,7 @@ export const ProfileCompany = (props) => {
         xs: 6,
         select: {
           status: "option",
-          data: optioncommunication.map((option) => (
+          data: optionCommunication.map((option) => (
             <option
               style={headerTableStyle}
               key={option.value}
@@ -2048,7 +1829,7 @@ export const ProfileCompany = (props) => {
       setRelationDatas((prev) => ({
         ...prev,
         [newid + 1]: "",
-        [newid + 2]: optionrelation[0].label,
+        [newid + 2]: optionRelation[0].label,
         [newid + 3]: "",
       }));
 
@@ -2060,7 +1841,7 @@ export const ProfileCompany = (props) => {
         xs: 6,
         select: {
           status: "option",
-          data: optionrelation.map((option) => (
+          data: optionRelation.map((option) => (
             <option
               style={headerTableStyle}
               key={option.value}
@@ -2120,11 +1901,7 @@ export const ProfileCompany = (props) => {
           data: "+ More Relation",
         },
       });
-      setList([
-        ...list.slice(0, index),
-        relation,
-        ...list.slice(index + 1),
-      ]);
+      setList([...list.slice(0, index), relation, ...list.slice(index + 1)]);
 
       console.log("relationDatas:", relationDatas);
     }
@@ -2151,22 +1928,6 @@ export const ProfileCompany = (props) => {
                 backgroundColor: themeState.paper,
               }}
             >
-              {/* <Container maxWidth="xl">
-                <Grid container alignItems="center">
-                  <Grid item style={{ flexGrow: 1 }}>
-                    {" "}
-                  </Grid>
-                  <Grid item style={{ paddingRight: 20 }}>
-                    <FormControlLabel
-                      value="start"
-                      control={<Checkbox color="primary" />}
-                      label="Negotiated Rates Only"
-                      labelPlacement="start"
-                    />
-                  </Grid>
-                </Grid>
-              </Container> */}
-
               {errorMessage ? (
                 <div
                   style={{
@@ -2227,12 +1988,6 @@ export const ProfileCompany = (props) => {
                                 xs={detail.xs}
                               >
                                 {detail.select.status === "check" ? (
-                                  // <FormControlLabel
-                                  //   // value="start"
-                                  //   control={<Checkbox color="primary" />}
-                                  //   label={detail.label}
-                                  //   labelPlacement="end"
-                                  // />
                                   <span>
                                     {detail.select.defaultvalue === true ? (
                                       <FormControlLabel
@@ -2270,13 +2025,6 @@ export const ProfileCompany = (props) => {
                                 ) : detail.select.status === "status" ? (
                                   <div style={{ paddingTop: 10 }}>
                                     <a>Status</a>
-                                    {/* <Switch
-                                      defaultChecked={Status}
-                                      value={Status}
-                                      color="primary"
-                                      onChange={(e) => changeSwitch(e)}
-                                    /> */}
-
                                     {detail.select.defaultvalue === true ? (
                                       <Switch
                                         defaultChecked={true}
@@ -2303,7 +2051,7 @@ export const ProfileCompany = (props) => {
                                     }}
                                     value={detail.select.data}
                                     onClick={() =>
-                                      handleAddComunication(item.id)
+                                      handleAddCommunication(item.id)
                                     }
                                   >
                                     {detail.select.data}
@@ -2349,41 +2097,22 @@ export const ProfileCompany = (props) => {
                                     onFocus={false}
                                   />
                                 ) : detail.select.status === "fill" ? (
-                                  // <TextField
-                                  //   className={classes.root}
-                                  //   label={detail.label}
-                                  //   variant="outlined"
-                                  //   InputProps={{
-                                  //     style: headerTableStyle,
-                                  //   }}
-                                  //   InputLabelProps={{
-                                  //     style: { color: "#AAAAAA" },
-                                  //   }}
-                                  //   fullWidth
-                                  //   defaultValue={detail.select.defaultvalue}
-                                  //   onChange={detail.handle}
-                                  // />
-
-
                                   [
                                     isRequired ? (
-
                                       <TextField
                                         error={
                                           detail.dataCheck == null ||
-                                            detail.dataCheck === "" ||
-                                            detail.dataCheck === " "
+                                          detail.dataCheck === "" ||
+                                          detail.dataCheck === " "
                                             ? true
                                             : false
                                         }
-                                        // error={detail.dataCheck}
                                         helperText={
                                           detail.dataCheck == null ||
-                                            detail.dataCheck === ""
+                                          detail.dataCheck === ""
                                             ? `${detail.label} is Required`
                                             : false
                                         }
-                                        // required={true}
                                         type={detail.dataType}
                                         className={classes.root}
                                         label={detail.label}
@@ -2399,26 +2128,10 @@ export const ProfileCompany = (props) => {
                                         defaultValue={
                                           detail.select.defaultvalue
                                         }
-                                        onChange={detail.handle}
-                                      // onBlur={handleValidation(detail.dataCheck)}
+                                        onBlur={detail.handle}
                                       />
                                     ) : (
                                       <TextField
-                                        // error={
-                                        //   detail.dataCheck == null ||
-                                        //   detail.dataCheck === "" ||
-                                        //   detail.dataCheck === " "
-                                        //     ? true
-                                        //     : false
-                                        // }
-                                        // // error={detail.dataCheck}
-                                        // helperText={
-                                        //   detail.dataCheck == null ||
-                                        //   detail.dataCheck === ""
-                                        //     ? `${detail.label} is Required`
-                                        //     : false
-                                        // }
-                                        // required={true}
                                         type={detail.dataType}
                                         className={classes.root}
                                         label={detail.label}
@@ -2434,8 +2147,7 @@ export const ProfileCompany = (props) => {
                                         defaultValue={
                                           detail.select.defaultvalue
                                         }
-                                        onChange={detail.handle}
-                                      // onBlur={handleValidation(detail.dataCheck)}
+                                        onBlur={detail.handle}
                                       />
                                     ),
                                   ]

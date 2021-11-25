@@ -4,13 +4,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-
-
 import KingBedIcon from '@material-ui/icons/KingBed';
 import ImageAspectRatioIcon from '@material-ui/icons/ImageAspectRatio';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
@@ -19,7 +15,6 @@ import NightsStayIcon from '@material-ui/icons/NightsStay';
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import BuildIcon from '@material-ui/icons/Build';
 import SettingsIcon from '@material-ui/icons/Settings';
-
 
 export const mainListItems_en = (
   <div >

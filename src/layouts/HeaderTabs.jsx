@@ -13,11 +13,10 @@ import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import NightsStayIcon from "@material-ui/icons/NightsStay";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { IconButton } from "@material-ui/core";
+import { ReactReduxContext, useDispatch, useSelector } from "react-redux";
+
 // import FrontDesk from "../components/Dashboard/FrontDesk";
-import ReservationPage from "../pages/ReservationPage";
-
-import { ReactReduxContext ,useDispatch,useSelector} from "react-redux";
-
+// import ReservationPage from "../pages/ReservationPage";
 import { EDIT_COMPONENT } from "../middleware/action";
 import { indexTab } from "../middleware/action";
 import { useHistory } from "react-router-dom";
@@ -76,10 +75,9 @@ export default function HeaderTabs() {
   const [colorMode, setColorMode] = React.useState("#FFFFFF");
   const { store } = useContext(ReactReduxContext);
 
-  const indextTab = useSelector((state) => state.reducer.indextTab.indextTab)
+  const indextTab = useSelector((state) => state.reducer.indextTab.indextTab);
   const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
-
 
   const compString = sessionStorage.getItem("comp");
   const comps = JSON.parse(compString);
@@ -90,16 +88,13 @@ export default function HeaderTabs() {
   const front = true;
   const setting = true;
 
-
   React.useEffect(() => {
-    setValue(indextTab)
-  },[indextTab])
+    setValue(indextTab);
+  }, [indextTab]);
 
   // React.useEffect(() => {
   //   handleChange(0,0)
   // },[])
- 
-
 
   function handleComponentState(comp) {
     const comlower = comp.toLowerCase();
@@ -126,12 +121,12 @@ export default function HeaderTabs() {
 
   const handleChange = (event, newValue) => {
     // console.log("newValue", newValue);
-  
-    setValue(newValue)
-    dispatch(indexTab(newValue))
+
+    setValue(newValue);
+    dispatch(indexTab(newValue));
     if (newValue === 0) handleComponentState("FrontDesk");
-    else if(newValue === 1) handleComponentState("Reservation");
-    else if(newValue === 3) handleComponentState("Night Auditor");
+    else if (newValue === 1) handleComponentState("Reservation");
+    else if (newValue === 3) handleComponentState("Night Auditor");
     // console.log("st", store.getState().reducer.componentState);
   };
 
@@ -163,7 +158,6 @@ export default function HeaderTabs() {
             variant="scrollable"
             scrollButtons="auto"
             TabIndicatorProps={{ style: { backgroundColor: wordColor } }}
-            
           >
             {front ? (
               <Tab
@@ -205,7 +199,6 @@ export default function HeaderTabs() {
           index={0 - (front ? 0 : 1)}
         >
           {/* <FrontDesk /> */}
-          
         </TabPanel>
       ) : null}
       <TabPanel

@@ -1,5 +1,9 @@
 import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { Breadcrumbs } from "@material-ui/core";
+import { ReactReduxContext, useSelector } from "react-redux";
+import { blue } from "@material-ui/core/colors";
 import TreeView from "@material-ui/lab/TreeView";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
@@ -26,25 +30,21 @@ import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-import { Breadcrumbs } from "@material-ui/core";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import LockIcon from "@material-ui/icons/Https";
+
 import RoleManagement from "./RoleManagement";
 import UserManagement from "./UserManagement";
 import RoomManagement from "./RoomManagement";
 import DeviceManager from "./DeviceManager";
 import ComputerPrinter from "./ComputerPrinter";
-import { ReactReduxContext, useSelector } from "react-redux";
-import LockIcon from "@material-ui/icons/Https";
-import { blue } from "@material-ui/core/colors";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
-import { useHistory } from "react-router-dom";
 import {
-  updateconfiguration,
+  updateConfiguration,
   getConfigurationByPropertyCode,
 } from "../../services/user.service";
+
 const useStyles = makeStyles({
   root: (themeState) => ({
     flexGrow: 1,
@@ -82,17 +82,6 @@ const useStyles = makeStyles({
   },
 });
 
-const language = [
-  {
-    value: "TH",
-    label: "TH",
-  },
-  {
-    value: "EN",
-    label: "EN",
-  },
-];
-
 export default function Configuration() {
   const history = useHistory();
   const { store } = useContext(ReactReduxContext);
@@ -105,16 +94,17 @@ export default function Configuration() {
   const [addChildid, setAddChuldid] = React.useState(null);
   const [addChildName, setAddChuldName] = React.useState("");
   const [addChildNameLang, setAddChuldNameLang] = React.useState("");
-  const [row, setRow] = React.useState(null);
   const [code, setCode] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [addChildValue, setAddChuldValue] = React.useState("");
-  const testa = "testa2";
   const [page, setPage] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState(false);
   const [errorParameter, setErrorParameter] = React.useState(null);
   const [errorMessageDu, setErrorMessageDu] = React.useState(false);
   const [errorParameterDu, setErrorParameterDu] = React.useState(null);
+
+  // const [row, setRow] = React.useState(null);
+  // const testa = "testa2";
 
   const [data, setData] = React.useState([
     {
@@ -347,8 +337,9 @@ export default function Configuration() {
       ],
     },
   ]);
-  const updateproperty = useSelector((state) => state.reducer.property);
-  const [property, setProperty] = React.useState(updateproperty);
+
+  const updateProperty = useSelector((state) => state.reducer.property);
+  const [property, setProperty] = React.useState(updateProperty);
 
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
@@ -383,13 +374,12 @@ export default function Configuration() {
     console.log("useEffect");
     let configdata = await getConfigurationByPropertyCode(
       sessionStorage.getItem("auth"),
-      updateproperty
+      updateProperty
     );
     setData(configdata.content[configdata.content.length - 1]);
-    setProperty((prev) => updateproperty);
-  }, [updateproperty]);
+    setProperty((prev) => updateProperty);
+  }, [updateProperty]);
 
-  // const [store.getState().reducer.configState, setstore.getState().reducer.configState] = React.useState("Configuration");
   const configState = useSelector((state) => state.reducer.configState);
   const lang = useSelector((state) => state.reducer.lang);
   const handleLanguageDialog = (event) => {
@@ -403,7 +393,6 @@ export default function Configuration() {
     // console.log("name",event.target.id.split("-")[1])
     setAddChuldid(id);
     setAddChuldName(name);
-
     setAddchild(event.target);
   };
 
@@ -474,9 +463,9 @@ export default function Configuration() {
     setDialogEdit(false);
   };
 
-  const handleChangeAdd = (event) => {
-    setAddChuldValue(event.target.value);
-  };
+  // const handleChangeAdd = (event) => {
+  //   setAddChuldValue(event.target.value);
+  // };
 
   const handleChangeValue = (event) => {
     setAddChuldValue(event.target.value);
@@ -548,13 +537,13 @@ export default function Configuration() {
   const handleDelete = async (id) => {
     console.log("deleteid", id);
     await prune(data, id);
-    let updateconfig = await updateconfiguration(
+    let updateConfig = await updateConfiguration(
       sessionStorage.getItem("auth"),
       { configuration: data, propertycode: property }
     );
   };
 
-  const maxchildid = async (array, parentid) => {
+  const maxChildID = async (array, parentid) => {
     let max = 0;
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
@@ -565,13 +554,13 @@ export default function Configuration() {
     return max;
   };
 
-  const runningid = async (array, label) => {
+  const runningID = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       console.log(obj.RefNo, label);
       if (obj.RefNo === label) {
         if (obj.children) {
-          let newmaxid = await maxchildid(obj.children, obj.RefNo);
+          let newmaxid = await maxChildID(obj.children, obj.RefNo);
           return obj.RefNo + "." + (newmaxid + 1);
         } else {
           console.log("label", label);
@@ -579,7 +568,7 @@ export default function Configuration() {
           return label + ".1";
         }
       } else if (obj.children) {
-        let a = await runningid(obj.children, label);
+        let a = await runningID(obj.children, label);
         if (a != undefined) return a;
       }
     }
@@ -651,35 +640,10 @@ export default function Configuration() {
               },
             ];
           }
-
-          // obj.children = [
-          //   ...obj.children,
-          //   {
-          //     RefNo: newid,
-          //     code: code,
-          //     name_en: name,
-          //     description: description,
-          //     createdate:
-          //       year +
-          //       "-" +
-          //       month +
-          //       "-" +
-          //       day +
-          //       " " +
-          //       hours +
-          //       ":" +
-          //       minutes +
-          //       ":" +
-          //       seconds,
-          //     master: false,
-          //     addchild: false,
-          //   },
-          // ];
         } else {
           console.log("44:");
           //   let isreadydata = null;
           //   for (let c = 0; c < obj.children.length; c++) {
-
           //      if( obj.children[c].code === name){
           //          console.log("obj.children[c].code:",obj.children[c].code);
           //         //  setErrorParameter(`Dupicate ${obj.children[c].code}` );
@@ -689,7 +653,6 @@ export default function Configuration() {
           //       isreadydata = obj.children[c].name_en;
           //      }
           //   }
-
           //   if(!isreadydata){
           //   obj.children = [
           //     {
@@ -758,7 +721,7 @@ export default function Configuration() {
     } else {
       //   let id = addChildid;
       //   console.log("addparentid", id);
-      //   let newid = await runningid(data, id);
+      //   let newid = await runningID(data, id);
       //   console.log("newid", newid);
       //   await adding(data, id, addChildValue, newid);
       //   console.log("added", data);
@@ -768,7 +731,7 @@ export default function Configuration() {
 
       // }else{
       //   setErrorMessage(false);
-      //   let updateconfig = await updateconfiguration(
+      //   let updateConfig = await updateConfiguration(
       //     sessionStorage.getItem("auth"),
       //     { configuration: data, propertycode: property }
       //   );
@@ -778,7 +741,7 @@ export default function Configuration() {
 
       let id = addChildid;
       console.log("addparentid", id);
-      let newid = await runningid(data, id);
+      let newid = await runningID(data, id);
       console.log("newid", newid);
       await adding(data, id, addChildValue, newid);
       console.log("added", data);
@@ -790,7 +753,7 @@ export default function Configuration() {
       };
 
       setErrorMessage(false);
-      let updateconfig = await updateconfiguration(
+      let updateConfig = await updateConfiguration(
         sessionStorage.getItem("auth"),
         {
           configuration: data,
@@ -800,11 +763,11 @@ export default function Configuration() {
       );
       // setData(data)
 
-      if (updateconfig.status == "2000") {
+      if (updateConfig.status == "2000") {
         setDialogAdd(false);
-      } else if (updateconfig.status == "1000") {
+      } else if (updateConfig.status == "1000") {
         setErrorMessageDu(true);
-        const dupic = updateconfig.msg;
+        const dupic = updateConfig.msg;
         setErrorParameterDu(dupic);
       }
     }
@@ -876,7 +839,7 @@ export default function Configuration() {
       setErrorMessage(false);
       let id = addChildid;
       console.log("editparentid", id);
-      // let newid = await runningid(data, id)
+      // let newid = await runningID(data, id)
       // console.log("newid", newid)
       await editing(data, id, addChildValue);
       console.log(data);
@@ -889,7 +852,7 @@ export default function Configuration() {
 
       console.log("checkdupli:", checkdupli);
 
-      let updateconfig = await updateconfiguration(
+      let updateConfig = await updateConfiguration(
         sessionStorage.getItem("auth"),
         {
           configuration: data,
@@ -899,11 +862,11 @@ export default function Configuration() {
       );
       // setData(data)
 
-      if (updateconfig.status == "2000") {
+      if (updateConfig.status == "2000") {
         setDialogEdit(false);
-      } else if (updateconfig.status == "1000") {
+      } else if (updateConfig.status == "1000") {
         setErrorMessageDu(true);
-        const dupic = updateconfig.msg;
+        const dupic = updateConfig.msg;
         setErrorParameterDu(dupic);
       }
     }
@@ -938,7 +901,7 @@ export default function Configuration() {
       setErrorMessage(false);
       let id = addChildid;
       console.log("editparentid", id);
-      // let newid = await runningid(data, id)
+      // let newid = await runningID(data, id)
       // console.log("newid", newid)
       await editingLang(data, id, addChildValue);
       console.log(data);
@@ -1056,13 +1019,7 @@ export default function Configuration() {
       {configState == "Configuration" ? (
         <Container maxWidth="xl">
           <React.Fragment>
-            <Grid
-              container
-              //   direction="row"
-              //   justifyContent="flex-start"
-              //   alignItems="center"
-              style={{ padding: 20 }}
-            >
+            <Grid container style={{ padding: 20 }}>
               <Grid item style={{ flexGrow: 1 }}>
                 <Breadcrumbs
                   separator={
@@ -1162,8 +1119,6 @@ export default function Configuration() {
                           Page
                         </InputLabel>
                         <Select
-                          //   labelId="demo-simple-select-outlined-label"
-                          //   id="demo-simple-select-outlined"
                           value={page}
                           onChange={handleChangePage}
                           label="Page"
@@ -1239,24 +1194,6 @@ export default function Configuration() {
           }}
         >
           <Container maxWidth="xl" disableGutters>
-            {/* <TextField
-                        autoFocus
-                        helperText={
-                          <Grid
-                            container
-                            justifyContent="flex-end"
-                            alignItems="center"
-                          >
-                            <Typography variant="title1" color="initial">
-                              3/50
-                            </Typography>
-                          </Grid>
-                        }
-                        id="outlined-basic"
-                        label="Parent"
-                        variant="outlined"
-                        fullWidth
-                      /> */}
             <h2>Parent Name: {addChildName}</h2>
             <Grid item style={{ paddingLeft: 20, paddingTop: 18 }}>
               <TextField

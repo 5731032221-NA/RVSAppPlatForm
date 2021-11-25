@@ -60,7 +60,7 @@ import SettingsIcon from "@material-ui/icons/PlayForWork";
 // import ProfilePageIndividual from "../components/ProfileIndividual";
 // import ProfilePageTravelAgent from "../components/ProfileTravelAgent";
 // import ProfilePageCompany from "../components/ProfileCompany";
-import ButtomBar from "../layouts/ButtomBar";
+import ButtomBar from "../layouts/BottomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
 import RightBar from "../layouts/RightBar";
 

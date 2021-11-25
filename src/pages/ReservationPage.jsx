@@ -20,11 +20,11 @@ import { blue } from "@material-ui/core/colors";
 
 import { ReactReduxContext, useSelector } from "react-redux";
 import {
-  getreservationroom,
-  postreservationroom,
-  getreservationroombyid,
-  updatereservationroom,
-  deletereservationroom,
+  getReservationRoom,
+  postReservationRoom,
+  getReservationRoomByID,
+  updateReservationRoom,
+  deleteReservationRoom,
 } from "../services/reservationRoom.service";
 import {
   DatePicker,
@@ -153,7 +153,7 @@ export const ReservationPage = (props) => {
   };
 
   const reservationRoom = async () => {
-    const data = await getreservationroom(sessionStorage.getItem("auth"));
+    const data = await getReservationRoom(sessionStorage.getItem("auth"));
     setDataEvent(data.content[0]);
   };
 
@@ -232,7 +232,7 @@ export const ReservationPage = (props) => {
         setErrorMessage(true);
         setErrorParameter("Room Number is required");
       } else {
-        const postdate = await postreservationroom(
+        const postdate = await postReservationRoom(
           sessionStorage.getItem("auth"),
           {
             roomno: roomno,
@@ -260,7 +260,7 @@ export const ReservationPage = (props) => {
         }
       }
 
-      const data = await getreservationroom(sessionStorage.getItem("auth"));
+      const data = await getReservationRoom(sessionStorage.getItem("auth"));
       // console.log("data", data);
       let datedata = [];
       data.content[data.content.length - 1].forEach((element) =>

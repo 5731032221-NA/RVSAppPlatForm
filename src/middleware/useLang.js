@@ -10,19 +10,12 @@ export default function useLang() {
             return "en"
         }
     };
-
-
-
     const [Lang, setLang] = useState(getLang());
-
     const saveLang = LangString => {
         localStorage.setItem('lang', LangString);
         // console.log("setlang", LangString)
         setLang(LangString);
-
-
     };
-
     return {
         setLang: saveLang,
         Lang

@@ -22,64 +22,64 @@ import Menu from "@material-ui/core/Menu";
 
 const drawerWidth = 220;
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1
+    zIndex: theme.zIndex.drawer + 1,
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
     marginLeft: 12,
-    marginRight: 36
+    marginRight: 36,
   },
   menuButtonIconClosed: {
     transition: theme.transitions.create(["transform"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
-    transform: "rotate(0deg)"
+    transform: "rotate(0deg)",
   },
   menuButtonIconOpen: {
     transition: theme.transitions.create(["transform"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
-    transform: "rotate(180deg)"
+    transform: "rotate(180deg)",
   },
   hide: {
-    display: "none"
+    display: "none",
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: "nowrap"
+    whiteSpace: "nowrap",
   },
   drawerOpen: {
     width: drawerWidth,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   drawerClose: {
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
     width: theme.spacing.unit * 7 + 1,
     [theme.breakpoints.up("sm")]: {
-      width: theme.spacing.unit * 9 + 1
-    }
+      width: theme.spacing.unit * 9 + 1,
+    },
   },
   toolbar: {
     display: "flex",
@@ -87,21 +87,21 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     justifyContent: "flex-end",
     padding: "0 8px",
-    ...theme.mixins.toolbar
+    ...theme.mixins.toolbar,
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing.unit * 3,
   },
   grow: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 });
 
 class Leftbar extends React.Component {
   state = {
     open: false,
-    anchorEl: null
+    anchorEl: null,
   };
 
   handleDrawerOpen = () => {
@@ -112,7 +112,7 @@ class Leftbar extends React.Component {
     this.setState({ open: false });
   };
 
-  handleMenu = event => {
+  handleMenu = (event) => {
     this.setState({ anchorEl: event.currentTarget });
   };
   handleClose = () => {
@@ -120,7 +120,7 @@ class Leftbar extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     return (
@@ -130,7 +130,7 @@ class Leftbar extends React.Component {
           position="fixed"
           className={classes.appBar}
           fooJon={classNames(classes.appBar, {
-            [classes.appBarShift]: this.state.open
+            [classes.appBarShift]: this.state.open,
           })}
         >
           <Toolbar disableGutters={true}>
@@ -144,7 +144,7 @@ class Leftbar extends React.Component {
                 classes={{
                   root: this.state.open
                     ? classes.menuButtonIconOpen
-                    : classes.menuButtonIconClosed
+                    : classes.menuButtonIconClosed,
                 }}
               />
             </IconButton>
@@ -170,11 +170,11 @@ class Leftbar extends React.Component {
                 anchorEl={anchorEl}
                 anchorOrigin={{
                   vertical: "top",
-                  horizontal: "right"
+                  horizontal: "right",
                 }}
                 transformOrigin={{
                   vertical: "top",
-                  horizontal: "right"
+                  horizontal: "right",
                 }}
                 open={open}
                 onClose={this.handleClose}
@@ -189,13 +189,13 @@ class Leftbar extends React.Component {
           variant="permanent"
           className={classNames(classes.drawer, {
             [classes.drawerOpen]: this.state.open,
-            [classes.drawerClose]: !this.state.open
+            [classes.drawerClose]: !this.state.open,
           })}
           classes={{
             paper: classNames({
               [classes.drawerOpen]: this.state.open,
-              [classes.drawerClose]: !this.state.open
-            })
+              [classes.drawerClose]: !this.state.open,
+            }),
           }}
           open={this.state.open}
         >
@@ -222,11 +222,6 @@ class Leftbar extends React.Component {
             ))}
           </List>
         </Drawer>
-        {/* <main className={classes.content}>
-          <div className={classes.toolbar} />
-
-          
-        </main> */}
       </div>
     );
   }
@@ -234,7 +229,7 @@ class Leftbar extends React.Component {
 
 Leftbar.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(Leftbar);

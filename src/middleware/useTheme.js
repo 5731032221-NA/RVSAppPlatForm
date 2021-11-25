@@ -11,20 +11,12 @@ export default function useTheme() {
         }
 
     };
-
-
-
     const [Theme, setTheme] = useState(getTheme());
-
     const saveTheme = ThemeString => {
         localStorage.setItem('theme', ThemeString);
         // console.log("setTheme", ThemeString)
         setTheme(ThemeString);
-
-
-
     };
-
     return {
         setTheme: saveTheme,
         Theme

@@ -1,24 +1,14 @@
-import { GET_USER_LIST } from "./action";
 import { EDIT_LANG } from "./action";
 import { EDIT_AUTHORIZATION } from "./action";
 import { EDIT_PROPERTYS } from "./action";
-
 import { EDIT_COLOR } from "./action";
-
 import { EDIT_COMPWIDTH } from "./action";
-
 import { EDIT_COMPONENT } from "./action";
-
 import { EDIT_DARKMODE } from "./action";
-
 import { EDIT_PROPERTY } from "./action";
-
 import { EDIT_CONFIGSTATE } from "./action";
-
 import { EDIT_PERMISSION } from "./action";
-
 import { EDIT_INDEXTAB } from "./action";
-
 import { EDIT_REDIRECT_INDIVIDUAL } from "./action";
 
 const initialState = {
@@ -33,7 +23,6 @@ const initialState = {
   componentState: "",
   themeBackground: "#FFFFFF",
   fontColor: "black",
-  //   darkbackgroundColor: "#212121",
   property: "",
   role: "Admin",
   configState: "Configuration",
@@ -101,11 +90,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         lang: action.payload,
       };
-    case GET_USER_LIST:
-      return {
-        ...state,
-        users: action.payload,
-      };
+
     case EDIT_REDIRECT_INDIVIDUAL:
       console.log("redirectToTableIndividual", action.payload);
       return {

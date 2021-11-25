@@ -3,44 +3,53 @@ import "../assets/login.css";
 import "../assets/variable.css";
 import background from "../assets/img/imgbackground.png";
 import backgroundLogo from "../assets/img/imgbackground-logo.png";
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
-import { InputAdornment, TextField, Container, Button, Paper, Grid, Divider } from "@material-ui/core";
-import uuid from 'react-native-uuid';
+import {
+  InputAdornment,
+  TextField,
+  Container,
+  Button,
+  Paper,
+  Grid,
+  Divider,
+} from "@material-ui/core";
+import uuid from "react-native-uuid";
 import Dialog from "@material-ui/core/Dialog";
-import { useCookies } from 'react-cookie';
+import { useCookies } from "react-cookie";
 import { blue } from "@material-ui/core/colors";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { getasset } from "../services/assest.service";
+import { getAsset } from "../services/assest.service";
 import PropTypes from "prop-types";
 import auth from "../services/auth.service";
 import propertys from "../services/propertys.service";
 import { makeStyles } from "@material-ui/core/styles";
-import { ReactReduxContext } from 'react-redux';
+import { ReactReduxContext } from "react-redux";
 import { EDIT_AUTHORIZATION } from "../middleware/action";
 import { EDIT_PROPERTYS } from "../middleware/action";
-import Box from '@material-ui/core/Box';
-import {
-  inserthardware
-} from "../services/device.service";
+import Box from "@material-ui/core/Box";
+import { inserthardware } from "../services/device.service";
 
 //Azure AD
 
 import { loginRequest } from "../authConfig";
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
+import {
+  AuthenticatedTemplate,
+  UnauthenticatedTemplate,
+  useMsal,
+} from "@azure/msal-react";
 import { callMsGraph } from "../graph";
-import ADSignin  from "./ADSignin"
+import ADSignin from "./ADSignin";
 
 function handleLogout(instance) {
-  instance.logoutRedirect().catch(e => {
+  instance.logoutRedirect().catch((e) => {
     console.error(e);
   });
 }
-
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -53,16 +62,25 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 100,
   },
   imglogo: {
-    maxHeight: 220, maxWidth: 220,
+    maxHeight: 220,
+    maxWidth: 220,
   },
   formlogin: {
-    marginBottom: 20, padding: 10,
+    marginBottom: 20,
+    padding: 10,
   },
   sysname: {
-    color: "#393737", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 15
+    color: "#393737",
+    fontFamily: "Roboto",
+    fontWeight: "normal",
+    fontSize: 15,
   },
   errorMessage: {
-    color: "#ff0033", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 12, paddingTop: 10,
+    color: "#ff0033",
+    fontFamily: "Roboto",
+    fontWeight: "normal",
+    fontSize: 12,
+    paddingTop: 10,
   },
   root: (themeState) => ({
     "& label.MuiInputLabel-root": {
@@ -103,19 +121,16 @@ export default function Login({ setToken }) {
   const [password, setPassword] = useState("");
   const { instance } = useMsal();
 
-
-
   const [errorUsername, setErrorUsername] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
   const [errorLogin, setErrorLogin] = useState(false);
   const { store } = useContext(ReactReduxContext);
-  const [cookies, setCookie] = useCookies(['name']);
+  const [cookies, setCookie] = useCookies(["name"]);
   const [mainColor, setMainColor] = React.useState("#2D62ED");
-  const pageProperty = '';
+  const pageProperty = "";
   //console.log("log store",store);
   // const [login, setlogin] = useState(false);
   const [file, setFile] = useState("");
-
 
   //Dialog cookie
   const [dialogAdd, setDialogAdd] = React.useState(false);
@@ -154,12 +169,9 @@ export default function Login({ setToken }) {
   const [errorParameterDu, setErrorParameterDu] = useState(null);
 
   const handleLogin = () => {
-
     if (cookies["UUID"] == null) setErrorCookie(true);
-      else setAdSignin(true);
-    
-  }
-
+    else setAdSignin(true);
+  };
 
   const handleInsert = async () => {
     console.log(updateData);
@@ -181,33 +193,29 @@ export default function Login({ setToken }) {
       if (_inserthardware.status == "2000") {
         var d1 = new Date(),
           d2 = new Date(d1);
-        d2.setFullYear(d2.getFullYear() + 100)
-        setCookie("UUID", gen_uuid, { path: '/', expires: d2 });
+        d2.setFullYear(d2.getFullYear() + 100);
+        setCookie("UUID", gen_uuid, { path: "/", expires: d2 });
         setDialogAdd(false);
         window.location.reload(false);
       } else if (_inserthardware.status == "1000") {
         setErrorMessageDu(true);
         const dupic = _inserthardware.msg + " Device Code: " + updateData.code;
-        setErrorParameterDu(dupic)
+        setErrorParameterDu(dupic);
       }
     }
   };
 
   const getLogo = async () => {
-    const resp = await getasset();
+    const resp = await getAsset();
 
     if (resp.status == "2000") {
-
       setFile(resp.content[0].asset);
     }
-
-
-  }
-
+  };
 
   React.useEffect(async () => {
     await getLogo();
-  }, [])
+  }, []);
 
   const [resTooken, setResToken] = useState(null);
   const [errorCookie, setErrorCookie] = useState(false);
@@ -216,22 +224,24 @@ export default function Login({ setToken }) {
   const handleSubmit = async (e) => {
     setErrorCookie(false);
     e.preventDefault();
-    if (username === null || username === '') {
+    if (username === null || username === "") {
       setErrorUsername(true);
     } else {
       setErrorUsername(false);
     }
-    if (password === null || password === '') {
+    if (password === null || password === "") {
       setErrorPassword(true);
     } else {
       setErrorPassword(false);
     }
 
-
     // console.log(
     //   (username === null || username === ''), (password === null || password === ''),
     //   !(username === null || username === '') && !(password === null || password === ''))
-    if (!(username === null || username === '') && !(password === null || password === '')) {
+    if (
+      !(username === null || username === "") &&
+      !(password === null || password === "")
+    ) {
       const token = await auth({
         user: {
           username,
@@ -239,51 +249,67 @@ export default function Login({ setToken }) {
         },
       });
 
-
       if (token.status == 2000) {
-        setResToken(token)
+        setResToken(token);
         // setToken(token);
         var d1 = new Date(),
           d2 = new Date(d1);
-        d2.setFullYear(d2.getFullYear() + 100)
+        d2.setFullYear(d2.getFullYear() + 100);
         // setCookie("UUID" ,  uuid.v4(), { path: '/', expires: d2 });
         setErrorUsername(false);
         setErrorPassword(false);
         if (cookies["UUID"] == null) {
-          if (username == "ADMIN" || username == 'root') {
+          if (username == "ADMIN" || username == "root") {
             setDialogAdd(true);
             setUpdateData({ type: deviceTypes[0].label });
-          }
-          else setErrorCookie(true);
-        }
-        else setToken(token);
+          } else setErrorCookie(true);
+        } else setToken(token);
       } else {
         setErrorLogin(true);
       }
-
     }
   };
   // no-repeat fix; background-size: 100%;
 
   return (
     <div>
-      {adSignin ? <ADSignin setToken={setToken} store={store} /> :
-        <Grid className="Login-component" style={{
-          backgroundImage: `url(${background})`, backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }} >
+      {adSignin ? (
+        <ADSignin setToken={setToken} store={store} />
+      ) : (
+        <Grid
+          className="Login-component"
+          style={{
+            backgroundImage: `url(${background})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
           <Box
             p={2}
             position="absolute"
             top="88%"
             left="89%"
             zIndex="tooltip"
-            style={{ backgroundRepeat: 'no-repeat' }}
+            style={{ backgroundRepeat: "no-repeat" }}
             sx={{ display: { xs: "none", md: "none", lg: "flex" } }}
           >
             {/* <img className={classes.imglogo} src={file} alt="logo" width="150" /> */}
-            {file ? <img src={file} className={classes.imglogo} alt="logo" width="150" /> : <img src="loginlogo.png" className={classes.imglogo} alt="logo" width="150" />}
+            {file ? (
+              <img
+                src={file}
+                className={classes.imglogo}
+                alt="logo"
+                width="150"
+              />
+            ) : (
+              <img
+                src="loginlogo.png"
+                className={classes.imglogo}
+                alt="logo"
+                width="150"
+              />
+            )}
           </Box>
 
           <Container
@@ -295,16 +321,30 @@ export default function Login({ setToken }) {
             <Paper className={classes.paper}>
               <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
               {/* { file ? <img src={file} className={classes.imglogo} alt="logo"  /> : <img src="loginlogo.png" className={classes.imglogo} alt="logo"  />  } */}
-              <h5 className={classes.sysname} >Hotel Property Management System</h5>
+              <h5 className={classes.sysname}>
+                Hotel Property Management System
+              </h5>
               <Divider variant="middle" />
 
-              {errorUsername ? <div className={classes.errorMessage}>Username is required</div> : (errorPassword ? <div className={classes.errorMessage}>Password is required</div> : (errorLogin ? <div className={classes.errorMessage}>Invalid Username or Password</div> : null))}
-              {errorCookie ? <div className={classes.errorMessage}>Device not register. Please contact administrator.</div> : null}
+              {errorUsername ? (
+                <div className={classes.errorMessage}>Username is required</div>
+              ) : errorPassword ? (
+                <div className={classes.errorMessage}>Password is required</div>
+              ) : errorLogin ? (
+                <div className={classes.errorMessage}>
+                  Invalid Username or Password
+                </div>
+              ) : null}
+              {errorCookie ? (
+                <div className={classes.errorMessage}>
+                  Device not register. Please contact administrator.
+                </div>
+              ) : null}
 
               <Grid item className={classes.formlogin}>
                 {/* Validate */}
                 <form autoComplete="on" onSubmit={handleSubmit}>
-                  <Grid item >
+                  <Grid item>
                     <TextField
                       id="username"
                       label=" Username "
@@ -320,8 +360,7 @@ export default function Login({ setToken }) {
                           </InputAdornment>
                         ),
                       }}
-                    >
-                    </TextField>
+                    ></TextField>
                   </Grid>
 
                   <Grid item style={{ marginTop: 0 }}>
@@ -339,10 +378,9 @@ export default function Login({ setToken }) {
                           </InputAdornment>
                         ),
                       }}
-                    >
-                    </TextField>
+                    ></TextField>
                   </Grid>
-                  <Grid item style={{ paddingTop: 25, paddingBottom: 20 }} >
+                  <Grid item style={{ paddingTop: 25, paddingBottom: 20 }}>
                     <Button
                       fullWidth
                       type="submit"
@@ -352,14 +390,17 @@ export default function Login({ setToken }) {
                       LOGIN <ArrowForwardIcon style={{ paddingLeft: 10 }} />
                     </Button>
 
-                    <Grid container style={{ paddingTop: 25, paddingBottom: 10 }}>
-                      <Grid item xs={5} >
+                    <Grid
+                      container
+                      style={{ paddingTop: 25, paddingBottom: 10 }}
+                    >
+                      <Grid item xs={5}>
                         <hr />
                       </Grid>
                       <Grid item xs={2}>
                         <span>or</span>
                       </Grid>
-                      <Grid item xs={5} >
+                      <Grid item xs={5}>
                         <hr />
                       </Grid>
                     </Grid>
@@ -372,17 +413,19 @@ export default function Login({ setToken }) {
                         fullWidth
                         onClick={() => handleLogin()}
                         variant="outlined"
-                        style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }}
+                        style={{
+                          backgroundColor: "#fff",
+                          color: "blue",
+                          borderColor: "blue",
+                        }}
                       >
-                        SIGN IN WITH A DOMAIN <ArrowForwardIcon style={{ paddingLeft: 10 }} />
+                        SIGN IN WITH A DOMAIN{" "}
+                        <ArrowForwardIcon style={{ paddingLeft: 10 }} />
                       </Button>
                     </UnauthenticatedTemplate>
-
                   </Grid>
-
                 </form>
               </Grid>
-
             </Paper>
           </Container>
           {/* ==================== Dialog New Device========================= */}
@@ -398,7 +441,10 @@ export default function Login({ setToken }) {
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <DialogTitle
                   id="form-dialog-title"
-                  style={{ backgroundColor: themeState.paper, color: mainColor }}
+                  style={{
+                    backgroundColor: themeState.paper,
+                    color: mainColor,
+                  }}
                 >
                   Register New Device
                 </DialogTitle>
@@ -479,7 +525,10 @@ export default function Login({ setToken }) {
                           variant="outlined"
                           fullWidth
                           onChange={(e) =>
-                            setUpdateData({ ...updateData, code: e.target.value })
+                            setUpdateData({
+                              ...updateData,
+                              code: e.target.value,
+                            })
                           }
                         />
                       </Grid>
@@ -492,7 +541,10 @@ export default function Login({ setToken }) {
                           variant="outlined"
                           fullWidth
                           onChange={(e) =>
-                            setUpdateData({ ...updateData, name: e.target.value })
+                            setUpdateData({
+                              ...updateData,
+                              name: e.target.value,
+                            })
                           }
                         />
                       </Grid>
@@ -559,11 +611,9 @@ export default function Login({ setToken }) {
               </Button>
             </DialogActions>
           </Dialog>
-
         </Grid>
-      }
+      )}
     </div>
-
   );
 }
 
@@ -574,7 +624,6 @@ Login.propTypes = {
   // setAuthorization:  PropTypes.func.isRequired
 };
 
-
 function ProfileContent() {
   const { instance, accounts } = useMsal();
   const [graphData, setGraphData] = useState(null);
@@ -582,35 +631,64 @@ function ProfileContent() {
   const name = accounts[0] && accounts[0].name;
 
   function RequestProfileData() {
-      const request = {
-          ...loginRequest,
-          account: accounts[0]
-      };
+    const request = {
+      ...loginRequest,
+      account: accounts[0],
+    };
 
-      console.log("request:",request);
+    console.log("request:", request);
 
-      // Silently acquires an access token which is then attached to a request for Microsoft Graph data
-      instance.acquireTokenSilent(request).then((response) => {
-          callMsGraph(response.accessToken).then(response => setGraphData(response));
-      }).catch((e) => {
-          instance.acquireTokenPopup(request).then((response) => {
-              callMsGraph(response.accessToken).then(response => setGraphData(response));
-          });
+    // Silently acquires an access token which is then attached to a request for Microsoft Graph data
+    instance
+      .acquireTokenSilent(request)
+      .then((response) => {
+        callMsGraph(response.accessToken).then((response) =>
+          setGraphData(response)
+        );
+      })
+      .catch((e) => {
+        instance.acquireTokenPopup(request).then((response) => {
+          callMsGraph(response.accessToken).then((response) =>
+            setGraphData(response)
+          );
+        });
       });
   }
 
   return (
-      <>
-          <Button   variant="outlined"
-                  style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }} onClick={() => handleLogout(instance)}>Sign out using Redirect</Button>
-          {/* <h5 className="card-title">Welcome {name}</h5> */}
-          {graphData ? 
-             <Button vvariant="outlined"
-             style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }} >Show Is Console </Button>
-              :
-              <Button vvariant="outlined"
-              style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }} onClick={RequestProfileData}>Request Profile Information</Button>
-          }
-      </>
+    <>
+      <Button
+        variant="outlined"
+        style={{ backgroundColor: "#fff", color: "blue", borderColor: "blue" }}
+        onClick={() => handleLogout(instance)}
+      >
+        Sign out using Redirect
+      </Button>
+      {/* <h5 className="card-title">Welcome {name}</h5> */}
+      {graphData ? (
+        <Button
+          vvariant="outlined"
+          style={{
+            backgroundColor: "#fff",
+            color: "blue",
+            borderColor: "blue",
+          }}
+        >
+          Show Is Console{" "}
+        </Button>
+      ) : (
+        <Button
+          vvariant="outlined"
+          style={{
+            backgroundColor: "#fff",
+            color: "blue",
+            borderColor: "blue",
+          }}
+          onClick={RequestProfileData}
+        >
+          Request Profile Information
+        </Button>
+      )}
+    </>
   );
-};
+}
