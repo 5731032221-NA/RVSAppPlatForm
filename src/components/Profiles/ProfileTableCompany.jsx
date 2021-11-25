@@ -30,6 +30,8 @@ import {
   getCompanyProfileById,
   deleteCompanyProfileById,
 } from "../../services/companyprofile.service";
+import StandardTable from "../Table/StandardTable";
+import Test2 from "../Table/test";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -157,6 +159,39 @@ export const ProfileTableCompany = (props) => {
     firstname: "firstname",
     lastname: "lastname",
   });
+  const [Columns, setColumns] = React.useState([
+    {
+      title: "Name",
+      field: "name",
+      headerStyle: headerTableStyle,
+    },
+    {
+      title: "Abbreviation",
+      field: "abbreviation",
+      headerStyle: headerTableStyle,
+    },
+    {
+      title: "WWW",
+      field: "www",
+      headerStyle: headerTableStyle,
+    },
+    {
+      title: "City/Country",
+      field: "citycountry",
+      headerStyle: headerTableStyle,
+    },
+  
+    {
+      title: "Industry",
+      field: "industrycode",
+      headerStyle: headerTableStyle,
+    },
+    {
+      title: "IATA",
+      field: "iata",
+      headerStyle: headerTableStyle,
+    },
+  ]);
 
   React.useEffect(async () => {
     if (action == "success") {
@@ -410,7 +445,10 @@ export const ProfileTableCompany = (props) => {
             </Grid>
           ) : (
             <Container maxWidth="xl">
-              <MaterialTable
+              {/* <StandardTable Data={companyData} Columns={Columns} FuncEdit={handleEditData} /> */}
+               {/* <StandardTable Data={companyData} Columns={Columns}  /> */}
+               <Test2 Datachile={companyData} />
+              {/* <MaterialTable
                 localization={{
                   toolbar: {
                     searchPlaceholder:
@@ -534,7 +572,7 @@ export const ProfileTableCompany = (props) => {
                     },
                   },
                 ]}
-              />
+              /> */}
             </Container>
           ),
         ]

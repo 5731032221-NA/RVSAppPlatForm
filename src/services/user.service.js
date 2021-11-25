@@ -486,17 +486,6 @@ module.exports = {
     });
   },
 
-  // updateuser: async function (accessToken, req, id) {
-  //   return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/listuser/${id}`, {
-  //     method: "PUT",
-  //     headers: {
-  //       Authorization:  accessToken,
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(req),
-  //   }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
-  // },
-
   deleteuserbyid: async function (accessToken, req, id) {
     return fetch(
       `http://${
@@ -518,5 +507,15 @@ module.exports = {
         window.location.reload(false);
       } else return res.json();
     });
+  },
+
+  getGroup: async function (accessToken) {
+    return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/getADGroups`, {
+      method: "GET",
+      headers: {
+        Authorization:  accessToken,
+        "Content-Type": "application/json",
+      }
+    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
   },
 };
