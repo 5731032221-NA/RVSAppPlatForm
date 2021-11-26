@@ -31,8 +31,7 @@ import {
   getCompanyProfileById,
   deleteCompanyProfileById,
 } from "../../services/companyprofile.service";
-import StandardTable from "../Table/StandardTable";
-import Test2 from "../Table/test";
+
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
