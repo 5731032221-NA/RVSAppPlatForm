@@ -25,6 +25,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import  MaterialTableComponent  from "../Table/MaterialTableComponent";
 import {
   getCompanyProfile,
   getCompanyProfileById,
@@ -451,7 +452,41 @@ export const ProfileTableCompany = (props) => {
             </Grid>
           ) : (
             <Container maxWidth="xl">
-              <StandardTable Data={companyData} Columns={Columns} FuncEdit={handleEditData} FuncDelete={handleDialogDeleteOpen} statusProfile={statusProfile} />
+              <MaterialTableComponent placeHolder="Search by Name, www, City/Country, Industry, IATA" companyData={companyData} handleNewData={handleNewData} handleEditData={handleEditData} handleDialogDeleteOpen={handleDialogDeleteOpen}
+              columns={[
+                {
+                  title: "Name",
+                  field: "name",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "Abbreviation",
+                  field: "abbreviation",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "WWW",
+                  field: "www",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "City/Country",
+                  field: "citycountry",
+                  headerStyle: headerTableStyle,
+                },
+
+                {
+                  title: "Industry",
+                  field: "industrycode",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "IATA",
+                  field: "iata",
+                  headerStyle: headerTableStyle,
+                },
+              ]}/>
+              {/* <StandardTable Data={companyData} Columns={Columns} FuncEdit={handleEditData} FuncDelete={handleDialogDeleteOpen} statusProfile={statusProfile} /> */}
             
                {/* <Test2 Datachile={companyData} /> */}
               {/* <MaterialTable

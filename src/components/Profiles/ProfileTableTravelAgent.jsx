@@ -14,6 +14,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import  MaterialTableComponent  from "../Table/MaterialTableComponent";
 import {
   Container,
   Grid,
@@ -381,132 +382,35 @@ export const ProfileTableTA = (props) => {
               </Grid>
             </Grid>
           ) : (
-            <Container maxWidth="xl">
-              <MaterialTable
-                localization={{
-                  toolbar: {
-                    searchPlaceholder:
-                      "Search by Name, www, City/Country, Industry, IATA",
-                  },
-                  body: {
-                    emptyDataSourceMessage: (
-                      <>
-                        {" "}
-                        <Typography
-                          variant="h1"
-                          align="center"
-                          style={{ fontSize: 25, color: themeState.color }}
-                        >
-                          <ErrorOutlineOutlinedIcon
-                            style={{ fontSize: 100, color: "lightgray" }}
-                          />
-                        </Typography>
-                        <Typography
-                          align="center"
-                          variant="h2"
-                          style={{
-                            fontWeight: 400,
-                            fontSize: 30,
-                            color: "rgb(0 0 0 / 47%)",
-                            marginBottom: 20,
-                          }}
-                        >
-                          No Data Available
-                        </Typography>
-                        <Grid item>
-                          <Button
-                            startIcon={<AddOutlinedIcon />}
-                            size="large"
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleNewData()}
-                          >
-                            New Travel Agent Profile
-                          </Button>
-                        </Grid>
-                      </>
-                    ),
-                  },
-                }}
-                style={{
-                  paddingLeft: 30,
-                  paddingRight: 30,
-                  color: themeState.color,
-                  backgroundColor: themeState.paper,
-                }}
-                columns={[
-                  {
-                    title: "Name",
-                    field: "name",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "www",
-                    field: "www",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "City/Country",
-                    field: "citycountry",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "Industry",
-                    field: "industrycode",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "IATA",
-                    field: "iata",
-                    headerStyle: headerTableStyle,
-                  },
-                ]}
-                data={companyData}
-                options={{
-                  searchFieldAlignment: "left",
-                  showTitle: false,
-                  search: true,
-                  actionsColumnIndex: -1,
-                  pageSize: 10,
-                  pageSizeOptions: [
-                    10,
-                    20,
-                    30,
-                    { value: companyData.length, label: "All" },
-                  ],
+            
+              <MaterialTableComponent placeHolder="Search by Name, www, City/Country, Industry, IATA" companyData={companyData} handleNewData={handleNewData} handleEditData={handleEditData} handleDialogDeleteOpen={handleDialogDeleteOpen}
+              columns={[
+                {
+                  title: "Name",
+                  field: "name",
                   headerStyle: headerTableStyle,
-                  searchFieldStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                    borderBottomColor: themeState.color,
-                    width: 530,
-                  },
-                }}
-                actions={[
-                  {
-                    icon: "edit",
-                    iconProps: { style: { color: themeState.color } },
-                    tooltip: "Edit",
-                    onClick: (event, rowData) => {
-                      handleEditData(rowData);
-                    },
-                  },
-                  {
-                    icon: "delete",
-                    iconProps: { style: { color: themeState.color } },
-                    tooltip: "Delete",
-                    onClick: (event, rowData) => {
-                      handleDialogDeleteOpen(
-                        rowData.id,
-                        rowData.name,
-                        rowData.www,
-                        rowData.city
-                      );
-                    },
-                  },
-                ]}
-              />
-            </Container>
+                },
+                {
+                  title: "www",
+                  field: "www",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "City/Country",
+                  field: "citycountry",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "Industry",
+                  field: "industrycode",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "IATA",
+                  field: "iata",
+                  headerStyle: headerTableStyle,
+                },
+              ]}/>
           ),
         ]
       )}
