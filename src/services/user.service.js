@@ -1,5 +1,5 @@
 module.exports = {
-  changestatus: async function (accessToken, username, status) {
+  changeStatus: async function (accessToken, username, status) {
     return fetch(
       `http://${
         process.env.REACT_APP_host || "localhost"
@@ -105,7 +105,7 @@ module.exports = {
       } else return res.json();
     });
   },
-  getuserpermission: async function (accessToken, username) {
+  getUserPermission: async function (accessToken, username) {
     return fetch(
       `http://${
         process.env.REACT_APP_host || "localhost"
@@ -126,7 +126,7 @@ module.exports = {
       } else return res.json();
     });
   },
-  getposition: async function (accessToken) {
+  getPosition: async function (accessToken) {
     return fetch(
       `http://${process.env.REACT_APP_host || "localhost"}:8000/apis/position`,
       {
@@ -145,7 +145,7 @@ module.exports = {
       } else return res.json();
     });
   },
-  postposition: async function (accessToken, req) {
+  postPosition: async function (accessToken, req) {
     return fetch(
       `http://${process.env.REACT_APP_host || "localhost"}:8000/apis/position`,
       {
@@ -165,7 +165,7 @@ module.exports = {
       } else return res.json();
     });
   },
-  userpropertybyusername: async function (accessToken, username) {
+  userPropertyByUserName: async function (accessToken, username) {
     return fetch(
       `http://${
         process.env.REACT_APP_host || "localhost"
@@ -186,7 +186,7 @@ module.exports = {
       } else return res.json();
     });
   },
-  userrolebyusername: async function (accessToken, username) {
+  userRoleByUserName: async function (accessToken, username) {
     return fetch(
       `http://${
         process.env.REACT_APP_host || "localhost"
@@ -251,7 +251,7 @@ module.exports = {
       } else return res.json();
     });
   },
-  listuser: async function (accessToken, req) {
+  listUser: async function (accessToken, req) {
     return fetch(
       "http://" +
         (process.env.REACT_APP_host || "localhost") +
@@ -273,7 +273,7 @@ module.exports = {
       } else return res.json();
     });
   },
-  listpropertybyroles: async function (accessToken, req) {
+  listPropertyByRoles: async function (accessToken, req) {
     return fetch(
       "http://" +
         (process.env.REACT_APP_host || "localhost") +
@@ -317,7 +317,7 @@ module.exports = {
     });
   },
 
-  postuser: async function (accessToken, req) {
+  postUser: async function (accessToken, req) {
     return fetch(
       "http://" +
         (process.env.REACT_APP_host || "localhost") +
@@ -339,7 +339,7 @@ module.exports = {
       } else return res.json();
     });
   },
-  updateuser: async function (accessToken, req) {
+  updateUser: async function (accessToken, req) {
     return fetch(
       "http://" +
         (process.env.REACT_APP_host || "localhost") +
@@ -406,7 +406,7 @@ module.exports = {
     });
   },
 
-  deleteuserbyusername: async function (accessToken, username) {
+  deleteUserByUserName: async function (accessToken, username) {
     return fetch(
       `http://${
         process.env.REACT_APP_host || "localhost"
@@ -449,7 +449,7 @@ module.exports = {
     });
   },
 
-  getuser: async function (accessToken) {
+  getUser: async function (accessToken) {
     return fetch(
       "http://" +
         (process.env.REACT_APP_host || "localhost") +
@@ -464,7 +464,7 @@ module.exports = {
     ).then((data) => data.json());
   },
 
-  getuserbyid: async function (accessToken, id) {
+  getUserByID: async function (accessToken, id) {
     return fetch(
       `http://${
         process.env.REACT_APP_host || "localhost"
@@ -486,7 +486,7 @@ module.exports = {
     });
   },
 
-  deleteuserbyid: async function (accessToken, req, id) {
+  deleteUserByID: async function (accessToken, req, id) {
     return fetch(
       `http://${
         process.env.REACT_APP_host || "localhost"
@@ -510,12 +510,24 @@ module.exports = {
   },
 
   getGroup: async function (accessToken) {
-    return fetch(`http://${(process.env.REACT_APP_host || "localhost")}:8000/apis/getADGroups`, {
-      method: "GET",
-      headers: {
-        Authorization:  accessToken,
-        "Content-Type": "application/json",
+    return fetch(
+      `http://${
+        process.env.REACT_APP_host || "localhost"
+      }:8000/apis/getADGroups`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: accessToken,
+          "Content-Type": "application/json",
+        },
       }
-    }).then(async (res) => {if(res.status==401){sessionStorage.removeItem('token');sessionStorage.removeItem("property");sessionStorage.removeItem("curent_component");window.location.reload(false);}else return res.json();});
+    ).then(async (res) => {
+      if (res.status == 401) {
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("property");
+        sessionStorage.removeItem("curent_component");
+        window.location.reload(false);
+      } else return res.json();
+    });
   },
 };

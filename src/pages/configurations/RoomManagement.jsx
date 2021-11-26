@@ -1,65 +1,42 @@
 import React, { useState, useContext } from "react";
-
-// import Link from "@material-ui/core/Link";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import MaterialTable from "material-table";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import { blue } from "@material-ui/core/colors";
+import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import { ReactReduxContext, useSelector } from "react-redux";
+import MaterialTable from "material-table";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import {
   Container,
   Grid,
-  Paper,
   Typography,
-  Divider,
   TextField,
-  InputAdornment,
   Button,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem,
   Chip,
   Breadcrumbs,
   Link,
 } from "@material-ui/core";
-import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
-import IconButton from "@material-ui/core/IconButton";
-import EditRoundedIcon from "@material-ui/icons/EditRounded";
-import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
-import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
-import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
-import FirstPageRoundedIcon from "@material-ui/icons/FirstPageRounded";
-import LastPageRoundedIcon from "@material-ui/icons/LastPageRounded";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { blue } from "@material-ui/core/colors";
+
+import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import {
   listRoom,
   postRoom,
   getRoombyid,
   updateRoom,
-  getRoombykey,
-  deletebyroomnum,
+  deleteByRoomNumber,
+  // getRoombykey,
 } from "../../services/roomMaster.service";
 import {
-  listallproperty,
+  listAllProperty,
   getConfigurationByPropertyCode,
-  getusercomponentpermision,
+  getUserComponentPermision,
 } from "../../services/user.service";
 
-import TablePagination from "@material-ui/core/TablePagination";
-import { EDIT_CONFIGSTATE } from "../../middleware/action";
-import { Check } from "@material-ui/icons";
-import { useHistory } from "react-router-dom";
 // Generate Order Data
 function createData(
   id,
@@ -83,10 +60,6 @@ function createData(
     status,
     attribute,
   };
-}
-
-function preventDefault(event) {
-  event.preventDefault();
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -135,19 +108,6 @@ const useStyles = makeStyles((theme) => ({
     "&.MuiMenu-paper": {
       backgroundColor: themeState.paper,
     },
-    // "& .MuiTablePagination-root": {
-    //   backgroundColor: themeState.color,
-    // },
-    // "& .MuiIcon-root": {
-    //   backgroundColor: "red",
-    // },
-    // "& .MuiTablePagination-caption": {
-    //   backgroundColor: themeState.color,
-    // },
-    //.material-icons
-    // "&.material-icons": {
-    //   backgroundColor: "red",
-    // },
   }),
 }));
 
@@ -172,7 +132,6 @@ export default function RoomManagement() {
   const [roomNumber, setRoomNumber] = React.useState(null);
   const [roomDesc, setRoomDesc] = React.useState(null);
   const [roomFloor, setRoomFloor] = React.useState([]);
-  // const [searchKey, setSearchKey] = React.useState(null);
   const pageProperty = useSelector((state) => state.reducer.property);
   const [properties, setProperty] = React.useState([]);
   const [roomType, setRoomType] = React.useState([]);
@@ -186,35 +145,24 @@ export default function RoomManagement() {
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorDuplicate, setErrorDuplicate] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
+
   //Master Config
-  const [rows, setRows] = useState([
-    // createData(
-    //   0,
-    //   "FSDH",
-    //   "8038",
-    //   "SUPERVISOR",
-    //   "3RDFLOOR",
-    //   "TOWER1",
-    //   "Desription",
-    //   "IN",
-    //   "-"
-    // ),
-  ]);
+  const [rows, setRows] = useState([]);
   const [pageData, setPageData] = React.useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
-    let usercomponentpermission = await getusercomponentpermision(
+    let userComponentPermission = await getUserComponentPermision(
       sessionStorage.getItem("auth"),
       sessionStorage.getItem("username"),
       "CF-RM"
     );
     setCRUD({
-      C: usercomponentpermission.content[0].permissioncreate,
-      R: usercomponentpermission.content[0].permissionread,
-      U: usercomponentpermission.content[0].permissionupdate,
-      D: usercomponentpermission.content[0].permissiondelete,
+      C: userComponentPermission.content[0].permissioncreate,
+      R: userComponentPermission.content[0].permissionread,
+      U: userComponentPermission.content[0].permissionupdate,
+      D: userComponentPermission.content[0].permissiondelete,
     });
     const data = await listRoom(sessionStorage.getItem("auth"));
     console.log("data", data);
@@ -251,21 +199,21 @@ export default function RoomManagement() {
     setPageData(data);
   };
 
-  const handleChangePage = (event, newPage) => {
-    console.log(event, newPage);
-    setPage(newPage);
-    updatePageData(rows, newPage, rowsPerPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   console.log(event, newPage);
+  //   setPage(newPage);
+  //   updatePageData(rows, newPage, rowsPerPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
-    setPage(0);
-    updatePageData(rows, 0, event.target.value);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(event.target.value);
+  //   setPage(0);
+  //   updatePageData(rows, 0, event.target.value);
+  // };
 
-  const handleAttributeDialog = (event) => {
-    setChipAttributeDialog(event.target.value);
-  };
+  // const handleAttributeDialog = (event) => {
+  //   setChipAttributeDialog(event.target.value);
+  // };
 
   const handleRoomNumber = (event) => {
     setRoomNumber(event.target.value);
@@ -273,9 +221,6 @@ export default function RoomManagement() {
   const handleDescription = (event) => {
     setRoomDesc(event.target.value);
   };
-  // const handleFloor = (event) => {
-  //   setRoomFloor(event.target.value);
-  // };
 
   const handlePropertyDialog = async (event) => {
     let getconfigdata = await getConfigurationByPropertyCode(
@@ -349,7 +294,7 @@ export default function RoomManagement() {
   }
 
   const handleDialogAddRoom = async () => {
-    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    let propertydata = await listAllProperty(sessionStorage.getItem("auth"));
     let tempproperty = [];
     propertydata.content[propertydata.content.length - 1]
       .split(",")
@@ -417,7 +362,7 @@ export default function RoomManagement() {
 
   const handleDialogEditRoom = async (event, roomNo) => {
     console.log("roomNo", roomNo);
-    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    let propertydata = await listAllProperty(sessionStorage.getItem("auth"));
     let tempproperty = [];
     propertydata.content[propertydata.content.length - 1]
       .split(",")
@@ -710,68 +655,6 @@ export default function RoomManagement() {
     }
   };
 
-  // const handleSeaarch = (event) => {
-  //   setSearchKey(event.target.value);
-  // };
-
-  // const handleSeaarchRequest = async (forSearch) => {
-  //   setPage(0);
-  //   console.log("forSearch", forSearch);
-  //   if (forSearch === null || forSearch === undefined || forSearch === "") {
-  //     const data = await listRoom(sessionStorage.getItem("auth"));
-  //     console.log("data", data);
-  //     let roomdata = [];
-  //     let i = 0;
-  //     data.content[data.content.length - 1].forEach((element) =>
-  //       roomdata.push(
-  //         createData(
-  //           element.id,
-  //           element.propertycode,
-  //           element.no,
-  //           element.type,
-  //           element.floor,
-  //           element.building,
-  //           element.description,
-  //           element.status,
-  //           element.attribute
-  //         )
-  //       )
-  //     );
-  //     console.log("a", roomdata);
-  //     setRows(roomdata);
-  //     updatePageData(roomdata, 0, rowsPerPage);
-  //   } else {
-  //     const databysearch = await getRoombykey(
-  //       sessionStorage.getItem("auth"),
-  //       forSearch
-  //     );
-  //     console.log("databysearch", databysearch);
-  //     if (databysearch.content.length != null) {
-  //       let roomdata = [];
-  //       let i = 0;
-  //       databysearch.content[databysearch.content.length - 1].forEach(
-  //         (element) =>
-  //           roomdata.push(
-  //             createData(
-  //               element.id,
-  //               element.propertycode,
-  //               element.no,
-  //               element.type,
-  //               element.floor,
-  //               element.building,
-  //               element.description,
-  //               element.status,
-  //               element.attribute
-  //             )
-  //           )
-  //       );
-  //       console.log("a", roomdata);
-  //       setRows(roomdata);
-  //       updatePageData(roomdata, 0, rowsPerPage);
-  //     }
-  //   }
-  // };
-
   const handleDialogDeleteRoomClose = () => {
     setDialogDeleteRoom(false);
   };
@@ -785,7 +668,7 @@ export default function RoomManagement() {
   const handleDialogDelete = async (roomNum) => {
     console.log("roomNum for delete : ", roomNum);
 
-    const roomDelete = await deletebyroomnum(
+    const roomDelete = await deleteByRoomNumber(
       sessionStorage.getItem("auth"),
       roomNum
     );
@@ -865,588 +748,179 @@ export default function RoomManagement() {
   return (
     <Container maxWidth="xl" style={themeState}>
       <React.Fragment>
-     
-          <Grid container style={{ padding: 20,marginTop:22 }}>
-            <Grid item style={{ flexGrow: 1 }}>
-              <Breadcrumbs
-                separator={
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: 15,
-                      fontSize: 20,
-                      color: themeState.color,
-                    }}
-                  >
-                    /
-                  </Typography>
-                }
-              >
-                <Link
-                  color="inherit"
-                  href="#"
-                  onClick={() => handleComponentState("Configuration")}
-                >
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: 15,
-                      fontSize: 20,
-                      color: mainColor,
-                    }}
-                  >
-                    Configuration
-                  </Typography>
-                </Link>
-                <Link color="inherit" href="#" onClick={" "}>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: 15,
-                      fontSize: 14,
-                      color: themeState.color,
-                    }}
-                  >
-                    PMS Configuration
-                  </Typography>
-                </Link>
-                <Link color="inherit" href="#" onClick={" "}>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: 15,
-                      fontSize: 14,
-                      color: themeState.color,
-                    }}
-                  >
-                    Room Configuration
-                  </Typography>
-                </Link>
-                <Typography>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      marginBottom: 15,
-                      fontSize: 14,
-                      color: themeState.color,
-                    }}
-                  >
-                    Room Master Maintenance
-                  </Typography>
-                </Typography>
-              </Breadcrumbs>
-            </Grid>
-            {/* <Divider
-              orientation="vertical"
-              flexItem
-              style={{ backgroundColor: themeState.color }}
-            /> */}
-            {CRUD.C ? (
-              <Grid item style={{ marginLeft: 20, marginRight: 20 }}>
-                <Button
-                  variant="contained"
+        <Grid container style={{ padding: 20, marginTop: 22 }}>
+          <Grid item style={{ flexGrow: 1 }}>
+            <Breadcrumbs
+              separator={
+                <Typography
+                  variant="h6"
                   style={{
-                    backgroundColor: mainColor,
-                    color: "white",
-                    textAlign: "center",
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: themeState.color,
                   }}
-                  onClick={handleDialogAddRoom}
                 >
-                  NEW ROOM MASTER
-                </Button>
-              </Grid>
-            ) : null}
-
-            {/* ==================== Dialog New Room========================= */}
-            <Dialog
-              fullWidth="true"
-              maxWidth="sm"
-              open={dialogAddRoom}
-              onClose={handleDialogAddRoomClose}
-              aria-labelledby="form-dialog-title"
-              className={classes.root}
+                  /
+                </Typography>
+              }
             >
-              <DialogTitle
-                id="form-dialog-title"
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: mainColor,
-                }}
+              <Link
+                color="inherit"
+                href="#"
+                onClick={() => handleComponentState("Configuration")}
               >
-                New Room Master
-              </DialogTitle>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 20,
+                    color: mainColor,
+                  }}
+                >
+                  Configuration
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
+                >
+                  PMS Configuration
+                </Typography>
+              </Link>
+              <Link color="inherit" href="#" onClick={" "}>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
+                >
+                  Room Configuration
+                </Typography>
+              </Link>
+              <Typography>
+                <Typography
+                  variant="h6"
+                  style={{
+                    marginBottom: 15,
+                    fontSize: 14,
+                    color: themeState.color,
+                  }}
+                >
+                  Room Master Maintenance
+                </Typography>
+              </Typography>
+            </Breadcrumbs>
+          </Grid>
 
-              <DialogContent style={headerTableStyle}>
-                <Container maxWidth="xl" disableGutters>
-                  <Grid container>
-                    <TextField
-                      autoFocus
-                      select
-                      className={classes.root}
-                      // id="outlined-basic"
-                      label="Property"
-                      variant="outlined"
-                      defaultValue={pageProperty}
-                      fullWidth
-                      SelectProps={{
-                        native: true,
-                      }}
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                      value={propertyDialog}
-                      onChange={(event) => handlePropertyDialog(event)}
-                    >
-                      {properties.map((option) => (
-                        <option
-                          key={option.value}
-                          value={option.value}
-                          style={headerTableStyle}
-                        >
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        id="outlined-basic"
-                        label="Room Number"
-                        variant="outlined"
-                        // value={roomNumber}
-                        defaultValue={""}
-                        onChange={(e) => handleRoomNumber(e)}
-                        fullWidth
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Room Type"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        // value={roomTypeDialog}
-                        defaultValue={""}
-                        onChange={(e) => handleRoomTypeDialog(e)}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                      >
-                        {roomType.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 15 }}>
-                    <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Floor"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        // value={buildingDialog}
-                        defaultValue={""}
-                        onChange={(e) => handleRoomFloorDialog(e)}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                      >
-                        {roomFloor.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Building"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        // value={buildingDialog}
-                        defaultValue={""}
-                        onChange={(e) => handleBuildingDialog(e)}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                      >
-                        {building.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Wing"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        // value={wingDialog}
-                        defaultValue={""}
-                        onChange={(e) => handleWingDialog(e)}
-                      >
-                        {wing.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Exposure"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        // value={exposureDialog}
-                        defaultValue={""}
-                        onChange={(e) => handleExposureDialog(e)}
-                      >
-                        {exposure.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Room Size"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        // value={roomSizeDialog}
-                        defaultValue={""}
-                        onChange={(e) => handleRoomSizeDialog(e)}
-                      >
-                        {roomSize.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Room Seg"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        // value={roomSegDialog}
-                        defaultValue={""}
-                        onChange={(e) => handleRoomSegDialog(e)}
-                      >
-                        {roomSeg.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Room Status"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        // value={roomStatusDialog}
-                        defaultValue={""}
-                        onChange={(e) => handleRoomStatusDialog(e)}
-                      >
-                        {roomStatus.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
+          {CRUD.C ? (
+            <Grid item style={{ marginLeft: 20, marginRight: 20 }}>
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: mainColor,
+                  color: "white",
+                  textAlign: "center",
+                }}
+                onClick={handleDialogAddRoom}
+              >
+                NEW ROOM MASTER
+              </Button>
+            </Grid>
+          ) : null}
+
+          {/* ==================== Dialog New Room========================= */}
+          <Dialog
+            fullWidth="true"
+            maxWidth="sm"
+            open={dialogAddRoom}
+            onClose={handleDialogAddRoomClose}
+            aria-labelledby="form-dialog-title"
+            className={classes.root}
+          >
+            <DialogTitle
+              id="form-dialog-title"
+              style={{
+                backgroundColor: themeState.paper,
+                color: mainColor,
+              }}
+            >
+              New Room Master
+            </DialogTitle>
+
+            <DialogContent style={headerTableStyle}>
+              <Container maxWidth="xl" disableGutters>
+                <Grid container>
+                  <TextField
+                    autoFocus
+                    select
+                    className={classes.root}
+                    // id="outlined-basic"
+                    label="Property"
+                    variant="outlined"
+                    defaultValue={pageProperty}
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    InputProps={{
+                      style: headerTableStyle,
+                    }}
+                    value={propertyDialog}
+                    onChange={(event) => handlePropertyDialog(event)}
                   >
+                    {properties.map((option) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        style={headerTableStyle}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                     <TextField
                       className={classes.root}
-                      fullWidth
+                      id="outlined-basic"
+                      label="Room Number"
                       variant="outlined"
-                      selectSelectProps={{
-                        native: true,
-                      }}
-                      style={{
-                        marginTop: 10,
-                        backgroundColor: themeState.paper,
-                        color: themeState.color,
-                      }}
+                      // value={roomNumber}
+                      defaultValue={""}
+                      onChange={(e) => handleRoomNumber(e)}
+                      fullWidth
                       InputProps={{
                         style: headerTableStyle,
                       }}
-                      label="Attribute"
-                      select
-                      // value={" "}
-                      defaultValue={""}
-                      onChange={(event, key) =>
-                        handleSelectAttribute(event, key)
-                      }
-                    >
-                      {attribute.map((option) => (
-                        <MenuItem
-                          className={classes.root}
-                          label={option.label}
-                          name={option.label}
-                          value={option.label}
-                          style={headerTableStyle}
-                        >
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    {chipAttributeDialog.map((data, index) => {
-                      return (
-                        <Chip
-                          style={{ marginTop: 10 }}
-                          key={data.key + index}
-                          label={data.label}
-                          onDelete={handleDeleteAttribute(data)}
-                        />
-                      );
-                    })}
-                  </Grid>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    style={{ paddingTop: 10 }}
-                  >
-                    <TextField
-                      className={classes.root}
-                      InputProps={{
-                        style: headerTableStyle,
-                      }}
-                      fullWidth
-                      label="Description"
-                      multiline
-                      rows={4}
-                      variant="outlined"
-                      defaultValue={""}
-                      onChange={(e) => handleDescription(e)}
                     />
                   </Grid>
-                </Container>
-                {errorMessage ? (
-                  <div
-                    style={{
-                      background: "#ff0033",
-                      textAlign: "center",
-                      color: "white",
-                      height: "30px",
-                      paddingTop: 5,
-                    }}
-                  >
-                    {errorParameter} is required
-                  </div>
-                ) : null}
-                {errorDuplicate ? (
-                  <div
-                    style={{
-                      background: "#ff0033",
-                      textAlign: "center",
-                      color: "white",
-                      height: "30px",
-                      paddingTop: 5,
-                    }}
-                  >
-                    Duplicate Room Number
-                  </div>
-                ) : null}
-              </DialogContent>
-              <DialogActions
-                style={{
-                  padding: 20,
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
-                <Button
-                  onClick={handleDialogAddRoomClose}
-                  variant="text"
-                  style={{ color: mainColor }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() =>
-                    handleDialogInsert(
-                      roomNumber,
-                      propertyDialog,
-                      roomTypeDialog,
-                      buildingDialog,
-                      wingDialog,
-                      exposureDialog,
-                      roomSizeDialog,
-                      roomSegDialog,
-                      roomStatusDialog,
-                      chipAttributeDialog,
-                      roomDesc,
-                      roomFloorDialog
-                    )
-                  }
-                  style={{
-                    // color: themeState.color,
-                    color: "white",
-                    backgroundColor: mainColor,
-                  }}
-                >
-                  Save
-                </Button>
-              </DialogActions>
-            </Dialog>
-            {/* ---------------------------------------- */}
-            {/* ==================== Dialog Edit Room ========================= */}
-            <Dialog
-              className={classes.root}
-              fullWidth="true"
-              maxWidth="sm"
-              open={dialogEditRoom}
-              onClose={handleDialogEditRoomClose}
-              aria-labelledby="form-dialog-title"
-            >
-              <DialogTitle
-                id="form-dialog-title"
-                style={{
-                  backgroundColor: themeState.paper,
-                  color: mainColor,
-                }}
-              >
-                Edit Room Master
-              </DialogTitle>
-
-              <DialogContent style={headerTableStyle}>
-                <Container maxWidth="xl" disableGutters>
-                  <Grid container>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                     <TextField
                       className={classes.root}
                       select
                       id="outlined-basic"
-                      label="Property"
+                      label="Room Type"
                       variant="outlined"
                       fullWidth
                       SelectProps={{
                         native: true,
                       }}
+                      // value={roomTypeDialog}
+                      defaultValue={""}
+                      onChange={(e) => handleRoomTypeDialog(e)}
                       InputProps={{
                         style: headerTableStyle,
                       }}
-                      defaultValue={propertyDialog}
-                      onChange={(event) => handlePropertyDialog(event)}
                     >
-                      {properties.map((option) => (
+                      {roomType.map((option) => (
                         <option
                           key={option.value}
                           value={option.value}
@@ -1457,534 +931,911 @@ export default function RoomManagement() {
                       ))}
                     </TextField>
                   </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        id="outlined-basic"
-                        label="Room Number"
-                        variant="outlined"
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        fullWidth
-                        value={roomNumber}
-                        onChange={(e) => handleRoomNumber(e)}
-                      />
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Room Type"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        value={roomTypeDialog}
-                        onChange={(e) => handleRoomTypeDialog(e)}
-                      >
-                        {roomType.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 15 }}>
-                    <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="roomFloor"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        value={roomFloorDialog}
-                        onChange={(e) => handleRoomFloorDialog(e)}
-                      >
-                        {roomFloor.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Building"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        value={buildingDialog}
-                        onChange={(e) => handleBuildingDialog(e)}
-                      >
-                        {building.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Wing"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        value={wingDialog}
-                        onChange={(e) => handleWingDialog(e)}
-                      >
-                        {wing.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Exposure"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        value={exposureDialog}
-                        onChange={(e) => handleExposureDialog(e)}
-                      >
-                        {exposure.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Room Size"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        value={roomSizeDialog}
-                        onChange={(e) => handleRoomSizeDialog(e)}
-                      >
-                        {roomSize.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Room Seg"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        value={roomSegDialog}
-                        onChange={(e) => handleRoomSegDialog(e)}
-                      >
-                        {roomSeg.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Room Status"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        value={roomStatusDialog}
-                        onChange={(e) => handleRoomStatusDialog(e)}
-                      >
-                        {roomStatus.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    style={{ paddingTop: 10 }}
-                  >
+                </Grid>
+                <Grid container spacing={2} style={{ paddingTop: 15 }}>
+                  <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                     <TextField
-                      fullWidth
                       className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Floor"
                       variant="outlined"
+                      fullWidth
                       SelectProps={{
                         native: true,
                       }}
+                      // value={buildingDialog}
+                      defaultValue={""}
+                      onChange={(e) => handleRoomFloorDialog(e)}
                       InputProps={{
                         style: headerTableStyle,
                       }}
-                      label="Attribute"
-                      select
-                      value={chipAttributeDialog}
-                      onChange={(event, key) =>
-                        handleSelectAttribute(event, key)
-                      }
                     >
-                      {attribute.map((option) => (
+                      {roomFloor.map((option) => (
                         <option
-                          className={classes.root}
-                          label={option.label}
-                          name={option.label}
-                          value={option.label}
+                          key={option.value}
+                          value={option.value}
                           style={headerTableStyle}
                         >
                           {option.label}
                         </option>
                       ))}
                     </TextField>
-                    {chipAttributeDialog.map((data, index) => {
-                      return (
-                        <Chip
-                          style={{ marginTop: 10 }}
-                          key={data.key + index}
-                          label={data.label}
-                          onDelete={handleDeleteAttribute(data)}
-                        />
-                      );
-                    })}
                   </Grid>
-
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    style={{ paddingTop: 10 }}
-                  >
+                  <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                     <TextField
                       className={classes.root}
-                      fullWidth
-                      label="Description"
-                      multiline
-                      rows={4}
+                      select
+                      id="outlined-basic"
+                      label="Building"
                       variant="outlined"
-                      value={roomDesc}
-                      onChange={(e) => handleDescription(e)}
-                    />
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      // value={buildingDialog}
+                      defaultValue={""}
+                      onChange={(e) => handleBuildingDialog(e)}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                    >
+                      {building.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
                   </Grid>
-                </Container>
-                {errorMessage ? (
-                  <div
-                    style={{
-                      background: "#ff0033",
-                      textAlign: "center",
-                      color: "white",
-                      height: "30px",
-                      paddingTop: 5,
-                    }}
-                  >
-                    {errorParameter} is required
-                  </div>
-                ) : null}
-                {errorDuplicate ? (
-                  <div
-                    style={{
-                      background: "#ff0033",
-                      textAlign: "center",
-                      color: "white",
-                      height: "30px",
-                      paddingTop: 5,
-                    }}
-                  >
-                    Duplicate Room Number
-                  </div>
-                ) : null}
-              </DialogContent>
-              <DialogActions
-                style={{
-                  padding: 20,
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                }}
-              >
-                <Button
-                  onClick={handleDialogEditRoomClose}
-                  variant="text"
-                  color="primary"
+                  <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Wing"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      // value={wingDialog}
+                      defaultValue={""}
+                      onChange={(e) => handleWingDialog(e)}
+                    >
+                      {wing.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Exposure"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      // value={exposureDialog}
+                      defaultValue={""}
+                      onChange={(e) => handleExposureDialog(e)}
+                    >
+                      {exposure.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Room Size"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      // value={roomSizeDialog}
+                      defaultValue={""}
+                      onChange={(e) => handleRoomSizeDialog(e)}
+                    >
+                      {roomSize.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Room Seg"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      // value={roomSegDialog}
+                      defaultValue={""}
+                      onChange={(e) => handleRoomSegDialog(e)}
+                    >
+                      {roomSeg.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Room Status"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      // value={roomStatusDialog}
+                      defaultValue={""}
+                      onChange={(e) => handleRoomStatusDialog(e)}
+                    >
+                      {roomStatus.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
                 >
-                  Cancel
-                </Button>
-                <Button
-                  color="primary"
-                  onClick={() =>
-                    handleDialogEditRoomSave(
-                      roomNumber,
-                      propertyDialog,
-                      roomTypeDialog,
-                      buildingDialog,
-                      wingDialog,
-                      exposureDialog,
-                      roomSizeDialog,
-                      roomSegDialog,
-                      roomStatusDialog,
-                      chipAttributeDialog,
-                      roomDesc,
-                      roomFloorDialog
-                    )
-                  }
-                  variant="contained"
-                  style={{
-                    color: themeState.background,
-                    backgroundColor: blue[themeState.colorlevel],
-                  }}
-                >
-                  Save
-                </Button>
-              </DialogActions>
-            </Dialog>
-            {/* -------------------------------------- */}
-
-            {/* ==================== Dialog Delete User========================= */}
-            <Dialog
-              maxWidth="sm"
-              open={dialogDeleteRoom}
-              onClose={handleDialogDeleteRoomClose}
-              aria-labelledby="form-dialog-title"
-            >
-              <Grid container>
-                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <DialogTitle
-                    id="form-dialog-title"
-                    style={{
-                      backgroundColor: themeState.paper,
-                      color: blue[themeState.colorlevel],
+                  <TextField
+                    className={classes.root}
+                    fullWidth
+                    variant="outlined"
+                    selectSelectProps={{
+                      native: true,
                     }}
-                  >
-                    Confirm Delete Room Information
-                  </DialogTitle>
-                  <DialogContent style={headerTableStyle}>
-                    <Typography>
-                      <Typography
-                        color="initial"
-                        style={{ fontWeight: 600 }}
-                        display="inline"
-                      >
-                        Room Number:&nbsp;
-                      </Typography>
-                      <Typography color="initial" display="inline">
-                        {roomNumber}
-                      </Typography>
-                    </Typography>
-                  </DialogContent>
-                  <DialogActions
                     style={{
-                      padding: 20,
+                      marginTop: 10,
                       backgroundColor: themeState.paper,
                       color: themeState.color,
                     }}
+                    InputProps={{
+                      style: headerTableStyle,
+                    }}
+                    label="Attribute"
+                    select
+                    // value={" "}
+                    defaultValue={""}
+                    onChange={(event, key) => handleSelectAttribute(event, key)}
                   >
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="space-evenly"
-                      alignItems="center"
-                      spacing={4}
-                    >
-                      <Grid item sm={6} md={6} lg={6} xl={6}>
-                        <Button
-                          fullWidth
-                          onClick={handleDialogDeleteRoomClose}
-                          variant="contained"
-                          color="default"
-                        >
-                          Cancel
-                        </Button>
-                      </Grid>
-                      <Grid item sm={6} md={6} lg={6} xl={6}>
-                        <Button
-                          fullWidth
-                          onClick={() => handleDialogDelete(roomNumber)}
-                          variant="contained"
-                          // color="primary"
-                          style={{ backgroundColor: "red", color: "white" }}
-                        >
-                          Delete
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </DialogActions>
+                    {attribute.map((option) => (
+                      <MenuItem
+                        className={classes.root}
+                        label={option.label}
+                        name={option.label}
+                        value={option.label}
+                        style={headerTableStyle}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  {chipAttributeDialog.map((data, index) => {
+                    return (
+                      <Chip
+                        style={{ marginTop: 10 }}
+                        key={data.key + index}
+                        label={data.label}
+                        onDelete={handleDeleteAttribute(data)}
+                      />
+                    );
+                  })}
                 </Grid>
-              </Grid>
-            </Dialog>
-            {/* ---------------------------------------- */}
-            {/* <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="center"
-              spacing={3}
-              style={{ marginTop: 15 }}
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  style={{ paddingTop: 10 }}
+                >
+                  <TextField
+                    className={classes.root}
+                    InputProps={{
+                      style: headerTableStyle,
+                    }}
+                    fullWidth
+                    label="Description"
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    defaultValue={""}
+                    onChange={(e) => handleDescription(e)}
+                  />
+                </Grid>
+              </Container>
+              {errorMessage ? (
+                <div
+                  style={{
+                    background: "#ff0033",
+                    textAlign: "center",
+                    color: "white",
+                    height: "30px",
+                    paddingTop: 5,
+                  }}
+                >
+                  {errorParameter} is required
+                </div>
+              ) : null}
+              {errorDuplicate ? (
+                <div
+                  style={{
+                    background: "#ff0033",
+                    textAlign: "center",
+                    color: "white",
+                    height: "30px",
+                    paddingTop: 5,
+                  }}
+                >
+                  Duplicate Room Number
+                </div>
+              ) : null}
+            </DialogContent>
+            <DialogActions
+              style={{
+                padding: 20,
+                backgroundColor: themeState.paper,
+                color: themeState.color,
+              }}
             >
-              <Grid item style={{ flexGrow: 1 }}>
-                <Typography variant="title1" color="initial">
-                  item {page * rowsPerPage + 1}-
-                  {(page + 1) * rowsPerPage > rows.length
-                    ? rows.length
-                    : (page + 1) * rowsPerPage}{" "}
-                  of {rows.length} Total
-                </Typography>
+              <Button
+                onClick={handleDialogAddRoomClose}
+                variant="text"
+                style={{ color: mainColor }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() =>
+                  handleDialogInsert(
+                    roomNumber,
+                    propertyDialog,
+                    roomTypeDialog,
+                    buildingDialog,
+                    wingDialog,
+                    exposureDialog,
+                    roomSizeDialog,
+                    roomSegDialog,
+                    roomStatusDialog,
+                    chipAttributeDialog,
+                    roomDesc,
+                    roomFloorDialog
+                  )
+                }
+                style={{
+                  // color: themeState.color,
+                  color: "white",
+                  backgroundColor: mainColor,
+                }}
+              >
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
+          {/* ---------------------------------------- */}
+          {/* ==================== Dialog Edit Room ========================= */}
+          <Dialog
+            className={classes.root}
+            fullWidth="true"
+            maxWidth="sm"
+            open={dialogEditRoom}
+            onClose={handleDialogEditRoomClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle
+              id="form-dialog-title"
+              style={{
+                backgroundColor: themeState.paper,
+                color: mainColor,
+              }}
+            >
+              Edit Room Master
+            </DialogTitle>
+
+            <DialogContent style={headerTableStyle}>
+              <Container maxWidth="xl" disableGutters>
+                <Grid container>
+                  <TextField
+                    className={classes.root}
+                    select
+                    id="outlined-basic"
+                    label="Property"
+                    variant="outlined"
+                    fullWidth
+                    SelectProps={{
+                      native: true,
+                    }}
+                    InputProps={{
+                      style: headerTableStyle,
+                    }}
+                    defaultValue={propertyDialog}
+                    onChange={(event) => handlePropertyDialog(event)}
+                  >
+                    {properties.map((option) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        style={headerTableStyle}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid container spacing={2} style={{ paddingTop: 10 }}>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      className={classes.root}
+                      id="outlined-basic"
+                      label="Room Number"
+                      variant="outlined"
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      fullWidth
+                      value={roomNumber}
+                      onChange={(e) => handleRoomNumber(e)}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Room Type"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      value={roomTypeDialog}
+                      onChange={(e) => handleRoomTypeDialog(e)}
+                    >
+                      {roomType.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={2} style={{ paddingTop: 15 }}>
+                  <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="roomFloor"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      value={roomFloorDialog}
+                      onChange={(e) => handleRoomFloorDialog(e)}
+                    >
+                      {roomFloor.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Building"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      value={buildingDialog}
+                      onChange={(e) => handleBuildingDialog(e)}
+                    >
+                      {building.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Wing"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      value={wingDialog}
+                      onChange={(e) => handleWingDialog(e)}
+                    >
+                      {wing.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Exposure"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      value={exposureDialog}
+                      onChange={(e) => handleExposureDialog(e)}
+                    >
+                      {exposure.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Room Size"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      value={roomSizeDialog}
+                      onChange={(e) => handleRoomSizeDialog(e)}
+                    >
+                      {roomSize.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={2} style={{ paddingTop: 5 }}>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Room Seg"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      value={roomSegDialog}
+                      onChange={(e) => handleRoomSegDialog(e)}
+                    >
+                      {roomSeg.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    <TextField
+                      className={classes.root}
+                      select
+                      id="outlined-basic"
+                      label="Room Status"
+                      variant="outlined"
+                      fullWidth
+                      SelectProps={{
+                        native: true,
+                      }}
+                      InputProps={{
+                        style: headerTableStyle,
+                      }}
+                      value={roomStatusDialog}
+                      onChange={(e) => handleRoomStatusDialog(e)}
+                    >
+                      {roomStatus.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                          style={headerTableStyle}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  style={{ paddingTop: 10 }}
+                >
+                  <TextField
+                    fullWidth
+                    className={classes.root}
+                    variant="outlined"
+                    SelectProps={{
+                      native: true,
+                    }}
+                    InputProps={{
+                      style: headerTableStyle,
+                    }}
+                    label="Attribute"
+                    select
+                    value={chipAttributeDialog}
+                    onChange={(event, key) => handleSelectAttribute(event, key)}
+                  >
+                    {attribute.map((option) => (
+                      <option
+                        className={classes.root}
+                        label={option.label}
+                        name={option.label}
+                        value={option.label}
+                        style={headerTableStyle}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
+                  {chipAttributeDialog.map((data, index) => {
+                    return (
+                      <Chip
+                        style={{ marginTop: 10 }}
+                        key={data.key + index}
+                        label={data.label}
+                        onDelete={handleDeleteAttribute(data)}
+                      />
+                    );
+                  })}
+                </Grid>
+
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  style={{ paddingTop: 10 }}
+                >
+                  <TextField
+                    className={classes.root}
+                    fullWidth
+                    label="Description"
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    value={roomDesc}
+                    onChange={(e) => handleDescription(e)}
+                  />
+                </Grid>
+              </Container>
+              {errorMessage ? (
+                <div
+                  style={{
+                    background: "#ff0033",
+                    textAlign: "center",
+                    color: "white",
+                    height: "30px",
+                    paddingTop: 5,
+                  }}
+                >
+                  {errorParameter} is required
+                </div>
+              ) : null}
+              {errorDuplicate ? (
+                <div
+                  style={{
+                    background: "#ff0033",
+                    textAlign: "center",
+                    color: "white",
+                    height: "30px",
+                    paddingTop: 5,
+                  }}
+                >
+                  Duplicate Room Number
+                </div>
+              ) : null}
+            </DialogContent>
+            <DialogActions
+              style={{
+                padding: 20,
+                backgroundColor: themeState.paper,
+                color: themeState.color,
+              }}
+            >
+              <Button
+                onClick={handleDialogEditRoomClose}
+                variant="text"
+                color="primary"
+              >
+                Cancel
+              </Button>
+              <Button
+                color="primary"
+                onClick={() =>
+                  handleDialogEditRoomSave(
+                    roomNumber,
+                    propertyDialog,
+                    roomTypeDialog,
+                    buildingDialog,
+                    wingDialog,
+                    exposureDialog,
+                    roomSizeDialog,
+                    roomSegDialog,
+                    roomStatusDialog,
+                    chipAttributeDialog,
+                    roomDesc,
+                    roomFloorDialog
+                  )
+                }
+                variant="contained"
+                style={{
+                  color: themeState.background,
+                  backgroundColor: blue[themeState.colorlevel],
+                }}
+              >
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
+          {/* -------------------------------------- */}
+
+          {/* ==================== Dialog Delete User========================= */}
+          <Dialog
+            maxWidth="sm"
+            open={dialogDeleteRoom}
+            onClose={handleDialogDeleteRoomClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <Grid container>
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                <DialogTitle
+                  id="form-dialog-title"
+                  style={{
+                    backgroundColor: themeState.paper,
+                    color: blue[themeState.colorlevel],
+                  }}
+                >
+                  Confirm Delete Room Information
+                </DialogTitle>
+                <DialogContent style={headerTableStyle}>
+                  <Typography>
+                    <Typography
+                      color="initial"
+                      style={{ fontWeight: 600 }}
+                      display="inline"
+                    >
+                      Room Number:&nbsp;
+                    </Typography>
+                    <Typography color="initial" display="inline">
+                      {roomNumber}
+                    </Typography>
+                  </Typography>
+                </DialogContent>
+                <DialogActions
+                  style={{
+                    padding: 20,
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
+                  }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-evenly"
+                    alignItems="center"
+                    spacing={4}
+                  >
+                    <Grid item sm={6} md={6} lg={6} xl={6}>
+                      <Button
+                        fullWidth
+                        onClick={handleDialogDeleteRoomClose}
+                        variant="contained"
+                        color="default"
+                      >
+                        Cancel
+                      </Button>
+                    </Grid>
+                    <Grid item sm={6} md={6} lg={6} xl={6}>
+                      <Button
+                        fullWidth
+                        onClick={() => handleDialogDelete(roomNumber)}
+                        variant="contained"
+                        // color="primary"
+                        style={{ backgroundColor: "red", color: "white" }}
+                      >
+                        Delete
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </DialogActions>
               </Grid>
-              <Grid item>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25]}
-                  component="div"
-                  count={rows.length}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  rowsPerPage={rowsPerPage}
-                  onChangeRowsPerPage={handleChangeRowsPerPage}
-                  // onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-              </Grid>
-            </Grid> */}
-          </Grid>
-      
+            </Grid>
+          </Dialog>
+          {/* ---------------------------------------- */}
+        </Grid>
       </React.Fragment>
       {CRUD.R ? (
         <MaterialTable
-        localization={{ body:{ emptyDataSourceMessage: <>   <Typography
-          variant="h1"
-          align="center"
-          style={{ fontSize: 25, color: themeState.color }}
-        >
-          <ErrorOutlineOutlinedIcon
-            style={{ fontSize: 170, color: "lightgray" }}
-          />
-        </Typography>
-        <Typography
-          align="center"
-          variant="h2"
-          style={{
-            fontWeight: 400,
-            fontSize: 30,
-            color: "rgb(0 0 0 / 47%)",
-            marginBottom: 20,
+          localization={{
+            body: {
+              emptyDataSourceMessage: (
+                <>
+                  {" "}
+                  <Typography
+                    variant="h1"
+                    align="center"
+                    style={{ fontSize: 25, color: themeState.color }}
+                  >
+                    <ErrorOutlineOutlinedIcon
+                      style={{ fontSize: 170, color: "lightgray" }}
+                    />
+                  </Typography>
+                  <Typography
+                    align="center"
+                    variant="h2"
+                    style={{
+                      fontWeight: 400,
+                      fontSize: 30,
+                      color: "rgb(0 0 0 / 47%)",
+                      marginBottom: 20,
+                    }}
+                  >
+                    No Data Available
+                  </Typography>
+                  <Grid item>
+                    <Button
+                      startIcon={<AddOutlinedIcon />}
+                      size="large"
+                      variant="contained"
+                      color="primary"
+                      // style={{ padding: 13 }}
+                      // fullWidth
+                      // onClick={() => setCreateindividual(true)}
+                      onClick={handleDialogAddRoom}
+                    >
+                      New Room Master
+                    </Button>
+                  </Grid>
+                </>
+              ),
+            },
           }}
-        >
-          No Data Available
-        </Typography>
-        <Grid item>
-              <Button
-                startIcon={<AddOutlinedIcon />}
-                size="large"
-                variant="contained"
-                color="primary"
-                // style={{ padding: 13 }}
-                // fullWidth
-                // onClick={() => setCreateindividual(true)}
-                onClick={handleDialogAddRoom}
-              >
-                New Room Master
-              </Button>
-           </Grid>
-         </> }}}
           style={{
             paddingLeft: 30,
             paddingRight: 30,
@@ -2044,11 +1895,8 @@ export default function RoomManagement() {
             },
           ]}
           data={rows}
-          // totalCount={rows.length}
-          // page={page}
           options={{
             actionsColumnIndex: -1,
-            // filtering: true,
             searchFieldAlignment: "left",
             page: page,
             pageSize: rowsPerPage,
@@ -2077,7 +1925,6 @@ export default function RoomManagement() {
             },
           ]}
           onChangePage={(page) => console.log("page")}
-          // onChangePage={(event, page) => console.log(event, page)}
         />
       ) : null}
     </Container>

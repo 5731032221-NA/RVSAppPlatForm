@@ -102,7 +102,7 @@ module.exports = {
       } else return res.json();
     });
   },
-  deletebyroomnum: async function (accessToken, roomnum) {
+  deleteByRoomNumber: async function (accessToken, roomnum) {
     return fetch(
       `http://${
         process.env.REACT_APP_host || "localhost"

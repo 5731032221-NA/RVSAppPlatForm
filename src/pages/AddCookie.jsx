@@ -1,28 +1,43 @@
-import uuid from 'react-native-uuid';
+// import uuid from "react-native-uuid";
 import React, { useState, useContext } from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import { useCookies } from "react-cookie";
+import { ReactReduxContext, useSelector } from "react-redux";
+import { TextField } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
+import Container from "@material-ui/core/Container";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+// import Dialog from "@material-ui/core/Dialog";
+// import DialogActions from "@material-ui/core/DialogActions";
+
 import "../assets/login.css";
 import "../assets/variable.css";
 import background from "../assets/img/imgbackground.png";
-import backgroundLogo from "../assets/img/imgbackground-logo.png";
-import BusinessIcon from '@material-ui/icons/Business';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import Box from '@material-ui/core/Box';
-import PropTypes from "prop-types";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Container from "@material-ui/core/Container";
-import Divider from "@material-ui/core/Divider";
-import { FormControl, FormLabel, Select, MenuItem } from '@material-ui/core';
-import menus from "../services/menus.service";
-import propertypermission from "../services/propertypermission.service";
+import propertyRole from "../services/propertyrole.service";
+import propertyPermission from "../services/propertypermission.service";
+import {
+  listRegisterHardware,
+  insertHardware,
+  deleteHardware,
+  updateHardware,
+} from "../services/device.service";
 import { getAsset } from "../services/assest.service";
-import propertyrole from "../services/propertyrole.service"
-import { useCookies } from 'react-cookie';
+import { EDIT_CONFIGSTATE } from "../middleware/action";
+import { EDIT_PERMISSION } from "../middleware/action";
+import { EDIT_PROPERTY } from "../middleware/action";
+import { EDIT_COMPONENT } from "../middleware/action";
+import { listAllProperty } from "../services/user.service";
 
-import { ReactReduxContext } from 'react-redux'
-
+// import backgroundLogo from "../assets/img/imgbackground-logo.png";
+// import { getAsset } from "../services/assest.service";
+// import menus from "../services/menus.service";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,29 +50,51 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 100,
   },
   imglogo: {
-    maxHeight: 220, maxWidth: 220,
+    maxHeight: 220,
+    maxWidth: 220,
   },
   formlogin: {
-    marginBottom: 20, padding: 10,
+    marginBottom: 20,
+    padding: 10,
   },
   sysname: {
-    color: "#393737", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 15
+    color: "#393737",
+    fontFamily: "Roboto",
+    fontWeight: "normal",
+    fontSize: 15,
   },
   errorMessage: {
-    color: "#ff0033", fontFamily: 'Roboto', fontWeight: 'normal', fontSize: 15
+    color: "#ff0033",
+    fontFamily: "Roboto",
+    fontWeight: "normal",
+    fontSize: 15,
   },
   seletprop: {
     fontSize: 15,
     color: "#164BD8",
-    paddingBottom: 20
-  }
+    paddingBottom: 20,
+  },
 }));
+
+function createData(id, propertycode, code, type, name, macaddress, ip) {
+  return {
+    id,
+    propertycode,
+    code,
+    type,
+    name,
+    macaddress,
+    ip,
+  };
+}
 
 export default function Property({ setToken, setProperty }) {
   const { store } = useContext(ReactReduxContext);
   const classes = useStyles();
-  const [selectedProperty, setSelectedProperty] = useState(JSON.parse(sessionStorage.getItem("grantproperty"))[0].propertycode);
-  const [cookies, setCookie] = useCookies(['name']);
+  const [selectedProperty, setSelectedProperty] = useState(
+    JSON.parse(sessionStorage.getItem("grantproperty"))[0].propertycode
+  );
+  const [cookies, setCookie] = useCookies(["name"]);
 
   const pageProperty = useSelector((state) => state.reducer.property);
   const [data, setData] = React.useState([]);
@@ -71,7 +108,7 @@ export default function Property({ setToken, setProperty }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const [properties, setProperty] = React.useState([]);
+  const [propertiesData, setPropertyData] = React.useState([]);
   const [deviceTypes, setDeviceType] = useState([
     {
       key: "1",
@@ -90,12 +127,21 @@ export default function Property({ setToken, setProperty }) {
 
   const [errorMessageDu, setErrorMessageDu] = useState(false);
   const [errorParameterDu, setErrorParameterDu] = useState(null);
+  const [file, setFile] = useState("");
+
+  const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
+    let data = [];
+    for (let i = _page * _rowsPerPage; i < (_page + 1) * _rowsPerPage; i++) {
+      if (rowsdata[i]) data.push(rowsdata[i]);
+    }
+    setPageData(data);
+  };
 
   React.useEffect(async () => {
     // macaddress.all().then(function (all) {
     //   console.log(JSON.stringify(all, null, 2));
     // });
-    let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+    let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
     let devicedata = [];
     // let i = 0;
     _data.content[_data.content.length - 1].forEach((element) =>
@@ -138,7 +184,7 @@ export default function Property({ setToken, setProperty }) {
   };
 
   const handleDialogAdd = async () => {
-    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    let propertydata = await listAllProperty(sessionStorage.getItem("auth"));
     let tempproperty = [];
     propertydata.content[propertydata.content.length - 1]
       .split(",")
@@ -151,7 +197,7 @@ export default function Property({ setToken, setProperty }) {
         }
       });
     console.log("tempproperty", tempproperty);
-    setProperty(tempproperty);
+    setPropertyData(tempproperty);
     setUpdateData({ type: deviceTypes[0].label });
     setErrorMessageDu(false);
     setErrorMessage(false);
@@ -166,7 +212,7 @@ export default function Property({ setToken, setProperty }) {
     let _rowData = JSON.parse(JSON.stringify(rowData));
     _rowData.tableData = undefined;
     console.log("handleDialogEdit", _rowData);
-    let propertydata = await listallproperty(sessionStorage.getItem("auth"));
+    let propertydata = await listAllProperty(sessionStorage.getItem("auth"));
     let tempproperty = [];
     propertydata.content[propertydata.content.length - 1]
       .split(",")
@@ -179,7 +225,7 @@ export default function Property({ setToken, setProperty }) {
         }
       });
     console.log("tempproperty", tempproperty);
-    setProperty(tempproperty);
+    setPropertyData(tempproperty);
     setUpdateData(_rowData);
     setErrorMessageDu(false);
     setErrorMessage(false);
@@ -201,12 +247,12 @@ export default function Property({ setToken, setProperty }) {
       setErrorParameter("Device Name");
     } else {
       setErrorMessage(false);
-      let _inserthardware = await inserthardware(
+      let _insertHardware = await insertHardware(
         sessionStorage.getItem("auth"),
         updateData
       );
-      if (_inserthardware.status == "2000") {
-        let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+      if (_insertHardware.status == "2000") {
+        let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
         let devicedata = [];
         // let i = 0;
         _data.content[_data.content.length - 1].forEach((element) =>
@@ -225,21 +271,21 @@ export default function Property({ setToken, setProperty }) {
         setRows(devicedata);
         updatePageData(devicedata, page, rowsPerPage);
         setDialogAdd(false);
-      }else if(_inserthardware.status == "1000"){
+      } else if (_insertHardware.status == "1000") {
         setErrorMessageDu(true);
-        const dupic = _inserthardware.msg +" Device Code: "+ updateData.code;
-        setErrorParameterDu(dupic)
+        const dupic = _insertHardware.msg + " Device Code: " + updateData.code;
+        setErrorParameterDu(dupic);
       }
     }
   };
 
   const handleDelete = async (id) => {
-    let _deletehardware = await deletehardware(
+    let _deleteHardware = await deleteHardware(
       sessionStorage.getItem("auth"),
       id
     );
-    if (_deletehardware.status == "2000") {
-      let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
+    if (_deleteHardware.status == "2000") {
+      let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
       let devicedata = [];
       // let i = 0;
       _data.content[_data.content.length - 1].forEach((element) =>
@@ -271,37 +317,37 @@ export default function Property({ setToken, setProperty }) {
       setErrorParameter("Device Name");
     } else {
       setErrorMessage(false);
-    let _updatehardware = await updatehardware(
-      sessionStorage.getItem("auth"),
-      id,
-      updateData
-    );
-    if (_updatehardware.status == "2000") {
-      let _data = await listregisterdhardware(sessionStorage.getItem("auth"));
-      let devicedata = [];
-      // let i = 0;
-      _data.content[_data.content.length - 1].forEach((element) =>
-        devicedata.push(
-          createData(
-            element.id,
-            element.propertycode,
-            element.code,
-            element.type,
-            element.name,
-            element.macaddress,
-            element.ip
-          )
-        )
+      let _updateHardware = await updateHardware(
+        sessionStorage.getItem("auth"),
+        id,
+        updateData
       );
-      setRows(devicedata);
-      updatePageData(devicedata, page, rowsPerPage);
-      setDialogEdit(false);
-    }else if(_updatehardware.status == "1000"){
-      setErrorMessageDu(true);
-      const dupic = _updatehardware.msg +" Device Code: "+ updateData.code;
-      setErrorParameterDu(dupic)
+      if (_updateHardware.status == "2000") {
+        let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
+        let devicedata = [];
+        // let i = 0;
+        _data.content[_data.content.length - 1].forEach((element) =>
+          devicedata.push(
+            createData(
+              element.id,
+              element.propertycode,
+              element.code,
+              element.type,
+              element.name,
+              element.macaddress,
+              element.ip
+            )
+          )
+        );
+        setRows(devicedata);
+        updatePageData(devicedata, page, rowsPerPage);
+        setDialogEdit(false);
+      } else if (_updateHardware.status == "1000") {
+        setErrorMessageDu(true);
+        const dupic = _updateHardware.msg + " Device Code: " + updateData.code;
+        setErrorParameterDu(dupic);
+      }
     }
-  }
   };
 
   const [themeState, setThemeState] = React.useState({
@@ -332,6 +378,11 @@ export default function Property({ setToken, setProperty }) {
     }
   }, [themeBackground]);
 
+  const headerTableStyle = {
+    backgroundColor: themeState.paper,
+    color: themeState.color,
+  };
+
   const [mainColor, setMainColor] = React.useState("#2D62ED");
   const maincolor = useSelector((state) => state.reducer.color);
 
@@ -343,23 +394,25 @@ export default function Property({ setToken, setProperty }) {
     }
   }, [maincolor]);
 
+  const getLogo = async () => {
+    const resp = await getAsset();
+
+    if (resp.status == "2000") {
+      setFile(resp.content[0].asset);
+    }
+  };
+
   React.useEffect(() => {
     getLogo();
-    // var d1 = new Date(),
-    //   d2 = new Date(d1);
-    // d2.setFullYear(d2.getFullYear() + 100)
-    // setCookie("UUID-" + sessionStorage.getItem("username"), sessionStorage.getItem("username") + uuid.v4(), { path: '/', expires: d2 });
-  }, [])
+  }, []);
 
-
-  // const handleCancle = () => {
-  //     console.log("cancle")
-  //     setToken(false);
-
-  // };
   const handleSelect = async () => {
-    const permission = await propertypermission(sessionStorage.getItem("auth"), selectedProperty, sessionStorage.getItem("username"));
-    console.log("permission", permission)
+    const permission = await propertyPermission(
+      sessionStorage.getItem("auth"),
+      selectedProperty,
+      sessionStorage.getItem("username")
+    );
+    console.log("permission", permission);
 
     // sessionStorage.setItem("permissionref", permission.content[permission.content.length - 1]);
     store.dispatch({
@@ -367,35 +420,38 @@ export default function Property({ setToken, setProperty }) {
       payload: permission.content[permission.content.length - 1],
     });
 
-
-
-
-    const role = await propertyrole(sessionStorage.getItem("auth"), selectedProperty, sessionStorage.getItem("username"));
+    const role = await propertyRole(
+      sessionStorage.getItem("auth"),
+      selectedProperty,
+      sessionStorage.getItem("username")
+    );
     sessionStorage.setItem("role", role.content[role.content.length - 1]);
-    console.log("::::::::::::::::role::", role.content[role.content.length - 1]);
+    console.log(":::::::role::", role.content[role.content.length - 1]);
     // const menu = await menus(sessionStorage.getItem("auth"),selectedProperty);
     // sessionStorage.setItem('comp', JSON.stringify(menu.content.components));
     store.dispatch({
       type: EDIT_PROPERTY,
       payload: selectedProperty,
     });
-    sessionStorage.setItem('property', selectedProperty);
-    console.log("Dashboard::::::")
+    sessionStorage.setItem("property", selectedProperty);
+    console.log("Dashboard::::::");
     store.dispatch({
       type: EDIT_COMPONENT,
-      payload: "Dashboard"
-    })
-    setProperty(selectedProperty);
-
-
+      payload: "Dashboard",
+    });
+    setPropertyData(selectedProperty);
   };
 
   return (
-    <Grid className="Login-component" style={{
-      backgroundImage: `url(${background})`, backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
-    }} >
+    <Grid
+      className="Login-component"
+      style={{
+        backgroundImage: `url(${background})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <Container
         component="main"
         maxWidth="xs"
@@ -408,15 +464,29 @@ export default function Property({ setToken, setProperty }) {
           top="88%"
           left="89%"
           zIndex="tooltip"
-          style={{ backgroundRepeat: 'no-repeat' }}
+          style={{ backgroundRepeat: "no-repeat" }}
           sx={{ display: { xs: "none", md: "none", lg: "flex" } }}
         >
           {/* <img className={classes.imglogo} src={file} alt="logo" width="150" /> */}
-          {file ? <img src={file} className={classes.imglogo} alt="logo" width="150" /> : <img src="loginlogo.png" className={classes.imglogo} alt="logo" width="150" />}
+          {file ? (
+            <img
+              src={file}
+              className={classes.imglogo}
+              alt="logo"
+              width="150"
+            />
+          ) : (
+            <img
+              src="loginlogo.png"
+              className={classes.imglogo}
+              alt="logo"
+              width="150"
+            />
+          )}
         </Box>
         <Paper className={classes.paper}>
           <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
-          <h5 className={classes.sysname} >Hotel Property Management System </h5>
+          <h5 className={classes.sysname}>Hotel Property Management System </h5>
           <Divider variant="middle" />
           <h5> </h5>
           <Grid container>
@@ -454,7 +524,7 @@ export default function Property({ setToken, setProperty }) {
                           })
                         }
                       >
-                        {properties.map((option) => (
+                        {propertiesData.map((option) => (
                           <option
                             key={option.value}
                             value={option.value}
@@ -572,5 +642,5 @@ export default function Property({ setToken, setProperty }) {
 
 Property.propTypes = {
   setToken: PropTypes.func.isRequired,
-  setProperty: PropTypes.func.isRequired
+  setProperty: PropTypes.func.isRequired,
 };
