@@ -1,48 +1,13 @@
 import React, { useState, useContext } from "react";
 import { ReactReduxContext, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import MaterialTable, {
-  MTableToolbar,
-  MTableBody,
-  MTableHeader,
-  MTablePagination,
-} from "material-table";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import {
-  Container,
-  Grid,
-  Paper,
-  Typography,
-  InputAdornment,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Breadcrumbs,
-  Link,
-  TextField,
-  Chip,
-  Divider,
-  FilledInput,
-} from "@material-ui/core";
-
-import UpdateIcon from "@material-ui/icons/Update";
-import PeopleIcon from "@material-ui/icons/People";
+import { VpnKey } from "@material-ui/icons";
+import { blue } from "@material-ui/core/colors";
+import MaterialTable from "material-table";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import IconButton from "@material-ui/core/IconButton";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import EditRoundedIcon from "@material-ui/icons/EditRounded";
-import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import VpnKeyOutlinedIcon from "@material-ui/icons/VpnKeyOutlined";
-import NavigateNextRoundedIcon from "@material-ui/icons/NavigateNextRounded";
-import NavigateBeforeRoundedIcon from "@material-ui/icons/NavigateBeforeRounded";
-import FirstPageRoundedIcon from "@material-ui/icons/FirstPageRounded";
-import LastPageRoundedIcon from "@material-ui/icons/LastPageRounded";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -51,39 +16,44 @@ import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import { useHistory } from "react-router-dom";
-
-import {
-  changestatus,
-  listuser,
-  getuser,
-  postuser,
-  updateuser,
-  getuserbyid,
-  deleteuserbyid,
-  // listrole,
-  listpropertybyroles,
-  listallproperty,
-  deleteuserbyusername,
-  rolepermissionbyrole,
-  userrolebyusername,
-  userpropertybyusername,
-  getposition,
-  postposition,
-  getuserpermission,
-  getusercomponentpermision,
-} from "../../services/user.service";
-import { listrole } from "../../services/roleManagement.service";
-
 import Checkbox from "@material-ui/core/Checkbox";
 import TreeItem from "@material-ui/lab/TreeItem";
 import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import {
+  Container,
+  Grid,
+  Typography,
+  Button,
+  MenuItem,
+  Breadcrumbs,
+  Link,
+  TextField,
+  Chip,
+  Divider,
+} from "@material-ui/core";
+
+import {
+  changeStatus,
+  listUser,
+  postUser,
+  updateUser,
+  listPropertyByRoles,
+  deleteUserByUserName,
+  rolePermissionByRole,
+  userRoleByUserName,
+  userPropertyByUserName,
+  getPosition,
+  postPosition,
+  getUserPermission,
+  getUserComponentPermision,
+  // listAllProperty,
+  // getUserByID,
+  // getUser,
+  // listrole,
+} from "../../services/user.service";
+import { listRole } from "../../services/roleManagement.service";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
-import { VpnKey } from "@material-ui/icons";
-import { blue, red } from "@material-ui/core/colors";
 // import user from "../services/user.service";
 
 // Generate Order Data
@@ -112,29 +82,6 @@ function createData(
     adaccount,
   };
 }
-// const rows = [
-//   createData(
-//     0,
-//     "Somchai",
-//     "Somchai Wong nut",
-//     "Front Office",
-//     "Cashier",
-//     "Active"
-//   ),
-//   createData(1, "Fah", "Mekha Wihok", "Reception", "Night", "Inactive"),
-//   createData(2, "Mon", "Month main", "Front Office", "Cashaier", "Active"),
-// ];
-
-// const roles = [
-//   {
-//     key: "1",
-//     label: "Cahshier",
-//   },
-//   {
-//     key: "2",
-//     label: "Accountant",
-//   },
-// ];
 
 const property = [
   {
@@ -152,10 +99,6 @@ const property = [
 ];
 const RoleValues = "";
 const PropertyValues = "";
-
-function preventDefault(event) {
-  event.preventDefault();
-}
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -203,31 +146,18 @@ const useStyles = makeStyles((theme) => ({
     "&.MuiMenu-paper": {
       backgroundColor: themeState.paper,
     },
-    // "& .material-icons": {
-    //   borderBottomColor: themeState.color,
-    // },
   }),
   pagination: (themeState) => ({
     "& .MTablePaginationInner-root": {
       backgroundColor: themeState.color,
     },
-    // "&.MuiButtonBase-root": {
-    //   backgroundColor: "red",
-    // },
-    // "&.MuiIconButton-root": {
-    //   backgroundColor: "red",
-    // },
-    // "&.Mui-disabled": {
-    //   backgroundColor: "red",
-    // },
-
     color: themeState.color,
   }),
 }));
 
 var roles = [];
 
-const defaultdata = [
+const defaultData = [
   {
     name: "Dashboard",
     code: "DB",
@@ -658,7 +588,7 @@ export default function UserManagement() {
   const [dialogEditUser, setDialogEditUser] = React.useState(false);
   const [dialogDeleteUser, setDialogDeleteUser] = React.useState(false);
   const [selectPosition, setSelectPosition] = React.useState(null);
-  const [selectProperty, setSelectProperty] = React.useState(null);
+  // const [selectProperty, setSelectProperty] = React.useState(null);
   const [permissionDialog, setPermissionDialog] = React.useState(false);
   const [chipRolesDialog, setChipRolesDialog] = React.useState([]);
   const [chipPropertyDialog, setChipPropertyDialog] = React.useState([]);
@@ -674,8 +604,8 @@ export default function UserManagement() {
   const [editAD, setEditAD] = useState("");
   // const [editFirstname, setEditFirstname] = React.useState(null);
   // const [editLastname, setEditLastname] = React.useState(null);
+  // const [editID, setEditID] = React.useState(null);
   const [properties, setProperties] = React.useState([]);
-  const [editID, setEditID] = React.useState(null);
   const [editStatus, setEditStatus] = React.useState(true);
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
@@ -688,19 +618,19 @@ export default function UserManagement() {
 
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
-    let usercomponentpermission = await getusercomponentpermision(
+    let userComponentPermission = await getUserComponentPermision(
       sessionStorage.getItem("auth"),
       sessionStorage.getItem("username"),
       "CF-UM"
     );
     setCRUD({
-      C: usercomponentpermission.content[0].permissioncreate,
-      R: usercomponentpermission.content[0].permissionread,
-      U: usercomponentpermission.content[0].permissionupdate,
-      D: usercomponentpermission.content[0].permissiondelete,
+      C: userComponentPermission.content[0].permissioncreate,
+      R: userComponentPermission.content[0].permissionread,
+      U: userComponentPermission.content[0].permissionupdate,
+      D: userComponentPermission.content[0].permissiondelete,
     });
-    let dataRole = await listrole(sessionStorage.getItem("auth"));
-    console.log("listrole", dataRole.content[dataRole.content.length - 1]);
+    let dataRole = await listRole(sessionStorage.getItem("auth"));
+    console.log("listRole", dataRole.content[dataRole.content.length - 1]);
     roles = [];
     dataRole.content[dataRole.content.length - 1].forEach((element) => {
       if (element.status == "Active")
@@ -711,7 +641,7 @@ export default function UserManagement() {
     });
     console.log("roles", roles);
 
-    const data = await listuser(sessionStorage.getItem("auth"));
+    const data = await listUser(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
@@ -737,7 +667,6 @@ export default function UserManagement() {
   }, []);
 
   const handleComponentState = async (comp) => {
-
     const comlower = comp.toLowerCase();
     history.replace(`/${comlower}`);
     store.dispatch({
@@ -756,8 +685,8 @@ export default function UserManagement() {
 
   const handleDialogAddUser = async () => {
     let position_json = [];
-    let listposition = await getposition(sessionStorage.getItem("auth"));
-    listposition.content[listposition.content.length - 1].forEach((element) => {
+    let listPosition = await getPosition(sessionStorage.getItem("auth"));
+    listPosition.content[listPosition.content.length - 1].forEach((element) => {
       position_json.push({ key: element.position, label: element.position });
     });
     position_json.push({ key: "Add new position", label: "Add new position" });
@@ -788,7 +717,7 @@ export default function UserManagement() {
     status,
     adaccount
   ) => {
-    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    // const databyid = await getUserByID(sessionStorage.getItem("auth"), id);
     // setEditFirstName(databyid.content[databyid.content.length - 1].firstname);
     // setEditLastName(databyid.content[databyid.content.length - 1].lastname);
     // setEditUserName(databyid.content[databyid.content.length - 1].username);
@@ -813,11 +742,11 @@ export default function UserManagement() {
     // setEditID(id);
 
     setPermissionDialog(false);
-    let userrole = await userrolebyusername(
+    let userrole = await userRoleByUserName(
       sessionStorage.getItem("auth"),
       username
     );
-    let userproperty = await userpropertybyusername(
+    let userproperty = await userPropertyByUserName(
       sessionStorage.getItem("auth"),
       username
     );
@@ -837,7 +766,7 @@ export default function UserManagement() {
     }
     console.log("role", role);
 
-    await listproperty(Array.from(setrole));
+    await listProperty(Array.from(setrole));
     let property = [];
     if (userproperty.content[userproperty.content.length - 1] != "") {
       userproperty.content[userproperty.content.length - 1]
@@ -849,8 +778,8 @@ export default function UserManagement() {
         });
     }
     let position_json = [];
-    let listposition = await getposition(sessionStorage.getItem("auth"));
-    listposition.content[listposition.content.length - 1].forEach((element) => {
+    let listPosition = await getPosition(sessionStorage.getItem("auth"));
+    listPosition.content[listPosition.content.length - 1].forEach((element) => {
       if (
         position_json.filter((x) => x.label === element.position).length == 0
       ) {
@@ -861,7 +790,7 @@ export default function UserManagement() {
 
     const temp = new Set();
     if (role.length) {
-      let userper = await getuserpermission(
+      let userper = await getUserPermission(
         sessionStorage.getItem("auth"),
         username
       );
@@ -870,14 +799,14 @@ export default function UserManagement() {
         for (var i in role) {
           temp.add(role[i].key);
         }
-        let roleper = await rolepermissionbyrole(
+        let roleper = await rolePermissionByRole(
           sessionStorage.getItem("auth"),
           { roles: Array.from(temp) }
         );
         console.log("roleper", roleper);
-        let _data = JSON.parse(JSON.stringify(defaultdata));
+        let _data = JSON.parse(JSON.stringify(defaultData));
 
-        rolepermissionedit(
+        rolePermissionEdit(
           _data,
           roleper.content[roleper.content.length - 1],
           userper.content[userper.content.length - 1]
@@ -909,7 +838,7 @@ export default function UserManagement() {
     setDialogEditUser(false);
   };
 
-  const rolepermission = async (array, permission) => {
+  const rolePermission = async (array, permission) => {
     let list = [];
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
@@ -920,8 +849,8 @@ export default function UserManagement() {
         obj.delete = !!parseInt(permission[obj.code].permissiondelete);
       }
       if (obj.children) {
-        // list = [...list, ...propertylist(obj.children)];
-        rolepermission(obj.children, permission);
+        // list = [...list, ...propertyList(obj.children)];
+        rolePermission(obj.children, permission);
       }
     }
     return list;
@@ -933,16 +862,16 @@ export default function UserManagement() {
       for (var i in chipRolesDialog) {
         temp.add(chipRolesDialog[i].key);
       }
-      let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), {
+      let roleper = await rolePermissionByRole(sessionStorage.getItem("auth"), {
         roles: Array.from(temp),
       });
       console.log("roleper", roleper);
-      let _data = JSON.parse(JSON.stringify(defaultdata));
-      rolepermission(_data, roleper.content[roleper.content.length - 1]);
+      let _data = JSON.parse(JSON.stringify(defaultData));
+      rolePermission(_data, roleper.content[roleper.content.length - 1]);
       setData(_data);
       setData((prevState) => [...prevState]);
     } else {
-      setData(JSON.parse(JSON.stringify(defaultdata)));
+      setData(JSON.parse(JSON.stringify(defaultData)));
     }
 
     setPermissionDialog(true);
@@ -955,7 +884,7 @@ export default function UserManagement() {
     // }
   };
 
-  const rolepermissionedit = async (array, permission, userpermission) => {
+  const rolePermissionEdit = async (array, permission, userpermission) => {
     let list = [];
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
@@ -1021,8 +950,8 @@ export default function UserManagement() {
         }
       }
       if (obj.children) {
-        // list = [...list, ...propertylist(obj.children)];
-        rolepermissionedit(obj.children, permission, userpermission);
+        // list = [...list, ...propertyList(obj.children)];
+        rolePermissionEdit(obj.children, permission, userpermission);
       }
     }
     return list;
@@ -1034,17 +963,17 @@ export default function UserManagement() {
       for (var i in chipRolesDialog) {
         temp.add(chipRolesDialog[i].key);
       }
-      let roleper = await rolepermissionbyrole(sessionStorage.getItem("auth"), {
+      let roleper = await rolePermissionByRole(sessionStorage.getItem("auth"), {
         roles: Array.from(temp),
       });
       console.log("roleper", roleper);
-      let _data = JSON.parse(JSON.stringify(defaultdata));
-      let userper = await getuserpermission(
+      let _data = JSON.parse(JSON.stringify(defaultData));
+      let userper = await getUserPermission(
         sessionStorage.getItem("auth"),
         oldUserName
       );
 
-      rolepermissionedit(
+      rolePermissionEdit(
         _data,
         roleper.content[roleper.content.length - 1],
         userper.content[userper.content.length - 1]
@@ -1052,7 +981,7 @@ export default function UserManagement() {
       setData(_data);
       setData((prevState) => [...prevState]);
     } else {
-      setData(JSON.parse(JSON.stringify(defaultdata)));
+      setData(JSON.parse(JSON.stringify(defaultData)));
     }
 
     setPermissionDialog(!permissionDialog);
@@ -1065,22 +994,22 @@ export default function UserManagement() {
     }
   };
 
-  const handlePermissionClose = () => {
-    setPermissionDialog(false);
-  };
+  // const handlePermissionClose = () => {
+  //   setPermissionDialog(false);
+  // };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-    updatePageData(rows, newPage, rowsPerPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  //   updatePageData(rows, newPage, rowsPerPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
-    setPage(0);
-    updatePageData(rows, 0, event.target.value);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(event.target.value);
+  //   setPage(0);
+  //   updatePageData(rows, 0, event.target.value);
+  // };
 
-  const propertylist = async (array, code) => {
+  const propertyList = async (array, code) => {
     let list = [];
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
@@ -1100,8 +1029,8 @@ export default function UserManagement() {
         });
       }
       if (obj.children) {
-        // list = [...list, ...propertylist(obj.children)];
-        let append = await propertylist(obj.children, code);
+        // list = [...list, ...propertyList(obj.children)];
+        let append = await propertyList(obj.children, code);
         if (append.length > 0) list = list.concat(append);
       }
     }
@@ -1136,15 +1065,13 @@ export default function UserManagement() {
       setErrorMessage(true);
       setErrorParameter("Property");
     } else {
-
-
       setErrorMessage(false);
       if (position == "Add new position") {
-        let addPosition = await postposition(sessionStorage.getItem("auth"), {
+        let addPosition = await postPosition(sessionStorage.getItem("auth"), {
           position: newPosition,
         });
       }
-      let perm = await propertylist(data, code);
+      let perm = await propertyList(data, code);
       console.log(perm);
       const roletemp = new Set();
       if (chipRolesDialog.length) {
@@ -1161,7 +1088,7 @@ export default function UserManagement() {
       }
       const propertyTempArray = Array.from(propertytemp).join(",");
       console.log(firstName, lastName, status, position, role);
-      let insert = await postuser(sessionStorage.getItem("auth"), {
+      let insert = await postUser(sessionStorage.getItem("auth"), {
         firstname: firstName,
         lastname: lastName,
         code: code,
@@ -1174,7 +1101,7 @@ export default function UserManagement() {
       });
       console.log(insert);
       if (insert.status == "2000") {
-        const data = await listuser(sessionStorage.getItem("auth"));
+        const data = await listUser(sessionStorage.getItem("auth"));
         let userdata = [];
         data.content[data.content.length - 1].forEach((element) =>
           userdata.push(
@@ -1196,9 +1123,8 @@ export default function UserManagement() {
         updatePageData(userdata, page, rowsPerPage);
         setDialogAddUser(false);
       } else if (insert.status == "1000") {
-
         setErrorMessageDu(true);
-        setErrorParameterDu(insert.msg)
+        setErrorParameterDu(insert.msg);
       }
     }
   };
@@ -1210,32 +1136,32 @@ export default function UserManagement() {
   //   setSelectProperty(event.target.value);
   // };
 
-  const listproperty = async (role) => {
+  const listProperty = async (role) => {
     // let oldproperty = properties;
-    let changeproperty = await listpropertybyroles(
+    let changeProperty = await listPropertyByRoles(
       sessionStorage.getItem("auth"),
       { roles: role }
     );
-    console.log("changeproperty", changeproperty);
-    let tempproperty = [];
+    console.log("changeProperty", changeProperty);
+    let tempProperty = [];
 
-    changeproperty.content[changeproperty.content.length - 1]
+    changeProperty.content[changeProperty.content.length - 1]
       .split(",")
       .forEach((element) => {
-        if (tempproperty.filter((x) => x.label === element).length == 0) {
-          tempproperty.push({
+        if (tempProperty.filter((x) => x.label === element).length == 0) {
+          tempProperty.push({
             key: element,
             label: element,
           });
         }
       });
-    console.log("tempproperty", tempproperty);
-    setProperties(tempproperty);
+    console.log("tempProperty", tempProperty);
+    setProperties(tempProperty);
 
     // console.log("prop",oldproperty,properties)
     setChipPropertyDialog((chips) =>
       chips.filter((chips) =>
-        tempproperty.some((property) => property.key === chips.key)
+        tempProperty.some((property) => property.key === chips.key)
       )
     );
   };
@@ -1256,7 +1182,7 @@ export default function UserManagement() {
         ]);
         temp.add(key.props.name);
         console.log("temp", temp);
-        listproperty(Array.from(temp));
+        listProperty(Array.from(temp));
       }
     } else {
       setChipRolesDialog([
@@ -1265,7 +1191,7 @@ export default function UserManagement() {
       ]);
       temp.add(key.props.name);
       console.log("temp", temp);
-      listproperty(Array.from(temp));
+      listProperty(Array.from(temp));
     }
   };
   const handleDeleteRoles = (chipToDelete) => async () => {
@@ -1278,7 +1204,7 @@ export default function UserManagement() {
       if (chipRolesDialog[i].key != chipToDelete.key)
         temp.add(chipRolesDialog[i].key);
     }
-    listproperty(Array.from(temp));
+    listProperty(Array.from(temp));
   };
 
   const handleSelectProperty = (event, key) => {
@@ -1308,7 +1234,7 @@ export default function UserManagement() {
     );
   };
 
-  const editing_create = async (array, label) => {
+  const editingCreate = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       console.log(obj.code, label);
@@ -1316,20 +1242,20 @@ export default function UserManagement() {
         obj.edited_create = !obj.edited_create;
         obj.create = !obj.create;
       } else if (obj.children) {
-        editing_create(obj.children, label);
+        editingCreate(obj.children, label);
       }
     }
   };
 
-  const handleCheckPermision_create = async (nodes) => {
+  const handleCheckPermisionCreate = async (nodes) => {
     let _data = data;
     console.log("nid", nodes.code);
-    await editing_create(_data, nodes.code);
+    await editingCreate(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
 
-  const editing_read = async (array, label) => {
+  const editingRead = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       console.log(obj.code, label);
@@ -1337,20 +1263,20 @@ export default function UserManagement() {
         obj.edited_read = !obj.edited_read;
         obj.read = !obj.read;
       } else if (obj.children) {
-        editing_read(obj.children, label);
+        editingRead(obj.children, label);
       }
     }
   };
 
-  const handleCheckPermision_read = async (nodes) => {
+  const handleCheckPermisionRead = async (nodes) => {
     let _data = data;
     console.log("nid", nodes.code);
-    await editing_read(_data, nodes.code);
+    await editingRead(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
 
-  const editing_update = async (array, label) => {
+  const editingUpdate = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       console.log(obj.code, label);
@@ -1358,20 +1284,20 @@ export default function UserManagement() {
         obj.edited_update = !obj.edited_update;
         obj.update = !obj.update;
       } else if (obj.children) {
-        editing_update(obj.children, label);
+        editingUpdate(obj.children, label);
       }
     }
   };
 
-  const handleCheckPermision_update = async (nodes) => {
+  const handleCheckPermisionUpdate = async (nodes) => {
     let _data = data;
     console.log("nid", nodes.code);
-    await editing_update(_data, nodes.code);
+    await editingUpdate(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
 
-  const editing_delete = async (array, label) => {
+  const editingDelete = async (array, label) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       console.log(obj.code, label);
@@ -1379,20 +1305,20 @@ export default function UserManagement() {
         obj.edited_delete = !obj.edited_delete;
         obj.delete = !obj.delete;
       } else if (obj.children) {
-        editing_delete(obj.children, label);
+        editingDelete(obj.children, label);
       }
     }
   };
 
-  const handleCheckPermision_delete = async (nodes) => {
+  const handleCheckPermisionDelete = async (nodes) => {
     let _data = data;
     console.log("nid", nodes.code);
-    await editing_delete(_data, nodes.code);
+    await editingDelete(_data, nodes.code);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
 
-  const editing_all = async (array, label, checked) => {
+  const editingAll = async (array, label, checked) => {
     for (var i = 0; i < array.length; i++) {
       var obj = array[i];
       console.log(obj.code, label);
@@ -1414,15 +1340,15 @@ export default function UserManagement() {
           obj.create = !obj.create;
         }
       } else if (obj.children) {
-        editing_all(obj.children, label, checked);
+        editingAll(obj.children, label, checked);
       }
     }
   };
 
-  const handleCheckPermision_all = async (nodes, event) => {
+  const handleCheckPermisionAll = async (nodes, event) => {
     let _data = data;
     console.log("nid", nodes.code, event.target.checked);
-    await editing_all(_data, nodes.code, !event.target.checked);
+    await editingAll(_data, nodes.code, !event.target.checked);
     setData(_data);
     setData((prevState) => [...prevState]);
   };
@@ -1486,9 +1412,9 @@ export default function UserManagement() {
                   <Grid item style={{ flexGrow: 1 }}>
                     <Typography>
                       {nodes.create ||
-                        nodes.read ||
-                        nodes.update ||
-                        nodes.delete ? (
+                      nodes.read ||
+                      nodes.update ||
+                      nodes.delete ? (
                         <Typography
                           display="inline"
                           variant="h6"
@@ -1517,9 +1443,9 @@ export default function UserManagement() {
                         </Typography>
                       )}
                       {nodes.edited_create ||
-                        nodes.edited_read ||
-                        nodes.edited_update ||
-                        nodes.edited_delete ? (
+                      nodes.edited_read ||
+                      nodes.edited_update ||
+                      nodes.edited_delete ? (
                         <Typography
                           display="inline"
                           variant="h6"
@@ -1550,7 +1476,7 @@ export default function UserManagement() {
                             nodes.delete
                           }
                           onClick={(event) =>
-                            handleCheckPermision_all(nodes, event)
+                            handleCheckPermisionAll(nodes, event)
                           }
                         />
                       }
@@ -1575,9 +1501,7 @@ export default function UserManagement() {
                                 color: "green",
                               }}
                               checked={nodes.create}
-                              onChange={() =>
-                                handleCheckPermision_create(nodes)
-                              }
+                              onChange={() => handleCheckPermisionCreate(nodes)}
                             />
                           }
                           label={
@@ -1600,9 +1524,7 @@ export default function UserManagement() {
                                 color: "red",
                               }}
                               checked={nodes.create}
-                              onChange={() =>
-                                handleCheckPermision_create(nodes)
-                              }
+                              onChange={() => handleCheckPermisionCreate(nodes)}
                             />
                           }
                           label={
@@ -1624,7 +1546,7 @@ export default function UserManagement() {
                           <Checkbox
                             color="primary"
                             checked={nodes.create}
-                            onChange={() => handleCheckPermision_create(nodes)}
+                            onChange={() => handleCheckPermisionCreate(nodes)}
                           />
                         }
                         label={
@@ -1649,7 +1571,7 @@ export default function UserManagement() {
                                 color: "green",
                               }}
                               checked={nodes.read}
-                              onChange={() => handleCheckPermision_read(nodes)}
+                              onChange={() => handleCheckPermisionRead(nodes)}
                             />
                           }
                           label={
@@ -1672,7 +1594,7 @@ export default function UserManagement() {
                                 color: "red",
                               }}
                               checked={nodes.read}
-                              onChange={() => handleCheckPermision_read(nodes)}
+                              onChange={() => handleCheckPermisionRead(nodes)}
                             />
                           }
                           label={
@@ -1694,7 +1616,7 @@ export default function UserManagement() {
                           <Checkbox
                             color="primary"
                             checked={nodes.read}
-                            onChange={() => handleCheckPermision_read(nodes)}
+                            onChange={() => handleCheckPermisionRead(nodes)}
                           />
                         }
                         label={
@@ -1719,9 +1641,7 @@ export default function UserManagement() {
                                 color: "green",
                               }}
                               checked={nodes.update}
-                              onChange={() =>
-                                handleCheckPermision_update(nodes)
-                              }
+                              onChange={() => handleCheckPermisionUpdate(nodes)}
                             />
                           }
                           label={
@@ -1744,9 +1664,7 @@ export default function UserManagement() {
                                 color: "red",
                               }}
                               checked={nodes.update}
-                              onChange={() =>
-                                handleCheckPermision_update(nodes)
-                              }
+                              onChange={() => handleCheckPermisionUpdate(nodes)}
                             />
                           }
                           label={
@@ -1768,7 +1686,7 @@ export default function UserManagement() {
                           <Checkbox
                             color="primary"
                             checked={nodes.update}
-                            onChange={() => handleCheckPermision_update(nodes)}
+                            onChange={() => handleCheckPermisionUpdate(nodes)}
                           />
                         }
                         label={
@@ -1793,9 +1711,7 @@ export default function UserManagement() {
                                 color: "green",
                               }}
                               checked={nodes.delete}
-                              onChange={() =>
-                                handleCheckPermision_delete(nodes)
-                              }
+                              onChange={() => handleCheckPermisionDelete(nodes)}
                             />
                           }
                           label={
@@ -1818,9 +1734,7 @@ export default function UserManagement() {
                                 color: "red",
                               }}
                               checked={nodes.delete}
-                              onChange={() =>
-                                handleCheckPermision_delete(nodes)
-                              }
+                              onChange={() => handleCheckPermisionDelete(nodes)}
                             />
                           }
                           label={
@@ -1842,7 +1756,7 @@ export default function UserManagement() {
                           <Checkbox
                             color="primary"
                             checked={nodes.delete}
-                            onChange={() => handleCheckPermision_delete(nodes)}
+                            onChange={() => handleCheckPermisionDelete(nodes)}
                           />
                         }
                         label={
@@ -1879,27 +1793,27 @@ export default function UserManagement() {
                           );
                         else return item.create === true;
                       }) ||
-                        nodes.children.some((item) => {
-                          if (item.permision == false)
-                            return item.children.some(
-                              (childitem) => childitem.read === true
-                            );
-                          else return item.read === true;
-                        }) ||
-                        nodes.children.some((item) => {
-                          if (item.permision == false)
-                            return item.children.some(
-                              (childitem) => childitem.update === true
-                            );
-                          else return item.update === true;
-                        }) ||
-                        nodes.children.some((item) => {
-                          if (item.permision == false)
-                            return item.children.some(
-                              (childitem) => childitem.delete === true
-                            );
-                          else return item.delete === true;
-                        }) ? (
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.read === true
+                          );
+                        else return item.read === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.update === true
+                          );
+                        else return item.update === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.delete === true
+                          );
+                        else return item.delete === true;
+                      }) ? (
                         <Typography
                           display="inline"
                           variant="h6"
@@ -1925,27 +1839,27 @@ export default function UserManagement() {
                           );
                         else return item.edited_create === true;
                       }) ||
-                        nodes.children.some((item) => {
-                          if (item.permision == false)
-                            return item.children.some(
-                              (childitem) => childitem.edited_read === true
-                            );
-                          else return item.edited_read === true;
-                        }) ||
-                        nodes.children.some((item) => {
-                          if (item.permision == false)
-                            return item.children.some(
-                              (childitem) => childitem.edited_update === true
-                            );
-                          else return item.edited_update === true;
-                        }) ||
-                        nodes.children.some((item) => {
-                          if (item.permision == false)
-                            return item.children.some(
-                              (childitem) => childitem.edited_delete === true
-                            );
-                          else return item.edited_delete === true;
-                        }) ? (
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.edited_read === true
+                          );
+                        else return item.edited_read === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.edited_update === true
+                          );
+                        else return item.edited_update === true;
+                      }) ||
+                      nodes.children.some((item) => {
+                        if (item.permision == false)
+                          return item.children.some(
+                            (childitem) => childitem.edited_delete === true
+                          );
+                        else return item.edited_delete === true;
+                      }) ? (
                         <Typography
                           display="inline"
                           variant="h6"
@@ -2014,11 +1928,11 @@ export default function UserManagement() {
     } else {
       setErrorMessage(false);
       if (position == "Add new position") {
-        let addPosition = await postposition(sessionStorage.getItem("auth"), {
+        let addPosition = await postPosition(sessionStorage.getItem("auth"), {
           position: newPosition,
         });
       }
-      let perm = await propertylist(data, code);
+      let perm = await propertyList(data, code);
       console.log(perm);
       const roletemp = new Set();
       if (chipRolesDialog.length) {
@@ -2035,7 +1949,7 @@ export default function UserManagement() {
       }
       const propertyTempArray = Array.from(propertytemp).join(",");
       console.log(firstName, lastName, status, position, role);
-      let update = await updateuser(sessionStorage.getItem("auth"), {
+      let update = await updateUser(sessionStorage.getItem("auth"), {
         oldUserName: oldUserName,
         firstname: firstName,
         lastname: lastName,
@@ -2047,31 +1961,9 @@ export default function UserManagement() {
         permission: perm,
         adaccount: ad,
       });
-      // const temp = new Set();
-      // if (role.length) {
-      //   for (var i in role) {
-      //     temp.add(role[i].key);
-      //   }
-      // }
-      // const roleArray = Array.from(temp).join(",");
-      // console.log("roleArray", roleArray);
-
-      // const userupdate = await updateuser(
-      //   sessionStorage.getItem("auth"),
-      //   {
-      //     username: username,
-      //     firstname: firstName,
-      //     lastname: lastName,
-      //     status: status,
-      //     position: position,
-      //     role: roleArray,
-      //   },
-      //   id
-      // );
-      // console.log("userupdate func:", userupdate);
 
       if (update.status == "2000") {
-        const _data = await listuser(sessionStorage.getItem("auth"));
+        const _data = await listUser(sessionStorage.getItem("auth"));
         let userdata = [];
         _data.content[_data.content.length - 1].forEach((element) =>
           userdata.push(
@@ -2094,9 +1986,8 @@ export default function UserManagement() {
         updatePageData(userdata, page, rowsPerPage);
         setDialogEditUser(false);
       } else if (update.status == "1000") {
-
         setErrorMessageDu(true);
-        setErrorParameterDu(update.msg)
+        setErrorParameterDu(update.msg);
       }
     }
   };
@@ -2110,7 +2001,7 @@ export default function UserManagement() {
   };
   const handleDialogDeleteUserOpen = async (username, firstname, lastname) => {
     // setEditID(id);
-    // const databyid = await getuserbyid(sessionStorage.getItem("auth"), id);
+    // const databyid = await getUserByID(sessionStorage.getItem("auth"), id);
     console.log("delete dialog", username, firstname, lastname);
     setEditUserName(username);
     setEditFirstName(firstname);
@@ -2120,9 +2011,13 @@ export default function UserManagement() {
   };
 
   const handleactive = async (username, status) => {
-    let changedstatus = await changestatus(sessionStorage.getItem("auth"), username, status);
-    if (changedstatus.status == '2000') {
-      let data = await listuser(sessionStorage.getItem("auth"));
+    let changedstatus = await changeStatus(
+      sessionStorage.getItem("auth"),
+      username,
+      status
+    );
+    if (changedstatus.status == "2000") {
+      let data = await listUser(sessionStorage.getItem("auth"));
       let userdata = [];
       data.content[data.content.length - 1].forEach((element) =>
         userdata.push(
@@ -2145,7 +2040,7 @@ export default function UserManagement() {
       setRows(userdata);
       updatePageData(userdata, page, rowsPerPage);
     }
-  }
+  };
 
   const handleDialogDelete = async (username, fname, lname) => {
     // console.log("DeleteID:", id);
@@ -2153,12 +2048,12 @@ export default function UserManagement() {
     console.log("DeleteFname:", fname);
     console.log("DeleteLname:", lname);
 
-    const deleteuser = await deleteuserbyusername(
+    const deleteuser = await deleteUserByUserName(
       sessionStorage.getItem("auth"),
       username
     );
     console.log("userupdate func:", deleteuser);
-    const data = await listuser(sessionStorage.getItem("auth"));
+    const data = await listUser(sessionStorage.getItem("auth"));
     let userdata = [];
     data.content[data.content.length - 1].forEach((element) =>
       userdata.push(
@@ -2238,7 +2133,6 @@ export default function UserManagement() {
                     marginBottom: 15,
                     fontSize: 14,
                     color: themeState.color,
-
                   }}
                 >
                   User Management
@@ -2267,148 +2161,49 @@ export default function UserManagement() {
           ) : null}
         </Grid>
 
-        {/* <Grid container>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Username</TableCell>
-                    <TableCell>Full Name</TableCell>
-                    <TableCell>Position</TableCell>
-                    <TableCell>Roles</TableCell>
-                    <TableCell>Property</TableCell>
-                    <TableCell align="center">Status</TableCell>
-                    <TableCell align="center">Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {pageData.map((row) => (
-                    <TableRow key={row.code}>
-                      <TableCell>{row.userID}</TableCell>
-                      <TableCell>
-                        {row.firstname} {row.lastname}
-                      </TableCell>
-                      <TableCell>{row.position}</TableCell>
-                      <TableCell>{row.roles}</TableCell>
-                      <TableCell>{row.property}</TableCell>
-                      {`${row.status}` === "Active" ||
-                        `${row.status}` === "active" ? (
-                        <TableCell align="center">
-                          <Button
-                            variant="contained"
-                            style={{
-                              borderRadius: 20,
-                              backgroundColor: "#2D62ED",
-                              color: "white",
-                            }}
-                            onClick={" "}
-                          >
-                            {row.status}
-                          </Button>
-                        </TableCell>
-                      ) : (
-                        <TableCell align="center">
-                          <Button
-                            variant="contained"
-                            style={{
-                              borderRadius: 20,
-                              backgroundColor: "#DEDFE0",
-                              color: "black",
-                            }}
-                          >
-                            {row.status}
-                          </Button>
-                        </TableCell>
-                      )}
-                      <TableCell align="center">
-                        <IconButton
-                          onClick={() => handleDialogEditUser(row.userID, row.firstname, row.lastname, row.position, row.status)}
-                        >
-                          <EditRoundedIcon />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => handleDialogDeleteUserOpen(row.userID, row.firstname, row.lastname)}
-                        >
-                          <DeleteRoundedIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <Grid
-                container
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
-                spacing={3}
-                style={{ marginTop: 15 }}
-              >
-                <Grid item style={{ flexGrow: 1 }}>
-                  <Typography variant="title1" color="initial">
-                    item {page * rowsPerPage + 1}-
-                    {(page + 1) * rowsPerPage > rows.length
-                      ? rows.length
-                      : (page + 1) * rowsPerPage}{" "}
-                    of {rows.length} Total
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={rows.length}
-                    page={page}
-                    // onPageChange={handleChangePage}
-                    rowsPerPage={rowsPerPage}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                  // onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-                </Grid>
-              </Grid>
-            </Grid> */}
         <div style={{ maxWidth: "100%" }}>
           {CRUD.R ? (
             <MaterialTable
               localization={{
                 body: {
-                  emptyDataSourceMessage: <>   <Typography
-                    variant="h1"
-                    align="center"
-                    style={{ fontSize: 25, color: themeState.color }}
-                  >
-                    <ErrorOutlineOutlinedIcon
-                      style={{ fontSize: 170, color: "lightgray" }}
-                    />
-                  </Typography>
-                    <Typography
-                      align="center"
-                      variant="h2"
-                      style={{
-                        fontWeight: 400,
-                        fontSize: 30,
-                        color: "rgb(0 0 0 / 47%)",
-                        marginBottom: 20,
-                      }}
-                    >
-                      No Data Available
-                    </Typography>
-                    <Grid item>
-                      <Button
-                        startIcon={<AddOutlinedIcon />}
-                        size="large"
-                        variant="contained"
-                        color="primary"
-                        // style={{ padding: 13 }}
-                        // fullWidth
-                        // onClick={() => setCreateindividual(true)}
-                        onClick={handleDialogAddUser}
+                  emptyDataSourceMessage: (
+                    <>
+                      {" "}
+                      <Typography
+                        variant="h1"
+                        align="center"
+                        style={{ fontSize: 25, color: themeState.color }}
                       >
-                        New User
-                      </Button>
-                    </Grid>
-                  </>
-                }
+                        <ErrorOutlineOutlinedIcon
+                          style={{ fontSize: 170, color: "lightgray" }}
+                        />
+                      </Typography>
+                      <Typography
+                        align="center"
+                        variant="h2"
+                        style={{
+                          fontWeight: 400,
+                          fontSize: 30,
+                          color: "rgb(0 0 0 / 47%)",
+                          marginBottom: 20,
+                        }}
+                      >
+                        No Data Available
+                      </Typography>
+                      <Grid item>
+                        <Button
+                          startIcon={<AddOutlinedIcon />}
+                          size="large"
+                          variant="contained"
+                          color="primary"
+                          onClick={handleDialogAddUser}
+                        >
+                          New User
+                        </Button>
+                      </Grid>
+                    </>
+                  ),
+                },
               }}
               style={{
                 paddingLeft: 30,
@@ -2417,7 +2212,7 @@ export default function UserManagement() {
                 backgroundColor: themeState.paper,
               }}
               title={
-                <Grid >
+                <Grid>
                   <Typography variant="h6" noWrap style={{ fontSize: 25 }}>
                     User Management
                   </Typography>
@@ -2464,7 +2259,9 @@ export default function UserManagement() {
                           backgroundColor: mainColor,
                           color: "white",
                         }}
-                        onClick={() => handleactive(rowData.userID, rowData.status)}
+                        onClick={() =>
+                          handleactive(rowData.userID, rowData.status)
+                        }
                       >
                         {rowData.status}
                       </Button>
@@ -2476,7 +2273,9 @@ export default function UserManagement() {
                           backgroundColor: "#DEDFE0",
                           color: "black",
                         }}
-                        onClick={() => handleactive(rowData.userID, rowData.status)}
+                        onClick={() =>
+                          handleactive(rowData.userID, rowData.status)
+                        }
                       >
                         {rowData.status}
                       </Button>
@@ -2494,11 +2293,8 @@ export default function UserManagement() {
                 },
               ]}
               data={rows}
-              // totalCount={rows.length}
-              // page={page}
               options={{
                 actionsColumnIndex: -1,
-                // filtering: true,
                 searchFieldAlignment: "left",
                 page: page,
                 pageSize: rowsPerPage,
@@ -2547,7 +2343,6 @@ export default function UserManagement() {
                 },
               ]}
               onChangePage={(page) => console.log("page")}
-            // onChangePage={(event, page) => console.log(event, page)}
             />
           ) : null}
         </div>
@@ -2628,28 +2423,6 @@ export default function UserManagement() {
                     </Grid>
                   </Grid>
 
-                  {/* <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <TextField
-                    select
-                    id="outlined-basic"
-                    label="Position"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-                    value={selectPosition}
-                    onChange={handleSelectPosition}
-                  >
-                    {position.map((option) => (
-                      <option key={option.key} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                </Grid>
-              </Grid> */}
                   <Grid
                     container
                     direction="row"
@@ -2765,18 +2538,6 @@ export default function UserManagement() {
                           </option>
                         ))}
                       </TextField>
-
-                      {/* <TextField
-                    id="outlined-basic"
-                    label="username@mail.com"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-                    // value={" "}
-                    // onChange={" "}
-                  ></TextField> */}
                     </Grid>
 
                     <Grid
@@ -3026,28 +2787,6 @@ export default function UserManagement() {
                     </Grid>
                   </Grid>
 
-                  {/* <Grid container spacing={2} style={{ paddingTop: 5 }}>
-                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <TextField
-                    select
-                    id="outlined-basic"
-                    label="Position"
-                    variant="outlined"
-                    fullWidth
-                    SelectProps={{
-                      native: true,
-                    }}
-                    value={selectPosition}
-                    onChange={handleSelectPosition}
-                  >
-                    {position.map((option) => (
-                      <option key={option.key} value={option.label}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                </Grid>
-              </Grid> */}
                   <Grid
                     container
                     direction="row"

@@ -1,27 +1,23 @@
 import "./assets/App.css";
-import SignIn from "./pages/SignIn";
 import Property from "./pages/Property";
-import Main from "./pages/Main";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import configureStore from "./middleware/store";
 import React, { useState } from "react";
 import UseToken from "./middleware/useToken";
 import UseProperty from "./middleware/useProperty";
-
-import propertypermission from "./services/propertypermission.service";
 import {
   EDIT_PROPERTY,
   EDIT_INDEXTAB,
   EDIT_PERMISSION,
 } from "./middleware/action";
 
+import Main from "./pages/Main";
+import SignIn from "./pages/SignIn";
 import FrontDesk from "./components/Dashboard/FrontDesk";
 import Dashboard from "./components/Dashboard/Dashboard";
-
 import Configuration from "./pages/configurations/Configuration";
 import ReservationPage from "./pages/ReservationPage";
-
 import RoleManagement from "./pages/configurations/RoleManagement";
 import UserManagement from "./pages/configurations/UserManagement";
 import DeviceManager from "./pages/configurations/DeviceManager";
@@ -31,12 +27,13 @@ import ProfileTableCompany from "./components/Profiles/ProfileTableCompany";
 import ProfileTableTravelAgent from "./components/Profiles/ProfileTableTravelAgent";
 import ProfileTableIndividual from "./components/Profiles/ProfileTableIndividual";
 
+import propertyPermission from "./services/propertypermission.service";
+
 function App() {
   const { token, setToken } = UseToken();
   const { property, setProperty } = UseProperty();
   const [store, setStore] = useState(configureStore());
   const [selectedProperty, setSelectedProperty] = useState(null);
-
   React.useEffect(async () => {
     setSelectedProperty(sessionStorage.getItem("property"));
     await fnrefresh();
@@ -44,7 +41,7 @@ function App() {
 
   const fnrefresh = async () => {
     if (selectedProperty) {
-      const permission = await propertypermission(
+      const permission = await propertyPermission(
         sessionStorage.getItem("auth"),
         selectedProperty,
         sessionStorage.getItem("username")
@@ -86,40 +83,38 @@ function App() {
 
   return (
     <Provider store={store}>
-      {" "}
       {!token ? (
         <SignIn setToken={setToken} store={store} />
       ) : !selectedProperty ? (
         <Property setToken={setToken} setProperty={setProperty} />
       ) : (
         <BrowserRouter>
-          {" "}
           <Switch>
-            <Route exact path="/signin" component={SignIn} />{" "}
+            <Route exact path="/signin" component={SignIn} />
             <Main>
-              <Route exact path={`/`} component={Dashboard} />{" "}
-              <Route path={`/frontdesk`} component={FrontDesk} />{" "}
-              <Route path={`/reservation`} component={ReservationPage} />{" "}
-              <Route path={`/configuration`} component={Configuration} />{" "}
-              <Route path={`/User-Management`} component={UserManagement} />{" "}
-              <Route path={`/Role-Management`} component={RoleManagement} />{" "}
-              <Route path={`/Device-Manager`} component={DeviceManager} />{" "}
-              <Route path={`/Computer-printer`} component={ComputerPrinter} />{" "}
-              <Route path={`/Room-Management`} component={RoomManagement} />{" "}
+              <Route exact path={`/`} component={Dashboard} />
+              <Route path={`/frontdesk`} component={FrontDesk} />
+              <Route path={`/reservation`} component={ReservationPage} />
+              <Route path={`/configuration`} component={Configuration} />
+              <Route path={`/User-Management`} component={UserManagement} />
+              <Route path={`/Role-Management`} component={RoleManagement} />
+              <Route path={`/Device-Manager`} component={DeviceManager} />
+              <Route path={`/Computer-printer`} component={ComputerPrinter} />
+              <Route path={`/Room-Management`} component={RoomManagement} />
               <Route
                 path={`/profileindividual`}
                 component={ProfileTableIndividual}
-              />{" "}
+              />
               <Route
                 path={`/profiletravelagent`}
                 component={ProfileTableTravelAgent}
-              />{" "}
+              />
               <Route
                 path={`/profilepagecompany`}
                 component={ProfileTableCompany}
-              />{" "}
+              />
             </Main>
-          </Switch>{" "}
+          </Switch>
         </BrowserRouter>
       )}
     </Provider>

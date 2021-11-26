@@ -1,41 +1,30 @@
-import React, { Fragment, useState, useContext } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import Calendar from "../components/Calendar";
-import Container from "@material-ui/core/Container";
+import { useSelector } from "react-redux";
+import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
 import Dialog from "@material-ui/core/Dialog";
+import Calendar from "../components/Calendar";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import { TextField } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import { blue } from "@material-ui/core/colors";
-
-import { ReactReduxContext, useSelector } from "react-redux";
+import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import {
   getReservationRoom,
   postReservationRoom,
-  getReservationRoomByID,
-  updateReservationRoom,
-  deleteReservationRoom,
+  // getReservationRoomByID,
+  // updateReservationRoom,
+  // deleteReservationRoom,
 } from "../services/reservationRoom.service";
-import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-  DateRangePicker,
-} from "@material-ui/pickers";
-
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -90,19 +79,16 @@ export const ReservationPage = (props) => {
   const [dialogReservation, setDialogReservation] = React.useState(false);
   const [dataEvent, setDataEvent] = React.useState([]);
   const [selectedDateStart, setSelectedDateStart] = React.useState(
-    // new Date("2021-09-13T21:11:54")
     new Date("2021-09-13")
   );
   const [selectedDateEnd, setSelectedDateEnd] = React.useState(
-    // new Date("2021-09-13T21:11:54")
     new Date("2021-09-13")
   );
-  const [roomNum, setRoomNum] = React.useState("");
-  const [firstname, setFirstname] = React.useState("");
-  const [lastname, setLastname] = React.useState("");
+  const [roomNumber, setRoomNumber] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
-
   const [dataDate, setDataDate] = React.useState([]);
   const [errorMessage, setErrorMessage] = useState(false);
   const [errorParameter, setErrorParameter] = useState(null);
@@ -157,20 +143,11 @@ export const ReservationPage = (props) => {
     setDataEvent(data.content[0]);
   };
 
-  React.useEffect(async () => {
-    reservationRoom();
-
-    // let datedata = [];
-    // data.content[data.content.length - 1].forEach((element) =>
-    //   datedata.push({
-    //     id: element.roomno,
-    //     title: element.description,
-    //     start: element.startdate,
-    //     end: element.enddate,
-    //   })
-    // );
-    // setDataDate(datedata);
-    // console.log("datedata", datedata);
+  React.useEffect(() => {
+    async function getReservationRoomData() {
+      reservationRoom();
+    }
+    getReservationRoomData();
   }, []);
 
   const handleDateStart = (date) => {
@@ -188,38 +165,38 @@ export const ReservationPage = (props) => {
   const handleRoomNum = (event) => {
     const re = /^[0-9\b]+$/; //rules
     if (event.target.value === "" || re.test(event.target.value)) {
-      setRoomNum(event.target.value);
+      setRoomNumber(event.target.value);
     }
   };
 
   const handleDialogReservationClose = () => {
-    setRoomNum("");
+    setRoomNumber("");
     setDialogReservation(false);
   };
 
   const handleDialogReservationOpen = () => {
-    setRoomNum("");
-    setFirstname("");
-    setLastname("");
+    setRoomNumber("");
+    setFirstName("");
+    setLastName("");
     setPhone("");
     setEmail("");
     setErrorMessage(false);
     setDialogReservation(true);
   };
 
-  const drag = () => {
-    let dragable = document.getElementById("eventItem");
-    // console.log(dragable);
-    new Draggable(dragable, {});
-  };
+  // const drag = () => {
+  //   let dragable = document.getElementById("eventItem");
+  //   // console.log(dragable);
+  //   new Draggable(dragable, {});
+  // };
 
   const handleDialogReservationSave = async (roomno, startdate, enddate) => {
     try {
       setErrorMessage(false);
-      if (firstname == null || firstname == "") {
+      if (firstName == null || firstName == "") {
         setErrorMessage(true);
         setErrorParameter("First Name is required");
-      } else if (lastname == null || lastname == "") {
+      } else if (lastName == null || lastName == "") {
         setErrorMessage(true);
         setErrorParameter("Last Name is required");
       } else if (phone == null || phone == "") {
@@ -239,8 +216,8 @@ export const ReservationPage = (props) => {
             startdate: startdate,
             enddate: enddate,
             description: "ROOM" + roomno,
-            firstname: firstname,
-            lastname: lastname,
+            firstname: firstName,
+            lastname: lastName,
             phone: phone,
             email: email,
           }
@@ -250,9 +227,9 @@ export const ReservationPage = (props) => {
           setErrorMessage(true);
           setErrorParameter(postdate.msg);
         } else if (postdate.status == "2000") {
-          setRoomNum("");
-          setFirstname("");
-          setLastname("");
+          setRoomNumber("");
+          setFirstName("");
+          setLastName("");
           setPhone("");
           setEmail("");
           reservationRoom();
@@ -431,7 +408,7 @@ export const ReservationPage = (props) => {
                     style: headerTableStyle,
                   }}
                   fullWidth
-                  onChange={(e) => setFirstname(e.target.value)}
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -443,7 +420,7 @@ export const ReservationPage = (props) => {
                     style: headerTableStyle,
                   }}
                   fullWidth
-                  onChange={(e) => setLastname(e.target.value)}
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -536,14 +513,6 @@ export const ReservationPage = (props) => {
                   fullWidth
                 />
               </Grid>
-              {/* ==== DateRangePicker available in v4 alpha, not v3 ====*/}
-              {/* <DateRangePicker
-                renderInput={(startProps, endProps) => (
-                  <Grid container>
-                    <TextField {...startProps} /> to <TextField {...endProps} />
-                  </Grid>
-                )}
-              /> */}
             </Grid>
             {errorMessage ? (
               <div
@@ -578,7 +547,7 @@ export const ReservationPage = (props) => {
           <Button
             onClick={() =>
               handleDialogReservationSave(
-                roomNum,
+                roomNumber,
                 selectedDateStart,
                 selectedDateEnd
               )

@@ -1,12 +1,18 @@
 import React, { useState, useContext } from "react";
-import "../assets/login.css";
-import "../assets/variable.css";
-import background from "../assets/img/imgbackground.png";
-import backgroundLogo from "../assets/img/imgbackground-logo.png";
+import PropTypes from "prop-types";
+import { blue } from "@material-ui/core/colors";
+import { useCookies } from "react-cookie";
+import { makeStyles } from "@material-ui/core/styles";
+import { ReactReduxContext } from "react-redux";
+import Box from "@material-ui/core/Box";
+import uuid from "react-native-uuid";
+import Dialog from "@material-ui/core/Dialog";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import {
   InputAdornment,
   TextField,
@@ -16,34 +22,27 @@ import {
   Grid,
   Divider,
 } from "@material-ui/core";
-import uuid from "react-native-uuid";
-import Dialog from "@material-ui/core/Dialog";
-import { useCookies } from "react-cookie";
-import { blue } from "@material-ui/core/colors";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { getAsset } from "../services/assest.service";
-import PropTypes from "prop-types";
+
+import "../assets/login.css";
+import "../assets/variable.css";
 import auth from "../services/auth.service";
-import propertys from "../services/propertys.service";
-import { makeStyles } from "@material-ui/core/styles";
-import { ReactReduxContext } from "react-redux";
-import { EDIT_AUTHORIZATION } from "../middleware/action";
-import { EDIT_PROPERTYS } from "../middleware/action";
-import Box from "@material-ui/core/Box";
-import { inserthardware } from "../services/device.service";
-
-//Azure AD
-
+import background from "../assets/img/imgbackground.png";
+import ADSignin from "./ADSignin";
+import { getAsset } from "../services/assest.service";
+import { insertHardware } from "../services/device.service";
+import { callMsGraph } from "../graph";
 import { loginRequest } from "../authConfig";
+//Azure AD
 import {
   AuthenticatedTemplate,
   UnauthenticatedTemplate,
   useMsal,
 } from "@azure/msal-react";
-import { callMsGraph } from "../graph";
-import ADSignin from "./ADSignin";
+
+// import propertys from "../services/propertys.service";
+// import { EDIT_AUTHORIZATION } from "../middleware/action";
+// import { EDIT_PROPERTYS } from "../middleware/action";
+// import backgroundLogo from "../assets/img/imgbackground-logo.png";
 
 function handleLogout(instance) {
   instance.logoutRedirect().catch((e) => {
@@ -117,20 +116,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login({ setToken }) {
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const { store } = useContext(ReactReduxContext);
   const { instance } = useMsal();
 
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
   const [errorUsername, setErrorUsername] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
   const [errorLogin, setErrorLogin] = useState(false);
-  const { store } = useContext(ReactReduxContext);
   const [cookies, setCookie] = useCookies(["name"]);
   const [mainColor, setMainColor] = React.useState("#2D62ED");
-  const pageProperty = "";
-  //console.log("log store",store);
-  // const [login, setlogin] = useState(false);
   const [file, setFile] = useState("");
+  const [updateData, setUpdateData] = useState({});
+  // const pageProperty = "";
+  // const [login, setlogin] = useState(false);
+  // const [properties, setProperty] = React.useState([]);
 
   //Dialog cookie
   const [dialogAdd, setDialogAdd] = React.useState(false);
@@ -138,7 +138,6 @@ export default function Login({ setToken }) {
     setDialogAdd(false);
   };
 
-  const [updateData, setUpdateData] = useState({});
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
     color: "#000000",
@@ -151,7 +150,6 @@ export default function Login({ setToken }) {
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
-  const [properties, setProperty] = React.useState([]);
   const [deviceTypes, setDeviceType] = useState([
     {
       key: "1",
@@ -186,20 +184,20 @@ export default function Login({ setToken }) {
       setErrorParameter("Device Name");
     } else {
       setErrorMessage(false);
-      let _inserthardware = await inserthardware(
+      let _insertHardware = await insertHardware(
         resTooken.contents[resTooken.contents.length - 2].refreshToken,
         updateData
       );
-      if (_inserthardware.status == "2000") {
+      if (_insertHardware.status == "2000") {
         var d1 = new Date(),
           d2 = new Date(d1);
         d2.setFullYear(d2.getFullYear() + 100);
         setCookie("UUID", gen_uuid, { path: "/", expires: d2 });
         setDialogAdd(false);
         window.location.reload(false);
-      } else if (_inserthardware.status == "1000") {
+      } else if (_insertHardware.status == "1000") {
         setErrorMessageDu(true);
-        const dupic = _inserthardware.msg + " Device Code: " + updateData.code;
+        const dupic = _insertHardware.msg + " Device Code: " + updateData.code;
         setErrorParameterDu(dupic);
       }
     }
@@ -234,10 +232,6 @@ export default function Login({ setToken }) {
     } else {
       setErrorPassword(false);
     }
-
-    // console.log(
-    //   (username === null || username === ''), (password === null || password === ''),
-    //   !(username === null || username === '') && !(password === null || password === ''))
     if (
       !(username === null || username === "") &&
       !(password === null || password === "")
@@ -294,7 +288,6 @@ export default function Login({ setToken }) {
             style={{ backgroundRepeat: "no-repeat" }}
             sx={{ display: { xs: "none", md: "none", lg: "flex" } }}
           >
-            {/* <img className={classes.imglogo} src={file} alt="logo" width="150" /> */}
             {file ? (
               <img
                 src={file}
@@ -452,71 +445,6 @@ export default function Login({ setToken }) {
                 <DialogContent style={headerTableStyle}>
                   <Container maxWidth="xl" disableGutters>
                     <Grid container spacing={2} style={{ paddingTop: 10 }}>
-                      {/* <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                      <TextField
-                        className={classes.root}
-                        autoFocus
-                        select
-                        id="outlined-basic"
-                        label="Property"
-                        variant="outlined"
-                        defaultValue={pageProperty}
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        onChange={(e) =>
-                          setUpdateData({
-                            ...updateData,
-                            propertycode: e.target.value,
-                          })
-                        }
-                      >
-                        {properties.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid> */}
-                      {/* <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <TextField
-                      onFocus
-                        className={classes.root}
-                        select
-                        id="outlined-basic"
-                        label="Device Type"
-                        variant="outlined"
-                        fullWidth
-                        SelectProps={{
-                          native: true,
-                        }}
-                        InputProps={{
-                          style: headerTableStyle,
-                        }}
-                        defaultValue={deviceTypes[0].label}
-                        onChange={(e) =>
-                          setUpdateData({ ...updateData, type: e.target.value })
-                        }
-                      >
-                        {deviceTypes.map((option) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            style={headerTableStyle}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </TextField>
-                    </Grid> */}
                       <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                         <TextField
                           // autoFocus
@@ -619,8 +547,7 @@ export default function Login({ setToken }) {
 
 Login.propTypes = {
   setToken: PropTypes.func.isRequired,
-  // store: PropTypes.func.isRequired
-  // ,
+  // store: PropTypes.func.isRequired,
   // setAuthorization:  PropTypes.func.isRequired
 };
 

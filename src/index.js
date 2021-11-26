@@ -1,11 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import './assets/index.css';
 import App from './App';
-import { createStore } from "redux";
+import React from 'react';
+import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import { CookiesProvider } from 'react-cookie';
-
 import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./authConfig";

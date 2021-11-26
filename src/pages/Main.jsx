@@ -1,30 +1,27 @@
-import React, { useContext, useState, useEffect } from "react";
-import "../assets/dashboard.css";
 import clsx from "clsx";
+import "../assets/dashboard.css";
+import React, { useContext, useState } from "react";
 import { ReactReduxContext, useSelector } from "react-redux";
-
 import { makeStyles } from "@material-ui/core/styles";
-
-import {
-  purple,
-  green,
-  orange,
-  red,
-  yellow,
-  blue,
-} from "@material-ui/core/colors";
-
+import { purple, green, orange, red } from "@material-ui/core/colors";
+import MenuIcon from "@material-ui/icons/Menu";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import SearchIcon from "@material-ui/icons/Search";
+import MailIcon from "@material-ui/icons/Mail";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import ExplicitIcon from "@material-ui/icons/Explicit";
+import BusinessIcon from "@material-ui/icons/Business";
+import SettingsIcon from "@material-ui/icons/PlayForWork";
 import {
   CssBaseline,
   Drawer,
   AppBar,
   Toolbar,
-  List,
   Typography,
   Badge,
   Container,
   Grid,
-  InputLabel,
   InputBase,
   Divider,
   IconButton,
@@ -33,61 +30,23 @@ import {
   FormControl,
   Select,
   MenuItem,
-  ThemeProvider,
 } from "@material-ui/core";
 
-import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import SearchIcon from "@material-ui/icons/Search";
-import MailIcon from "@material-ui/icons/Mail";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import ExplicitIcon from "@material-ui/icons/Explicit";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import BusinessIcon from "@material-ui/icons/Business";
-import SettingsIcon from "@material-ui/icons/PlayForWork";
-
-// import Dashboard from "../components/Dashboard/Dashboard";
-// import FrontDesk from "../components/Dashboard/FrontDesk";
-// import Configuration from "./configurations/Configuration";
-// import ReservationPage from "./ReservationPage";
-
-// import RoleManagement from "./configurations/RoleManagement";
-// import UserManagement from "../components/UserManagement";
-// import DashboardDetail from "../components/Dashboard/DashboardDetail";
-// import ProfilePage from "./ProfilePage";
-// import ProfileTable from "../components/ProfileTable";
-// import ProfilePageIndividual from "../components/ProfileIndividual";
-// import ProfilePageTravelAgent from "../components/ProfileTravelAgent";
-// import ProfilePageCompany from "../components/ProfileCompany";
-import ButtomBar from "../layouts/BottomBar";
+import BottomBar from "../layouts/BottomBar";
 import HeaderTabs from "../layouts/HeaderTabs";
 import RightBar from "../layouts/RightBar";
-
+import MainListItems_en from "../middleware/listitems/dropDownItems";
+import propertyPermission from "../services/propertypermission.service";
+import propertyRole from "../services/propertyrole.service";
+import { EDIT_PERMISSION } from "../middleware/action";
 import {
   EDIT_COMPWIDTH,
   EDIT_LANG,
   EDIT_COLOR,
   EDIT_PROPERTY,
 } from "../middleware/action";
-import MainListItems_en from "../middleware/listitems/dropDownItems";
-// import secondaryListItems_en from "../middleware/listitems/dropDownItems";
-// import mainListItems_th from "../middleware/listitems/dropDownItems";
-// import secondaryListItems_th from "../middleware/listitems/dropDownItems";
-// import { mainListItems_en, secondaryListItems_en } from '../middleware/listitems/dropDownItems';
-// import { mainListItems_th, secondaryListItems_th } from '../middleware/listitems/dropDownItems';
-import propertypermission from "../services/propertypermission.service";
-
-import { EDIT_PERMISSION } from "../middleware/action";
-
-import propertyrole from "../services/propertyrole.service";
-
-// import {
-//   EDIT_PERMISSION
-// } from "../middleware/action";
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -210,10 +169,7 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    // backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      // backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
+    "&:hover": {},
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "10%",
@@ -236,7 +192,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -246,7 +201,6 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionDesktop: {
     display: "none",
-    // borderLeft:" 1px solid #ffffff",
     [theme.breakpoints.up("md")]: {
       display: "flex",
     },
@@ -364,13 +318,13 @@ export default function Main({ children }) {
   }, 1000);
 
   const handleChangeProperty = async (event) => {
-    const permission = await propertypermission(
+    const permission = await propertyPermission(
       sessionStorage.getItem("auth"),
       event.target.value,
       sessionStorage.getItem("username")
     );
     // console.log("permission", permission);
-    const role = await propertyrole(
+    const role = await propertyRole(
       sessionStorage.getItem("auth"),
       event.target.value,
       sessionStorage.getItem("username")
@@ -387,22 +341,7 @@ export default function Main({ children }) {
     });
     setSelectedProperty(event.target.value);
     sessionStorage.setItem("property", event.target.value);
-    // setSelectedProperty(event.target.value);
-    // setSelectedProperty(event.target.value);
   };
-
-  // const [lang, setLang] = useState('en')
-
-  // setInterval(() => {
-  //     let settinglang = store.getState().reducer.lang;
-  //     // console.log("settinglang",settinglang,lang)
-  //     // console.log("is",lang != settinglang && lang != null)
-  //     if (lang != settinglang && lang != null) {
-  //         setLang(settinglang)
-  //         if(settinglang == 'th') setTranslate(translate_th)
-  //         else if(settinglang == 'en') setTranslate(translate_en)
-  //     }
-  // }, 500);
 
   const handlelanguageMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -420,9 +359,9 @@ export default function Main({ children }) {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+  // const handleMobileMenuOpen = (event) => {
+  //   setMobileMoreAnchorEl(event.currentTarget);
+  // };
 
   const handleLanguage = (lang) => {
     // console.log("handle lang", lang);
@@ -550,7 +489,7 @@ export default function Main({ children }) {
     </Menu>
   );
 
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const [rightBar, setRightBar] = React.useState(false);
   const toggleRightBar = (open) => (event) => {
@@ -613,31 +552,15 @@ export default function Main({ children }) {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <span style={{color: "white", borderLeft:" 1px solid rgb(255 255 255 / 44%)", marginTop: 20,marginBottom: 20}}></span>
-            {/* <Fab
-              size="small"
-              aria-label="add"
-              style={{ backgroundColor: "#64CFFF", color: "white" }}
-            >
-              <AddIcon />
-            </Fab>
-            <Divider
-              orientation="vertical"
-              flexItem
-              style={{ backgroundColor: "#FFFFFF" }}
-              variant="middle"
-            /> */}
-            {/* <IconButton
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handlelanguageMenuOpen}
-                            size="medium"
-                            style={{ color: "white" }}
-                        >
-                            <ExplicitIcon />
-                        </IconButton> */}
+            <span
+              style={{
+                color: "white",
+                borderLeft: " 1px solid rgb(255 255 255 / 44%)",
+                marginTop: 20,
+                marginBottom: 20,
+              }}
+            ></span>
+
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -659,7 +582,10 @@ export default function Main({ children }) {
                 </Typography>
               </Grid>
               <Grid item container spacing={1} style={{ paddingLeft: 10 }}>
-                <Typography variant="body2" style={{ fontSize: 10,marginTop: -15 }}>
+                <Typography
+                  variant="body2"
+                  style={{ fontSize: 10, marginTop: -15 }}
+                >
                   {sessionStorage.getItem("role")}
                 </Typography>
               </Grid>
@@ -668,7 +594,7 @@ export default function Main({ children }) {
               item
               container
               // spacing={1}
-              style={{ paddingLeft: 20, paddingTop: 7,paddingRight:0 }}
+              style={{ paddingLeft: 20, paddingTop: 7, paddingRight: 0 }}
             >
               <Grid item>
                 <IconButton
@@ -690,16 +616,6 @@ export default function Main({ children }) {
           </div>
 
           <div className={classes.sectionMobile}>
-            {/* <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton> */}
-
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -723,9 +639,7 @@ export default function Main({ children }) {
                 <Typography
                   variant="body2"
                   style={{ fontSize: 10, fontWeight: "bold" }}
-                >
-                  {/* {sessionStorage.getItem("role")} */}
-                </Typography>
+                ></Typography>
               </Grid>
             </Grid>
             <Grid item container spacing={1} style={{ paddingLeft: 10 }}>
@@ -743,18 +657,10 @@ export default function Main({ children }) {
                   onClose={toggleRightBar(false)}
                 >
                   <div style={{ zIndex: 4000 }}>{rightBarMenu()}</div>
-              
                 </SwipeableDrawer>
-              
               </Grid>
             </Grid>
           </div>
-          {/* <IconButton color="inherit">
-
-                        <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton> */}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
@@ -769,10 +675,6 @@ export default function Main({ children }) {
               !open && classes.drawerPaperClose
             ),
           }}
-          // sx={{
-          //   display: { xs: 'block', sm: 'none' },
-          //   '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          // }}
           open={open}
         >
           <Grid container>
@@ -802,17 +704,6 @@ export default function Main({ children }) {
           </Grid>
           <Divider />
           <Grid item container direction="row">
-            {/* <IconButton
-            edge="end"
-            aria-label="account of current user"
-            aria-controls={menuId}
-            aria-haspopup="true"
-            // onClick={handlelanguageMenuOpen}
-            size="large"
-            style={{ color: "white", marginLeft: 5, marginTop: 5 }}
-          >
-            <AccountCircle style={{ fontSize: 28 }} />
-          </IconButton> */}
             {open ? (
               <Grid
                 item
@@ -830,15 +721,6 @@ export default function Main({ children }) {
                     {" Change Property"}
                   </Typography>
                 </Grid>
-                {/* <Grid item container direction="row"> */}
-                {/* <Grid>
-                  <SettingsIcon />
-                </Grid> */}
-                {/* <Grid item spacing={1}>
-                  <Typography variant="body2" style={{ fontSize: 10, marginTop: 5, marginLeft: 5 }}>
-                    {store.getState().reducer.property}
-                  </Typography>
-                </Grid> */}
 
                 <Grid className={classes.propertyForm}>
                   <BusinessIcon
@@ -890,8 +772,6 @@ export default function Main({ children }) {
 
           <MainListItems_en />
           <Divider />
-
-          {/* <List>{store.getState().reducer.lang == "en"? <MainListItems_en/>:<MainListItems_en/>}</List> */}
         </Drawer>
       ) : (
         <Drawer
@@ -936,17 +816,6 @@ export default function Main({ children }) {
           </Grid>
           <Divider />
           <Grid item container direction="row">
-            {/* <IconButton
-            edge="end"
-            aria-label="account of current user"
-            aria-controls={menuId}
-            aria-haspopup="true"
-            // onClick={handlelanguageMenuOpen}
-            size="large"
-            style={{ color: "white", marginLeft: 5, marginTop: 5 }}
-          >
-            <AccountCircle style={{ fontSize: 28 }} />
-          </IconButton> */}
             {open ? (
               <Grid
                 item
@@ -964,15 +833,6 @@ export default function Main({ children }) {
                     {" Change Property"}
                   </Typography>
                 </Grid>
-                {/* <Grid item container direction="row"> */}
-                {/* <Grid>
-                  <SettingsIcon />
-                </Grid> */}
-                {/* <Grid item spacing={1}>
-                  <Typography variant="body2" style={{ fontSize: 10, marginTop: 5, marginLeft: 5 }}>
-                    {store.getState().reducer.property}
-                  </Typography>
-                </Grid> */}
 
                 <Grid className={classes.propertyForm}>
                   <BusinessIcon
@@ -1035,80 +895,9 @@ export default function Main({ children }) {
         <Container maxWidth="100" className={classes.container}>
           <HeaderTabs />
           {children}
-          {/* {store.getState().reducer.componentState == "Dashboard" ? (
-            <div
-              style={{
-                backgroundColor: themeStatedata.background,
-                color: themeStatedata.color,
-              }}
-            >
-              <Dashboard />
-            </div>
-          ) : store.getState().reducer.componentState == "FrontDesk" ? (
-            <div
-              style={{
-                backgroundColor: themeStatedata.background,
-                color: themeStatedata.color,
-              }}
-            >
-              <FrontDesk />
-            </div>
-          ) : store.getState().reducer.componentState == "Reservation" ? (
-            <div
-              style={{
-                backgroundColor: themeStatedata.background,
-                color: themeStatedata.color,
-              }}
-            >
-              <ReservationPage />
-            </div>
-          ) : store.getState().reducer.componentState == "Configuration" ? (
-            <div>
-              <Configuration />
-            </div>
-          ) : 
-          // : store.getState().reducer.componentState == "ProfileTable" ? (
-          //   <div
-          //     style={{
-          //       backgroundColor: themeStatedata.background,
-          //       color: themeStatedata.color,
-          //     }}
-          //   >
-          //     <ProfileTable />
-          //   </div>
-          // )
-          store.getState().reducer.componentState == "ProfileIndivisual" ? (
-            <div
-              style={{
-                backgroundColor: themeStatedata.background,
-                color: themeStatedata.color,
-              }}
-            >
-              <ProfileTable />
-              {/* <ProfilePageIndividual /> */}
-            {/* </div>
-          ) : store.getState().reducer.componentState ==
-            "ProfileTravelAgent" ? (
-            <div
-              style={{
-                backgroundColor: themeStatedata.background,
-                color: themeStatedata.color,
-              }}
-            >
-              <ProfilePageTravelAgent />
-            </div>
-          ) : store.getState().reducer.componentState == "ProfileCompany" ? (
-            <div
-              style={{
-                backgroundColor: themeStatedata.background,
-                color: themeStatedata.color,
-              }}
-            >
-              <ProfilePageCompany />
-            </div>
-          ) : null} */} 
+
           <div style={{ paddingTop: 50 }}>
-            <ButtomBar />
+            <BottomBar />
           </div>
         </Container>
       </main>
