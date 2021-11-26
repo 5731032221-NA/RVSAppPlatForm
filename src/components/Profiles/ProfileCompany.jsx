@@ -1698,6 +1698,7 @@ export const ProfileCompany = (props) => {
   };
 
   const handleAddDataEdittoDatabase = async (e) => {
+   try {
     props.setAction("none");
 
     let req = {
@@ -1751,12 +1752,17 @@ export const ProfileCompany = (props) => {
     );
 
     if (resp.status == "2000") {
+      console.log("success:",resp);
       props.setAction("success");
     } else {
       props.setAction("dupic");
       setErrorParameter(resp.msg);
       setErrorMessage(true);
     }
+     
+   } catch (error) {
+     console.log("error:",error);
+   }
   };
 
   React.useEffect(() => {

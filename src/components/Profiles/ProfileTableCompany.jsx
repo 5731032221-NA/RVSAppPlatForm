@@ -191,9 +191,15 @@ export const ProfileTableCompany = (props) => {
       field: "iata",
       headerStyle: headerTableStyle,
     },
+    // {
+    //   title: "Actions",
+    //   field: "actions",
+    //   headerStyle: headerTableStyle,
+    // },
   ]);
 
   React.useEffect(async () => {
+    console.log("action:",action);
     if (action == "success") {
       await handleGetCompanyProfile();
       await setStatusProfile("moredata");
@@ -445,9 +451,9 @@ export const ProfileTableCompany = (props) => {
             </Grid>
           ) : (
             <Container maxWidth="xl">
-              {/* <StandardTable Data={companyData} Columns={Columns} FuncEdit={handleEditData} /> */}
-               {/* <StandardTable Data={companyData} Columns={Columns}  /> */}
-               <Test2 Datachile={companyData} />
+              <StandardTable Data={companyData} Columns={Columns} FuncEdit={handleEditData} FuncDelete={handleDialogDeleteOpen} statusProfile={statusProfile} />
+            
+               {/* <Test2 Datachile={companyData} /> */}
               {/* <MaterialTable
                 localization={{
                   toolbar: {
