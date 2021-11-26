@@ -29,7 +29,7 @@ import  MaterialTableComponent  from "../Table/MaterialTableComponent";
 import {
   getTAProfile,
   getTAProfileById,
-  deleteTAProfileById,
+  deleteCompanyProfileById,
 } from "../../services/companyprofile.service";
 
 
