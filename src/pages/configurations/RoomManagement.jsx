@@ -36,6 +36,7 @@ import {
   getConfigurationByPropertyCode,
   getUserComponentPermision,
 } from "../../services/user.service";
+import MaterialTableComponent from "../../components/Table/MaterialTableComponent2";
 
 // Generate Order Data
 function createData(
@@ -360,7 +361,7 @@ export default function RoomManagement() {
     });
   };
 
-  const handleDialogEditRoom = async (event, roomNo) => {
+  const handleDialogEditRoom = async (roomNo) => {
     console.log("roomNo", roomNo);
     let propertydata = await listAllProperty(sessionStorage.getItem("auth"));
     let tempproperty = [];
@@ -659,7 +660,7 @@ export default function RoomManagement() {
     setDialogDeleteRoom(false);
   };
 
-  const handleDialogDeleteRoomOpen = async (event, roomNum) => {
+  const handleDialogDeleteRoomOpen = async (roomNum) => {
     console.log("roomNum.number", roomNum.number);
     setRoomNumber(roomNum.number);
     setDialogDeleteRoom(true);
@@ -1791,68 +1792,9 @@ export default function RoomManagement() {
         </Grid>
       </React.Fragment>
       {CRUD.R ? (
-        <MaterialTable
-          localization={{
-            body: {
-              emptyDataSourceMessage: (
-                <>
-                  {" "}
-                  <Typography
-                    variant="h1"
-                    align="center"
-                    style={{ fontSize: 25, color: themeState.color }}
-                  >
-                    <ErrorOutlineOutlinedIcon
-                      style={{ fontSize: 170, color: "lightgray" }}
-                    />
-                  </Typography>
-                  <Typography
-                    align="center"
-                    variant="h2"
-                    style={{
-                      fontWeight: 400,
-                      fontSize: 30,
-                      color: "rgb(0 0 0 / 47%)",
-                      marginBottom: 20,
-                    }}
-                  >
-                    No Data Available
-                  </Typography>
-                  <Grid item>
-                    <Button
-                      startIcon={<AddOutlinedIcon />}
-                      size="large"
-                      variant="contained"
-                      color="primary"
-                      // style={{ padding: 13 }}
-                      // fullWidth
-                      // onClick={() => setCreateindividual(true)}
-                      onClick={handleDialogAddRoom}
-                    >
-                      New Room Master
-                    </Button>
-                  </Grid>
-                </>
-              ),
-            },
-          }}
-          style={{
-            paddingLeft: 30,
-            paddingRight: 30,
-            color: themeState.color,
-            backgroundColor: themeState.paper,
-          }}
-          title={
-            <Grid>
-              <Typography
-                variant="h6"
-                style={{ fontSize: 25, color: themeState.color }}
-              >
-                Room Master
-              </Typography>
-            </Grid>
-          }
-          columns={[
+
+<MaterialTableComponent placeHolder="Search by Property, Number, Room Type, Floor, Building,Desc Attribute" title="Room Master" rows={rows} handleNewData={handleDialogAddRoom} handleEditData={handleDialogEditRoom} handleDialogDeleteOpen={handleDialogDeleteRoomOpen}
+   columns={[
             {
               title: "Property",
               field: "property",
@@ -1894,38 +1836,142 @@ export default function RoomManagement() {
               headerStyle: headerTableStyle,
             },
           ]}
-          data={rows}
-          options={{
-            actionsColumnIndex: -1,
-            searchFieldAlignment: "left",
-            page: page,
-            pageSize: rowsPerPage,
-            pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
-            searchFieldStyle: headerTableStyle,
-            headerStyle: headerTableStyle,
-          }}
-          actions={[
-            {
-              icon: "edit",
-              iconProps: { style: { color: themeState.color } },
-              tooltip: "Edit",
-              disabled: !CRUD.U,
-              onClick: (event, rowData) => {
-                handleDialogEditRoom(event, rowData);
-              },
-            },
-            {
-              icon: "delete",
-              iconProps: { style: { color: themeState.color } },
-              tooltip: "Delete",
-              disabled: !CRUD.D,
-              onClick: (event, rowData) => {
-                handleDialogDeleteRoomOpen(event, rowData);
-              },
-            },
-          ]}
-          onChangePage={(page) => console.log("page")}
-        />
+   />
+        // <MaterialTable
+        //   localization={{
+        //     body: {
+        //       emptyDataSourceMessage: (
+        //         <>
+        //           {" "}
+        //           <Typography
+        //             variant="h1"
+        //             align="center"
+        //             style={{ fontSize: 25, color: themeState.color }}
+        //           >
+        //             <ErrorOutlineOutlinedIcon
+        //               style={{ fontSize: 170, color: "lightgray" }}
+        //             />
+        //           </Typography>
+        //           <Typography
+        //             align="center"
+        //             variant="h2"
+        //             style={{
+        //               fontWeight: 400,
+        //               fontSize: 30,
+        //               color: "rgb(0 0 0 / 47%)",
+        //               marginBottom: 20,
+        //             }}
+        //           >
+        //             No Data Available
+        //           </Typography>
+        //           <Grid item>
+        //             <Button
+        //               startIcon={<AddOutlinedIcon />}
+        //               size="large"
+        //               variant="contained"
+        //               color="primary"
+        //               // style={{ padding: 13 }}
+        //               // fullWidth
+        //               // onClick={() => setCreateindividual(true)}
+        //               onClick={handleDialogAddRoom}
+        //             >
+        //               New Room Master
+        //             </Button>
+        //           </Grid>
+        //         </>
+        //       ),
+        //     },
+        //   }}
+        //   style={{
+        //     paddingLeft: 30,
+        //     paddingRight: 30,
+        //     color: themeState.color,
+        //     backgroundColor: themeState.paper,
+        //   }}
+        //   title={
+        //     <Grid>
+        //       <Typography
+        //         variant="h6"
+        //         style={{ fontSize: 25, color: themeState.color }}
+        //       >
+        //         Room Master
+        //       </Typography>
+        //     </Grid>
+        //   }
+        //   columns={[
+        //     {
+        //       title: "Property",
+        //       field: "property",
+        //       headerStyle: headerTableStyle,
+        //     },
+        //     {
+        //       title: "#Number",
+        //       field: "number",
+        //       headerStyle: headerTableStyle,
+        //     },
+        //     {
+        //       title: "Room Type",
+        //       field: "roomType",
+        //       headerStyle: headerTableStyle,
+        //     },
+        //     {
+        //       title: "Floor",
+        //       field: "floor",
+        //       headerStyle: headerTableStyle,
+        //     },
+        //     {
+        //       title: "Building",
+        //       field: "building",
+        //       headerStyle: headerTableStyle,
+        //     },
+        //     {
+        //       title: "Desc",
+        //       field: "desc",
+        //       headerStyle: headerTableStyle,
+        //     },
+        //     {
+        //       title: "Status",
+        //       field: "status",
+        //       headerStyle: headerTableStyle,
+        //     },
+        //     {
+        //       title: "Attribute",
+        //       field: "attribute",
+        //       headerStyle: headerTableStyle,
+        //     },
+        //   ]}
+        //   data={rows}
+        //   options={{
+        //     actionsColumnIndex: -1,
+        //     searchFieldAlignment: "left",
+        //     page: page,
+        //     pageSize: rowsPerPage,
+        //     pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
+        //     searchFieldStyle: headerTableStyle,
+        //     headerStyle: headerTableStyle,
+        //   }}
+        //   actions={[
+        //     {
+        //       icon: "edit",
+        //       iconProps: { style: { color: themeState.color } },
+        //       tooltip: "Edit",
+        //       disabled: !CRUD.U,
+        //       onClick: (event, rowData) => {
+        //         handleDialogEditRoom(event, rowData);
+        //       },
+        //     },
+        //     {
+        //       icon: "delete",
+        //       iconProps: { style: { color: themeState.color } },
+        //       tooltip: "Delete",
+        //       disabled: !CRUD.D,
+        //       onClick: (event, rowData) => {
+        //         handleDialogDeleteRoomOpen(event, rowData);
+        //       },
+        //     },
+        //   ]}
+        //   onChangePage={(page) => console.log("page")}
+        // />
       ) : null}
     </Container>
   );

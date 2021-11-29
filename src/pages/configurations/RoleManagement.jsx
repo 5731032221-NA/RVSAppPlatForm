@@ -18,6 +18,7 @@ import TreeItem from "@material-ui/lab/TreeItem";
 import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import UpdateIcon from "@material-ui/icons/Update";
+import MaterialTableComponent from "../../components/Table/MaterialTableComponent2";
 import {
   Container,
   Grid,
@@ -792,12 +793,15 @@ export default function RoleManagement() {
   };
 
   const handleDialogEditRole = async (
-    rolecode,
-    rolename,
-    description,
-    applyproperty,
-    status
+    rowData
   ) => {
+
+    let rolecode = rowData.rolecode;
+    let rolename =  rowData.rolename;
+    let description =  rowData.description;
+    let applyproperty =  rowData.applyproperty;
+    let status =  rowData.status;
+
     let propertydata = await listAllProperty(sessionStorage.getItem("auth"));
     console.log("propertydata", propertydata);
     let tempproperty = [
@@ -938,16 +942,16 @@ export default function RoleManagement() {
   };
 
   const handleDialogDeleteRoleOpen = async (
-    rolecode,
-    rolename,
-    description
+  rowsData
   ) => {
+
+
     // console.log("idForDelete", id);
     // const rolebyid = await getRoleByID(sessionStorage.getItem("auth"), id);
     // setRoleID(rolebyid.content[rolebyid.content.length - 1].code);
-    setRoleCode(rolecode);
-    setRoleName(rolename);
-    setDescriptionsRole(description);
+    setRoleCode(rowsData.rolecode);
+    setRoleName(rowsData.rolename);
+    setDescriptionsRole(rowsData.description);
 
     setDialogDeleteRole(true);
   };
@@ -1940,62 +1944,9 @@ export default function RoleManagement() {
 
         <div style={{ maxWidth: "100%" }}>
           {CRUD.R ? (
-            <MaterialTable
-              localization={{
-                body: {
-                  emptyDataSourceMessage: (
-                    <>
-                      {" "}
-                      <Typography
-                        variant="h1"
-                        align="center"
-                        style={{ fontSize: 25, color: themeState.color }}
-                      >
-                        <ErrorOutlineOutlinedIcon
-                          style={{ fontSize: 170, color: "lightgray" }}
-                        />
-                      </Typography>
-                      <Typography
-                        align="center"
-                        variant="h2"
-                        style={{
-                          fontWeight: 400,
-                          fontSize: 30,
-                          color: "rgb(0 0 0 / 47%)",
-                          marginBottom: 20,
-                        }}
-                      >
-                        No Data Available
-                      </Typography>
-                      <Grid item>
-                        <Button
-                          startIcon={<AddOutlinedIcon />}
-                          size="large"
-                          variant="contained"
-                          color="primary"
-                          onClick={handleDialogAddRole}
-                        >
-                          New Role
-                        </Button>
-                      </Grid>
-                    </>
-                  ),
-                },
-              }}
-              style={{
-                paddingLeft: 30,
-                paddingRight: 30,
-                color: themeState.color,
-                backgroundColor: themeState.paper,
-              }}
-              title={
-                <Grid>
-                  <Typography variant="h6" noWrap style={{ fontSize: 25 }}>
-                    Role Management
-                  </Typography>
-                </Grid>
-              }
-              columns={[
+
+        <MaterialTableComponent placeHolder="Search by Role Code, Role Name, Description, User" title="Role Management" rows={rows} handleNewData={handleDialogAddRole} handleEditData={handleDialogEditRole} handleDialogDeleteOpen={handleDialogDeleteRoleOpen}
+           columns={[
                 {
                   title: "Role Code",
                   field: "rolecode",
@@ -2053,53 +2004,167 @@ export default function RoleManagement() {
                   field: "status",
                 },
               ]}
-              data={rows}
-              options={{
-                actionsColumnIndex: -1,
-                searchFieldAlignment: "left",
-                page: page,
-                pageSize: rowsPerPage,
-                pageSizeOptions: [
-                  5,
-                  10,
-                  20,
-                  { value: rows.length, label: "All" },
-                ],
-                searchFieldStyle: headerTableStyle,
-                headerStyle: headerTableStyle,
-              }}
-              actions={[
-                {
-                  icon: "edit",
-                  iconProps: { style: { color: themeState.color } },
-                  tooltip: "Edit",
-                  disabled: !CRUD.U,
-                  onClick: (event, rowData) => {
-                    handleDialogEditRole(
-                      rowData.rolecode,
-                      rowData.rolename,
-                      rowData.description,
-                      rowData.applyproperty,
-                      rowData.status
-                    );
-                  },
-                },
-                {
-                  icon: "delete",
-                  iconProps: { style: { color: themeState.color } },
-                  tooltip: "Delete",
-                  disabled: !CRUD.D,
-                  onClick: (event, rowData) => {
-                    handleDialogDeleteRoleOpen(
-                      rowData.rolecode,
-                      rowData.rolename,
-                      rowData.description
-                    );
-                  },
-                },
-              ]}
-              onChangePage={(page) => console.log("page")}
-            />
+          />
+            // <MaterialTable
+            //   localization={{
+            //     body: {
+            //       emptyDataSourceMessage: (
+            //         <>
+            //           {" "}
+            //           <Typography
+            //             variant="h1"
+            //             align="center"
+            //             style={{ fontSize: 25, color: themeState.color }}
+            //           >
+            //             <ErrorOutlineOutlinedIcon
+            //               style={{ fontSize: 170, color: "lightgray" }}
+            //             />
+            //           </Typography>
+            //           <Typography
+            //             align="center"
+            //             variant="h2"
+            //             style={{
+            //               fontWeight: 400,
+            //               fontSize: 30,
+            //               color: "rgb(0 0 0 / 47%)",
+            //               marginBottom: 20,
+            //             }}
+            //           >
+            //             No Data Available
+            //           </Typography>
+            //           <Grid item>
+            //             <Button
+            //               startIcon={<AddOutlinedIcon />}
+            //               size="large"
+            //               variant="contained"
+            //               color="primary"
+            //               onClick={handleDialogAddRole}
+            //             >
+            //               New Role
+            //             </Button>
+            //           </Grid>
+            //         </>
+            //       ),
+            //     },
+            //   }}
+            //   style={{
+            //     paddingLeft: 30,
+            //     paddingRight: 30,
+            //     color: themeState.color,
+            //     backgroundColor: themeState.paper,
+            //   }}
+            //   title={
+            //     <Grid>
+            //       <Typography variant="h6" noWrap style={{ fontSize: 25 }}>
+            //         Role Management
+            //       </Typography>
+            //     </Grid>
+            //   }
+            //   columns={[
+            //     {
+            //       title: "Role Code",
+            //       field: "rolecode",
+            //       headerStyle: headerTableStyle,
+            //     },
+            //     {
+            //       title: "Role Name",
+            //       field: "rolename",
+            //       headerStyle: headerTableStyle,
+            //     },
+            //     {
+            //       title: "Description",
+            //       field: "description",
+            //       headerStyle: headerTableStyle,
+            //     },
+            //     {
+            //       title: "#User",
+            //       field: "count",
+            //       headerStyle: headerTableStyle,
+            //     },
+            //     {
+            //       render: (rowData) => {
+            //         return rowData.status == "Active" ? (
+            //           <Button
+            //             variant="contained"
+            //             style={{
+            //               borderRadius: 20,
+            //               backgroundColor: mainColor,
+            //               color: "white",
+            //             }}
+            //           >
+            //             {rowData.status}
+            //           </Button>
+            //         ) : (
+            //           <Button
+            //             variant="contained"
+            //             style={{
+            //               borderRadius: 20,
+            //               backgroundColor: "#DEDFE0",
+            //               color: "black",
+            //             }}
+            //           >
+            //             {rowData.status}
+            //           </Button>
+            //         );
+            //       },
+            //       cellStyle: { textAlign: "center" },
+            //       headerStyle: {
+            //         textAlign: "center",
+            //         paddingLeft: 37,
+            //         backgroundColor: themeState.paper,
+            //         color: themeState.color,
+            //       },
+            //       title: "Status",
+            //       field: "status",
+            //     },
+            //   ]}
+            //   data={rows}
+            //   options={{
+            //     actionsColumnIndex: -1,
+            //     searchFieldAlignment: "left",
+            //     page: page,
+            //     pageSize: rowsPerPage,
+            //     pageSizeOptions: [
+            //       5,
+            //       10,
+            //       20,
+            //       { value: rows.length, label: "All" },
+            //     ],
+            //     searchFieldStyle: headerTableStyle,
+            //     headerStyle: headerTableStyle,
+            //   }}
+            //   actions={[
+            //     {
+            //       icon: "edit",
+            //       iconProps: { style: { color: themeState.color } },
+            //       tooltip: "Edit",
+            //       disabled: !CRUD.U,
+            //       onClick: (event, rowData) => {
+            //         handleDialogEditRole(
+            //           rowData.rolecode,
+            //           rowData.rolename,
+            //           rowData.description,
+            //           rowData.applyproperty,
+            //           rowData.status
+            //         );
+            //       },
+            //     },
+            //     {
+            //       icon: "delete",
+            //       iconProps: { style: { color: themeState.color } },
+            //       tooltip: "Delete",
+            //       disabled: !CRUD.D,
+            //       onClick: (event, rowData) => {
+            //         handleDialogDeleteRoleOpen(
+            //           rowData.rolecode,
+            //           rowData.rolename,
+            //           rowData.description
+            //         );
+            //       },
+            //     },
+            //   ]}
+            //   onChangePage={(page) => console.log("page")}
+            // />
           ) : null}
         </div>
 
