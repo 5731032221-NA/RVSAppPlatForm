@@ -5,15 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import { blue } from "@material-ui/core/colors";
 import ClearIcon from "@material-ui/icons/Clear";
-import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
-import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import ProfileTravelAgent from "./ProfileTravelAgent";
-import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import {
   Container,
   Grid,
@@ -23,11 +14,24 @@ import {
   Link,
 } from "@material-ui/core";
 
+import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
+import ProfileCompany from "./ProfileCompany";
+import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import  MaterialTableComponent  from "../Table/MaterialTableComponent";
 import {
   getTAProfile,
   getTAProfileById,
   deleteCompanyProfileById,
 } from "../../services/companyprofile.service";
+
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -80,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const ProfileTableTA = (props) => {
   const [action, setAction] = React.useState("");
+  const [triggerButton, setTriggerButton] = React.useState(false);
   const [editData, setEditData] = React.useState(" ");
   const [themeState, setThemeState] = React.useState({
     background: "#FFFFFF",
@@ -122,6 +127,25 @@ export const ProfileTableTA = (props) => {
 
   const classes = useStyles(themeState);
 
+  const theme = useTheme();
+  const smUp = useMediaQuery(theme.breakpoints.up("sm"));
+
+  let customStyle = {
+    padding: theme.spacing(0, 0, 0, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+  };
+
+  if (smUp) {
+    customStyle = {
+      ...customStyle,
+      width: "54ch",
+      // color: "red",
+    };
+  }
+
   const headerTableStyle = {
     backgroundColor: themeState.paper,
     color: themeState.color,
@@ -135,8 +159,47 @@ export const ProfileTableTA = (props) => {
     firstname: "firstname",
     lastname: "lastname",
   });
+  const [Columns, setColumns] = React.useState([
+    {
+      title: "Name",
+      field: "name",
+      headerStyle: headerTableStyle,
+    },
+    {
+      title: "Abbreviation",
+      field: "abbreviation",
+      headerStyle: headerTableStyle,
+    },
+    {
+      title: "WWW",
+      field: "www",
+      headerStyle: headerTableStyle,
+    },
+    {
+      title: "City/Country",
+      field: "citycountry",
+      headerStyle: headerTableStyle,
+    },
+  
+    {
+      title: "Industry",
+      field: "industrycode",
+      headerStyle: headerTableStyle,
+    },
+    {
+      title: "IATA",
+      field: "iata",
+      headerStyle: headerTableStyle,
+    },
+    // {
+    //   title: "Actions",
+    //   field: "actions",
+    //   headerStyle: headerTableStyle,
+    // },
+  ]);
 
   React.useEffect(async () => {
+    console.log("action:",action);
     if (action == "success") {
       await handleGetTAProfile();
       await setStatusProfile("moredata");
@@ -170,18 +233,22 @@ export const ProfileTableTA = (props) => {
   };
 
   const handleNewData = async () => {
+    await setTriggerButton(!triggerButton);
     await setAction("none");
     await setEditData(null);
     await setStatusProfile("add");
   };
   const handleAddData = async (companyData) => {
+    await setTriggerButton(!triggerButton);
     await setAction("add");
   };
   const handleAddDataEdit = async (companyData) => {
+    await setTriggerButton(!triggerButton);
     await setAction("edit");
   };
 
   const handleEditData = async (data) => {
+    await setTriggerButton(!triggerButton);
     const resp = await getTAProfileById(
       sessionStorage.getItem("auth"),
       data.id
@@ -190,6 +257,7 @@ export const ProfileTableTA = (props) => {
     await setAction("none");
     await setStatusProfile("edit");
   };
+
   const handleDeleteData = async () => {
     try {
       const resp = await deleteCompanyProfileById(
@@ -208,6 +276,7 @@ export const ProfileTableTA = (props) => {
     await setDeleteData({ id: id, name: name, www: www, city: city });
     await setDialogDelete(true);
   };
+
   const handleDialogDeleteClose = async () => {
     await setDialogDelete(false);
   };
@@ -263,12 +332,11 @@ export const ProfileTableTA = (props) => {
                   color: themeState.color,
                 }}
               >
-                Travel Agent
+                Company
               </Typography>
             </Link>
           </Breadcrumbs>
         </Grid>
-
         {statusProfile === "add" ? (
           <Grid
             container
@@ -341,10 +409,11 @@ export const ProfileTableTA = (props) => {
         ) : null}
       </Grid>
       {statusProfile === "edit" || statusProfile === "add" ? (
-        <ProfileTravelAgent
+        <ProfileCompany
           editdata={editData}
           action={action}
           setAction={setAction}
+          trigger={triggerButton}
         />
       ) : (
         [
@@ -382,7 +451,44 @@ export const ProfileTableTA = (props) => {
             </Grid>
           ) : (
             <Container maxWidth="xl">
-              <MaterialTable
+              <MaterialTableComponent placeHolder="Search by Name, www, City/Country, Industry, IATA" companyData={companyData} handleNewData={handleNewData} handleEditData={handleEditData} handleDialogDeleteOpen={handleDialogDeleteOpen}
+              columns={[
+                {
+                  title: "Name",
+                  field: "name",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "Abbreviation",
+                  field: "abbreviation",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "WWW",
+                  field: "www",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "City/Country",
+                  field: "citycountry",
+                  headerStyle: headerTableStyle,
+                },
+
+                {
+                  title: "Industry",
+                  field: "industrycode",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "IATA",
+                  field: "iata",
+                  headerStyle: headerTableStyle,
+                },
+              ]}/>
+              {/* <StandardTable Data={companyData} Columns={Columns} FuncEdit={handleEditData} FuncDelete={handleDialogDeleteOpen} statusProfile={statusProfile} /> */}
+            
+               {/* <Test2 Datachile={companyData} /> */}
+              {/* <MaterialTable
                 localization={{
                   toolbar: {
                     searchPlaceholder:
@@ -421,7 +527,7 @@ export const ProfileTableTA = (props) => {
                             color="primary"
                             onClick={() => handleNewData()}
                           >
-                            New Travel Agent Profile
+                            New CompanyProfile
                           </Button>
                         </Grid>
                       </>
@@ -441,7 +547,12 @@ export const ProfileTableTA = (props) => {
                     headerStyle: headerTableStyle,
                   },
                   {
-                    title: "www",
+                    title: "Abbreviation",
+                    field: "abbreviation",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "WWW",
                     field: "www",
                     headerStyle: headerTableStyle,
                   },
@@ -450,6 +561,7 @@ export const ProfileTableTA = (props) => {
                     field: "citycountry",
                     headerStyle: headerTableStyle,
                   },
+
                   {
                     title: "Industry",
                     field: "industrycode",
@@ -475,12 +587,7 @@ export const ProfileTableTA = (props) => {
                     { value: companyData.length, label: "All" },
                   ],
                   headerStyle: headerTableStyle,
-                  searchFieldStyle: {
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                    borderBottomColor: themeState.color,
-                    width: 530,
-                  },
+                  searchFieldStyle: customStyle,
                 }}
                 actions={[
                   {
@@ -505,7 +612,7 @@ export const ProfileTableTA = (props) => {
                     },
                   },
                 ]}
-              />
+              /> */}
             </Container>
           ),
         ]
@@ -527,7 +634,7 @@ export const ProfileTableTA = (props) => {
                 color: mainColor,
               }}
             >
-              Confirm Delete Travel Agent Profile
+              Confirm Delete CompanyProfile
             </DialogTitle>
             <DialogContent style={headerTableStyle}>
               <Typography>
@@ -594,8 +701,10 @@ export const ProfileTableTA = (props) => {
                 <Grid item sm={6} md={6} lg={6} xl={6}>
                   <Button
                     fullWidth
+                    // onClick={() => handleDelete(updateData.id)}
                     onClick={() => handleDeleteData()}
                     variant="contained"
+                    // color="primary"
                     style={{ backgroundColor: "red", color: "white" }}
                   >
                     Delete
@@ -618,4 +727,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileTableTA);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProfileTableTA);

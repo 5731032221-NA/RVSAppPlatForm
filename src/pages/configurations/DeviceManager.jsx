@@ -11,6 +11,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import MaterialTableComponent from "../../components/Table/MaterialTableComponent2";
 import {
   Container,
   Grid,
@@ -154,12 +155,13 @@ export default function DeviceManager() {
     });
   };
 
-  const handleDialogDeleteOpen = async (id, code, type, name) => {
+  const handleDialogDeleteOpen = async (data) => {
+
     setUpdateData({
-      code: code,
-      type: type,
-      name: name,
-      id: id,
+      code: data.code,
+      type: data.type,
+      name: data.name,
+      id: data.id,
     });
     setDialogDelete(true);
   };
@@ -488,7 +490,37 @@ export default function DeviceManager() {
         </Grid>
 
         <div style={{ maxWidth: "100%" }}>
-          <MaterialTable
+
+        <MaterialTableComponent placeHolder="Search by Device Code, Type, Device Name, MAC Address,IP Address" title="Device Manager" rows={rows} handleNewData={handleDialogAdd} handleEditData={handleDialogEdit} handleDialogDeleteOpen={handleDialogDeleteOpen}
+           columns={[
+            {
+              title: "Device Code",
+              field: "code",
+              headerStyle: headerTableStyle,
+            },
+            {
+              title: "Type",
+              field: "type",
+              headerStyle: headerTableStyle,
+            },
+            {
+              title: "Device Name",
+              field: "name",
+              headerStyle: headerTableStyle,
+            },
+            {
+              title: "MAC Address",
+              field: "macaddress",
+              headerStyle: headerTableStyle,
+            },
+            {
+              title: "IP Address",
+              field: "ip",
+              headerStyle: headerTableStyle,
+            },
+          ]}
+          />
+          {/* <MaterialTable
             localization={{
               body: {
                 emptyDataSourceMessage: (
@@ -613,7 +645,7 @@ export default function DeviceManager() {
               },
             ]}
             onChangePage={(page) => console.log("page")}
-          />
+          /> */}
         </div>
 
         {/* ==================== Dialog New Device========================= */}

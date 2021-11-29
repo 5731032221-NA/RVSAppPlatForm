@@ -1698,6 +1698,7 @@ export const ProfileCompany = (props) => {
   };
 
   const handleAddDataEdittoDatabase = async (e) => {
+   try {
     props.setAction("none");
 
     let req = {
@@ -1751,12 +1752,17 @@ export const ProfileCompany = (props) => {
     );
 
     if (resp.status == "2000") {
+      console.log("success:",resp);
       props.setAction("success");
     } else {
       props.setAction("dupic");
       setErrorParameter(resp.msg);
       setErrorMessage(true);
     }
+     
+   } catch (error) {
+     console.log("error:",error);
+   }
   };
 
   React.useEffect(() => {
@@ -1780,10 +1786,10 @@ export const ProfileCompany = (props) => {
   ]);
 
   const [validationStatus, setValidationStatus] = React.useState(true);
-
+  const [initial , setInitial] = React.useState(true);
   React.useEffect(() => {
     let _IsRequired;
-
+    if(!initial){
     if (!sameAsAddress) {
       console.log("sameAsAddress22:", sameAsAddress);
       _IsRequired =
@@ -1861,9 +1867,11 @@ export const ProfileCompany = (props) => {
       // props.handleRedirectToTableIndividual(false);
     }
     updateList();
+  }
   }, [
-    nameOne,
+    initial,
     abbreviation,
+    chooseCountry,
     guaranteeMethodCode,
     IATA,
     streetAddress,
@@ -1894,8 +1902,12 @@ export const ProfileCompany = (props) => {
   //data from button for  trigger (add or delete)
   React.useEffect(() => {
     async function handlebutton() {
+      console.log("props.action",props.action)
       if (props.action === "add") {
         console.log("ok");
+        if(initial){
+          setInitial(false);
+        }
         console.log("action add", props.action);
         console.log("validationStatus", validationStatus);
         // await props.handleRedirectToTableIndividual(false);

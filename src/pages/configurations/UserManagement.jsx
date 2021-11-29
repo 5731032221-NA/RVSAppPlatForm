@@ -54,6 +54,7 @@ import {
 } from "../../services/user.service";
 import { listRole } from "../../services/roleManagement.service";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
+import MaterialTableComponent from "../../components/Table/MaterialTableComponent2";
 // import user from "../services/user.service";
 
 // Generate Order Data
@@ -710,13 +711,18 @@ export default function UserManagement() {
   };
 
   const handleDialogEditUser = async (
-    username,
-    firstname,
-    lastname,
-    position,
-    status,
-    adaccount
+    rowData
   ) => {
+
+  let  username = rowData.userID;
+  let  firstname = rowData.firstname;
+  let  lastname = rowData.lastname;
+  let  position = rowData.position;
+  let  status = rowData.status;
+  let adaccount =rowData.adaccount;
+                      
+                   
+                      
     // const databyid = await getUserByID(sessionStorage.getItem("auth"), id);
     // setEditFirstName(databyid.content[databyid.content.length - 1].firstname);
     // setEditLastName(databyid.content[databyid.content.length - 1].lastname);
@@ -1999,13 +2005,13 @@ export default function UserManagement() {
   const handleDialogDeleteUserClose = () => {
     setDialogDeleteUser(false);
   };
-  const handleDialogDeleteUserOpen = async (username, firstname, lastname) => {
+  const handleDialogDeleteUserOpen = async (data) => {
     // setEditID(id);
     // const databyid = await getUserByID(sessionStorage.getItem("auth"), id);
-    console.log("delete dialog", username, firstname, lastname);
-    setEditUserName(username);
-    setEditFirstName(firstname);
-    setEditLastName(lastname);
+    // console.log("delete dialog", data);
+    setEditUserName(data.userID);
+    setEditFirstName(data.firstname);
+    setEditLastName(data.lastname);
     // setEditAD(adaccount);
     setDialogDeleteUser(true);
   };
@@ -2163,187 +2169,263 @@ export default function UserManagement() {
 
         <div style={{ maxWidth: "100%" }}>
           {CRUD.R ? (
-            <MaterialTable
-              localization={{
-                body: {
-                  emptyDataSourceMessage: (
-                    <>
-                      {" "}
-                      <Typography
-                        variant="h1"
-                        align="center"
-                        style={{ fontSize: 25, color: themeState.color }}
-                      >
-                        <ErrorOutlineOutlinedIcon
-                          style={{ fontSize: 170, color: "lightgray" }}
-                        />
-                      </Typography>
-                      <Typography
-                        align="center"
-                        variant="h2"
-                        style={{
-                          fontWeight: 400,
-                          fontSize: 30,
-                          color: "rgb(0 0 0 / 47%)",
-                          marginBottom: 20,
-                        }}
-                      >
-                        No Data Available
-                      </Typography>
-                      <Grid item>
+           
+             <MaterialTableComponent placeHolder="Search by Username, Full Name, Position, Roles, Property,AD Account" title="User Management" rows={rows} handleNewData={handleDialogAddUser} handleEditData={handleDialogEditUser} handleDialogDeleteOpen={handleDialogDeleteUserOpen}
+             columns={[
+                  {
+                    title: "Username",
+                    field: "userID",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Full Name",
+                    field: "name",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Position",
+                    field: "position",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Roles",
+                    field: "roles",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Property",
+                    field: "property",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "AD Account",
+                    field: "adaccount",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    render: (rowData) => {
+                      return rowData.status == "Active" ? (
                         <Button
-                          startIcon={<AddOutlinedIcon />}
-                          size="large"
                           variant="contained"
-                          color="primary"
-                          onClick={handleDialogAddUser}
+                          style={{
+                            borderRadius: 20,
+                            backgroundColor: mainColor,
+                            color: "white",
+                          }}
+                          onClick={() =>
+                            handleactive(rowData.userID, rowData.status)
+                          }
                         >
-                          New User
+                          {rowData.status}
                         </Button>
-                      </Grid>
-                    </>
-                  ),
-                },
-              }}
-              style={{
-                paddingLeft: 30,
-                paddingRight: 30,
-                color: themeState.color,
-                backgroundColor: themeState.paper,
-              }}
-              title={
-                <Grid>
-                  <Typography variant="h6" noWrap style={{ fontSize: 25 }}>
-                    User Management
-                  </Typography>
-                </Grid>
-              }
-              columns={[
-                {
-                  title: "Username",
-                  field: "userID",
-                  headerStyle: headerTableStyle,
-                },
-                {
-                  title: "Full Name",
-                  field: "name",
-                  headerStyle: headerTableStyle,
-                },
-                {
-                  title: "Position",
-                  field: "position",
-                  headerStyle: headerTableStyle,
-                },
-                {
-                  title: "Roles",
-                  field: "roles",
-                  headerStyle: headerTableStyle,
-                },
-                {
-                  title: "Property",
-                  field: "property",
-                  headerStyle: headerTableStyle,
-                },
-                {
-                  title: "AD Account",
-                  field: "adaccount",
-                  headerStyle: headerTableStyle,
-                },
-                {
-                  render: (rowData) => {
-                    return rowData.status == "Active" ? (
-                      <Button
-                        variant="contained"
-                        style={{
-                          borderRadius: 20,
-                          backgroundColor: mainColor,
-                          color: "white",
-                        }}
-                        onClick={() =>
-                          handleactive(rowData.userID, rowData.status)
-                        }
-                      >
-                        {rowData.status}
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        style={{
-                          borderRadius: 20,
-                          backgroundColor: "#DEDFE0",
-                          color: "black",
-                        }}
-                        onClick={() =>
-                          handleactive(rowData.userID, rowData.status)
-                        }
-                      >
-                        {rowData.status}
-                      </Button>
-                    );
+                      ) : (
+                        <Button
+                          variant="contained"
+                          style={{
+                            borderRadius: 20,
+                            backgroundColor: "#DEDFE0",
+                            color: "black",
+                          }}
+                          onClick={() =>
+                            handleactive(rowData.userID, rowData.status)
+                          }
+                        >
+                          {rowData.status}
+                        </Button>
+                      );
+                    },
+                    cellStyle: { textAlign: "center" },
+                    headerStyle: {
+                      textAlign: "center",
+                      paddingLeft: 37,
+                      backgroundColor: themeState.paper,
+                      color: themeState.color,
+                    },
+                    title: "Status",
+                    field: "status",
                   },
-                  cellStyle: { textAlign: "center" },
-                  headerStyle: {
-                    textAlign: "center",
-                    paddingLeft: 37,
-                    backgroundColor: themeState.paper,
-                    color: themeState.color,
-                  },
-                  title: "Status",
-                  field: "status",
-                },
-              ]}
-              data={rows}
-              options={{
-                actionsColumnIndex: -1,
-                searchFieldAlignment: "left",
-                page: page,
-                pageSize: rowsPerPage,
-                pageSizeOptions: [
-                  5,
-                  10,
-                  20,
-                  { value: rows.length, label: "All" },
-                ],
-                headerStyle: headerTableStyle,
-                searchFieldStyle: {
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                  borderBottomColor: themeState.color,
-                },
-              }}
-              actions={[
-                {
-                  icon: "edit",
-                  iconProps: { style: { color: themeState.color } },
-                  tooltip: "Edit",
-                  disabled: !CRUD.U,
-                  onClick: (event, rowData) => {
-                    handleDialogEditUser(
-                      rowData.userID,
-                      rowData.firstname,
-                      rowData.lastname,
-                      rowData.position,
-                      rowData.status,
-                      rowData.adaccount
-                    );
-                  },
-                },
-                {
-                  icon: "delete",
-                  iconProps: { style: { color: themeState.color } },
-                  tooltip: "Delete",
-                  disabled: !CRUD.D,
-                  onClick: (event, rowData) => {
-                    handleDialogDeleteUserOpen(
-                      rowData.userID,
-                      rowData.firstname,
-                      rowData.lastname
-                    );
-                  },
-                },
-              ]}
-              onChangePage={(page) => console.log("page")}
-            />
+                ]}/>
+            // <MaterialTable
+            //   localization={{
+            //     body: {
+            //       emptyDataSourceMessage: (
+            //         <>
+            //           {" "}
+            //           <Typography
+            //             variant="h1"
+            //             align="center"
+            //             style={{ fontSize: 25, color: themeState.color }}
+            //           >
+            //             <ErrorOutlineOutlinedIcon
+            //               style={{ fontSize: 170, color: "lightgray" }}
+            //             />
+            //           </Typography>
+            //           <Typography
+            //             align="center"
+            //             variant="h2"
+            //             style={{
+            //               fontWeight: 400,
+            //               fontSize: 30,
+            //               color: "rgb(0 0 0 / 47%)",
+            //               marginBottom: 20,
+            //             }}
+            //           >
+            //             No Data Available
+            //           </Typography>
+            //           <Grid item>
+            //             <Button
+            //               startIcon={<AddOutlinedIcon />}
+            //               size="large"
+            //               variant="contained"
+            //               color="primary"
+            //               onClick={handleDialogAddUser}
+            //             >
+            //               New User
+            //             </Button>
+            //           </Grid>
+            //         </>
+            //       ),
+            //     },
+            //   }}
+            //   style={{
+            //     paddingLeft: 30,
+            //     paddingRight: 30,
+            //     color: themeState.color,
+            //     backgroundColor: themeState.paper,
+            //   }}
+            //   title={
+            //     <Grid>
+            //       <Typography variant="h6" noWrap style={{ fontSize: 25 }}>
+            //         User Management
+            //       </Typography>
+            //     </Grid>
+            //   }
+            //   columns={[
+            //     {
+            //       title: "Username",
+            //       field: "userID",
+            //       headerStyle: headerTableStyle,
+            //     },
+            //     {
+            //       title: "Full Name",
+            //       field: "name",
+            //       headerStyle: headerTableStyle,
+            //     },
+            //     {
+            //       title: "Position",
+            //       field: "position",
+            //       headerStyle: headerTableStyle,
+            //     },
+            //     {
+            //       title: "Roles",
+            //       field: "roles",
+            //       headerStyle: headerTableStyle,
+            //     },
+            //     {
+            //       title: "Property",
+            //       field: "property",
+            //       headerStyle: headerTableStyle,
+            //     },
+            //     {
+            //       title: "AD Account",
+            //       field: "adaccount",
+            //       headerStyle: headerTableStyle,
+            //     },
+            //     {
+            //       render: (rowData) => {
+            //         return rowData.status == "Active" ? (
+            //           <Button
+            //             variant="contained"
+            //             style={{
+            //               borderRadius: 20,
+            //               backgroundColor: mainColor,
+            //               color: "white",
+            //             }}
+            //             onClick={() =>
+            //               handleactive(rowData.userID, rowData.status)
+            //             }
+            //           >
+            //             {rowData.status}
+            //           </Button>
+            //         ) : (
+            //           <Button
+            //             variant="contained"
+            //             style={{
+            //               borderRadius: 20,
+            //               backgroundColor: "#DEDFE0",
+            //               color: "black",
+            //             }}
+            //             onClick={() =>
+            //               handleactive(rowData.userID, rowData.status)
+            //             }
+            //           >
+            //             {rowData.status}
+            //           </Button>
+            //         );
+            //       },
+            //       cellStyle: { textAlign: "center" },
+            //       headerStyle: {
+            //         textAlign: "center",
+            //         paddingLeft: 37,
+            //         backgroundColor: themeState.paper,
+            //         color: themeState.color,
+            //       },
+            //       title: "Status",
+            //       field: "status",
+            //     },
+            //   ]}
+            //   data={rows}
+            //   options={{
+            //     actionsColumnIndex: -1,
+            //     searchFieldAlignment: "left",
+            //     page: page,
+            //     pageSize: rowsPerPage,
+            //     pageSizeOptions: [
+            //       5,
+            //       10,
+            //       20,
+            //       { value: rows.length, label: "All" },
+            //     ],
+            //     headerStyle: headerTableStyle,
+            //     searchFieldStyle: {
+            //       backgroundColor: themeState.paper,
+            //       color: themeState.color,
+            //       borderBottomColor: themeState.color,
+            //     },
+            //   }}
+            //   actions={[
+            //     {
+            //       icon: "edit",
+            //       iconProps: { style: { color: themeState.color } },
+            //       tooltip: "Edit",
+            //       disabled: !CRUD.U,
+            //       onClick: (event, rowData) => {
+            //         handleDialogEditUser(
+            //           rowData.userID,
+            //           rowData.firstname,
+            //           rowData.lastname,
+            //           rowData.position,
+            //           rowData.status,
+            //           rowData.adaccount
+            //         );
+            //       },
+            //     },
+            //     {
+            //       icon: "delete",
+            //       iconProps: { style: { color: themeState.color } },
+            //       tooltip: "Delete",
+            //       disabled: !CRUD.D,
+            //       onClick: (event, rowData) => {
+            //         handleDialogDeleteUserOpen(
+            //           rowData.userID,
+            //           rowData.firstname,
+            //           rowData.lastname
+            //         );
+            //       },
+            //     },
+            //   ]}
+            //   onChangePage={(page) => console.log("page")}
+            // />
           ) : null}
         </div>
 

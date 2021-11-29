@@ -10,6 +10,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import MaterialTableComponent from "../../components/Table/MaterialTableComponent2";
 import {
   Container,
   Grid,
@@ -239,11 +240,11 @@ export default function ComputerPrinter() {
     });
   };
 
-  const handleDialogDeleteOpen = async (id, computercode, devicecode) => {
+  const handleDialogDeleteOpen = async (rowData) => {
     setUpdateData({
-      computercode: computercode,
-      devicecode: devicecode,
-      id: id,
+      computercode: rowData.computercode,
+      devicecode: rowData.devicecode,
+      id: rowData.id,
     });
     setDialogDelete(true);
   };
@@ -717,65 +718,7 @@ export default function ComputerPrinter() {
         </Grid>
 
         <div style={{ maxWidth: "100%" }}>
-          <MaterialTable
-            localization={{
-              body: {
-                emptyDataSourceMessage: (
-                  <>
-                    {" "}
-                    <Typography
-                      variant="h1"
-                      align="center"
-                      style={{ fontSize: 25, color: themeState.color }}
-                    >
-                      <ErrorOutlineOutlinedIcon
-                        style={{ fontSize: 170, color: "lightgray" }}
-                      />
-                    </Typography>
-                    <Typography
-                      align="center"
-                      variant="h2"
-                      style={{
-                        fontWeight: 400,
-                        fontSize: 30,
-                        color: "rgb(0 0 0 / 47%)",
-                        marginBottom: 20,
-                      }}
-                    >
-                      No Data Available
-                    </Typography>
-                    <Grid item>
-                      <Button
-                        startIcon={<AddOutlinedIcon />}
-                        size="large"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleDialogAdd}
-                      >
-                        New Setting
-                      </Button>
-                    </Grid>
-                  </>
-                ),
-              },
-            }}
-            style={{
-              paddingLeft: 30,
-              paddingRight: 30,
-              color: themeState.color,
-              backgroundColor: themeState.paper,
-            }}
-            title={
-              <Grid>
-                <Typography
-                  variant="h6"
-                  noWrap
-                  style={{ fontSize: 25, color: themeState.color }}
-                >
-                  Computer-printer
-                </Typography>
-              </Grid>
-            }
+        <MaterialTableComponent placeHolder="Search by Property, Username, Computer Code, Action ,Device Code,Tray,Remark" title="Computer-printer" rows={rows} handleNewData={handleDialogAdd} handleEditData={handleDialogEdit} handleDialogDeleteOpen={handleDialogDeleteOpen}
             columns={[
               {
                 title: "Property",
@@ -818,46 +761,148 @@ export default function ComputerPrinter() {
                 headerStyle: headerTableStyle,
               },
             ]}
-            data={rows}
-            options={{
-              actionsColumnIndex: -1,
-              search: true,
-              searchFieldAlignment: "left",
-              page: page,
-              pageSize: rowsPerPage,
-              pageSizeOptions: [
-                5,
-                10,
-                20,
-                { value: rows.length, label: "All" },
-              ],
-              searchFieldStyle: headerTableStyle,
-              headerStyle: headerTableStyle,
-            }}
-            actions={[
-              {
-                icon: "edit",
-                iconProps: { style: { color: themeState.color } },
-                tooltip: "Edit",
-                onClick: (event, rowData) => {
-                  handleDialogEdit(rowData);
-                },
-              },
-              {
-                icon: "delete",
-                iconProps: { style: { color: themeState.color } },
-                tooltip: "Delete",
-                onClick: (event, rowData) => {
-                  handleDialogDeleteOpen(
-                    rowData.id,
-                    rowData.computercode,
-                    rowData.devicecode
-                  );
-                },
-              },
-            ]}
-            onChangePage={(page) => console.log("page")}
           />
+          {/* // <MaterialTable
+          //   localization={{
+          //     body: {
+          //       emptyDataSourceMessage: (
+          //         <>
+          //           {" "}
+          //           <Typography
+          //             variant="h1"
+          //             align="center"
+          //             style={{ fontSize: 25, color: themeState.color }}
+          //           >
+          //             <ErrorOutlineOutlinedIcon
+          //               style={{ fontSize: 170, color: "lightgray" }}
+          //             />
+          //           </Typography>
+          //           <Typography
+          //             align="center"
+          //             variant="h2"
+          //             style={{
+          //               fontWeight: 400,
+          //               fontSize: 30,
+          //               color: "rgb(0 0 0 / 47%)",
+          //               marginBottom: 20,
+          //             }}
+          //           >
+          //             No Data Available
+          //           </Typography>
+          //           <Grid item>
+          //             <Button
+          //               startIcon={<AddOutlinedIcon />}
+          //               size="large"
+          //               variant="contained"
+          //               color="primary"
+          //               onClick={handleDialogAdd}
+          //             >
+          //               New Setting
+          //             </Button>
+          //           </Grid>
+          //         </>
+          //       ),
+          //     },
+          //   }}
+          //   style={{
+          //     paddingLeft: 30,
+          //     paddingRight: 30,
+          //     color: themeState.color,
+          //     backgroundColor: themeState.paper,
+          //   }}
+          //   title={
+          //     <Grid>
+          //       <Typography
+          //         variant="h6"
+          //         noWrap
+          //         style={{ fontSize: 25, color: themeState.color }}
+          //       >
+          //         Computer-printer
+          //       </Typography>
+          //     </Grid>
+          //   }
+          //   columns={[
+          //     {
+          //       title: "Property",
+          //       field: "propertycode",
+          //       headerStyle: headerTableStyle,
+          //     },
+          //     {
+          //       title: "Username",
+          //       field: "username",
+          //       headerStyle: headerTableStyle,
+          //     },
+          //     {
+          //       title: "Computer Code",
+          //       field: "computercode",
+          //       headerStyle: headerTableStyle,
+          //     },
+          //     {
+          //       title: "Action",
+          //       field: "action",
+          //       headerStyle: headerTableStyle,
+          //     },
+          //     {
+          //       title: "Device Code",
+          //       field: "devicecode",
+          //       headerStyle: headerTableStyle,
+          //     },
+          //     {
+          //       title: "Tray",
+          //       field: "tray",
+          //       headerStyle: headerTableStyle,
+          //     },
+          //     {
+          //       title: "Remark",
+          //       field: "remark",
+          //       headerStyle: headerTableStyle,
+          //     },
+          //     {
+          //       title: "Special Strings",
+          //       field: "specialstrings",
+          //       headerStyle: headerTableStyle,
+          //     },
+          //   ]}
+          //   data={rows}
+          //   options={{
+          //     actionsColumnIndex: -1,
+          //     search: true,
+          //     searchFieldAlignment: "left",
+          //     page: page,
+          //     pageSize: rowsPerPage,
+          //     pageSizeOptions: [
+          //       5,
+          //       10,
+          //       20,
+          //       { value: rows.length, label: "All" },
+          //     ],
+          //     searchFieldStyle: headerTableStyle,
+          //     headerStyle: headerTableStyle,
+          //   }}
+          //   actions={[
+          //     {
+          //       icon: "edit",
+          //       iconProps: { style: { color: themeState.color } },
+          //       tooltip: "Edit",
+          //       onClick: (event, rowData) => {
+          //         handleDialogEdit(rowData);
+          //       },
+          //     },
+          //     {
+          //       icon: "delete",
+          //       iconProps: { style: { color: themeState.color } },
+          //       tooltip: "Delete",
+          //       onClick: (event, rowData) => {
+          //         handleDialogDeleteOpen(
+          //           rowData.id,
+          //           rowData.computercode,
+          //           rowData.devicecode
+          //         );
+          //       },
+          //     },
+          //   ]}
+          //   onChangePage={(page) => console.log("page")}
+          // /> */}
         </div>
 
         {/* ==================== Dialog New Device========================= */}

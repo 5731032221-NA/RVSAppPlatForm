@@ -25,13 +25,13 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import  MaterialTableComponent  from "../Table/MaterialTableComponent";
 import {
   getCompanyProfile,
   getCompanyProfileById,
   deleteCompanyProfileById,
 } from "../../services/companyprofile.service";
-import StandardTable from "../Table/StandardTable";
-import Test2 from "../Table/test";
+
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -191,9 +191,15 @@ export const ProfileTableCompany = (props) => {
       field: "iata",
       headerStyle: headerTableStyle,
     },
+    // {
+    //   title: "Actions",
+    //   field: "actions",
+    //   headerStyle: headerTableStyle,
+    // },
   ]);
 
   React.useEffect(async () => {
+    console.log("action:",action);
     if (action == "success") {
       await handleGetCompanyProfile();
       await setStatusProfile("moredata");
@@ -445,134 +451,41 @@ export const ProfileTableCompany = (props) => {
             </Grid>
           ) : (
             <Container maxWidth="xl">
-              {/* <StandardTable Data={companyData} Columns={Columns} FuncEdit={handleEditData} /> */}
-               {/* <StandardTable Data={companyData} Columns={Columns}  /> */}
-               <Test2 Datachile={companyData} />
-              {/* <MaterialTable
-                localization={{
-                  toolbar: {
-                    searchPlaceholder:
-                      "Search by Name, www, City/Country, Industry, IATA",
-                  },
-                  body: {
-                    emptyDataSourceMessage: (
-                      <>
-                        {" "}
-                        <Typography
-                          variant="h1"
-                          align="center"
-                          style={{ fontSize: 25, color: themeState.color }}
-                        >
-                          <ErrorOutlineOutlinedIcon
-                            style={{ fontSize: 100, color: "lightgray" }}
-                          />
-                        </Typography>
-                        <Typography
-                          align="center"
-                          variant="h2"
-                          style={{
-                            fontWeight: 400,
-                            fontSize: 30,
-                            color: "rgb(0 0 0 / 47%)",
-                            marginBottom: 20,
-                          }}
-                        >
-                          No Data Available
-                        </Typography>
-                        <Grid item>
-                          <Button
-                            startIcon={<AddOutlinedIcon />}
-                            size="large"
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleNewData()}
-                          >
-                            New CompanyProfile
-                          </Button>
-                        </Grid>
-                      </>
-                    ),
-                  },
-                }}
-                style={{
-                  paddingLeft: 30,
-                  paddingRight: 30,
-                  color: themeState.color,
-                  backgroundColor: themeState.paper,
-                }}
-                columns={[
-                  {
-                    title: "Name",
-                    field: "name",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "Abbreviation",
-                    field: "abbreviation",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "WWW",
-                    field: "www",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "City/Country",
-                    field: "citycountry",
-                    headerStyle: headerTableStyle,
-                  },
-
-                  {
-                    title: "Industry",
-                    field: "industrycode",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "IATA",
-                    field: "iata",
-                    headerStyle: headerTableStyle,
-                  },
-                ]}
-                data={companyData}
-                options={{
-                  searchFieldAlignment: "left",
-                  showTitle: false,
-                  search: true,
-                  actionsColumnIndex: -1,
-                  pageSize: 10,
-                  pageSizeOptions: [
-                    10,
-                    20,
-                    30,
-                    { value: companyData.length, label: "All" },
-                  ],
+              <MaterialTableComponent placeHolder="Search by Name, www, City/Country, Industry, IATA" companyData={companyData} handleNewData={handleNewData} handleEditData={handleEditData} handleDialogDeleteOpen={handleDialogDeleteOpen}
+              columns={[
+                {
+                  title: "Name",
+                  field: "name",
                   headerStyle: headerTableStyle,
-                  searchFieldStyle: customStyle,
-                }}
-                actions={[
-                  {
-                    icon: "edit",
-                    iconProps: { style: { color: themeState.color } },
-                    tooltip: "Edit",
-                    onClick: (event, rowData) => {
-                      handleEditData(rowData);
-                    },
-                  },
-                  {
-                    icon: "delete",
-                    iconProps: { style: { color: themeState.color } },
-                    tooltip: "Delete",
-                    onClick: (event, rowData) => {
-                      handleDialogDeleteOpen(
-                        rowData.id,
-                        rowData.name,
-                        rowData.www,
-                        rowData.city
-                      );
-                    },
-                  },
-                ]}
-              /> */}
+                },
+                {
+                  title: "Abbreviation",
+                  field: "abbreviation",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "WWW",
+                  field: "www",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "City/Country",
+                  field: "citycountry",
+                  headerStyle: headerTableStyle,
+                },
+
+                {
+                  title: "Industry",
+                  field: "industrycode",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "IATA",
+                  field: "iata",
+                  headerStyle: headerTableStyle,
+                },
+              ]}/>
+              
             </Container>
           ),
         ]
