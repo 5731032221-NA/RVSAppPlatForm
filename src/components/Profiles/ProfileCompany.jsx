@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { connect, ReactReduxContext, useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import Accordion from "@material-ui/core/Accordion";
@@ -23,10 +23,10 @@ import DateFnsUtils from "@date-io/date-fns";
 import {
   getCompanyProfileCommunication,
   getCompanyProfileRelation,
-  // getCompanyProfile,
-  // getCompanyProfileById,
   postCompanyProfile,
   updateCompanyProfile,
+  // getCompanyProfile,
+  // getCompanyProfileById,
   // deleteCompanyProfileById,
 } from "../../services/companyprofile.service";
 import {

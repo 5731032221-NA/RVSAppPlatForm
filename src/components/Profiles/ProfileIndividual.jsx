@@ -2186,12 +2186,12 @@ export const ProfileIndividual = (props) => {
     }
   };
 
-  const convertTimeToString = (e) => {
-    let dateNoTiome = e.toISOString();
-    let T = dateNoTiome.split("T");
-    // console.log(T);
-    return T[0];
-  };
+  // const convertTimeToString = (e) => {
+  //   let dateNoTiome = e.toISOString();
+  //   let T = dateNoTiome.split("T");
+  //   // console.log(T);
+  //   return T[0];
+  // };
 
   const handleBoolean = (e) => {
     if (e == true) {
