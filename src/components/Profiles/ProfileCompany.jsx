@@ -1912,6 +1912,7 @@ export const ProfileCompany = (props) => {
         }
         console.log("action add", props.action);
         console.log("validationStatus", validationStatus);
+       
         // await props.handleRedirectToTableIndividual(false);
         if (validationStatus === false) {
           // await props.handleRedirectToTableIndividual(true);
