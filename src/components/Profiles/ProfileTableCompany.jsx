@@ -25,7 +25,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import  MaterialTableComponent  from "../Table/MaterialTableComponent";
+import  MaterialTableComponent  from "../Table/MaterialTableComponent2";
 import {
   getCompanyProfile,
   getCompanyProfileById,
@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 20,
     marginRight: 20,
   },
+
   root: (themeState) => ({
     "& label.MuiInputLabel-root": {
       color: themeState.color,
@@ -79,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
     "&.MuiMenu-paper": {
       backgroundColor: themeState.paper,
     },
+    
   }),
 }));
 
@@ -272,8 +274,8 @@ export const ProfileTableCompany = (props) => {
     } catch (error) {}
   };
 
-  const handleDialogDeleteOpen = async (id, name, www, city) => {
-    await setDeleteData({ id: id, name: name, www: www, city: city });
+  const handleDialogDeleteOpen = async (rowData) => {
+    await setDeleteData({ id: rowData.id, name: rowData.name, www: rowData.www, city: rowData.city });
     await setDialogDelete(true);
   };
 
@@ -450,8 +452,8 @@ export const ProfileTableCompany = (props) => {
               </Grid>
             </Grid>
           ) : (
-            <Container maxWidth="xl">
-              <MaterialTableComponent placeHolder="Search by Name, www, City/Country, Industry, IATA" companyData={companyData} handleNewData={handleNewData} handleEditData={handleEditData} handleDialogDeleteOpen={handleDialogDeleteOpen}
+            <div style={{ maxWidth: "100%" }}>
+              <MaterialTableComponent placeHolder="Search by Name, www, City/Country, Industry, IATA" title="Profile Company" rows={companyData} handleNewData={handleNewData} handleEditData={handleEditData} handleDialogDeleteOpen={handleDialogDeleteOpen}
               columns={[
                 {
                   title: "Name",
@@ -486,7 +488,7 @@ export const ProfileTableCompany = (props) => {
                 },
               ]}/>
               
-            </Container>
+            </div>
           ),
         ]
       )}

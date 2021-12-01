@@ -29,6 +29,7 @@ import {
   deleteIndividualProfileById,
 } from "../../services/individualprofile.service";
 import * as actions from "../../middleware/action";
+import  MaterialTableComponent  from "../Table/MaterialTableComponent2";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -257,14 +258,14 @@ export const ProfileTableIndividual = (props) => {
     setDialogDelete(false);
   };
 
-  const handleDialogDeleteOpen = async (nameid, firstname, lastname, title) => {
+  const handleDialogDeleteOpen = async (rowData) => {
     await setDeleteData({
-      nameid: nameid,
-      title: title,
-      firstname: firstname,
-      lastname: lastname,
+      nameid: rowData.nameid,
+      title: rowData.title,
+      firstname: rowData.firstname,
+      lastname: rowData.lastname,
     });
-    console.log(nameid, firstname, lastname, title);
+    // console.log(rowData);
     await setDialogDelete(true);
   };
   const handleDialogDeleteClose = () => {
@@ -352,8 +353,8 @@ export const ProfileTableIndividual = (props) => {
         backgroundColor: themeState.background,
       }}
     >
-      <Grid container style={{ paddingLeft: 30, paddingRight: 30 }}>
-        <Grid item style={{ flexGrow: 1 }}>
+      <Grid container style={{ paddingLeft: 25, paddingRight: 25 }}>
+        <Grid item xs={6} sm={10} md={10} lg={10} style={{ flexGrow: 1 }}>
           <Breadcrumbs
             separator={
               <Typography
@@ -516,8 +517,90 @@ export const ProfileTableIndividual = (props) => {
               </Grid>
             </Grid>
           ) : (
-            <Container maxWidth="xl">
-              <MaterialTable
+            <div style={{ maxWidth: "100%" }}>
+              
+              <MaterialTableComponent placeHolder="Search by ID, Title, First Name, Last Name, Gender, country " title="Profile Individual" rows={individualData} handleNewData={handleNewData} handleEditData={handleEditData} handleDialogDeleteOpen={handleDialogDeleteOpen}
+             columns={[
+              {
+                title: "ID",
+                field: "nameid",
+                headerStyle: headerTableStyle,
+              },
+              {
+                title: "Title",
+                field: "title",
+                headerStyle: headerTableStyle,
+              },
+              {
+                title: "First Name",
+                field: "firstname",
+                headerStyle: headerTableStyle,
+              },
+              {
+                title: "Last Name",
+                field: "lastname",
+                headerStyle: headerTableStyle,
+              },
+              {
+                title: "Gender",
+                field: "gender",
+                headerStyle: headerTableStyle,
+              },
+              {
+                title: "Country",
+                field: "countrycode",
+                headerStyle: headerTableStyle,
+              },
+              {
+                title: "Last Stay",
+                field: "laststay",
+                headerStyle: headerTableStyle,
+              },
+              {
+                title: "Score",
+                field: "score",
+                headerStyle: headerTableStyle,
+              },
+
+              {
+                render: (rowData) => {
+                  return rowData.status === "Inactive" ? (
+                    <Button
+                      variant="contained"
+                      style={{
+                        borderRadius: 20,
+                        backgroundColor: "gray",
+                        color: "white",
+                      }}
+                    >
+                      {rowData.status}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      style={{
+                        borderRadius: 20,
+                        backgroundColor: mainColor,
+                        color: "white",
+                      }}
+                    >
+                      {rowData.status}
+                    </Button>
+                  );
+                },
+                cellStyle: { textAlign: "center" },
+                headerStyle: {
+                  textAlign: "center",
+                  paddingLeft: 37,
+                  backgroundColor: themeState.paper,
+                  color: themeState.color,
+                },
+                title: "Status",
+                field: "status",
+              },
+            ]}
+              />
+              {/* <MaterialTable
                 style={{
                   paddingLeft: 30,
                   paddingRight: 30,
@@ -654,8 +737,8 @@ export const ProfileTableIndividual = (props) => {
                     },
                   },
                 ]}
-              />
-            </Container>
+              /> */}
+            </div>
           ),
         ]
       )}

@@ -208,7 +208,7 @@ const optionCommunication = [
   },
 ];
 
-export const ProfileCompany = (props) => {
+export const ProfileTA = (props) => {
   // const { store } = useContext(ReactReduxContext);
   // const [action, setAction] = React.useState(props.action);
 
@@ -730,12 +730,12 @@ export const ProfileCompany = (props) => {
     setList([
       {
         id: "1",
-        title: "TravelAgent Account",
+        title: "Company Account",
         expend: true,
         content: [
           {
             id: 1,
-            label: "TravelAgent Name1",
+            label: "Company Name1",
             xl: 5,
             md: 5,
             xs: 12,
@@ -751,7 +751,7 @@ export const ProfileCompany = (props) => {
           },
           {
             id: 2,
-            label: "TravelAgent Name2",
+            label: "Company Name2",
             xl: 5,
             md: 5,
             xs: 12,
@@ -767,7 +767,7 @@ export const ProfileCompany = (props) => {
           },
           {
             id: 3,
-            label: "TravelAgent Type",
+            label: "Company Type",
             xl: 2,
             md: 2,
             xs: 12,
@@ -1682,7 +1682,7 @@ export const ProfileCompany = (props) => {
       relations: relationDatas,
     };
 
-    console.log("datafrom post", req);
+    console.log("==========datafrom post", req);
     const resp = await postCompanyProfile(sessionStorage.getItem("auth"), req);
 
     if (resp.status == "2000") {
@@ -1858,7 +1858,6 @@ export const ProfileCompany = (props) => {
         geographic.trim() === "";
     }
 
-    console.log("_IsRequired:",_IsRequired);
     setValidationStatus(_IsRequired);
     if (_IsRequired === false) {
       setIsRequired(false);
@@ -1869,7 +1868,6 @@ export const ProfileCompany = (props) => {
     }
     updateList();
   }
- 
   }, [
     initial,
     abbreviation,
@@ -1921,9 +1919,6 @@ export const ProfileCompany = (props) => {
           setIsRequired(true);
         }
       } else if (props.action === "edit") {
-        if(initial){
-          setInitial(false);
-        }
         if (validationStatus === false) {
           // await props.handleRedirectToTableIndividual(true);
           await setIsRequired(false);
@@ -2512,4 +2507,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileCompany);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileTA);

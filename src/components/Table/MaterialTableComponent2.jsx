@@ -11,6 +11,8 @@ import { connect, useSelector } from "react-redux";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import MaterialTable from "material-table";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 const func1Default = () => {
   console.log("func1");
 };
@@ -44,6 +46,25 @@ export default function MaterialTableComponent({
     backgroundColor: themeState.paper,
     color: themeState.color,
   };
+
+  const theme = useTheme();
+  const smUp = useMediaQuery(theme.breakpoints.up("sm"));
+  
+  let customStyle = {
+    padding: theme.spacing(0, 0, 0, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%"
+  };
+  
+  if (smUp) {
+    customStyle = {
+      ...customStyle,
+      width: "54ch",
+      // color: "red",
+      }
+    };
   // const [companyData, setCompanyData] = React.useState([]);
   React.useEffect(() => {
     if (themeBackground === "#FFFFFF") {
@@ -66,7 +87,7 @@ export default function MaterialTableComponent({
   }, [themeBackground]);
 
   return (
-    <Container maxWidth="xl">
+    <div>
       <MaterialTable
         localization={{
           toolbar: {
@@ -105,12 +126,13 @@ export default function MaterialTableComponent({
                     color="primary"
                     onClick={() => handleNewData()}
                   >
-                    New Travel Agent Profile
+                    New Data
                   </Button>
                 </Grid>
               </>
             ),
           },
+       
         }}
         style={{
           paddingLeft: 30,
@@ -122,6 +144,7 @@ export default function MaterialTableComponent({
               <Grid>
                 <Typography
                   variant="h6"
+                  noWrap
                   style={{ fontSize: 25, color: themeState.color }}
                 >
                   {title}
@@ -132,7 +155,7 @@ export default function MaterialTableComponent({
         data={rows}
         options={{
           searchFieldAlignment: "left",
-          showTitle: false,
+          showTitle: true,
           search: true,
           actionsColumnIndex: -1,
           pageSize: 10,
@@ -143,12 +166,7 @@ export default function MaterialTableComponent({
             { value: rows.length, label: "All" },
           ],
           headerStyle: headerTableStyle,
-          searchFieldStyle: {
-            backgroundColor: themeState.paper,
-            color: themeState.color,
-            borderBottomColor: themeState.color,
-            width: 530,
-          },
+          searchFieldStyle: customStyle,
         }}
         actions={[
           {
@@ -172,7 +190,7 @@ export default function MaterialTableComponent({
           },
         ]}
       />
-    </Container>
+    </div>
 
   );
 }

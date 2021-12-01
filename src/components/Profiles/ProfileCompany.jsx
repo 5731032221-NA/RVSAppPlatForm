@@ -1858,6 +1858,7 @@ export const ProfileCompany = (props) => {
         geographic.trim() === "";
     }
 
+    console.log("_IsRequired:",_IsRequired);
     setValidationStatus(_IsRequired);
     if (_IsRequired === false) {
       setIsRequired(false);
@@ -1868,6 +1869,7 @@ export const ProfileCompany = (props) => {
     }
     updateList();
   }
+ 
   }, [
     initial,
     abbreviation,
@@ -1910,6 +1912,7 @@ export const ProfileCompany = (props) => {
         }
         console.log("action add", props.action);
         console.log("validationStatus", validationStatus);
+       
         // await props.handleRedirectToTableIndividual(false);
         if (validationStatus === false) {
           // await props.handleRedirectToTableIndividual(true);
@@ -1919,6 +1922,9 @@ export const ProfileCompany = (props) => {
           setIsRequired(true);
         }
       } else if (props.action === "edit") {
+        if(initial){
+          setInitial(false);
+        }
         if (validationStatus === false) {
           // await props.handleRedirectToTableIndividual(true);
           await setIsRequired(false);
