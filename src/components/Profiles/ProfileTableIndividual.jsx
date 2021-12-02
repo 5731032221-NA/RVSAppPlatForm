@@ -21,7 +21,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
+import Box from '@material-ui/core/Box';
 import ProfileIndividual from "./ProfileIndividual";
 import {
   getIndividualProfile,
@@ -401,13 +401,16 @@ export const ProfileTableIndividual = (props) => {
         </Grid>
 
         {statusProfile === "add" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
+          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }} >
+
+
             <Button
               variant="contained"
               style={{
                 backgroundColor: "gray",
                 color: "white",
-                marginRight: 10,
+                // marginRight: 10,
+                marginBottom: 10,
               }}
               startIcon={<ClearIcon />}
               onClick={() => setStatusProfile("moredata")}
@@ -416,7 +419,7 @@ export const ProfileTableIndividual = (props) => {
             </Button>
             <Button
               variant="contained"
-              style={{ backgroundColor: mainColor, color: "white" }}
+              style={{ backgroundColor: mainColor, color: "white",marginLeft: 10, marginBottom: 10, }}
               startIcon={<SaveOutlinedIcon />}
               onClick={() => handleAddData()}
             >
@@ -424,13 +427,14 @@ export const ProfileTableIndividual = (props) => {
             </Button>
           </Grid>
         ) : statusProfile === "edit" ? (
-          <Grid item xs={6} sm={3} md={3} style={{ textAlign: "right" }}>
+          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
             <Button
               variant="contained"
               style={{
                 backgroundColor: "gray",
                 color: "white",
-                marginRight: 10,
+                // marginRight: 10,
+                marginBottom: 10,
               }}
               startIcon={<ClearIcon />}
               onClick={() => setStatusProfile("moredata")}
@@ -443,7 +447,8 @@ export const ProfileTableIndividual = (props) => {
               style={{
                 backgroundColor: mainColor,
                 color: "white",
-                marginRight: 10,
+                // marginRight: 10,
+                marginLeft: 10, marginBottom: 10
               }}
               startIcon={<SaveOutlinedIcon />}
               onClick={() => handleSaveEditData()}

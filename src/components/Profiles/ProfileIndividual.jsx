@@ -747,7 +747,7 @@ export const ProfileIndividual = (props) => {
             label: "Name Title",
             xl: 1,
             md: 1,
-            xs: 2,
+            xs: 4,
             select: {
               status: "option",
               data: [
@@ -776,7 +776,7 @@ export const ProfileIndividual = (props) => {
             label: "Name Prefix",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 8,
             select: {
               status: "fill",
               data: "",
@@ -793,7 +793,7 @@ export const ProfileIndividual = (props) => {
             label: "First Name",
             xl: 5,
             md: 5,
-            xs: 10,
+            xs: 12,
             select: {
               status: "fill",
               // data: props.editdata.firstname,
@@ -809,7 +809,7 @@ export const ProfileIndividual = (props) => {
             label: "Name Suffix",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fill",
               // data: props.editdata.firstname,
@@ -825,7 +825,7 @@ export const ProfileIndividual = (props) => {
             label: "Middle Initial",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fill",
               // data: props.editdata.firstname,
@@ -841,7 +841,7 @@ export const ProfileIndividual = (props) => {
             label: "Last Name",
             xl: 5,
             md: 5,
-            xs: 10,
+            xs: 12,
             select: {
               status: "fill",
               defaultvalue:
@@ -857,7 +857,7 @@ export const ProfileIndividual = (props) => {
             label: "Gender",
             xl: 1,
             md: 1,
-            xs: 4,
+            xs: 6,
             select: {
               status: "option",
               data: optionGender.map((option) => (
@@ -882,7 +882,7 @@ export const ProfileIndividual = (props) => {
             label: "Religion",
             xl: 2,
             md: 2,
-            xs: 4,
+            xs: 6,
             select: {
               status: "option",
               data: [
@@ -1028,7 +1028,7 @@ export const ProfileIndividual = (props) => {
             label: "Organisation",
             xl: 3,
             md: 3,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fill",
               data: "",
@@ -1045,7 +1045,7 @@ export const ProfileIndividual = (props) => {
             label: "Province Of Residence",
             xl: 3,
             md: 3,
-            xs: 4,
+            xs: 6,
             select: {
               status: "fill",
               data: "",
@@ -1063,7 +1063,7 @@ export const ProfileIndividual = (props) => {
             label: "Border Crossing Entry Place",
             xl: 3,
             md: 3,
-            xs: 4,
+            xs: 12,
             select: {
               status: "fill",
               data: "",
@@ -1081,7 +1081,7 @@ export const ProfileIndividual = (props) => {
             label: "Border Crossing Entry Date",
             xl: 3,
             md: 3,
-            xs: 4,
+            xs: 12,
             select: {
               status: "datetime",
               data: borderCrossingEntryDate,
@@ -1300,7 +1300,7 @@ export const ProfileIndividual = (props) => {
             label: "Phone Number",
             xl: 2,
             md: 2,
-            xs: 6,
+            xs: 12,
             select: {
               status: "AddCommunication",
               data: "+ More Communication",
@@ -1320,7 +1320,7 @@ export const ProfileIndividual = (props) => {
             label: "Relation",
             xl: 2,
             md: 2,
-            xs: 6,
+            xs: 12,
             select: {
               status: "AddRelation",
               data: "+ More Relation",
@@ -1382,7 +1382,7 @@ export const ProfileIndividual = (props) => {
             label: "Guest Catagory",
             xl: 2,
             md: 2,
-            xs: 6,
+            xs: 12,
             select: {
               status: "option",
               data: [
@@ -1498,7 +1498,7 @@ export const ProfileIndividual = (props) => {
             label: "ID Type",
             xl: 2,
             md: 2,
-            xs: 6,
+            xs: 12,
             select: {
               status: "option",
               data: optionData.map((option) => (
@@ -1575,7 +1575,7 @@ export const ProfileIndividual = (props) => {
             label: "Passport Visa Check",
             xl: 2,
             md: 2,
-            xs: 6,
+            xs: 12,
             select: {
               status: "check",
               data: "",
@@ -1587,23 +1587,23 @@ export const ProfileIndividual = (props) => {
             dataType: "string",
             dataCheck: passportVisaCheck,
           },
-          {
-            id: 9,
-            label: "Offset",
-            xl: 10,
-            md: 10,
-            xs: 6,
-            select: {
-              status: "offset",
-              data: "",
-            },
-          },
+          // {
+          //   id: 9,
+          //   label: "Offset",
+          //   xl: 10,
+          //   md: 10,
+          //   xs: 6,
+          //   select: {
+          //     status: "offset",
+          //     data: "",
+          //   },
+          // },
           {
             id: 10,
             label: "Visa Type",
             xl: 2,
             md: 2,
-            xs: 6,
+            xs: 12,
             select: {
               status: "option",
               data: [{ label: "Tourist" }, { label: "Miliary" }].map(
@@ -1797,7 +1797,7 @@ export const ProfileIndividual = (props) => {
             label: "Guest Identity",
             xl: 2,
             md: 2,
-            xs: 6,
+            xs: 12,
             select: {
               status: "fill",
               data: "",
@@ -2081,7 +2081,7 @@ export const ProfileIndividual = (props) => {
         label: "AddCommunication",
         xl: 2,
         md: 2,
-        xs: 2,
+        xs: 12,
         select: {
           status: "AddCommunication",
           data: "+ More Communication",
@@ -2176,7 +2176,7 @@ export const ProfileIndividual = (props) => {
         label: "AddRelation",
         xl: 2,
         md: 2,
-        xs: 2,
+        xs: 12,
         select: {
           status: "AddRelation",
           data: "+ More Relation",
