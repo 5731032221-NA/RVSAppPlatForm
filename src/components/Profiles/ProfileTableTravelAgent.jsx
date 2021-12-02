@@ -13,7 +13,7 @@ import {
   Breadcrumbs,
   Link,
 } from "@material-ui/core";
-
+import MaterialButtonComponent from "../Button/MaterialButtonComponent";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import ProfileCompany from "./ProfileCompany";
@@ -25,7 +25,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import  MaterialTableComponent  from "../Table/MaterialTableComponent2";
+import  MaterialTableComponent  from "../Table/MaterialTableComponent";
 import {
   getCompanyProfile,
   getCompanyProfileById,
@@ -243,11 +243,11 @@ export const ProfileTableCompany = (props) => {
     await setEditData(null);
     await setStatusProfile("add");
   };
-  const handleAddData = async (companyData) => {
+  const handleAddData = async () => {
     await setTriggerButton(!triggerButton);
     await setAction("add");
   };
-  const handleAddDataEdit = async (companyData) => {
+  const handleAddDataEdit = async () => {
     await setTriggerButton(!triggerButton);
     await setAction("edit");
   };
@@ -343,74 +343,27 @@ export const ProfileTableCompany = (props) => {
           </Breadcrumbs>
         </Grid>
         {statusProfile === "add" ? (
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-evenly"
-            alignItems="center"
-            item
-            xs={6}
-            sm={2}
-            md={2}
-            style={{ textAlign: "right" }}
-          >
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "gray", color: "white" }}
-              startIcon={<ClearIcon />}
-              onClick={() => setStatusProfile("moredata")}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: mainColor, color: "white" }}
-              startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleAddData(companyData)}
-            >
-              Save
-            </Button>
-          </Grid>
+           <MaterialButtonComponent
+           setStatus={setStatusProfile}
+           dataStatus="moredata"
+           handleData={handleAddData}
+         
+         />
+     
         ) : statusProfile === "edit" ? (
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-evenly"
-            alignItems="center"
-            item
-            xs={6}
-            sm={2}
-            md={2}
-            style={{ textAlign: "right" }}
-          >
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "gray", color: "white" }}
-              startIcon={<ClearIcon />}
-              onClick={() => setStatusProfile("moredata")}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: mainColor, color: "white" }}
-              startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleAddDataEdit(companyData)}
-            >
-              Save
-            </Button>
-          </Grid>
+          <MaterialButtonComponent
+            setStatus={setStatusProfile}
+            dataStatus="moredata"
+            handleData={handleAddDataEdit}
+          
+          />
+      
         ) : statusProfile === "moredata" || statusProfile === "none" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: mainColor, color: "white" }}
-              startIcon={<AddRoundedIcon />}
-              onClick={() => handleNewData()}
-            >
-              Add New Profile
-            </Button>
-          </Grid>
+
+          <MaterialButtonComponent
+          handleNewData={handleNewData}
+        />
+       
         ) : null}
       </Grid>
       {statusProfile === "edit" || statusProfile === "add" ? (

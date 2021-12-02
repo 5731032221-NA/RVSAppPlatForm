@@ -18,7 +18,7 @@ import TreeItem from "@material-ui/lab/TreeItem";
 import TreeView from "@material-ui/lab/TreeView";
 import RemoveRoundedIcon from "@material-ui/icons/RemoveRounded";
 import UpdateIcon from "@material-ui/icons/Update";
-import MaterialTableComponent from "../../components/Table/MaterialTableComponent2";
+import MaterialTableComponent from "../../components/Table/MaterialTableComponent";
 import {
   Container,
   Grid,

@@ -25,13 +25,13 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import  MaterialTableComponent  from "../Table/MaterialTableComponent2";
+import MaterialTableComponent from "../Table/MaterialTableComponent";
 import {
   getCompanyProfile,
   getCompanyProfileById,
   deleteCompanyProfileById,
 } from "../../services/companyprofile.service";
-
+import MaterialButtonComponent from "../Button/MaterialButtonComponent";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -80,7 +80,6 @@ const useStyles = makeStyles((theme) => ({
     "&.MuiMenu-paper": {
       backgroundColor: themeState.paper,
     },
-    
   }),
 }));
 
@@ -182,7 +181,7 @@ export const ProfileTableCompany = (props) => {
       field: "citycountry",
       headerStyle: headerTableStyle,
     },
-  
+
     {
       title: "Industry",
       field: "industrycode",
@@ -201,7 +200,7 @@ export const ProfileTableCompany = (props) => {
   ]);
 
   React.useEffect(async () => {
-    console.log("action:",action);
+    console.log("action:", action);
     if (action == "success") {
       await handleGetCompanyProfile();
       await setStatusProfile("moredata");
@@ -240,7 +239,7 @@ export const ProfileTableCompany = (props) => {
     await setEditData(null);
     await setStatusProfile("add");
   };
-  const handleAddData = async (companyData) => {
+  const handleAddData = async () => {
     await setTriggerButton(!triggerButton);
     await setAction("add");
   };
@@ -275,7 +274,12 @@ export const ProfileTableCompany = (props) => {
   };
 
   const handleDialogDeleteOpen = async (rowData) => {
-    await setDeleteData({ id: rowData.id, name: rowData.name, www: rowData.www, city: rowData.city });
+    await setDeleteData({
+      id: rowData.id,
+      name: rowData.name,
+      www: rowData.www,
+      city: rowData.city,
+    });
     await setDialogDelete(true);
   };
 
@@ -340,74 +344,24 @@ export const ProfileTableCompany = (props) => {
           </Breadcrumbs>
         </Grid>
         {statusProfile === "add" ? (
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-evenly"
-            alignItems="center"
-            item
-            xs={6}
-            sm={2}
-            md={2}
-            style={{ textAlign: "right" }}
-          >
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "gray", color: "white" }}
-              startIcon={<ClearIcon />}
-              onClick={() => setStatusProfile("moredata")}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: mainColor, color: "white" }}
-              startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleAddData(companyData)}
-            >
-              Save
-            </Button>
-          </Grid>
+          <MaterialButtonComponent
+            setStatus={setStatusProfile}
+            dataStatus="moredata"
+            handleData={handleAddData}
+        
+          />
         ) : statusProfile === "edit" ? (
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-evenly"
-            alignItems="center"
-            item
-            xs={6}
-            sm={2}
-            md={2}
-            style={{ textAlign: "right" }}
-          >
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "gray", color: "white" }}
-              startIcon={<ClearIcon />}
-              onClick={() => setStatusProfile("moredata")}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: mainColor, color: "white" }}
-              startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleAddDataEdit(companyData)}
-            >
-              Save
-            </Button>
-          </Grid>
+          <MaterialButtonComponent
+            setStatus={setStatusProfile}
+            dataStatus="moredata"
+            handleData={handleAddDataEdit}
+           
+          />
         ) : statusProfile === "moredata" || statusProfile === "none" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: mainColor, color: "white" }}
-              startIcon={<AddRoundedIcon />}
-              onClick={() => handleNewData()}
-            >
-              Add New Profile
-            </Button>
-          </Grid>
+
+          <MaterialButtonComponent
+            handleNewData={handleNewData}
+          />
         ) : null}
       </Grid>
       {statusProfile === "edit" || statusProfile === "add" ? (
@@ -453,41 +407,47 @@ export const ProfileTableCompany = (props) => {
             </Grid>
           ) : (
             <div style={{ maxWidth: "100%" }}>
-              <MaterialTableComponent placeHolder="Search by Name, www, City/Country, Industry, IATA" title="Profile Company" rows={companyData} handleNewData={handleNewData} handleEditData={handleEditData} handleDialogDeleteOpen={handleDialogDeleteOpen}
-              columns={[
-                {
-                  title: "Name",
-                  field: "name",
-                  headerStyle: headerTableStyle,
-                },
-                {
-                  title: "Abbreviation",
-                  field: "abbreviation",
-                  headerStyle: headerTableStyle,
-                },
-                {
-                  title: "WWW",
-                  field: "www",
-                  headerStyle: headerTableStyle,
-                },
-                {
-                  title: "City/Country",
-                  field: "citycountry",
-                  headerStyle: headerTableStyle,
-                },
+              <MaterialTableComponent
+                placeHolder="Search by Name, www, City/Country, Industry, IATA"
+                title="Profile Company"
+                rows={companyData}
+                handleNewData={handleNewData}
+                handleEditData={handleEditData}
+                handleDialogDeleteOpen={handleDialogDeleteOpen}
+                columns={[
+                  {
+                    title: "Name",
+                    field: "name",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Abbreviation",
+                    field: "abbreviation",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "WWW",
+                    field: "www",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "City/Country",
+                    field: "citycountry",
+                    headerStyle: headerTableStyle,
+                  },
 
-                {
-                  title: "Industry",
-                  field: "industrycode",
-                  headerStyle: headerTableStyle,
-                },
-                {
-                  title: "IATA",
-                  field: "iata",
-                  headerStyle: headerTableStyle,
-                },
-              ]}/>
-              
+                  {
+                    title: "Industry",
+                    field: "industrycode",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "IATA",
+                    field: "iata",
+                    headerStyle: headerTableStyle,
+                  },
+                ]}
+              />
             </div>
           ),
         ]

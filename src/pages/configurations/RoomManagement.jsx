@@ -36,7 +36,7 @@ import {
   getConfigurationByPropertyCode,
   getUserComponentPermision,
 } from "../../services/user.service";
-import MaterialTableComponent from "../../components/Table/MaterialTableComponent2";
+import MaterialTableComponent from "../../components/Table/MaterialTableComponent";
 
 // Generate Order Data
 function createData(

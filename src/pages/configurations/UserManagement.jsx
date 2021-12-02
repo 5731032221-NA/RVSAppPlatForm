@@ -54,7 +54,7 @@ import {
 } from "../../services/user.service";
 import { listRole } from "../../services/roleManagement.service";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
-import MaterialTableComponent from "../../components/Table/MaterialTableComponent2";
+import MaterialTableComponent from "../../components/Table/MaterialTableComponent";
 // import user from "../services/user.service";
 
 // Generate Order Data

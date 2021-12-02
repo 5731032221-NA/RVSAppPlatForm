@@ -21,7 +21,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Box from '@material-ui/core/Box';
+import Box from "@material-ui/core/Box";
 import ProfileIndividual from "./ProfileIndividual";
 import {
   getIndividualProfile,
@@ -29,7 +29,8 @@ import {
   deleteIndividualProfileById,
 } from "../../services/individualprofile.service";
 import * as actions from "../../middleware/action";
-import  MaterialTableComponent  from "../Table/MaterialTableComponent2";
+import MaterialTableComponent from "../Table/MaterialTableComponent";
+import MaterialButtonComponent from "../Button/MaterialButtonComponent";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -401,72 +402,19 @@ export const ProfileTableIndividual = (props) => {
         </Grid>
 
         {statusProfile === "add" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }} >
-
-
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "gray",
-                color: "white",
-                // marginRight: 10,
-                marginBottom: 10,
-              }}
-              startIcon={<ClearIcon />}
-              onClick={() => setStatusProfile("moredata")}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: mainColor, color: "white",marginLeft: 10, marginBottom: 10, }}
-              startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleAddData()}
-            >
-              Save
-            </Button>
-          </Grid>
+          <MaterialButtonComponent
+            setStatus={setStatusProfile}
+            dataStatus="moredata"
+            handleData={handleAddData}
+          />
         ) : statusProfile === "edit" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "gray",
-                color: "white",
-                // marginRight: 10,
-                marginBottom: 10,
-              }}
-              startIcon={<ClearIcon />}
-              onClick={() => setStatusProfile("moredata")}
-            >
-              Cancel
-            </Button>
-
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: mainColor,
-                color: "white",
-                // marginRight: 10,
-                marginLeft: 10, marginBottom: 10
-              }}
-              startIcon={<SaveOutlinedIcon />}
-              onClick={() => handleSaveEditData()}
-            >
-              Save
-            </Button>
-          </Grid>
+          <MaterialButtonComponent
+            setStatus={setStatusProfile}
+            dataStatus="moredata"
+            handleData={handleSaveEditData}
+          />
         ) : statusProfile === "moredata" ? (
-          <Grid item xs={6} sm={2} md={2} style={{ textAlign: "right" }}>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: mainColor, color: "white" }}
-              startIcon={<AddRoundedIcon />}
-              onClick={() => handleNewData()}
-            >
-              Add New Profile
-            </Button>
-          </Grid>
+          <MaterialButtonComponent handleNewData={handleNewData} />
         ) : null}
       </Grid>
       {statusProfile === "edit" || statusProfile === "add" ? (
@@ -523,87 +471,92 @@ export const ProfileTableIndividual = (props) => {
             </Grid>
           ) : (
             <div style={{ maxWidth: "100%" }}>
-              
-              <MaterialTableComponent placeHolder="Search by ID, Title, First Name, Last Name, Gender, country " title="Profile Individual" rows={individualData} handleNewData={handleNewData} handleEditData={handleEditData} handleDialogDeleteOpen={handleDialogDeleteOpen}
-             columns={[
-              {
-                title: "ID",
-                field: "nameid",
-                headerStyle: headerTableStyle,
-              },
-              {
-                title: "Title",
-                field: "title",
-                headerStyle: headerTableStyle,
-              },
-              {
-                title: "First Name",
-                field: "firstname",
-                headerStyle: headerTableStyle,
-              },
-              {
-                title: "Last Name",
-                field: "lastname",
-                headerStyle: headerTableStyle,
-              },
-              {
-                title: "Gender",
-                field: "gender",
-                headerStyle: headerTableStyle,
-              },
-              {
-                title: "Country",
-                field: "countrycode",
-                headerStyle: headerTableStyle,
-              },
-              {
-                title: "Last Stay",
-                field: "laststay",
-                headerStyle: headerTableStyle,
-              },
-              {
-                title: "Score",
-                field: "score",
-                headerStyle: headerTableStyle,
-              },
+              <MaterialTableComponent
+                placeHolder="Search by ID, Title, First Name, Last Name, Gender, country "
+                title="Profile Individual"
+                rows={individualData}
+                handleNewData={handleNewData}
+                handleEditData={handleEditData}
+                handleDialogDeleteOpen={handleDialogDeleteOpen}
+                columns={[
+                  {
+                    title: "ID",
+                    field: "nameid",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Title",
+                    field: "title",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "First Name",
+                    field: "firstname",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Last Name",
+                    field: "lastname",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Gender",
+                    field: "gender",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Country",
+                    field: "countrycode",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Last Stay",
+                    field: "laststay",
+                    headerStyle: headerTableStyle,
+                  },
+                  {
+                    title: "Score",
+                    field: "score",
+                    headerStyle: headerTableStyle,
+                  },
 
-              {
-                render: (rowData) => {
-                  return rowData.status === "Inactive" ? (
-                    <Button
-                      variant="contained"
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: "gray",
-                        color: "white",
-                      }}
-                    >
-                      {rowData.status}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      style={{
-                        borderRadius: 20,
-                        backgroundColor: mainColor,
-                        color: "white",
-                      }}
-                    >
-                      {rowData.status}
-                    </Button>
-                  );
-                },
-                cellStyle: { textAlign: "center" },
-                headerStyle: {
-                  textAlign: "center",
-                  paddingLeft: 37,
-                  backgroundColor: themeState.paper,
-                  color: themeState.color,
-                },
-                title: "Status",
-                field: "status",
-              },
-            ]}
+                  {
+                    render: (rowData) => {
+                      return rowData.status === "Inactive" ? (
+                        <Button
+                          variant="contained"
+                          style={{
+                            borderRadius: 20,
+                            backgroundColor: "gray",
+                            color: "white",
+                          }}
+                        >
+                          {rowData.status}
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          style={{
+                            borderRadius: 20,
+                            backgroundColor: mainColor,
+                            color: "white",
+                          }}
+                        >
+                          {rowData.status}
+                        </Button>
+                      );
+                    },
+                    cellStyle: { textAlign: "center" },
+                    headerStyle: {
+                      textAlign: "center",
+                      paddingLeft: 37,
+                      backgroundColor: themeState.paper,
+                      color: themeState.color,
+                    },
+                    title: "Status",
+                    field: "status",
+                  },
+                ]}
               />
               {/* <MaterialTable
                 style={{
