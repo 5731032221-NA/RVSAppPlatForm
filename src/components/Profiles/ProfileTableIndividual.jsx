@@ -31,6 +31,7 @@ import {
 import * as actions from "../../middleware/action";
 import MaterialTableComponent from "../Table/MaterialTableComponent";
 import MaterialButtonComponent from "../Button/MaterialButtonComponent";
+import MaterialBreadcrumbsComponent from "../Breadcrumbs/MaterialBreadcrumbsComponent";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -356,49 +357,15 @@ export const ProfileTableIndividual = (props) => {
     >
       <Grid container style={{ paddingLeft: 25, paddingRight: 25 }}>
         <Grid item xs={6} sm={10} md={10} lg={10} style={{ flexGrow: 1 }}>
-          <Breadcrumbs
-            separator={
-              <Typography
-                variant="h6"
-                style={{
-                  marginBottom: 15,
-                  fontSize: 20,
-                  color: themeState.color,
-                }}
-              >
-                /
-              </Typography>
-            }
-          >
-            <Link
-              color="inherit"
-              href="#"
-              onClick={() => handleComponentState("Configuration")}
-            >
-              <Typography
-                variant="h6"
-                style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
-              >
-                Profiles
-              </Typography>
-            </Link>
-            <Link
-              color="inherit"
-              href="#"
-              onClick={() => setStatusProfile("moredata")}
-            >
-              <Typography
-                variant="h6"
-                style={{
-                  marginBottom: 15,
-                  fontSize: 14,
-                  color: themeState.color,
-                }}
-              >
-                Individual
-              </Typography>
-            </Link>
-          </Breadcrumbs>
+        <MaterialBreadcrumbsComponent 
+          Datacrumbs={[
+            { text: "Profiles",handle: () =>  handleComponentState("profileindividual") },
+            { text: "Individual",handle: () => setStatusProfile("moredata") }
+          
+          ]} 
+          
+          />
+          
         </Grid>
 
         {statusProfile === "add" ? (
