@@ -45,7 +45,8 @@ function MaterialButtonComponent(
         setStatus = null,
         dataStatus = null,
         handleData = null,
-        handleNewData = null 
+        handleNewData = null,
+        handleNewText = null,
   
    }
   ) {
@@ -104,7 +105,7 @@ function MaterialButtonComponent(
               startIcon={<AddRoundedIcon />}
               onClick={() => handleNewData()}
             >
-              Add New Profile
+              {handleNewText}
             </Button>
           </Grid> 
          )

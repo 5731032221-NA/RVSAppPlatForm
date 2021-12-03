@@ -29,7 +29,6 @@ import {
   getRoombyid,
   updateRoom,
   deleteByRoomNumber,
-  
 } from "../../services/roomMaster.service";
 import {
   listAllProperty,
@@ -37,6 +36,8 @@ import {
   getUserComponentPermision,
 } from "../../services/user.service";
 import MaterialTableComponent from "../../components/Table/MaterialTableComponent";
+import MaterialButtonComponent from "../../components/Button/MaterialButtonComponent";
+import MaterialBreadcrumbsComponent from "../../components/Breadcrumbs/MaterialBreadcrumbsComponent";
 
 // Generate Order Data
 function createData(
@@ -751,89 +752,40 @@ export default function RoomManagement() {
       <React.Fragment>
         <Grid container style={{ padding: 20, marginTop: 22 }}>
           <Grid item style={{ flexGrow: 1 }}>
-            <Breadcrumbs
-              separator={
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 20,
-                    color: themeState.color,
-                  }}
-                >
-                  /
-                </Typography>
-              }
-            >
-              <Link
-                color="inherit"
-                href="#"
-                onClick={() => handleComponentState("Configuration")}
-              >
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 20,
-                    color: mainColor,
-                  }}
-                >
-                  Configuration
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={" "}>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  PMS Configuration
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={" "}>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  Room Configuration
-                </Typography>
-              </Link>
-              <Typography>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  Room Master Maintenance
-                </Typography>
-              </Typography>
-            </Breadcrumbs>
+            <MaterialBreadcrumbsComponent
+              Datacrumbs={[
+                {
+                  text: "Configuration",
+                  handle: () => handleComponentState("Configuration"),
+                },
+                {
+                  text: "PMS Configuration",
+                  handle: () => {
+                    "";
+                  },
+                },
+                {
+                  text: "Room Configuration",
+                  handle: () => {
+                    "";
+                  },
+                },
+                {
+                  text: "Room Master Maintenance",
+                  handle: () => {
+                    "";
+                  },
+                },
+              ]}
+            />
+         
           </Grid>
 
           {CRUD.C ? (
-            <Grid item style={{ marginLeft: 20, marginRight: 20 }}>
-              <Button
-                variant="contained"
-                style={{
-                  backgroundColor: mainColor,
-                  color: "white",
-                  textAlign: "center",
-                }}
-                onClick={handleDialogAddRoom}
-              >
-                NEW ROOM MASTER
-              </Button>
-            </Grid>
+            <MaterialButtonComponent
+              handleNewData={handleDialogAddRoom}
+              handleNewText="NEW ROOM MASTER"
+            />
           ) : null}
 
           {/* ==================== Dialog New Room========================= */}
@@ -1792,9 +1744,14 @@ export default function RoomManagement() {
         </Grid>
       </React.Fragment>
       {CRUD.R ? (
-
-<MaterialTableComponent placeHolder="Search by Property, Number, Room Type, Floor, Building,Desc Attribute" title="Room Master" rows={rows} handleNewData={handleDialogAddRoom} handleEditData={handleDialogEditRoom} handleDialogDeleteOpen={handleDialogDeleteRoomOpen}
-   columns={[
+        <MaterialTableComponent
+          placeHolder="Search by Property, Number, Room Type, Floor, Building,Desc Attribute"
+          title="Room Master"
+          rows={rows}
+          handleNewData={handleDialogAddRoom}
+          handleEditData={handleDialogEditRoom}
+          handleDialogDeleteOpen={handleDialogDeleteRoomOpen}
+          columns={[
             {
               title: "Property",
               field: "property",
@@ -1836,143 +1793,9 @@ export default function RoomManagement() {
               headerStyle: headerTableStyle,
             },
           ]}
-   />
-        // <MaterialTable
-        //   localization={{
-        //     body: {
-        //       emptyDataSourceMessage: (
-        //         <>
-        //           {" "}
-        //           <Typography
-        //             variant="h1"
-        //             align="center"
-        //             style={{ fontSize: 25, color: themeState.color }}
-        //           >
-        //             <ErrorOutlineOutlinedIcon
-        //               style={{ fontSize: 170, color: "lightgray" }}
-        //             />
-        //           </Typography>
-        //           <Typography
-        //             align="center"
-        //             variant="h2"
-        //             style={{
-        //               fontWeight: 400,
-        //               fontSize: 30,
-        //               color: "rgb(0 0 0 / 47%)",
-        //               marginBottom: 20,
-        //             }}
-        //           >
-        //             No Data Available
-        //           </Typography>
-        //           <Grid item>
-        //             <Button
-        //               startIcon={<AddOutlinedIcon />}
-        //               size="large"
-        //               variant="contained"
-        //               color="primary"
-        //               // style={{ padding: 13 }}
-        //               // fullWidth
-        //               // onClick={() => setCreateindividual(true)}
-        //               onClick={handleDialogAddRoom}
-        //             >
-        //               New Room Master
-        //             </Button>
-        //           </Grid>
-        //         </>
-        //       ),
-        //     },
-        //   }}
-        //   style={{
-        //     paddingLeft: 30,
-        //     paddingRight: 30,
-        //     color: themeState.color,
-        //     backgroundColor: themeState.paper,
-        //   }}
-        //   title={
-        //     <Grid>
-        //       <Typography
-        //         variant="h6"
-        //         style={{ fontSize: 25, color: themeState.color }}
-        //       >
-        //         Room Master
-        //       </Typography>
-        //     </Grid>
-        //   }
-        //   columns={[
-        //     {
-        //       title: "Property",
-        //       field: "property",
-        //       headerStyle: headerTableStyle,
-        //     },
-        //     {
-        //       title: "#Number",
-        //       field: "number",
-        //       headerStyle: headerTableStyle,
-        //     },
-        //     {
-        //       title: "Room Type",
-        //       field: "roomType",
-        //       headerStyle: headerTableStyle,
-        //     },
-        //     {
-        //       title: "Floor",
-        //       field: "floor",
-        //       headerStyle: headerTableStyle,
-        //     },
-        //     {
-        //       title: "Building",
-        //       field: "building",
-        //       headerStyle: headerTableStyle,
-        //     },
-        //     {
-        //       title: "Desc",
-        //       field: "desc",
-        //       headerStyle: headerTableStyle,
-        //     },
-        //     {
-        //       title: "Status",
-        //       field: "status",
-        //       headerStyle: headerTableStyle,
-        //     },
-        //     {
-        //       title: "Attribute",
-        //       field: "attribute",
-        //       headerStyle: headerTableStyle,
-        //     },
-        //   ]}
-        //   data={rows}
-        //   options={{
-        //     actionsColumnIndex: -1,
-        //     searchFieldAlignment: "left",
-        //     page: page,
-        //     pageSize: rowsPerPage,
-        //     pageSizeOptions: [5, 10, 20, { value: rows.length, label: "All" }],
-        //     searchFieldStyle: headerTableStyle,
-        //     headerStyle: headerTableStyle,
-        //   }}
-        //   actions={[
-        //     {
-        //       icon: "edit",
-        //       iconProps: { style: { color: themeState.color } },
-        //       tooltip: "Edit",
-        //       disabled: !CRUD.U,
-        //       onClick: (event, rowData) => {
-        //         handleDialogEditRoom(event, rowData);
-        //       },
-        //     },
-        //     {
-        //       icon: "delete",
-        //       iconProps: { style: { color: themeState.color } },
-        //       tooltip: "Delete",
-        //       disabled: !CRUD.D,
-        //       onClick: (event, rowData) => {
-        //         handleDialogDeleteRoomOpen(event, rowData);
-        //       },
-        //     },
-        //   ]}
-        //   onChangePage={(page) => console.log("page")}
-        // />
-      ) : null}
+        />
+      ) : 
+      null}
     </Container>
   );
 }

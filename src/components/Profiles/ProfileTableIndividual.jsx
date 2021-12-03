@@ -381,7 +381,7 @@ export const ProfileTableIndividual = (props) => {
             handleData={handleSaveEditData}
           />
         ) : statusProfile === "moredata" ? (
-          <MaterialButtonComponent handleNewData={handleNewData} />
+          <MaterialButtonComponent handleNewData={handleNewData}  handleNewText="Add New Profile" />
         ) : null}
       </Grid>
       {statusProfile === "edit" || statusProfile === "add" ? (

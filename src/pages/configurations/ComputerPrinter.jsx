@@ -40,6 +40,8 @@ import {
 
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import { useHistory } from "react-router-dom";
+import MaterialBreadcrumbsComponent from "../../components/Breadcrumbs/MaterialBreadcrumbsComponent";
+import MaterialButtonComponent from "../../components/Button/MaterialButtonComponent";
 
 // Generate Order Data
 function createData(
@@ -634,87 +636,41 @@ export default function ComputerPrinter() {
       <React.Fragment>
         <Grid container style={{ padding: 20, marginTop: 22 }}>
           <Grid item style={{ flexGrow: 1 }}>
-            <Breadcrumbs
-              separator={
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 20,
-                    color: themeState.color,
-                  }}
-                >
-                  /
-                </Typography>
-              }
-            >
-              <Link
-                color="inherit"
-                href="#"
-                onClick={() => handleComponentState("Configuration")}
-              >
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
-                >
-                  Configuration
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={" "}>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  System Configuration
-                </Typography>
-              </Link>
-              <Typography>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  Device Management
-                </Typography>
-              </Typography>
-              <Typography>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  Computer-printer
-                </Typography>
-              </Typography>
-            </Breadcrumbs>
+          <MaterialBreadcrumbsComponent
+              Datacrumbs={[
+                {
+                  text: "Configuration",
+                  handle: () => handleComponentState("Configuration"),
+                },
+                {
+                  text: "System Configuration",
+                  handle: () => {
+                    "";
+                  },
+                },
+                {
+                  text: "Device Management",
+                  handle: () => {
+                    "";
+                  },
+                },
+                {
+                  text: "Computer-printer",
+                  handle: () => {
+                    "";
+                  },
+                },
+               
+              ]}
+            />
+         
           </Grid>
-          <Grid item>
-            <Button
-              variant="outlined"
-              style={{
-                backgroundColor: mainColor,
-                color: "white",
-                alignItems: "center",
-              }}
-              size="large"
-              onClick={handleDialogAdd}
-            >
-              <AddRoundedIcon />
-              <Typography variant="body1" style={{}}>
-                New Setting
-              </Typography>
-            </Button>
-          </Grid>
+
+          <MaterialButtonComponent
+              handleNewData={handleDialogAdd}
+              handleNewText="New Setting"
+            />
+          
         </Grid>
 
         <div style={{ maxWidth: "100%" }}>
@@ -762,147 +718,7 @@ export default function ComputerPrinter() {
               },
             ]}
           />
-          {/* // <MaterialTable
-          //   localization={{
-          //     body: {
-          //       emptyDataSourceMessage: (
-          //         <>
-          //           {" "}
-          //           <Typography
-          //             variant="h1"
-          //             align="center"
-          //             style={{ fontSize: 25, color: themeState.color }}
-          //           >
-          //             <ErrorOutlineOutlinedIcon
-          //               style={{ fontSize: 170, color: "lightgray" }}
-          //             />
-          //           </Typography>
-          //           <Typography
-          //             align="center"
-          //             variant="h2"
-          //             style={{
-          //               fontWeight: 400,
-          //               fontSize: 30,
-          //               color: "rgb(0 0 0 / 47%)",
-          //               marginBottom: 20,
-          //             }}
-          //           >
-          //             No Data Available
-          //           </Typography>
-          //           <Grid item>
-          //             <Button
-          //               startIcon={<AddOutlinedIcon />}
-          //               size="large"
-          //               variant="contained"
-          //               color="primary"
-          //               onClick={handleDialogAdd}
-          //             >
-          //               New Setting
-          //             </Button>
-          //           </Grid>
-          //         </>
-          //       ),
-          //     },
-          //   }}
-          //   style={{
-          //     paddingLeft: 30,
-          //     paddingRight: 30,
-          //     color: themeState.color,
-          //     backgroundColor: themeState.paper,
-          //   }}
-          //   title={
-          //     <Grid>
-          //       <Typography
-          //         variant="h6"
-          //         noWrap
-          //         style={{ fontSize: 25, color: themeState.color }}
-          //       >
-          //         Computer-printer
-          //       </Typography>
-          //     </Grid>
-          //   }
-          //   columns={[
-          //     {
-          //       title: "Property",
-          //       field: "propertycode",
-          //       headerStyle: headerTableStyle,
-          //     },
-          //     {
-          //       title: "Username",
-          //       field: "username",
-          //       headerStyle: headerTableStyle,
-          //     },
-          //     {
-          //       title: "Computer Code",
-          //       field: "computercode",
-          //       headerStyle: headerTableStyle,
-          //     },
-          //     {
-          //       title: "Action",
-          //       field: "action",
-          //       headerStyle: headerTableStyle,
-          //     },
-          //     {
-          //       title: "Device Code",
-          //       field: "devicecode",
-          //       headerStyle: headerTableStyle,
-          //     },
-          //     {
-          //       title: "Tray",
-          //       field: "tray",
-          //       headerStyle: headerTableStyle,
-          //     },
-          //     {
-          //       title: "Remark",
-          //       field: "remark",
-          //       headerStyle: headerTableStyle,
-          //     },
-          //     {
-          //       title: "Special Strings",
-          //       field: "specialstrings",
-          //       headerStyle: headerTableStyle,
-          //     },
-          //   ]}
-          //   data={rows}
-          //   options={{
-          //     actionsColumnIndex: -1,
-          //     search: true,
-          //     searchFieldAlignment: "left",
-          //     page: page,
-          //     pageSize: rowsPerPage,
-          //     pageSizeOptions: [
-          //       5,
-          //       10,
-          //       20,
-          //       { value: rows.length, label: "All" },
-          //     ],
-          //     searchFieldStyle: headerTableStyle,
-          //     headerStyle: headerTableStyle,
-          //   }}
-          //   actions={[
-          //     {
-          //       icon: "edit",
-          //       iconProps: { style: { color: themeState.color } },
-          //       tooltip: "Edit",
-          //       onClick: (event, rowData) => {
-          //         handleDialogEdit(rowData);
-          //       },
-          //     },
-          //     {
-          //       icon: "delete",
-          //       iconProps: { style: { color: themeState.color } },
-          //       tooltip: "Delete",
-          //       onClick: (event, rowData) => {
-          //         handleDialogDeleteOpen(
-          //           rowData.id,
-          //           rowData.computercode,
-          //           rowData.devicecode
-          //         );
-          //       },
-          //     },
-          //   ]}
-          //   onChangePage={(page) => console.log("page")}
-          // /> */}
+         
         </div>
 
         {/* ==================== Dialog New Device========================= */}

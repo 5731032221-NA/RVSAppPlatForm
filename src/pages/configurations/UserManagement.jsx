@@ -55,6 +55,8 @@ import {
 import { listRole } from "../../services/roleManagement.service";
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
 import MaterialTableComponent from "../../components/Table/MaterialTableComponent";
+import MaterialBreadcrumbsComponent from "../../components/Breadcrumbs/MaterialBreadcrumbsComponent";
+import MaterialButtonComponent from "../../components/Button/MaterialButtonComponent";
 // import user from "../services/user.service";
 
 // Generate Order Data
@@ -710,19 +712,14 @@ export default function UserManagement() {
     setDialogAddUser(false);
   };
 
-  const handleDialogEditUser = async (
-    rowData
-  ) => {
+  const handleDialogEditUser = async (rowData) => {
+    let username = rowData.userID;
+    let firstname = rowData.firstname;
+    let lastname = rowData.lastname;
+    let position = rowData.position;
+    let status = rowData.status;
+    let adaccount = rowData.adaccount;
 
-  let  username = rowData.userID;
-  let  firstname = rowData.firstname;
-  let  lastname = rowData.lastname;
-  let  position = rowData.position;
-  let  status = rowData.status;
-  let adaccount =rowData.adaccount;
-                      
-                   
-                      
     // const databyid = await getUserByID(sessionStorage.getItem("auth"), id);
     // setEditFirstName(databyid.content[databyid.content.length - 1].firstname);
     // setEditLastName(databyid.content[databyid.content.length - 1].lastname);
@@ -2090,343 +2087,121 @@ export default function UserManagement() {
       <React.Fragment>
         <Grid container style={{ padding: 20 }}>
           <Grid item style={{ flexGrow: 1 }}>
-            <Breadcrumbs
-              separator={
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 20,
-                    color: themeState.color,
-                  }}
-                >
-                  /
-                </Typography>
-              }
-            >
-              <Link
-                color="inherit"
-                href="#"
-                onClick={() => handleComponentState("Configuration")}
-              >
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 20,
-                    color: mainColor,
-                  }}
-                >
-                  Configuration
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={" "}>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  System Configuration
-                </Typography>
-              </Link>
-              <Typography>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  User Management
-                </Typography>
-              </Typography>
-            </Breadcrumbs>
+            <MaterialBreadcrumbsComponent
+              Datacrumbs={[
+                {
+                  text: "Configuration",
+                  handle: () => handleComponentState("Configuration"),
+                },
+                {
+                  text: "System Configuration",
+                  handle: () => {
+                    "";
+                  },
+                },
+                {
+                  text: "User Management",
+                  handle: () => {
+                    "";
+                  },
+                },
+              ]}
+            />
           </Grid>
           {CRUD.C ? (
-            <Grid item>
-              <Button
-                variant="outlined"
-                style={{
-                  backgroundColor: mainColor,
-                  color: "white",
-                  alignItems: "center",
-                }}
-                size="large"
-                onClick={handleDialogAddUser}
-              >
-                <AddRoundedIcon />
-                <Typography variant="body1" style={{}}>
-                  New User
-                </Typography>
-              </Button>
-            </Grid>
+            <MaterialButtonComponent
+              handleNewData={handleDialogAddUser}
+              handleNewText="New User"
+            />
           ) : null}
         </Grid>
 
         <div style={{ maxWidth: "100%" }}>
           {CRUD.R ? (
-           
-             <MaterialTableComponent placeHolder="Search by Username, Full Name, Position, Roles, Property,AD Account" title="User Management" rows={rows} handleNewData={handleDialogAddUser} handleEditData={handleDialogEditUser} handleDialogDeleteOpen={handleDialogDeleteUserOpen}
-             columns={[
-                  {
-                    title: "Username",
-                    field: "userID",
-                    headerStyle: headerTableStyle,
+            <MaterialTableComponent
+              placeHolder="Search by Username, Full Name, Position, Roles, Property,AD Account"
+              title="User Management"
+              rows={rows}
+              handleNewData={handleDialogAddUser}
+              handleEditData={handleDialogEditUser}
+              handleDialogDeleteOpen={handleDialogDeleteUserOpen}
+              columns={[
+                {
+                  title: "Username",
+                  field: "userID",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "Full Name",
+                  field: "name",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "Position",
+                  field: "position",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "Roles",
+                  field: "roles",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "Property",
+                  field: "property",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  title: "AD Account",
+                  field: "adaccount",
+                  headerStyle: headerTableStyle,
+                },
+                {
+                  render: (rowData) => {
+                    return rowData.status == "Active" ? (
+                      <Button
+                        variant="contained"
+                        style={{
+                          borderRadius: 20,
+                          backgroundColor: mainColor,
+                          color: "white",
+                        }}
+                        onClick={() =>
+                          handleactive(rowData.userID, rowData.status)
+                        }
+                      >
+                        {rowData.status}
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        style={{
+                          borderRadius: 20,
+                          backgroundColor: "#DEDFE0",
+                          color: "black",
+                        }}
+                        onClick={() =>
+                          handleactive(rowData.userID, rowData.status)
+                        }
+                      >
+                        {rowData.status}
+                      </Button>
+                    );
                   },
-                  {
-                    title: "Full Name",
-                    field: "name",
-                    headerStyle: headerTableStyle,
+                  cellStyle: { textAlign: "center" },
+                  headerStyle: {
+                    textAlign: "center",
+                    paddingLeft: 37,
+                    backgroundColor: themeState.paper,
+                    color: themeState.color,
                   },
-                  {
-                    title: "Position",
-                    field: "position",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "Roles",
-                    field: "roles",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "Property",
-                    field: "property",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    title: "AD Account",
-                    field: "adaccount",
-                    headerStyle: headerTableStyle,
-                  },
-                  {
-                    render: (rowData) => {
-                      return rowData.status == "Active" ? (
-                        <Button
-                          variant="contained"
-                          style={{
-                            borderRadius: 20,
-                            backgroundColor: mainColor,
-                            color: "white",
-                          }}
-                          onClick={() =>
-                            handleactive(rowData.userID, rowData.status)
-                          }
-                        >
-                          {rowData.status}
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="contained"
-                          style={{
-                            borderRadius: 20,
-                            backgroundColor: "#DEDFE0",
-                            color: "black",
-                          }}
-                          onClick={() =>
-                            handleactive(rowData.userID, rowData.status)
-                          }
-                        >
-                          {rowData.status}
-                        </Button>
-                      );
-                    },
-                    cellStyle: { textAlign: "center" },
-                    headerStyle: {
-                      textAlign: "center",
-                      paddingLeft: 37,
-                      backgroundColor: themeState.paper,
-                      color: themeState.color,
-                    },
-                    title: "Status",
-                    field: "status",
-                  },
-                ]}/>
-            // <MaterialTable
-            //   localization={{
-            //     body: {
-            //       emptyDataSourceMessage: (
-            //         <>
-            //           {" "}
-            //           <Typography
-            //             variant="h1"
-            //             align="center"
-            //             style={{ fontSize: 25, color: themeState.color }}
-            //           >
-            //             <ErrorOutlineOutlinedIcon
-            //               style={{ fontSize: 170, color: "lightgray" }}
-            //             />
-            //           </Typography>
-            //           <Typography
-            //             align="center"
-            //             variant="h2"
-            //             style={{
-            //               fontWeight: 400,
-            //               fontSize: 30,
-            //               color: "rgb(0 0 0 / 47%)",
-            //               marginBottom: 20,
-            //             }}
-            //           >
-            //             No Data Available
-            //           </Typography>
-            //           <Grid item>
-            //             <Button
-            //               startIcon={<AddOutlinedIcon />}
-            //               size="large"
-            //               variant="contained"
-            //               color="primary"
-            //               onClick={handleDialogAddUser}
-            //             >
-            //               New User
-            //             </Button>
-            //           </Grid>
-            //         </>
-            //       ),
-            //     },
-            //   }}
-            //   style={{
-            //     paddingLeft: 30,
-            //     paddingRight: 30,
-            //     color: themeState.color,
-            //     backgroundColor: themeState.paper,
-            //   }}
-            //   title={
-            //     <Grid>
-            //       <Typography variant="h6" noWrap style={{ fontSize: 25 }}>
-            //         User Management
-            //       </Typography>
-            //     </Grid>
-            //   }
-            //   columns={[
-            //     {
-            //       title: "Username",
-            //       field: "userID",
-            //       headerStyle: headerTableStyle,
-            //     },
-            //     {
-            //       title: "Full Name",
-            //       field: "name",
-            //       headerStyle: headerTableStyle,
-            //     },
-            //     {
-            //       title: "Position",
-            //       field: "position",
-            //       headerStyle: headerTableStyle,
-            //     },
-            //     {
-            //       title: "Roles",
-            //       field: "roles",
-            //       headerStyle: headerTableStyle,
-            //     },
-            //     {
-            //       title: "Property",
-            //       field: "property",
-            //       headerStyle: headerTableStyle,
-            //     },
-            //     {
-            //       title: "AD Account",
-            //       field: "adaccount",
-            //       headerStyle: headerTableStyle,
-            //     },
-            //     {
-            //       render: (rowData) => {
-            //         return rowData.status == "Active" ? (
-            //           <Button
-            //             variant="contained"
-            //             style={{
-            //               borderRadius: 20,
-            //               backgroundColor: mainColor,
-            //               color: "white",
-            //             }}
-            //             onClick={() =>
-            //               handleactive(rowData.userID, rowData.status)
-            //             }
-            //           >
-            //             {rowData.status}
-            //           </Button>
-            //         ) : (
-            //           <Button
-            //             variant="contained"
-            //             style={{
-            //               borderRadius: 20,
-            //               backgroundColor: "#DEDFE0",
-            //               color: "black",
-            //             }}
-            //             onClick={() =>
-            //               handleactive(rowData.userID, rowData.status)
-            //             }
-            //           >
-            //             {rowData.status}
-            //           </Button>
-            //         );
-            //       },
-            //       cellStyle: { textAlign: "center" },
-            //       headerStyle: {
-            //         textAlign: "center",
-            //         paddingLeft: 37,
-            //         backgroundColor: themeState.paper,
-            //         color: themeState.color,
-            //       },
-            //       title: "Status",
-            //       field: "status",
-            //     },
-            //   ]}
-            //   data={rows}
-            //   options={{
-            //     actionsColumnIndex: -1,
-            //     searchFieldAlignment: "left",
-            //     page: page,
-            //     pageSize: rowsPerPage,
-            //     pageSizeOptions: [
-            //       5,
-            //       10,
-            //       20,
-            //       { value: rows.length, label: "All" },
-            //     ],
-            //     headerStyle: headerTableStyle,
-            //     searchFieldStyle: {
-            //       backgroundColor: themeState.paper,
-            //       color: themeState.color,
-            //       borderBottomColor: themeState.color,
-            //     },
-            //   }}
-            //   actions={[
-            //     {
-            //       icon: "edit",
-            //       iconProps: { style: { color: themeState.color } },
-            //       tooltip: "Edit",
-            //       disabled: !CRUD.U,
-            //       onClick: (event, rowData) => {
-            //         handleDialogEditUser(
-            //           rowData.userID,
-            //           rowData.firstname,
-            //           rowData.lastname,
-            //           rowData.position,
-            //           rowData.status,
-            //           rowData.adaccount
-            //         );
-            //       },
-            //     },
-            //     {
-            //       icon: "delete",
-            //       iconProps: { style: { color: themeState.color } },
-            //       tooltip: "Delete",
-            //       disabled: !CRUD.D,
-            //       onClick: (event, rowData) => {
-            //         handleDialogDeleteUserOpen(
-            //           rowData.userID,
-            //           rowData.firstname,
-            //           rowData.lastname
-            //         );
-            //       },
-            //     },
-            //   ]}
-            //   onChangePage={(page) => console.log("page")}
-            // />
-          ) : null}
+                  title: "Status",
+                  field: "status",
+                },
+              ]}
+            />
+          ) : 
+          null}
         </div>
 
         {/* ==================== Dialog New User========================= */}

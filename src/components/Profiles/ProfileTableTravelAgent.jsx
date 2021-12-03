@@ -328,6 +328,7 @@ export const ProfileTableCompany = (props) => {
 
           <MaterialButtonComponent
           handleNewData={handleNewData}
+          handleNewText="Add New Profile"
         />
        
         ) : null}

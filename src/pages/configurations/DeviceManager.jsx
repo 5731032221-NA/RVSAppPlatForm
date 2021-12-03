@@ -30,6 +30,8 @@ import {
   deleteHardware,
   updateHardware,
 } from "../../services/device.service";
+import MaterialBreadcrumbsComponent from "../../components/Breadcrumbs/MaterialBreadcrumbsComponent";
+import MaterialButtonComponent from "../../components/Button/MaterialButtonComponent";
 // from "../services/roleManagement.service";
 
 // Generate Order Data
@@ -404,89 +406,37 @@ export default function DeviceManager() {
   return (
     <Container maxWidth="xl" style={themeState}>
       <React.Fragment>
-        <Grid container style={{ padding: 20 }}>
+        <Grid container style={{ padding: 20, marginTop: 22, }}>
           <Grid item style={{ flexGrow: 1 }}>
-            <Breadcrumbs
-              separator={
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 20,
-                    color: themeState.color,
-                  }}
-                >
-                  /
-                </Typography>
-              }
-            >
-              <Link
-                color="inherit"
-                href="#"
-                onClick={() => handleComponentState("Configuration")}
-              >
-                <Typography
-                  variant="h6"
-                  style={{ marginBottom: 15, fontSize: 20, color: mainColor }}
-                >
-                  Configuration
-                </Typography>
-              </Link>
-              <Link color="inherit" href="#" onClick={" "}>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  System Configuration
-                </Typography>
-              </Link>
-              <Typography>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  Device Management
-                </Typography>
-              </Typography>
-              <Typography>
-                <Typography
-                  variant="h6"
-                  style={{
-                    marginBottom: 15,
-                    fontSize: 14,
-                    color: themeState.color,
-                  }}
-                >
-                  Device Manager
-                </Typography>
-              </Typography>
-            </Breadcrumbs>
+         
+          <MaterialBreadcrumbsComponent
+              Datacrumbs={[
+                {
+                  text: "Configuration",
+                  handle: () => handleComponentState("Configuration"),
+                },
+                {
+                  text: "System Configuration",
+                  handle: () => {
+                    "";
+                  },
+                },
+                {
+                  text: "Device Management",
+                  handle: () => {
+                    "";
+                  },
+                },
+              ]}
+            />
+           
           </Grid>
-          <Grid item>
-            <Button
-              variant="outlined"
-              style={{
-                backgroundColor: mainColor,
-                color: "white",
-                alignItems: "center",
-              }}
-              size="large"
-              onClick={handleDialogAdd}
-            >
-              <AddRoundedIcon />
-              <Typography variant="body1" style={{}}>
-                New Device
-              </Typography>
-            </Button>
-          </Grid>
+
+          <MaterialButtonComponent
+              handleNewData={handleDialogAdd}
+              handleNewText="New Device"
+            />
+        
         </Grid>
 
         <div style={{ maxWidth: "100%" }}>
@@ -520,132 +470,7 @@ export default function DeviceManager() {
             },
           ]}
           />
-          {/* <MaterialTable
-            localization={{
-              body: {
-                emptyDataSourceMessage: (
-                  <>
-                    {" "}
-                    <Typography
-                      variant="h1"
-                      align="center"
-                      style={{ fontSize: 25, color: themeState.color }}
-                    >
-                      <ErrorOutlineOutlinedIcon
-                        style={{ fontSize: 170, color: "lightgray" }}
-                      />
-                    </Typography>
-                    <Typography
-                      align="center"
-                      variant="h2"
-                      style={{
-                        fontWeight: 400,
-                        fontSize: 30,
-                        color: "rgb(0 0 0 / 47%)",
-                        marginBottom: 20,
-                      }}
-                    >
-                      No Data Available
-                    </Typography>
-                    <Grid item>
-                      <Button
-                        startIcon={<AddOutlinedIcon />}
-                        size="large"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleDialogAdd}
-                      >
-                        New Device
-                      </Button>
-                    </Grid>
-                  </>
-                ),
-              },
-            }}
-            style={{
-              paddingLeft: 30,
-              paddingRight: 30,
-              color: themeState.color,
-              backgroundColor: themeState.paper,
-            }}
-            title={
-              <Grid>
-                <Typography
-                  variant="h6"
-                  noWrap
-                  style={{ fontSize: 25, color: themeState.color }}
-                >
-                  Device Manager
-                </Typography>
-              </Grid>
-            }
-            columns={[
-              {
-                title: "Device Code",
-                field: "code",
-                headerStyle: headerTableStyle,
-              },
-              {
-                title: "Type",
-                field: "type",
-                headerStyle: headerTableStyle,
-              },
-              {
-                title: "Device Name",
-                field: "name",
-                headerStyle: headerTableStyle,
-              },
-              {
-                title: "MAC Address",
-                field: "macaddress",
-                headerStyle: headerTableStyle,
-              },
-              {
-                title: "IP Address",
-                field: "ip",
-                headerStyle: headerTableStyle,
-              },
-            ]}
-            data={rows}
-            options={{
-              actionsColumnIndex: -1,
-              searchFieldAlignment: "left",
-              page: page,
-              pageSize: rowsPerPage,
-              pageSizeOptions: [
-                5,
-                10,
-                20,
-                { value: rows.length, label: "All" },
-              ],
-              searchFieldStyle: headerTableStyle,
-              headerStyle: headerTableStyle,
-            }}
-            actions={[
-              {
-                icon: "edit",
-                iconProps: { style: { color: themeState.color } },
-                tooltip: "Edit",
-                onClick: (event, rowData) => {
-                  handleDialogEdit(rowData);
-                },
-              },
-              {
-                icon: "delete",
-                iconProps: { style: { color: themeState.color } },
-                tooltip: "Delete",
-                onClick: (event, rowData) => {
-                  handleDialogDeleteOpen(
-                    rowData.id,
-                    rowData.code,
-                    rowData.type,
-                    rowData.name
-                  );
-                },
-              },
-            ]}
-            onChangePage={(page) => console.log("page")}
-          /> */}
+         
         </div>
 
         {/* ==================== Dialog New Device========================= */}
