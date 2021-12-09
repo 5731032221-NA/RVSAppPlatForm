@@ -462,71 +462,73 @@ export const ProfileCompany = (props) => {
         sessionStorage.getItem("auth"),
         props.editdata[0].id
       );
-      console.log("getCommunications.contents", getCommunications.contents);
+      console.log("getCommunications.contents", getCommunications.content);
       let count = 1;
-      getCommunications.contents[0].forEach((element) => {
-        const commuid1 = count;
-        const commuid2 = count + 1;
-        if (element.communication == "email") {
-          getCommunicationsDatas.email = element.value;
-        } else if (element.communication == "mobile") {
-          getCommunicationsDatas.mobile = element.value;
-        } else {
-          setCommunicationDatas((prev) => ({
-            ...prev,
-            [count]: element.communication,
-            [count + 1]: element.value,
-          }));
-          getComunication.push({
-            id: commuid1,
-            label: "Choose a communication",
-            xl: 3,
-            md: 3,
-            xs: 6,
-            select: {
-              status: "option",
-              data: optionCommunication.map((option) => (
-                <option
-                  style={headerTableStyle}
-                  key={option.value}
-                  value={option.value}
-                  selected={option.value == element.communication}
-                  // defaultValue={element.communication}
-                >
-                  {option.label}
-                </option>
-              )),
-            },
-            handle: (e) =>
-              setCommunicationDatas((prev) => ({
-                ...prev,
-                [commuid1]: e.target.value,
-              })),
-          });
-          getComunication.push({
-            id: commuid2,
-            label: "communication",
-            xl: 9,
-            md: 9,
-            xs: 6,
-            select: {
-              status: "fillnolabel",
-              data: "",
-              defaultvalue: element.value,
-            },
-            handle: (e) =>
-              setCommunicationDatas((prev) => ({
-                ...prev,
-                [commuid2]: e.target.value,
-              })),
-          });
-          count = count + 2;
-        }
-      });
+      if(getCommunications.content.length > 0){
+        getCommunications.content[0].forEach((element) => {
+          const commuid1 = count;
+          const commuid2 = count + 1;
+          if (element.communication == "email") {
+            getCommunicationsDatas.email = element.value;
+          } else if (element.communication == "mobile") {
+            getCommunicationsDatas.mobile = element.value;
+          } else {
+            setCommunicationDatas((prev) => ({
+              ...prev,
+              [count]: element.communication,
+              [count + 1]: element.value,
+            }));
+            getComunication.push({
+              id: commuid1,
+              label: "Choose a communication",
+              xl: 3,
+              md: 3,
+              xs: 6,
+              select: {
+                status: "option",
+                data: optionCommunication.map((option) => (
+                  <option
+                    style={headerTableStyle}
+                    key={option.value}
+                    value={option.value}
+                    selected={option.value == element.communication}
+                    // defaultValue={element.communication}
+                  >
+                    {option.label}
+                  </option>
+                )),
+              },
+              handle: (e) =>
+                setCommunicationDatas((prev) => ({
+                  ...prev,
+                  [commuid1]: e.target.value,
+                })),
+            });
+            getComunication.push({
+              id: commuid2,
+              label: "communication",
+              xl: 9,
+              md: 9,
+              xs: 6,
+              select: {
+                status: "fillnolabel",
+                data: "",
+                defaultvalue: element.value,
+              },
+              handle: (e) =>
+                setCommunicationDatas((prev) => ({
+                  ...prev,
+                  [commuid2]: e.target.value,
+                })),
+            });
+            count = count + 2;
+          }
+        });
+      }
       let relationid = 1;
-      console.log(getRelations.contents[0]);
-
-      getRelations.contents[0].forEach((element) => {
+      console.log(getRelations.content[0]);
+      if(getRelations.content.length > 0){
+      getRelations.content[0].forEach((element) => {
         const relaid1 = relationid;
         const relaid2 = relationid + 1;
         const relaid3 = relationid + 2;
@@ -597,6 +599,7 @@ export const ProfileCompany = (props) => {
         });
         relationid = relationid + 3;
       });
+      }
       console.log("getRelation", getRelation);
     } else {
       let count = 3;

@@ -49,6 +49,7 @@ export default function MaterialTableComponent({
 
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up("sm"));
+  const mdUp = useMediaQuery(theme.breakpoints.up("md"));
   
   let customStyle = {
     padding: theme.spacing(0, 0, 0, 0),
@@ -57,11 +58,20 @@ export default function MaterialTableComponent({
     transition: theme.transitions.create("width"),
     width: "100%"
   };
+  // if (mdUp) {
+
+  //   customStyle = {
+  //     ...customStyle,
+  //     width: "20ch",
+  //     color: "red",
+  //     }
+  //   };
   
   if (smUp) {
+
     customStyle = {
       ...customStyle,
-      width: "54ch",
+      width: "40ch",
       // color: "red",
       }
     };

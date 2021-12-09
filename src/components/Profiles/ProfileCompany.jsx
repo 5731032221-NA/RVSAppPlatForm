@@ -462,9 +462,11 @@ export const ProfileCompany = (props) => {
         sessionStorage.getItem("auth"),
         props.editdata[0].id
       );
-      console.log("getCommunications.contents", getCommunications.contents);
+      console.log("getCommunications::::::",getCommunications);
+      console.log("getCommunications.contents", getCommunications.content);
       let count = 1;
-      getCommunications.contents[0].forEach((element) => {
+      if(getCommunications.content.length > 0){
+      getCommunications.content[0].forEach((element) => {
         const commuid1 = count;
         const commuid2 = count + 1;
         if (element.communication == "email") {
@@ -523,10 +525,11 @@ export const ProfileCompany = (props) => {
           count = count + 2;
         }
       });
+      }
       let relationid = 1;
-      console.log(getRelations.contents[0]);
-
-      getRelations.contents[0].forEach((element) => {
+      console.log(getRelations.content[0]);
+     if(getRelations.content.length > 0){
+      getRelations.content[0].forEach((element) => {
         const relaid1 = relationid;
         const relaid2 = relationid + 1;
         const relaid3 = relationid + 2;
@@ -597,6 +600,7 @@ export const ProfileCompany = (props) => {
         });
         relationid = relationid + 3;
       });
+    }
       console.log("getRelation", getRelation);
     } else {
       let count = 3;
