@@ -220,6 +220,7 @@ export default function Login({ setToken }) {
   const [adSignin, setAdSignin] = useState(false);
 
   const handleSubmit = async (e) => {
+    console.log("click signin");
     setErrorCookie(false);
     e.preventDefault();
     if (username === null || username === "") {

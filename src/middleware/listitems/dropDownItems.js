@@ -26,7 +26,6 @@ import translate_th from "../../static/lang/th.json";
 import translate_en from "../../static/lang/en.json";
 import { indexTab } from "../action";
 
-
 export default function MainListItems() {
   const history = useHistory();
   const { store } = useContext(ReactReduxContext);
@@ -196,6 +195,11 @@ export default function MainListItems() {
     setOpenRS(!openRS);
     setSelectedIndex(8);
   }
+  function handleOpenReports(event, inx) {
+    console.log("report Click");
+    handleComponentState("reports");
+    setSelectedIndex(inx);
+  }
   function handleOpenConfig() {
     const ind = 9;
     dispatch(indexTab(ind));
@@ -343,7 +347,6 @@ export default function MainListItems() {
       comps.includes("*ALL") ? (
         <List style={{ marginTop: -15 }}>
           <ListItem
-            button
             button
             selected={selectedIndex === 3}
             onClick={handleOpenCashier}
@@ -618,7 +621,6 @@ export default function MainListItems() {
         <List style={{ marginTop: -15 }}>
           <ListItem
             button
-            button
             selected={selectedIndex === 8}
             onClick={handleOpenRS}
           >
@@ -637,7 +639,7 @@ export default function MainListItems() {
               <ListItem
                 button
                 selected={selectedIndex === 81}
-                onClick={(event) => handleListItemClick(event, 81)}
+                onClick={(event) => handleOpenReports(event, 81)}
               >
                 <ListItemText
                   primaryTypographyProps={{ style: setFontSize }}

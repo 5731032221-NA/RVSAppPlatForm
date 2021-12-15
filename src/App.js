@@ -26,7 +26,7 @@ import RoomManagement from "./pages/configurations/RoomManagement";
 import ProfileTableCompany from "./components/Profiles/ProfileTableCompany";
 import ProfileTableTravelAgent from "./components/Profiles/ProfileTableTravelAgent";
 import ProfileTableIndividual from "./components/Profiles/ProfileTableIndividual";
-
+import Reports from "./pages/Reports";
 import propertyPermission from "./services/propertypermission.service";
 
 function App() {
@@ -113,6 +113,7 @@ function App() {
                 path={`/profilepagecompany`}
                 component={ProfileTableCompany}
               />
+              <Route path={`/reports`} component={Reports} />
             </Main>
           </Switch>
         </BrowserRouter>
