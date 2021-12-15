@@ -3,27 +3,12 @@ import { connect, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Switch from "@material-ui/core/Switch";
-import DateFnsUtils from "@date-io/date-fns";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import MaterialTable, { MTableToolbar } from "material-table";
 import Typography from "@material-ui/core/Typography";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
-import MaterialTable from "material-table";
-import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 
 import * as actions from "../middleware/action";
-import MaterialTableComponent from "../components/Table/MaterialTableComponent";
-import MaterialButtonComponent from "../components/Button/MaterialButtonComponent";
 import { getReports } from "../services/reports.service";
 
 const useStyles = makeStyles((theme) => ({
@@ -74,30 +59,6 @@ const useStyles = makeStyles((theme) => ({
     },
   }),
 }));
-
-function createData(
-  id,
-  username,
-  computercode,
-  action,
-  devicecode,
-  tray,
-  remark,
-  specialstrings,
-  propertycode
-) {
-  return {
-    id,
-    username,
-    computercode,
-    action,
-    devicecode,
-    tray,
-    remark,
-    specialstrings,
-    propertycode,
-  };
-}
 
 export const Reports = (props) => {
   const [themeState, setThemeState] = React.useState({
@@ -165,7 +126,8 @@ export const Reports = (props) => {
         const getTitleTable = [];
         Object.values(reportData.content[0].reportjson.titles).forEach(
           (element) => {
-            getTitleTable.push(element.title);
+            getTitleTable.push(element);
+            console.log("element ++", element);
           }
         );
         setTitleTable(getTitleTable);
@@ -200,220 +162,33 @@ export const Reports = (props) => {
         getRowsTable.push(newReportsData.grand_total);
         setRows(getRowsTable);
         console.log("getRowsTable ##", getRowsTable);
-
-        // var getRowsTable = [];
-        // const newRowsTable = newReportsData.details.sub[0];
-        // console.log("getRowsTable == >", typeof newRowsTable, newRowsTable);
-        // Object.entries(newRowsTable).map((entry) => {
-        //   const [key, value] = entry;
-        //   //   console.log("entry entry", entry);
-        //   if (key === "sub") {
-        //     Object.entries(value).map((entry) => {
-        //       const [key, value] = entry;
-        //       //   console.log("entry entry", entry);
-        //       Object.entries(value).map((entry) => {
-        //         const [key, value] = entry;
-        //         // console.log("entry entry", entry);
-        //         if (key === "detail") {
-        //           //   console.log("entry entry|| ", entry);
-        //           Object.entries(value).map((entry) => {
-        //             const [key, value] = entry;
-        //             getRowsTable.push(value);
-        //           });
-        //         } else if (key === "total") {
-        //           getRowsTable.push(value);
-        //         }
-        //       });
-        //     });
-        //   } else if (key === "total") {
-        //     getRowsTable.push(value);
-        //   }
-        // });
-        // // console.log("grand", newReportsData.grand_total);
-        // getRowsTable.push(newReportsData.grand_total);
-        // setRows(getRowsTable);
-        // console.log("getRowsTable ##", getRowsTable);
-
-        //   if (key === "sub") {
-        //     Object.entries(value).map((entry) => {
-        //       const [key, value] = entry;
-        //       //   console.log("entry entry|| ", entry);
-        //       if (key === "detail") {
-        //         // console.log("entry entry|| ", entry);
-        //       } else if (key === "total") {
-        //         getRowsTable.push(value);
-        //       }
-        //     });
-        //     // console.log("entry entry|| ", entry);
-        //   } else if (key === "total") {
-        //     getRowsTable.push(value);
-        //   }
-
-        // // var somedata = "some thing testt";
-        // var getRowsTable = Object.entries(newReportsData.details).map(
-        //   (entry) => {
-        //     const [key, value] = entry;
-        //     console.log("entry", value);
-        //     Object.entries(value).map((entrySub1) => {
-        //       const [key, value] = entrySub1;
-        //       Object.entries(value).map((entrySub2) => {
-        //         const [key, value] = entrySub2;
-        //         if (key == "total") {
-        //           //   console.log("mainTotal1####", value);
-        //           var mainTotal1 = value;
-        //         } else {
-        //           Object.entries(value).map((entrySub3) => {
-        //             const [key, value] = entrySub3;
-        //             Object.entries(value).map((entrySub4) => {
-        //               const [key, value] = entrySub4;
-        //               if (key == "total") {
-        //                 var subTotal = value;
-        //                 console.log("subTotal ++++", entrySub4);
-        //               } else {
-        //                 const entrySub55 = Object.entries(value).map(
-        //                   (entrySub5) => {
-        //                     const [key, value] = entrySub5;
-        //                     var returnData = value;
-        //                     console.log("entrySub5 --->", returnData);
-        //                     console.log("mainTotal1 ||--->", mainTotal1);
-        //                     // console.log("entrySub5 Return||", returnData);
-        //                     // return returnData;
-        //                   }
-        //                 );
-        //               }
-        //             });
-        //           });
-        //         }
-        //       });
-        //     });
-        //   }
-        // );
-        // console.log("getRowsTable", getRowsTable);
-        // const getRowsTable = [];
-        // var getRowsTable = Object.entries(newReportsData.details).map(
-        //   (entry) => {
-        //     const [key, value] = entry;
-        //     Object.entries(value).forEach((entrySub1) => {
-        //       const [key, value] = entrySub1;
-        //       Object.entries(value).forEach((entrySub2) => {
-        //         const [key, value] = entrySub2;
-        //         if (key == "total") {
-        //           console.log("mainTotal1####", value);
-        //           // var mainTotal1 = value;
-        //           // console.log("mainTotal1out;;;", mainTotal1);
-        //         } else {
-        //           Object.entries(value).forEach((entrySub3) => {
-        //             const [key, value] = entrySub3;
-        //             Object.entries(value).forEach((entrySub4) => {
-        //               const [key, value] = entrySub4;
-        //               if (key == "total") {
-        //                 console.log("subTotal ++++", entrySub4);
-        //               } else {
-        //                 const entrySub55 = Object.entries(value).map(
-        //                   (entrySub5) => {
-        //                     const [key, value] = entrySub5;
-        //                     //   const returnData = [];
-        //                     const returnData = value;
-        //                     // console.log("entrySub5 --->", entrySub5);
-        //                     console.log("entrySub5 Return||", returnData);
-        //                     return returnData;
-        //                   }
-        //                 );
-        //                 console.log("entrySub5 Return//", entrySub55);
-        //               }
-        //             });
-        //           });
-        //         }
-        //       });
-        //     });
-        //   }
-        // );
-        // const getRowsTable = [];
-        // Object.entries(newReportsData).forEach((entry) => {
-        //   const [key, value] = entry;
-        //   if (key === "details") {
-        //     Object.entries(value.sub).forEach((entrySub1) => {
-        //       const [key, value] = entrySub1;
-        //       //   console.log("main Catagory", key, "=====", value);
-        //       Object.entries(value.sub).forEach((entrySub2) => {
-        //         const [key, value] = entrySub2;
-        //         // console.log("sub Catagory", key, "=====", value);
-        //         Object.entries(value).forEach((entrySub3) => {
-        //           const [key, value] = entrySub3;
-        //           if (key === "detail") {
-        //             value.forEach((entrySub4) => {
-        //               console.log("entrySub4", entrySub4);
-        //             });
-        //           } else {
-        //             console.log("Total::", key, value);
-        //           }
-        //         });
-        //       });
-        //     });
-        //   }
-        // });
-
-        //   setRows(reportData.content[0].reportjson);
-
-        // let deconstructData = [];
-        // newReportsData.detail.sub.forEach((element) =>
-        //   console.log("dedata::", element)
-        // );
-        // let deconstructData = [];
-        // reportData.content[0].forEach((element) =>
-        //   // deconstructData.push(
-        //   //     createData(
-        //   //       element.id,
-        //   //       element.username,
-        //   //       element.computercode,
-        //   //       element.action,
-        //   //       element.devicecode,
-        //   //       element.tray,
-        //   //       element.remark,
-        //   //       element.specialstrings,
-        //   //       element.propertycode
-        //   //     )
-        //   //   )
-        // );
       }
     }
     getReportsData();
   }, []);
 
-  const numbers = [0, 1, 2, 3, 4, 5];
-
   const NewTitle = titleTable.map((title) => {
     return (
       <div>
-        <Grid container justifyContent="center" maxWidth="xl">
+        <Grid container justifyContent="center">
           <Typography
             variant="h6"
             noWrap
-            fullWidth
-            style={{ fontSize: 16, color: themeState.color }}
+            style={{
+              fontSize: parseInt(title.style.fontSize),
+              color: themeState.color,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              fontWeight: title.style.fontWeight,
+            }}
           >
-            {title}
+            {title.title}
           </Typography>
         </Grid>
       </div>
     );
   });
-
-  //   titleTable.map((title) => {
-  //     return (
-  //      <div>
-  //           <Grid container justifyContent="center">
-  //         <Typography
-  //           variant="h6"
-  //           noWrap
-  //           style={{ fontSize: 16, color: themeState.color }}
-  //         >
-  //           {title}
-  //         </Typography>
-  //       </Grid>
-  //      </div>
-  //     );
-  //   })
 
   return (
     <Container
@@ -425,7 +200,6 @@ export const Reports = (props) => {
         backgroundColor: themeState.background,
       }}
     >
-      {NewTitle}
       <MaterialTable
         localization={{
           body: {
@@ -452,7 +226,7 @@ export const Reports = (props) => {
                 >
                   No Data Available
                 </Typography>
-                <Grid item>
+                {/* <Grid item>
                   <Button
                     startIcon={<AddOutlinedIcon />}
                     size="large"
@@ -462,12 +236,9 @@ export const Reports = (props) => {
                   >
                     New Data
                   </Button>
-                </Grid>
+                </Grid> */}
               </>
             ),
-          },
-          title: {
-            NewTitle,
           },
         }}
         style={{
@@ -477,12 +248,25 @@ export const Reports = (props) => {
           color: themeState.color,
           backgroundColor: themeState.paper,
         }}
+        components={{
+          Toolbar: (props) => (
+            <div
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+              }}
+            >
+              <MTableToolbar {...props} />
+            </div>
+          ),
+        }}
         title={NewTitle}
         columns={reportsData.columns}
         data={rows}
         options={{
+          toolbar: true,
           showTitle: true,
-
           search: false,
           pageSize: 10,
           pageSizeOptions: [10, 20, 30, { value: rows.length, label: "All" }],
