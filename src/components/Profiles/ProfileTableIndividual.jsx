@@ -2,26 +2,26 @@ import React from "react";
 import { connect, useSelector } from "react-redux";
 import { nextComponent } from "../../middleware/action";
 import { makeStyles } from "@material-ui/core/styles";
-import MaterialTable from "material-table";
+// import MaterialTable from "material-table";
 import { blue } from "@material-ui/core/colors";
 import {
   Container,
   Grid,
   Typography,
   Button,
-  Breadcrumbs,
-  Link,
+  // Breadcrumbs,
+  // Link,
 } from "@material-ui/core";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import ClearIcon from "@material-ui/icons/Clear";
-import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
+// import ClearIcon from "@material-ui/icons/Clear";
+// import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
+// import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Box from "@material-ui/core/Box";
+// import Box from "@material-ui/core/Box";
 import ProfileIndividual from "./ProfileIndividual";
 import {
   getIndividualProfile,
@@ -226,8 +226,8 @@ export const ProfileTableIndividual = (props) => {
     );
 
     console.log("rowData", rowData);
-    console.log("individualdata ==", individualdata.content[0]);
-    await setEditData(individualdata.content[0]);
+    console.log("individualdata ==", individualdata.content);
+    await setEditData(individualdata.content);
     await handleDeleteData(
       rowData.nameid,
       rowData.title,
@@ -279,7 +279,7 @@ export const ProfileTableIndividual = (props) => {
     console.log("data", data);
     let _individualData = [];
     if (data.content.length != 0) {
-      data.content[data.content.length - 1].forEach((element) =>
+      data.content.forEach((element) =>
         _individualData.push(
           createData(
             element.nameid,
@@ -317,7 +317,7 @@ export const ProfileTableIndividual = (props) => {
       console.log("data", data);
       let _individualData = [];
       if (data.content.length !== 0) {
-        data.content[data.content.length - 1].forEach((element) =>
+        data.content.forEach((element) =>
           _individualData.push(
             createData(
               element.nameid,
@@ -357,15 +357,18 @@ export const ProfileTableIndividual = (props) => {
     >
       <Grid container style={{ paddingLeft: 25, paddingRight: 25 }}>
         <Grid item xs={6} sm={10} md={10} lg={10} style={{ flexGrow: 1 }}>
-        <MaterialBreadcrumbsComponent 
-          Datacrumbs={[
-            { text: "Profiles",handle: () =>  handleComponentState("profileindividual") },
-            { text: "Individual",handle: () => setStatusProfile("moredata") }
-          
-          ]} 
-          
+          <MaterialBreadcrumbsComponent
+            Datacrumbs={[
+              {
+                text: "Profiles",
+                handle: () => handleComponentState("profileindividual"),
+              },
+              {
+                text: "Individual",
+                handle: () => setStatusProfile("moredata"),
+              },
+            ]}
           />
-          
         </Grid>
 
         {statusProfile === "add" ? (
@@ -381,7 +384,10 @@ export const ProfileTableIndividual = (props) => {
             handleData={handleSaveEditData}
           />
         ) : statusProfile === "moredata" ? (
-          <MaterialButtonComponent handleNewData={handleNewData}  handleNewText="Add New Profile" />
+          <MaterialButtonComponent
+            handleNewData={handleNewData}
+            handleNewText="Add New Profile"
+          />
         ) : null}
       </Grid>
       {statusProfile === "edit" || statusProfile === "add" ? (

@@ -131,7 +131,7 @@ export default function DeviceManager() {
     let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
     let devicedata = [];
     // let i = 0;
-    _data.content[_data.content.length - 1].forEach((element) =>
+    _data.content.forEach((element) =>
       devicedata.push(
         createData(
           element.id,
@@ -158,7 +158,6 @@ export default function DeviceManager() {
   };
 
   const handleDialogDeleteOpen = async (data) => {
-
     setUpdateData({
       code: data.code,
       type: data.type,
@@ -244,7 +243,7 @@ export default function DeviceManager() {
         let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
         let devicedata = [];
         // let i = 0;
-        _data.content[_data.content.length - 1].forEach((element) =>
+        _data.content.forEach((element) =>
           devicedata.push(
             createData(
               element.id,
@@ -277,7 +276,7 @@ export default function DeviceManager() {
       let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
       let devicedata = [];
       // let i = 0;
-      _data.content[_data.content.length - 1].forEach((element) =>
+      _data.content.forEach((element) =>
         devicedata.push(
           createData(
             element.id,
@@ -315,7 +314,7 @@ export default function DeviceManager() {
         let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
         let devicedata = [];
         // let i = 0;
-        _data.content[_data.content.length - 1].forEach((element) =>
+        _data.content.forEach((element) =>
           devicedata.push(
             createData(
               element.id,
@@ -406,10 +405,9 @@ export default function DeviceManager() {
   return (
     <Container maxWidth="xl" style={themeState}>
       <React.Fragment>
-        <Grid container style={{ padding: 20, marginTop: 22, }}>
+        <Grid container style={{ padding: 20, marginTop: 22 }}>
           <Grid item style={{ flexGrow: 1 }}>
-         
-          <MaterialBreadcrumbsComponent
+            <MaterialBreadcrumbsComponent
               Datacrumbs={[
                 {
                   text: "Configuration",
@@ -429,48 +427,50 @@ export default function DeviceManager() {
                 },
               ]}
             />
-           
           </Grid>
 
           <MaterialButtonComponent
-              handleNewData={handleDialogAdd}
-              handleNewText="New Device"
-            />
-        
+            handleNewData={handleDialogAdd}
+            handleNewText="New Device"
+          />
         </Grid>
 
         <div style={{ maxWidth: "100%" }}>
-
-        <MaterialTableComponent placeHolder="Search by Device Code, Type, Device Name, MAC Address,IP Address" title="Device Manager" rows={rows} handleNewData={handleDialogAdd} handleEditData={handleDialogEdit} handleDialogDeleteOpen={handleDialogDeleteOpen}
-           columns={[
-            {
-              title: "Device Code",
-              field: "code",
-              headerStyle: headerTableStyle,
-            },
-            {
-              title: "Type",
-              field: "type",
-              headerStyle: headerTableStyle,
-            },
-            {
-              title: "Device Name",
-              field: "name",
-              headerStyle: headerTableStyle,
-            },
-            {
-              title: "MAC Address",
-              field: "macaddress",
-              headerStyle: headerTableStyle,
-            },
-            {
-              title: "IP Address",
-              field: "ip",
-              headerStyle: headerTableStyle,
-            },
-          ]}
+          <MaterialTableComponent
+            placeHolder="Search by Device Code, Type, Device Name, MAC Address,IP Address"
+            title="Device Manager"
+            rows={rows}
+            handleNewData={handleDialogAdd}
+            handleEditData={handleDialogEdit}
+            handleDialogDeleteOpen={handleDialogDeleteOpen}
+            columns={[
+              {
+                title: "Device Code",
+                field: "code",
+                headerStyle: headerTableStyle,
+              },
+              {
+                title: "Type",
+                field: "type",
+                headerStyle: headerTableStyle,
+              },
+              {
+                title: "Device Name",
+                field: "name",
+                headerStyle: headerTableStyle,
+              },
+              {
+                title: "MAC Address",
+                field: "macaddress",
+                headerStyle: headerTableStyle,
+              },
+              {
+                title: "IP Address",
+                field: "ip",
+                headerStyle: headerTableStyle,
+              },
+            ]}
           />
-         
         </div>
 
         {/* ==================== Dialog New Device========================= */}

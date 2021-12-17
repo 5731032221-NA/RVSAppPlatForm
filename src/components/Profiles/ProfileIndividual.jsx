@@ -440,7 +440,7 @@ export const ProfileIndividual = (props) => {
       pageProperty
     );
     console.log("getConfigData:", getConfigData);
-    let configData = getConfigData.content[getConfigData.content.length - 1];
+    let configData = getConfigData.content;
     let optionTitle = await getList(configData, "PCINDTT");
     // let optionDocumentType = await getList(configData,"");
     let optionGender = await getList(configData, "PCINDGD");
@@ -463,9 +463,9 @@ export const ProfileIndividual = (props) => {
         sessionStorage.getItem("auth"),
         props.editdata.nameid
       );
-      console.log("getCommunications.contents", getCommunications.contents);
+      console.log("getCommunications.content", getCommunications.content);
       let count = 3;
-      getCommunications.contents[0].forEach((element) => {
+      getCommunications.content.forEach((element) => {
         const commuid1 = count;
         const commuid2 = count + 1;
 
@@ -535,9 +535,9 @@ export const ProfileIndividual = (props) => {
       });
 
       let relationid = 1;
-      console.log(getRelations.contents[0]);
+      console.log(getRelations.content);
 
-      getRelations.contents[0].forEach((element) => {
+      getRelations.content.forEach((element) => {
         const relaid1 = relationid;
         const relaid2 = relationid + 1;
         const relaid3 = relationid + 2;

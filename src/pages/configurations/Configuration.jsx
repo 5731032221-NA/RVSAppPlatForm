@@ -376,7 +376,7 @@ export default function Configuration() {
       sessionStorage.getItem("auth"),
       updateProperty
     );
-    setData(configdata.content[configdata.content.length - 1]);
+    setData(configdata.content);
     setProperty((prev) => updateProperty);
   }, [updateProperty]);
 

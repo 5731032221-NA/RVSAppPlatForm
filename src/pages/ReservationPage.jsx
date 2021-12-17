@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
+// import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import { TextField } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import { blue } from "@material-ui/core/colors";
@@ -140,7 +140,8 @@ export const ReservationPage = (props) => {
 
   const reservationRoom = async () => {
     const data = await getReservationRoom(sessionStorage.getItem("auth"));
-    setDataEvent(data.content[0]);
+    // console.log("data", typeof data, data);
+    setDataEvent(data.content);
   };
 
   React.useEffect(() => {
@@ -240,7 +241,7 @@ export const ReservationPage = (props) => {
       const data = await getReservationRoom(sessionStorage.getItem("auth"));
       // console.log("data", data);
       let datedata = [];
-      data.content[data.content.length - 1].forEach((element) =>
+      data.content.forEach((element) =>
         datedata.push({
           id: element.roomno,
           title: element.description,

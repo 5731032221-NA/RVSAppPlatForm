@@ -3,9 +3,9 @@ import { blue } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import { ReactReduxContext, useSelector } from "react-redux";
-import MaterialTable from "material-table";
-import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
-import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
+// import MaterialTable from "material-table";
+// import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+// import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -18,8 +18,8 @@ import {
   Button,
   MenuItem,
   Chip,
-  Breadcrumbs,
-  Link,
+  // Breadcrumbs,
+  // Link,
 } from "@material-ui/core";
 
 import { EDIT_CONFIGSTATE } from "../../middleware/action";
@@ -154,42 +154,46 @@ export default function RoomManagement() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { store } = useContext(ReactReduxContext);
-  React.useEffect(async () => {
-    let userComponentPermission = await getUserComponentPermision(
-      sessionStorage.getItem("auth"),
-      sessionStorage.getItem("username"),
-      "CF-RM"
-    );
-    setCRUD({
-      C: userComponentPermission.content[0].permissioncreate,
-      R: userComponentPermission.content[0].permissionread,
-      U: userComponentPermission.content[0].permissionupdate,
-      D: userComponentPermission.content[0].permissiondelete,
-    });
-    const data = await listRoom(sessionStorage.getItem("auth"));
-    console.log("data", data);
-    let roomdata = [];
-    let i = 0;
-    if (data.content.length != 0) {
-      data.content[data.content.length - 1].forEach((element) =>
-        roomdata.push(
-          createData(
-            element.id,
-            element.propertycode,
-            element.no,
-            element.type,
-            element.floor,
-            element.building,
-            element.description,
-            element.status,
-            element.attribute
+  React.useEffect(() => {
+    async function getData() {
+      // let userComponentPermission = await getUserComponentPermision(
+      //   sessionStorage.getItem("auth"),
+      //   sessionStorage.getItem("username"),
+      //   "CF-RM"
+      // );
+      // console.log("userComponentPermission ||", userComponentPermission);
+      // setCRUD({
+      //   C: userComponentPermission.content[0].permissioncreate,
+      //   R: userComponentPermission.content[0].permissionread,
+      //   U: userComponentPermission.content[0].permissionupdate,
+      //   D: userComponentPermission.content[0].permissiondelete,
+      // });
+      const data = await listRoom(sessionStorage.getItem("auth"));
+      console.log("data ==>", data);
+      let roomdata = [];
+      let i = 0;
+      if (data.content.length != 0) {
+        data.content.forEach((element) =>
+          roomdata.push(
+            createData(
+              element.id,
+              element.propertycode,
+              element.no,
+              element.type,
+              element.floor,
+              element.building,
+              element.description,
+              element.status,
+              element.attribute
+            )
           )
-        )
-      );
+        );
+      }
+      console.log("a", roomdata);
+      setRows(roomdata);
+      updatePageData(roomdata, page, rowsPerPage);
     }
-    console.log("a", roomdata);
-    setRows(roomdata);
-    updatePageData(roomdata, page, rowsPerPage);
+    getData();
   }, []);
 
   const updatePageData = async (rowsdata, _page, _rowsPerPage) => {
@@ -229,6 +233,7 @@ export default function RoomManagement() {
       sessionStorage.getItem("auth"),
       event.target.value
     );
+    console.log("getConfigurationByPropertyCode", getconfigdata);
     let configdata = getconfigdata.content[getconfigdata.content.length - 1];
     let listroomtype = await getlist(configdata, "Room Type");
     let listWing = await getlist(configdata, "Zone/Wing");
@@ -312,7 +317,7 @@ export default function RoomManagement() {
       sessionStorage.getItem("auth"),
       pageProperty
     );
-    let configdata = getconfigdata.content[getconfigdata.content.length - 1];
+    let configdata = getconfigdata.content;
     let listroomtype = await getlist(configdata, "Room Type");
     let listWing = await getlist(configdata, "Zone/Wing");
     let listBuilding = await getlist(configdata, "Building Master");
@@ -386,11 +391,11 @@ export default function RoomManagement() {
 
     let getconfigdata = await getConfigurationByPropertyCode(
       sessionStorage.getItem("auth"),
-      dataRoombyid.content[0].propertycode
+      dataRoombyid.content.propertycode
     );
     console.log("getconfigdata", getconfigdata);
 
-    let configdata = getconfigdata.content[getconfigdata.content.length - 1];
+    let configdata = getconfigdata.content;
     let listroomtype = await getlist(configdata, "Room Type");
     let listWing = await getlist(configdata, "Zone/Wing");
     let listBuilding = await getlist(configdata, "Building Master");
@@ -510,7 +515,7 @@ export default function RoomManagement() {
         console.log("data", data);
         let roomdata = [];
         let i = 0;
-        data.content[data.content.length - 1].forEach((element) =>
+        data.content.forEach((element) =>
           roomdata.push(
             createData(
               element.id,
@@ -633,7 +638,7 @@ export default function RoomManagement() {
         console.log("data", data);
         let roomdata = [];
         let i = 0;
-        data.content[data.content.length - 1].forEach((element) =>
+        data.content.forEach((element) =>
           roomdata.push(
             createData(
               element.id,
@@ -677,10 +682,10 @@ export default function RoomManagement() {
     console.log("roomDelete func:", roomDelete);
 
     const data = await listRoom(sessionStorage.getItem("auth"));
-    console.log("data", data);
+    console.log("data Room", data);
     let roomdata = [];
     let i = 0;
-    data.content[data.content.length - 1].forEach((element) =>
+    data.content.forEach((element) =>
       roomdata.push(
         createData(
           element.id,
@@ -778,7 +783,6 @@ export default function RoomManagement() {
                 },
               ]}
             />
-         
           </Grid>
 
           {CRUD.C ? (
@@ -1794,8 +1798,7 @@ export default function RoomManagement() {
             },
           ]}
         />
-      ) : 
-      null}
+      ) : null}
     </Container>
   );
 }

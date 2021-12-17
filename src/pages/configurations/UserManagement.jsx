@@ -621,17 +621,17 @@ export default function UserManagement() {
 
   const { store } = useContext(ReactReduxContext);
   React.useEffect(async () => {
-    let userComponentPermission = await getUserComponentPermision(
-      sessionStorage.getItem("auth"),
-      sessionStorage.getItem("username"),
-      "CF-UM"
-    );
-    setCRUD({
-      C: userComponentPermission.content[0].permissioncreate,
-      R: userComponentPermission.content[0].permissionread,
-      U: userComponentPermission.content[0].permissionupdate,
-      D: userComponentPermission.content[0].permissiondelete,
-    });
+    // let userComponentPermission = await getUserComponentPermision(
+    //   sessionStorage.getItem("auth"),
+    //   sessionStorage.getItem("username"),
+    //   "CF-UM"
+    // );
+    // setCRUD({
+    //   C: userComponentPermission.content[0].permissioncreate,
+    //   R: userComponentPermission.content[0].permissionread,
+    //   U: userComponentPermission.content[0].permissionupdate,
+    //   D: userComponentPermission.content[0].permissiondelete,
+    // });
     let dataRole = await listRole(sessionStorage.getItem("auth"));
     console.log("listRole", dataRole.content[dataRole.content.length - 1]);
     roles = [];
@@ -2200,8 +2200,7 @@ export default function UserManagement() {
                 },
               ]}
             />
-          ) : 
-          null}
+          ) : null}
         </div>
 
         {/* ==================== Dialog New User========================= */}

@@ -598,20 +598,20 @@ export default function RoleManagement() {
   const [editStatus, setEditStatus] = useState([]);
 
   React.useEffect(async () => {
-    let usercomponentpermission = await getUserComponentPermision(
-      sessionStorage.getItem("auth"),
-      sessionStorage.getItem("username"),
-      "CF-RM"
-    );
-    setCRUD({
-      C: usercomponentpermission.content[0].permissioncreate,
-      R: usercomponentpermission.content[0].permissionread,
-      U: usercomponentpermission.content[0].permissionupdate,
-      D: usercomponentpermission.content[0].permissiondelete,
-    });
-    // macaddress.all().then(function (all) {
-    //   console.log(JSON.stringify(all, null, 2));
+    // let usercomponentpermission = await getUserComponentPermision(
+    //   sessionStorage.getItem("auth"),
+    //   sessionStorage.getItem("username"),
+    //   "CF-RM"
+    // );
+    // setCRUD({
+    //   C: usercomponentpermission.content[0].permissioncreate,
+    //   R: usercomponentpermission.content[0].permissionread,
+    //   U: usercomponentpermission.content[0].permissionupdate,
+    //   D: usercomponentpermission.content[0].permissiondelete,
     // });
+    // // macaddress.all().then(function (all) {
+    // //   console.log(JSON.stringify(all, null, 2));
+    // // });
     let data = await listRole(sessionStorage.getItem("auth"));
     console.log("listRole", listRole);
     let userdata = [];

@@ -133,7 +133,7 @@ export const Reports = (props) => {
         setTitleTable(getTitleTable);
 
         var getRowsTable = [];
-        var status = false;
+        // var status = false;
         const newRowsTable = newReportsData.details.sub[0];
         console.log("getRowsTable == >", typeof newRowsTable, newRowsTable);
         Object.entries(newRowsTable).forEach((entry) => {

@@ -2,10 +2,10 @@ import React, { useState, useContext } from "react";
 import { blue } from "@material-ui/core/colors";
 import { ReactReduxContext, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import MaterialTable from "material-table";
-import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
-import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
+// import MaterialTable from "material-table";
+// import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+// import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
+// import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -16,8 +16,8 @@ import {
   Grid,
   Typography,
   Button,
-  Breadcrumbs,
-  Link,
+  // Breadcrumbs,
+  // Link,
   TextField,
 } from "@material-ui/core";
 import {
@@ -196,7 +196,7 @@ export default function ComputerPrinter() {
     setProperties(tempproperty);
     let data = await listComputerPrinter(sessionStorage.getItem("auth"));
     let userdata = [];
-    data.content[data.content.length - 1].forEach((element) =>
+    data.content.forEach((element) =>
       userdata.push(
         createData(
           element.id,
@@ -274,7 +274,7 @@ export default function ComputerPrinter() {
     let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
     let _computers = [];
     let _listprinters = [];
-    _data.content[_data.content.length - 1].forEach((element) => {
+    _data.content.forEach((element) => {
       if (element.type == "COMP") {
         if (_computers.filter((x) => x.value === element.code).length == 0) {
           _computers.push({
@@ -299,41 +299,39 @@ export default function ComputerPrinter() {
     let _trays = [];
     let _remarks = [];
 
-    _dataconfigmaster.content[_dataconfigmaster.content.length - 1].forEach(
-      (element) => {
-        if (element.name == "actions") {
-          if (_actions.filter((x) => x.key === element.config).length == 0) {
-            let labeldata = element.config.split(",");
-            for (let i = 0; i < labeldata.length; i++) {
-              _actions.push({
-                key: i + 1,
-                label: labeldata[i],
-              });
-            }
+    _dataconfigmaster.content.forEach((element) => {
+      if (element.name == "actions") {
+        if (_actions.filter((x) => x.key === element.config).length == 0) {
+          let labeldata = element.config.split(",");
+          for (let i = 0; i < labeldata.length; i++) {
+            _actions.push({
+              key: i + 1,
+              label: labeldata[i],
+            });
           }
-        } else if (element.name == "trays") {
-          if (_trays.filter((x) => x.key === element.config).length == 0) {
-            let labeldata = element.config.split(",");
-            for (let i = 0; i < labeldata.length; i++) {
-              _trays.push({
-                key: i + 1,
-                label: labeldata[i],
-              });
-            }
+        }
+      } else if (element.name == "trays") {
+        if (_trays.filter((x) => x.key === element.config).length == 0) {
+          let labeldata = element.config.split(",");
+          for (let i = 0; i < labeldata.length; i++) {
+            _trays.push({
+              key: i + 1,
+              label: labeldata[i],
+            });
           }
-        } else if (element.name == "remarks") {
-          if (_remarks.filter((x) => x.key === element.config).length == 0) {
-            let labeldata = element.config.split(",");
-            for (let i = 0; i < labeldata.length; i++) {
-              _remarks.push({
-                key: i + 1,
-                label: labeldata[i],
-              });
-            }
+        }
+      } else if (element.name == "remarks") {
+        if (_remarks.filter((x) => x.key === element.config).length == 0) {
+          let labeldata = element.config.split(",");
+          for (let i = 0; i < labeldata.length; i++) {
+            _remarks.push({
+              key: i + 1,
+              label: labeldata[i],
+            });
           }
         }
       }
-    );
+    });
     console.log(
       "_users,_computers,_listprinters,_actions,_trays,_remarks:",
       _users,
@@ -388,7 +386,7 @@ export default function ComputerPrinter() {
     let _data = await listRegisterHardware(sessionStorage.getItem("auth"));
     let _computers = [];
     let _listprinters = [];
-    _data.content[_data.content.length - 1].forEach((element) => {
+    _data.content.forEach((element) => {
       if (element.type == "COMP") {
         if (_computers.filter((x) => x.value === element.code).length == 0) {
           _computers.push({
@@ -414,41 +412,39 @@ export default function ComputerPrinter() {
     let _trays = [];
     let _remarks = [];
 
-    _dataconfigmaster.content[_dataconfigmaster.content.length - 1].forEach(
-      (element) => {
-        if (element.name == "actions") {
-          if (_actions.filter((x) => x.key === element.config).length == 0) {
-            let labeldata = element.config.split(",");
-            for (let i = 0; i < labeldata.length; i++) {
-              _actions.push({
-                key: i + 1,
-                label: labeldata[i],
-              });
-            }
+    _dataconfigmaster.content.forEach((element) => {
+      if (element.name == "actions") {
+        if (_actions.filter((x) => x.key === element.config).length == 0) {
+          let labeldata = element.config.split(",");
+          for (let i = 0; i < labeldata.length; i++) {
+            _actions.push({
+              key: i + 1,
+              label: labeldata[i],
+            });
           }
-        } else if (element.name == "trays") {
-          if (_trays.filter((x) => x.key === element.config).length == 0) {
-            let labeldata = element.config.split(",");
-            for (let i = 0; i < labeldata.length; i++) {
-              _trays.push({
-                key: i + 1,
-                label: labeldata[i],
-              });
-            }
+        }
+      } else if (element.name == "trays") {
+        if (_trays.filter((x) => x.key === element.config).length == 0) {
+          let labeldata = element.config.split(",");
+          for (let i = 0; i < labeldata.length; i++) {
+            _trays.push({
+              key: i + 1,
+              label: labeldata[i],
+            });
           }
-        } else if (element.name == "remarks") {
-          if (_remarks.filter((x) => x.key === element.config).length == 0) {
-            let labeldata = element.config.split(",");
-            for (let i = 0; i < labeldata.length; i++) {
-              _remarks.push({
-                key: i + 1,
-                label: labeldata[i],
-              });
-            }
+        }
+      } else if (element.name == "remarks") {
+        if (_remarks.filter((x) => x.key === element.config).length == 0) {
+          let labeldata = element.config.split(",");
+          for (let i = 0; i < labeldata.length; i++) {
+            _remarks.push({
+              key: i + 1,
+              label: labeldata[i],
+            });
           }
         }
       }
-    );
+    });
 
     setUsernames(_users);
     setComputers(_computers);
@@ -479,7 +475,7 @@ export default function ComputerPrinter() {
     if (_insertComputerPrinter.status == "2000") {
       let data = await listComputerPrinter(sessionStorage.getItem("auth"));
       let userdata = [];
-      data.content[data.content.length - 1].forEach((element) =>
+      data.content.forEach((element) =>
         userdata.push(
           createData(
             element.id,
@@ -514,7 +510,7 @@ export default function ComputerPrinter() {
     if (_updateComputerPrinter.status == "2000") {
       let data = await listComputerPrinter(sessionStorage.getItem("auth"));
       let userdata = [];
-      data.content[data.content.length - 1].forEach((element) =>
+      data.content.forEach((element) =>
         userdata.push(
           createData(
             element.id,
@@ -546,7 +542,7 @@ export default function ComputerPrinter() {
     if (_deleteComputerPrinter.status == "2000") {
       let data = await listComputerPrinter(sessionStorage.getItem("auth"));
       let userdata = [];
-      data.content[data.content.length - 1].forEach((element) =>
+      data.content.forEach((element) =>
         userdata.push(
           createData(
             element.id,
@@ -636,7 +632,7 @@ export default function ComputerPrinter() {
       <React.Fragment>
         <Grid container style={{ padding: 20, marginTop: 22 }}>
           <Grid item style={{ flexGrow: 1 }}>
-          <MaterialBreadcrumbsComponent
+            <MaterialBreadcrumbsComponent
               Datacrumbs={[
                 {
                   text: "Configuration",
@@ -660,21 +656,24 @@ export default function ComputerPrinter() {
                     "";
                   },
                 },
-               
               ]}
             />
-         
           </Grid>
 
           <MaterialButtonComponent
-              handleNewData={handleDialogAdd}
-              handleNewText="New Setting"
-            />
-          
+            handleNewData={handleDialogAdd}
+            handleNewText="New Setting"
+          />
         </Grid>
 
         <div style={{ maxWidth: "100%" }}>
-        <MaterialTableComponent placeHolder="Search by Property, Username, Computer Code, Action ,Device Code,Tray,Remark" title="Computer-printer" rows={rows} handleNewData={handleDialogAdd} handleEditData={handleDialogEdit} handleDialogDeleteOpen={handleDialogDeleteOpen}
+          <MaterialTableComponent
+            placeHolder="Search by Property, Username, Computer Code, Action ,Device Code,Tray,Remark"
+            title="Computer-printer"
+            rows={rows}
+            handleNewData={handleDialogAdd}
+            handleEditData={handleDialogEdit}
+            handleDialogDeleteOpen={handleDialogDeleteOpen}
             columns={[
               {
                 title: "Property",
@@ -718,7 +717,6 @@ export default function ComputerPrinter() {
               },
             ]}
           />
-         
         </div>
 
         {/* ==================== Dialog New Device========================= */}
