@@ -115,6 +115,22 @@ export const Reports = (props) => {
   const [titleTable, setTitleTable] = useState([]);
   const [rows, setRows] = useState([]);
 
+  function listData(data) {
+    let subDatas = [];
+    data.forEach((groupData) => {
+      if (groupData.hasOwnProperty("detail")) {
+        groupData.detail.forEach((row) => {
+          subDatas.push(row);
+        });
+        subDatas.push(groupData.total);
+      } else {
+        subDatas.push(...listData(groupData.sub));
+        subDatas.push(groupData.total);
+      }
+    });
+    return subDatas;
+  }
+
   React.useEffect(() => {
     async function getReportsData() {
       const reportData = await getReports(sessionStorage.getItem("auth"));
@@ -131,40 +147,13 @@ export const Reports = (props) => {
         setTitleTable(getTitleTable);
 
         // ==============================================
+
+        let newListData = [];
         const newRowsTable = newReportsData.details.sub;
-        var newListData = [];
-        if (newRowsTable) {
-          for (let i = 0; i < newRowsTable.length; i++) {
-            var data = newRowsTable[i];
-            if (data.sub) {
-              for (let j = 0; j < data.sub.length; j++) {
-                let newData = data.sub[j];
-                if (newData.sub) {
-                  for (let k = 0; k < newData.sub.length; k++) {
-                    let newData2 = newData.sub[k];
-                    if (newData2.detail) {
-                      for (let l = 0; l < newData2.detail.length; l++) {
-                        newListData.push(newData2.detail[l]);
-                      }
-                    }
-                    if (newData2.total) {
-                      newListData.push(newData2.total);
-                    }
-                  }
-                }
-                if (newData.total) {
-                  newListData.push(newData.total);
-                }
-              }
-            }
-            if (data.total) {
-              newListData.push(data.total);
-            }
-          }
-        }
+        newListData.push(...listData(newRowsTable));
         newListData.push(newReportsData.grand_total);
         setRows(newListData);
-        console.log("newListData", newListData);
+        // console.log(JSON.stringify(newListData));
       }
     }
     getReportsData();
