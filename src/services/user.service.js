@@ -449,21 +449,6 @@ module.exports = {
     });
   },
 
-  getUser: async function (accessToken) {
-    return fetch(
-      "http://" +
-        (process.env.REACT_APP_host || "localhost") +
-        ":8000/apis/user-management/users",
-      {
-        method: "GET",
-        headers: {
-          Authorization: accessToken,
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((data) => data.json());
-  },
-
   getUserByID: async function (accessToken, id) {
     return fetch(
       `http://${

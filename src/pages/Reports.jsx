@@ -120,14 +120,12 @@ export const Reports = (props) => {
       const reportData = await getReports(sessionStorage.getItem("auth"));
       const newReportsData = reportData.content[0].reportjson;
       if (reportData) {
-        // console.log("newReportsData", newReportsData);
         setReportsData(reportData.content[0].reportjson);
 
         const getTitleTable = [];
         Object.values(reportData.content[0].reportjson.titles).forEach(
           (element) => {
             getTitleTable.push(element);
-            // console.log("element ++", element);
           }
         );
         setTitleTable(getTitleTable);
@@ -171,53 +169,6 @@ export const Reports = (props) => {
     }
     getReportsData();
   }, []);
-
-  // console.log("newRowsTable", data);
-
-  // if (reportData) {
-  //   console.log("newReportsData", newReportsData);
-  //   setReportsData(reportData.content[0].reportjson);
-
-  //   const getTitleTable = [];
-  //   Object.values(reportData.content[0].reportjson.titles).forEach(
-  //     (element) => {
-  //       getTitleTable.push(element);
-  //       console.log("element ++", element);
-  //     }
-  //   );
-  //   setTitleTable(getTitleTable);
-
-  //   var getRowsTable = [];
-  //   // var status = false;
-  //   const newRowsTable = newReportsData.details.sub[0];
-  //   console.log("getRowsTable == >", typeof newRowsTable, newRowsTable);
-  //   Object.entries(newRowsTable).forEach((entry) => {
-  //     const [key, value] = entry;
-  //     if (key === "sub") {
-  //       Object.entries(value).forEach((entry) => {
-  //         const [key, value] = entry;
-  //         let data = Object.entries(value).map((entry) => {
-  //           const [key, value] = entry;
-  //           if (key === "detail") {
-  //             Object.entries(value).forEach((entry) => {
-  //               const [key, value] = entry;
-  //               getRowsTable.push(value);
-  //             });
-  //           } else if (key === "total") {
-  //             return value;
-  //           }
-  //         });
-  //         getRowsTable.push(data[0]);
-  //       });
-  //     } else if (key === "total") {
-  //       getRowsTable.push(value);
-  //     }
-  //   });
-  //   // console.log("grand", newReportsData.grand_total);
-  //   getRowsTable.push(newReportsData.grand_total);
-  //   setRows(getRowsTable);
-  //   console.log("getRowsTable ##", getRowsTable);
-  // }
 
   const NewTitle = titleTable.map((title) => {
     return (
