@@ -8,7 +8,7 @@ import MaterialTable, { MTableToolbar } from "material-table";
 import Typography from "@material-ui/core/Typography";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 
-import * as actions from "../middleware/action";
+// import * as actions from "../middleware/action";
 import { getReports } from "../services/reports.service";
 
 const useStyles = makeStyles((theme) => ({
@@ -113,6 +113,7 @@ export const Reports = (props) => {
 
   const [reportsData, setReportsData] = useState("");
   const [titleTable, setTitleTable] = useState([]);
+  const [titleExport, setTitleExport] = useState([]);
   const [rows, setRows] = useState([]);
 
   function listData(data) {
@@ -139,12 +140,16 @@ export const Reports = (props) => {
         setReportsData(reportData.content[0].reportjson);
 
         const getTitleTable = [];
-        Object.values(reportData.content[0].reportjson.titles).forEach(
-          (element) => {
-            getTitleTable.push(element);
-          }
-        );
+        const getTitleExport = [];
+        Object.values(newReportsData.titles).forEach((element) => {
+          getTitleTable.push(element);
+          // getTitleExport.push(element.title);
+        });
+        for (let i = 0; i < newReportsData.titles.length - 1; i++) {
+          getTitleExport.push(newReportsData.titles[i].title);
+        }
         setTitleTable(getTitleTable);
+        setTitleExport(getTitleExport.join());
 
         // ==============================================
 
@@ -153,7 +158,7 @@ export const Reports = (props) => {
         newListData.push(...listData(newRowsTable));
         newListData.push(newReportsData.grand_total);
         setRows(newListData);
-        // console.log(JSON.stringify(newListData));
+        // console.table(JSON.stringify(newListData));
       }
     }
     getReportsData();
@@ -173,6 +178,7 @@ export const Reports = (props) => {
               overflow: "hidden",
               textOverflow: "ellipsis",
               fontWeight: title.style.fontWeight,
+              marginLeft: 25,
             }}
           >
             {title.title}
@@ -242,15 +248,20 @@ export const Reports = (props) => {
         }}
         components={{
           Toolbar: (props) => (
-            <div
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                display: "flex",
-              }}
-            >
-              <MTableToolbar {...props} />
-            </div>
+            <Grid container style={{ paddingBottom: 10 }}>
+              <Grid item xs={6} sm={4} md={4} lg={4} xl={4}></Grid>
+              <Grid
+                item
+                justifyContent="center"
+                xs={8}
+                sm={8}
+                md={8}
+                lg={8}
+                xl={8}
+              >
+                <MTableToolbar {...props} />
+              </Grid>
+            </Grid>
           ),
         }}
         title={NewTitle}
@@ -263,6 +274,18 @@ export const Reports = (props) => {
           pageSize: 10,
           pageSizeOptions: [10, 20, 30, { value: rows.length, label: "All" }],
           headerStyle: headerTableStyle,
+          exportButton: true,
+          exportAllData: true,
+
+          exportFileName: titleExport,
+          rowStyle: (rowData) => {
+            if (!rowData.Category || !rowData.SubCategory) {
+              return { fontWeight: "bold" };
+            }
+            // else if (!rowData.SubCategory) {
+            //   return { fontWeight: "bold", fontSize: 16 };
+            // }
+          },
         }}
       />
     </Container>
