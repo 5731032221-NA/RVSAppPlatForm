@@ -7,6 +7,8 @@ import Grid from "@material-ui/core/Grid";
 import MaterialTable, { MTableToolbar } from "material-table";
 import Typography from "@material-ui/core/Typography";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 // import * as actions from "../middleware/action";
 import { getReports } from "../services/reports.service";
@@ -115,6 +117,7 @@ export const Reports = (props) => {
   const [titleTable, setTitleTable] = useState([]);
   const [titleExport, setTitleExport] = useState([]);
   const [rows, setRows] = useState([]);
+  const [columnsData, setColumns] = useState([]);
 
   function listData(data) {
     let subDatas = [];
@@ -136,13 +139,19 @@ export const Reports = (props) => {
     async function getReportsData() {
       const reportData = await getReports(sessionStorage.getItem("auth"));
       const newReportsData = reportData.content[0].reportjson;
+      console.log("newReportsData", newReportsData);
       if (reportData) {
         setReportsData(reportData.content[0].reportjson);
 
         const getTitleTable = [];
         const getTitleExport = [];
+        const getColumnsExport = [];
         Object.values(newReportsData.titles).forEach((element) => {
           getTitleTable.push(element);
+          // getTitleExport.push(element.title);
+        });
+        Object.values(newReportsData.columns).forEach((element) => {
+          getColumnsExport.push(element);
           // getTitleExport.push(element.title);
         });
         for (let i = 0; i < newReportsData.titles.length - 1; i++) {
@@ -158,6 +167,7 @@ export const Reports = (props) => {
         newListData.push(...listData(newRowsTable));
         newListData.push(newReportsData.grand_total);
         setRows(newListData);
+        setColumns(getColumnsExport);
         // console.table(JSON.stringify(newListData));
       }
     }
@@ -285,6 +295,39 @@ export const Reports = (props) => {
             // else if (!rowData.SubCategory) {
             //   return { fontWeight: "bold", fontSize: 16 };
             // }
+          },
+          exportPdf: (rows, columns) => {
+            const doc = new jsPDF("l");
+            // console.log("columnsData", columns);
+            // console.log("rows", rows);
+
+            const columnTitles = rows.map((columnDef) => columnDef.title);
+            // console.log("columnTitles", columns);
+
+            const pdfData = columns.map((rowData) =>
+              rows.map((columnDef) => rowData[columnDef.field])
+            );
+
+            doc.autoTable({
+              headStyles: { fillColor: [45, 98, 237] },
+              theme: "grid",
+              head: [columnTitles],
+              body: pdfData,
+              // columnStyles: (rows) => {
+              //   if (rows.type === "numeric") {
+              //     console.log("rows check", rows);
+              //     return { halign: "right" };
+              //   }
+              // },
+              columnStyles: {
+                3: { halign: "right" },
+                4: { halign: "right" },
+                5: { halign: "right" },
+                6: { halign: "right" },
+              },
+            });
+
+            doc.save(`reportTable.pdf`);
           },
         }}
       />

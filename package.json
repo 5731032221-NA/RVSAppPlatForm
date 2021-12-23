@@ -24,6 +24,7 @@
     "date-fns": "^2.23.0",
     "dotenv": "^10.0.0",
     "getmac": "^5.20.0",
+    "jspdf": "^2.5.0",
     "material-table": "^1.69.3",
     "material-ui-chip-input": "^2.0.0-beta.2",
     "name-my-computer": "^1.0.2",
