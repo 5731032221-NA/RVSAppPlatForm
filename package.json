@@ -23,6 +23,7 @@
     "d3-fetch": "^3.0.1",
     "date-fns": "^2.23.0",
     "dotenv": "^10.0.0",
+    "filefy": "^0.1.11",
     "getmac": "^5.20.0",
     "jspdf": "^2.5.0",
     "material-table": "^1.69.3",

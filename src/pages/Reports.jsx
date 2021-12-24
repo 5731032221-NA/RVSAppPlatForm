@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { CsvBuilder } from "filefy";
 
 // import * as actions from "../middleware/action";
 import { getReports } from "../services/reports.service";
@@ -117,7 +118,7 @@ export const Reports = (props) => {
   const [titleTable, setTitleTable] = useState([]);
   const [titleExport, setTitleExport] = useState([]);
   const [rows, setRows] = useState([]);
-  const [columnsData, setColumns] = useState([]);
+  const [columnsData, setColumns] = useState("somedata");
 
   function listData(data) {
     let subDatas = [];
@@ -292,33 +293,97 @@ export const Reports = (props) => {
             if (!rowData.Category || !rowData.SubCategory) {
               return { fontWeight: "bold" };
             }
-            // else if (!rowData.SubCategory) {
-            //   return { fontWeight: "bold", fontSize: 16 };
-            // }
           },
-          exportPdf: (rows, columns) => {
+          exportPdf: (data, columns) => {
             const doc = new jsPDF("l");
-            // console.log("columnsData", columns);
-            // console.log("rows", rows);
+            var newDataTemp = [];
+            console.log("columnsData", columns);
+            // console.log("data", data);
+            for (let i = 0; i < columns.length; i++) {
+              if (columns[i].Category) {
+                var tempArray = columns[i].Category.split(" ");
+                //console.log("tempArray", tempArray);
+                //console.log("TTT", tempArray[tempArray.length - 1] === "Total");
+                if (tempArray[tempArray.length - 1] === "Total") {
+                  newDataTemp.push(i);
+                }
 
-            const columnTitles = rows.map((columnDef) => columnDef.title);
+                // console.log("columnsData", columns[i].Category);
+                //var newDataTemp = columns[i].Category.split();
+              }
+            }
+            //console.log("newDataTemp", newDataTemp);
+            var newSplitData = [];
+            for (let j = 0; j < newDataTemp.length; j++) {
+              if (j === 0) {
+                let tempi = j;
+                let tempj = newDataTemp[j];
+                console.log("tempI,j", tempi, tempj);
+                var newSplit = columns.slice(tempi, tempj + 1);
+                newSplitData.push(newSplit);
+              } else {
+                let tempi = newDataTemp[j - 1];
+                let tempj = newDataTemp[j];
+                console.log("tempI,j ===", tempi, tempj);
+                var newSplit = columns.slice(tempi, tempj + 1);
+                newSplitData.push(newSplit);
+              }
+            }
+
+            console.log("newSplitData", newSplitData);
+
+            const columnTitles = data.map((columnDef) => columnDef.title);
             // console.log("columnTitles", columns);
 
             const pdfData = columns.map((rowData) =>
-              rows.map((columnDef) => rowData[columnDef.field])
+              data.map((columnDef) => rowData[columnDef.field])
             );
 
+            for (let k = 0; k < newSplitData.length - 1; k++) {
+              console.log("newSplit", newSplitData[k]);
+
+              const pdfData2 = newSplitData[k].map((rowData) =>
+                data.map((columnDef) => rowData[columnDef.field])
+              );
+              if (k === 0) {
+                doc.autoTable({
+                  headStyles: { fillColor: [45, 98, 237] },
+                  theme: "grid",
+                  head: [columnTitles],
+                  body: pdfData2,
+
+                  columnStyles: {
+                    3: { halign: "right" },
+                    4: { halign: "right" },
+                    5: { halign: "right" },
+                    6: { halign: "right" },
+                  },
+                });
+              } else {
+                doc.autoTable({
+                  pageBreak: "always",
+                  headStyles: { fillColor: [45, 98, 237] },
+                  theme: "grid",
+                  head: [columnTitles],
+                  body: pdfData2,
+
+                  columnStyles: {
+                    3: { halign: "right" },
+                    4: { halign: "right" },
+                    5: { halign: "right" },
+                    6: { halign: "right" },
+                  },
+                });
+              }
+            }
+
             doc.autoTable({
+              pageBreak: "always",
               headStyles: { fillColor: [45, 98, 237] },
               theme: "grid",
               head: [columnTitles],
               body: pdfData,
-              // columnStyles: (rows) => {
-              //   if (rows.type === "numeric") {
-              //     console.log("rows check", rows);
-              //     return { halign: "right" };
-              //   }
-              // },
+
               columnStyles: {
                 3: { halign: "right" },
                 4: { halign: "right" },
@@ -327,7 +392,41 @@ export const Reports = (props) => {
               },
             });
 
+            // doc.autoTable({
+            //   headStyles: { fillColor: [45, 98, 237] },
+            //   theme: "grid",
+            //   head: [columnTitles],
+            //   body: pdfData,
+
+            //   columnStyles: {
+            //     3: { halign: "right" },
+            //     4: { halign: "right" },
+            //     5: { halign: "right" },
+            //     6: { halign: "right" },
+            //   },
+            // });
+
             doc.save(`reportTable.pdf`);
+          },
+          exportCsv: (data, columns) => {
+            //const columnTitles = columns.map((columnDef) => columnDef.title);
+            const columnTitles = data.map((columnDef) => columnDef.title);
+
+            const csvData = columns.map((rowData) =>
+              data.map((columnDef) => rowData[columnDef.field])
+            );
+            // const csvData = data.map((rowData) =>
+            //   columns.map((columnDef) => rowData[columnDef.field])
+            // );
+
+            const builder = new CsvBuilder(`data.csv`)
+              // .setColumns(["mycolumn"])
+              // .addRow(["file title some thing blah blah"])
+              .setColumns(columnTitles)
+              .addRows(csvData)
+              .exportFile();
+
+            return builder;
           },
         }}
       />
