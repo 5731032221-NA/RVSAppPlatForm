@@ -135,6 +135,8 @@ export default function Login({ setToken }) {
   //Dialog cookie
   const [dialogAdd, setDialogAdd] = React.useState(false);
   const handleDialogAddClose = async () => {
+    setErrorMessageDu(false);
+    setErrorParameterDu(false);
     setDialogAdd(false);
   };
 
@@ -378,6 +380,7 @@ export default function Login({ setToken }) {
                     <Button
                       fullWidth
                       type="submit"
+                      name="login"
                       variant="contained"
                       style={{ backgroundColor: "#2D62ED", color: "white" }}
                     >
@@ -449,7 +452,7 @@ export default function Login({ setToken }) {
                       <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                         <TextField
                           // autoFocus
-                          id="outlined-basic"
+                          id="devicecode"
                           label="Device Code"
                           variant="outlined"
                           fullWidth
@@ -465,7 +468,7 @@ export default function Login({ setToken }) {
                       <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
                         <TextField
                           // autoFocus
-                          id="outlined-basic"
+                          id="devicename"
                           label="Device Name"
                           variant="outlined"
                           fullWidth
@@ -520,6 +523,7 @@ export default function Login({ setToken }) {
               }}
             >
               <Button
+                name="cancel"
                 onClick={handleDialogAddClose}
                 variant="text"
                 color="primary"
@@ -528,6 +532,7 @@ export default function Login({ setToken }) {
                 Cancel
               </Button>
               <Button
+                name="save"
                 variant="contained"
                 color="primary"
                 style={{

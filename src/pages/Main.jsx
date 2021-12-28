@@ -692,6 +692,7 @@ export default function Main({ children }) {
               {open ? (
                 <IconButton
                   edge="start"
+                  id="handleLeftMenu"
                   className={classes.menuButton}
                   color="inherit"
                   aria-label="open drawer"
@@ -804,6 +805,7 @@ export default function Main({ children }) {
               {open ? (
                 <IconButton
                   edge="start"
+                  id="handleLeftMenu"
                   className={classes.menuButton}
                   color="inherit"
                   aria-label="open drawer"

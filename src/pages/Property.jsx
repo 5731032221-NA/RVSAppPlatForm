@@ -187,8 +187,7 @@ export default function Property({ setToken, setProperty }) {
               Please Select Your Property
             </FormLabel>
             <Select
-              name="gender1"
-              id="select"
+              id="selectpropertyfield"
               value={selectedProperty}
               onChange={handleChange}
               style={{ width: 280 }}
@@ -200,6 +199,7 @@ export default function Property({ setToken, setProperty }) {
                     key={item.propertycode}
                     value={item.propertycode}
                     label={item.propertycode}
+                    id={item.propertycode}
                   >
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <BusinessIcon
@@ -214,6 +214,7 @@ export default function Property({ setToken, setProperty }) {
           </FormControl>
           <div variant="middle" style={{ paddingTop: 30 }} />
           <Button
+            name="selectpropertybutton"
             fullWidth
             variant="contained"
             style={{ backgroundColor: "#2D62ED", color: "white" }}
