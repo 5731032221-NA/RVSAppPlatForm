@@ -49,7 +49,7 @@ TabPanel.propTypes = {
 
 function a11yProps(index) {
   return {
-    id: `simple-tab-${index}`,
+    id: `tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
@@ -164,21 +164,21 @@ export default function HeaderTabs() {
                 icon={<ImageAspectRatioIcon />}
                 style={{ color: wordColor }}
                 label="Front Desk"
-                {...a11yProps(0)}
+                {...a11yProps("frontdesk")}
               />
             ) : null}
             <Tab
               style={{ color: wordColor }}
               icon={<KingBedIcon />}
               label="Reservation"
-              {...a11yProps(1)}
+              {...a11yProps("reservation")}
             />
             {cashier ? (
               <Tab
                 icon={<MonetizationOnIcon />}
                 style={{ color: wordColor }}
                 label="Cashier"
-                {...a11yProps(2)}
+                {...a11yProps("cashier")}
               />
             ) : null}
             {setting ? (
@@ -186,7 +186,7 @@ export default function HeaderTabs() {
                 icon={<NightsStayIcon />}
                 style={{ color: wordColor }}
                 label="Night Auditor"
-                {...a11yProps(3)}
+                {...a11yProps("nightauditor")}
               />
             ) : null}
           </Tabs>

@@ -232,6 +232,7 @@ export default function MainListItems() {
       {/* disablePadding dense */}
       {comps.includes("DB") || comps.includes("*ALL") ? (
         <ListItem
+          id="DB"
           button
           selected={selectedIndex === 0}
           onClick={handleOpenDashboard}
@@ -248,6 +249,7 @@ export default function MainListItems() {
       {comps.includes("RV") || comps.includes("*ALL") ? (
         // <ListItem button selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)} >
         <ListItem
+          id="RV"
           button
           selected={selectedIndex === 1}
           onClick={handleOpenReservation}
@@ -268,6 +270,7 @@ export default function MainListItems() {
       comps.includes("*ALL") ? (
         <List style={{ marginTop: -10 }}>
           <ListItem
+            id="FD"
             button
             selected={selectedIndex === 2}
             onClick={handleOpenFrontDesk}
@@ -286,6 +289,7 @@ export default function MainListItems() {
             <List component="div" disablePadding>
               {comps.includes("FD-WN") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="FD-WN"
                   button
                   selected={selectedIndex === 21}
                   onClick={(event) => handleListItemClick(event, 21)}
@@ -299,6 +303,7 @@ export default function MainListItems() {
               ) : null}
               {comps.includes("FD-CI") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="FD-CI"
                   button
                   primaryTypographyProps={{ style: setFontSize }}
                   selected={selectedIndex === 22}
@@ -313,6 +318,7 @@ export default function MainListItems() {
               ) : null}
               {comps.includes("FD-CO") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="FD-CO"
                   button
                   primaryTypographyProps={{ style: setFontSize }}
                   selected={selectedIndex === 23}
@@ -327,6 +333,7 @@ export default function MainListItems() {
               ) : null}
               {comps.includes("FD-RS") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="FD-RS"
                   button
                   selected={selectedIndex === 24}
                   onClick={(event) => handleListItemClick(event, 24)}
@@ -347,6 +354,7 @@ export default function MainListItems() {
       comps.includes("*ALL") ? (
         <List style={{ marginTop: -15 }}>
           <ListItem
+            id="CS"
             button
             selected={selectedIndex === 3}
             onClick={handleOpenCashier}
@@ -365,6 +373,7 @@ export default function MainListItems() {
             <List component="div" disablePadding>
               {comps.includes("CS-FM") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="CS-FM"
                   button
                   selected={selectedIndex === 31}
                   onClick={(event) => handleListItemClick(event, 31)}
@@ -378,6 +387,7 @@ export default function MainListItems() {
               ) : null}
               {comps.includes("CS-RP") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="CS-RP"
                   button
                   selected={selectedIndex === 32}
                   onClick={(event) => handleListItemClick(event, 32)}
@@ -400,6 +410,7 @@ export default function MainListItems() {
       comps.includes("*ALL") ? (
         <List style={{ marginTop: -15 }}>
           <ListItem
+            id="PF"
             button
             selected={selectedIndex === 4}
             onClick={handleOpenProfile}
@@ -418,6 +429,7 @@ export default function MainListItems() {
             <List component="div" disablePadding>
               {comps.includes("PF-ID") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="PF-ID"
                   button
                   selected={selectedIndex === 41}
                   onClick={(event) => handleOpenProfileIndivisual(event, 41)}
@@ -431,6 +443,7 @@ export default function MainListItems() {
               ) : null}
               {comps.includes("PF-TA") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="PF-TA"
                   button
                   selected={selectedIndex === 42}
                   onClick={(event) => handleOpenProfileTravelAgent(event, 42)}
@@ -444,6 +457,7 @@ export default function MainListItems() {
               ) : null}
               {comps.includes("PF-CP") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="PF-CP"
                   button
                   selected={selectedIndex === 43}
                   onClick={(event) => handleOpenProfileCompany(event, 43)}
@@ -457,6 +471,7 @@ export default function MainListItems() {
               ) : null}
               {comps.includes("PF-GR") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="PF-GR"
                   button
                   selected={selectedIndex === 44}
                   onClick={(event) => handleListItemClick(event, 44)}
@@ -479,6 +494,7 @@ export default function MainListItems() {
       comps.includes("*ALL") ? (
         <List style={{ marginTop: -15 }}>
           <ListItem
+            id="NA"
             button
             selected={selectedIndex === 5}
             onClick={handleOpenNA}
@@ -497,6 +513,7 @@ export default function MainListItems() {
             <List component="div" disablePadding>
               {comps.includes("NA-RP") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="NA-RP"
                   button
                   selected={selectedIndex === 51}
                   onClick={(event) => handleListItemClick(event, 51)}
@@ -510,6 +527,7 @@ export default function MainListItems() {
               ) : null}
               {comps.includes("NA-HD") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="NA-HD"
                   button
                   selected={selectedIndex === 52}
                   onClick={(event) => handleListItemClick(event, 52)}
@@ -523,6 +541,7 @@ export default function MainListItems() {
               ) : null}
               {comps.includes("NA-CD") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="NA-CD"
                   button
                   selected={selectedIndex === 53}
                   onClick={(event) => handleListItemClick(event, 53)}
@@ -536,6 +555,7 @@ export default function MainListItems() {
               ) : null}
               {comps.includes("NA-AS") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="NA-AS"
                   button
                   selected={selectedIndex === 54}
                   onClick={(event) => handleListItemClick(event, 54)}
@@ -556,6 +576,7 @@ export default function MainListItems() {
       comps.includes("*ALL") ? (
         <List style={{ marginTop: -15 }}>
           <ListItem
+            id="HK"
             button
             selected={selectedIndex === 6}
             onClick={handleOpenHK}
@@ -574,6 +595,7 @@ export default function MainListItems() {
             <List component="div" disablePadding>
               {comps.includes("HK-IM") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="HK-IM"
                   button
                   selected={selectedIndex === 61}
                   onClick={(event) => handleListItemClick(event, 61)}
@@ -587,6 +609,7 @@ export default function MainListItems() {
               ) : null}
               {comps.includes("HK-RS") || comps.includes("*ALL") ? (
                 <ListItem
+                  id="HK-RS"
                   button
                   selected={selectedIndex === 62}
                   onClick={(event) => handleListItemClick(event, 62)}
@@ -604,6 +627,7 @@ export default function MainListItems() {
       ) : null}
       {comps.includes("EN") || comps.includes("*ALL") ? (
         <ListItem
+          id="EN"
           button
           selected={selectedIndex === 7}
           onClick={(event) => handleListItemClick(event, 7)}
@@ -620,6 +644,7 @@ export default function MainListItems() {
       {comps.includes("RS") || comps.includes("*ALL") ? (
         <List style={{ marginTop: -15 }}>
           <ListItem
+            id="RS"
             button
             selected={selectedIndex === 8}
             onClick={handleOpenRS}
@@ -637,6 +662,7 @@ export default function MainListItems() {
             <Divider />
             <List component="div" disablePadding>
               <ListItem
+                id="RS-CS"
                 button
                 selected={selectedIndex === 81}
                 onClick={(event) => handleOpenReports(event, 81)}
@@ -653,6 +679,7 @@ export default function MainListItems() {
       ) : null}
       {comps.includes("CF") || comps.includes("*ALL") ? (
         <ListItem
+          id="CF"
           button
           selected={selectedIndex === 9}
           onClick={handleOpenConfig}
@@ -670,6 +697,7 @@ export default function MainListItems() {
       {comps.includes("CF") || comps.includes("*ALL") ? (
         <List style={{ marginTop: -15 }}>
           <ListItem
+            id="ST"
             button
             selected={selectedIndex === 10}
             onClick={handleOpenSystemsTools}
@@ -687,6 +715,7 @@ export default function MainListItems() {
             <Divider />
             <List component="div" disablePadding>
               <ListItem
+                id="ST-HS"
                 button
                 selected={selectedIndex === 101}
                 onClick={(event) => handleListItemClick(event, 101)}
@@ -698,6 +727,7 @@ export default function MainListItems() {
                 />
               </ListItem>
               <ListItem
+                id="ST-RR"
                 button
                 selected={selectedIndex === 102}
                 onClick={(event) => handleListItemClick(event, 102)}

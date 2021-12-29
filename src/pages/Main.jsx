@@ -523,6 +523,7 @@ export default function Main({ children }) {
             height={35}
           />
           <IconButton
+            id="opendrawer"
             edge="start"
             color="inherit"
             aria-label="open drawer"
