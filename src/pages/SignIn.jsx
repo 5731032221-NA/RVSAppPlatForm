@@ -314,7 +314,7 @@ export default function Login({ setToken }) {
             alignitems="center"
             justifycontent="center"
           >
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} name="paperlogin">
               <img className={classes.imglogo} src="loginlogo.png" alt="logo" />
               {/* { file ? <img src={file} className={classes.imglogo} alt="logo"  /> : <img src="loginlogo.png" className={classes.imglogo} alt="logo"  />  } */}
               <h5 className={classes.sysname}>
